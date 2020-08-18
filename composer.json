@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Google\\Generator\\": "src"
+        }
+    },
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2"
+    }
+}
