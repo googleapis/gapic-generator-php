@@ -8,4 +8,4 @@ install:
   - composer dump-autoload
 
 script:
-  - phpunit tests
+  - ./vendor/bin/phpunit tests
