@@ -5,7 +5,8 @@
         }
     },
     "require": {
-        "google/protobuf": "^3.13"
+        "google/protobuf": "^3.13",
+        "nette/php-generator": "^3.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.2"

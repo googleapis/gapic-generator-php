@@ -3,8 +3,12 @@
 namespace Google\Generator;
 
 use \Google\Generator\Collections\Vector;
+use \Google\Generator\Generation\GapicClientGenerator;
+use \Google\Generator\Generation\ServiceDetails;
+use \Google\Generator\Generation\SourceFileContext;
 use \Google\Generator\Utils\ProtoCatalog;
 use \Google\Generator\Utils\ProtoHelpers;
+use \Google\Generator\Utils\SourceCodeInfoHelper;
 use \Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
@@ -65,9 +69,15 @@ class CodeGenerator
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
         {
-            // TODO: Generate all files as required for this proto file.
-            // And remove the next line...
-            yield "nothing yet";
+            SourceCodeInfoHelper::Merge($fileDesc);
+            foreach ($fileDesc->getService() as $index => $service)
+            {
+                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
+                $ctx = new SourceFileContext();
+                $code = GapicClientGenerator::Generate($ctx, $serviceDetails);
+                yield $code;
+            }
+            // TODO: Further files, as required.
         }
     }
 }
