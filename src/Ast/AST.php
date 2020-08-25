@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
@@ -51,7 +52,7 @@ abstract class AST
             {
                 $this->name = $name;
             }
-            public function ToCode(): string
+            public function toCode(): string
             {
                 return '$' . $this->name;
             }
@@ -73,7 +74,7 @@ abstract class AST
             {
                 $this->expr = $expr;
             }
-            public function ToCode(): string
+            public function toCode(): string
             {
                 return 'return ' . $this->expr->toCode();
             }
