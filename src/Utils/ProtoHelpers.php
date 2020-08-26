@@ -32,7 +32,7 @@ class ProtoHelpers
      * @param mixed $desc The descriptor to which to add the proto.
      * @param mixed $proto The underlying proto to add.
      * 
-     * @return mixed To descriptor passed in.
+     * @return mixed The descriptor passed in.
      */
     public static function AddProto($desc, $proto)
     {
