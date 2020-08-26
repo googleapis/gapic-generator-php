@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+// Test proto for reading custom options
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FileOptions {
+    int32 int_option = 2000;
+    string string_option = 2001;
+    repeated int32 repeated_int_option = 2002;
+    repeated string repeated_string_option = 2003;
+}
+
+option (int_option) = 42;
+option (string_option) = "stringy";
+option (repeated_int_option) = 8;
+option (repeated_int_option) = 9;
+option (repeated_int_option) = 10;
+option (repeated_string_option) = "s1";
+option (repeated_string_option) = "s2";
