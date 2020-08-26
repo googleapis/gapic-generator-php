@@ -1,0 +1,11 @@
+language: php
+dist: bionic
+php:
+  - '7.4'
+
+install:
+  - composer install
+  - composer dump-autoload
+
+script:
+  - ./vendor/bin/phpunit tests
