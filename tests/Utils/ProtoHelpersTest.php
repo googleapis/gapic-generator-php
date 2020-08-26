@@ -19,7 +19,7 @@ final class ProtoHelpersTest extends TestCase
         $protobuf = "{$cwd}/protobuf/src/";
         $descRes = tmpfile();
         $descFilename = stream_get_meta_data($descRes)['uri'];
-        $input = "{$cwd}/tests/Utils/CustomOptions.proto";
+        $input = "{$cwd}/tests/Utils/custom_options.proto";
         // Invoke protoc to build the descriptor of the test proto.
         $protocCmdLine = "{$protoc} --include_imports --include_source_info -o {$descFilename} -I {$protobuf} -I {$cwd} {$input} 2>&1";
         $output = [];
@@ -33,7 +33,7 @@ final class ProtoHelpersTest extends TestCase
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
         // Select the correct file from the descriptor-set.
-        $file = Vector::new($descSet->getFile())->filter(fn($x) => $x->getName() === 'tests/Utils/CustomOptions.proto')[0];
+        $file = Vector::new($descSet->getFile())->filter(fn($x) => $x->getName() === 'tests/Utils/custom_options.proto')[0];
 
         // Check custom options are loaded successfully.
         $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
