@@ -1,15 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Google\Generator;
 
-use \Google\Generator\Collections\Vector;
-use \Google\Generator\Generation\GapicClientGenerator;
-use \Google\Generator\Generation\ServiceDetails;
-use \Google\Generator\Generation\SourceFileContext;
-use \Google\Generator\Utils\ProtoCatalog;
-use \Google\Generator\Utils\ProtoHelpers;
-use \Google\Generator\Utils\SourceCodeInfoHelper;
-use \Google\Protobuf\Internal\FileDescriptorSet;
+use Google\Generator\Collections\Vector;
+use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\ServiceDetails;
+use Google\Generator\Generation\SourceFileContext;
+use Google\Generator\Utils\ProtoCatalog;
+use Google\Generator\Utils\ProtoHelpers;
+use Google\Generator\Utils\SourceCodeInfoHelper;
+use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
 {
