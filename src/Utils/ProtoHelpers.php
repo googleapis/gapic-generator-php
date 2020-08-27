@@ -1,13 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use \Google\Generator\Collections\Vector;
-use \Google\Protobuf\Internal\CodedInputStream;
-use \Google\Protobuf\Internal\FileDescriptorProto;
-use \Google\Protobuf\Internal\GPBWire;
-use \Google\Protobuf\Internal\HasPublicDescriptorTrait;
-use \Google\Protobuf\Internal\Message;
+use Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\CodedInputStream;
+use Google\Protobuf\Internal\FileDescriptorProto;
+use Google\Protobuf\Internal\GPBWire;
+use Google\Protobuf\Internal\HasPublicDescriptorTrait;
+use Google\Protobuf\Internal\Message;
 
 class ProtoHelpers
 {

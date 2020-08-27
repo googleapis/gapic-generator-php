@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use \Google\Generator\Collections\Vector;
-use \Google\Generator\Collections\Map;
-use \Google\Generator\Utils\ProtoHelpers;
-use \Google\Protobuf\Internal\Descriptor;
+use Google\Generator\Collections\Vector;
+use Google\Generator\Collections\Map;
+use Google\Generator\Utils\ProtoHelpers;
+use Google\Protobuf\Internal\Descriptor;
 
 class ProtoCatalog
 {
