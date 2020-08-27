@@ -5,7 +5,7 @@ namespace Google\Generator\Tests\Collections;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Vector;
-ERROR!
+ERROR!!
 final class VectorTest extends TestCase
 {
     public function testNew(): void
