@@ -19,11 +19,15 @@ class ServiceDetails {
     /** @var string *Readonly* The name of the service client class. */
     public string $gapicClientClassName;
 
+    /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
+    public Vector $docLines;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
         $this->clientNamespace = "{$namespace}\Gapic";
         $this->gapicClientClassName = "{$desc->getName()}GapicClient";
+        $this->docLines = $desc->leadingComments;
         // TODO: More details...
     }
 }

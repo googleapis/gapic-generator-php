@@ -30,6 +30,18 @@ declare(strict_types=1);
 
 namespace testing\basic\Gapic;
 
+/**
+ * Service Description: This is a basic service.
+ *
+ * This class provides the ability to make remote calls to the backing service through method
+ * calls that map to API methods. Sample code to get started:
+ *
+ * @experimental
+ */
+class BasicGapicClient
+{
+}
+
 EOF;
 
         $this->assertEquals($expectedCode, $code);

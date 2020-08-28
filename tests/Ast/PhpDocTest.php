@@ -46,4 +46,12 @@ final class PhpDocTest extends TestCase
         )->toCode();
         $this->assertEquals("one\ntwo", $doc);
     }
+
+    public function testExperimental(): void
+    {
+        $doc = PhpDoc::block(
+            PhpDoc::experimental()
+        )->toCode();
+        $this->assertEquals('@experimental', $doc);
+    }
 }
