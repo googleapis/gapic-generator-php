@@ -34,7 +34,11 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals(['Method 1', 'Method 2'], $method->leadingComments->toArray());
         $msg = $file->getMessageType()[0];
         $this->assertEquals(['Msg 1', 'Msg 2'], $msg->leadingComments->toArray());
+        $msgField = $msg->getField()[0];
+        $this->assertEquals(['Field 1', 'Field 2'], $msgField->leadingComments->toArray());
         $inner = $msg->getNestedType()[0];
         $this->assertEquals(['Inner 1', 'Inner 2'], $inner->leadingComments->toArray());
+        $innerField = $inner->getField()[0];
+        $this->assertEquals(['Inner field 1', 'Inner field 2'], $innerField->leadingComments->toArray());
     }
 }
