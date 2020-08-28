@@ -59,7 +59,7 @@ class SourceCodeInfoHelper
             }
             foreach ($message->getNestedType() as $nestedMessageIndex => $nestedMessage) {
                 $nestedMessagePath = $messagePath->concat(Vector::New([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
-                $mergeMessage(nestedMessagePath, $nestedMessage);
+                $mergeMessage($nestedMessagePath, $nestedMessage);
             }
             // TODO: enums
         };
