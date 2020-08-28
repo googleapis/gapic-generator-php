@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// Test proto for reading source comments
+
+// Svc 1
+// Svc 2
+service Svc {
+    // Method 1
+    // Method 2
+    rpc AMethod(Msg) returns(Msg);
+}
+
+// Msg 1
+// Msg 2
+message Msg {
+    // Inner 1
+    // Inner 2
+    message InnerMsg {
+
+    }
+}
