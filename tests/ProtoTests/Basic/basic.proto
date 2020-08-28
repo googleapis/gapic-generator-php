@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package testing.basic;
+
+import "google/api/client.proto";
+
+// This is a basic service.
+service Basic {
+  option (google.api.default_host) = "basic.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  // Test summary text for AMethod
+  rpc AMethod(Request) returns(Response);
+}
+
+message Request {
+}
+
+message Response {
+}
