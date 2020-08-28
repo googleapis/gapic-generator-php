@@ -6,6 +6,7 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ClassTypeProxy;
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Constant;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
@@ -31,10 +32,11 @@ class GapicClientGenerator
         $file = new PhpFile();
         $file->setStrictTypes();
         $namespace = $file->addNamespace($this->serviceDetails->clientNamespace);
-        $this->ctx->SetNamespace($namespace->getName());
+        $this->ctx->setNamespace($namespace->getName());
         // Create the GAPIC client class content
         $namespace->add($this->GenerateClass($namespace));
-        // TODO: Add required 'use' statements to file.
+        // Add 'use' statements at top of file, and return string of file content.
+        $this->ctx->addUses($namespace);
         return (new PsrPrinter())->printFile($file);
     }
 
@@ -52,7 +54,20 @@ class GapicClientGenerator
             // TODO: Include code example here.
             PhpDoc::experimental(),
         )->toCode());
-        // TODO: Generate class content.
+        // TODO: Adding this trait is incorrectly prefixing the trait name with a '\'.
+        // Find out why this is, and fix it.
+        $class->addTrait(strval($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class))));
+        $class->addMember($this->serviceName());
+
+        // TODO: Generate further class content.
+
         return $class->getValue();
+    }
+
+    private function serviceName(): Constant
+    {
+        return (new Constant('SERVICE_NAME'))
+            ->setValue($this->serviceDetails->serviceName)
+            ->setComment('The name of the service.');
     }
 }

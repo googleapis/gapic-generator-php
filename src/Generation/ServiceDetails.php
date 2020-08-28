@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
@@ -22,12 +23,16 @@ class ServiceDetails {
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
+    /** @var string *Readonly* ... */
+    public string $serviceName;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
         $this->clientNamespace = "{$namespace}\Gapic";
         $this->gapicClientClassName = "{$desc->getName()}GapicClient";
         $this->docLines = $desc->leadingComments;
+        $this->serviceName = "{$package}.{$desc->getName()}";
         // TODO: More details...
     }
 }
