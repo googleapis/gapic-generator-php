@@ -148,6 +148,17 @@ abstract class PhpDoc
         };
     }
 
+    public static function experimental(): PhpDoc
+    {
+        return new class extends PhpDoc
+        {
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(['@experimental']);
+            }
+        };
+    }
+
     /** Override to provide content-specific pre-processing. */
     // Note: Currently unused; will be used when support for @param is added.
     protected function preProcess(Map $info): Map
