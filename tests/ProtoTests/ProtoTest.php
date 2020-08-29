@@ -30,6 +30,8 @@ declare(strict_types=1);
 
 namespace testing\basic\Gapic;
 
+use Google\ApiCore\GapicClientTrait;
+
 /**
  * Service Description: This is a basic service.
  *
@@ -40,6 +42,10 @@ namespace testing\basic\Gapic;
  */
 class BasicGapicClient
 {
+    use \GapicClientTrait;
+
+    /** The name of the service. */
+    const SERVICE_NAME = 'testing.basic.Basic';
 }
 
 EOF;
