@@ -12,7 +12,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: |
+        composer install --prefer-dist --no-progress --no-suggest;
+        composer dump-autoload;
 
+    - name: Run tests
+      run: ./vendor/bin/phpunit tests
