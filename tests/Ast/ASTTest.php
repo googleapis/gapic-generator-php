@@ -19,7 +19,7 @@ final class ASTTest extends TestCase
         $x = AST::var('x');
         $return = AST::return($x);
         $block = AST::Block($return);
-        $this->assertEquals('return $x;', $block->toCode());
+        $this->assertEquals('return $x;!!', $block->toCode());
     }
 
     public function testArrayEmpty(): void
