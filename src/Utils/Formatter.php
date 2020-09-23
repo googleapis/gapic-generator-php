@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Google\Generator;
+namespace Google\Generator\Utils;
 
 class Formatter
 {

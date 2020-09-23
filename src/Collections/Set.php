@@ -102,4 +102,14 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
             return new Set($map);
         }
     }
+
+    /**
+     * Convert this set to a vector. Order of elements is non-deterministic.
+     *
+     * @return Vector
+     */
+    public function toVector(): Vector
+    {
+        return Vector::new($this);
+    }
 }

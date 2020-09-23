@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use \Google\Generator\Collections\Set;
-use \Nette\PhpGenerator\PhpNamespace;
+use Google\Generator\Ast\PhpFile;
+use Google\Generator\Collections\Set;
+use Google\Generator\Utils\ResolvedType;
+use Google\Generator\Utils\Type;
 
 /** Track per-file data. */
 class SourceFileContext
@@ -42,23 +44,22 @@ class SourceFileContext
         if ($type->isClass()) {
             if ($type->getNamespace() !== $this->namespace) {
                 // No 'use' required if type is in the current namespace
-                $fullname = $type->getFullname();
-                $this->uses = $this->uses->add($fullname);
+                $this->uses = $this->uses->add($type);
             }
         }
-        return new ResolvedType($type->name);
+        return new ResolvedType($type, fn() => $type->name);
     }
 
     /**
-     * Add required 'use' statements to the source file.
-     * 
-     * @param PhpNamespace $namespace The namespace within the file that requires the 'use' statements.
+     * Finalize this source context; after this call there must be no further changes.
+     * The PhpFile passed in can be altered as necessary for this finalization.
+     *
+     * @param PhpFile $file The file being generared with this context.
+     *
+     * @return PhpFile
      */
-    public function addUses(PhpNamespace $namespace): void
+    public function finalize(PhpFile $file): PhpFile
     {
-        // TODO: Sort 'use' statements in canonical order.
-        foreach ($this->uses as $use) {
-            $namespace->addUse($use);
-        }
+        return $file->withUses($this->uses);
     }
 }

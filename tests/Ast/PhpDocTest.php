@@ -18,7 +18,7 @@ final class PhpDocTest extends TestCase
                 'and finally, line 3'
             ]))
         )->toCode();
-        $this->assertEquals("Line 1\nLine 2\nand finally, line 3", $doc);
+        $this->assertEquals("/**\n * Line 1\n * Line 2\n * and finally, line 3\n */\n", $doc);
     }
 
     public function testText(): void
@@ -31,7 +31,7 @@ final class PhpDocTest extends TestCase
             )
         )->toCode();
         $this->assertEquals(
-            "Some text which will be formatted to a fixed line length of 80 characters, with\nauto line wrapping at that point :)",
+            "/**\n * Some text which will be formatted to a fixed line length of 80 characters, with\n * auto line wrapping at that point :)\n */\n",
             $doc);
     }
 
@@ -44,7 +44,7 @@ final class PhpDocTest extends TestCase
                 'two'
             ),
         )->toCode();
-        $this->assertEquals("one\ntwo", $doc);
+        $this->assertEquals("/**\n * one\n * two\n */\n", $doc);
     }
 
     public function testExperimental(): void
@@ -52,6 +52,6 @@ final class PhpDocTest extends TestCase
         $doc = PhpDoc::block(
             PhpDoc::experimental()
         )->toCode();
-        $this->assertEquals('@experimental', $doc);
+        $this->assertEquals("/** @experimental */\n", $doc);
     }
 }

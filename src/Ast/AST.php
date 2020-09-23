@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Type;
 
 /** Base of the PHP code AST. */
 abstract class AST
@@ -43,13 +44,56 @@ abstract class AST
         }
     }
 
+    protected function clone(Callable $fnOnClone)
+    {
+        $clone = clone $this;
+        $fnOnClone($clone);
+        return $clone;
+    }
+
+    /**
+     * Create a PHP file.
+     *
+     * @param PhpClass $class The class to be contained within this file.
+     *
+     * @return PhpFile
+     */
+    public static function file(PhpClass $class): PhpFile
+    {
+        return new PhpFile($class);
+    }
+
+    /**
+     * Create a class.
+     *
+     * @param Type $type The type of the class to create.
+     *
+     * @return PhpClass
+     */
+    public static function class(Type $type): PhpClass
+    {
+        return new PhpClass($type);
+    }
+
+    /**
+     * Create a class constant.
+     *
+     * @param string $name The name of the constant.
+     *
+     * @return PhpConstant
+     */
+    public static function constant(string $name): PhpConstant
+    {
+        return new PhpConstant($name);
+    }
+
     /**
      * Create a block of PHP code.
-     * 
+     *
      * @param array $code The code to include in this block.
      *     Each item must be an AST instance or a Vector thereof.
      *     Null values will be ignored.
-     * 
+     *
      * @return AST
      */
     public static function block(...$code): AST
@@ -73,9 +117,9 @@ abstract class AST
 
     /**
      * Create a PHP variable.
-     * 
+     *
      * @param string $name The name of the variable, without leading '$'.
-     * 
+     *
      * @return Expression
      */
     public static function var(string $name): Expression
@@ -94,9 +138,9 @@ abstract class AST
 
     /**
      * Create a 'return' statement, returning the specified expression.
-     * 
+     *
      * @param Expression $expr Expression to return.
-     * 
+     *
      * @return AST
      */
     public static function return(Expression $expr): AST
@@ -115,9 +159,9 @@ abstract class AST
 
     /**
      * Create an array initializer expression.
-     * 
+     *
      * @param array $array The array content. Supports both associative and sequential arrays.
-     * 
+     *
      * @return Expression
      */
     public static function array(array $array): Expression
@@ -143,10 +187,10 @@ abstract class AST
 
     /**
      * Create an expression to access a class property or const.
-     * 
+     *
      * @param mixed $obj The object containing the accessee.
      * @param mixed $accessee The property or const being accessed.
-     * 
+     *
      * @return Expression
      */
     public static function access($obj, $accessee): Expression
@@ -166,10 +210,10 @@ abstract class AST
 
     /**
      * Create an expression to call a method. This method returns a Callable into which the args are passed.
-     * 
+     *
      * @param mixed $obj The object containing the method to call.
      * @param mixed $callee The method to call.
-     * 
+     *
      * @return Callable The returned Callable returns an Expression once called with callee args.
      */
     public static function call($obj, $callee): Callable
@@ -192,7 +236,7 @@ abstract class AST
     /**
      * Convert this AST to lines of text suitable for directlyincluding in the output PHP file.
      * The returned string will be mostly unformatted, so an extra formatting step will be required.
-     * 
+     *
      * @return string
      */
     public abstract function toCode(): string;

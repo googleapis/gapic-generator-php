@@ -10,7 +10,7 @@ final class ProtoTest extends TestCase
 {
     use ProtoTrait;
 
-    public function testCustomOptions(): void
+    public function testProtoBasic(): void
     {
         // TODO: Abstract out this form of testing, once we have more than just this one proto-based test.
 
@@ -42,7 +42,7 @@ use Google\ApiCore\GapicClientTrait;
  */
 class BasicGapicClient
 {
-    use \GapicClientTrait;
+    use GapicClientTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'testing.basic.Basic';
