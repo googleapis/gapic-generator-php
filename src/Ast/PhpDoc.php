@@ -1,4 +1,19 @@
 <?php
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 declare(strict_types=1);
 
 namespace Google\Generator\Ast;
@@ -11,9 +26,9 @@ abstract class PhpDoc
     /**
      * Create a PHP Documentation block.
      * Items passed in make up the content of the block.
-     * 
+     *
      * @param array $items The block contents.
-     * 
+     *
      * @return PhpDoc
      */
     public static function block(...$items): PhpDoc
@@ -46,7 +61,7 @@ abstract class PhpDoc
 
     /**
      * Create a new-line within the PHP doc content.
-     * 
+     *
      * @return PhpDoc
      */
     public static function newLine(): PhpDoc
@@ -63,9 +78,9 @@ abstract class PhpDoc
     /**
      * Create zero or more lines of pre-formatted text within a PHP doc block.
      * The lines specified are added to the PHP doc with no extra processing.
-     * 
+     *
      * @param Vector $lines Vector of string; the lines of content.
-     * 
+     *
      * @return PhpDoc
      */
     public static function preFormattedText(Vector $lines): PhpDoc
@@ -87,9 +102,9 @@ abstract class PhpDoc
      * Add unformatted text to the PHP doc block.
      * The parts specified may be a variety of types, which are processed according to type.
      * Output is formatted to fit within a fixed line length (of 80).
-     * 
+     *
      * @param array $parts The doc parts
-     * 
+     *
      * @return PhpDoc
      */
     public static function text(...$parts): PhpDoc
@@ -175,7 +190,7 @@ abstract class PhpDoc
     /**
      * Convert this PhpDoc block to lines of text suitable for directly
      * including in the output PHP file.
-     * 
+     *
      * @return string
      */
     public function toCode(): string
