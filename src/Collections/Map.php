@@ -1,4 +1,19 @@
 <?php
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 declare(strict_types=1);
 
 namespace Google\Generator\Collections;
@@ -10,9 +25,9 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Instantiate a new Map.
-     * 
+     *
      * @param Map|\Traversable|array $data The data from which to create this Map.
-     * 
+     *
      * @return Map
      */
     public static function new($data = []): Map
@@ -35,9 +50,9 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Create a new Map from an array of key/value pair values.
-     * 
+     *
      * @param array $pairs An array in which each value is a length-2 array containing a key/value pair.
-     * 
+     *
      * @return Map
      */
     public static function fromPairs(array $pairs): Map
@@ -56,7 +71,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      * @param mixed $k The key to lookup and/or modify.
      * @param int $action -1 to remove element $k, 0 to lookup whether an element exists, +1 to add/overwrite an element.
      * @param mixed $v The element to add/overwrite, if relevant.
-     * 
+     *
      * @return array Array containing whether key exists, then the value (if relevant).
      */
     private static function apply(array &$data, $k, int $action, $v): array
@@ -110,7 +125,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
             }
         })();
     }
-    
+
     // Countable methods
 
     /** @inheritDoc */
@@ -153,10 +168,10 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Set the specified value for the specified key. Will overwrite if the key is already present.
-     * 
+     *
      * @param mixed $key The key at which to add or overwrite.
      * @param mixed $value The value to add or overwrite.
-     * 
+     *
      * @return Map
      */
     public function set($key, $value): Map
@@ -169,11 +184,11 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Filter elements from this map.
-     * 
+     *
      * @param Callable $fnPredicate Elements will be present in the returned map
      *     for which this function returns true. This function is called with two
      *     parameters - the key, and the value.
-     * 
+     *
      * @return Map
      */
     public function filter(Callable $fnPredicate): Map
@@ -189,11 +204,11 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Transform elements of this map.
-     * 
+     *
      * @param Callable $fnMap Transformation function called for each element in this map.
      *     This function is called with two parameters, the key and the value, and must return
      *     a single value which will be the new value.
-     * 
+     *
      * @return Map
      */
     public function mapValues(Callable $fnMap): Map
@@ -207,7 +222,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Return a vector of the keys of this map.
-     * 
+     *
      * @return Vector
      */
     public function keys(): Vector
@@ -221,7 +236,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Return a vector of the values of this map.
-     * 
+     *
      * @return Vector
      */
     public function values(): Vector
@@ -235,10 +250,10 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 
     /**
      * Get a single value from this map, with a default value returned if the key does not exist.
-     * 
+     *
      * @param mixed $key The key of the value to retrieve.
      * @param mixed $default The default value to return if the key does not exist.
-     * 
+     *
      * @return mixed
      */
     public function get($key, $default)

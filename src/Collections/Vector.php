@@ -1,4 +1,19 @@
 <?php
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 declare(strict_types=1);
 
 namespace Google\Generator\Collections;
@@ -10,10 +25,10 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Instantiate a new Vector.
-     * 
+     *
      * @param Vector|\Traversable|array $data The data from which to create this Vector;
      *     If an array, then only the values are used, the keys are ignored.
-     * 
+     *
      * @return Vector
      */
     public static function new($data = []): Vector
@@ -32,7 +47,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /**
      * Zip two Vectors, with optional mapping function. If the vectors are not the same
      * length, then the excess elements in the longer vector will be ignored.
-     * 
+     *
      * @param Vector $a The first Vector to zip.
      * @param Vector $b The second Vector to zip.
      * @param ?Callable $fnMap The optional map function. This will be called with two
@@ -142,9 +157,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Prepend an item to the beginning of this vector.
-     * 
+     *
      * @param mixed $item The item to prepend.
-     * 
+     *
      * @return Vector
      */
     public function prepend($item): Vector
@@ -156,9 +171,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Append an item to the end of this vector.
-     * 
+     *
      * @param mixed $item The item to append.
-     * 
+     *
      * @return Vector
      */
     public function append($item): Vector
@@ -170,9 +185,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Concatenate a vector on to the end of this vector.
-     * 
+     *
      * @param Vector $vector The vector to concatentate.
-     * 
+     *
      * @return Vector
      */
     public function concat(Vector $vector): Vector
@@ -182,10 +197,10 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Filter elements from this vector.
-     * 
+     *
      * @param Callable $fnPredicate Elements will be present in the returned vector
      *     for which this function returns true.
-     * 
+     *
      * @return Vector
      */
     public function filter(Callable $fnPredicate): Vector
@@ -201,9 +216,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Transform elements of this vector.
-     * 
+     *
      * @param Callable $fnMap Transformation function called for each element in this vector.
-     * 
+     *
      * @return Vector
      */
     public function map(Callable $fnMap): Vector
@@ -217,10 +232,10 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Transform and flatten elements of this vector.
-     * 
+     *
      * @param Callable $fnFlatMap Transformation function called for each element in this vector;
      *     must return a vector.
-     * 
+     *
      * @return Vector
      */
     public function flatMap(Callable $fnFlatMap): Vector
@@ -238,7 +253,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Flatten elements from this vector. Each element which is a vector is recursively flattened.
-     * 
+     *
      * @return Vector
      */
     public function flatten(): Vector
@@ -248,11 +263,11 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Group elements of this vector using a key function.
-     * 
+     *
      * @param Callable $fnKey The function to return a group key for each element.
      * @param ?Callable $fnValue Optional function to return an value for each element.
      *     If omitted, the element value is used.
-     * 
+     *
      * @return Map A map of Vectors.
      */
     public function groupBy(Callable $fnKey, ?Callable $fnValue = null): Map
@@ -270,7 +285,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /**
      * Include only unique values from this vector.
      * Elements are kept in order of first occurance of each element.
-     * 
+     *
      * @return Vector
      */
     public function distinct(): Vector
@@ -288,7 +303,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Take elements from the beginning of this vector.
-     * 
+     *
      * @return Vector
      */
     public function take(int $n): Vector
@@ -298,7 +313,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Take elements from the end of this vector.
-     * 
+     *
      * @return Vector
      */
     public function takeLast(int $n): Vector
@@ -308,7 +323,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Skip elements from the beginning of this vector.
-     * 
+     *
      * @return Vector
      */
     public function skip(int $n): Vector
@@ -318,7 +333,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Skip elements from the end of this vector.
-     * 
+     *
      * @return Vector
      */
     public function skipLast(int $n) : Vector
@@ -328,9 +343,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Skip elements from the beginning of this vector, whilst a predicate returns true.
-     * 
+     *
      * @param Callable $fnPredicate Elements skipped whilst this function returns true.
-     * 
+     *
      * @return Vector
      */
     public function skipWhile(Callable $fnPredicate): Vector
@@ -345,9 +360,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Skip elements from the end of this vector, whilst a predicate returns true.
-     * 
+     *
      * @param Callable $fnPredicate Elements skipped whilst this function returns true.
-     * 
+     *
      * @return Vector
      */
     public function skipLastWhile(Callable $fnPredicate): Vector
@@ -362,7 +377,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Return the first element from this vector, or null if this vector is empty.
-     * 
+     *
      * @return mixed
      */
     public function firstOrNull()
@@ -372,7 +387,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Return the last element from this vector.
-     * 
+     *
      * @return mixed
      */
     public function last()
@@ -383,9 +398,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /**
      * Returns true if there are any elements in this vector for which the predicate returns true.
      * If the optional predicate is omitted, then returns true if this vector contains any elements.
-     * 
+     *
      * @param ?Callable $fnPredicate Optional predicate, to select elements from this vector
-     * 
+     *
      * @return bool
      */
     public function any(?Callable $fnPredicate = null): bool
@@ -401,9 +416,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /**
      * Join elements into a string, with the specified joiner string.
      * All elements must be convertable to string.
-     * 
+     *
      * @param string $joiner String used between elements, defaults to an empty string.
-     * 
+     *
      * @return string
      */
     public function join(string $joiner = ''): string
@@ -413,9 +428,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Return whether this vector contains the specified item.
-     * 
+     *
      * @param mixed $item Item to look for.
-     * 
+     *
      * @return bool
      */
     public function contains($item): bool
@@ -430,10 +445,10 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Converts this vector to a map, using the key function, and optional value function.
-     * 
+     *
      * @param Callable $fnKey Return a key for an element.
      * @param ?Callable $fnValue Return a value for an element; if omitted, the element itself is used.
-     * 
+     *
      * @return Map
      */
     public function toMap(Callable $fnKey, ?Callable $fnValue = null): Map
@@ -447,7 +462,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Converts this vector to a set.
-     * 
+     *
      * @return Set
      */
     public function toSet(): Set
@@ -457,7 +472,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Converts this vector to a standard PHP array, with incrementing numeric keys
-     * 
+     *
      * @return array
      */
     public function toArray(): array
@@ -467,9 +482,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 
     /**
      * Return the maximum value form this vector. All elements must be numeric.
-     * 
+     *
      * @param mixed $defaultValue The default return value if this vector is empty, defaults to null.
-     * 
+     *
      * @return mixed
      */
     public function max($defaultValue = null)

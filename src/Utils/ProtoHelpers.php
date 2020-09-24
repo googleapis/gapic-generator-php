@@ -1,4 +1,19 @@
 <?php
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 declare(strict_types=1);
 
 namespace Google\Generator\Utils;
@@ -15,7 +30,7 @@ class ProtoHelpers
     /**
      * Get the PHP namespace of the specified file.
      * This is achieved by reading the PHP namespace option if present, otherwise it uses the proto package name.
-     * 
+     *
      * @param FileDescriptorProto $fileDesc The file for this to get the PHP namespace.
      */
     public static function GetNamespace(FileDescriptorProto $fileDesc): string
@@ -34,10 +49,10 @@ class ProtoHelpers
 
     /**
      * Add an underlying proto to a descriptor.
-     * 
+     *
      * @param mixed $desc The descriptor to which to add the proto.
      * @param mixed $proto The underlying proto to add.
-     * 
+     *
      * @return mixed The descriptor passed in.
      */
     public static function AddProto($desc, $proto)
@@ -111,11 +126,11 @@ class ProtoHelpers
 
     /**
      * Get a non-repeated custom option. The option can be of any type, which determines the return type.
-     * 
+     *
      * @param mixed $message The message containing the custom option. Must be of type Message, or
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
-     * 
+     *
      * @return mixed Will be null if the option does not exist.
      */
     public static function getCustomOption($message, int $optionId)
@@ -125,11 +140,11 @@ class ProtoHelpers
 
     /**
      * Get a repeated custom option. The option can be of any type, which determines to content of the returned Vector.
-     * 
+     *
      * @param mixed $message The message containing the custom option. Must be of type Message, or
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
-     * 
+     *
      * @return Vector Will be an empty Vector if the option does not exist.
      */
     public static function getCustomOptionRepeated($message, int $optionId): Vector

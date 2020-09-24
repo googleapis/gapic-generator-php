@@ -1,4 +1,19 @@
 <?php
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 declare(strict_types=1);
 
 namespace Google\Generator;
@@ -17,10 +32,10 @@ class CodeGenerator
 {
     /**
      * Generate from a FileSet descriptor; used when evoked from the command-line.
-     * 
+     *
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
-     * 
+     *
      * @return string[]
      */
     public static function GenerateFromDescriptor(string $descBytes, string $package)
@@ -37,10 +52,10 @@ class CodeGenerator
     /**
      * Generate from a vector of proto file descriptors, only generating the files listed
      * in $filesToGenerate.
-     * 
+     *
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
-     * 
+     *
      * @return string[]
      */
     public static function Generate(Vector $fileDescs, Vector $filesToGenerate)
