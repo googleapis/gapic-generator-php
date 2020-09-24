@@ -103,6 +103,18 @@ abstract class AST
     }
 
     /**
+     * Create a class property
+     *
+     * @param string $name The name of the property.
+     *
+     * @return PhpProperty
+     */
+    public static function property(string $name): PhpProperty
+    {
+        return new PhpProperty($name);
+    }
+
+    /**
      * Create a block of PHP code.
      *
      * @param array $code The code to include in this block.

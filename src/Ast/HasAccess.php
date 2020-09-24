@@ -18,34 +18,30 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
-trait HasPhpDoc
+use Google\Generator\Collections\Vector;
+
+class Access
+{
+    public const PUBLIC = 'public';
+    public const STATIC = 'static';
+}
+
+trait HasAccess
 {
     /**
-     * Create a version of this ast element with PHP doc.
+     * Create a version of this ast element with access modifiers.
      *
-     * @param PhpDoc $phpDoc The PHP doc to use.
-     *
-     * @return self
-     */
-    public function withPhpDoc(PhpDoc $phpDoc): self
-    {
-        return $this->clone(fn($clone) => $clone->phpDoc = $phpDoc);
-    }
-
-    /**
-     * Create a version of this ast element with PHP doc.
-     *
-     * @param string $summaryText The summary text to use as a PHP doc.
+     * @param array $access All access modifiers.
      *
      * @return self
      */
-    public function WithPhpDocText(string $summaryText): self
+    public function withAccess(...$access): self
     {
-        return $this->withPhpDoc(PhpDoc::block(PhpDoc::text($summaryText)));
+        return $this->clone(fn($clone) => $clone->access = Vector::new($access));
     }
 
-    protected function phpDocToCode(): string
+    protected function accessToCode(): string
     {
-        return isset($this->phpDoc) ? $this->phpDoc->toCode() : '';
+        return isset($this->access) ? $this->access->map(fn($x) => "{$x} ")->join() : '';
     }
 }

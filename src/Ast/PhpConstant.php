@@ -42,6 +42,7 @@ final class PhpConstant extends PhpClassMember
     {
         return
             $this->phpDocToCode() .
+            $this->accessToCode() .
             "const {$this->name} = " . static::toPhp($this->value) . ';';
     }
 }

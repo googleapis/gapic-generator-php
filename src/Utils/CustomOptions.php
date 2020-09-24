@@ -16,11 +16,10 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Ast;
+namespace Google\Generator\Utils;
 
-/** A member of a class. */
-abstract class PhpClassMember extends AST
+class CustomOptions
 {
-    use HasPhpDoc;
-    use HasAccess;
+    public const GOOGLE_API_DEFAULTHOST = 1049;
+    public const GOOGLE_API_OAUTHSCOPES = 1050;
 }

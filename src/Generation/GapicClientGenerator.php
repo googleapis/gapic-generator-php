@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
+use Google\Generator\Ast\Access;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
@@ -65,14 +66,47 @@ class GapicClientGenerator
                 PhpDoc::experimental(),
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
-            ->withMember($this->serviceName());
+            ->withMember($this->serviceName())
+            ->withMember($this->serviceAddress())
+            ->withMember($this->servicePort())
+            ->withMember($this->codegenName())
+            ->withMember($this->serviceScopes());
         // TODO: Generate further class content.
     }
 
     private function serviceName(): PhpClassMember
     {
         return AST::constant('SERVICE_NAME')
-            ->withPhpDoc(PhpDoc::block(PhpDoc::text('The name of the service.')))
+            ->withPhpDocText('The name of the service.')
             ->withValue($this->serviceDetails->serviceName);
+    }
+
+    private function serviceAddress(): PhpClassMember
+    {
+        return AST::constant('SERVICE_ADDRESS')
+            ->withPhpDocText('The default address of the service.')
+            ->withValue($this->serviceDetails->defaultHost);
+    }
+
+    private function servicePort(): PhpClassMember
+    {
+        return AST::constant('DEFAULT_SERVICE_PORT')
+            ->withPhpDocText('The default port of the service.')
+            ->withValue($this->serviceDetails->defaultPort);
+    }
+
+    private function codegenName(): PhpClassMember
+    {
+        return AST::constant('CODEGEN_NAME')
+            ->withPhpDocText('The name of the code generator, to be included in the agent header.')
+            ->withValue('gapic');
+    }
+
+    private function serviceScopes(): PhpClassMember
+    {
+        return AST::property('serviceScopes')
+            ->withAccess(Access::PUBLIC, Access::STATIC)
+            ->withPhpDocText('The default scopes required by the service.')
+            ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
     }
 }

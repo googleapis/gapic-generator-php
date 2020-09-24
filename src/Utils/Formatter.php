@@ -36,6 +36,7 @@ class Formatter
         // Fixers must be in priority order; the priority is the number in the comment.
         // More fixers can be added as required to achieve the formatting we desire.
         $fixers = [
+            new \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
             new \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer(), // 50
             new \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer(), // 26
             new \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer(), // 2

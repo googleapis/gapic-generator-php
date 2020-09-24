@@ -39,12 +39,27 @@ class ServiceDetails {
     /** @var string *Readonly* The full name of the service. */
     public string $serviceName;
 
+    /** @var string *Readonly* The default hostname of the service. */
+    public string $defaultHost;
+
+    /** @var int *Readonly* The default port of the service. */
+    public int $defaultPort;
+
+    /** @var Vector *Readonly* Vector of strings; the default auth scopes of the service. */
+    public Vector $defaultScopes;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
+        $this->defaultHost = ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
+        $this->defaultPort = 443;
+        $this->defaultScopes =
+            Vector::New(explode(',', ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
+                ->filter(fn($x) => $x != '')
+                ->map(fn($x) => trim($x));
         // TODO: More details...
     }
 }
