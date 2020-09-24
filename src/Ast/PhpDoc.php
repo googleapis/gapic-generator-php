@@ -40,7 +40,6 @@ abstract class PhpDoc
                     }
                     return $result;
                 });
-                return $this->items->flatMap(fn($x) => $x->toLines($info)->append(''));
             }
         };
     }
@@ -148,10 +147,14 @@ abstract class PhpDoc
         };
     }
 
+    /**
+     * Add the @experimental tag to the PHP doc block.
+     *
+     * @return PhpDoc
+     */
     public static function experimental(): PhpDoc
     {
-        return new class extends PhpDoc
-        {
+        return new class extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new(['@experimental']);
@@ -178,6 +181,13 @@ abstract class PhpDoc
     public function toCode(): string
     {
         $lines = $this->toLines(Map::new());
-        return $lines->join("\n");
+        if (count($lines) <= 1) {
+            return "/** {$lines->join()} */\n";
+        } else {
+            return
+                "/**\n" .
+                $lines->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
+                " */\n";
+        }
     }
 }

@@ -7,6 +7,7 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
+use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\SourceCodeInfoHelper;
@@ -75,7 +76,9 @@ class CodeGenerator
             {
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
                 $ctx = new SourceFileContext();
-                $code = GapicClientGenerator::Generate($ctx, $serviceDetails);
+                $file = GapicClientGenerator::Generate($ctx, $serviceDetails);
+                $code = $file->toCode();
+                $code = Formatter::format($code);
                 yield $code;
             }
             // TODO: Further files, as required.

@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Google\Generator\Generation;
+namespace Google\Generator\Utils;
 
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\Descriptor;
+use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
 
 /** A fully-specified PHP type. */
-class Type
+class Type implements Equality
 {
     /**
      * Build a type from a class full-name.
@@ -64,8 +65,22 @@ class Type
      * 
      * @return string
      */
-    public function getFullname(): string
+    public function getFullname($omitLeadingBackslash = false): string
     {
-        return $this->isClass() ? "\\{$this->getNamespace()}\\{$this->name}" : $this->name;
+        return $this->isClass() ?
+            ($omitLeadingBackslash ? '' : '\\') . "{$this->getNamespace()}\\{$this->name}" :
+            $this->name;
+    }
+
+    // Equality methods
+
+    public function getHash(): int
+    {
+        return crc32($this->getFullname());
+    }
+
+    public function isEqualTo($other): bool
+    {
+        return $other instanceof Type && $this->getFullname() === $other->getFullname();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Google\Generator\Generation;
+namespace Google\Generator\Utils;
 
 /**
  * Represent a resolved type, ready to use in code output.
@@ -9,21 +9,24 @@ namespace Google\Generator\Generation;
  */
 class ResolvedType
 {
-    /** @var string The type as is ready to use in code output. */
-    public string $typeName;
-
     /**
      * Construct a ResolvedType.
      * 
      * @param string $typeName The resolved name of the type.
      */
-    public function __construct(string $typeName)
+    public function __construct(Type $type, \Closure $fnToCode)
     {
-        $this->typeName = $typeName;
+        $this->type = $type;
+        $this->fnToCode = $fnToCode;
     }
 
-    public function __toString()
+    /** @var Type *Readonly* The type of this resolved-type. */
+    public Type $type;
+
+    private \Closure $fnToCode;
+
+    public function toCode(): string
     {
-        return $this->typeName;
+        return ($this->fnToCode)();
     }
 }

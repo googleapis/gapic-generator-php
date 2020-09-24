@@ -51,4 +51,13 @@ final class SetTest extends TestCase
         $s = $s->add(2);
         $this->assertCount(2, $s);
     }
+
+    public function testToVector(): void
+    {
+        $s = Set::new([1, 2]);
+        $v = $s->toVector();
+        $this->assertCount(2, $v);
+        $this->assertContains(1, $v);
+        $this->assertContains(2, $v);
+    }
 }

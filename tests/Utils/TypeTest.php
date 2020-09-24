@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Google\Generator\Tests\Generation;
+namespace Google\Generator\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Generation\Type;
+use Google\Generator\Utils\Type;
 
 final class TypeTest extends TestCase
 {

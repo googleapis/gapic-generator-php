@@ -1,25 +1,25 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Generator\Ast\AST;
+use Google\Generator\Ast\PhpClass;
+use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
+use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\ClassTypeProxy;
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Constant;
-use Nette\PhpGenerator\PhpFile;
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\PsrPrinter;
+use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
 {
-    public static function Generate(SourceFileContext $ctx, ServiceDetails $serviceDetails)
+    public static function Generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
         return (new GapicClientGenerator($ctx, $serviceDetails))->GenerateGapicClient();
     }
 
-    private $ctx;
-    private $serviceDetails;
+    private SourceFileContext $ctx;
+    private ServiceDetails $serviceDetails;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
@@ -27,47 +27,37 @@ class GapicClientGenerator
         $this->serviceDetails = $serviceDetails;
     }
 
-    private function GenerateGapicClient()
+    private function GenerateGapicClient(): PhpFile
     {
-        $file = new PhpFile();
-        $file->setStrictTypes();
-        $namespace = $file->addNamespace($this->serviceDetails->clientNamespace);
-        $this->ctx->setNamespace($namespace->getName());
-        // Create the GAPIC client class content
-        $namespace->add($this->GenerateClass($namespace));
-        // Add 'use' statements at top of file, and return string of file content.
-        $this->ctx->addUses($namespace);
-        return (new PsrPrinter())->printFile($file);
+        // Generate file content
+        $file = AST::file($this->GenerateClass());
+        // Finalize as required by the source-context; e.g. add top-level 'use' statements.
+        return $this->ctx->finalize($file);
     }
 
-    private function GenerateClass(PhpNamespace $namespace): ClassType
+    private function GenerateClass(): PhpClass
     {
-        $class = new ClassTypeProxy($this->serviceDetails->gapicClientClassName);
-        $class->setComment(PhpDoc::block(
-            PhpDoc::preFormattedText($this->serviceDetails->docLines->take(1)
-                ->map(fn($x) => "Service Description: {$x}")
-                ->concat($this->serviceDetails->docLines->skip(1))),
-            PhpDoc::preFormattedText(Vector::new([
-                'This class provides the ability to make remote calls to the backing service through method',
-                'calls that map to API methods. Sample code to get started:'
-            ])),
-            // TODO: Include code example here.
-            PhpDoc::experimental(),
-        )->toCode());
-        // TODO: Adding this trait is incorrectly prefixing the trait name with a '\'.
-        // Find out why this is, and fix it.
-        $class->addTrait(strval($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class))));
-        $class->addMember($this->serviceName());
-
+        return AST::class($this->serviceDetails->gapicClientType)
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::preFormattedText($this->serviceDetails->docLines->take(1)
+                    ->map(fn($x) => "Service Description: {$x}")
+                    ->concat($this->serviceDetails->docLines->skip(1))),
+                PhpDoc::preFormattedText(Vector::new([
+                    'This class provides the ability to make remote calls to the backing service through method',
+                    'calls that map to API methods. Sample code to get started:'
+                ])),
+                // TODO: Include code example here.
+                PhpDoc::experimental(),
+            ))
+            ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
+            ->withMember($this->serviceName());
         // TODO: Generate further class content.
-
-        return $class->getValue();
     }
 
-    private function serviceName(): Constant
+    private function serviceName(): PhpClassMember
     {
-        return (new Constant('SERVICE_NAME'))
-            ->setValue($this->serviceDetails->serviceName)
-            ->setComment('The name of the service.');
+        return AST::constant('SERVICE_NAME')
+            ->withPhpDoc(PhpDoc::block(PhpDoc::text('The name of the service.')))
+            ->withValue($this->serviceDetails->serviceName);
     }
 }
