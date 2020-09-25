@@ -18,34 +18,31 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
-trait HasPhpDoc
+/** A property within a class. */
+final class PhpProperty extends PhpClassMember
 {
-    /**
-     * Create a version of this ast element with PHP doc.
-     *
-     * @param PhpDoc $phpDoc The PHP doc to use.
-     *
-     * @return self
-     */
-    public function withPhpDoc(PhpDoc $phpDoc): self
+    public function __construct(string $name)
     {
-        return $this->clone(fn($clone) => $clone->phpDoc = $phpDoc);
+        $this->name = $name;
     }
 
     /**
-     * Create a version of this ast element with PHP doc.
+     * Create a property with the specified value.
      *
-     * @param string $summaryText The summary text to use as a PHP doc.
+     * @param Expression $value The value of the constant.
      *
-     * @return self
+     * @return PhpConstant
      */
-    public function WithPhpDocText(string $summaryText): self
+    public function withValue(Expression $value): PhpProperty
     {
-        return $this->withPhpDoc(PhpDoc::block(PhpDoc::text($summaryText)));
+        return $this->clone(fn($clone) => $clone->value = $value);
     }
 
-    protected function phpDocToCode(): string
+    public function toCode(): string
     {
-        return isset($this->phpDoc) ? $this->phpDoc->toCode() : '';
+        return
+            $this->phpDocToCode() .
+            $this->accessToCode() .
+            '$' . $this->name . ' = ' . static::toPhp($this->value) . ';';
     }
 }
