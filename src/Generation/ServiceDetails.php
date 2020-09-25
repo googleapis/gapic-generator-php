@@ -48,6 +48,18 @@ class ServiceDetails {
     /** @var Vector *Readonly* Vector of strings; the default auth scopes of the service. */
     public Vector $defaultScopes;
 
+    /** @var string *Readonly* The client-config filename. */
+    public string $clientConfigFilename;
+
+    /** @var string *Readonly* The descriptor-config filename. */
+    public string $descriptorConfigFilename;
+
+    /** @var string *Readonly* The grpc-config filename. */
+    public string $grpcConfigFilename;
+
+    /** @var string *Readonly* The rest-config filename. */
+    public string $restConfigFilename;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
@@ -60,6 +72,10 @@ class ServiceDetails {
             Vector::New(explode(',', ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
                 ->filter(fn($x) => $x != '')
                 ->map(fn($x) => trim($x));
+        $this->clientConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_client_config.json';
+        $this->descriptorConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_descriptor_config.php';
+        $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
+        $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         // TODO: More details...
     }
 }

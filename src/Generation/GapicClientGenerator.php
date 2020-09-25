@@ -70,7 +70,8 @@ class GapicClientGenerator
             ->withMember($this->serviceAddress())
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
-            ->withMember($this->serviceScopes());
+            ->withMember($this->serviceScopes())
+            ->withMember($this->getClientDefaults());
         // TODO: Generate further class content.
     }
 
@@ -108,5 +109,28 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC, Access::STATIC)
             ->withPhpDocText('The default scopes required by the service.')
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
+    }
+
+    private function getClientDefaults(): PhpClassMember
+    {
+        return AST::method('getClientDefaults')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::array([
+                    'serviceName' => AST::access(AST::SELF, $this->serviceName()),
+                    'apiEndpoint' => AST::concat(AST::access(AST::SELF, $this->serviceAddress()), ':', AST::access(AST::SELF, $this->servicePort())),
+                    'clientConfig' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->clientConfigFilename}"),
+                    'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->descriptorConfigFilename}"),
+                    'gcpApiConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}"),
+                    'credentialsConfig' => AST::array([
+                        'scopes' => AST::access(AST::SELF, $this->serviceScopes()),
+                    ]),
+                    'transportConfig' => AST::array([
+                        'rest' => AST::array([
+                            'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
+                        ])
+                    ])
+                ]))
+            ));
     }
 }

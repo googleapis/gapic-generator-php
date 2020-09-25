@@ -16,13 +16,13 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Ast;
+namespace Google\Generator\Utils;
 
-/** A member of a class. */
-abstract class PhpClassMember extends AST
+class Helpers
 {
-    use HasPhpDoc;
-    use HasAccess;
-
-    abstract function getName(): string;
+    public static function ToSnakeCase(string $s)
+    {
+        // https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-pascal-case
+        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $s));
+    }
 }
