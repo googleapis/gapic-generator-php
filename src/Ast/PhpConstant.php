@@ -38,6 +38,11 @@ final class PhpConstant extends PhpClassMember
         return $this->clone(fn($clone) => $clone->value = $value);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function toCode(): string
     {
         return

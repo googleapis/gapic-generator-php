@@ -18,24 +18,27 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
-/** A property within a class. */
-final class PhpProperty extends PhpClassMember
+use Google\Generator\Collections\Vector;
+
+/** A method within a class. */
+final class PhpMethod extends PhpClassMember
 {
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->params = Vector::new();
     }
 
     /**
-     * Create a property with the specified value.
+     * Create a method with the specified body.
      *
-     * @param Expression $value The value of the constant.
+     * @param AST $body The body of the method.
      *
-     * @return PhpConstant
+     * @return PhpMethod
      */
-    public function withValue(Expression $value): PhpProperty
+    public function withBody(AST $body): PhpMethod
     {
-        return $this->clone(fn($clone) => $clone->value = $value);
+        return $this->clone(fn($clone) => $clone->body = $body);
     }
 
     public function getName(): string
@@ -48,6 +51,9 @@ final class PhpProperty extends PhpClassMember
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
-            '$' . $this->name . ' = ' . static::toPhp($this->value) . ';';
+            "function {$this->name}({$this->params->map(fn($x) => static::toPhp($x))->join(', ')})" .
+            "{\n" .
+            static::toPhp($this->body) .
+            "}\n";
     }
 }

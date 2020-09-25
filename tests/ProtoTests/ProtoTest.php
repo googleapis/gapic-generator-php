@@ -77,6 +77,25 @@ class BasicGapicClient
         'scope1',
         'scope2',
     ];
+
+    private static function getClientDefaults()
+    {
+        return [
+            'serviceName' => self::SERVICE_NAME,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'clientConfig' => __DIR__ . '/../resources/basic_client_config.json',
+            'descriptorsConfigPath' => __DIR__ . '/../resources/basic_descriptor_config.php',
+            'gcpApiConfigPath' => __DIR__ . '/../resources/basic_grpc_config.json',
+            'credentialsConfig' => [
+                'scopes' => self::serviceScopes,
+            ],
+            'transportConfig' => [
+                'rest' => [
+                    'restClientConfigPath' => __DIR__ . '/../resources/basic_rest_client_config.php',
+                ],
+            ],
+        ];
+    }
 }
 
 EOF;

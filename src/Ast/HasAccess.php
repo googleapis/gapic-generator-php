@@ -23,6 +23,7 @@ use Google\Generator\Collections\Vector;
 class Access
 {
     public const PUBLIC = 'public';
+    public const PRIVATE = 'private';
     public const STATIC = 'static';
 }
 

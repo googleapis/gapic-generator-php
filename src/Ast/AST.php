@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 /** Base of the PHP code AST. */
@@ -33,6 +34,9 @@ abstract class AST
     /** @var string Constant to reference `null`. */
     public const NULL = "\0null";
 
+    /** @var string Constant to reference `__DIR__` */
+    public const __DIR__ = "\0__DIR__";
+
     protected static function deref($obj): string
     {
         // TODO: Handle $obj being a type.
@@ -41,7 +45,6 @@ abstract class AST
 
     protected static function toPhp($x): string
     {
-        // TODO: Handle Nette objects once the Nette package is referenced.
         if (is_string($x)) {
             if (strncmp($x, "\0", 1) === 0) {
                 // \0 prefix means the string that follows is used verbatim.
@@ -52,7 +55,11 @@ abstract class AST
             }
         } elseif (is_numeric($x)) {
             return strval($x);
+        } elseif ($x instanceof PhpClassMember) {
+            return $x->getName();
         } elseif ($x instanceof AST) {
+            return $x->toCode();
+        } elseif ($x instanceof ResolvedType) {
             return $x->toCode();
         } else {
             throw new \Exception('Cannot convert to PHP code.');
@@ -103,7 +110,7 @@ abstract class AST
     }
 
     /**
-     * Create a class property
+     * Create a class property.
      *
      * @param string $name The name of the property.
      *
@@ -112,6 +119,18 @@ abstract class AST
     public static function property(string $name): PhpProperty
     {
         return new PhpProperty($name);
+    }
+
+    /**
+     * Create a class method.
+     *
+     * @param string $name The name of the method.
+     *
+     * @return PhpMethod
+     */
+    public static function method(string $name): PhpMethod
+    {
+        return new PhpMethod($name);
     }
 
     /**
@@ -146,19 +165,22 @@ abstract class AST
      * Create a PHP variable.
      *
      * @param string $name The name of the variable, without leading '$'.
+     * @param ?ResolvedType $type Optional. The type of this variable.
      *
      * @return Expression
      */
-    public static function var(string $name): Expression
+    public static function var(string $name, ?ResolvedType $type = null): Expression
     {
-        return new class($name) extends Expression {
-            public function __construct($name)
+        return new class($name, $type) extends Expression {
+            public function __construct($name, $type)
             {
                 $this->name = $name;
+                $this->type = $type;
             }
             public function toCode(): string
             {
-                return '$' . $this->name;
+                $type = is_null($this->type) ? '' : static::toPhp($this->type) . ' ';
+                return $type . '$' . $this->name;
             }
         };
     }
@@ -256,6 +278,30 @@ abstract class AST
             {
                 $args = $this->args->map(fn($x) => static::toPhp($x))->join(', ');
                 return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+            }
+        };
+    }
+
+    /**
+     * Create a string concat expression.
+     *
+     * @param array $items The items to concat.
+     *
+     * @return Expression
+     */
+    public static function concat(...$items): ?Expression
+    {
+        $items = Vector::New($items);
+        $null = $items->any(fn($x) => is_null($x));
+        return $null ? null : new class($items) extends Expression
+        {
+            public function __construct($items)
+            {
+                $this->items = $items;
+            }
+            public function toCode(): string
+            {
+                return $this->items->map(fn($x) => static::toPhp($x))->join(' . ');
             }
         };
     }
