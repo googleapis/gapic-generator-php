@@ -31,7 +31,7 @@ class GapicClientGenerator
 {
     public static function Generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails))->GenerateGapicClient();
+        return (new GapicClientGenerator($ctx, $serviceDetails))->GenerateImpl();
     }
 
     private SourceFileContext $ctx;
@@ -43,7 +43,7 @@ class GapicClientGenerator
         $this->serviceDetails = $serviceDetails;
     }
 
-    private function GenerateGapicClient(): PhpFile
+    private function GenerateImpl(): PhpFile
     {
         // Generate file content
         $file = AST::file($this->GenerateClass());
