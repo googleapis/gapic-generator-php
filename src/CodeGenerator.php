@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
@@ -90,11 +91,19 @@ class CodeGenerator
             foreach ($fileDesc->getService() as $index => $service)
             {
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
+                // TODO: Refactor this code when it's clearer where the common elements are.
+                // Service client.
                 $ctx = new SourceFileContext();
-                $file = GapicClientGenerator::Generate($ctx, $serviceDetails);
+                $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
+                // Very thin service client wrapper, for manual code additions if required.
+                $ctx = new SourceFileContext();
+                $file = EmptyClientGenerator::generate($ctx, $serviceDetails);
+                $code = $file->toCode();
+                $code = Formatter::format($code);
+                yield ["{$serviceDetails->emptyClientType->name}.php", $code];
             }
             // TODO: Further files, as required.
         }

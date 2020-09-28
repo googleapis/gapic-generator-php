@@ -20,6 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
+use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 
 class EmptyClientGenerator
@@ -48,7 +49,11 @@ class EmptyClientGenerator
 
     private function GenerateClass(): PhpClass
     {
-        return AST::class($this->serviceDetails->emptyClientType);
-        // TODO: Class content
+        return AST::class($this->serviceDetails->emptyClientType, $this->ctx->type($this->serviceDetails->gapicClientType))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::inherit()))
+            ->withMember(AST::comment(PhpDoc::text(
+                'This class is intentionally empty, and is intended to hold manual additions to the generated',
+                $this->ctx->type($this->serviceDetails->gapicClientType), 'class.'
+            )));
     }
 }

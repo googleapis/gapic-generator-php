@@ -186,6 +186,21 @@ abstract class PhpDoc
     }
 
     /**
+     * Add the @inheritdoc tag to the PHP doc block.
+     *
+     * @return PhpDoc
+     */
+    public static function inherit(): PhpDoc
+    {
+        return new class extends PhpDoc {
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(['{@inheritdoc}']);
+            }
+        };
+    }
+
+    /**
      * Add a @throw tag to the PHP doc block.
      *
      * @param ResolvedType $type The exception type thrown.
@@ -339,18 +354,25 @@ abstract class PhpDoc
      *
      * @return string
      */
-    public function toCode(): string
+    public function toCode(bool $singleLine = false): string
     {
         $lines = $this->toLines(Map::new());
-        if (count($lines) <= 1) {
-            return "/** {$lines->join()} */\n";
+        if ($singleLine) {
+            return $lines
+                ->map(fn($x) => rtrim($x))
+                ->map(fn($x) => '    //' . (strlen($x) === 0 ? "\n" : " {$x}\n"))
+                ->join();
         } else {
-            return
-                "/**\n" .
-                $lines
-                    ->map(fn($x) => rtrim($x))
-                    ->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
-                " */\n";
+            if (count($lines) <= 1) {
+                return "/** {$lines->join()} */\n";
+            } else {
+                return
+                    "/**\n" .
+                    $lines
+                        ->map(fn($x) => rtrim($x))
+                        ->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
+                    " */\n";
+            }
         }
     }
 }

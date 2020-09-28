@@ -20,6 +20,7 @@ namespace Google\Generator\Tests\ProtoTests;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\CodeGenerator;
+use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\ProtoTrait;
 
 final class ProtoTest extends TestCase
@@ -35,11 +36,14 @@ final class ProtoTest extends TestCase
         $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, 'testing.basic');
 
         // Check generator code is as expected.
-        // TODO: Handle multiple output files.
-        [$filename, $code] = iterator_to_array($codeIterator)[0];
+        $all = Vector::new($codeIterator);
 
+        // TODO: Handle multiple files in a general way.
         // TODO: Move expected text to files, not inline in the test code.
+
+        // Check GAPIC client generation
         $expectedFilename = 'Gapic/BasicGapicClient.php';
+        [$filename, $code] = $all->filter(fn($x) => $x[0] === $expectedFilename)[0];
         $expectedCode = <<<'EOF'
 <?php
 
@@ -174,6 +178,29 @@ class BasicGapicClient
 
 EOF;
 
+        $this->assertEquals($expectedFilename, $filename);
+        $this->assertEquals($expectedCode, $code);
+
+        // Check thin client wrapper ("empty client") generation
+        $expectedFilename = 'BasicClient.php';
+        [$filename, $code] = $all->filter(fn($x) => $x[0] === $expectedFilename)[0];
+        $expectedCode = <<<'EOF'
+<?php
+
+declare(strict_types=1);
+
+namespace testing\basic;
+
+use testing\basic\Gapic\BasicGapicClient;
+
+/** {@inheritdoc} */
+class BasicClient extends BasicGapicClient
+{
+    // This class is intentionally empty, and is intended to hold manual additions to
+    // the generated {@see BasicGapicClient} class.
+}
+
+EOF;
         $this->assertEquals($expectedFilename, $filename);
         $this->assertEquals($expectedCode, $code);
     }
