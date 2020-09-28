@@ -32,7 +32,8 @@ $package = $opts['package'];
 // At the moment $files is just the file content.
 // TODO: Change this to be file location and content
 $files = CodeGenerator::GenerateFromDescriptor($descBytes, $package);
-foreach ($files as $file) {
+foreach ($files as [$relativeFilename, $fileContent]) {
     // TODO: Later this won't just print out the generated file content.
-    print($file . "\n");
+    print("File: '{$relativeFilename}':\n");
+    print($fileContent . "\n");
 }

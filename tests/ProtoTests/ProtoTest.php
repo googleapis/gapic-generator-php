@@ -36,9 +36,10 @@ final class ProtoTest extends TestCase
 
         // Check generator code is as expected.
         // TODO: Handle multiple output files.
-        $code = iterator_to_array($codeIterator)[0];
+        [$filename, $code] = iterator_to_array($codeIterator)[0];
 
         // TODO: Move expected text to files, not inline in the test code.
+        $expectedFilename = 'Gapic/BasicGapicClient.php';
         $expectedCode = <<<'EOF'
 <?php
 
@@ -100,6 +101,7 @@ class BasicGapicClient
 
 EOF;
 
+        $this->assertEquals($expectedFilename, $filename);
         $this->assertEquals($expectedCode, $code);
     }
 }

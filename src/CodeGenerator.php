@@ -56,7 +56,7 @@ class CodeGenerator
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
      *
-     * @return string[]
+     * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
     public static function Generate(Vector $fileDescs, Vector $filesToGenerate)
     {
@@ -94,7 +94,7 @@ class CodeGenerator
                 $file = GapicClientGenerator::Generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield $code;
+                yield ["Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
             }
             // TODO: Further files, as required.
         }
