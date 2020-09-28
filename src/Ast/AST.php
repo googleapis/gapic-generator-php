@@ -39,8 +39,7 @@ abstract class AST
 
     protected static function deref($obj): string
     {
-        // TODO: Handle $obj being a type.
-        return $obj === static::SELF ? '::' : '->';
+        return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
     }
 
     protected static function toPhp($x): string
@@ -133,6 +132,11 @@ abstract class AST
         return new PhpMethod($name);
     }
 
+    public static function param(?ResolvedType $type = null, Variable $var, ?Expression $default = null): PhpParam
+    {
+        return new PhpParam($type, $var, $default);
+    }
+
     /**
      * Create a block of PHP code.
      *
@@ -165,24 +169,12 @@ abstract class AST
      * Create a PHP variable.
      *
      * @param string $name The name of the variable, without leading '$'.
-     * @param ?ResolvedType $type Optional. The type of this variable.
      *
      * @return Expression
      */
-    public static function var(string $name, ?ResolvedType $type = null): Expression
+    public static function var(string $name): Expression
     {
-        return new class($name, $type) extends Expression {
-            public function __construct($name, $type)
-            {
-                $this->name = $name;
-                $this->type = $type;
-            }
-            public function toCode(): string
-            {
-                $type = is_null($this->type) ? '' : static::toPhp($this->type) . ' ';
-                return $type . '$' . $this->name;
-            }
-        };
+        return new Variable($name);
     }
 
     /**
@@ -228,8 +220,9 @@ abstract class AST
                 $items = $isAssocArray ?
                     $this->keyValues->map(fn($x) => static::toPhp($x[0]) . ' => ' . static::toPhp($x[1])) :
                     $this->keyValues->map(fn($x) => static::toPhp($x[1]));
-                $items = $items->map(fn($x) => "{$x},\n")->join();
-                return "[\n{$items}]";
+                $itemsStr = $items->map(fn($x) => "{$x},\n")->join();
+                $firstNl = count($items) === 0 ? '' : "\n";
+                return "[{$firstNl}{$itemsStr}]";
             }
         };
     }
@@ -302,6 +295,29 @@ abstract class AST
             public function toCode(): string
             {
                 return $this->items->map(fn($x) => static::toPhp($x))->join(' . ');
+            }
+        };
+    }
+
+    /**
+     * Create an assignment expression.
+     *
+     * @param AST $to Assign a value to this.
+     * @param mixed $from Assign from this.
+     *
+     * @return Expression
+     */
+    public static function assign(AST $to, $from): Expression
+    {
+        return new class($to, $from) extends Expression {
+            public function __construct($to, $from)
+            {
+                $this->to = $to;
+                $this->from = $from;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->to) . " = " . static::toPhp($this->from);
             }
         };
     }

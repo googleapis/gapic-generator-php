@@ -30,6 +30,18 @@ final class PhpMethod extends PhpClassMember
     }
 
     /**
+     * Create a method with the specified parameters.
+     *
+     * @param array $params Array of AST::vars(); The parameters of the method.
+     *
+     * @return PhpMethod
+     */
+    public function withParams(...$params): PhpMethod
+    {
+        return $this->clone(fn($clone) => $clone->params = Vector::new($params));
+    }
+
+    /**
      * Create a method with the specified body.
      *
      * @param AST $body The body of the method.

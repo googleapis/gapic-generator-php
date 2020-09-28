@@ -26,6 +26,24 @@ use Google\Generator\Collections\Vector;
 /** A fully-specified PHP type. */
 class Type implements Equality
 {
+    /** The built-in 'array' type. */
+    public static function array(): Type
+    {
+        return new Type(null, 'array');
+    }
+
+    /** The built-in 'string' type. */
+    public static function string(): Type
+    {
+        return new Type(null, 'string');
+    }
+
+    /** The built-in 'bool' type. */
+    public static function bool(): Type
+    {
+        return new Type(null, 'bool');
+    }
+
     /**
      * Build a type from a class full-name.
      *
