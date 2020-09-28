@@ -30,8 +30,11 @@ class ServiceDetails {
     /** @var ProtoCatalog *Readonly* The proto-catalog containing all source protos. */
     public ProtoCatalog $catalog;
 
-    /** @var string *Readonly* The type of the service client class. */
+    /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
+
+    /** @var Type *Readonly* The type of the empty client class. */
+    public Type $emptyClientType;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
@@ -64,6 +67,7 @@ class ServiceDetails {
     {
         $this->catalog = $catalog;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
+        $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->defaultHost = ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
