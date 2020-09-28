@@ -20,6 +20,8 @@ namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Formatter;
+use Google\Generator\Utils\ResolvedType;
 
 abstract class PhpDoc
 {
@@ -152,6 +154,12 @@ abstract class PhpDoc
                         foreach ($part->toLines(Map::new()) as $line) {
                             $commitLine();
                         }
+                    } elseif ($part instanceof ResolvedType) {
+                        $word = '{@see ' . $part->toCode() . '}';
+                        $add($word);
+                    } elseif ($part instanceof AST) {
+                        $word = '{@see ' . $part->ToCode() . '}';
+                        $add($word);
                     } else {
                         throw new \Exception('Cannot convert part to text');
                     }
@@ -177,8 +185,146 @@ abstract class PhpDoc
         };
     }
 
-    /** Override to provide content-specific pre-processing. */
-    // Note: Currently unused; will be used when support for @param is added.
+    /**
+     * Add a @throw tag to the PHP doc block.
+     *
+     * @param ResolvedType $type The exception type thrown.
+     *
+     * @return PhpDoc
+     */
+    public static function throws(ResolvedType $type): PhpDoc
+    {
+        return new class($type) extends PhpDoc {
+            public function __construct($type)
+            {
+                $this->type = $type;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(["@throws {$this->type->toCode()}"]);
+            }
+        };
+    }
+
+    private static function paramOrType(string $tag, Vector $types, $varOrName, ?PhpDoc $doc): PhpDoc
+    {
+        return new class($tag, $types, $varOrName, $doc) extends PhpDoc {
+            private const K_TYPE = 'param_type';
+            private const K_NAME = 'param_name';
+            public function __construct($tag, $types, $varOrName, $doc)
+            {
+                $this->tag = $tag;
+                $this->types = $types;
+                $this->varOrName = $varOrName;
+                $this->doc = $doc;
+                $this->isParam = true;
+            }
+            protected function preProcess(Map $info): Map
+            {
+                // This may be called multiple times.
+                $this->typesJoined = $this->types->map(fn($x) => $x->toCode())->join('|');
+                $this->name = $this->varOrName instanceof AST ? $this->varOrName->toCode() : '$' . $this->varOrName;
+                if ($this->tag === 'param') {
+                    // Parameters align the param name and the description, so get max lengths.
+                    $info = $info->set(static::K_TYPE, max($info->get(static::K_TYPE, 0), strlen($this->typesJoined)));
+                    $info = $info->set(static::K_NAME, max($info->get(static::K_NAME, 0), strlen($this->name)));
+                }
+                return $info;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                $lines = is_null($this->doc) ? Vector::new([]) : $this->doc->toLines(Map::new());
+                if ($this->tag === 'param') {
+                    // Align param name and descriptions.
+                    $typeLen = $info->get(static::K_TYPE, 0);
+                    $nameLen = $info->get(static::K_NAME, 0);
+                    $types = str_pad($this->typesJoined, $typeLen);
+                    $introPad = str_repeat(' ', $nameLen - strlen($this->name));
+                    $intro = "@{$this->tag} {$types} {$this->name} {$introPad}";
+                    if (is_null($this->doc)) {
+                        return Vector::new([trim($intro)]);
+                    } else {
+                        if (isset($this->doc->isBlock)) {
+                            return $lines
+                                ->map(fn($x) => '    ' . $x)
+                                ->prepend($intro . '{')
+                                ->append('}');
+                        } else {
+                            $pad = str_repeat(' ', strlen($intro));
+                            return $lines->take(1)->map(fn($x) => $intro . $x)
+                                ->concat($lines->skip(1)->map(fn($x) => $pad . $x));
+                        }
+                    }
+                } else {
+                    $indent = str_repeat(' ', strlen("@{$this->tag} "));
+                    return Vector::new(["@{$this->tag} {$this->typesJoined} {$this->name}"])
+                        ->concat($lines->map(fn($x) => $indent . $x));
+                }
+            }
+        };
+    }
+
+    /**
+     * Add a @param tag to the PHP doc block.
+     *
+     * @param PhpParam $param The param to add.
+     * @param PhpDoc $doc The documetation for this param.
+     *
+     * @return PhpDoc
+     */
+    public static function param(PhpParam $param, PhpDoc $doc): PhpDoc
+    {
+        return static::paramOrType('param', Vector::new([$param->type]), $param->var, $doc);
+    }
+
+    /**
+     * Add a @type tag to the PHP doc block.
+     *
+     * @param Vector $type Vector of ResolvedType; the type(s) of this element.
+     * @param string $name The name of this element.
+     * @param PhpDoc $doc The documetation for this element.
+     *
+     * @return PhpDoc
+     */
+    public static function type(Vector $types, string $name, PhpDoc $doc): PhpDoc
+    {
+        return static::paramOrType('type', $types, $name, $doc);
+    }
+
+    /**
+     * Add a code example to the PHP doc block.
+     *
+     * @param AST $ast The code example in AST form.
+     * @param ?PhpDoc $intro Optional; introductory text to this code example.
+     *
+     * @return PhpDoc
+     */
+    public static function example(AST $ast, ?PhpDoc $intro = null): PhpDoc
+    {
+        return new class($ast, $intro) extends PhpDoc
+        {
+            public function __construct($ast, $intro)
+            {
+                $this->ast = $ast;
+                $this->intro = $intro;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                $code = Formatter::format("<?php\n{$this->ast->toCode()}");
+                return
+                    (is_null($this->intro) ? Vector::new() : $this->intro->toLines(Map::new()))
+                    ->concat(
+                        Vector::new(explode("\n", $code))
+                            ->skip(3)->skipLast(1)
+                            ->filter(fn($x) => $x !== '')
+                            ->prepend('```')
+                            ->append('```')
+                    );
+            }
+        };
+    }
+
+    /** Override to provide content-specific pre-processing. This may be called multiple times. */
     protected function preProcess(Map $info): Map
     {
         return $info;
@@ -201,7 +347,9 @@ abstract class PhpDoc
         } else {
             return
                 "/**\n" .
-                $lines->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
+                $lines
+                    ->map(fn($x) => rtrim($x))
+                    ->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
                 " */\n";
         }
     }

@@ -18,6 +18,11 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\Transport\GrpcTransport;
+use Google\ApiCore\Transport\RestTransport;
+use Google\ApiCore\Transport\TransportInterface;
+use Google\Auth\FetchAuthTokenInterface;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\PhpClass;
@@ -71,8 +76,9 @@ class GapicClientGenerator
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
-            ->withMember($this->getClientDefaults());
-        // TODO: Generate further class content.
+            ->withMember($this->getClientDefaults())
+            ->withMember($this->construct());
+        // TODO: Generate RPC methods.
     }
 
     private function serviceName(): PhpClassMember
@@ -132,5 +138,83 @@ class GapicClientGenerator
                     ])
                 ]))
             ));
+    }
+
+    private function construct(): PhpClassMember
+    {
+        $ctx = $this->ctx;
+        // TODO: Likely to move these two method definitions into a common location.
+        $buildClientOptions = AST::method('buildClientOptions');
+        $setClientOptions = AST::method('setClientOptions');
+        $options = AST::var('options');
+        $optionsParam = AST::param($this->ctx->type(Type::array()), $options, AST::array([]));
+        $clientOptions = AST::var('clientOptions');
+        return AST::method('__construct')
+            ->withParams($optionsParam)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
+                Ast::call(AST::THIS, $setClientOptions)($clientOptions),
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('Constructor.'),
+                PhpDoc::param($optionsParam, PhpDoc::block(
+                    PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'serviceAddress',
+                        PhpDoc::text('**Deprecated**. This option will be removed in a future major release.',
+                            'Please utilize the `$apiEndpoint` option instead.')),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'apiEndpoint',
+                        PhpDoc::text('The address of the API remote host. May optionally include the port, formatted',
+                            "as \"<uri>:<port>\". Default '{$this->serviceDetails->defaultHost}:{$this->serviceDetails->defaultPort}'.")),
+                    PhpDoc::type(Vector::new([
+                        $ctx->type(Type::string()),
+                        $ctx->type(Type::array()),
+                        $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
+                        $ctx->type(Type::fromName(CredentialsWrapper::class))
+                    ]), 'credentials',
+                        PhpDoc::text('The credentials to be used by the client to authorize API calls. This option',
+                            'accepts either a path to a credentials file, or a decoded credentials file as a PHP array.', PhpDoc::newLine(),
+                            '*Advanced usage*: In addition, this option can also accept a pre-constructed',
+                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
+                            'object or',
+                            $ctx->type(Type::fromName(CredentialsWrapper::class)),
+                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.')),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::array())]), 'credentialsConfig',
+                        PhpDoc::text('Options used to configure credentials, including auth token caching, for the client.',
+                            'For a full list of supporting configuration options, see',
+                            AST::call($ctx->type(Type::fromName(CredentialsWrapper::class)), AST::method('build'))())),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::bool())]), 'disableRetries',
+                        PhpDoc::text('Determines whether or not retries defined by the client configuration should be',
+                            'disabled. Defaults to `false`.')),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::string()), $ctx->type(Type::array())]), 'clientConfig',
+                        PhpDoc::text('Client method configuration, including retry settings. This option can be either a',
+                            'path to a JSON file, or a PHP array containing the decoded JSON data.',
+                            'By default this settings points to the default client config file, which is provided',
+                            'in the resources folder.')),
+                    PhpDoc::type(Vector::new([
+                        $ctx->type(Type::string()),
+                        $ctx->type(Type::fromName(TransportInterface::class))
+                    ]), 'transport',
+                        PhpDoc::text('The transport used for executing network requests. May be either the string `rest`',
+                            'or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.',
+                            '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
+                            $ctx->type(Type::fromName(TransportInterface::class)),
+                            'object. Note that when this object is provided, any settings in `$transportConfig`, and any `$apiEndpoint`',
+                            'setting, will be ignored.')),
+                    PhpDoc::type(Vector::new([$ctx->type(Type::array())]), 'transportConfig',
+                        PhpDoc::text('Configuration options that will be used to construct the transport. Options for',
+                            'each supported transport type should be passed in a key for that transport. For example:',
+                            PhpDoc::example(AST::block(
+                                AST::assign(AST::var('transportConfig'), AST::array([
+                                    'grpc' => AST::array(['...' => '...']),
+                                    'rest' => AST::array(['...' => '...']),
+                                ])))),
+                            'See the', AST::call($ctx->type(Type::fromName(GrpcTransport::class)), AST::method('build'))(),
+                            'and', AST::call($ctx->type(Type::fromName(RestTransport::class)), AST::method('build'))(),
+                            'methods for the supported options.'))
+                )),
+            PhpDoc::throws($this->ctx->type(Type::fromName(\Google\ApiCore\ValidationException::class))),
+            PhpDoc::experimental()
+        ));
     }
 }
