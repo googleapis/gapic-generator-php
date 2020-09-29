@@ -38,6 +38,7 @@ class Type implements Equality
         return new Type(null, 'string');
     }
 
+    /** The built-in 'int' type. */
     public static function int(): Type
     {
         return new Type(null, 'int');

@@ -399,6 +399,13 @@ abstract class AST
         };
     }
 
+    /**
+     * Create an if statement.
+     *
+     * @param Expression $expr The conditional expression for the if statement.
+     *
+     * @return AST
+     */
     public static function if(Expression $expr): AST
     {
         return new class($expr) extends AST {

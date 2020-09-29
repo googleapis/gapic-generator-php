@@ -73,7 +73,7 @@ final class PhpClass extends AST
     }
 
     /**
-     * Create a class with addition members.
+     * Create a class with additional members.
      *
      * @param Vector $members Vector of PhpClassMember; the members to add.
      *
