@@ -141,7 +141,7 @@ abstract class AST
      *
      * @return PhpParam
      */
-    public static function param(?ResolvedType $type = null, Variable $var, ?Expression $default = null): PhpParam
+    public static function param(?ResolvedType $type, Variable $var, ?Expression $default = null): PhpParam
     {
         return new PhpParam($type, $var, $default);
     }
