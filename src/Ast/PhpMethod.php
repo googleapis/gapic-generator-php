@@ -38,7 +38,7 @@ final class PhpMethod extends PhpClassMember
      */
     public function withParams(...$params): PhpMethod
     {
-        return $this->clone(fn($clone) => $clone->params = Vector::new($params));
+        return $this->clone(fn($clone) => $clone->params = Vector::new($params)->flatten());
     }
 
     /**

@@ -22,4 +22,7 @@ class CustomOptions
 {
     public const GOOGLE_API_DEFAULTHOST = 1049;
     public const GOOGLE_API_OAUTHSCOPES = 1050;
+    public const GOOGLE_API_FIELDBEHAVIOR = 1052;
+
+    public const GOOGLE_API_FIELDBEHAVIOR_REQUIRED = 2;
 }

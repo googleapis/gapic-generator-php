@@ -63,6 +63,9 @@ class ServiceDetails {
     /** @var string *Readonly* The rest-config filename. */
     public string $restConfigFilename;
 
+    /** @var Vector *Readonly* Vector of MethodDetails; one element per RPC method. */
+    public Vector $methods;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
@@ -70,16 +73,16 @@ class ServiceDetails {
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
-        $this->defaultHost = ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
+        $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
         $this->defaultPort = 443;
         $this->defaultScopes =
-            Vector::New(explode(',', ProtoHelpers::GetCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
+            Vector::new(explode(',', ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
                 ->filter(fn($x) => $x != '')
                 ->map(fn($x) => trim($x));
         $this->clientConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_client_config.json';
         $this->descriptorConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_descriptor_config.php';
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
-        // TODO: More details...
+        $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
     }
 }

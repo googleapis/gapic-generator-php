@@ -38,6 +38,12 @@ class Type implements Equality
         return new Type(null, 'string');
     }
 
+    /** The built-in 'int' type. */
+    public static function int(): Type
+    {
+        return new Type(null, 'int');
+    }
+
     /** The built-in 'bool' type. */
     public static function bool(): Type
     {
@@ -56,6 +62,18 @@ class Type implements Equality
         $parts = Vector::new(explode('\\', $fullname))
             ->skipWhile(fn($x) => $x === ''); // First element will be empty if leading '\' given.
         return new Type($parts->skipLast(1), $parts->last());
+    }
+
+    /**
+     * Build a type from a proto message descriptor.
+     *
+     * @param Descriptor $desc The proto message descriptor.
+     *
+     * @return Type
+     */
+    public static function fromMessage(Descriptor $desc): Type
+    {
+        return static::fromName($desc->getClass());
     }
 
     private function __construct(?Vector $namespaceParts, string $name)

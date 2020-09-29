@@ -120,6 +120,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         return (function() {
             foreach ($this->data as $kvs) {
                 foreach ($kvs as $kv) {
+                    // Returns [<key>, <value>] pairs.
                     yield $kv;
                 }
             }

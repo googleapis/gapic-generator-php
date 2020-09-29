@@ -21,6 +21,7 @@ namespace Google\Generator\Utils;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\DescriptorProto;
+use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Vector;
 
 class ProtoAugmenter
@@ -79,6 +80,10 @@ class ProtoAugmenter
             $message->leadingComments = static::getComments($messageLocations, $fnLeadingComments);
             // Recurse into fields and nested msgs.
             foreach ($message->getField() as $fieldIndex => $field) {
+                // Create higher-level field descriptor, and link in both directions.
+                $field->desc = FieldDescriptor::buildFromProto($field);
+                $field->desc->underlyingProto = $field;
+                // Link proto coments.
                 $fieldPath = $messagePath->concat(Vector::New([static::MESSAGE_FIELD, $fieldIndex]));
                 $fieldLocations = $locsByPath[$fieldPath];
                 $field->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
