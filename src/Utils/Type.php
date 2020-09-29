@@ -50,6 +50,12 @@ class Type implements Equality
         return new Type(null, 'bool');
     }
 
+    /** The built-in 'mixed' type. */
+    public static function mixed(): Type
+    {
+        return new Type(null, 'mixed');
+    }
+
     /**
      * Build a type from a class full-name.
      *

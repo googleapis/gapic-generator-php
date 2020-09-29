@@ -22,6 +22,7 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\ResolvedType;
+use Google\Generator\Utils\Type;
 
 abstract class PhpDoc
 {
@@ -204,10 +205,34 @@ abstract class PhpDoc
      * Add a @throw tag to the PHP doc block.
      *
      * @param ResolvedType $type The exception type thrown.
+     * @param ?PhpDoc $doc Optional; Documentation for this thrown exception.
      *
      * @return PhpDoc
      */
-    public static function throws(ResolvedType $type): PhpDoc
+    public static function throws(ResolvedType $type, ?PhpDoc $doc = null): PhpDoc
+    {
+        return new class($type, $doc) extends PhpDoc {
+            public function __construct($type, $doc)
+            {
+                $this->type = $type;
+                $this->doc = $doc;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                $doc = is_null($this->doc) ? '' : ' ' . $this->doc->toLines(Map::new())->join(' ');
+                return Vector::new(["@throws {$this->type->toCode()}{$doc}"]);
+            }
+        };
+    }
+
+    /**
+     * Add a @return tag to the PHP doc block.
+     *
+     * @param ResolvedType $type The type of the value that is returned.
+     *
+     * @return PhpDoc
+     */
+    public static function return(ResolvedType $type): PhpDoc
     {
         return new class($type) extends PhpDoc {
             public function __construct($type)
@@ -216,7 +241,7 @@ abstract class PhpDoc
             }
             protected function toLines(Map $info): Vector
             {
-                return Vector::new(["@throws {$this->type->toCode()}"]);
+                return Vector::new(["@return {$this->type->toCode()}"]);
             }
         };
     }
@@ -289,7 +314,7 @@ abstract class PhpDoc
      */
     public static function param(PhpParam $param, PhpDoc $doc): PhpDoc
     {
-        return static::paramOrType('param', Vector::new([$param->type]), $param->var, $doc);
+        return static::paramOrType('param', Vector::new([$param->type ?? ResolvedType::mixed()]), $param->var, $doc);
     }
 
     /**

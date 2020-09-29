@@ -18,7 +18,9 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -225,6 +227,7 @@ class GapicClientGenerator
         $request = AST::var('request');
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->name)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
+        $retrySettingsType = Type::fromName(RetrySettings::class);
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams($required, $optionalArgs)
@@ -239,6 +242,28 @@ class GapicClientGenerator
                     $optionalArgs->var,
                     $request
                 ))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::preFormattedText($method->docLines),
+                // TODO: Code example
+                Vector::zip($method->requiredFields, $required,
+                    fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines))),
+                PhpDoc::param($optionalArgs, PhpDoc::block(
+                    PhpDoc::Text('Optional.'),
+                    $method->optionalFields->map(fn($x) =>
+                        PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->name, PhpDoc::preFormattedText($x->docLines))
+                    ),
+                    PhpDoc::type(
+                        Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
+                        'retrySettings', PhpDoc::Text(
+                            'Retry settings to use for this call. Can be a ', $this->ctx->Type($retrySettingsType),
+                            ' object, or an associative array of retry settings parameters. See the documentation on ',
+                            $this->ctx->Type($retrySettingsType), ' for example usage.'))
+                        )),
+                PhpDoc::return($this->ctx->type($method->responseType)),
+                PhpDoc::throws($this->ctx->type(Type::fromName(ApiException::class)),
+                    PhpDoc::text('if the remote call fails')),
+                PhpDoc::experimental()
             ));
     }
 }

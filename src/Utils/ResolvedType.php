@@ -25,6 +25,16 @@ namespace Google\Generator\Utils;
 class ResolvedType
 {
     /**
+     * The 'mixed' built-in type.
+     *
+     * @return ResolvedType
+     */
+    public static function mixed(): ResolvedType
+    {
+        return new ResolvedType(Type::mixed(), fn() => 'mixed');
+    }
+
+    /**
      * Construct a ResolvedType.
      *
      * @param string $typeName The resolved name of the type.
