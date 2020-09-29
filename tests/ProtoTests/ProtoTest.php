@@ -44,6 +44,7 @@ final class ProtoTest extends TestCase
             $expectedCode = file_get_contents($filename);
             $this->assertEquals($expectedCode, $code);
         }
+        // TODO: Check that all expected files are actually generated!
     }
 
     public function testProtoBasic(): void
