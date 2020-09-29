@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace testing\basic\Gapic;
 
+use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -130,6 +132,24 @@ class BasicGapicClient
         $this->setClientOptions($clientOptions);
     }
 
+    /**
+     * Test summary text for AMethod
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return Response
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
     public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
