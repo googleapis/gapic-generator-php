@@ -19,9 +19,10 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\ProtoTrait;
 use Google\Generator\Utils\ProtoHelpers;
-use Google\Generator\Utils\SourceCodeInfoHelper;
+use Google\Generator\Utils\ProtoAugmenter;
 
 final class ProtoHelpersTest extends TestCase
 {
@@ -41,7 +42,7 @@ final class ProtoHelpersTest extends TestCase
     public function testProtoComments(): void
     {
         $file = $this->loadDescriptor('Utils/comments.proto');
-        SourceCodeInfoHelper::Merge($file);
+        ProtoAugmenter::Augment(Vector::new([$file]));
 
         // Check comments are merged from all proto structures.
         $svc = $file->getService()[0];

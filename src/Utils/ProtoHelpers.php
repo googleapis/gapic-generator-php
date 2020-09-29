@@ -47,20 +47,6 @@ class ProtoHelpers
         return implode('\\', explode('.', $fileDesc->getPackage()));
     }
 
-    /**
-     * Add an underlying proto to a descriptor.
-     *
-     * @param mixed $desc The descriptor to which to add the proto.
-     * @param mixed $proto The underlying proto to add.
-     *
-     * @return mixed The descriptor passed in.
-     */
-    public static function AddProto($desc, $proto)
-    {
-        $desc->underlyingProto = $proto;
-        return $desc;
-    }
-
     // Return type is dependant on option type. Either string, int, or Vector of string or int,
     // or null if not repeated and value doesn't exist. Repeated returns empty vector if not exists.
     private static function getCustomOptionRaw(Message $message, int $optionId, bool $repeated)

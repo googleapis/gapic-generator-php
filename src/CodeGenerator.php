@@ -26,7 +26,7 @@ use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
-use Google\Generator\Utils\SourceCodeInfoHelper;
+use Google\Generator\Utils\ProtoAugmenter;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
@@ -61,8 +61,10 @@ class CodeGenerator
      */
     public static function Generate(Vector $fileDescs, Vector $filesToGenerate)
     {
-        $filesToGenerateSet = $filesToGenerate->toSet();
+        // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
+        ProtoAugmenter::augment($fileDescs);
         // Create map of all files to generate, keyed by package name.
+        $filesToGenerateSet = $filesToGenerate->toSet();
         $byPackage = $fileDescs
             ->filter(fn($x) => $filesToGenerateSet[$x->getName()])
             ->groupBy(fn($x) => $x->getPackage());
@@ -87,7 +89,6 @@ class CodeGenerator
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
         {
-            SourceCodeInfoHelper::Merge($fileDesc);
             foreach ($fileDesc->getService() as $index => $service)
             {
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
