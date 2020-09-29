@@ -91,9 +91,9 @@ abstract class AST
      *
      * @return PhpClass
      */
-    public static function class(Type $type): PhpClass
+    public static function class(Type $type, ?ResolvedType $extends = null): PhpClass
     {
-        return new PhpClass($type);
+        return new PhpClass($type, $extends);
     }
 
     /**
@@ -132,9 +132,30 @@ abstract class AST
         return new PhpMethod($name);
     }
 
+    /**
+     * Create a parameter.
+     *
+     * @param ?ResolvedType $type The type of the parameter.
+     * @param Variable $var The AST variable used as the parameter.
+     * @param ?Expression $default Optional; the default value of the parameter.
+     *
+     * @return PhpParam
+     */
     public static function param(?ResolvedType $type = null, Variable $var, ?Expression $default = null): PhpParam
     {
         return new PhpParam($type, $var, $default);
+    }
+
+    /**
+     * Create a comment within a class.
+     *
+     * @param PhpDoc $comment The comment.
+     *
+     * @return PhpComment
+     */
+    public static function comment(PhpDoc $comment): PhpComment
+    {
+        return new PhpComment($comment);
     }
 
     /**
