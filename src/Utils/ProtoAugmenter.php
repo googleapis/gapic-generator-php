@@ -18,11 +18,12 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use \Google\Protobuf\Internal\FileDescriptorProto;
-use \Google\Protobuf\Internal\DescriptorProto;
-use \Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\FileDescriptorProto;
+use Google\Protobuf\Internal\Descriptor;
+use Google\Protobuf\Internal\DescriptorProto;
+use Google\Generator\Collections\Vector;
 
-class SourceCodeInfoHelper
+class ProtoAugmenter
 {
     // Constants taken from:
     // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
@@ -34,15 +35,19 @@ class SourceCodeInfoHelper
     private const SERVICE_METHOD = 2;
 
     /**
-     * Recursively merge source-code comments into proto descriptors.
-     * This is required because PHP doesn't currently reflect over comments.
+     * Recursively augment proto descriptors.
+     * This is required because PHP doesn't currently reflect over all proto data.
      *
-     * All descriptors heva a `leadingComments` property added which contains
-     * a Vector of strings containing the proto comment lines.
-     *
-     * @param FileDescriptorProto $fileDesc Top-level file descriptor.
+     * @param Vector $fileDescs Vector of FileDescriptorProto; Top-level file descriptors.
      */
-    public static function Merge(FileDescriptorProto $fileDesc): void
+    public static function Augment(Vector $fileDescs): void
+    {
+        foreach ($fileDescs as $fileDesc) {
+            static::AugmentFile($fileDesc);
+        }
+    }
+
+    private static function AugmentFile(FileDescriptorProto $fileDesc)
     {
         $fnLeadingComments = fn($x) => $x->getLeadingComments();
 
@@ -64,10 +69,15 @@ class SourceCodeInfoHelper
 
         // Messages
         $mergeMessage = null;
-        $mergeMessage = function(Vector $messagePath, DescriptorProto $message) use(&$mergeMessage, $locsByPath, $fnLeadingComments)
-        {
+        $mergeMessage = function(Vector $messagePath, DescriptorProto $message, Vector $outerMsgs)
+                use(&$mergeMessage, $locsByPath, $fnLeadingComments, $fileDesc) {
+            // Create higher-level message descriptor, and link in both directions.
+            $message->desc = Descriptor::buildFromProto($message, $fileDesc, $outerMsgs->join('.'));
+            $message->desc->underlyingProto = $message;
+            // Link proto comments.
             $messageLocations = $locsByPath[$messagePath];
             $message->leadingComments = static::getComments($messageLocations, $fnLeadingComments);
+            // Recurse into fields and nested msgs.
             foreach ($message->getField() as $fieldIndex => $field) {
                 $fieldPath = $messagePath->concat(Vector::New([static::MESSAGE_FIELD, $fieldIndex]));
                 $fieldLocations = $locsByPath[$fieldPath];
@@ -75,12 +85,12 @@ class SourceCodeInfoHelper
             }
             foreach ($message->getNestedType() as $nestedMessageIndex => $nestedMessage) {
                 $nestedMessagePath = $messagePath->concat(Vector::New([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
-                $mergeMessage($nestedMessagePath, $nestedMessage);
+                $mergeMessage($nestedMessagePath, $nestedMessage, $outerMsgs->append($message->getName()));
             }
             // TODO: enums
         };
         foreach ($fileDesc->getMessageType() as $messageIndex => $message) {
-            $mergeMessage(Vector::New([static::MESSAGE, $messageIndex]), $message);
+            $mergeMessage(Vector::New([static::MESSAGE, $messageIndex]), $message, Vector::new());
         }
 
         // TODO: enums
