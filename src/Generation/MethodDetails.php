@@ -31,23 +31,26 @@ class MethodDetails
         return new MethodDetails($svc, $desc);
     }
 
-    /** @var string The name of the method, as named in the proto. */
+    /** @var string *Readonly* The name of the method, as named in the proto. */
     public string $name;
 
-    /** @var string The name of this method, as required for PHP code. */
+    /** @var string *Readonly* The name of this method, as required for PHP code. */
     public string $methodName;
 
-    /** @var Type The type of the method request message. */
+    /** @var Type *Readonly* The type of the method request message. */
     public Type $requestType;
 
-    /** @var Type The type of the method response message. */
+    /** @var Type *Readonly* The type of the method response message. */
     public Type $responseType;
 
-    /** @var Vector Vector of FieldDetails; All required fields. */
+    /** @var Vector *Readonly* Vector of FieldDetails; All required fields. */
     public Vector $requiredFields;
 
-    /** @var Vector Vector of FieldDetails; All optional fields. */
+    /** @var Vector *Readonly* Vector of FieldDetails; All optional fields. */
     public Vector $optionalFields;
+
+    /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
+    public Vector $docLines;
 
     private function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
@@ -61,5 +64,6 @@ class MethodDetails
         $allFields = Vector::new($inputMsg->getField())->map(fn($x) => new FieldDetails($x));
         $this->requiredFields = $allFields->filter(fn($x) => $x->isRequired);
         $this->optionalFields = $allFields->filter(fn($x) => !$x->isRequired);
+        $this->docLines = $desc->leadingComments;
     }
 }

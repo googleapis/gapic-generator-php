@@ -28,16 +28,16 @@ use Google\Protobuf\Internal\GPBType;
 
 class FieldDetails
 {
-    /** @var string The name of this field. */
+    /** @var string *Readonly* The name of this field. */
     public string $name;
 
-    /** @var Type The type of this field. */
+    /** @var Type *Readonly* The type of this field. */
     public Type $type;
 
-    /** @var PhpMethod The method used to set this field. */
+    /** @var PhpMethod *Readonly* The method used to set this field. */
     public PhpMethod $setter;
 
-    /** @var bool Whether this field is required. */
+    /** @var bool *Readonly* Whether this field is required. */
     public bool $isRequired;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
@@ -63,6 +63,6 @@ class FieldDetails
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
-        $this->docLines = $desc->underlyingProto->leadingComments;
+        $this->docLines = $field->leadingComments;
     }
 }
