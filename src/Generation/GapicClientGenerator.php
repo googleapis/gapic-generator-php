@@ -77,8 +77,8 @@ class GapicClientGenerator
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
             ->withMember($this->getClientDefaults())
-            ->withMember($this->construct());
-        // TODO: Generate RPC methods.
+            ->withMember($this->construct())
+            ->withMembers($this->serviceDetails->methods->map(fn($x) => $this->rpcMethod($x)));
     }
 
     private function serviceName(): PhpClassMember
@@ -216,5 +216,29 @@ class GapicClientGenerator
             PhpDoc::throws($this->ctx->type(Type::fromName(\Google\ApiCore\ValidationException::class))),
             PhpDoc::experimental()
         ));
+    }
+
+    private function rpcMethod(MethodDetails $method): PhpClassMember
+    {
+        // TODO: Add PhpDoc
+        $startCall = AST::method('startCall');
+        $request = AST::var('request');
+        $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->name)));
+        $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
+        return AST::method($method->methodName)
+            ->withAccess(Access::PUBLIC)
+            ->withParams($required, $optionalArgs)
+            ->withBody(AST::block(
+                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                $method->requiredFields->map(fn($x) => AST::call($request, $x->setter)()),
+                $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->name)))
+                    ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->name)))),
+                AST::return(AST::call(AST::THIS, $startCall)(
+                    $method->name,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $optionalArgs->var,
+                    $request
+                ))
+            ));
     }
 }

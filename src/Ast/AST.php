@@ -34,8 +34,14 @@ abstract class AST
     /** @var string Constant to reference `null`. */
     public const NULL = "\0null";
 
-    /** @var string Constant to reference `__DIR__` */
+    /** @var string Constant to reference `__DIR__`. */
     public const __DIR__ = "\0__DIR__";
+
+    /** @var string Constant to reference `isset`. */
+    public const ISSET = "\0isset";
+
+    /** @var string Constant to reference `class` as used in `<type>::class`. */
+    public const CLS = "\0class";
 
     protected static function deref($obj): string
     {
@@ -272,14 +278,37 @@ abstract class AST
     }
 
     /**
+     * Create an expression to index an object.
+     *
+     * @param mixed $obj The object containing the indexer.
+     * @param mixed $index The index.
+     *
+     * @return Expression
+     */
+    public static function index($obj, $index): Expression
+    {
+        return new class($obj, $index) extends Expression {
+            public function __construct($obj, $index)
+            {
+                $this->obj = $obj;
+                $this->index = $index;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->obj) . '[' . static::toPhp($this->index) . ']';
+            }
+        };
+    }
+
+    /**
      * Create an expression to call a method. This method returns a Callable into which the args are passed.
      *
-     * @param mixed $obj The object containing the method to call.
-     * @param mixed $callee The method to call.
+     * @param mixed $obj The object containing the method to call; or a built-in function.
+     * @param mixed $callee The method to call; or null if calling a built-in function.
      *
      * @return Callable The returned Callable returns an Expression once called with callee args.
      */
-    public static function call($obj, $callee): Callable
+    public static function call($obj, $callee = null): Callable
     {
         return fn(...$args) => new class($obj, $callee, Vector::new($args)) extends Expression {
             public function __construct($obj, $callee, $args)
@@ -291,7 +320,34 @@ abstract class AST
             public function toCode(): string
             {
                 $args = $this->args->map(fn($x) => static::toPhp($x))->join(', ');
-                return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+                if (is_null($this->callee)) {
+                    return static::toPhp($this->obj) . "({$args})";
+                } else {
+                    return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+                }
+            }
+        };
+    }
+
+    /**
+     * Create an object instantiation expression. This method returns a Callable into which the args are passed.
+     *
+     * @param ResolvedType $type The type to instantiate.
+     *
+     * @return Callable The returned Callable returns an Expression once called with callee args.
+     */
+    public static function new(ResolvedType $type): Callable
+    {
+        return fn(...$args) => new class($type, Vector::new($args)) extends Expression {
+            public function __construct($type, $args)
+            {
+                $this->type = $type;
+                $this->args = $args;
+            }
+            public function toCode(): string
+            {
+                $args = $this->args->map(fn($x) => static::toPhp($x))->join(', ');
+                return 'new ' . static::toPhp($this->type) . "({$args})";
             }
         };
     }
@@ -339,6 +395,26 @@ abstract class AST
             public function toCode(): string
             {
                 return static::toPhp($this->to) . " = " . static::toPhp($this->from);
+            }
+        };
+    }
+
+    public static function if(Expression $expr): AST
+    {
+        return new class($expr) extends AST {
+            public function __construct($expr)
+            {
+                $this->expr = $expr;
+            }
+            public function then(...$code)
+            {
+                return $this->clone(fn($clone) => $clone->then = AST::block(...$code));
+            }
+            public function toCode(): string
+            {
+                return 'if (' . static::toPhp($this->expr) . ") {\n" .
+                    static::toPhp($this->then) . "\n" .
+                    "}\n";
             }
         };
     }

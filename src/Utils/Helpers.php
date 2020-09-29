@@ -20,9 +20,15 @@ namespace Google\Generator\Utils;
 
 class Helpers
 {
-    public static function ToSnakeCase(string $s)
+    public static function toSnakeCase(string $s)
     {
         // https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-pascal-case
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $s));
+    }
+
+    public static function toCamelCase(string $s)
+    {
+        // TODO: Make this correct in more situations!
+        return strtolower($s[0]) . substr($s, 1);
     }
 }

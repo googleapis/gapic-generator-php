@@ -11,6 +11,8 @@ use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Testing\Basic\Request;
+use Testing\Basic\Response;
 
 /**
  * Service Description: This is a basic service.
@@ -126,5 +128,12 @@ class BasicGapicClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    public function aMethod(array $optionalArgs = [])
+    {
+        $request = new Request();
+
+        return $this->startCall('AMethod', Response::class, $optionalArgs, $request);
     }
 }

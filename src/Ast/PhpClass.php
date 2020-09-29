@@ -72,6 +72,18 @@ final class PhpClass extends AST
         return $this->clone(fn($clone) => $clone->members = $clone->members->append($member));
     }
 
+    /**
+     * Create a class with addition members.
+     *
+     * @param Vector $members Vector of PhpClassMember; the members to add.
+     *
+     * @return PhpClass
+     */
+    public function withMembers(Vector $members): PhpClass
+    {
+        return $this->clone(fn($clone) => $clone->members = $clone->members->concat($members));
+    }
+
     public function toCode(): string
     {
         $extends = is_null($this->extends) ? '' : " extends {$this->extends->toCode()}";
