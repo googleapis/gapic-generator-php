@@ -66,6 +66,9 @@ class ServiceDetails {
     /** @var Vector *Readonly* Vector of MethodDetails; one element per RPC method. */
     public Vector $methods;
 
+    /** @var string *Readonly* Variable name for a client of this service. */
+    public string $clientVarName;
+
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
@@ -84,5 +87,6 @@ class ServiceDetails {
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
+        $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}ServiceClient");
     }
 }

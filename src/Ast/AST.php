@@ -310,12 +310,12 @@ abstract class AST
      */
     public static function call($obj, $callee = null): Callable
     {
-        return fn(...$args) => new class($obj, $callee, Vector::new($args)) extends Expression {
+        return fn(...$args) => new class($obj, $callee, $args) extends Expression {
             public function __construct($obj, $callee, $args)
             {
                 $this->obj = $obj;
                 $this->callee = $callee;
-                $this->args = $args;
+                $this->args = Vector::new($args)->flatten();
             }
             public function toCode(): string
             {
@@ -422,6 +422,36 @@ abstract class AST
                 return 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
                     "}\n";
+            }
+        };
+    }
+
+    /**
+     * Create a try/catch/finally statement.
+     *
+     * @param array $tryCode The code to use in the try block.
+     *
+     * @return AST
+     */
+    public static function try(...$tryCode): AST
+    {
+        return new class($tryCode) extends AST {
+            public function __construct($tryCode)
+            {
+                $this->tryCode = AST::block(...$tryCode);
+                $this->finallyCode = null;
+            }
+            public function finally(...$finallyCode): AST
+            {
+                return $this->clone(fn($clone) => $clone->finallyCode = AST::block(...$finallyCode));
+            }
+            public function toCode(): string
+            {
+                return
+                    "try {\n" .
+                    static::toPhp($this->tryCode) . "\n" .
+                    '}' .
+                    (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}");
             }
         };
     }

@@ -69,7 +69,8 @@ class GapicClientGenerator
                     'This class provides the ability to make remote calls to the backing service through method',
                     'calls that map to API methods. Sample code to get started:'
                 ])),
-                // TODO: Include code example here.
+                count($this->serviceDetails->methods) === 0 ? null :
+                    PhpDoc::example($this->rpcMethodExample($this->serviceDetails->methods[0])),
                 PhpDoc::experimental(),
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
@@ -222,7 +223,6 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
-        // TODO: Add PhpDoc
         $startCall = AST::method('startCall');
         $request = AST::var('request');
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->name)));
@@ -245,7 +245,7 @@ class GapicClientGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
-                // TODO: Code example
+                PhpDoc::example($this->rpcMethodExample($method), PhpDoc::text('Sample code:')),
                 Vector::zip($method->requiredFields, $required,
                     fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines))),
                 PhpDoc::param($optionalArgs, PhpDoc::block(
@@ -265,5 +265,26 @@ class GapicClientGenerator
                     PhpDoc::text('if the remote call fails')),
                 PhpDoc::experimental()
             ));
+    }
+
+    private function rpcMethodExample(MethodDetails $method): AST
+    {
+        // TODO: Example methods for Streaming, LRO, ...
+        // TODO: Handle special arg types; e.g. resources.
+        // Create a separate context, as this code isn't part of the generated client.
+        $exampleCtx = new SourceFileContext();
+        $serviceClient = AST::Var($this->serviceDetails->clientVarName);
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $code = AST::block(
+            AST::assign($serviceClient, AST::new($exampleCtx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                AST::call($serviceClient, AST::method($method->methodName))($callVars)
+            )->finally(
+                AST::call($serviceClient, AST::method('close'))()
+            )
+        );
+        $exampleCtx->finalize(null);
+        return $code;
     }
 }

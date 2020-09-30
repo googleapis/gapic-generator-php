@@ -83,15 +83,20 @@ class SourceFileContext
 
     /**
      * Finalize this source context; after this call there must be no further changes.
-     * The PhpFile passed in can be altered as necessary for this finalization.
+     * The PhpFile passed in will be altered as necessary for this finalization.
      *
-     * @param PhpFile $file The file being generared with this context.
+     * @param ?PhpFile $file The file being generared with this context.
+     *                      This may be null when generating partial code; e.g. for code examples.
      *
-     * @return PhpFile
+     * @return ?PhpFile
      */
-    public function finalize(PhpFile $file): PhpFile
+    public function finalize(?PhpFile $file): ?PhpFile
     {
-        $result = $file->withUses($this->uses);
+        if (!is_null($file)) {
+            $result = $file->withUses($this->uses);
+        } else {
+            $result = null;
+        }
         $this->isFinalized = true;
         return $result;
     }
