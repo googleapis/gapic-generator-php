@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package testing.basic;
 
+// php_namespace option not included; to test generating namespace from proto package.
+
 import "google/api/client.proto";
 
 // This is a basic service.
