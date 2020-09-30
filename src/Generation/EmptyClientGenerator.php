@@ -25,9 +25,9 @@ use Google\Generator\Ast\PhpFile;
 
 class EmptyClientGenerator
 {
-    public static function Generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new EmptyClientGenerator($ctx, $serviceDetails))->GenerateImpl();
+        return (new EmptyClientGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
@@ -39,15 +39,15 @@ class EmptyClientGenerator
         $this->serviceDetails = $serviceDetails;
     }
 
-    private function GenerateImpl(): PhpFile
+    private function generateImpl(): PhpFile
     {
         // Generate file content
-        $file = AST::file($this->GenerateClass());
+        $file = AST::file($this->generateClass());
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
 
-    private function GenerateClass(): PhpClass
+    private function generateClass(): PhpClass
     {
         return AST::class($this->serviceDetails->emptyClientType, $this->ctx->type($this->serviceDetails->gapicClientType))
             ->withPhpDoc(PhpDoc::block(PhpDoc::inherit()))
