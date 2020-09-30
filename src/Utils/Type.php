@@ -129,6 +129,25 @@ class Type implements Equality
             $this->name;
     }
 
+    /**
+     * Get a suitable default value for this type.
+     *
+     * @return mixed
+     */
+    public function defaultValue()
+    {
+        // TODO: More cases required.
+        if ($this->isClass()) {
+            return null;
+        } else {
+            switch ($this->name) {
+                case 'int': return 0;
+                case 'string': return '';
+                default: throw new \Exception('No default value available');
+            }
+        }
+    }
+
     // Equality methods
 
     public function getHash(): int

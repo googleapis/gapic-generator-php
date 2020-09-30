@@ -22,6 +22,15 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods. Sample code to get started:
  *
+ * ```
+ * $basicServiceClient = new BasicClient();
+ * try {
+ *     $basicServiceClient->aMethod();
+ * } finally {
+ *     $basicServiceClient->close();
+ * }
+ * ```
+ *
  * @experimental
  */
 class BasicGapicClient
@@ -134,6 +143,16 @@ class BasicGapicClient
 
     /**
      * Test summary text for AMethod
+     *
+     * Sample code:
+     * ```
+     * $basicServiceClient = new BasicClient();
+     * try {
+     *     $basicServiceClient->aMethod();
+     * } finally {
+     *     $basicServiceClient->close();
+     * }
+     * ```
      *
      * @param array $optionalArgs {
      *     Optional.
