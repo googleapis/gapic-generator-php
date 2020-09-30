@@ -202,6 +202,21 @@ abstract class PhpDoc
     }
 
     /**
+     * Add the @test tag to the PHP doc block.
+     *
+     * @return PhpDoc
+     */
+    public static function test(): PhpDoc
+    {
+        return new class extends PhpDoc {
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(['@test']);
+            }
+        };
+    }
+
+    /**
      * Add a @throw tag to the PHP doc block.
      *
      * @param ResolvedType $type The exception type thrown.
