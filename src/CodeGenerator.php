@@ -40,7 +40,7 @@ class CodeGenerator
      *
      * @return string[]
      */
-    public static function GenerateFromDescriptor(string $descBytes, string $package)
+    public static function generateFromDescriptor(string $descBytes, string $package)
     {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -48,7 +48,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn($x) => $x->getPackage() === $package)
             ->map(fn($x) => $x->getName());
-        yield from static::Generate($fileDescs, $filesToGenerate);
+        yield from static::generate($fileDescs, $filesToGenerate);
     }
 
     /**
@@ -60,7 +60,7 @@ class CodeGenerator
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
-    public static function Generate(Vector $fileDescs, Vector $filesToGenerate)
+    public static function generate(Vector $fileDescs, Vector $filesToGenerate)
     {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
@@ -81,11 +81,11 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            yield from static::GeneratePackage($catalog, $namespaces[0], $singlePackageFileDescs);
+            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs);
         }
     }
 
-    private static function GeneratePackage(ProtoCatalog $catalog, string $namespace, Vector $fileDescs)
+    private static function generatePackage(ProtoCatalog $catalog, string $namespace, Vector $fileDescs)
     {
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
