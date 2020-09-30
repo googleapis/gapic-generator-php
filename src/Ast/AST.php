@@ -143,11 +143,11 @@ abstract class AST
      *
      * @param ?ResolvedType $type The type of the parameter.
      * @param Variable $var The AST variable used as the parameter.
-     * @param ?Expression $default Optional; the default value of the parameter.
+     * @param mixed $default Optional; the default value of the parameter.
      *
      * @return PhpParam
      */
-    public static function param(?ResolvedType $type, Variable $var, ?Expression $default = null): PhpParam
+    public static function param(?ResolvedType $type, Variable $var, $default = null): PhpParam
     {
         return new PhpParam($type, $var, $default);
     }

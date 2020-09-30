@@ -21,6 +21,7 @@ namespace Google\Generator;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
@@ -105,6 +106,12 @@ class CodeGenerator
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["{$serviceDetails->emptyClientType->name}.php", $code];
+                // Unit tests.
+                $ctx = new SourceFileContext();
+                $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
+                $code = $file->toCode();
+                $code = Formatter::format($code);
+                yield ["tests/{$serviceDetails->unitTestsType->name}.php", $code];
             }
             // TODO: Further files, as required.
         }

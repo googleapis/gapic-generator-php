@@ -23,7 +23,7 @@ use Google\Generator\Utils\ResolvedType;
 /** A param of a method or function. */
 final class PhpParam extends AST
 {
-    public function __construct(?ResolvedType $type, Variable $var, ?Expression $default)
+    public function __construct(?ResolvedType $type, Variable $var, $default)
     {
         $this->type = $type;
         $this->var = $var;
@@ -36,8 +36,8 @@ final class PhpParam extends AST
     /** @var Variable *Readonly* The variable used as the parameter. */
     public Variable $var;
 
-    /** @var ?Expression *Readonly* Optional; the default value of the parameter. */
-    public ?Expression $default;
+    /** @var mixed *Readonly* Optional; the default value of the parameter. */
+    public $default;
 
     public function toCode(): string
     {

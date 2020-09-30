@@ -36,6 +36,9 @@ class ServiceDetails {
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
 
+    /** @var Type *Readonly* The type of the unit-tests class. */
+    public Type $unitTestsType;
+
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
@@ -74,6 +77,7 @@ class ServiceDetails {
         $this->catalog = $catalog;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
+        $this->unitTestsType = Type::fromName("{$namespace}\\{$desc->getName()}ClientTest"); // TODO: Fix this, not currently correct.
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
