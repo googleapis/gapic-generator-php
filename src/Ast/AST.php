@@ -400,6 +400,31 @@ abstract class AST
     }
 
     /**
+     * Create a binary operation expression.
+     *
+     * @param AST $lhs The left-hand side of the binary operation.
+     * @param string $op The operation to preform.
+     * @param mixed $rhs The right-hand side of the binary operation.
+     *
+     * @return Expression
+     */
+    public static function binaryOp(AST $lhs, string $op, $rhs): Expression
+    {
+        return new class($lhs, $op, $rhs) extends Expression {
+            public function __construct($lhs, $op, $rhs)
+            {
+                $this->lhs = $lhs;
+                $this->op = $op;
+                $this->rhs = $rhs;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->lhs) . " {$this->op} " . static::toPhp($this->rhs);
+            }
+        };
+    }
+
+    /**
      * Create an if statement.
      *
      * @param Expression $expr The conditional expression for the if statement.
