@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace testing\basic;
+namespace Testing\Basic;
 
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
-use testing\basic\BasicClient;
+use Testing\Basic\BasicClient;
+use Testing\Basic\Response;
 
 class BasicClientTest extends GeneratedTest
 {
@@ -32,5 +33,19 @@ class BasicClientTest extends GeneratedTest
         ];
 
         return new BasicClient($options);
+    }
+
+    /** @test */
+    public function aMethodTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        // Mock request
     }
 }

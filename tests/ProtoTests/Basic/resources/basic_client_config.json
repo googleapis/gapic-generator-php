@@ -1,0 +1,9 @@
+{
+  "interfaces": {
+    "testing.basic.Basic": {
+      "retry_codes": {},
+      "retry_params": {},
+      "methods": {}
+    }
+  }
+}

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace testing\basic;
+namespace Testing\Basic;
 
-use testing\basic\Gapic\BasicGapicClient;
+use Testing\Basic\Gapic\BasicGapicClient;
 
 /** {@inheritdoc} */
 class BasicClient extends BasicGapicClient

@@ -45,7 +45,10 @@ class UnitTestsGenerator
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
+        $this->assertTrue = AST::call(AST::THIS, AST::method('assertTrue'));
     }
+
+    private $assertTrue;
 
     private function generateImpl(): PhpFile
     {
@@ -60,7 +63,9 @@ class UnitTestsGenerator
         return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
-            ->withMember($this->createClient());
+            ->withMember($this->createClient())
+            ->withMembers($this->serviceDetails->methods->map(fn($x) => $this->testSuccessCase($x)));
+            // TODO: Add exceptional tests.
     }
 
     private function createTransport(): PhpClassMember
@@ -111,5 +116,25 @@ class UnitTestsGenerator
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::return($this->ctx->type($this->serviceDetails->emptyClientType))
             ));
+    }
+
+    private function testSuccessCase(MethodDetails $method)
+    {
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $expectedResponse = AST::var('expectedResponse');
+        return AST::method($method->testSuccessMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+                '// Mock response',
+                AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
+                AST::call($transport, AST::method('addResponse'))($expectedResponse),
+                '// Mock request',
+                // TODO: Complete this test.
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 }
