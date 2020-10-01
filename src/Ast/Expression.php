@@ -20,4 +20,16 @@ namespace Google\Generator\Ast;
 
 abstract class Expression extends AST
 {
+    /**
+     * Create an expression to call a method on this instance.
+     * This method returns a Callable into which the args are passed.
+     *
+     * @param mixed $callee The method to call.
+     *
+     * @return Callable The returned Callable returns an Expression once called with callee args.
+     */
+    public function instanceCall($callee): Callable
+    {
+        return AST::call($this, $callee);
+    }
 }

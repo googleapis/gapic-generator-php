@@ -88,12 +88,10 @@ class UnitTestsGenerator
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
                 AST::return(
-                    AST::call(
-                        AST::call(
-                            AST::call(AST::THIS, AST::method('getMockBuilder'))(
-                                AST::access($this->ctx->type(Type::fromName(CredentialsWrapper::class)), AST::CLS)),
-                            AST::method('disableOriginalConstructor'))(),
-                        AST::method('getMock'))()
+                    AST::call(AST::THIS, AST::method('getMockBuilder'))(
+                            AST::access($this->ctx->type(Type::fromName(CredentialsWrapper::class)), AST::CLS))
+                        ->instanceCall(AST::method('disableOriginalConstructor'))()
+                        ->instanceCall(AST::method('getMock'))()
                 )
             ))
             ->withPhpDoc(PhpDoc::block(
