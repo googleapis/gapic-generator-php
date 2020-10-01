@@ -1,3 +1,8 @@
 <?php
 
-return [];
+return [
+    'interfaces' => [
+        'testing.basic.Basic' => [
+        ],
+    ],
+];
