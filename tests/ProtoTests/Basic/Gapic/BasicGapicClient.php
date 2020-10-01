@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace testing\basic\Gapic;
+namespace Testing\Basic\Gapic;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
@@ -64,7 +64,7 @@ class BasicGapicClient
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_grpc_config.json',
             'credentialsConfig' => [
-                'scopes' => self::serviceScopes,
+                'scopes' => self::$serviceScopes,
             ],
             'transportConfig' => [
                 'rest' => [

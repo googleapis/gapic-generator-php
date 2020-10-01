@@ -48,12 +48,17 @@ abstract class AST
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
     }
 
-    protected static function toPhp($x): string
+    protected static function toPhp($x, &$omitSemicolon = false): string
     {
+        $omitSemicolon = false;
         if (is_string($x)) {
             if (strncmp($x, "\0", 1) === 0) {
                 // \0 prefix means the string that follows is used verbatim.
                 return substr($x, 1);
+            } elseif (substr($x, 0, 2) === '//') {
+                // '//' prefix means a comment.
+                $omitSemicolon = true;
+                return $x;
             } else {
                 // Otherwise strings are treated as string literals.
                 return "'{$x}'";
@@ -61,7 +66,11 @@ abstract class AST
         } elseif (is_numeric($x)) {
             return strval($x);
         } elseif ($x instanceof PhpClassMember) {
-            return $x->getName();
+            if ($x instanceof PhpProperty) {
+                return '$' . $x->getName();
+            } else {
+                return $x->getName();
+            }
         } elseif ($x instanceof AST) {
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
@@ -185,8 +194,9 @@ abstract class AST
             }
             public function toCode(): string
             {
+                $omitSemicolon = false;
                 return $this->code
-                    ->map(fn($x) => $x->toCode() . ';')
+                    ->map(fn($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
             }
         };

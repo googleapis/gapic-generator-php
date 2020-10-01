@@ -1,0 +1,8 @@
+{
+  "interfaces": {
+    "testing.basic.Basic": {
+      "methods": {
+      }
+    }
+  }
+}

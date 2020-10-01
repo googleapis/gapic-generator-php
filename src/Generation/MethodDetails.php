@@ -37,6 +37,12 @@ class MethodDetails
     /** @var string *Readonly* The name of this method, as required for PHP code. */
     public string $methodName;
 
+    /** @var string *Readonly* The name of the test method testing the success case. */
+    public string $testSuccessMethodName;
+
+    /** @var string *Readonly* The name of the test method testing the exceptional case. */
+    public string $testExceptionMethodName;
+
     /** @var Type *Readonly* The type of the method request message. */
     public Type $requestType;
 
@@ -59,6 +65,8 @@ class MethodDetails
         $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
         $this->name = $desc->getName();
         $this->methodName = Helpers::toCamelCase($this->name);
+        $this->testSuccessMethodName = $this->methodName . 'Test';
+        $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
         $this->requestType = Type::fromMessage($inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
         $allFields = Vector::new($inputMsg->getField())->map(fn($x) => new FieldDetails($x));

@@ -2,7 +2,8 @@
     "autoload": {
         "psr-4": {
             "Google\\Generator\\": "src",
-            "Google\\Generator\\Tests\\": "tests"
+            "Google\\Generator\\Tests\\": "tests",
+            "Testing\\": "tests/ProtoTests"
         }
     },
     "require": {

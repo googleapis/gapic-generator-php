@@ -111,7 +111,7 @@ class CodeGenerator
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["tests/{$serviceDetails->unitTestsType->name}.php", $code];
+                yield ["Tests/{$serviceDetails->unitTestsType->name}.php", $code];
             }
             // TODO: Further files, as required.
         }

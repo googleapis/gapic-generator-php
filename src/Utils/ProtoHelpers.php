@@ -33,7 +33,7 @@ class ProtoHelpers
      *
      * @param FileDescriptorProto $fileDesc The file for this to get the PHP namespace.
      */
-    public static function GetNamespace(FileDescriptorProto $fileDesc): string
+    public static function getNamespace(FileDescriptorProto $fileDesc): string
     {
         if ($fileDesc->hasOptions())
         {
@@ -44,7 +44,9 @@ class ProtoHelpers
             }
         }
         // Fallback to munging the proto package.
-        return implode('\\', explode('.', $fileDesc->getPackage()));
+        return Vector::new(explode('.', $fileDesc->getPackage()))
+            ->map(fn($x) => strtoupper($x[0]) . substr($x, 1))
+            ->join('\\');
     }
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,
