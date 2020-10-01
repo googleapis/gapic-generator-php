@@ -44,7 +44,7 @@ class BasicClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $client = new Response();
+        $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
     }

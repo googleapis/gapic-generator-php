@@ -130,7 +130,7 @@ class UnitTestsGenerator
                 AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
                 '// Mock response',
-                AST::assign($client, AST::new($this->ctx->type($method->responseType))()),
+                AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 '// Mock request',
                 // TODO: Complete this test.
