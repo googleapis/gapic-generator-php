@@ -66,11 +66,7 @@ abstract class AST
         } elseif (is_numeric($x)) {
             return strval($x);
         } elseif ($x instanceof PhpClassMember) {
-            if ($x instanceof PhpProperty) {
-                return '$' . $x->getName();
-            } else {
-                return $x->getName();
-            }
+            return ($x instanceof PhpProperty ? '$' : '') . $x->getName();
         } elseif ($x instanceof AST) {
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
