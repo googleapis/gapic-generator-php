@@ -34,6 +34,9 @@ class FieldDetails
     /** @var Type *Readonly* The type of this field. */
     public Type $type;
 
+    /** @var PhpMethod *Readonly* The method used to get this field. */
+    public PhpMethod $getter;
+
     /** @var PhpMethod *Readonly* The method used to set this field. */
     public PhpMethod $setter;
 
@@ -60,6 +63,7 @@ class FieldDetails
             default:
                 throw new \Exception("Cannot handle field of type: {$field->getType()}");
         }
+        $this->getter = new PhpMethod($desc->getGetter());
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);

@@ -241,7 +241,7 @@ class GapicClientGenerator
                     AST::access($this->ctx->type($method->responseType), AST::CLS),
                     $optionalArgs->var,
                     $request
-                ))
+                )->instanceCall(AST::method('wait'))())
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),

@@ -43,6 +43,9 @@ abstract class AST
     /** @var string Constant to reference `class` as used in `<type>::class`. */
     public const CLS = "\0class";
 
+    /** @var string Constant to reference `count`. */
+    public const COUNT = "\0count";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
