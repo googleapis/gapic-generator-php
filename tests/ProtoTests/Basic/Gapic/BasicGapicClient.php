@@ -173,6 +173,6 @@ class BasicGapicClient
     {
         $request = new Request();
 
-        return $this->startCall('AMethod', Response::class, $optionalArgs, $request);
+        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
     }
 }

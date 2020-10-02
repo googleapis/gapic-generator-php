@@ -29,6 +29,7 @@ use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
+use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Type;
 
 class UnitTestsGenerator
@@ -40,15 +41,20 @@ class UnitTestsGenerator
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
+    private $assertTrue;
+    private $assertEquals;
+    private $assertSame;
+    private $assertProtobufEquals;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
         $this->assertTrue = AST::call(AST::THIS, AST::method('assertTrue'));
+        $this->assertEquals = AST::call(AST::THIS, AST::method('assertEquals'));
+        $this->assertSame = AST::call(AST::THIS, AST::method('assertSame'));
+        $this->assertProtobufEquals = AST::call(AST::THIS, AST::method('assertProtobufEquals'));
     }
-
-    private $assertTrue;
 
     private function generateImpl(): PhpFile
     {
@@ -118,9 +124,18 @@ class UnitTestsGenerator
 
     private function testSuccessCase(MethodDetails $method)
     {
+        // TODO: Currently this only handles basic methods. Support all method types: LRO, paged, ...
+        // TODO: Support resource-names in request args.
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
+        $request = AST::var('request');
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $response = AST::var('response');
+        $actualRequests = AST::var('actualRequests');
+        $actualFuncCall = AST::var('actualFuncCall');
+        $actualRequestObject = AST::var('actualRequestObject');
+        $actualValue = AST::var('actualValue');
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -131,7 +146,19 @@ class UnitTestsGenerator
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 '// Mock request',
-                // TODO: Complete this test.
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                ($this->assertEquals)($expectedResponse, $response),
+                AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
+                AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
+                AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
+                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => Vector::new([
+                    AST::assign($actualValue, $actualRequestObject->instanceCall($f->getter)()),
+                    ($this->assertProtobufEquals)($v, $actualValue),
+                ])),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }

@@ -47,5 +47,13 @@ class BasicClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
+        $response = $client->aMethod();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basic.Basic/AMethod', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
     }
 }
