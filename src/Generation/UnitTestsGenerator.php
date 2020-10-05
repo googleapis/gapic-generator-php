@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
@@ -31,6 +32,7 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Type;
+use Google\Rpc\Code;
 
 class UnitTestsGenerator
 {
@@ -45,6 +47,7 @@ class UnitTestsGenerator
     private $assertEquals;
     private $assertSame;
     private $assertProtobufEquals;
+    private $fail;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
@@ -54,6 +57,7 @@ class UnitTestsGenerator
         $this->assertEquals = AST::call(AST::THIS, AST::method('assertEquals'));
         $this->assertSame = AST::call(AST::THIS, AST::method('assertSame'));
         $this->assertProtobufEquals = AST::call(AST::THIS, AST::method('assertProtobufEquals'));
+        $this->fail = AST::call(AST::THIS, AST::method('fail'));
     }
 
     private function generateImpl(): PhpFile
@@ -70,8 +74,10 @@ class UnitTestsGenerator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->map(fn($x) => $this->testSuccessCase($x)));
-            // TODO: Add exceptional tests.
+            ->withMembers($this->serviceDetails->methods->flatMap(fn($x) => Vector::new([
+                $this->testSuccessCase($x),
+                $this->testExceptionalCase($x)]
+            )));
     }
 
     private function createTransport(): PhpClassMember
@@ -159,6 +165,49 @@ class UnitTestsGenerator
                     ($this->assertProtobufEquals)($v, $actualValue),
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testExceptionalCase(MethodDetails $method)
+    {
+        // TODO: Currently this only handles basic methods. Support all method types: LRO, paged, ...
+        // TODO: Support resource-names in request args.
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $status = AST::var('status');
+        $expectedExceptionMessage  = AST::var('expectedExceptionMessage ');
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $ex = AST::var('ex');
+        return AST::method($method->testExceptionMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+                AST::assign($status, AST::new($this->ctx->type(Type::stdClass()))()),
+                AST::assign(AST::access($status, AST::property('code')), AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS'))),
+                AST::assign(AST::access($status, AST::property('details')), 'internal error'),
+                AST::assign($expectedExceptionMessage, AST::call(AST::method('json_encode'))(AST::array([
+                    'message' => 'internal error',
+                    'code' => AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS')),
+                    'status' => 'DATA_LOSS',
+                    'details' => AST::array([]),
+                ]), AST::constant('JSON_PRETTY_PRINT'))),
+                $transport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::try(
+                    $client->instanceCall(AST::method($method->methodName))(...$requestVars),
+                    ($this->fail)('Expected an ApiException, but no exception was thrown.')
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                    ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
+                    ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
+                ),
+                // TODO: Fix formatted error (wrong indent) in this comment.
+                '// Call popReceivedCalls to ensure the stub is exhausted',
+                $transport->instanceCall(AST::method('popReceivedCalls'))(),
+                ($this->assertTrue)($transport->instanceCall(AST::method('isExhausted'))()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }

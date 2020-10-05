@@ -30,9 +30,9 @@ class SourceFileContext
     private Set $uses;
     private bool $isFinalized;
 
-    public function __construct()
+    public function __construct($namespace)
     {
-        $this->namespace = '';
+        $this->namespace = $namespace;
         $this->uses = Set::new();
         $this->isFinalized = false;
     }
@@ -44,17 +44,6 @@ class SourceFileContext
                 'This operation is only valid when the source-file-context has been finalized.' :
                 'This operation is only valid when the source-file-context has not been finalized.');
         }
-    }
-
-    /**
-     * Set the namespace of this file.
-     *
-     * @param string $namespace The current namespace of this file.
-     */
-    public function setNamespace(string $namespace): void
-    {
-        $this->checkFinalized(false);
-        $this->namespace = $namespace;
     }
 
     /**

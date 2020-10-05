@@ -69,7 +69,7 @@ abstract class AST
         } elseif (is_numeric($x)) {
             return strval($x);
         } elseif ($x instanceof PhpClassMember) {
-            return ($x instanceof PhpProperty ? '$' : '') . $x->getName();
+            return $x->getName();
         } elseif ($x instanceof AST) {
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
@@ -281,7 +281,8 @@ abstract class AST
             }
             public function toCode(): string
             {
-                return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->accessee);
+                $dollar = $this->obj == AST::SELF && $this->accessee instanceof PhpProperty ? '$' : '';
+                return static::toPhp($this->obj) . static::deref($this->obj) . $dollar . static::toPhp($this->accessee);
             }
         };
     }
@@ -473,7 +474,12 @@ abstract class AST
             public function __construct($tryCode)
             {
                 $this->tryCode = AST::block(...$tryCode);
+                $this->catch = null;
                 $this->finallyCode = null;
+            }
+            public function catch(ResolvedType $type, Variable $var, ...$catchCode): AST
+            {
+                return $this->clone(fn($clone) => $clone->catch = [$type, $var, AST::block(...$catchCode)]);
             }
             public function finally(...$finallyCode): AST
             {
@@ -485,6 +491,9 @@ abstract class AST
                     "try {\n" .
                     static::toPhp($this->tryCode) . "\n" .
                     '}' .
+                    (is_null($this->catch) ? '' : 'catch (' .
+                        static::toPhp($this->catch[0]) . ' ' . static::toPhp($this->catch[1]) . ") {\n" .
+                        static::toPhp($this->catch[2]) . "\n}") .
                     (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}");
             }
         };
