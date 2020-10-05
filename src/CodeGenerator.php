@@ -95,19 +95,19 @@ class CodeGenerator
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
-                $ctx = new SourceFileContext();
+                $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace());
                 $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
                 // Very thin service client wrapper, for manual code additions if required.
-                $ctx = new SourceFileContext();
+                $ctx = new SourceFileContext($serviceDetails->emptyClientType->getNamespace());
                 $file = EmptyClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
-                $ctx = new SourceFileContext();
+                $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace());
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);

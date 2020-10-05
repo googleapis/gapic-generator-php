@@ -56,6 +56,11 @@ class Type implements Equality
         return new Type(null, 'mixed');
     }
 
+    public static function stdClass(): Type
+    {
+        return new Type(Vector::new([]), 'stdClass');
+    }
+
     /**
      * Build a type from a class full-name.
      *
@@ -125,7 +130,7 @@ class Type implements Equality
     public function getFullname($omitLeadingBackslash = false): string
     {
         return $this->isClass() ?
-            ($omitLeadingBackslash ? '' : '\\') . "{$this->getNamespace()}\\{$this->name}" :
+            ($omitLeadingBackslash ? '' : '\\') . $this->namespaceParts->map(fn($x) => $x . '\\')->join() . $this->name :
             $this->name;
     }
 

@@ -272,7 +272,7 @@ class GapicClientGenerator
         // TODO: Example methods for Streaming, LRO, ...
         // TODO: Handle special arg types; e.g. resources.
         // Create a separate context, as this code isn't part of the generated client.
-        $exampleCtx = new SourceFileContext();
+        $exampleCtx = new SourceFileContext('');
         $serviceClient = AST::Var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
         $code = AST::block(
