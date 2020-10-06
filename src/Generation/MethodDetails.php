@@ -23,12 +23,35 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
 
-class MethodDetails
+abstract class MethodDetails
 {
     public static function create(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
         // TODO: Handle different method types; e.g. streaming, LRO, ...
-        return new MethodDetails($svc, $desc);
+        return
+            $desc->getOutputType() === 'google.longrunning.Operation' ? static::createLro($svc, $desc) :
+            static::createNormal($svc, $desc);
+    }
+
+    private static function createLro(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
+    {
+        return new class($svc, $desc) extends MethodDetails {
+            public function __construct($svc, $desc)
+            {
+                parent::__construct($svc, $desc);
+                // TODO: Load LRO-specific details.
+            }
+        };
+    }
+
+    private static function createNormal(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
+    {
+        return new class($svc, $desc) extends MethodDetails {
+            public function __construct($svc, $desc)
+            {
+                parent::__construct($svc, $desc);
+            }
+        };
     }
 
     /** @var string *Readonly* The name of the method, as named in the proto. */
@@ -58,7 +81,7 @@ class MethodDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
-    private function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
+    protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
         $catalog = $svc->catalog;
         $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
