@@ -47,8 +47,14 @@ final class ProtoTest extends TestCase
         // TODO: Check that all expected files are actually generated!
     }
 
-    public function testProtoBasic(): void
+    public function testBasic0(): void
     {
         $this->runProtoTest('Basic/basic.proto');
+    }
+
+    public function testBasicLro(): void
+    {
+        // TODO: Enable this test once LRO is implemented.
+        // $this->runProtoTest('BasicLro/basiclro.proto');
     }
 }
