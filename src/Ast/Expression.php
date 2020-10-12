@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
-abstract class Expression extends AST
+abstract class Expression extends AST implements \ArrayAccess
 {
     /**
      * Create an expression to call a method on this instance.
@@ -32,4 +32,27 @@ abstract class Expression extends AST
     {
         return AST::call($this, $callee);
     }
+
+    // Allow indexing as a shortcut for AST::index(...)
+
+    public function offsetExists($offset): bool
+    {
+        return true;
+    }
+
+    public function offsetGet($offset)
+    {
+        return AST::index($this, $offset);
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        throw new \Exception('Invalid operation (may be used later).');
+    }
+
+    public function offsetUnset($offset): void
+    {
+        throw new \Exception('Invalid operation.');
+    }
+
 }

@@ -30,6 +30,9 @@ class ServiceDetails {
     /** @var ProtoCatalog *Readonly* The proto-catalog containing all source protos. */
     public ProtoCatalog $catalog;
 
+    /** @var string *Readonly* The proto package name for this service. */
+    public string $package;
+
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
 
@@ -75,6 +78,7 @@ class ServiceDetails {
     public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
     {
         $this->catalog = $catalog;
+        $this->package = $package;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->unitTestsType = Type::fromName("{$namespace}\\{$desc->getName()}ClientTest"); // TODO: Fix this, not currently correct.
@@ -92,5 +96,12 @@ class ServiceDetails {
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}ServiceClient");
+    }
+
+    public function packageFullName(string $typeName): string
+    {
+        return
+            strpos($typeName, '.') === false ? ".{$this->package}.{$typeName}" :
+            (substr($typeName, 0, 1) === '.' ? $typeName : ".{$typeName}");
     }
 }

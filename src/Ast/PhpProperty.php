@@ -24,6 +24,7 @@ final class PhpProperty extends PhpClassMember
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->value = null;
     }
 
     /**
@@ -48,6 +49,7 @@ final class PhpProperty extends PhpClassMember
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
-            '$' . $this->name . ' = ' . static::toPhp($this->value) . ';';
+            '$' . $this->name .
+            (is_null($this->value) ? ';' : ' = ' . static::toPhp($this->value) . ';');
     }
 }

@@ -63,13 +63,14 @@ final class PhpClass extends AST
     /**
      * Create a class with an additional member.
      *
-     * @param PhpClassMember $member The member to add.
+     * @param ?PhpClassMember $member The member to add. Ignored if null.
      *
      * @return PhpClass
      */
-    public function withMember(PhpClassMember $member): PhpClass
+    public function withMember(?PhpClassMember $member): PhpClass
     {
-        return $this->clone(fn($clone) => $clone->members = $clone->members->append($member));
+        return is_null($member) ? $this :
+            $this->clone(fn($clone) => $clone->members = $clone->members->append($member));
     }
 
     /**
@@ -81,7 +82,9 @@ final class PhpClass extends AST
      */
     public function withMembers(Vector $members): PhpClass
     {
-        return $this->clone(fn($clone) => $clone->members = $clone->members->concat($members));
+        $members = $members->filter(fn($x) => !is_null($x));
+        return count($members) === 0 ? $this :
+            $this->clone(fn($clone) => $clone->members = $clone->members->concat($members));
     }
 
     public function toCode(): string
