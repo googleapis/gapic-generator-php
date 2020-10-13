@@ -50,7 +50,7 @@ abstract class MethodDetails
                 $catalog = $svc->catalog;
                 $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
                 if (is_null($lroData)) {
-                    throw new \Exception('An LRO method must provide an `google.api.operation` option.');
+                    throw new \Exception('An LRO method must provide a `google.api.operation` option.');
                 }
                 $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
                 $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];

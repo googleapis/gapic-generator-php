@@ -462,7 +462,7 @@ abstract class AST
     }
 
     /**
-     * Create a ternary expression.
+     * Create a '?:' expression.
      *
      * @param Expression $expr The conditional expression for the ternary expression.
      * @param Expression $true The expression to use if $expr evaluates to true.
