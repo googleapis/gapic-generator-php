@@ -131,7 +131,6 @@ class BasicLroGapicClient
         $options = isset($this->descriptors[$methodName]['longRunning']) ? $this->descriptors[$methodName]['longRunning'] : [];
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
-
         return $operation;
     }
 
@@ -257,7 +256,6 @@ class BasicLroGapicClient
     public function method1(array $optionalArgs = [])
     {
         $request = new Request();
-
         return $this->startOperationsCall('Method1', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

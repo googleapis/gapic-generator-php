@@ -31,7 +31,6 @@ class BasicLroClientTest extends GeneratedTest
         $options += [
             'credentials' => $this->createCredentials(),
         ];
-
         return new BasicLroClient($options);
     }
 

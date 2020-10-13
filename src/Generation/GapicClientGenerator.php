@@ -289,8 +289,9 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
+        // TODO: Test field with no proto-doc to make sure the PhpDoc is generated correctly.
         $request = AST::var('request');
-        $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->name)));
+        $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
         return AST::method($method->methodName)
@@ -298,9 +299,9 @@ class GapicClientGenerator
             ->withParams($required, $optionalArgs)
             ->withBody(AST::block(
                 AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                $method->requiredFields->map(fn($x) => AST::call($request, $x->setter)()),
-                $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->name)))
-                    ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->name)))),
+                Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
+                    ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
                 AST::return($this->startCall($method, $optionalArgs, $request)->instanceCall(AST::method('wait'))())
             ))
             ->withPhpDoc(PhpDoc::block(
@@ -311,7 +312,7 @@ class GapicClientGenerator
                 PhpDoc::param($optionalArgs, PhpDoc::block(
                     PhpDoc::Text('Optional.'),
                     $method->optionalFields->map(fn($x) =>
-                        PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->name, PhpDoc::preFormattedText($x->docLines))
+                        PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->camelName, PhpDoc::preFormattedText($x->docLines))
                     ),
                     PhpDoc::type(
                         Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
@@ -371,7 +372,7 @@ class GapicClientGenerator
     private function rpcMethodExampleNormal(SourceFileContext $ctx, MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
-        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         return AST::block(
             AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
@@ -386,7 +387,7 @@ class GapicClientGenerator
     private function rpcMethodExampleLro(SourceFileContext $ctx, MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
-        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $operationResponse = AST::var('operationResponse');
         $result = AST::var('result');
         $error = AST::var('error');

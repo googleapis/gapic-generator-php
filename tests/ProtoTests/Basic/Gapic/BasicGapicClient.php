@@ -14,6 +14,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\Basic\Request;
+use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
 
 /**
@@ -172,7 +173,49 @@ class BasicGapicClient
     public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
-
         return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Test including method args.
+     *
+     * Sample code:
+     * ```
+     * $basicServiceClient = new BasicClient();
+     * try {
+     *     $aString = '';
+     *     $basicServiceClient->methodWithArgs($aString);
+     * } finally {
+     *     $basicServiceClient->close();
+     * }
+     * ```
+     *
+     * @param mixed $aString      A required field...
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $anInt
+     *           ...and an optional field.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return Response
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function methodWithArgs($aString, array $optionalArgs = [])
+    {
+        $request = new RequestWithArgs();
+        $request->setAString($aString);
+        if (isset($optionalArgs['anInt'])) {
+            $request->setAnInt($optionalArgs['anInt']);
+        }
+
+        return $this->startCall('MethodWithArgs', Response::class, $optionalArgs, $request)->wait();
     }
 }

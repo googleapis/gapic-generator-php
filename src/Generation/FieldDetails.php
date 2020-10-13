@@ -21,6 +21,7 @@ namespace Google\Generator\Generation;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\FieldDescriptorProto;
@@ -28,8 +29,11 @@ use Google\Protobuf\Internal\GPBType;
 
 class FieldDetails
 {
-    /** @var string *Readonly* The name of this field. */
+    /** @var string *Readonly* The proto name of this field. */
     public string $name;
+
+    /** @var string *Readonly* The name of this field in camelCase. */
+    public string $camelName;
 
     /** @var Type *Readonly* The type of this field. */
     public Type $type;
@@ -50,6 +54,8 @@ class FieldDetails
     {
         $desc = $field->desc;
         $this->name = $desc->getName();
+        // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
+        $this->camelName = Helpers::toCamelCase(implode('', array_map('ucwords', explode('_', $this->name))));
         switch ($field->getType()) {
             case GPBType::INT32: // 5
                 $this->type = Type::int();
