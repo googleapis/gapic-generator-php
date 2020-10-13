@@ -55,4 +55,10 @@ abstract class Expression extends AST implements \ArrayAccess
         throw new \Exception('Invalid operation.');
     }
 
+    // Allow a method-call as a shortcut for AST::call(...)
+
+    public function __call(string $name ,array $arguments): Expression
+    {
+        return AST::call($this, AST::method($name))(...$arguments);
+    }
 }

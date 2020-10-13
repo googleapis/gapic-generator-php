@@ -351,14 +351,29 @@ class GapicClientGenerator
 
     private function rpcMethodExample(MethodDetails $method): AST
     {
-        // TODO: Example methods for Streaming, LRO, ...
         // TODO: Handle special arg types; e.g. resources.
         // Create a separate context, as this code isn't part of the generated client.
         $exampleCtx = new SourceFileContext('');
-        $serviceClient = AST::Var($this->serviceDetails->clientVarName);
+        switch ($method->methodType) {
+            case MethodDetails::NORMAL:
+                $code = $this->rpcMethodExampleNormal($exampleCtx, $method);
+                break;
+            case MethodDetails::LRO:
+                $code = $this->rpcMethodExampleLro($exampleCtx, $method);
+                break;
+            default:
+                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+        }
+        $exampleCtx->finalize(null);
+        return $code;
+    }
+
+    private function rpcMethodExampleNormal(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
-        $code = AST::block(
-            AST::assign($serviceClient, AST::new($exampleCtx->type($this->serviceDetails->emptyClientType))()),
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
                 AST::call($serviceClient, AST::method($method->methodName))($callVars)
@@ -366,7 +381,47 @@ class GapicClientGenerator
                 AST::call($serviceClient, AST::method('close'))()
             )
         );
-        $exampleCtx->finalize(null);
-        return $code;
+    }
+
+    private function rpcMethodExampleLro(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $operationResponse = AST::var('operationResponse');
+        $result = AST::var('result');
+        $error = AST::var('error');
+        $operationName = AST::var('operationName');
+        $newOperationResponse = AST::var('newOperationResponse');
+        $useResponseFn = fn($var) => AST::if($var->operationSucceeded())
+            ->then(
+                AST::assign($result, $var->getResult()),
+                '// doSomethingWith($result)'
+            )
+            ->else(
+                AST::assign($error, $var->getError()),
+                '// handleError($error)'
+            );
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                AST::assign($operationResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
+                $operationResponse->pollUntilComplete(),
+                $useResponseFn($operationResponse),
+                '// Alternatively:',
+                '// start the operation, keep the operation name, and resume later',
+                AST::assign($operationResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
+                AST::assign($operationName, $operationResponse->getName()),
+                '// ... do other work',
+                AST::assign($newOperationResponse, $serviceClient->resumeOperation($operationName, $method->methodName)),
+                AST::while(AST::not($newOperationResponse->isDone()))(
+                    '// ... do other work',
+                    $newOperationResponse->reload()
+                ),
+                $useResponseFn($newOperationResponse)
+            )->finally(
+                AST::call($serviceClient, AST::method('close'))()
+            )
+        );
     }
 }
