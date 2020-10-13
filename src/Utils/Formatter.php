@@ -50,15 +50,21 @@ class Formatter
             new \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50
         ];
 
-        $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);
+        try
+        {
+            $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);
 
-        // All the fixers we'll use don't reference the file passed in, so use a dummy file.
-        $fakeFile = new \SplFileInfo('');
-        foreach ($fixers as $fixer) {
-            $fixer->fix($fakeFile, $tokens);
+            // All the fixers we'll use don't reference the file passed in, so use a dummy file.
+            $fakeFile = new \SplFileInfo('');
+            foreach ($fixers as $fixer) {
+                $fixer->fix($fakeFile, $tokens);
+            }
+
+            $code = $tokens->generateCode();
+            return $code;
+        } catch (\Throwable $ex) {
+            print("\nFailed to format code:\n{$code}\n");
+            throw $ex;
         }
-
-        $code = $tokens->generateCode();
-        return $code;
     }
 }

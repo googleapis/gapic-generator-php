@@ -118,12 +118,19 @@ class ProtoHelpers
      * @param mixed $message The message containing the custom option. Must be of type Message, or
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
+     * @param ?string $msgClas Optional; to return a proto msg, set this to the PHP class of the msg.
      *
      * @return mixed Will be null if the option does not exist.
      */
-    public static function getCustomOption($message, int $optionId)
+    public static function getCustomOption($message, int $optionId, ?string $msgClass = null)
     {
-        return static::getCustomOptionRaw(static::conformMessage($message), $optionId, false);
+        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, false);
+        if (!is_null($msgClass) && !is_null($result)) {
+            $msg = new $msgClass();
+            $msg->mergeFromString($result);
+            $result = $msg;
+        }
+        return $result;
     }
 
     /**

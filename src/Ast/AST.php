@@ -462,6 +462,33 @@ abstract class AST
     }
 
     /**
+     * Create a '?:' expression.
+     *
+     * @param Expression $expr The conditional expression for the ternary expression.
+     * @param Expression $true The expression to use if $expr evaluates to true.
+     * @param Expression $false The expression to use if $expr evaluates to false.
+     *
+     * @return Expression
+     */
+    public static function ternary(Expression $expr, Expression $true, Expression $false): Expression
+    {
+        return new Class($expr, $true, $false) extends Expression {
+            public function __construct($expr, $true, $false)
+            {
+                $this->expr = $expr;
+                $this->true = $true;
+                $this->false = $false;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->expr) .
+                    ' ? ' . static::toPhp($this->true) .
+                    ' : ' . static::toPhp($this->false);
+            }
+        };
+    }
+
+    /**
      * Create a try/catch/finally statement.
      *
      * @param array $tryCode The code to use in the try block.

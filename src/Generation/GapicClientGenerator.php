@@ -20,6 +20,8 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\OperationResponse;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
@@ -48,6 +50,7 @@ class GapicClientGenerator
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
+        $this->hasLro = $serviceDetails->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
     }
 
     private function generateImpl(): PhpFile
@@ -79,7 +82,9 @@ class GapicClientGenerator
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
+            ->withMember($this->lroProperty())
             ->withMember($this->getClientDefaults())
+            ->withMembers($this->lroMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn($x) => $this->rpcMethod($x)));
     }
@@ -118,6 +123,67 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC, Access::STATIC)
             ->withPhpDocText('The default scopes required by the service.')
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
+    }
+
+    private function lroProperty(): ?PhpClassMember
+    {
+        if ($this->hasLro) {
+            return AST::property('operationsClient')
+                ->withAccess(Access::PRIVATE);
+        } else {
+            return null;
+        }
+    }
+
+    private function lroMethods(): Vector
+    {
+        if ($this->hasLro) {
+            $getOperationsClient = AST::method('getOperationsClient')
+                ->withAccess(Access::PUBLIC)
+                ->withBody(AST::block(
+                    AST::return(AST::access(AST::THIS, $this->lroProperty()))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
+                    PhpDoc::experimental()
+                ));
+            $operationName = AST::var('operationName');
+            $methodName = AST::var('methodName');
+            $options = AST::var('options');
+            $operation = AST::var('operation');
+            $resumeOperation = AST::method('resumeOperation')
+                ->withAccess(Access::PUBLIC)
+                ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
+                ->withBody(AST::block(
+                    AST::assign($options, AST::ternary(
+                        AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
+                        AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
+                        AST::array([])
+                    )),
+                    AST::assign($operation, AST::new($this->ctx->type(Type::fromName(OperationResponse::class)))(
+                        $operationName, AST::call(AST::THIS, $getOperationsClient)(), $options
+                    )),
+                    $operation->instanceCall(AST::method('reload'))(),
+                    AST::return($operation)
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text('Resume an existing long running operation that was previously started',
+                        'by a long running API method. If $methodName is not provided, or does',
+                        'not match a long running API method, then the operation can still be',
+                        'resumed, but the OperationResponse object will not deserialize the',
+                        'final response.'),
+                    PhpDoc::param(AST::param($this->ctx->type(Type::string()), $operationName),
+                        PhpDoc::text('The name of the long running operation')),
+                    PhpDoc::param(AST::param($this->ctx->type(Type::string()), $methodName),
+                        PhpDoc::text('The name of the method used to start the operation')),
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
+                    PhpDoc::experimental()
+                ));
+            return Vector::new([$getOperationsClient, $resumeOperation]);
+        } else {
+            return Vector::new([]);
+        }
     }
 
     private function getClientDefaults(): PhpClassMember
@@ -223,7 +289,6 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
-        $startCall = AST::method('startCall');
         $request = AST::var('request');
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->name)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
@@ -236,12 +301,7 @@ class GapicClientGenerator
                 $method->requiredFields->map(fn($x) => AST::call($request, $x->setter)()),
                 $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->name)))
                     ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->name)))),
-                AST::return(AST::call(AST::THIS, $startCall)(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    $request
-                )->instanceCall(AST::method('wait'))())
+                AST::return($this->startCall($method, $optionalArgs, $request)->instanceCall(AST::method('wait'))())
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
@@ -265,6 +325,28 @@ class GapicClientGenerator
                     PhpDoc::text('if the remote call fails')),
                 PhpDoc::experimental()
             ));
+    }
+
+    private function startCall($method, $optionalArgs, $request): AST
+    {
+        switch ($method->methodType) {
+            case MethodDetails::NORMAL:
+                return AST::call(AST::THIS, AST::method('startCall'))(
+                    $method->name,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $optionalArgs->var,
+                    $request
+                );
+            case MethodDetails::LRO:
+                return AST::call(AST::THIS, AST::method('startOperationsCall'))(
+                    $method->name,
+                    $optionalArgs->var,
+                    $request,
+                    AST::call(AST::THIS, AST::method('getOperationsClient'))()
+                );
+            default:
+                throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+        }
     }
 
     private function rpcMethodExample(MethodDetails $method): AST
