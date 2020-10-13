@@ -54,7 +54,6 @@ final class ProtoTest extends TestCase
 
     public function testBasicLro(): void
     {
-        // TODO: Enable this test once LRO is implemented.
-        // $this->runProtoTest('BasicLro/basiclro.proto');
+        $this->runProtoTest('BasicLro/basiclro.proto');
     }
 }

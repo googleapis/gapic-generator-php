@@ -20,6 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -74,10 +75,7 @@ class UnitTestsGenerator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->flatMap(fn($x) => Vector::new([
-                $this->testSuccessCase($x),
-                $this->testExceptionalCase($x)]
-            )));
+            ->withMembers($this->serviceDetails->methods->flatMap(fn($x) => Vector::new($this->testCases($x))));
     }
 
     private function createTransport(): PhpClassMember
@@ -128,9 +126,24 @@ class UnitTestsGenerator
             ));
     }
 
-    private function testSuccessCase(MethodDetails $method)
+    private function testCases(MethodDetails $method)
     {
-        // TODO: Currently this only handles basic methods. Support all method types: LRO, paged, ...
+        switch ($method->methodType) {
+            case MethodDetails::NORMAL:
+                yield $this->testSuccessCaseNormal($method);
+                yield $this->testExceptionalCaseNormal($method);
+                break;
+            case MethodDetails::LRO:
+                yield $this->testSuccessCaseLro($method);
+                yield $this->testExceptionalCaseLro($method);
+                break;
+            default:
+                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+        }
+    }
+
+    private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
+    {
         // TODO: Support resource-names in request args.
         $transport = AST::var('transport');
         $client = AST::var('client');
@@ -169,7 +182,7 @@ class UnitTestsGenerator
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function testExceptionalCase(MethodDetails $method)
+    private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
         // TODO: Currently this only handles basic methods. Support all method types: LRO, paged, ...
         // TODO: Support resource-names in request args.
@@ -210,5 +223,42 @@ class UnitTestsGenerator
                 ($this->assertTrue)($transport->instanceCall(AST::method('isExhausted'))()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testSuccessCaseLro(MethodDetails $method): PhpMethod
+    {
+        return AST::method($method->testSuccessMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                $this->lroTestInit(),
+                // TODO: Complete test...
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
+    {
+        return AST::method($method->testExceptionMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                $this->lroTestInit(),
+                // TODO: Complete test...
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function lroTestInit(): Vector
+    {
+        $operationsTransport = AST::var('operationsTransport');
+        $operationsClient = AST::var('operationsClient');
+        return Vector::new([
+            AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
+            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName(OperationsClient::class)))(AST::array([
+                'serviceAddress' => '',
+                'transport' => $operationsTransport,
+                'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
+            ]))),
+            // TODO: Complete init code...
+        ]);
     }
 }
