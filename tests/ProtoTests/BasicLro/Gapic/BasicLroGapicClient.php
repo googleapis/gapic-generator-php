@@ -15,7 +15,6 @@ use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\LongRunning\Operation;
 use Testing\BasicLro\Request;
 
 /**
@@ -199,7 +198,7 @@ class BasicLroGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return Operation
+     * @return OperationResponse
      *
      * @throws ApiException if the remote call fails
      *

@@ -320,7 +320,7 @@ class GapicClientGenerator
                             ' object, or an associative array of retry settings parameters. See the documentation on ',
                             $this->ctx->Type($retrySettingsType), ' for example usage.'))
                         )),
-                PhpDoc::return($this->ctx->type($method->responseType)),
+                PhpDoc::return($this->ctx->type($method->methodReturnType)),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')),
                 PhpDoc::experimental()
