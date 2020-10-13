@@ -43,12 +43,14 @@ class Formatter
             new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1
             new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
             new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
-            new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
             new \PhpCsFixer\Fixer\Basic\BracesFixer(), // -25
             new \PhpCsFixer\Fixer\Import\OrderedImportsFixer(), // -30
             new \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer(), // -31
             new \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50
         ];
+        // Fixer temporarily removed:
+        // new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
+        // TODO: Understand why this fixer causes too many blank line insertions in some cases.
 
         try
         {

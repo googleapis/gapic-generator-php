@@ -20,6 +20,11 @@
           "timeout_millis": 5000000,
           "retry_codes_name": "no_retry_codes",
           "retry_params_name": "no_retry_params"
+        },
+        "MethodWithArgs": {
+          "timeout_millis": 5000000,
+          "retry_codes_name": "no_retry_codes",
+          "retry_params_name": "no_retry_params"
         }
       }
     }
