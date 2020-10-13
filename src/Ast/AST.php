@@ -435,6 +435,27 @@ abstract class AST
     }
 
     /**
+     * Create a not expression.
+     *
+     * @param Expression $operand The operand to logically negate.
+     *
+     * @return Expression
+     */
+    public static function not(Expression $operand): Expression
+    {
+        return new class($operand) extends Expression {
+            public function __construct($operand)
+            {
+                $this->operand = $operand;
+            }
+            public function toCode(): string
+            {
+                return '!' . static::toPhp($this->operand);
+            }
+        };
+    }
+
+    /**
      * Create an if statement.
      *
      * @param Expression $expr The conditional expression for the if statement.
@@ -447,16 +468,26 @@ abstract class AST
             public function __construct($expr)
             {
                 $this->expr = $expr;
+                $this->then = null;
+                $this->else = null;
             }
             public function then(...$code)
             {
                 return $this->clone(fn($clone) => $clone->then = AST::block(...$code));
             }
+            public function else(...$code)
+            {
+                return $this->clone(fn($clone) => $clone->else = AST::block(...$code));
+            }
             public function toCode(): string
             {
+                $else = is_null($this->else ) ? '' :
+                    " else {\n" .
+                    static::toPhp($this->else) . "\n" .
+                    "}";
                 return 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
-                    "}\n";
+                    "}{$else}\n";
             }
         };
     }
@@ -472,7 +503,7 @@ abstract class AST
      */
     public static function ternary(Expression $expr, Expression $true, Expression $false): Expression
     {
-        return new Class($expr, $true, $false) extends Expression {
+        return new class($expr, $true, $false) extends Expression {
             public function __construct($expr, $true, $false)
             {
                 $this->expr = $expr;
@@ -484,6 +515,30 @@ abstract class AST
                 return static::toPhp($this->expr) .
                     ' ? ' . static::toPhp($this->true) .
                     ' : ' . static::toPhp($this->false);
+            }
+        };
+    }
+
+    /**
+     * Create a while statement. This method returns a Callable into which the loop code is passed.
+     *
+     * @param Expression $condition The condition checked at the top of the while loop.
+     *
+     * @return Callable The returned Callable returns an Expression once called with the loop code.
+     */
+    public static function while(Expression $condition): Callable
+    {
+        return fn(...$code) => new class($condition, $code) extends Expression {
+            public function __construct($condition, $code)
+            {
+                $this->condition = $condition;
+                $this->code = AST::block(...$code);
+            }
+            public function toCode(): string
+            {
+                return 'while (' . static::toPhp($this->condition) . ") {\n" .
+                    static::toPhp($this->code) .
+                    "}\n";
             }
         };
     }

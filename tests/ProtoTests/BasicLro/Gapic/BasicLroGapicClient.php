@@ -25,7 +25,32 @@ use Testing\BasicLro\Request;
  * ```
  * $basicLroServiceClient = new BasicLroClient();
  * try {
- *     $basicLroServiceClient->method1();
+ *     $operationResponse = $basicLroServiceClient->method1();
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         $result = $operationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ * // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $basicLroServiceClient->method1();
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $basicLroServiceClient->resumeOperation($operationName, 'method1');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         $result = $newOperationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $basicLroServiceClient->close();
  * }
@@ -183,7 +208,32 @@ class BasicLroGapicClient
      * ```
      * $basicLroServiceClient = new BasicLroClient();
      * try {
-     *     $basicLroServiceClient->method1();
+     *     $operationResponse = $basicLroServiceClient->method1();
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $basicLroServiceClient->method1();
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $basicLroServiceClient->resumeOperation($operationName, 'method1');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
      * } finally {
      *     $basicLroServiceClient->close();
      * }
