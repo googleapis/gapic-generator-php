@@ -68,6 +68,8 @@ abstract class AST
             }
         } elseif (is_numeric($x)) {
             return strval($x);
+        } elseif (is_bool($x)) {
+            return $x ? 'true' : 'false';
         } elseif ($x instanceof PhpClassMember) {
             return $x->getName();
         } elseif ($x instanceof AST) {

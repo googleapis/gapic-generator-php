@@ -9,6 +9,7 @@ use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
+use Google\LongRunning\Operation;
 
 class BasicLroClientTest extends GeneratedTest
 {
@@ -43,6 +44,18 @@ class BasicLroClientTest extends GeneratedTest
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/method1Test');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
     }
 
     /** @test */
@@ -54,5 +67,17 @@ class BasicLroClientTest extends GeneratedTest
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/method1ExceptionTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
     }
 }
