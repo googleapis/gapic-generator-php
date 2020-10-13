@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\OperationResponse;
 use Google\Protobuf\Internal\MethodDescriptorProto;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
@@ -56,6 +57,7 @@ abstract class MethodDetails
                 $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
                 $this->lroResponseType = Type::fromMessage($responseMsg->desc);
                 $this->lroMetadataType = Type::fromMessage($metadataMsg->desc);
+                $this->methodReturnType = Type::fromName(OperationResponse::class);
             }
 
             /** @var Type *Readonly* The type of the LRO response. */
@@ -98,6 +100,9 @@ abstract class MethodDetails
     /** @var Type *Readonly* The type of the method response message. */
     public Type $responseType;
 
+    /** @var Type *Readonly* The return type of the PHP method. */
+    public Type $methodReturnType;
+
     /** @var Vector *Readonly* Vector of FieldDetails; All required fields. */
     public Vector $requiredFields;
 
@@ -118,6 +123,7 @@ abstract class MethodDetails
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
         $this->requestType = Type::fromMessage($inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
+        $this->methodReturnType = $this->responseType;
         $allFields = Vector::new($inputMsg->getField())->map(fn($x) => new FieldDetails($x));
         $this->requiredFields = $allFields->filter(fn($x) => $x->isRequired);
         $this->optionalFields = $allFields->filter(fn($x) => !$x->isRequired);
