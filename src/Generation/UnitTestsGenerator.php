@@ -33,6 +33,7 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Operation;
 use Google\Rpc\Code;
 
 class UnitTestsGenerator
@@ -145,6 +146,7 @@ class UnitTestsGenerator
     private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
     {
         // TODO: Support resource-names in request args.
+        // TODO: Support empty-returning RPCs
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
@@ -184,8 +186,8 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
-        // TODO: Currently this only handles basic methods. Support all method types: LRO, paged, ...
         // TODO: Support resource-names in request args.
+        // TODO: Support empty-returning RPCs
         $transport = AST::var('transport');
         $client = AST::var('client');
         $status = AST::var('status');
@@ -227,10 +229,15 @@ class UnitTestsGenerator
 
     private function testSuccessCaseLro(MethodDetails $method): PhpMethod
     {
+        // TODO: Support resource-names in request args.
+        // TODO: Support empty-returning RPCs
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $response = AST::var('response');
+        [$initCode, $client] = $this->lroTestInit($method->testSuccessMethodName);
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
-                $this->lroTestInit(),
+                $initCode,
                 // TODO: Complete test...
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
@@ -238,27 +245,45 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
     {
+        // TODO: Support resource-names in request args.
+        // TODO: Support empty-returning RPCs
+        [$initCode] = $this->lroTestInit($method->testExceptionMethodName);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
-                $this->lroTestInit(),
+                $initCode,
                 // TODO: Complete test...
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function lroTestInit(): Vector
+    private function lroTestInit($testName)
     {
         $operationsTransport = AST::var('operationsTransport');
         $operationsClient = AST::var('operationsClient');
-        return Vector::new([
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $incompleteOperation = AST::var('incompleteOperation');
+        $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
             AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName(OperationsClient::class)))(AST::array([
                 'serviceAddress' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),
-            // TODO: Complete init code...
+            AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+            AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array([
+                'transport' => $transport,
+                'operationsClient' => $operationsClient,
+            ]))),
+            ($this->assertTrue)($transport->isExhausted()),
+            ($this->assertTrue)($operationsTransport->isExhausted()),
+            '// Mock response',
+            AST::assign($incompleteOperation, AST::new($this->ctx->type(Type::fromName(Operation::class)))()),
+            $incompleteOperation->setName("operations/{$testName}"),
+            $incompleteOperation->setDone(false),
+            $transport->addResponse($incompleteOperation),
         ]);
+        return [$initCode, $client];
     }
 }
