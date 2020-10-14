@@ -18,20 +18,6 @@ declare(strict_types=1);
 
 namespace Testing\Basic;
 
-use Google\Protobuf\Internal\Message;
-
-// TODO: Use a real message, or a fake message with enough field handling to make future tests work.
-class RequestWithArgs extends Message
+class RequestWithArgs extends \Google\Generator\Tests\FakeMessage
 {
-    public function __construct() { }
-
-    public function setAString($aString)
-    {
-        $this->aString = $aString;
-    }
-
-    public function getAString()
-    {
-        return $this->aString;
-    }
 }

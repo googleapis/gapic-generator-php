@@ -18,10 +18,6 @@ declare(strict_types=1);
 
 namespace Testing\Basic;
 
-use Google\Protobuf\Internal\Message;
-
-// TODO: Use a real message, or a fake message with enough field handling to make future tests work.
-class Request extends Message
+class Request extends \Google\Generator\Tests\FakeMessage
 {
-    public function __construct() { }
 }
