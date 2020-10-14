@@ -33,6 +33,7 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
@@ -47,9 +48,11 @@ class UnitTestsGenerator
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
     private $assertTrue;
+    private $assertFalse;
     private $assertEquals;
     private $assertSame;
     private $assertProtobufEquals;
+    private $assertNull;
     private $fail;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
@@ -57,9 +60,11 @@ class UnitTestsGenerator
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
         $this->assertTrue = AST::call(AST::THIS, AST::method('assertTrue'));
+        $this->assertFalse = AST::call(AST::THIS, AST::method('assertFalse'));
         $this->assertEquals = AST::call(AST::THIS, AST::method('assertEquals'));
         $this->assertSame = AST::call(AST::THIS, AST::method('assertSame'));
         $this->assertProtobufEquals = AST::call(AST::THIS, AST::method('assertProtobufEquals'));
+        $this->assertNull = AST::call(AST::THIS, AST::method('assertNull'));
         $this->fail = AST::call(AST::THIS, AST::method('fail'));
     }
 
@@ -232,11 +237,23 @@ class UnitTestsGenerator
     {
         // TODO: Support resource-names in request args.
         // TODO: Support empty-returning RPCs
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $lroResponseVars = $method->lroResponseFields->map(fn($x) => AST::var($x->camelName));
         $expectedResponse = AST::var('expectedResponse');
         $anyResponse = AST::var('anyResponse');
-        [$initCode, $client] = $this->lroTestInit($method->testSuccessMethodName);
+        $completeOperation = AST::var('completeOperation');
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $response = AST::var('response');
+        $apiRequests = AST::var('apiRequests');
+        $operationsRequestsEmpty = AST::var('operationsRequestsEmpty');
+        $actualApiFuncCall = AST::var('actualApiFuncCall');
+        $actualApiRequestObject = AST::var('actualApiRequestObject');
+        $actualValue = AST::var('actualValue');
+        $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
+        $apiRequestsEmpty = AST::var('apiRequestsEmpty');
+        $operationsRequests = AST::var('operationsRequests');
+        $actualOperationsFuncCall = AST::var('actualOperationsFuncCall');
+        $actualOperationsRequestObject = AST::var('actualOperationsRequestObject');
+        [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testSuccessMethodName);
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -246,7 +263,44 @@ class UnitTestsGenerator
                 Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => $expectedResponse->instanceCall($f->setter)($v)),
                 AST::assign($anyResponse, AST::new($this->ctx->type(Type::fromName(Any::class)))()),
                 $anyResponse->setValue($expectedResponse->serializeToString()),
-                // TODO: Complete test...
+                AST::assign($completeOperation, AST::new($this->ctx->type(Type::fromName(Operation::class)))()),
+                $completeOperation->setName("operations/{$method->testSuccessMethodName}"),
+                $completeOperation->setDone(true),
+                $completeOperation->setResponse($anyResponse),
+                $operationsTransport->addResponse($completeOperation),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                ($this->assertFalse)($response->isDone()),
+                ($this->assertNull)($response->getResult()),
+                AST::assign($apiRequests, $transport->popReceivedCalls()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($apiRequests)),
+                AST::assign($operationsRequestsEmpty, $operationsTransport->popReceivedCalls()),
+                ($this->assertSame)(0, AST::call(AST::COUNT)($operationsRequestsEmpty)),
+                AST::assign($actualApiFuncCall, $apiRequests[0]->getFuncCall()),
+                AST::assign($actualApiRequestObject, $apiRequests[0]->getRequestObject()),
+                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualApiFuncCall),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => Vector::new([
+                    AST::assign($actualValue, $actualApiRequestObject->instanceCall($f->getter)()),
+                    ($this->assertProtobufEquals)($v, $actualValue),
+                ])),
+                AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type(Type::fromName(GetOperationRequest::class)))()),
+                $expectedOperationsRequestObject->setName("operations/{$method->testSuccessMethodName}"),
+                $response->pollUntilComplete(AST::array([
+                    'initialPollDelayMillis' => 1,
+                ])),
+                ($this->assertTrue)($response->isDone()),
+                ($this->assertEquals)($expectedResponse, $response->getResult()),
+                AST::assign($apiRequestsEmpty, $transport->popReceivedCalls()),
+                ($this->assertSame)(0, AST::call(AST::COUNT)($apiRequestsEmpty)),
+                AST::assign($operationsRequests, $operationsTransport->popReceivedCalls()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($operationsRequests)),
+                AST::assign($actualOperationsFuncCall, $operationsRequests[0]->getFuncCall()),
+                AST::assign($actualOperationsRequestObject, $operationsRequests[0]->getRequestObject()),
+                ($this->assertSame)('/google.longrunning.Operations/GetOperation', $actualOperationsFuncCall),
+                ($this->assertEquals)($expectedOperationsRequestObject, $actualOperationsRequestObject),
+                ($this->assertTrue)($transport->isExhausted()),
+                ($this->assertTrue)($operationsTransport->isExhausted()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
@@ -292,6 +346,6 @@ class UnitTestsGenerator
             $incompleteOperation->setDone(false),
             $transport->addResponse($incompleteOperation),
         ]);
-        return [$initCode, $client];
+        return [$initCode, $operationsTransport, $client, $transport];
     }
 }
