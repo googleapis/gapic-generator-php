@@ -100,8 +100,8 @@ class BasicClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $a_string = '';
-        $response = $client->methodWithArgs($a_string);
+        $aString = '';
+        $response = $client->methodWithArgs($aString);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -109,7 +109,7 @@ class BasicClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.basic.Basic/MethodWithArgs', $actualFuncCall);
         $actualValue = $actualRequestObject->getAString();
-        $this->assertProtobufEquals($a_string, $actualValue);
+        $this->assertProtobufEquals($aString, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -132,9 +132,9 @@ class BasicClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $a_string = '';
+        $aString = '';
         try {
-            $client->methodWithArgs($a_string);
+            $client->methodWithArgs($aString);
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
