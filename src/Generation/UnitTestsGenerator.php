@@ -34,6 +34,7 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Any;
 use Google\Rpc\Code;
 
 class UnitTestsGenerator
@@ -232,12 +233,19 @@ class UnitTestsGenerator
         // TODO: Support resource-names in request args.
         // TODO: Support empty-returning RPCs
         $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
-        $response = AST::var('response');
+        $lroResponseVars = $method->lroResponseFields->map(fn($x) => AST::var($x->camelName));
+        $expectedResponse = AST::var('expectedResponse');
+        $anyResponse = AST::var('anyResponse');
         [$initCode, $client] = $this->lroTestInit($method->testSuccessMethodName);
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
+                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($expectedResponse, AST::new($this->ctx->type($method->lroResponseType))()),
+                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => $expectedResponse->instanceCall($f->setter)($v)),
+                AST::assign($anyResponse, AST::new($this->ctx->type(Type::fromName(Any::class)))()),
+                $anyResponse->setValue($expectedResponse->serializeToString()),
                 // TODO: Complete test...
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));

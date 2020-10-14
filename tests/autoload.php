@@ -16,14 +16,8 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Tests;
-
-use Google\Protobuf\Internal\Message;
-
-/**
- * Fake message base class for tests, that emulates any proto message well enough for testing.
- */
-abstract class FakeMessage extends Message
+/** class that can fake any proto message sufficiantly well for testing. */
+class FakeMessage extends \Google\Protobuf\Internal\Message
 {
     public function __construct() { }
 
@@ -43,4 +37,23 @@ abstract class FakeMessage extends Message
                 throw new \Exception("FakeMessage cannot handle method call: '{$name}'");
         }
     }
+
+    public function serializeToString()
+    {
+        // TODO: Implement serialization; as it's required for the generated tests to be effective.
+        // Note that this serialization will not need to be compatible with real proto serialization.
+        return '';
+    }
 }
+
+function protosOnDemandLoader($class)
+{
+    if (substr($class, 0, 8) === 'Testing\\' &&
+        (strpos($class, 'Request') !== false || strpos($class, 'Response') !== false)) {
+        // Create an alias to `FakeMessage` for any non-existant class that looks like it's a proto message class.
+        class_alias(FakeMessage::class, $class);
+    }
+}
+
+// Use a custom autoloader to produce fake proto message classes for tests.
+spl_autoload_register('protosOnDemandLoader', true);

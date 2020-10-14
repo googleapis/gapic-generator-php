@@ -58,6 +58,7 @@ abstract class MethodDetails
                 $this->lroResponseType = Type::fromMessage($responseMsg->desc);
                 $this->lroMetadataType = Type::fromMessage($metadataMsg->desc);
                 $this->methodReturnType = Type::fromName(OperationResponse::class);
+                $this->lroResponseFields = Vector::new($responseMsg->getField())->map(fn($x) => new FieldDetails($x));
             }
 
             /** @var Type *Readonly* The type of the LRO response. */
@@ -65,6 +66,9 @@ abstract class MethodDetails
 
             /** @var Type *Readonly* The type of the LRO metadata. */
             public Type $lroMetadataType;
+
+            /** @var Vector *Readonly* Vector of FieldDetails; all fields of lroResponse type. */
+            public Vector $lroResponseFields;
         };
     }
 
@@ -103,10 +107,10 @@ abstract class MethodDetails
     /** @var Type *Readonly* The return type of the PHP method. */
     public Type $methodReturnType;
 
-    /** @var Vector *Readonly* Vector of FieldDetails; All required fields. */
+    /** @var Vector *Readonly* Vector of FieldDetails; all required request fields. */
     public Vector $requiredFields;
 
-    /** @var Vector *Readonly* Vector of FieldDetails; All optional fields. */
+    /** @var Vector *Readonly* Vector of FieldDetails; all optional request fields. */
     public Vector $optionalFields;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */

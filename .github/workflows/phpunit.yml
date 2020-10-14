@@ -21,4 +21,4 @@ jobs:
         composer dump-autoload;
 
     - name: Run tests
-      run: ./vendor/bin/phpunit tests
+      run: ./vendor/bin/phpunit --bootstrap tests/autoload.php tests

@@ -10,6 +10,7 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Any;
 
 class BasicLroClientTest extends GeneratedTest
 {
@@ -55,6 +56,11 @@ class BasicLroClientTest extends GeneratedTest
         $incompleteOperation->setName('operations/method1Test');
         $incompleteOperation->setDone(false);
         $transport->addResponse($incompleteOperation);
+        $aValue = '';
+        $expectedResponse = new LroResponse();
+        $expectedResponse->setAValue($aValue);
+        $anyResponse = new Any();
+        $anyResponse->setValue($expectedResponse->serializeToString());
     }
 
     /** @test */
