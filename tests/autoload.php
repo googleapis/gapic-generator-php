@@ -16,7 +16,7 @@
  */
 declare(strict_types=1);
 
-/** class that can fake any proto message sufficiantly well for testing. */
+/** class that can fake any proto message sufficiently well for testing. */
 class FakeMessage extends \Google\Protobuf\Internal\Message
 {
     public function __construct() { }
