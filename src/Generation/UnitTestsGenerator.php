@@ -151,7 +151,7 @@ class UnitTestsGenerator
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
         $request = AST::var('request');
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $response = AST::var('response');
         $actualRequests = AST::var('actualRequests');
         $actualFuncCall = AST::var('actualFuncCall');
@@ -192,7 +192,7 @@ class UnitTestsGenerator
         $client = AST::var('client');
         $status = AST::var('status');
         $expectedExceptionMessage  = AST::var('expectedExceptionMessage ');
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $ex = AST::var('ex');
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
@@ -231,7 +231,7 @@ class UnitTestsGenerator
     {
         // TODO: Support resource-names in request args.
         // TODO: Support empty-returning RPCs
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->name));
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $response = AST::var('response');
         [$initCode, $client] = $this->lroTestInit($method->testSuccessMethodName);
         return AST::method($method->testSuccessMethodName)
