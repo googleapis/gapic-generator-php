@@ -23,6 +23,7 @@ message Request {
 }
 
 message LroResponse {
+  string a_value = 1;
 }
 
 message LroMetadata {
