@@ -40,9 +40,27 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
 
     public function serializeToString()
     {
-        // TODO: Implement serialization; as it's required for the generated tests to be effective.
-        // Note that this serialization will not need to be compatible with real proto serialization.
-        return '';
+        // This serialization does not need to be compatible with real proto serialization.
+        $result = '';
+        foreach ($this as $name => $value) {
+            $v = serialize($value);
+            $result .= $name . ':' . strval(strlen($v)) . ':' . $v;
+        }
+        return $result;
+    }
+
+    public function mergeFromString($s)
+    {
+        $pos = 0;
+        while ($pos < strlen($s)) {
+            $colon1 = strpos($s, ':', $pos);
+            $colon2 = strpos($s, ':', $colon1 + 1);
+            $name = substr($s, $pos, $colon1);
+            $valueLen = (int)substr($s, $colon1 + 1, $colon2 - $colon1 - 1);
+            $value = unserialize(substr($s, $colon2 + 1, $valueLen));
+            $this->$name = $value;
+            $pos = $colon2 + 1 + $valueLen;
+        }
     }
 }
 

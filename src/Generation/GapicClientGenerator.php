@@ -82,7 +82,7 @@ class GapicClientGenerator
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
-            ->withMember($this->lroProperty())
+            ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
             ->withMembers($this->lroMethods())
             ->withMember($this->construct())
@@ -125,7 +125,7 @@ class GapicClientGenerator
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
     }
 
-    private function lroProperty(): ?PhpClassMember
+    private function operationsClient(): ?PhpClassMember
     {
         if ($this->hasLro) {
             return AST::property('operationsClient')
@@ -141,7 +141,7 @@ class GapicClientGenerator
             $getOperationsClient = AST::method('getOperationsClient')
                 ->withAccess(Access::PUBLIC)
                 ->withBody(AST::block(
-                    AST::return(AST::access(AST::THIS, $this->lroProperty()))
+                    AST::return(AST::access(AST::THIS, $this->operationsClient()))
                 ))
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
@@ -224,6 +224,10 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
+                $this->hasLro ?
+                    AST::assign(AST::access(AST::THIS, $this->operationsClient()),
+                        AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)) :
+                    null
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
