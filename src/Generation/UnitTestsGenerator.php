@@ -309,12 +309,49 @@ class UnitTestsGenerator
     {
         // TODO: Support resource-names in request args.
         // TODO: Support empty-returning RPCs
-        [$initCode] = $this->lroTestInit($method->testExceptionMethodName);
+        $status = AST::var('status');
+        $expectedExceptionMessage = AST::var('expectedExceptionMessage');
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $response = AST::var('response');
+        $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
+        $ex = AST::var('ex');
+        [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testExceptionMethodName);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
-                // TODO: Complete test...
+                AST::assign($status, AST::new($this->ctx->type(Type::stdClass()))()),
+                AST::assign(AST::access($status, AST::property('code')), AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS'))),
+                AST::assign(AST::access($status, AST::property('details')), 'internal error'),
+                AST::assign($expectedExceptionMessage, AST::call(AST::method('json_encode'))(AST::array([
+                    'message' => 'internal error',
+                    'code' => AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS')),
+                    'status' => 'DATA_LOSS',
+                    'details' => AST::array([]),
+                ]), AST::constant('JSON_PRETTY_PRINT'))),
+                $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                ($this->assertFalse)($response->isDone()),
+                ($this->assertNull)($response->getResult()),
+                AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type(Type::fromName(GetOperationRequest::class)))()),
+                $expectedOperationsRequestObject->setName("operations/{$method->testExceptionMethodName}"),
+                AST::try(
+                    $response->pollUntilComplete(AST::array([
+                        'initialPollDelayMillis' => 1,
+                    ])),
+                    '// If the pollUntilComplete() method call did not throw, fail the test',
+                    ($this->fail)('Expected an ApiException, but no exception was thrown.'),
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                    ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
+                    ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
+                ),
+                '// Call popReceivedCalls to ensure the stubs are exhausted',
+                $transport->popReceivedCalls(),
+                $operationsTransport->popReceivedCalls(),
+                ($this->assertTrue)($transport->isExhausted()),
+                ($this->assertTrue)($operationsTransport->isExhausted()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
