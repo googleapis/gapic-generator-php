@@ -39,7 +39,6 @@ class Formatter
             new \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
             new \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer(), // 50
             new \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer(), // 26
-            new \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer(), // 2
             new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1
             new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
             new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0

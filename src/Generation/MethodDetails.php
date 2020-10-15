@@ -47,7 +47,6 @@ abstract class MethodDetails
             {
                 parent::__construct($svc, $desc);
                 $this->methodType = MethodDetails::LRO;
-                $this->isLro = true;
                 $catalog = $svc->catalog;
                 $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
                 if (is_null($lroData)) {
