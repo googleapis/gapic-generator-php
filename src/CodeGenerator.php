@@ -21,6 +21,7 @@ namespace Google\Generator;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
@@ -112,6 +113,10 @@ class CodeGenerator
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["Tests/{$serviceDetails->unitTestsType->name}.php", $code];
+                // Resource: descriptor_config.
+                $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
+                $code = Formatter::format($code);
+                yield ["resources/{$serviceDetails->descriptorConfigFilename}", $code];
             }
             // TODO: Further files, as required.
         }

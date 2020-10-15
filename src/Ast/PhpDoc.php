@@ -370,7 +370,7 @@ abstract class PhpDoc
                     (is_null($this->intro) ? Vector::new() : $this->intro->toLines(Map::new()))
                     ->concat(
                         Vector::new(explode("\n", $code))
-                            ->skip(3)->skipLast(1)
+                            ->skip(2)->skipLast(1)
                             ->filter(fn($x) => $x !== '')
                             ->prepend('```')
                             ->append('```')

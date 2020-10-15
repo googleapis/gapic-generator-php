@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
@@ -239,14 +240,21 @@ abstract class AST
     /**
      * Create an array initializer expression.
      *
-     * @param array $array The array content. Supports both associative and sequential arrays.
+     * @param mixed $data The array content. Supports both associative and sequential arrays.
+     *     May be an array or a Map.
      *
      * @return Expression
      */
-    public static function array(array $array): Expression
+    public static function array($data): Expression
     {
-        $keyValues = Vector::new(array_map(fn($v, $k) => [$k, $v], $array, array_keys($array)))
-            ->filter(fn($x) => !is_null($x[1]));
+        if (is_array($data)) {
+            $keyValues = Vector::new(array_map(fn($v, $k) => [$k, $v], $data, array_keys($data)))
+                ->filter(fn($x) => !is_null($x[1]));
+        } elseif ($data instanceof Map) {
+            $keyValues = $data->mapValues(fn($k, $v) => [$k, $v])->values();
+        } else {
+            throw new \Exception('$data must be an array or a Map.');
+        }
         return new class($keyValues) extends Expression {
             public function __construct($keyValues)
             {
