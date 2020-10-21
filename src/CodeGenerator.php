@@ -38,10 +38,11 @@ class CodeGenerator
      *
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
+     * @param int $licenseYear The year to use in license headers.
      *
      * @return string[]
      */
-    public static function generateFromDescriptor(string $descBytes, string $package)
+    public static function generateFromDescriptor(string $descBytes, string $package, int $licenseYear)
     {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -49,7 +50,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn($x) => $x->getPackage() === $package)
             ->map(fn($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate);
+        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear);
     }
 
     /**
@@ -58,10 +59,11 @@ class CodeGenerator
      *
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
+     * @param int $licenseYear The year to use in license headers.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
-    public static function generate(Vector $fileDescs, Vector $filesToGenerate)
+    public static function generate(Vector $fileDescs, Vector $filesToGenerate, int $licenseYear)
     {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
@@ -82,11 +84,11 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs);
+            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear);
         }
     }
 
-    private static function generatePackage(ProtoCatalog $catalog, string $namespace, Vector $fileDescs)
+    private static function generatePackage(ProtoCatalog $catalog, string $namespace, Vector $fileDescs, int $licenseYear)
     {
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
@@ -96,19 +98,19 @@ class CodeGenerator
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
-                $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace());
+                $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);
                 $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
                 // Very thin service client wrapper, for manual code additions if required.
-                $ctx = new SourceFileContext($serviceDetails->emptyClientType->getNamespace());
+                $ctx = new SourceFileContext($serviceDetails->emptyClientType->getNamespace(), $licenseYear);
                 $file = EmptyClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
-                $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace());
+                $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace(), $licenseYear);
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);

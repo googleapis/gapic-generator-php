@@ -31,7 +31,8 @@ $package = $opts['package'];
 // Generate PHP code.
 // At the moment $files is just the file content.
 // TODO: Change this to be file location and content
-$files = CodeGenerator::GenerateFromDescriptor($descBytes, $package);
+$year = (int)date('Y');
+$files = CodeGenerator::GenerateFromDescriptor($descBytes, $package, $year);
 foreach ($files as [$relativeFilename, $fileContent]) {
     // TODO: Later this won't just print out the generated file content.
     print("File: '{$relativeFilename}':\n");

@@ -30,9 +30,13 @@ class SourceFileContext
     private Set $uses;
     private bool $isFinalized;
 
-    public function __construct($namespace)
+    /** @var *Readonly* Year value for license headers, if set. */
+    public ?int $licenseYear;
+
+    public function __construct(string $namespace, ?int $licenseYear = null)
     {
         $this->namespace = $namespace;
+        $this->licenseYear = $licenseYear;
         $this->uses = Set::new();
         $this->isFinalized = false;
     }
