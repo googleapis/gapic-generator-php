@@ -28,7 +28,8 @@ class Helpers
 
     public static function toCamelCase(string $s)
     {
-        // TODO: Make this correct in more situations!
+        // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
+        $s = implode('', array_map('ucwords', explode('_', $s)));
         return strtolower($s[0]) . substr($s, 1);
     }
 }

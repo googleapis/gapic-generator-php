@@ -19,31 +19,47 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
+use Google\Generator\Collections\Map;
 
 class ResourcesGenerator
 {
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails): string
     {
-        $methods = $serviceDetails->methods
-            ->filter(fn($x) => $x->methodType === MethodDetails::LRO)
-            ->toMap(
-                fn($x) => $x->name,
-                fn($x) => AST::array([
-                    'longRunning' => AST::array([
-                        'operationReturnType' => $x->lroResponseType->getFullname(),
-                        'metadataReturnType' => $x->lroMetadataType->getFullname(),
+        $perMethod = function($method) {
+            switch ($method->methodType) {
+                case MethodDetails::LRO:
+                    return Map::new(['longRunning' => AST::array([
+                        'operationReturnType' => $method->lroResponseType->getFullname(),
+                        'metadataReturnType' => $method->lroMetadataType->getFullname(),
                         'initialPollDelayMillis' => '60000', // TODO: Check these are the correct values.
                         'pollDelayMultiplier' => '1.0',
                         'maxPollDelayMillis' => '60000',
                         'totalPollTimeoutMillis' => '86400000',
-                    ])
-                ])
-            );
+                    ])]);
+                case MethodDetails::PAGINATED:
+                    return Map::new(['pageStreaming' => AST::array([
+                        'requestPageTokenGetMethod' => $method->requestPageTokenGetter->name,
+                        'requestPageTokenSetMethod' => $method->requestPageTokenSetter->name,
+                        'requestPageSizeGetMethod' => $method->requestPageSizeGetter->name,
+                        'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
+                        'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
+                        'resourcesGetMethod' => $method->resourcesGetter->name,
+                    ])]);
+                default:
+                    return Map::new();
+            }
+        };
 
         $return = AST::return(
             AST::array([
                 'interfaces' => AST::array([
-                    $serviceDetails->serviceName => AST::array($methods)
+                    $serviceDetails->serviceName => AST::array(
+                        // TODO: Order these correctly, duplicating monolith ordering.
+                        $serviceDetails->methods
+                            ->map(fn($x) => [$x->name, $perMethod($x)])
+                            ->filter(fn($x) => count($x[1]) > 0)
+                            ->toMap(fn($x) => $x[0], fn($x) => AST::array($x[1]))
+                    )
                 ])
             ])
         );

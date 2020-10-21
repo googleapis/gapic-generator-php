@@ -19,6 +19,6 @@ message Request {
 }
 
 message Response {
-  repeated string results = 1;
+  repeated string the_results = 1;
   string next_page_token = 2;
 }

@@ -29,6 +29,9 @@ final class PhpMethod extends PhpClassMember
         $this->params = Vector::new();
     }
 
+    /** @var string *Readonly* The name of this method. */
+    public string $name;
+
     /**
      * Create a method with the specified parameters.
      *
