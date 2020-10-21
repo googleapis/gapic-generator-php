@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\OperationResponse;
+use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
@@ -31,13 +32,55 @@ abstract class MethodDetails
 {
     public const NORMAL = 'normal';
     public const LRO = 'lro';
+    public const PAGINATED = 'paginated';
 
     public static function create(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
         // TODO: Handle further method types; e.g. streaming, paginated, ...
         return
-            $desc->getOutputType() === '.google.longrunning.Operation' ? static::createLro($svc, $desc) :
-            static::createNormal($svc, $desc);
+            static::isPaginated($svc, $desc) ? static::createPaginated($svc, $desc) : (
+                $desc->getOutputType() === '.google.longrunning.Operation' ? static::createLro($svc, $desc) :
+                static::createNormal($svc, $desc)
+            );
+    }
+
+    private static function isPaginated(ServiceDetails $svc, MethodDescriptorProto $desc): bool
+    {
+        $catalog = $svc->catalog;
+        $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+        $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
+        $pageSize = $inputMsg->desc->getFieldByName('page_size');
+        $pageToken = $inputMsg->desc->getFieldByName('page_token');
+        $nextPageToken = $outputMsg->desc->getFieldByName('next_page_token');
+        $results = $outputMsg->desc->getFieldByNumber(1);
+        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken)) {
+            return false;
+        } else {
+            if ($pageSize->isRepeated() || $pageSize->getType() !== GPBType::INT32) {
+                throw new \Exception("page_size field must be of type int32.");
+            }
+            if ($pageToken->isRepeated() || $pageToken->getType() !== GPBType::STRING) {
+                throw new \Exception("page_token field must be of type string.");
+            }
+            if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
+                throw new \Exception("next_page_token field must be of type string.");
+            }
+            if (!$results->isRepeated() || $results->isMap()) {
+                throw new \Exception("Item response field must be a repeated field with field-number 1.");
+            }
+            return true;
+        }
+    }
+
+    private static function createPaginated(ServiceDetails $svc, MethodDescriptorProto $desc)
+    {
+        return new class($svc, $desc) extends MethodDetails {
+            public function __construct($svc, $desc)
+            {
+                parent::__construct($svc, $desc);
+                $this->methodType = MethodDetails::PAGINATED;
+            }
+        };
     }
 
     private static function createLro(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails

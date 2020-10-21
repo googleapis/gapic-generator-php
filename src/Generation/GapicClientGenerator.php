@@ -308,7 +308,7 @@ class GapicClientGenerator
                 Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
                 $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
                     ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
-                AST::return($this->startCall($method, $optionalArgs, $request)->instanceCall(AST::method('wait'))())
+                AST::return($this->startCall($method, $optionalArgs, $request))
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
@@ -343,13 +343,20 @@ class GapicClientGenerator
                     AST::access($this->ctx->type($method->responseType), AST::CLS),
                     $optionalArgs->var,
                     $request
-                );
+                )->wait();
             case MethodDetails::LRO:
                 return AST::call(AST::THIS, AST::method('startOperationsCall'))(
                     $method->name,
                     $optionalArgs->var,
                     $request,
                     AST::call(AST::THIS, AST::method('getOperationsClient'))()
+                )->wait();
+            case MethodDetails::PAGINATED:
+                return AST::call(AST::THIS, AST::method('getPagedListResponse'))(
+                    $method->name,
+                    $optionalArgs->var,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $request
                 );
             default:
                 throw new \Exception("Cannot handle method type: '{$method->methodType}'");
@@ -367,6 +374,9 @@ class GapicClientGenerator
                 break;
             case MethodDetails::LRO:
                 $code = $this->rpcMethodExampleLro($exampleCtx, $method);
+                break;
+            case MethodDetails::PAGINATED:
+                $code = $this->rpcMethodExamplePaginated($exampleCtx, $method);
                 break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
@@ -428,6 +438,36 @@ class GapicClientGenerator
                 $useResponseFn($newOperationResponse)
             )->finally(
                 AST::call($serviceClient, AST::method('close'))()
+            )
+        );
+    }
+
+    private function rpcMethodExamplePaginated(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $pagedResponse = AST::var('pagedresponse');
+        $page = AST::var('page');
+        $element = AST::var('element');
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                '// Iterate over pages of elements',
+                AST::assign($pagedResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
+                AST::foreach($pagedResponse->iteratePages(), $page)(
+                    AST::foreach($page, $element)(
+                        '// doSomethingWith($element);'
+                    )
+                ),
+                '// Alternatively:',
+                '// Iterate through all elements',
+                AST::assign($pagedResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
+                AST::foreach($pagedResponse->iterateAllElements(), $element)(
+                    '// doSomethingWith($element);'
+                )
+            )->finally(
+                $serviceClient->close()
             )
         );
     }
