@@ -54,8 +54,7 @@ class FieldDetails
     {
         $desc = $field->desc;
         $this->name = $desc->getName();
-        // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
-        $this->camelName = Helpers::toCamelCase(implode('', array_map('ucwords', explode('_', $this->name))));
+        $this->camelName = Helpers::toCamelCase($this->name);
         switch ($field->getType()) {
             case GPBType::INT32: // 5
                 $this->type = Type::int();

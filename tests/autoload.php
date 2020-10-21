@@ -19,6 +19,16 @@ declare(strict_types=1);
 /** class that can fake any proto message sufficiently well for testing. */
 class FakeMessage extends \Google\Protobuf\Internal\Message
 {
+    private static function defaultFieldValue($name)
+    {
+        switch ($name) {
+            case 'PageToken':
+                return '';
+            default:
+                throw new \Exception("No default value available for field: '{$name}'");
+        }
+    }
+
     public function __construct() { }
 
     public function __call(string $name, array $arguments)
@@ -32,7 +42,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
                 $this->$suffix = $arguments[0];
                 return;
             case 'get':
-                return $this->$suffix;
+                return isset($this->$suffix) ? $this->$suffix : static::defaultFieldValue($suffix);
             default:
                 throw new \Exception("FakeMessage cannot handle method call: '{$name}'");
         }
@@ -55,7 +65,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         while ($pos < strlen($s)) {
             $colon1 = strpos($s, ':', $pos);
             $colon2 = strpos($s, ':', $colon1 + 1);
-            $name = substr($s, $pos, $colon1);
+            $name = substr($s, $pos, $colon1 - $pos);
             $valueLen = (int)substr($s, $colon1 + 1, $colon2 - $colon1 - 1);
             $value = unserialize(substr($s, $colon2 + 1, $valueLen));
             $this->$name = $value;

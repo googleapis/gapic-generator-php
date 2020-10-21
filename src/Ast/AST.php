@@ -47,6 +47,9 @@ abstract class AST
     /** @var string Constant to reference `count`. */
     public const COUNT = "\0count";
 
+    /** @var string Constant to reference `iterator_to_array`. */
+    public const ITERATOR_TO_ARRAY = "\0iterator_to_array";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';

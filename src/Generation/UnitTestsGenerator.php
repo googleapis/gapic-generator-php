@@ -146,9 +146,65 @@ class UnitTestsGenerator
                 yield $this->testSuccessCaseLro($method);
                 yield $this->testExceptionalCaseLro($method);
                 break;
+            case MethodDetails::PAGINATED:
+                yield $this->testSuccessCasePaginated($method);
+                yield $this->testExceptionalCaseNormal($method); // Paginated exceptional case is the same as for normal method.
+                break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
+    }
+
+    private function testSuccessCasePaginated(MethodDetails $method): PhpMethod
+    {
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $nextPageToken = AST::var('nextPageToken');
+        $expectedResponse = AST::var('expectedResponse');
+        $mockResourceElement = AST::var("{$method->resourcesFieldName}Element");
+        $mockResource = AST::var($method->resourcesFieldName);
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $response = AST::var('response');
+        $resources = AST::var('resources');
+        $mockResourceElementValue = $method->resourceType->defaultValue() ?? AST::new($this->ctx->type($method->resourceType));
+        $actualRequests = AST::var('actualRequests');
+        $actualFuncCall = AST::var('actualFuncCall');
+        $actualRequestObject = AST::var('actualRequestObject');
+        $actualValue = AST::var('actualValue');
+        // TODO: Support resource-names in request args.
+        return AST::method($method->testSuccessMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+                '// Mock response',
+                AST::assign($nextPageToken, ''),
+                AST::assign($mockResourceElement, $mockResourceElementValue),
+                AST::assign($mockResource, AST::array([$mockResourceElement])),
+                AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
+                $expectedResponse->instanceCall($method->responseNextPageTokenSetter)($nextPageToken),
+                $expectedResponse->instanceCall($method->resourcesSetter)($mockResource),
+                AST::call($transport, AST::method('addResponse'))($expectedResponse),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
+                AST::assign($resources , AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($resources)),
+                ($this->assertEquals)($expectedResponse->instanceCall($method->resourcesGetter)()[0], $resources[0]),
+                AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
+                AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
+                AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
+                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => Vector::new([
+                    AST::assign($actualValue, $actualRequestObject->instanceCall($f->getter)()),
+                    ($this->assertProtobufEquals)($v, $actualValue),
+                ])),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
     private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
@@ -158,7 +214,6 @@ class UnitTestsGenerator
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
-        $request = AST::var('request');
         $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $response = AST::var('response');
         $actualRequests = AST::var('actualRequests');

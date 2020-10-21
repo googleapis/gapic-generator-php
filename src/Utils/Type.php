@@ -20,6 +20,7 @@ namespace Google\Generator\Utils;
 
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\Descriptor;
+use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
 
@@ -85,6 +86,25 @@ class Type implements Equality
     public static function fromMessage(Descriptor $desc): Type
     {
         return static::fromName($desc->getClass());
+    }
+
+    /**
+     * Build a type from a proto message field.
+     *
+     * @param FieldDescriptor $desc The proto field descriptor.
+     *
+     * @return Type
+     */
+    public static function fromField(FieldDescriptor $desc): Type
+    {
+        switch ($desc->getType()) {
+            case GPBType::STRING:
+                return static::string();
+            case GPBType::MESSAGE:
+                return static::fromMessage($desc->getMessage());
+            default:
+                throw new \Exception("Cannot get field type of type: {$desc->getType()}");
+        }
     }
 
     private function __construct(?Vector $namespaceParts, string $name)
