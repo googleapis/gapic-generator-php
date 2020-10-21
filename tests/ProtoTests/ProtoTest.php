@@ -34,7 +34,8 @@ final class ProtoTest extends TestCase
         // * The expected file contents are based in the same directory as the proto file.
         $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
         $package = 'testing.' . basename($protoPath, '.proto');
-        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package);
+        // Use the fixed year 2020 for test generation, so tests won't fail in the future.
+        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020);
 
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/' . $relativeFilename;
