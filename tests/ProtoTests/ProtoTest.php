@@ -57,4 +57,10 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('BasicLro/basiclro.proto');
     }
+
+    public function testBasicPaginated(): void
+    {
+        // TODO: Enable this test once paginated generation is complete.
+        // $this->runProtoTest('BasicPaginated/basicpaginated.proto');
+    }
 }

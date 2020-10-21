@@ -534,11 +534,11 @@ abstract class AST
      *
      * @param Expression $condition The condition checked at the top of the while loop.
      *
-     * @return Callable The returned Callable returns an Expression once called with the loop code.
+     * @return Callable The returned Callable returns a while statement once called with the loop code.
      */
     public static function while(Expression $condition): Callable
     {
-        return fn(...$code) => new class($condition, $code) extends Expression {
+        return fn(...$code) => new class($condition, $code) extends AST {
             public function __construct($condition, $code)
             {
                 $this->condition = $condition;
@@ -547,6 +547,32 @@ abstract class AST
             public function toCode(): string
             {
                 return 'while (' . static::toPhp($this->condition) . ") {\n" .
+                    static::toPhp($this->code) .
+                    "}\n";
+            }
+        };
+    }
+
+    /**
+     * Create a foreach statement. This method returns a Callable into which the foreach body code is passed.
+     *
+     * @param Expression $expr The expression to foreach over.
+     * @param Variable $var The variable into which each element is placed.
+     *
+     * @return Callable The returned Callable returns a foreach statement once called with the foreach body code.
+     */
+    public static function foreach(Expression $expr, Variable $var): Callable
+    {
+        return fn(...$code) => new class($expr, $var, $code) extends AST {
+            public function __construct($expr, $var, $code)
+            {
+                $this->expr = $expr;
+                $this->var = $var;
+                $this->code = AST::block(...$code);
+            }
+            public function toCode(): string
+            {
+                return 'foreach (' . static::toPhp($this->expr) . ' as ' . static::toPhp($this->var) . ") {\n" .
                     static::toPhp($this->code) .
                     "}\n";
             }
