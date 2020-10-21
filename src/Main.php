@@ -23,14 +23,12 @@ error_reporting(E_ALL);
 
 // TODO: Support running as protoc plugin.
 // TODO: Provide help/usage if incorrect command-line args provided.
-// Read commend-line args.
+// Read command-line args.
 $opts = getopt('', ['descriptor:', 'package:']);
 $descBytes = stream_get_contents(fopen($opts['descriptor'], 'rb'));
 $package = $opts['package'];
 
 // Generate PHP code.
-// At the moment $files is just the file content.
-// TODO: Change this to be file location and content
 $year = (int)date('Y');
 $files = CodeGenerator::GenerateFromDescriptor($descBytes, $package, $year);
 foreach ($files as [$relativeFilename, $fileContent]) {
