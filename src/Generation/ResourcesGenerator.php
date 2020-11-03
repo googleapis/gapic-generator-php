@@ -82,7 +82,7 @@ class ResourcesGenerator
             ->append(['no_retry_codes', []])
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
-            $retryParams = Vector::zip($grpcServiceConfig->retryPolicies, $grpcServiceConfig->timeouts, fn($r, $t, $i) =>
+        $retryParams = Vector::zip($grpcServiceConfig->retryPolicies, $grpcServiceConfig->timeouts, fn($r, $t, $i) =>
             ["retry_policy_{$inc($i)}_params", is_null($r) && is_null($t) ? null :
                 Vector::new([
                     ['initial_retry_delay_millis', is_null($r) ? null : $durationToMillis($r->getInitialBackoff())],
