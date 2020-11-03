@@ -26,6 +26,7 @@ use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
+use Google\Generator\Utils\GrpcServiceConfig;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
@@ -39,18 +40,23 @@ class CodeGenerator
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
      * @param int $licenseYear The year to use in license headers.
+     * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      *
      * @return string[]
      */
-    public static function generateFromDescriptor(string $descBytes, string $package, int $licenseYear)
-    {
+    public static function generateFromDescriptor(
+        string $descBytes,
+        string $package,
+        int $licenseYear,
+        ?string $grpcServiceConfigJson
+    ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
         $fileDescs = Vector::new($descSet->getFile());
         $filesToGenerate = $fileDescs
             ->filter(fn($x) => $x->getPackage() === $package)
             ->map(fn($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear);
+        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson);
     }
 
     /**
@@ -60,11 +66,16 @@ class CodeGenerator
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
      * @param int $licenseYear The year to use in license headers.
+     * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
-    public static function generate(Vector $fileDescs, Vector $filesToGenerate, int $licenseYear)
-    {
+    public static function generate(
+        Vector $fileDescs,
+        Vector $filesToGenerate,
+        int $licenseYear,
+        ?string $grpcServiceConfigJson
+    ) {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
         // Create map of all files to generate, keyed by package name.
@@ -84,18 +95,26 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear);
+            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson);
         }
     }
 
-    private static function generatePackage(ProtoCatalog $catalog, string $namespace, Vector $fileDescs, int $licenseYear)
-    {
+    private static function generatePackage(
+        ProtoCatalog $catalog,
+        string $namespace,
+        Vector $fileDescs,
+        int $licenseYear,
+        ?string $grpcServiceConfigJson
+    ) {
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
         {
             foreach ($fileDesc->getService() as $index => $service)
             {
+                // Load service details.
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
+                // Load gRPC service config; if it's not provided then defaults will be used.
+                $grpcServiceConfig = new GrpcServiceConfig($serviceDetails->serviceName, $grpcServiceConfigJson);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
                 $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);
@@ -115,10 +134,13 @@ class CodeGenerator
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["Tests/{$serviceDetails->unitTestsType->name}.php", $code];
-                // Resource: descriptor_config.
+                // Resource: descriptor_config.php
                 $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
                 $code = Formatter::format($code);
                 yield ["resources/{$serviceDetails->descriptorConfigFilename}", $code];
+                // Resource: client_config.json
+                $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig);
+                yield ["resources/{$serviceDetails->clientConfigFilename}", $json];
             }
             // TODO: Further files, as required.
         }

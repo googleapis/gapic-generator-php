@@ -4,7 +4,9 @@
             "Google\\Generator\\": "src",
             "Google\\Generator\\Tests\\": "tests",
             "Testing\\": "tests/ProtoTests",
-            "Google\\": "src/Google"
+            "Google\\": "src/Google",
+            "Grpc\\": "src/Grpc",
+            "GPBMetadata\\": "src/GPBMetadata"
         }
     },
     "require": {
