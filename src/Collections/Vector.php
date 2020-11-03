@@ -51,8 +51,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * @param Vector $a The first Vector to zip.
      * @param Vector $b The second Vector to zip.
      * @param ?Callable $fnMap The optional map function. This will be called with two
-     *     parameters, one element from each input vector. If this function is omitted, then
-     *     each element of the output vector will contain an array of length two.
+     *     parameters, one element from each input vector; an optional third parameter
+     *     is the element index. If this function is omitted, then each element of the
+     *     output vector will contain an array of length two.
      */
     public static function zip(Vector $a, Vector $b, ?Callable $fnMap = null): Vector
     {
@@ -60,7 +61,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         $result = [];
         if ($fnMap) {
             for ($i = 0; $i < $count; $i++) {
-                $result[] = $fnMap($a[$i], $b[$i]);
+                $result[] = $fnMap($a[$i], $b[$i], $i);
             }
         } else {
             for ($i = 0; $i < $count; $i++) {
@@ -218,14 +219,15 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Transform elements of this vector.
      *
      * @param Callable $fnMap Transformation function called for each element in this vector.
+     *     Index passed as second parameter if required.
      *
      * @return Vector
      */
     public function map(Callable $fnMap): Vector
     {
         $result = [];
-        foreach ($this->data as $item) {
-            $result[] = $fnMap($item);
+        foreach ($this->data as $index => $item) {
+            $result[] = $fnMap($item, $index);
         }
         return new Vector($result);
     }
@@ -234,15 +236,15 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Transform and flatten elements of this vector.
      *
      * @param Callable $fnFlatMap Transformation function called for each element in this vector;
-     *     must return a vector.
+     *     must return a vector. Index passed as second parameter if required.
      *
      * @return Vector
      */
     public function flatMap(Callable $fnFlatMap): Vector
     {
         $parts = [];
-        foreach ($this->data as $item) {
-            $mapping = $fnFlatMap($item);
+        foreach ($this->data as $index => $item) {
+            $mapping = $fnFlatMap($item, $index);
             if (!($mapping instanceof Vector)) {
                 throw new \Exception("flatMap() function must return a Vector");
             }
@@ -471,13 +473,24 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     }
 
     /**
-     * Converts this vector to a standard PHP array, with incrementing numeric keys
+     * Converts this vector to a standard PHP array, with incrementing numeric keys or custom keys.
+     *
+     * @param ?Callable $fnKey Optional. Key function to create an associative array.
+     * @param ?Callable $fnValue Optional. Value function to create an associative array.
      *
      * @return array
      */
-    public function toArray(): array
+    public function toArray(?Callable $fnKey = null, ?Callable $fnValue = null): array
     {
-        return $this->data;
+        if (is_null($fnKey)) {
+            return $this->data;
+        } else {
+            $result = [];
+            foreach ($this as $item) {
+                $result[$fnKey($item)] = is_null($fnValue) ? $item : $fnValue($item);
+            }
+            return $result;
+        }
     }
 
     /**

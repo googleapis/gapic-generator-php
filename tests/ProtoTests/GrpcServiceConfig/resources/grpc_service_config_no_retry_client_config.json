@@ -1,6 +1,6 @@
 {
     "interfaces": {
-        "testing.basic.Basic": {
+        "testing.grpcserviceconfig.GrpcServiceConfigNoRetry": {
             "retry_codes": {
                 "no_retry_codes": []
             },
@@ -16,12 +16,7 @@
                 }
             },
             "methods": {
-                "AMethod": {
-                    "timeout_millis": 0,
-                    "retry_codes_name": "no_retry_codes",
-                    "retry_params_name": "no_retry_params"
-                },
-                "MethodWithArgs": {
+                "NoRetryMethod": {
                     "timeout_millis": 0,
                     "retry_codes_name": "no_retry_codes",
                     "retry_params_name": "no_retry_params"

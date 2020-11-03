@@ -32,10 +32,13 @@ final class ProtoTest extends TestCase
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
         // * The expected file contents are based in the same directory as the proto file.
+        // * An optional grpc-service-config.json file may be in the same directory as the proto file.
         $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
         $package = 'testing.' . basename($protoPath, '.proto');
+        $grpcServiceConfigPath = 'tests/' . dirname("ProtoTests/{$protoPath}") . '/grpc-service-config.json';
+        $grpcServiceConfigJson = file_exists($grpcServiceConfigPath) ? file_get_contents($grpcServiceConfigPath) : null;
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020);
+        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson);
 
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/' . $relativeFilename;
@@ -43,7 +46,9 @@ final class ProtoTest extends TestCase
             // TODO: Add ability to check partial files.
             $this->assertTrue(file_exists($filename), "Expected code file missing: '{$filename}'");
             $expectedCode = file_get_contents($filename);
-            $this->assertEquals($expectedCode, $code);
+            if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {
+                $this->assertEquals($expectedCode, $code);
+            }
         }
         // TODO: Check that all expected files are actually generated!
     }
@@ -61,5 +66,10 @@ final class ProtoTest extends TestCase
     public function testBasicPaginated(): void
     {
         $this->runProtoTest('BasicPaginated/basicpaginated.proto');
+    }
+
+    public function testGrpcServiceConfig(): void
+    {
+        $this->runProtoTest('GrpcServiceConfig/grpcserviceconfig.proto');
     }
 }

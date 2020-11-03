@@ -45,6 +45,16 @@ final class VectorTest extends TestCase
         $this->assertEquals(['1:a', '2:b'], $v->toArray());
     }
 
+    public function testZipIndex(): void
+    {
+        $v = Vector::zip(
+            Vector::new([1, 2]),
+            Vector::new(['a', 'b', 'c']),
+            fn($a, $b, $index) => "{$index}:{$a}:{$b}"
+        );
+        $this->assertEquals(['0:1:a', '1:2:b'], $v->toArray());
+    }
+
     public function testEquality(): void
     {
         $this->assertTrue(Vector::new()->isEqualTo(Vector::new()));
@@ -91,11 +101,25 @@ final class VectorTest extends TestCase
         $this->assertEquals(['oneone', 'twotwo'], $v->toArray());
     }
 
+    public function testMapIndex(): void
+    {
+        $v = Vector::new(['one', 'two']);
+        $v = $v->map(fn($x, $index) => "{$index}{$x}");
+        $this->assertEquals(['0one', '1two'], $v->toArray());
+    }
+
     public function testFlatMap(): void
     {
         $v = Vector::new([1, 2]);
         $v = $v->flatMap(fn($x) => Vector::new([$x, $x]));
         $this->assertEquals([1, 1, 2, 2], $v->toArray());
+    }
+
+    public function testFlatMapIndex(): void
+    {
+        $v = Vector::new([1, 2]);
+        $v = $v->flatMap(fn($x, $index) => Vector::new([$index, $x]));
+        $this->assertEquals([0, 1, 1, 2], $v->toArray());
     }
 
     public function testFlatten(): void
@@ -244,5 +268,14 @@ final class VectorTest extends TestCase
             $found = true;
         }
         $this->assertTrue($found);
+    }
+
+    public function testToArrayAssoc(): void
+    {
+        $v = Vector::new([1, 2]);
+        $a = $v->toArray(fn($x) => "key_{$x}");
+        $this->assertEquals(['key_1' => 1, 'key_2' => 2], $a);
+        $a = $v->toArray(fn($x) => "key_{$x}", fn($x) => $x * 10);
+        $this->assertEquals(['key_1' => 10, 'key_2' => 20], $a);
     }
 }
