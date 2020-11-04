@@ -50,6 +50,9 @@ abstract class AST
     /** @var string Constant to reference `iterator_to_array`. */
     public const ITERATOR_TO_ARRAY = "\0iterator_to_array";
 
+    /** @var string Constant to reference `is_null`. */
+    public const IS_NULL = "\0is_null";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
@@ -304,7 +307,7 @@ abstract class AST
      * Create an expression to index an object.
      *
      * @param mixed $obj The object containing the indexer.
-     * @param mixed $index The index.
+     * @param mixed $index The index; null for an empty index.
      *
      * @return Expression
      */
@@ -318,7 +321,9 @@ abstract class AST
             }
             public function toCode(): string
             {
-                return static::toPhp($this->obj) . '[' . static::toPhp($this->index) . ']';
+                return static::toPhp($this->obj) . '[' .
+                    (is_null($this->index) ? '' : static::toPhp($this->index)) .
+                    ']';
             }
         };
     }

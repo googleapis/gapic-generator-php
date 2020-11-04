@@ -48,6 +48,10 @@ class ResourcesGenerator
                         'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
                         'resourcesGetMethod' => $method->resourcesGetter->name,
                     ])]);
+                case MethodDetails::BIDI_STREAMING:
+                    return Map::new(['grpcStreaming' => AST::array([
+                        'grpcStreamingType' => 'BidiStreaming',
+                    ])]);
                 default:
                     return Map::new();
             }
