@@ -41,28 +41,28 @@ class ProtoAugmenter
      *
      * @param Vector $fileDescs Vector of FileDescriptorProto; Top-level file descriptors.
      */
-    public static function Augment(Vector $fileDescs): void
+    public static function augment(Vector $fileDescs): void
     {
         foreach ($fileDescs as $fileDesc) {
-            static::AugmentFile($fileDesc);
+            static::augmentFile($fileDesc);
         }
     }
 
-    private static function AugmentFile(FileDescriptorProto $fileDesc)
+    private static function augmentFile(FileDescriptorProto $fileDesc)
     {
         $fnLeadingComments = fn($x) => $x->getLeadingComments();
 
-        $sci = $fileDesc->GetSourceCodeInfo();
-        $locsByPath = Vector::New($sci->getLocation())
-            ->groupBy(fn($x) => Vector::New($x->getPath()));
+        $sci = $fileDesc->getSourceCodeInfo();
+        $locsByPath = Vector::new($sci->getLocation())
+            ->groupBy(fn($x) => Vector::new($x->getPath()));
 
         // Services
         foreach ($fileDesc->getService() as $serviceIndex => $service) {
-            $servicePath = Vector::New([static::SERVICE, $serviceIndex]);
+            $servicePath = Vector::new([static::SERVICE, $serviceIndex]);
             $serviceLocations = $locsByPath[$servicePath];
             $service->leadingComments = static::getComments($serviceLocations, $fnLeadingComments);
             foreach ($service->getMethod() as $methodIndex => $method) {
-                $methodPath = $servicePath->concat(Vector::New([static::SERVICE_METHOD, $methodIndex]));
+                $methodPath = $servicePath->concat(Vector::new([static::SERVICE_METHOD, $methodIndex]));
                 $methodLocations = $locsByPath[$methodPath];
                 $method->leadingComments = static::getComments($methodLocations, $fnLeadingComments);
             }
@@ -84,18 +84,18 @@ class ProtoAugmenter
                 $field->desc = FieldDescriptor::buildFromProto($field);
                 $field->desc->underlyingProto = $field;
                 // Link proto coments.
-                $fieldPath = $messagePath->concat(Vector::New([static::MESSAGE_FIELD, $fieldIndex]));
+                $fieldPath = $messagePath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
                 $fieldLocations = $locsByPath[$fieldPath];
                 $field->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
             }
             foreach ($message->getNestedType() as $nestedMessageIndex => $nestedMessage) {
-                $nestedMessagePath = $messagePath->concat(Vector::New([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
+                $nestedMessagePath = $messagePath->concat(Vector::new([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
                 $mergeMessage($nestedMessagePath, $nestedMessage, $outerMsgs->append($message->getName()));
             }
             // TODO: enums
         };
         foreach ($fileDesc->getMessageType() as $messageIndex => $message) {
-            $mergeMessage(Vector::New([static::MESSAGE, $messageIndex]), $message, Vector::new());
+            $mergeMessage(Vector::new([static::MESSAGE, $messageIndex]), $message, Vector::new());
         }
 
         // TODO: enums
@@ -104,7 +104,7 @@ class ProtoAugmenter
     private static function getComments(Vector $locations, Callable $fn): Vector
     {
         return $locations
-            ->flatMap(fn($x) => Vector::New(explode("\n", $fn($x))))
+            ->flatMap(fn($x) => Vector::new(explode("\n", $fn($x))))
             ->map(fn($x) => trim($x))
             ->skipLast(1); // Last line is always empty due to trailing \n
     }
