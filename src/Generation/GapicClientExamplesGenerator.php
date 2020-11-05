@@ -23,13 +23,11 @@ use Google\Generator\Collections\Vector;
 
 class GapicClientExamplesGenerator
 {
-    public function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
+    public function __construct(ServiceDetails $serviceDetails)
     {
-        $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
     }
 
-    private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
 
     public function rpcMethodExample(MethodDetails $method): AST
@@ -156,7 +154,7 @@ class GapicClientExamplesGenerator
             AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
-                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                AST::assign($request, AST::new($ctx->type($method->requestType))()),
                 Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write all requests to the server, then read all responses until the',
                 '// stream is complete',
