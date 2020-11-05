@@ -603,9 +603,10 @@ abstract class AST
                 $this->catch = null;
                 $this->finallyCode = null;
             }
-            public function catch(ResolvedType $type, Variable $var, ...$catchCode): AST
+            public function catch(ResolvedType $type, Variable $var): Callable
             {
-                return $this->clone(fn($clone) => $clone->catch = [$type, $var, AST::block(...$catchCode)]);
+                return fn(...$catchCode) =>
+                    $this->clone(fn($clone) => $clone->catch = [$type, $var, AST::block(...$catchCode)]);
             }
             public function finally(...$finallyCode): AST
             {

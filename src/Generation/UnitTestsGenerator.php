@@ -238,7 +238,7 @@ class UnitTestsGenerator
                 AST::try(
                     $client->instanceCall(AST::method($method->methodName))(...$requestVars),
                     ($this->fail)('Expected an ApiException, but no exception was thrown.')
-                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
                     ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
                 ),
@@ -360,7 +360,7 @@ class UnitTestsGenerator
                     ])),
                     '// If the pollUntilComplete() method call did not throw, fail the test',
                     ($this->fail)('Expected an ApiException, but no exception was thrown.'),
-                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
                     ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
                 ),
@@ -554,7 +554,7 @@ class UnitTestsGenerator
                     AST::call(AST::ITERATOR_TO_ARRAY)($results),
                     '// If the close stream method call did not throw, fail the test',
                     ($this->fail)('Expected an ApiException, but no exception was thrown.'),
-                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->getCode()),
                     ($this->assertEquals)($expectedExceptionMessage, $ex->getMessage()),
                 ),
@@ -647,7 +647,7 @@ class UnitTestsGenerator
                     AST::call(AST::ITERATOR_TO_ARRAY)($results),
                     '// If the close stream method call did not throw, fail the test',
                     ($this->fail)('Expected an ApiException, but no exception was thrown.'),
-                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->getCode()),
                     ($this->assertEquals)($expectedExceptionMessage, $ex->getMessage()),
                 ),
