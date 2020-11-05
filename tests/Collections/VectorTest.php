@@ -55,6 +55,11 @@ final class VectorTest extends TestCase
         $this->assertEquals(['0:1:a', '1:2:b'], $v->toArray());
     }
 
+    public function testRange(): void
+    {
+        $this->assertEquals([3, 4, 5], Vector::range(3, 5)->toArray());
+    }
+
     public function testEquality(): void
     {
         $this->assertTrue(Vector::new()->isEqualTo(Vector::new()));

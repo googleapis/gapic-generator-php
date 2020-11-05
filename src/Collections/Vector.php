@@ -71,6 +71,19 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         return new Vector($result);
     }
 
+    /**
+     * Create a vector with the specified range, inclusive of both $start and $end.
+     *
+     * @param int $start The inclusive start value of the range.
+     * @param int $end The inclusive end value of the range.
+     *
+     * @return Vector
+     */
+    public static function range(int $start, int $end)
+    {
+        return new Vector(range($start, $end));
+    }
+
     private array $data;
 
     private function __construct($data)

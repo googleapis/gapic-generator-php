@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
@@ -302,12 +303,16 @@ class GapicClientGenerator
         $retrySettingsType = Type::fromName(RetrySettings::class);
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
-            ->withParams($required, $optionalArgs)
+            ->withParams(
+                $method->methodType === MethodDetails::BIDI_STREAMING ? null : $required,
+                $optionalArgs)
             ->withBody(AST::block(
-                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
-                $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                    ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
+                $method->methodType === MethodDetails::BIDI_STREAMING ? null : Vector::new([
+                    AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                    Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                    $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
+                        ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
+                ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))
             ->withPhpDoc(PhpDoc::block(
@@ -358,6 +363,14 @@ class GapicClientGenerator
                     AST::access($this->ctx->type($method->responseType), AST::CLS),
                     $request
                 );
+            case MethodDetails::BIDI_STREAMING:
+                return AST::call(AST::THIS, AST::method('startCall'))(
+                    $method->name,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $optionalArgs->var,
+                    AST::NULL,
+                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'))
+                );
             default:
                 throw new \Exception("Cannot handle method type: '{$method->methodType}'");
         }
@@ -377,6 +390,9 @@ class GapicClientGenerator
                 break;
             case MethodDetails::PAGINATED:
                 $code = $this->rpcMethodExamplePaginated($exampleCtx, $method);
+                break;
+            case MethodDetails::BIDI_STREAMING:
+                $code = $this->rpcMethodExampleBidiStreaming($exampleCtx, $method);
                 break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
@@ -466,6 +482,52 @@ class GapicClientGenerator
                 AST::foreach($pagedResponse->iterateAllElements(), $element)(
                     '// doSomethingWith($element);'
                 )
+            )->finally(
+                $serviceClient->close()
+            )
+        );
+    }
+
+    private function rpcMethodExampleBidiStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $request = AST::var('request');
+        $requests = AST::var('requests');
+        $stream = AST::var('stream');
+        $element = AST::var('element');
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                '// Write all requests to the server, then read all responses until the',
+                '// stream is complete',
+                AST::assign($requests, AST::array([$request])),
+                AST::assign($stream, $serviceClient->instanceCall(AST::method($method->methodName))()),
+                $stream->writeAll($requests),
+                AST::foreach($stream->closeWriteAndReadAll(), $element)(
+                    '// doSomethingWith($element);'
+                ),
+                '// Alternatively:',
+                '// Write requests individually, making read() calls if',
+                '// required. Call closeWrite() once writes are complete, and read the',
+                '// remaining responses from the server.',
+                AST::assign($requests, AST::array([$request])),
+                AST::assign($stream, $serviceClient->instanceCall(AST::method($method->methodName))()),
+                AST::foreach($requests, $request)(
+                    $stream->write($request),
+                    '// if required, read a single response from the stream',
+                    AST::assign($element, $stream->read()),
+                    '// doSomethingWith($element)',
+                ),
+                $stream->closeWrite(),
+                AST::assign($element, $stream->read()),
+                AST::while(AST::not(AST::call(AST::IS_NULL)($element)))(
+                    '// doSomethingWith($element)',
+                    AST::assign($element, $stream->read()),
+                ),
             )->finally(
                 $serviceClient->close()
             )

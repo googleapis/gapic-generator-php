@@ -35,15 +35,31 @@ abstract class MethodDetails
     public const NORMAL = 'normal';
     public const LRO = 'lro';
     public const PAGINATED = 'paginated';
+    public const BIDI_STREAMING = 'bidi_streaming';
 
     public static function create(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
         // TODO: Handle further method types; e.g. streaming, paginated, ...
         return
-            static::maybeCreatePaginated($svc, $desc) ?? (
-                $desc->getOutputType() === '.google.longrunning.Operation' ? static::createLro($svc, $desc) :
-                static::createNormal($svc, $desc)
-            );
+            static::maybeCreatePaginated($svc, $desc) ??
+            static::maybeCreateLro($svc, $desc) ??
+            static::maybeCreateBidiStreaming($svc, $desc) ??
+            static::createNormal($svc, $desc);
+    }
+
+    private static function maybeCreateBidiStreaming(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
+    {
+        if (!$desc->getClientStreaming() || !$desc->getServerStreaming()) {
+            return null;
+        } else {
+            return new class($svc, $desc) extends MethodDetails {
+                public function __construct($svc, $desc)
+                {
+                    parent::__construct($svc, $desc);
+                    $this->methodType = MethodDetails::BIDI_STREAMING;
+                }
+            };
+        }
     }
 
     private static function maybeCreatePaginated(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
@@ -120,35 +136,39 @@ abstract class MethodDetails
         }
     }
 
-    private static function createLro(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
+    private static function maybeCreateLro(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
     {
-        return new class($svc, $desc) extends MethodDetails {
-            public function __construct($svc, $desc)
-            {
-                parent::__construct($svc, $desc);
-                $this->methodType = MethodDetails::LRO;
-                $catalog = $svc->catalog;
-                $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
-                if (is_null($lroData)) {
-                    throw new \Exception('An LRO method must provide a `google.api.operation` option.');
+        if ($desc->getOutputType() !== '.google.longrunning.Operation') {
+            return null;
+        } else {
+            return new class($svc, $desc) extends MethodDetails {
+                public function __construct($svc, $desc)
+                {
+                    parent::__construct($svc, $desc);
+                    $this->methodType = MethodDetails::LRO;
+                    $catalog = $svc->catalog;
+                    $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
+                    if (is_null($lroData)) {
+                        throw new \Exception('An LRO method must provide a `google.api.operation` option.');
+                    }
+                    $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
+                    $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
+                    $this->lroResponseType = Type::fromMessage($responseMsg->desc);
+                    $this->lroMetadataType = Type::fromMessage($metadataMsg->desc);
+                    $this->methodReturnType = Type::fromName(OperationResponse::class);
+                    $this->lroResponseFields = Vector::new($responseMsg->getField())->map(fn($x) => new FieldDetails($x));
                 }
-                $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
-                $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
-                $this->lroResponseType = Type::fromMessage($responseMsg->desc);
-                $this->lroMetadataType = Type::fromMessage($metadataMsg->desc);
-                $this->methodReturnType = Type::fromName(OperationResponse::class);
-                $this->lroResponseFields = Vector::new($responseMsg->getField())->map(fn($x) => new FieldDetails($x));
-            }
 
-            /** @var Type *Readonly* The type of the LRO response. */
-            public Type $lroResponseType;
+                /** @var Type *Readonly* The type of the LRO response. */
+                public Type $lroResponseType;
 
-            /** @var Type *Readonly* The type of the LRO metadata. */
-            public Type $lroMetadataType;
+                /** @var Type *Readonly* The type of the LRO metadata. */
+                public Type $lroMetadataType;
 
-            /** @var Vector *Readonly* Vector of FieldDetails; all fields of lroResponse type. */
-            public Vector $lroResponseFields;
-        };
+                /** @var Vector *Readonly* Vector of FieldDetails; all fields of lroResponse type. */
+                public Vector $lroResponseFields;
+            };
+        }
     }
 
     private static function createNormal(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
