@@ -90,7 +90,7 @@ class CodeGenerator
         // Generate files for each package.
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
-                ->map(fn($x) => ProtoHelpers::GetNamespace($x))
+                ->map(fn($x) => ProtoHelpers::getNamespace($x))
                 ->distinct();
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');

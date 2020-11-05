@@ -30,7 +30,7 @@ $package = $opts['package'];
 
 // Generate PHP code.
 $year = (int)date('Y');
-$files = CodeGenerator::GenerateFromDescriptor($descBytes, $package, $year);
+$files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year);
 foreach ($files as [$relativeFilename, $fileContent]) {
     // TODO: Later this won't just print out the generated file content.
     print("File: '{$relativeFilename}':\n");
