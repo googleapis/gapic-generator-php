@@ -21,6 +21,7 @@ namespace Google\Generator\Generation;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
@@ -157,6 +158,10 @@ class UnitTestsGenerator
                 yield $this->testSuccessCaseBidiStreaming($method);
                 yield $this->testExceptionalCaseBidiStreaming($method);
                 break;
+            case MethodDetails::SERVER_STREAMING:
+                yield $this->testSuccessCaseServerStreaming($method);
+                yield $this->testExceptionalCaseServerStreaming($method);
+                break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
@@ -210,6 +215,99 @@ class UnitTestsGenerator
                     ($this->assertProtobufEquals)($v, $actualValue),
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testSuccessCaseServerStreaming(MethodDetails $method): PhpMethod
+    {
+        // TODO: Support resource-names in request args.
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $expectedResponseList = Vector::range(1, 3)->map(fn($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $serverStream = AST::var('serverStream');
+        $responses = AST::var('responses');
+        $expectedResponses = AST::var('expectedResponses');
+        $actualRequests = AST::var('actualRequests');
+        $actualFuncCall = AST::var('actualFuncCall');
+        $actualRequestObject = AST::var('actualRequestObject');
+        $actualValue = AST::var('actualValue');
+        return AST::method($method->testSuccessMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+                '// Mock response',
+                $expectedResponseList->map(fn($x) => Vector::new([
+                    AST::assign($x, AST::new($this->ctx->type($method->responseType))()),
+                    $transport->addResponse($x),
+                ])),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                ($this->assertInstanceOf)(AST::access($this->ctx->type(Type::fromName(ServerStream::class)), AST::CLS), $serverStream),
+                AST::assign($responses, AST::call(AST::ITERATOR_TO_ARRAY)($serverStream->readAll())),
+                AST::assign($expectedResponses, AST::array([])),
+                $expectedResponseList->map(fn($x) => AST::assign(AST::index($expectedResponses, null), $x)),
+                ($this->assertEquals)($expectedResponses, $responses),
+                AST::assign($actualRequests, $transport->popReceivedCalls()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
+                AST::assign($actualFuncCall, $actualRequests[0]->getFuncCall()),
+                AST::assign($actualRequestObject, $actualRequests[0]->getRequestObject()),
+                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => Vector::new([
+                    AST::assign($actualValue, $actualRequestObject->instanceCall($f->getter)()),
+                    ($this->assertProtobufEquals)($v, $actualValue),
+                ])),
+                ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testExceptionalCaseServerStreaming(MethodDetails $method): PhpMethod
+    {
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $status = AST::var('status');
+        $expectedExceptionMessage = AST::var('expectedExceptionMessage');
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $serverStream = AST::var('serverStream');
+        $results = AST::var('results');
+        $ex = AST::var('ex');
+        return AST::method($method->testExceptionMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                AST::assign($status, AST::new($this->ctx->type(Type::stdClass()))()),
+                AST::assign(AST::access($status, AST::property('code')), AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS'))),
+                AST::assign(AST::access($status, AST::property('details')), 'internal error'),
+                AST::assign($expectedExceptionMessage, AST::call(AST::method('json_encode'))(AST::array([
+                    'message' => 'internal error',
+                    'code' => AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS')),
+                    'status' => 'DATA_LOSS',
+                    'details' => AST::array([]),
+                ]), AST::constant('JSON_PRETTY_PRINT'))),
+                $transport->setStreamingStatus($status),
+                ($this->assertTrue)($transport->isExhausted()),
+                '// Mock request',
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
+                AST::assign($results, $serverStream->readAll()),
+                AST::try(
+                    AST::call(AST::ITERATOR_TO_ARRAY)($results),
+                    '// If the close stream method call did not throw, fail the test',
+                    ($this->fail)('Expected an ApiException, but no exception was thrown.'),
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex,
+                    ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->getCode()),
+                    ($this->assertEquals)($expectedExceptionMessage, $ex->getMessage()),
+                ),
+                '// Call popReceivedCalls to ensure the stub is exhausted',
+                $transport->popReceivedCalls(),
+                ($this->assertTrue)($transport->isExhausted()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
