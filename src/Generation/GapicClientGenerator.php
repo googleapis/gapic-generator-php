@@ -374,6 +374,14 @@ class GapicClientGenerator
                     AST::NULL,
                     AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'))
                 );
+            case MethodDetails::SERVER_STREAMING:
+                return AST::call(AST::THIS, AST::method('startCall'))(
+                    $method->name,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $optionalArgs->var,
+                    $request,
+                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'))
+                );
             default:
                 throw new \Exception("Cannot handle method type: '{$method->methodType}'");
         }

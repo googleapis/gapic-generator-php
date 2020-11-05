@@ -73,6 +73,11 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('BasicBidiStreaming/basicbidistreaming.proto');
     }
 
+    public function testServerStreaming(): void
+    {
+        $this->runProtoTest('BasicServerStreaming/basicserverstreaming.proto');
+    }
+
     public function testGrpcServiceConfig(): void
     {
         $this->runProtoTest('GrpcServiceConfig/grpcserviceconfig.proto');

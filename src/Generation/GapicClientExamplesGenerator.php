@@ -48,6 +48,9 @@ class GapicClientExamplesGenerator
             case MethodDetails::BIDI_STREAMING:
                 $code = $this->rpcMethodExampleBidiStreaming($exampleCtx, $method);
                 break;
+            case MethodDetails::SERVER_STREAMING:
+                $code = $this->rpcMethodExampleServerStreaming($exampleCtx, $method);
+                break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
@@ -181,6 +184,27 @@ class GapicClientExamplesGenerator
                 AST::while(AST::not(AST::call(AST::IS_NULL)($element)))(
                     '// doSomethingWith($element)',
                     AST::assign($element, $stream->read()),
+                ),
+            )->finally(
+                $serviceClient->close()
+            )
+        );
+    }
+
+    private function rpcMethodExampleServerStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $stream = AST::var('stream');
+        $element = AST::var('element');
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                '// Read all responses until the stream is complete',
+                AST::assign($stream, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
+                AST::foreach($stream->readAll(), $element)(
+                    '// doSomethingWith($element);'
                 ),
             )->finally(
                 $serviceClient->close()
