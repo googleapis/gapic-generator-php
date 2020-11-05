@@ -34,7 +34,7 @@ final class ProtoTest extends TestCase
         // * The expected file contents are based in the same directory as the proto file.
         // * An optional grpc-service-config.json file may be in the same directory as the proto file.
         $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
-        $package = 'testing.' . basename($protoPath, '.proto');
+        $package = str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
         $grpcServiceConfigPath = 'tests/' . dirname("ProtoTests/{$protoPath}") . '/grpc-service-config.json';
         $grpcServiceConfigJson = file_exists($grpcServiceConfigPath) ? file_get_contents($grpcServiceConfigPath) : null;
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
@@ -60,26 +60,26 @@ final class ProtoTest extends TestCase
 
     public function testBasicLro(): void
     {
-        $this->runProtoTest('BasicLro/basiclro.proto');
+        $this->runProtoTest('BasicLro/basic-lro.proto');
     }
 
     public function testBasicPaginated(): void
     {
-        $this->runProtoTest('BasicPaginated/basicpaginated.proto');
+        $this->runProtoTest('BasicPaginated/basic-paginated.proto');
     }
 
     public function testBidiStreaming(): void
     {
-        $this->runProtoTest('BasicBidiStreaming/basicbidistreaming.proto');
+        $this->runProtoTest('BasicBidiStreaming/basic-bidi-streaming.proto');
     }
 
     public function testServerStreaming(): void
     {
-        $this->runProtoTest('BasicServerStreaming/basicserverstreaming.proto');
+        $this->runProtoTest('BasicServerStreaming/basic-server-streaming.proto');
     }
 
     public function testGrpcServiceConfig(): void
     {
-        $this->runProtoTest('GrpcServiceConfig/grpcserviceconfig.proto');
+        $this->runProtoTest('GrpcServiceConfig/grpc-service-config.proto');
     }
 }
