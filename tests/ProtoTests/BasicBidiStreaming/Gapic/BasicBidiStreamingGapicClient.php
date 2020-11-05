@@ -34,7 +34,6 @@ use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
 
 /**

@@ -53,7 +53,7 @@ class GapicClientGenerator
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
-        $this->examples = new GapicClientExamplesGenerator($ctx, $serviceDetails);
+        $this->examples = new GapicClientExamplesGenerator($serviceDetails);
         $this->hasLro = $serviceDetails->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
     }
 
