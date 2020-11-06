@@ -162,6 +162,11 @@ class UnitTestsGenerator
                 yield $this->testSuccessCaseServerStreaming($method);
                 yield $this->testExceptionalCaseServerStreaming($method);
                 break;
+            case MethodDetails::CLIENT_STREAMING:
+                // The monolithic generator does not generate client-streaming test code.
+                // That behaviour is reproduced here, but we may add new tests after the
+                // initial release of this micro-generator.
+                break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }

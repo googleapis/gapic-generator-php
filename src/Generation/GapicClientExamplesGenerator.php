@@ -51,6 +51,9 @@ class GapicClientExamplesGenerator
             case MethodDetails::SERVER_STREAMING:
                 $code = $this->rpcMethodExampleServerStreaming($exampleCtx, $method);
                 break;
+            case MethodDetails::CLIENT_STREAMING:
+                $code = $this->rpcMethodExampleClientStreaming($exampleCtx, $method);
+                break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
@@ -206,6 +209,40 @@ class GapicClientExamplesGenerator
                 AST::foreach($stream->readAll(), $element)(
                     '// doSomethingWith($element);'
                 ),
+            )->finally(
+                $serviceClient->close()
+            )
+        );
+    }
+
+    private function rpcMethodExampleClientStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $request = AST::var('request');
+        $requests = AST::var('requests');
+        $stream = AST::var('stream');
+        $result = AST::var('result');
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                AST::assign($request, AST::new($ctx->type($method->requestType))()),
+                Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                '// Write data to server and wait for a response',
+                AST::assign($requests, AST::array([$request])),
+                AST::assign($stream, $serviceClient->instanceCall(AST::method($method->methodName))()),
+                AST::assign($result, $stream->writeAllAndReadResponse($requests)),
+                '// doSomethingWith($result)',
+                '// Alternatively:',
+                '// Write data as it becomes available, then wait for a response',
+                AST::assign($requests, AST::array([$request])),
+                AST::assign($stream, $serviceClient->instanceCall(AST::method($method->methodName))()),
+                AST::foreach($requests, $request)(
+                    $stream->write($request)
+                ),
+                AST::assign($result, $stream->readResponse()),
+                '// doSomethingWith($result)',
             )->finally(
                 $serviceClient->close()
             )
