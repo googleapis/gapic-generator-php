@@ -56,6 +56,10 @@ class ResourcesGenerator
                     return Map::new(['grpcStreaming' => AST::array([
                         'grpcStreamingType' => 'ServerStreaming',
                     ])]);
+                case MethodDetails::CLIENT_STREAMING:
+                    return Map::new(['grpcStreaming' => AST::array([
+                        'grpcStreamingType' => 'ClientStreaming',
+                    ])]);
                 default:
                     return Map::new();
             }

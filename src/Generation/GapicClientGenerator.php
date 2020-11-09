@@ -304,13 +304,14 @@ class GapicClientGenerator
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
+        $isStreamedRequest = $method->methodType === MethodDetails::BIDI_STREAMING || $method->methodType === MethodDetails::CLIENT_STREAMING;
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
-                $method->methodType === MethodDetails::BIDI_STREAMING ? null : $required,
+                $isStreamedRequest ? null : $required,
                 $optionalArgs)
             ->withBody(AST::block(
-                $method->methodType === MethodDetails::BIDI_STREAMING ? null : Vector::new([
+                $isStreamedRequest ? null : Vector::new([
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
                     $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
@@ -381,6 +382,14 @@ class GapicClientGenerator
                     $optionalArgs->var,
                     $request,
                     AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'))
+                );
+            case MethodDetails::CLIENT_STREAMING:
+                return AST::call(AST::THIS, AST::method('startCall'))(
+                    $method->name,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                    $optionalArgs->var,
+                    AST::NULL,
+                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'))
                 );
             default:
                 throw new \Exception("Cannot handle method type: '{$method->methodType}'");

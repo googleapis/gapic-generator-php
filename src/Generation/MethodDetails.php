@@ -37,6 +37,7 @@ abstract class MethodDetails
     public const PAGINATED = 'paginated';
     public const BIDI_STREAMING = 'bidi_streaming';
     public const SERVER_STREAMING = 'server_streaming';
+    public const CLIENT_STREAMING = 'client_streaming';
 
     public static function create(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
@@ -46,7 +47,23 @@ abstract class MethodDetails
             static::maybeCreateLro($svc, $desc) ??
             static::maybeCreateBidiStreaming($svc, $desc) ??
             static::maybeCreateServerStreaming($svc, $desc) ??
+            static::maybeCreateClientStreaming($svc, $desc) ??
             static::createNormal($svc, $desc);
+    }
+
+    private static function maybeCreateClientStreaming(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
+    {
+        if (!$desc->getClientStreaming()) {
+            return null;
+        } else {
+            return new class($svc, $desc) extends MethodDetails {
+                public function __construct($svc, $desc)
+                {
+                    parent::__construct($svc, $desc);
+                    $this->methodType = MethodDetails::CLIENT_STREAMING;
+                }
+            };
+        }
     }
 
     private static function maybeCreateServerStreaming(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
