@@ -55,19 +55,7 @@ class FieldDetails
         $desc = $field->desc;
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
-        switch ($field->getType()) {
-            case GPBType::INT32: // 5
-                $this->type = Type::int();
-                break;
-            case GPBType::BOOL: // 8
-                $this->type = Type::bool();
-                break;
-            case GPBType::STRING: // 9
-                $this->type = Type::string();
-                break;
-            default:
-                throw new \Exception("Cannot handle field of type: {$field->getType()}");
-        }
+        $this->type = Type::fromField($desc);
         $this->getter = new PhpMethod($desc->getGetter());
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)

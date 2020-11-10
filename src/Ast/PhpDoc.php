@@ -324,12 +324,14 @@ abstract class PhpDoc
      *
      * @param PhpParam $param The param to add.
      * @param PhpDoc $doc The documetation for this param.
+     * @param ?ResolvedType $forceType Optional; override this PhpDoc type.
      *
      * @return PhpDoc
      */
-    public static function param(PhpParam $param, PhpDoc $doc): PhpDoc
+    public static function param(PhpParam $param, PhpDoc $doc, ?ResolvedType $forceType = null): PhpDoc
     {
-        return static::paramOrType('param', Vector::new([$param->type ?? ResolvedType::mixed()]), $param->var, $doc);
+        return static::paramOrType('param',
+            Vector::new([$forceType ?? $param->type ?? ResolvedType::mixed()]), $param->var, $doc);
     }
 
     /**
@@ -351,30 +353,36 @@ abstract class PhpDoc
      *
      * @param AST $ast The code example in AST form.
      * @param ?PhpDoc $intro Optional; introductory text to this code example.
+     * @param bool $noBackticks Optional; optional pre/post triple-backticks.
      *
      * @return PhpDoc
      */
-    public static function example(AST $ast, ?PhpDoc $intro = null): PhpDoc
+    public static function example(AST $ast, ?PhpDoc $intro = null, bool $noBackticks = false): PhpDoc
     {
-        return new class($ast, $intro) extends PhpDoc
+        return new class($ast, $intro, $noBackticks) extends PhpDoc
         {
-            public function __construct($ast, $intro)
+            public function __construct($ast, $intro, $noBackticks)
             {
                 $this->ast = $ast;
                 $this->intro = $intro;
+                $this->noBackticks = $noBackticks;
             }
             protected function toLines(Map $info): Vector
             {
-                $code = Formatter::format("<?php\n{$this->ast->toCode()}");
+                $code = $this->ast->toCode();
+                // Turn [...] into valid PHP so it will format. Turn it back again afterwards.
+                $code = str_replace('[...]', '[ELLIPSIS]', $code);
+                $code = Formatter::format("<?php\n{$code}");
+                $code = str_replace('[ELLIPSIS]', '[...]', $code);
+                $code = Vector::new(explode("\n", $code))
+                    ->skip(2)->skipLast(1)
+                    ->filter(fn($x) => $x !== '');
+                if (!$this->noBackticks) {
+                    $code = $code->prepend('```')->append('```');
+                }
                 return
                     (is_null($this->intro) ? Vector::new() : $this->intro->toLines(Map::new()))
-                    ->concat(
-                        Vector::new(explode("\n", $code))
-                            ->skip(2)->skipLast(1)
-                            ->filter(fn($x) => $x !== '')
-                            ->prepend('```')
-                            ->append('```')
-                    );
+                    ->concat($code);
             }
         };
     }

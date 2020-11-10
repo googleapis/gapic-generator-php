@@ -24,6 +24,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\ServiceDescriptorProto;
 
 class ServiceDetails {
@@ -38,6 +39,9 @@ class ServiceDetails {
 
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
+
+    /** @var Type *Readonly* The type of the gRPC client. */
+    public Type $grpcClientType;
 
     /** @var Type *Readonly* The type of the unit-tests class. */
     public Type $unitTestsType;
@@ -75,12 +79,21 @@ class ServiceDetails {
     /** @var string *Readonly* Variable name for a client of this service. */
     public string $clientVarName;
 
-    public function __construct(ProtoCatalog $catalog, string $namespace, string $package, ServiceDescriptorProto $desc)
-    {
+    /** @var string *Readonly* The path to the source .proto file containing this service. */
+    public string $filePath;
+
+    public function __construct(
+        ProtoCatalog $catalog,
+        string $namespace,
+        string $package,
+        ServiceDescriptorProto $desc,
+        FileDescriptorProto $fileDesc
+    ) {
         $this->catalog = $catalog;
         $this->package = $package;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
+        $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $this->unitTestsType = Type::fromName("{$namespace}\\{$desc->getName()}ClientTest"); // TODO: Fix this, not currently correct.
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
@@ -95,7 +108,8 @@ class ServiceDetails {
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
-        $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}ServiceClient");
+        $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
+        $this->filePath = $fileDesc->getName();
     }
 
     public function packageFullName(string $typeName): string

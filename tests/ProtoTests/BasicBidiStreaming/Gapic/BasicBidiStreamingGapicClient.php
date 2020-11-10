@@ -17,10 +17,12 @@
 
 /*
  * GENERATED CODE WARNING
- * This file was automatically generated - do not edit!
+ * This file was generated from the file
+ * https://github.com/google/googleapis/blob/master/tests/ProtoTests/BasicBidiStreaming/basic-bidi-streaming.proto
+ * and updates to that file get reflected here through a refresh process.
+ *
+ * @experimental
  */
-
-declare(strict_types=1);
 
 namespace Testing\BasicBidiStreaming\Gapic;
 
@@ -28,12 +30,13 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
-use Google\ApiCore\Transport\GrpcTransport;
-use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Testing\BasicBidiStreaming\BasicBidiStreamingGrpcClient;
 use Testing\BasicBidiStreaming\Response;
 
 /**
@@ -42,7 +45,7 @@ use Testing\BasicBidiStreaming\Response;
  * calls that map to API methods. Sample code to get started:
  *
  * ```
- * $basicBidiStreamingServiceClient = new BasicBidiStreamingClient();
+ * $basicBidiStreamingClient = new BasicBidiStreamingClient();
  * try {
  *     $aNumber = 0;
  *     $request = new Request();
@@ -52,7 +55,7 @@ use Testing\BasicBidiStreaming\Response;
  *     $requests = [
  *         $request,
  *     ];
- *     $stream = $basicBidiStreamingServiceClient->methodBidi();
+ *     $stream = $basicBidiStreamingClient->methodBidi();
  *     $stream->writeAll($requests);
  *     foreach ($stream->closeWriteAndReadAll() as $element) {
  *         // doSomethingWith($element);
@@ -64,7 +67,7 @@ use Testing\BasicBidiStreaming\Response;
  *     $requests = [
  *         $request,
  *     ];
- *     $stream = $basicBidiStreamingServiceClient->methodBidi();
+ *     $stream = $basicBidiStreamingClient->methodBidi();
  *     foreach ($requests as $request) {
  *         $stream->write($request);
  *         // if required, read a single response from the stream
@@ -78,7 +81,7 @@ use Testing\BasicBidiStreaming\Response;
  *         $element = $stream->read();
  *     }
  * } finally {
- *     $basicBidiStreamingServiceClient->close();
+ *     $basicBidiStreamingClient->close();
  * }
  * ```
  *
@@ -110,7 +113,7 @@ class BasicBidiStreamingGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_bidi_streaming_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_bidi_streaming_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_bidi_streaming_grpc_config.json',
@@ -132,9 +135,6 @@ class BasicBidiStreamingGapicClient
      *     Optional. Options for configuring the service API wrapper.
      *
      *     @type string $serviceAddress
-     *           **Deprecated**. This option will be removed in a future major release. Please
-     *           utilize the `$apiEndpoint` option instead.
-     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'bidi.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -142,13 +142,13 @@ class BasicBidiStreamingGapicClient
      *           accepts either a path to a credentials file, or a decoded credentials file as a
      *           PHP array.
      *           *Advanced usage*: In addition, this option can also accept a pre-constructed
-     *           {@see FetchAuthTokenInterface} object or {@see CredentialsWrapper} object. Note
-     *           that when one of these objects are provided, any settings in $credentialsConfig
-     *           will be ignored.
+     *           {@see \Google\Auth\FetchAuthTokenInterface} object or
+     *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
+     *           objects are provided, any settings in $credentialsConfig will be ignored.
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
-     *           {@see CredentialsWrapper::build()}
+     *           {@see \Google\ApiCore\CredentialsWrapper::build()} .
      *     @type bool $disableRetries
      *           Determines whether or not retries defined by the client configuration should be
      *           disabled. Defaults to `false`.
@@ -161,25 +161,20 @@ class BasicBidiStreamingGapicClient
      *           The transport used for executing network requests. May be either the string
      *           `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.
      *           *Advanced usage*: Additionally, it is possible to pass in an already
-     *           instantiated {@see TransportInterface} object. Note that when this object is
-     *           provided, any settings in `$transportConfig`, and any `$apiEndpoint` setting,
-     *           will be ignored.
+     *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
+     *           that when this object is provided, any settings in $transportConfig, and any
+     *           $serviceAddress setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
      *           example:
-     *           ```
      *           $transportConfig = [
-     *               'grpc' => [
-     *                   '...' => '...',
-     *               ],
-     *               'rest' => [
-     *                   '...' => '...',
-     *               ],
+     *               'grpc' => [...],
+     *               'rest' => [...],
      *           ];
-     *           ```
-     *           See the {@see GrpcTransport::build()} and {@see RestTransport::build()} methods
-     *           for the supported options.
+     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} and
+     *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
+     *           supported options.
      * }
      *
      * @throws ValidationException
@@ -196,7 +191,7 @@ class BasicBidiStreamingGapicClient
      *
      * Sample code:
      * ```
-     * $basicBidiStreamingServiceClient = new BasicBidiStreamingClient();
+     * $basicBidiStreamingClient = new BasicBidiStreamingClient();
      * try {
      *     $aNumber = 0;
      *     $request = new Request();
@@ -206,7 +201,7 @@ class BasicBidiStreamingGapicClient
      *     $requests = [
      *         $request,
      *     ];
-     *     $stream = $basicBidiStreamingServiceClient->methodBidi();
+     *     $stream = $basicBidiStreamingClient->methodBidi();
      *     $stream->writeAll($requests);
      *     foreach ($stream->closeWriteAndReadAll() as $element) {
      *         // doSomethingWith($element);
@@ -218,7 +213,7 @@ class BasicBidiStreamingGapicClient
      *     $requests = [
      *         $request,
      *     ];
-     *     $stream = $basicBidiStreamingServiceClient->methodBidi();
+     *     $stream = $basicBidiStreamingClient->methodBidi();
      *     foreach ($requests as $request) {
      *         $stream->write($request);
      *         // if required, read a single response from the stream
@@ -232,7 +227,7 @@ class BasicBidiStreamingGapicClient
      *         $element = $stream->read();
      *     }
      * } finally {
-     *     $basicBidiStreamingServiceClient->close();
+     *     $basicBidiStreamingClient->close();
      * }
      * ```
      *
@@ -240,12 +235,13 @@ class BasicBidiStreamingGapicClient
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
-     *           associative array of retry settings parameters. See the documentation on
-     *           {@see RetrySettings} for example usage.
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return Response
+     * @return \Testing\BasicBidiStreaming\Response
      *
      * @throws ApiException if the remote call fails
      *

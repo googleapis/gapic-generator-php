@@ -75,12 +75,28 @@ final class PhpFile extends AST
         return $this->clone(fn($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
+    public function withGeneratedFromProtoCodeWarning(string $filePath)
+    {
+        $warning = <<<EOF
+            /*
+             * GENERATED CODE WARNING
+             * This file was generated from the file
+             * https://github.com/google/googleapis/blob/master/{$filePath}
+             * and updates to that file get reflected here through a refresh process.
+             *
+             * @experimental
+             */
+            EOF;
+        $warning = Vector::new(explode("\n", $warning));
+        return $this->clone(fn($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
+    }
+
     public function toCode(): string
     {
         return
             "<?php\n" .
             $this->headerLines->map(fn($x) => "{$x}\n")->join() .
-            "declare(strict_types=1);\n" .
+            // TODO(vNext): Insert `declare(strict_types=1);`
             "\n" .
             "namespace {$this->class->type->getNamespace()};\n" .
             "\n" .

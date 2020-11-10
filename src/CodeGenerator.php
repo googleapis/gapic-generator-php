@@ -112,7 +112,7 @@ class CodeGenerator
             foreach ($fileDesc->getService() as $index => $service)
             {
                 // Load service details.
-                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service);
+                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc);
                 // Load gRPC service config; if it's not provided then defaults will be used.
                 $grpcServiceConfig = new GrpcServiceConfig($serviceDetails->serviceName, $grpcServiceConfigJson);
                 // TODO: Refactor this code when it's clearer where the common elements are.

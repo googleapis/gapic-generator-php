@@ -59,10 +59,15 @@ class GapicClientGenerator
 
     private function generateImpl(): PhpFile
     {
+        // TODO(vNext): Remove the forced addition of these `use` clauses.
+        $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
+        $this->ctx->type(Type::fromName(\Google\ApiCore\RequestParamsHeaderDescriptor::class));
+        $this->ctx->type($this->serviceDetails->grpcClientType);
         // Generate file content
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
-            ->withGeneratedCodeWarning();
+            // TODO(vNext): Consider if this header is sensible, as it ties this generator to Google cloud.
+            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath);
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
@@ -199,7 +204,8 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 AST::return(AST::array([
                     'serviceName' => AST::access(AST::SELF, $this->serviceName()),
-                    'apiEndpoint' => AST::concat(AST::access(AST::SELF, $this->serviceAddress()), ':', AST::access(AST::SELF, $this->servicePort())),
+                    // TODO: Understand if this should be named 'serviceAddress' or 'apiEndpoint'?
+                    'serviceAddress' => AST::concat(AST::access(AST::SELF, $this->serviceAddress()), ':', AST::access(AST::SELF, $this->servicePort())),
                     'clientConfig' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->clientConfigFilename}"),
                     'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->descriptorConfigFilename}"),
                     'gcpApiConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}"),
@@ -239,10 +245,12 @@ class GapicClientGenerator
                 PhpDoc::text('Constructor.'),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
+                    // TODO: Understand if this commented-out code is correct or not.
+                    // PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'serviceAddress',
+                    //     PhpDoc::text('**Deprecated**. This option will be removed in a future major release.',
+                    //         'Please utilize the `$apiEndpoint` option instead.')),
+                    // PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'apiEndpoint',
                     PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'serviceAddress',
-                        PhpDoc::text('**Deprecated**. This option will be removed in a future major release.',
-                            'Please utilize the `$apiEndpoint` option instead.')),
-                    PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'apiEndpoint',
                         PhpDoc::text('The address of the API remote host. May optionally include the port, formatted',
                             "as \"<uri>:<port>\". Default '{$this->serviceDetails->defaultHost}:{$this->serviceDetails->defaultPort}'.")),
                     PhpDoc::type(Vector::new([
@@ -254,14 +262,17 @@ class GapicClientGenerator
                         PhpDoc::text('The credentials to be used by the client to authorize API calls. This option',
                             'accepts either a path to a credentials file, or a decoded credentials file as a PHP array.', PhpDoc::newLine(),
                             '*Advanced usage*: In addition, this option can also accept a pre-constructed',
-                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class), true),
                             'object or',
-                            $ctx->type(Type::fromName(CredentialsWrapper::class)),
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            $ctx->type(Type::fromName(CredentialsWrapper::class), true),
                             'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.')),
                     PhpDoc::type(Vector::new([$ctx->type(Type::array())]), 'credentialsConfig',
                         PhpDoc::text('Options used to configure credentials, including auth token caching, for the client.',
                             'For a full list of supporting configuration options, see',
-                            AST::call($ctx->type(Type::fromName(CredentialsWrapper::class)), AST::method('build'))())),
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            AST::call($ctx->type(Type::fromName(CredentialsWrapper::class), true), AST::method('build'))(), '.')),
                     PhpDoc::type(Vector::new([$ctx->type(Type::bool())]), 'disableRetries',
                         PhpDoc::text('Determines whether or not retries defined by the client configuration should be',
                             'disabled. Defaults to `false`.')),
@@ -277,19 +288,20 @@ class GapicClientGenerator
                         PhpDoc::text('The transport used for executing network requests. May be either the string `rest`',
                             'or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.',
                             '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
-                            $ctx->type(Type::fromName(TransportInterface::class)),
-                            'object. Note that when this object is provided, any settings in `$transportConfig`, and any `$apiEndpoint`',
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            $ctx->type(Type::fromName(TransportInterface::class), true),
+                            'object. Note that when this object is provided, any settings in $transportConfig, and any $serviceAddress',
                             'setting, will be ignored.')),
                     PhpDoc::type(Vector::new([$ctx->type(Type::array())]), 'transportConfig',
                         PhpDoc::text('Configuration options that will be used to construct the transport. Options for',
                             'each supported transport type should be passed in a key for that transport. For example:',
                             PhpDoc::example(AST::block(
                                 AST::assign(AST::var('transportConfig'), AST::array([
-                                    'grpc' => AST::array(['...' => '...']),
-                                    'rest' => AST::array(['...' => '...']),
-                                ])))),
-                            'See the', AST::call($ctx->type(Type::fromName(GrpcTransport::class)), AST::method('build'))(),
-                            'and', AST::call($ctx->type(Type::fromName(RestTransport::class)), AST::method('build'))(),
+                                    'grpc' => AST::arrayEllipsis(),
+                                    'rest' => AST::arrayEllipsis(),
+                                ]))), null, true),
+                            'See the', AST::call($ctx->type(Type::fromName(GrpcTransport::class), true), AST::method('build'))(),
+                            'and', AST::call($ctx->type(Type::fromName(RestTransport::class), true), AST::method('build'))(),
                             'methods for the supported options.'))
                 )),
             PhpDoc::throws($this->ctx->type(Type::fromName(\Google\ApiCore\ValidationException::class))),
@@ -323,7 +335,7 @@ class GapicClientGenerator
                 PhpDoc::preFormattedText($method->docLines),
                 PhpDoc::example($this->examples->rpcMethodExample($method), PhpDoc::text('Sample code:')),
                 Vector::zip($method->requiredFields, $required,
-                    fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines))),
+                    fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines), $this->ctx->type($field->type))),
                 PhpDoc::param($optionalArgs, PhpDoc::block(
                     PhpDoc::Text('Optional.'),
                     $method->optionalFields->map(fn($x) =>
@@ -332,11 +344,14 @@ class GapicClientGenerator
                     PhpDoc::type(
                         Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
                         'retrySettings', PhpDoc::Text(
-                            'Retry settings to use for this call. Can be a ', $this->ctx->Type($retrySettingsType),
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            'Retry settings to use for this call. Can be a ', $this->ctx->Type($retrySettingsType, 1),
                             ' object, or an associative array of retry settings parameters. See the documentation on ',
-                            $this->ctx->Type($retrySettingsType), ' for example usage.'))
+                            // TODO(vNext): Don't use a fully-qualified type here.
+                            $this->ctx->Type($retrySettingsType, 1), ' for example usage.'))
                         )),
-                PhpDoc::return($this->ctx->type($method->methodReturnType)),
+                // TODO(vNext): Don't use a fully-qualified type here.
+                PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')),
                 PhpDoc::experimental()

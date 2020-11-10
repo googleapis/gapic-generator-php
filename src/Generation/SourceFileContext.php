@@ -55,23 +55,32 @@ class SourceFileContext
      * Return the correct ResolvedType to use in the generated source code.
      *
      * @param Type $type The type being used.
+     * @param mixed $fullyQualify true to fully-qualify type; +ve int to fully-qualify with chars removed.
      *
      * @return ResolvedType
      */
-    public function type(Type $type): ResolvedType
+    public function type(Type $type, $fullyQualify = false): ResolvedType
     {
         $this->checkFinalized(false);
-        // TODO: Handle type name collisions.
-        if ($type->isClass()) {
-            if ($type->getNamespace() !== $this->namespace) {
-                // No 'use' required if type is in the current namespace
-                $this->uses = $this->uses->add($type);
+        // TODO(vNext): Remove `fullyQualify` support when no longer required.
+        if ($fullyQualify) {
+            return new ResolvedType($type, function() use($type, $fullyQualify) {
+                $this->checkFinalized(true);
+                return is_int($fullyQualify) ? substr($type->getFullname(), $fullyQualify) : $type->getFullname();
+            });
+        } else {
+            // TODO: Handle type name collisions.
+            if ($type->isClass()) {
+                if ($type->getNamespace() !== $this->namespace) {
+                    // No 'use' required if type is in the current namespace
+                    $this->uses = $this->uses->add($type);
+                }
             }
+            return new ResolvedType($type, function() use($type) {
+                $this->checkFinalized(true);
+                return $type->name;
+            });
         }
-        return new ResolvedType($type, function() use($type) {
-            $this->checkFinalized(true);
-            return $type->name;
-        });
     }
 
     /**

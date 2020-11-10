@@ -280,6 +280,21 @@ abstract class AST
     }
 
     /**
+     * Create an array containing an ellipsis `[...]`. For demo code only.
+     *
+     * @return Expression
+     */
+    public static function arrayEllipsis(): Expression
+    {
+        return new class() extends Expression {
+            public function toCode(): string
+            {
+                return '[...]';
+            }
+        };
+    }
+
+    /**
      * Create an expression to access a class property or const.
      *
      * @param mixed $obj The object containing the accessee.

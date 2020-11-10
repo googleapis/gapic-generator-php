@@ -98,9 +98,13 @@ class Type implements Equality
     public static function fromField(FieldDescriptor $desc): Type
     {
         switch ($desc->getType()) {
-            case GPBType::STRING:
+            case GPBType::INT32: // 5
+                return static::int();
+            case GPBType::BOOL: // 8
+                return static::bool();
+            case GPBType::STRING: // 9
                 return static::string();
-            case GPBType::MESSAGE:
+            case GPBType::MESSAGE: // 11
                 return static::fromMessage($desc->getMessage());
             default:
                 throw new \Exception("Cannot get field type of type: {$desc->getType()}");

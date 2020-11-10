@@ -4,19 +4,31 @@ package testing.basic;
 
 // php_namespace option not included; to test generating namespace from proto package.
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 
 // This is a basic service.
 service Basic {
   option (google.api.default_host) = "basic.example.com";
-  option (google.api.oauth_scopes) = "scope1,scope2";
+  // TODO: Understand why the monolithic doesn't appear to respect these scopes.
+  //option (google.api.oauth_scopes) = "scope1,scope2";
 
   // Test summary text for AMethod
-  rpc AMethod(Request) returns(Response);
+  rpc AMethod(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:aMethod"
+      body: "*"
+    };
+  }
 
   // Test including method args.
-  rpc MethodWithArgs(RequestWithArgs) returns(Response);
+  rpc MethodWithArgs(RequestWithArgs) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodWithArgs"
+      body: "*"
+    };
+  };
 }
 
 message Request {
