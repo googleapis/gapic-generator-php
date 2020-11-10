@@ -7,3 +7,6 @@
 [submodule "grpc-proto"]
 	path = grpc-proto
 	url = https://github.com/grpc/grpc-proto
+[submodule "gapic-generator"]
+	path = gapic-generator
+	url = https://github.com/googleapis/gapic-generator.git
