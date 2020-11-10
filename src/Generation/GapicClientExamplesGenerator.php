@@ -65,11 +65,12 @@ class GapicClientExamplesGenerator
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $response = AST::var('response');
         return AST::block(
             AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
-                AST::call($serviceClient, AST::method($method->methodName))($callVars)
+                AST::assign($response, AST::call($serviceClient, AST::method($method->methodName))($callVars))
             )->finally(
                 AST::call($serviceClient, AST::method('close'))()
             )
