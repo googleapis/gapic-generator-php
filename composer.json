@@ -6,7 +6,8 @@
             "Testing\\": "tests/ProtoTests",
             "Google\\": "src/Google",
             "Grpc\\": "src/Grpc",
-            "GPBMetadata\\": "src/GPBMetadata"
+            "GPBMetadata\\": "src/GPBMetadata",
+            "Google\\Generator\\IntegrationTests\\": "integration_tests"
         }
     },
     "require": {
