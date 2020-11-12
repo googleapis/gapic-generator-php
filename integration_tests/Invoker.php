@@ -20,7 +20,7 @@ namespace Google\Generator\IntegrationTests;
 
 class Invoker
 {
-    public static function Invoke(string $protoPath)
+    public static function invoke(string $protoPath)
     {
         $rootDir = __DIR__ . '/..';
 
