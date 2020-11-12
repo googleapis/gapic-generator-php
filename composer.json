@@ -3,11 +3,21 @@
         "psr-4": {
             "Google\\Generator\\": "src",
             "Google\\Generator\\Tests\\": "tests",
-            "Testing\\": "tests/ProtoTests",
             "Google\\": "src/Google",
             "Grpc\\": "src/Grpc",
-            "GPBMetadata\\": "src/GPBMetadata",
-            "Google\\Generator\\IntegrationTests\\": "integration_tests"
+            "GPBMetadata\\": "src/GPBMetadata"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Google\\Generator\\IntegrationTests\\": "integration_tests",
+            "Testing\\Basic\\": "tests/ProtoTests/Basic/out/src",
+            "Testing\\BasicBidiStreaming\\": "tests/ProtoTests/BasicBidiStreaming/out/src",
+            "Testing\\BasicClientStreaming\\": "tests/ProtoTests/BasicClientStreaming/out/src",
+            "Testing\\BasicLro\\": "tests/ProtoTests/BasicLro/out/src",
+            "Testing\\BasicPaginated\\": "tests/ProtoTests/BasicPaginated/out/src",
+            "Testing\\BasicServerStreaming\\": "tests/ProtoTests/BasicServerStreaming/out/src",
+            "Testing\\GrpcServiceConfig\\": "tests/ProtoTests/GrpcServiceConfig/out/src"
         }
     },
     "require": {

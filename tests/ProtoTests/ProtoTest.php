@@ -41,7 +41,7 @@ final class ProtoTest extends TestCase
         $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson);
 
         foreach ($codeIterator as [$relativeFilename, $code]) {
-            $filename = __DIR__ . '/' . dirname($protoPath) . '/' . $relativeFilename;
+            $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;
             // Check "expected-code" file exists, then compare generated code against expected code.
             // TODO: Add ability to check partial files.
             $this->assertTrue(file_exists($filename), "Expected code file missing: '{$filename}'");
