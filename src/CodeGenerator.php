@@ -121,26 +121,26 @@ class CodeGenerator
                 $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
+                yield ["src/Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
                 // Very thin service client wrapper, for manual code additions if required.
                 $ctx = new SourceFileContext($serviceDetails->emptyClientType->getNamespace(), $licenseYear);
                 $file = EmptyClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["{$serviceDetails->emptyClientType->name}.php", $code];
+                yield ["src/{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
                 $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace(), $licenseYear);
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["Tests/{$serviceDetails->unitTestsType->name}.php", $code];
+                yield ["tests/Unit/{$serviceDetails->unitTestsType->name}.php", $code];
                 // Resource: descriptor_config.php
                 $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
                 $code = Formatter::format($code);
-                yield ["resources/{$serviceDetails->descriptorConfigFilename}", $code];
+                yield ["src/resources/{$serviceDetails->descriptorConfigFilename}", $code];
                 // Resource: client_config.json
                 $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig);
-                yield ["resources/{$serviceDetails->clientConfigFilename}", $json];
+                yield ["src/resources/{$serviceDetails->clientConfigFilename}", $json];
             }
             // TODO: Further files, as required.
         }

@@ -35,7 +35,7 @@ $micro = $result['micro'];
 // TODO: Compare all generated files.
 $ok = SourceComparer::compare(
     $mono['/src/Gapic/BasicGapicClient.php'],
-    $micro['/Gapic/BasicGapicClient.php']
+    $micro['/src/Gapic/BasicGapicClient.php']
 );
 
 if (!$ok) {
