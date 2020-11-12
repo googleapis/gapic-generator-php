@@ -31,17 +31,33 @@ $result = Invoker::invoke('tests/ProtoTests/Basic/basic.proto');
 $mono = $result['mono'];
 $micro = $result['micro'];
 
-// Compare a file. Just the generated gapic client for the moment.
-// TODO: Compare all generated files.
-$ok = SourceComparer::compare(
-    $mono['/src/Gapic/BasicGapicClient.php'],
-    $micro['/src/Gapic/BasicGapicClient.php']
-);
+$ok = true;
+
+// Find missing files.
+$missing = array_diff(array_keys($mono), array_keys($micro));
+$ok = count($missing) === 0 ? $ok : false;
+foreach ($missing as $missingPath) {
+    print("File missing from micro-generator: '{$missingPath}'\n");
+}
+
+// Find excessive files.
+$excess = array_diff(array_keys($micro), array_keys($mono));
+$ok = count($excess) === 0 ? $ok : false;
+foreach ($excess as $excessPath) {
+    print("File mistakenly generated from micro-generator: '{$excessPath}'\n");
+}
+
+// Find incorrectly generated files.
+foreach (array_intersect(array_keys($mono), array_keys($micro)) as $path) {
+    print("Comparing: '{$path}':\n");
+    $sameContent = SourceComparer::compare($mono[$path], $micro[$path]);
+    $ok = $sameContent ? $ok : false;
+}
 
 if (!$ok) {
-    print("Fail\n");
+    print("\nFail\n");
     exit(1);
 } else {
-    print("Pass\n");
+    print("\nPass\n");
     exit(0);
 }
