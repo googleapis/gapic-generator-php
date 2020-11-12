@@ -17,9 +17,12 @@
 
 /*
  * GENERATED CODE WARNING
- * This file was automatically generated - do not edit!
+ * This file was generated from the file
+ * https://github.com/google/googleapis/blob/master/tests/ProtoTests/BasicServerStreaming/basic-server-streaming.proto
+ * and updates to that file get reflected here through a refresh process.
+ *
+ * @experimental
  */
-
 
 namespace Testing\BasicServerStreaming;
 
