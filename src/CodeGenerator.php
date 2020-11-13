@@ -141,6 +141,10 @@ class CodeGenerator
                 $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
                 $code = Formatter::format($code);
                 yield ["src/resources/{$serviceDetails->descriptorConfigFilename}", $code];
+                // Resource: rest_client_config.php
+                $code = ResourcesGenerator::generateRestConfig($serviceDetails);
+                $code = Formatter::format($code);
+                yield ["src/resources/{$serviceDetails->restConfigFilename}", $code];
                 // Resource: client_config.json
                 $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig);
                 yield ["src/resources/{$serviceDetails->clientConfigFilename}", $json];

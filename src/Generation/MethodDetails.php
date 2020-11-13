@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\HttpRule;
 use Google\ApiCore\OperationResponse;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
@@ -249,6 +250,15 @@ abstract class MethodDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
+    /** @var ?string *Readonly* REST method, if specified in a 'google.api.http' proto option. */
+    public ?string $restMethod;
+
+    /** @var ?string *Readonly* REST URI template, if specified in a 'google.api.http' proto option. */
+    public ?string $restUriTemplate;
+
+    /** @var ?string *Readonly* REST body, if specified in a 'google.api.http' proto option. */
+    public ?string $restBody;
+
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
         $catalog = $svc->catalog;
@@ -265,5 +275,16 @@ abstract class MethodDetails
         $this->requiredFields = $allFields->filter(fn($x) => $x->isRequired);
         $this->optionalFields = $allFields->filter(fn($x) => !$x->isRequired);
         $this->docLines = $desc->leadingComments;
+        $http = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
+        if (is_null($http)) {
+            $this->restMethod = null;
+            $this->restUriTemplate = null;
+            $this->restBody = null;
+        } else {
+            $this->restMethod = $http->getPattern();
+            $uriTemplateGetter = Helpers::toCamelCase("get_{$http->getPattern()}");
+            $this->restUriTemplate = $http->$uriTemplateGetter();
+            $this->restBody = $http->getBody();
+        }
     }
 }

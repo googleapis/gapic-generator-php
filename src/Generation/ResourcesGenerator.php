@@ -69,7 +69,6 @@ class ResourcesGenerator
             AST::array([
                 'interfaces' => AST::array([
                     $serviceDetails->serviceName => AST::array(
-                        // TODO: Order these correctly, duplicating monolith ordering.
                         $serviceDetails->methods
                             ->map(fn($x) => [$x->name, $perMethod($x)])
                             ->filter(fn($x) => count($x[1]) > 0)
@@ -79,6 +78,29 @@ class ResourcesGenerator
             ])
         );
 
+        return "<?php\n\n{$return->toCode()};";
+    }
+
+    public static function generateRestConfig(ServiceDetails $serviceDetails): string
+    {
+        $return = AST::return(
+            AST::array([
+                'interfaces' => AST::array([
+                    $serviceDetails->serviceName => AST::array(
+                        $serviceDetails->methods
+                            ->filter(fn($method) => !is_null($method->restMethod))
+                            ->toMap(
+                                fn($method) => $method->name,
+                                fn($method) => AST::array([
+                                    'method' => $method->restMethod,
+                                    'uriTemplate' => $method->restUriTemplate,
+                                    'body' => $method->restBody,
+                                ])
+                            )
+                    )
+                ])
+            ])
+        );
         return "<?php\n\n{$return->toCode()};";
     }
 
