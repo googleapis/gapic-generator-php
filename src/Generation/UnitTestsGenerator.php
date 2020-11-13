@@ -74,6 +74,18 @@ class UnitTestsGenerator
 
     private function generateImpl(): PhpFile
     {
+        // TODO(vNext): Remove the forced addition of these `use` clauses.
+        $this->ctx->type(Type::fromName(BidiStream::class));
+        $this->ctx->type(Type::fromName(\Google\ApiCore\LongRunning\OperationsClient::class));
+        $this->ctx->type(Type::fromName(ServerStream::class));
+        $this->ctx->type(Type::fromName(GetOperationRequest::class));
+        $this->ctx->type(Type::fromName(Any::class));
+        $this->ctx->type(Type::fromName(\Google\Protobuf\GPBEmpty::class));
+        $this->ctx->type(Type::fromName(\PHPUnit\Framework\TestCase::class));
+        $this->ctx->type($this->serviceDetails->grpcClientType);
+        foreach ($this->serviceDetails->methods as $method) {
+            $this->ctx->type($method->requestType);
+        }
         // Generate file content
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
@@ -85,6 +97,10 @@ class UnitTestsGenerator
     private function generateClass(): PhpClass
     {
         return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::group($this->serviceDetails->unitTestGroupName),
+                PhpDoc::group('gapic')
+            ))
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
@@ -101,7 +117,8 @@ class UnitTestsGenerator
                 AST::return(AST::new($this->ctx->type(Type::fromName(MockTransport::class)))($deserialize->var))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::return($this->ctx->type(Type::fromName(TransportInterface::class)))
+                // TODO(vNext): Don't use broken no-import here.
+                PhpDoc::return($this->ctx->type(Type::fromName(TransportInterface::class), false, true))
             ));
     }
 
@@ -194,8 +211,9 @@ class UnitTestsGenerator
                 '// Mock response',
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
-                '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertEquals)($expectedResponse, $response),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
@@ -238,10 +256,12 @@ class UnitTestsGenerator
                     'details' => AST::array([]),
                 ]), AST::constant('JSON_PRETTY_PRINT'))),
                 $transport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
-                '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::try(
                     $client->instanceCall(AST::method($method->methodName))(...$requestVars),
+                    '// If the $client method call did not throw, fail the test',
                     ($this->fail)('Expected an ApiException, but no exception was thrown.')
                 )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),

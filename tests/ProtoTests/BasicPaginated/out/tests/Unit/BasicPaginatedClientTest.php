@@ -21,16 +21,31 @@
  */
 
 
-namespace Testing\BasicPaginated;
+namespace Testing\BasicPaginated\Tests\Unit;
 
+use Testing\BasicPaginated\BasicPaginatedClient;
 use Google\ApiCore\ApiException;
+use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\ApiCore\Transport\TransportInterface;
+use Google\LongRunning\GetOperationRequest;
+use Google\Protobuf\Any;
+use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
+use PHPUnit\Framework\TestCase;
+use Testing\BasicPaginated\BasicPaginatedGrpcClient;
+use Testing\BasicPaginated\Request;
+use Testing\BasicPaginated\Response;
 use stdClass;
 
+/**
+ * @group basicpaginated
+ *
+ * @group gapic
+ */
 class BasicPaginatedClientTest extends GeneratedTest
 {
     /** @return TransportInterface */
@@ -104,9 +119,9 @@ class BasicPaginatedClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
-        // Mock request
         try {
             $client->methodPaginated();
+            // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

@@ -21,16 +21,32 @@
  */
 
 
-namespace Testing\Basic;
+namespace Testing\Basic\Tests\Unit;
 
+use Testing\Basic\BasicClient;
 use Google\ApiCore\ApiException;
+use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\ApiCore\Transport\TransportInterface;
+use Google\LongRunning\GetOperationRequest;
+use Google\Protobuf\Any;
+use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
+use PHPUnit\Framework\TestCase;
+use Testing\Basic\BasicGrpcClient;
+use Testing\Basic\Request;
+use Testing\Basic\RequestWithArgs;
+use Testing\Basic\Response;
 use stdClass;
 
+/**
+ * @group basic
+ *
+ * @group gapic
+ */
 class BasicClientTest extends GeneratedTest
 {
     /** @return TransportInterface */
@@ -65,7 +81,6 @@ class BasicClientTest extends GeneratedTest
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        // Mock request
         $response = $client->aMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -94,9 +109,9 @@ class BasicClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
-        // Mock request
         try {
             $client->aMethod();
+            // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -119,7 +134,7 @@ class BasicClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $aString = '';
+        $aString = 'aString-929604177';
         $response = $client->methodWithArgs($aString);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -151,9 +166,10 @@ class BasicClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $aString = '';
+        $aString = 'aString-929604177';
         try {
             $client->methodWithArgs($aString);
+            // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

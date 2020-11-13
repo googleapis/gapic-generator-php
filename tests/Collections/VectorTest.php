@@ -171,6 +171,14 @@ final class VectorTest extends TestCase
         $this->assertEquals([1, 2 ,3], $v->takeLast(4)->toArray());
     }
 
+    public function testTakeWhile(): void
+    {
+        $v = Vector::new([1, 2, 0]);
+        $this->assertEquals([1, 2, 0], $v->takeWhile(fn($x) => $x < 3)->toArray());
+        $this->assertEquals([1, 2], $v->takeWhile(fn($x) => $x > 0)->toArray());
+        $this->assertEquals([], $v->takeWhile(fn($x) => $x > 3)->toArray());
+    }
+
     public function testSkip(): void
     {
         $v = Vector::new([1, 2, 3]);

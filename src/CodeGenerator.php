@@ -133,6 +133,9 @@ class CodeGenerator
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
+                // TODO(vNext): Remove these non-standard 'use' ordering.
+                $code = Formatter::moveUseTo($code, $serviceDetails->emptyClientType->getFullname(true), 0);
+                $code = Formatter::moveUseTo($code, 'stdClass', -1);
                 yield ["tests/Unit/{$serviceDetails->unitTestsType->name}.php", $code];
                 // Resource: descriptor_config.php
                 $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);

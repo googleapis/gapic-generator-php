@@ -82,6 +82,9 @@ class ServiceDetails {
     /** @var string *Readonly* The path to the source .proto file containing this service. */
     public string $filePath;
 
+    /** @var string *Readonly* The group name used for grouping unit test. */
+    public string $unitTestGroupName;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -94,7 +97,7 @@ class ServiceDetails {
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
-        $this->unitTestsType = Type::fromName("{$namespace}\\{$desc->getName()}ClientTest"); // TODO: Fix this, not currently correct.
+        $this->unitTestsType = Type::fromName("{$namespace}\\Tests\\Unit\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
@@ -110,6 +113,7 @@ class ServiceDetails {
         $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
+        $this->unitTestGroupName = strtolower($desc->getName());
     }
 
     public function packageFullName(string $typeName): string
