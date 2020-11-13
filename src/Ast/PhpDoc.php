@@ -387,6 +387,21 @@ abstract class PhpDoc
         };
     }
 
+    public static function group(string $groupName): PhpDoc
+    {
+        return new class($groupName) extends PhpDoc
+        {
+            public function __construct($groupName)
+            {
+                $this->groupName = $groupName;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(["@group {$this->groupName}"]);
+            }
+        };
+    }
+
     /** Override to provide content-specific pre-processing. This may be called multiple times. */
     protected function preProcess(Map $info): Map
     {

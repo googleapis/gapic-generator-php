@@ -29,6 +29,8 @@ use Google\Protobuf\Internal\GPBType;
 
 class FieldDetails
 {
+    private FieldDescriptorProto $desc;
+
     /** @var string *Readonly* The proto name of this field. */
     public string $name;
 
@@ -52,6 +54,7 @@ class FieldDetails
 
     public function __construct(FieldDescriptorProto $field)
     {
+        $this->desc = $field;
         $desc = $field->desc;
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
@@ -61,5 +64,24 @@ class FieldDetails
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
         $this->docLines = $field->leadingComments;
+    }
+
+    public function testValue()
+    {
+        // Reproduce exactly the Java test value generation.
+        // TODO(vNext): Make these more PHPish.
+        switch ($this->desc->getType()) {
+            case GPBType::STRING: // 9
+                $name = $this->desc->getName();
+                $javaHash = 0;
+                for ($i = 0; $i < strlen($name); $i++) {
+                    $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;
+                }
+                if ($javaHash > 0x7ffffff) $javaHash -= 0x100000000;
+                return "{$this->camelName}{$javaHash}";
+            default:
+                // TODO: Other types.
+                return "NOT YET DONE! type={$this->desc->getType()}";
+        }
     }
 }

@@ -21,17 +21,31 @@
  */
 
 
-namespace Testing\BasicBidiStreaming;
+namespace Testing\BasicBidiStreaming\Tests\Unit;
 
+use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\ApiCore\Transport\TransportInterface;
+use Google\LongRunning\GetOperationRequest;
+use Google\Protobuf\Any;
+use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
+use PHPUnit\Framework\TestCase;
+use Testing\BasicBidiStreaming\BasicBidiStreamingGrpcClient;
+use Testing\BasicBidiStreaming\Request;
+use Testing\BasicBidiStreaming\Response;
 use stdClass;
 
+/**
+ * @group basicbidistreaming
+ *
+ * @group gapic
+ */
 class BasicBidiStreamingClientTest extends GeneratedTest
 {
     /** @return TransportInterface */

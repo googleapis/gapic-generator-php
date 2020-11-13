@@ -337,6 +337,23 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     }
 
     /**
+     * Take elements from the beginning of this vector, whilst a predicate returns true.
+     *
+     * @param Callable $fnPredicate Elements taken whilst this function returns true.
+     *
+     * @return Vector
+     */
+    public function takeWhile(Callable $fnPredicate): Vector
+    {
+        for ($i = 0; $i < count($this->data); $i++) {
+            if (!$fnPredicate($this->data[$i])) {
+                return $this->take($i);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Skip elements from the beginning of this vector.
      *
      * @return Vector

@@ -91,7 +91,8 @@ class ResourcesGenerator
             ->map(fn($x, $i) => ["retry_policy_{$inc($i)}_codes", is_null($x) ? null :
                 Vector::new($x->getRetryableStatusCodes())->map(fn($x) => Code::name($x))->toArray()])
             ->filter(fn($x) => !is_null($x[1]))
-            ->append(['no_retry_codes', []])
+            ->append(['idempotent', ['DEADLINE_EXCEEDED', 'UNAVAILABLE']])
+            ->append(['non_idempotent', []])
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
         $retryParams = Vector::zip($grpcServiceConfig->retryPolicies, $grpcServiceConfig->timeouts, fn($r, $t, $i) =>
@@ -107,14 +108,14 @@ class ResourcesGenerator
                 ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
             ])
             ->filter(fn($x) => !is_null($x[1]))
-            ->append(['no_retry_params', [
-                'initial_retry_delay_millis' => 0,
-                'retry_delay_multiplier' => 0.0,
-                'max_retry_delay_millis' => 0,
-                'initial_rpc_timeout_millis' => 0,
+            ->append(['default', [
+                'initial_retry_delay_millis' => 100,
+                'retry_delay_multiplier' => 1.3,
+                'max_retry_delay_millis' => 60_000,
+                'initial_rpc_timeout_millis' => 20_000,
                 'rpc_timeout_multiplier' => 1.0,
-                'max_rpc_timeout_millis' => 0,
-                'total_timeout_millis' => 0,
+                'max_rpc_timeout_millis' => 20_000,
+                'total_timeout_millis' => 600_000,
             ]])
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
@@ -125,9 +126,9 @@ class ResourcesGenerator
                     $grpcServiceConfig->configsByName->get("{$serviceName}/", null);
                 // TODO: Check the default 'timeoutMillis' if it's not specified; currently 0, but this may not be correct.
                 return [$method->name, is_null($index) ? [
-                    'timeout_millis' => 0,
-                    'retry_codes_name' => 'no_retry_codes',
-                    'retry_params_name' => 'no_retry_params',
+                    'timeout_millis' => 60_000,
+                    'retry_codes_name' => 'non_idempotent',
+                    'retry_params_name' => 'default',
                 ] : [
                     'timeout_millis' => $durationToMillis($grpcServiceConfig->timeouts[$index]),
                     'retry_codes_name' => "retry_policy_{$inc($index)}_params",
@@ -146,6 +147,25 @@ class ResourcesGenerator
             ]
         ];
 
-        return json_encode($json, JSON_PRETTY_PRINT) . "\n";
+        $json = json_encode($json, JSON_PRETTY_PRINT) . "\n";
+        // TODO(vNext): Remove this post-processing.
+        $json = static::jsonPostProcess($json);
+        return $json;
+    }
+
+    private static function jsonPostProcess(string $json): string
+    {
+        // Force multplier values to have a ".0" if no decimal point present, required for monolith compatibility.
+        return Vector::new(explode("\n", $json))
+            ->map(function($line) {
+                if (strpos($line, 'multiplier') !== false) {
+                    $parts = explode(':', $line);
+                    if (count($parts) === 2 && strpos($parts[1], '.') === false) {
+                        return substr($line, 0, -1) . '.0,';
+                    }
+                }
+                return $line;
+            })
+            ->join("\n");
     }
 }

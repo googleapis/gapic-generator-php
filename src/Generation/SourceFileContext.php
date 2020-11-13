@@ -56,10 +56,11 @@ class SourceFileContext
      *
      * @param Type $type The type being used.
      * @param mixed $fullyQualify true to fully-qualify type; +ve int to fully-qualify with chars removed.
+     * @param bool $brokenNoImport true to NOT import this type correctly. This is broken and will be fixed later.
      *
      * @return ResolvedType
      */
-    public function type(Type $type, $fullyQualify = false): ResolvedType
+    public function type(Type $type, $fullyQualify = false, bool $brokenNoImport = false): ResolvedType
     {
         $this->checkFinalized(false);
         // TODO(vNext): Remove `fullyQualify` support when no longer required.
@@ -73,7 +74,10 @@ class SourceFileContext
             if ($type->isClass()) {
                 if ($type->getNamespace() !== $this->namespace) {
                     // No 'use' required if type is in the current namespace
-                    $this->uses = $this->uses->add($type);
+                    // TODO(vNext): Remove this terrible brokenness.
+                    if (!$brokenNoImport) {
+                        $this->uses = $this->uses->add($type);
+                    }
                 }
             }
             return new ResolvedType($type, function() use($type) {
