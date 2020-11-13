@@ -37,11 +37,13 @@ class SourceComparer
                     while ($monoPos < $monoLen &&
                         (static::isWhitespace($mono[$monoPos]) ||
                         ($inComment && $mono[$monoPos] === '*') ||
-                        substr($mono, $monoPos, 2) === ",\n")) $monoPos++;
+                        substr($mono, $monoPos, 2) === ",\n") ||
+                        (substr($mono, $monoPos - 1, 2) == '//' || substr($mono, $monoPos, 2) == '//')) $monoPos++;
                     while ($microPos < $microLen &&
                         (static::isWhitespace($micro[$microPos]) ||
                         ($inComment && $micro[$microPos] === '*') ||
-                        substr($micro, $microPos, 2) === ",\n")) $microPos++;
+                        substr($micro, $microPos, 2) === ",\n") ||
+                        (substr($micro, $microPos - 1, 2) == '//' || substr($micro, $microPos, 2) == '//')) $microPos++;
                 }
             }
             $c = $mono[$monoPos];
