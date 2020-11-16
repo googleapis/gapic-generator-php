@@ -38,6 +38,8 @@ $missing = array_diff(array_keys($mono), array_keys($micro));
 $ok = count($missing) === 0 ? $ok : false;
 foreach ($missing as $missingPath) {
     print("File missing from micro-generator: '{$missingPath}'\n");
+    print($mono[$missingPath]);
+    print("\n");
 }
 
 // Find excessive files.

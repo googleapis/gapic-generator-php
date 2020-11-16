@@ -69,6 +69,15 @@ class SourceComparer
             $monoPos++;
             $microPos++;
         }
+        while ($monoPos < $monoLen && static::isWhiteSpace($mono[$monoPos])) $monoPos++;
+        while ($microPos < $microLen && static::isWhitespace($micro[$microPos])) $microPos++;
+        if ($monoPos < $monoLen || $microPos < $microLen) {
+            print("One file is a prefix of the other.\n");
+            if ($monoPos < $monoLen) {
+                print(substr($mono, $monoPos) . "\n");
+            }
+            return false;
+        }
         return true;
     }
 
