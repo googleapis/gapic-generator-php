@@ -27,34 +27,9 @@ error_reporting(E_ALL);
 
 // Initially run for just the "basic" proto as defined in the basic unit test.
 
-$result = Invoker::invoke('tests/ProtoTests/Basic/basic.proto');
-$mono = $result['mono'];
-$micro = $result['micro'];
-
 $ok = true;
-
-// Find missing files.
-$missing = array_diff(array_keys($mono), array_keys($micro));
-$ok = count($missing) === 0 ? $ok : false;
-foreach ($missing as $missingPath) {
-    print("File missing from micro-generator: '{$missingPath}'\n");
-    print($mono[$missingPath]);
-    print("\n");
-}
-
-// Find excessive files.
-$excess = array_diff(array_keys($micro), array_keys($mono));
-$ok = count($excess) === 0 ? $ok : false;
-foreach ($excess as $excessPath) {
-    print("File mistakenly generated from micro-generator: '{$excessPath}'\n");
-}
-
-// Find incorrectly generated files.
-foreach (array_intersect(array_keys($mono), array_keys($micro)) as $path) {
-    print("Comparing: '{$path}':\n");
-    $sameContent = SourceComparer::compare($mono[$path], $micro[$path]);
-    $ok = $sameContent ? $ok : false;
-}
+$ok = processDiff(Invoker::invoke('tests/ProtoTests/Basic/basic.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");
@@ -62,4 +37,37 @@ if (!$ok) {
 } else {
     print("\nPass\n");
     exit(0);
+}
+
+function processDiff($result)
+{
+    $mono = $result['mono'];
+    $micro = $result['micro'];
+
+    $ok = true;
+
+    // Find missing files.
+    $missing = array_diff(array_keys($mono), array_keys($micro));
+    $ok = count($missing) === 0 ? $ok : false;
+    foreach ($missing as $missingPath) {
+        print("File missing from micro-generator: '{$missingPath}'\n");
+        print($mono[$missingPath]);
+        print("\n");
+    }
+
+    // Find excessive files.
+    $excess = array_diff(array_keys($micro), array_keys($mono));
+    $ok = count($excess) === 0 ? $ok : false;
+    foreach ($excess as $excessPath) {
+        print("File mistakenly generated from micro-generator: '{$excessPath}'\n");
+    }
+
+    // Find incorrectly generated files.
+    foreach (array_intersect(array_keys($mono), array_keys($micro)) as $path) {
+        print("Comparing: '{$path}':\n");
+        $sameContent = SourceComparer::compare($mono[$path], $micro[$path]);
+        $ok = $sameContent ? $ok : false;
+    }
+
+    return $ok;
 }

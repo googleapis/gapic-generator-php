@@ -34,10 +34,10 @@ class ResourcesGenerator
                     return Map::new(['longRunning' => AST::array([
                         'operationReturnType' => $method->lroResponseType->getFullname(),
                         'metadataReturnType' => $method->lroMetadataType->getFullname(),
-                        'initialPollDelayMillis' => '60000', // TODO: Check these are the correct values.
-                        'pollDelayMultiplier' => '1.0',
-                        'maxPollDelayMillis' => '60000',
-                        'totalPollTimeoutMillis' => '86400000',
+                        'initialPollDelayMillis' => '500',
+                        'pollDelayMultiplier' => '1.5',
+                        'maxPollDelayMillis' => '5000',
+                        'totalPollTimeoutMillis' => '300000',
                     ])]);
                 case MethodDetails::PAGINATED:
                     return Map::new(['pageStreaming' => AST::array([

@@ -48,7 +48,7 @@ class SourceComparer
             }
             $c = $mono[$monoPos];
             if ($c !== $micro[$microPos]) {
-                $lines = 25;
+                $lines = 5;
                 for ($monoFrom = $monoPos, $c = 0; $c < $lines && $monoFrom > 0; $monoFrom--) $c += $mono[$monoFrom] === "\n" ? 1 : 0;
                 for ($monoTo = $monoPos, $c = 0; $c < $lines && $monoTo < $monoLen; $monoTo++) $c += $mono[$monoTo] === "\n" ? 1 : 0;
                 for ($microFrom = $microPos, $c = 0; $c < $lines && $microFrom > 0; $microFrom--) $c += $micro[$microFrom] === "\n" ? 1 : 0;

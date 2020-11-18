@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/longrunning/operations.proto";
 
@@ -12,6 +13,10 @@ service BasicLro {
   option (google.api.oauth_scopes) = "scope1,scope2";
 
   rpc Method1(Request) returns(google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
     option (google.longrunning.operation_info) = {
       response_type: "LroResponse"
       metadata_type: "LroMetadata"

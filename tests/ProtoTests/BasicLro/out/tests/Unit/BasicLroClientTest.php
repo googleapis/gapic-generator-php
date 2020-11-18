@@ -91,7 +91,7 @@ class BasicLroClientTest extends GeneratedTest
         $incompleteOperation->setName('operations/method1Test');
         $incompleteOperation->setDone(false);
         $transport->addResponse($incompleteOperation);
-        $aValue = '';
+        $aValue = 'aValue-1274714093';
         $expectedResponse = new LroResponse();
         $expectedResponse->setAValue($aValue);
         $anyResponse = new Any();
@@ -101,7 +101,6 @@ class BasicLroClientTest extends GeneratedTest
         $completeOperation->setDone(true);
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
-        // Mock request
         $response = $client->method1();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -149,7 +148,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
         // Mock response
         $incompleteOperation = new Operation();
-        $incompleteOperation->setName('operations/method1ExceptionTest');
+        $incompleteOperation->setName('operations/method1Test');
         $incompleteOperation->setDone(false);
         $transport->addResponse($incompleteOperation);
         $status = new stdClass();
@@ -162,12 +161,11 @@ class BasicLroClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
-        // Mock request
         $response = $client->method1();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
-        $expectedOperationsRequestObject->setName('operations/method1ExceptionTest');
+        $expectedOperationsRequestObject->setName('operations/method1Test');
         try {
             $response->pollUntilComplete([
                 'initialPollDelayMillis' => 1,

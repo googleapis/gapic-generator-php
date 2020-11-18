@@ -40,6 +40,7 @@ use Testing\BasicPaginated\Request;
 use Testing\BasicPaginated\Response;
 
 /**
+ * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods. Sample code to get started:

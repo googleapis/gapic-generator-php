@@ -85,6 +85,9 @@ class ServiceDetails {
     /** @var string *Readonly* The group name used for grouping unit test. */
     public string $unitTestGroupName;
 
+    /** @var bool *Readonly* This service contains at least one LRO method. */
+    public bool $hasLro;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -114,6 +117,7 @@ class ServiceDetails {
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
         $this->unitTestGroupName = strtolower($desc->getName());
+        $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
     }
 
     public function packageFullName(string $typeName): string
