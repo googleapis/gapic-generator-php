@@ -300,7 +300,7 @@ class UnitTestsGenerator
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
-                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->lroResponseType))()),
                 Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => $expectedResponse->instanceCall($f->setter)($v)),
                 AST::assign($anyResponse, AST::new($this->ctx->type(Type::fromName(Any::class)))()),
@@ -310,8 +310,9 @@ class UnitTestsGenerator
                 $completeOperation->setDone(true),
                 $completeOperation->setResponse($anyResponse),
                 $operationsTransport->addResponse($completeOperation),
-                '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
@@ -357,7 +358,7 @@ class UnitTestsGenerator
         $response = AST::var('response');
         $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
         $ex = AST::var('ex');
-        [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testExceptionMethodName);
+        [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testSuccessMethodName);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -372,13 +373,14 @@ class UnitTestsGenerator
                     'details' => AST::array([]),
                 ]), AST::constant('JSON_PRETTY_PRINT'))),
                 $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
-                '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
                 AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type(Type::fromName(GetOperationRequest::class)))()),
-                $expectedOperationsRequestObject->setName("operations/{$method->testExceptionMethodName}"),
+                $expectedOperationsRequestObject->setName("operations/{$method->testSuccessMethodName}"),
                 AST::try(
                     $response->pollUntilComplete(AST::array([
                         'initialPollDelayMillis' => 1,

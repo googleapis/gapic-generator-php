@@ -39,6 +39,8 @@ class Invoker
         $rootOutDir = sys_get_temp_dir() . '/php-gapic-' . mt_rand(0, (int)1e8);
         mkdir($rootOutDir);
         try {
+            $package = str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
+
             // Run the monolithic generator.
             $monoDir = "{$rootDir}/gapic-generator";
             $monoBuildDir = "{$monoDir}/build";
@@ -51,15 +53,24 @@ class Invoker
                 'com.google.api.codegen.GeneratorMain ' .
                 'GAPIC_CODE ' .
                 "--descriptor_set {$descFilename} " .
-                '--package testing.basic ' .
+                "--package {$package} " .
                 '--language php ' .
                 "-o {$monoOutDir}";
+            $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
+            $monoGapicYaml = $monoConfigBase . '_gapic.yaml';
+            if (file_exists($monoGapicYaml)) {
+                $monoCmdLine .= " --gapic_yaml {$monoGapicYaml}";
+            }
+            $monoServiceConfig = $monoConfigBase . '_service.yaml';
+            if (file_exists($monoServiceConfig)) {
+                $monoCmdLine .= " --service_yaml {$monoServiceConfig}";
+            }
             static::execCmd("cd {$monoDir}; {$monoCmdLine}", 'mono');
 
             // Run the micro-generator.
             $microMain = "{$rootDir}/src/Main.php";
             $microOutDir = "{$rootOutDir}/micro";
-            $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package testing.basic --output {$microOutDir} 2>&1";
+            $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package {$package} --output {$microOutDir} 2>&1";
             static::execCmd($microCmdLine, 'micro');
 
             // Read all files in output dirs.

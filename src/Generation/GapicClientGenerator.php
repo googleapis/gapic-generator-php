@@ -47,14 +47,12 @@ class GapicClientGenerator
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
     private GapicClientExamplesGenerator $examples;
-    private bool $hasLro;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
         $this->examples = new GapicClientExamplesGenerator($serviceDetails);
-        $this->hasLro = $serviceDetails->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
     }
 
     private function generateImpl(): PhpFile
@@ -63,6 +61,15 @@ class GapicClientGenerator
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
         $this->ctx->type(Type::fromName(\Google\ApiCore\RequestParamsHeaderDescriptor::class));
         $this->ctx->type($this->serviceDetails->grpcClientType);
+        if ($this->serviceDetails->hasLro) {
+            $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
+            foreach ($this->serviceDetails->methods as $method) {
+                if ($method->methodType === MethodDetails::LRO) {
+                    $this->ctx->type($method->lroResponseType);
+                    $this->ctx->type($method->lroMetadataType);
+                }
+            }
+        }
         // Generate file content
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
@@ -76,9 +83,8 @@ class GapicClientGenerator
     {
         return AST::class($this->serviceDetails->gapicClientType)
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::preFormattedText($this->serviceDetails->docLines->take(1)
-                    ->map(fn($x) => "Service Description: {$x}")
-                    ->concat($this->serviceDetails->docLines->skip(1))),
+                PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)
+                    ->prepend('Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? ''))),
                 PhpDoc::preFormattedText(Vector::new([
                     'This class provides the ability to make remote calls to the backing service through method',
                     'calls that map to API methods. Sample code to get started:'
@@ -138,7 +144,7 @@ class GapicClientGenerator
 
     private function operationsClient(): ?PhpClassMember
     {
-        if ($this->hasLro) {
+        if ($this->serviceDetails->hasLro) {
             return AST::property('operationsClient')
                 ->withAccess(Access::PRIVATE);
         } else {
@@ -148,7 +154,7 @@ class GapicClientGenerator
 
     private function lroMethods(): Vector
     {
-        if ($this->hasLro) {
+        if ($this->serviceDetails->hasLro) {
             $getOperationsClient = AST::method('getOperationsClient')
                 ->withAccess(Access::PUBLIC)
                 ->withBody(AST::block(
@@ -236,7 +242,7 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
-                $this->hasLro ?
+                $this->serviceDetails->hasLro ?
                     AST::assign(AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)) :
                     null
