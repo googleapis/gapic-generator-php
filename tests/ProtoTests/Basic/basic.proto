@@ -11,8 +11,7 @@ import "google/api/field_behavior.proto";
 // This is a basic service.
 service Basic {
   option (google.api.default_host) = "basic.example.com";
-  // TODO: Understand why the monolithic doesn't appear to respect these scopes.
-  //option (google.api.oauth_scopes) = "scope1,scope2";
+  option (google.api.oauth_scopes) = "scope1,scope2";
 
   // Test summary text for AMethod
   rpc AMethod(Request) returns(Response) {
