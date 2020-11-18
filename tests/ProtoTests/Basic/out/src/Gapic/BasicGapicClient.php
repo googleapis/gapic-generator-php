@@ -74,7 +74,10 @@ class BasicGapicClient
     const CODEGEN_NAME = 'gapic';
 
     /** The default scopes required by the service. */
-    public static $serviceScopes = [];
+    public static $serviceScopes = [
+        'scope1',
+        'scope2',
+    ];
 
     private static function getClientDefaults()
     {
