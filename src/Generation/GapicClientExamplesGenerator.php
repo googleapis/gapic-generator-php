@@ -123,7 +123,7 @@ class GapicClientExamplesGenerator
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
-        $pagedResponse = AST::var('pagedresponse');
+        $pagedResponse = AST::var('pagedResponse');
         $page = AST::var('page');
         $element = AST::var('element');
         return AST::block(

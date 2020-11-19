@@ -29,7 +29,8 @@ use Google\Protobuf\Internal\GPBType;
 
 class FieldDetails
 {
-    private FieldDescriptorProto $desc;
+    /** @var FieldDescriptorProto The proto definition of this field. */
+    public FieldDescriptorProto $desc;
 
     /** @var string *Readonly* The proto name of this field. */
     public string $name;
@@ -52,7 +53,7 @@ class FieldDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
-    public function __construct(FieldDescriptorProto $field)
+    public function __construct(FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->desc = $field;
         $desc = $field->desc;
@@ -63,22 +64,23 @@ class FieldDetails
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
-        $this->docLines = $field->leadingComments;
+        $this->docLines = $docLinesOverride ?? $field->leadingComments;
     }
 
-    public function testValue()
+    public function testValue(?string $nameOverride = null)
     {
         // Reproduce exactly the Java test value generation.
         // TODO(vNext): Make these more PHPish.
         switch ($this->desc->getType()) {
             case GPBType::STRING: // 9
-                $name = $this->desc->getName();
+                $name = $nameOverride ?? $this->desc->getName();
                 $javaHash = 0;
                 for ($i = 0; $i < strlen($name); $i++) {
                     $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;
                 }
-                if ($javaHash > 0x7ffffff) $javaHash -= 0x100000000;
-                return "{$this->camelName}{$javaHash}";
+                if ($javaHash > 0x7fffffff) $javaHash -= 0x100000000;
+                $prefix = is_null($nameOverride) ? $this->camelName : Helpers::toCamelCase($nameOverride);
+                return $prefix . $javaHash;
             default:
                 // TODO: Other types.
                 return "NOT YET DONE! type={$this->desc->getType()}";

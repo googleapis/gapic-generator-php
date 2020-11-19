@@ -232,6 +232,7 @@ class BasicBidiStreamingGapicClient
      * }
      * ```
      *
+     * @param int   $aNumber
      * @param array $optionalArgs {
      *     Optional.
      *

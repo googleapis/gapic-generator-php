@@ -79,7 +79,7 @@ class BasicPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $nextPageToken = '';
-        $theResultsElement = '';
+        $theResultsElement = 'theResultsElement-1546403867';
         $theResults = [
             $theResultsElement,
         ];
@@ -88,7 +88,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         $expectedResponse->setTheResults($theResults);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $response = $client->methodPaginated();
+        $aField = 'aField-1289259108';
+        $pageToken = 'pageToken1630607433';
+        $response = $client->methodPaginated($aField, $pageToken);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -98,6 +100,10 @@ class BasicPaginatedClientTest extends GeneratedTest
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.basicpaginated.BasicPaginated/MethodPaginated', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAField();
+        $this->assertProtobufEquals($aField, $actualValue);
+        $actualValue = $actualRequestObject->getPageToken();
+        $this->assertProtobufEquals($pageToken, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -119,8 +125,11 @@ class BasicPaginatedClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
+        // Mock request
+        $aField = 'aField-1289259108';
+        $pageToken = 'pageToken1630607433';
         try {
-            $client->methodPaginated();
+            $client->methodPaginated($aField, $pageToken);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

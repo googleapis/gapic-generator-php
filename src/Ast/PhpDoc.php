@@ -306,8 +306,8 @@ abstract class PhpDoc
                                 ->append('}');
                         } else {
                             $pad = str_repeat(' ', strlen($intro));
-                            return $lines->take(1)->map(fn($x) => $intro . $x)
-                                ->concat($lines->skip(1)->map(fn($x) => $pad . $x));
+                            return $lines->skip(1)->map(fn($x) => $pad . $x)
+                                ->prepend($intro . ($lines->firstOrNull() ?? ''));
                         }
                     }
                 } else {

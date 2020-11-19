@@ -4,18 +4,30 @@ package testing.basicpaginated;
 
 option php_namespace = "Testing\\BasicPaginated";
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 
 service BasicPaginated {
   option (google.api.default_host) = "paginated.example.com";
   option (google.api.oauth_scopes) = "scope1,scope2";
 
-  rpc MethodPaginated(Request) returns(Response);
+  rpc MethodPaginated(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
 }
 
+// a_field has no docs, to test that fields without docs
+// are generated correctly.
 message Request {
-  int32 page_size = 1;
-  string page_token = 2;
+  string a_field = 1 [(google.api.field_behavior) = REQUIRED];
+  // Docs on this optional standard page_size field will be ignored.
+  int32 page_size = 2;
+  // Docs on this required standard page_token field will be ignored.
+  string page_token = 3  [(google.api.field_behavior) = REQUIRED];
 }
 
 message Response {
