@@ -1,0 +1,10 @@
+type: google.api.Service
+config_version: 3
+
+authentication:
+  rules:
+  - selector: 'testing.basicpaginated.BasicPaginated.*'
+    oauth:
+      canonical_scopes: |-
+        scope1,
+        scope2

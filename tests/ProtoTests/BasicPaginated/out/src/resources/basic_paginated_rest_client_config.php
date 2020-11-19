@@ -2,6 +2,12 @@
 
 return [
     'interfaces' => [
-        'testing.basicpaginated.BasicPaginated' => [],
+        'testing.basicpaginated.BasicPaginated' => [
+            'MethodPaginated' => [
+                'method' => 'post',
+                'uriTemplate' => '/path:methodPaginated',
+                'body' => '*',
+            ],
+        ],
     ],
 ];

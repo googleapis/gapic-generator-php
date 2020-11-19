@@ -179,6 +179,7 @@ class BasicServerStreamingGapicClient
      * }
      * ```
      *
+     * @param int   $aNumber
      * @param array $optionalArgs {
      *     Optional.
      *

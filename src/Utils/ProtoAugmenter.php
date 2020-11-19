@@ -81,7 +81,7 @@ class ProtoAugmenter
             // Recurse into fields and nested msgs.
             foreach ($message->getField() as $fieldIndex => $field) {
                 // Create higher-level field descriptor, and link in both directions.
-                $field->desc = FieldDescriptor::buildFromProto($field);
+                $field->desc = $message->desc->getFieldByIndex($fieldIndex);
                 $field->desc->underlyingProto = $field;
                 // Link proto coments.
                 $fieldPath = $messagePath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));

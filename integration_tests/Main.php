@@ -30,6 +30,7 @@ error_reporting(E_ALL);
 $ok = true;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/Basic/basic.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");

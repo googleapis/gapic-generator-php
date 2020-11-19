@@ -441,7 +441,9 @@ class UnitTestsGenerator
         $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $response = AST::var('response');
         $resources = AST::var('resources');
-        $mockResourceElementValue = $method->resourceType->defaultValue() ?? AST::new($this->ctx->type($method->resourceType));
+        $mockResourceElementValue =
+            $method->resourcesField->testValue($method->resourcesField->name . '_element') ??
+            AST::new($this->ctx->type($method->resourceType));
         $actualRequests = AST::var('actualRequests');
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
@@ -461,8 +463,9 @@ class UnitTestsGenerator
                 $expectedResponse->instanceCall($method->responseNextPageTokenSetter)($nextPageToken),
                 $expectedResponse->instanceCall($method->resourcesSetter)($mockResource),
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
-                '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
                 AST::assign($resources , AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
