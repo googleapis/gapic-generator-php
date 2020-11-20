@@ -8,6 +8,11 @@ return [
                     'grpcStreamingType' => 'ClientStreaming',
                 ],
             ],
+            'MethodEmpty' => [
+                'grpcStreaming' => [
+                    'grpcStreamingType' => 'ClientStreaming',
+                ],
+            ],
         ],
     ],
 ];

@@ -19,8 +19,11 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Api\HttpRule;
+use Google\ApiCore\BidiStream;
+use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ServerStream;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
 use Google\Generator\Ast\AST;
@@ -63,6 +66,7 @@ abstract class MethodDetails
                 {
                     parent::__construct($svc, $desc);
                     $this->methodType = MethodDetails::CLIENT_STREAMING;
+                    $this->methodReturnType = Type::fromName(ClientStream::class);
                 }
             };
         }
@@ -78,6 +82,7 @@ abstract class MethodDetails
                 {
                     parent::__construct($svc, $desc);
                     $this->methodType = MethodDetails::SERVER_STREAMING;
+                    $this->methodReturnType = Type::fromName(ServerStream::class);
                 }
             };
         }
@@ -93,6 +98,7 @@ abstract class MethodDetails
                 {
                     parent::__construct($svc, $desc);
                     $this->methodType = MethodDetails::BIDI_STREAMING;
+                    $this->methodReturnType = Type::fromName(BidiStream::class);
                 }
             };
         }
@@ -318,5 +324,12 @@ abstract class MethodDetails
             $this->restUriTemplate = $http->$uriTemplateGetter();
             $this->restBody = $http->getBody();
         }
+    }
+
+    public function isStreaming()
+    {
+        return $this->methodType === static::BIDI_STREAMING ||
+            $this->methodType === static::SERVER_STREAMING ||
+            $this->methodType === static::CLIENT_STREAMING;
     }
 }

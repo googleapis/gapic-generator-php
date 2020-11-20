@@ -9,13 +9,18 @@ import "google/api/field_behavior.proto";
 
 service BasicBidiStreaming {
   option (google.api.default_host) = "bidi.example.com";
-  option (google.api.oauth_scopes) = "scope1,scope2";
 
   rpc MethodBidi(stream Request) returns(stream Response);
+
+  rpc MethodEmpty(stream EmptyRequest) returns(stream Response);
 }
 
 message Request {
     int32 a_number = 1 [(google.api.field_behavior) = REQUIRED];
+    string a_string = 2;
+}
+
+message EmptyRequest {
 }
 
 message Response {

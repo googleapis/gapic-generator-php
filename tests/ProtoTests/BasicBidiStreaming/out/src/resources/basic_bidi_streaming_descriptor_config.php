@@ -8,6 +8,11 @@ return [
                     'grpcStreamingType' => 'BidiStreaming',
                 ],
             ],
+            'MethodEmpty' => [
+                'grpcStreaming' => [
+                    'grpcStreamingType' => 'BidiStreaming',
+                ],
+            ],
         ],
     ],
 ];

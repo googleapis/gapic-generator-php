@@ -82,8 +82,11 @@ class UnitTestsGenerator
         $this->ctx->type(Type::fromName(Any::class));
         $this->ctx->type(Type::fromName(\Google\Protobuf\GPBEmpty::class));
         $this->ctx->type(Type::fromName(\PHPUnit\Framework\TestCase::class));
+        $this->ctx->type(Type::fromName(ApiException::class));
+        $this->ctx->type(Type::fromName(Code::class));
+        $this->ctx->type(Type::stdClass());
         $this->ctx->type($this->serviceDetails->grpcClientType);
-        foreach ($this->serviceDetails->methods as $method) {
+        foreach ($this->serviceDetails->methods->filter(fn($x) => $x->methodType !== MethodDetails::CLIENT_STREAMING) as $method) {
             $this->ctx->type($method->requestType);
         }
         // Generate file content
@@ -142,6 +145,8 @@ class UnitTestsGenerator
     private function createClient(): PhpClassMember
     {
         $options = AST::param($this->ctx->type(Type::array()), AST::var('options'), AST::array([]));
+        // TODO(vNext): Remove this brokenness. Note that this only "works" because this code is never called when it's broken.
+        $brokenNoImport = !$this->serviceDetails->methods->any(fn($x) => $x->methodType !== MethodDetails::CLIENT_STREAMING);
         return AST::method('createClient')
             ->withAccess(Access::PRIVATE)
             ->withParams($options)
@@ -149,10 +154,10 @@ class UnitTestsGenerator
                 AST::binaryOp($options->var, '+=', AST::array([
                     'credentials' => AST::call(AST::THIS, $this->createCredentials())()
                 ])),
-                AST::return(AST::new($this->ctx->type($this->serviceDetails->emptyClientType))($options->var))
+                AST::return(AST::new($this->ctx->type($this->serviceDetails->emptyClientType, false, $brokenNoImport))($options->var))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::return($this->ctx->type($this->serviceDetails->emptyClientType))
+                PhpDoc::return($this->ctx->type($this->serviceDetails->emptyClientType, false, $brokenNoImport))
             ));
     }
 
@@ -492,8 +497,12 @@ class UnitTestsGenerator
         $client = AST::var('client');
         $expectedResponseList = Vector::range(1, 3)->map(fn($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
         $requestList = Vector::range(1, 3)->map(fn($i) => AST::var('request' . ($i === 1 ? '' : $i)));
+        // TODO(vNext): Remove this convoluted test-value generation.
         $requestsVarList = Vector::range(1, 3)->map(fn($i) =>
-            $method->requiredFields->map(fn($x) => AST::var($x->camelName . ($i === 1 ? '' : $i))));
+            $method->requiredFields->map(fn($x) => [
+                AST::var($x->camelName . ($i === 1 ? '' : $i)),
+                $x->name . ($i === 1 ? '' : "_{$i}")
+            ]));
         $bidi = AST::var('bidi');
         $responses = AST::var('responses');
         $response = AST::var('response');
@@ -518,9 +527,9 @@ class UnitTestsGenerator
                 ])),
                 '// Mock request',
                 Vector::zip($requestList, $requestsVarList, fn($request, $vars) => Vector::new([
-                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::assign($v[0], $f->testValue($v[1]))),
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::call($request, $f->setter)($v)),
+                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::call($request, $f->setter)($v[0])),
                 ])),
                 AST::assign($bidi, $client->instanceCall(AST::method($method->methodName))()),
                 ($this->assertInstanceOf)(AST::access($this->ctx->type(Type::fromName(BidiStream::class)), AST::CLS), $bidi),
@@ -621,7 +630,7 @@ class UnitTestsGenerator
                     $transport->addResponse($x),
                 ])),
                 '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertInstanceOf)(AST::access($this->ctx->type(Type::fromName(ServerStream::class)), AST::CLS), $serverStream),
                 AST::assign($responses, AST::call(AST::ITERATOR_TO_ARRAY)($serverStream->readAll())),
@@ -670,7 +679,7 @@ class UnitTestsGenerator
                 $transport->setStreamingStatus($status),
                 ($this->assertTrue)($transport->isExhausted()),
                 '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->type->defaultValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
                 AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 AST::assign($results, $serverStream->readAll()),
                 AST::try(

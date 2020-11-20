@@ -69,16 +69,25 @@ class FieldDetails
 
     public function testValue(?string $nameOverride = null)
     {
-        // Reproduce exactly the Java test value generation.
+        // Reproduce exactly the Java test value generation:
+        // https://github.com/googleapis/gapic-generator/blob/e3501faea84f61be2f59bd49a7740a486a02fa6b/src/main/java/com/google/api/codegen/util/testing/StandardValueProducer.java
         // TODO(vNext): Make these more PHPish.
+
+        $javaHashCode = function(string $name) {
+            $javaHash = 0;
+            for ($i = 0; $i < strlen($name); $i++) {
+                $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;
+            }
+            return $javaHash > 0x7fffffff ? $javaHash -= 0x100000000 : $javaHash;
+        };
+
+        $name = $nameOverride ?? $this->desc->getName();
         switch ($this->desc->getType()) {
+            case GPBType::INT32: // 5
+                $javaHash = $javaHashCode($name);
+                return $javaHash === -0x80000000 ? 0 : abs($javaHash);
             case GPBType::STRING: // 9
-                $name = $nameOverride ?? $this->desc->getName();
-                $javaHash = 0;
-                for ($i = 0; $i < strlen($name); $i++) {
-                    $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;
-                }
-                if ($javaHash > 0x7fffffff) $javaHash -= 0x100000000;
+                $javaHash = $javaHashCode($name);
                 $prefix = is_null($nameOverride) ? $this->camelName : Helpers::toCamelCase($nameOverride);
                 return $prefix . $javaHash;
             default:
