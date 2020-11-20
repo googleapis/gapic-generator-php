@@ -83,21 +83,20 @@ class ResourcesGenerator
 
     public static function generateRestConfig(ServiceDetails $serviceDetails): string
     {
+        $serviceContent = $serviceDetails->methods
+            ->filter(fn($method) => !is_null($method->restMethod))
+            ->toMap(
+                fn($method) => $method->name,
+                fn($method) => AST::array([
+                    'method' => $method->restMethod,
+                    'uriTemplate' => $method->restUriTemplate,
+                    'body' => $method->restBody,
+                ])
+            );
         $return = AST::return(
             AST::array([
                 'interfaces' => AST::array([
-                    $serviceDetails->serviceName => AST::array(
-                        $serviceDetails->methods
-                            ->filter(fn($method) => !is_null($method->restMethod))
-                            ->toMap(
-                                fn($method) => $method->name,
-                                fn($method) => AST::array([
-                                    'method' => $method->restMethod,
-                                    'uriTemplate' => $method->restUriTemplate,
-                                    'body' => $method->restBody,
-                                ])
-                            )
-                    )
+                    $serviceDetails->serviceName => count($serviceContent) === 0 ? null : AST::array($serviceContent)
                 ])
             ])
         );
@@ -146,16 +145,23 @@ class ResourcesGenerator
             ->map(function($method) use($grpcServiceConfig, $serviceName, $durationToMillis, $inc) {
                 $index = $grpcServiceConfig->configsByName->get("{$serviceName}/{$method->name}", null) ??
                     $grpcServiceConfig->configsByName->get("{$serviceName}/", null);
-                // TODO: Check the default 'timeoutMillis' if it's not specified; currently 0, but this may not be correct.
-                return [$method->name, is_null($index) ? [
-                    'timeout_millis' => 60_000,
-                    'retry_codes_name' => 'non_idempotent',
-                    'retry_params_name' => 'default',
-                ] : [
-                    'timeout_millis' => $durationToMillis($grpcServiceConfig->timeouts[$index]),
-                    'retry_codes_name' => "retry_policy_{$inc($index)}_params",
-                    'retry_params_name' => "retry_policy_{$inc($index)}_codes",
-                ]];
+                if (is_null($index)) {
+                    return [
+                        $method->name,
+                        ['timeout_millis' => 60_000,
+                    ] + ($method->isStreaming() ? [] : [
+                        'retry_codes_name' => 'non_idempotent',
+                        'retry_params_name' => 'default',
+                    ])];
+                } else {
+                    return [
+                        $method->name,
+                        ['timeout_millis' => $durationToMillis($grpcServiceConfig->timeouts[$index])
+                    ] + ($method->isStreaming() ? [] : [
+                        'retry_codes_name' => "retry_policy_{$inc($index)}_params",
+                        'retry_params_name' => "retry_policy_{$inc($index)}_codes",
+                    ])];
+                }
             })
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 

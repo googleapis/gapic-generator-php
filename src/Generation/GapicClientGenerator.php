@@ -60,6 +60,7 @@ class GapicClientGenerator
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
         $this->ctx->type(Type::fromName(\Google\ApiCore\RequestParamsHeaderDescriptor::class));
+        $this->ctx->type(Type::fromName(RetrySettings::class));
         $this->ctx->type($this->serviceDetails->grpcClientType);
         if ($this->serviceDetails->hasLro) {
             $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
@@ -69,6 +70,9 @@ class GapicClientGenerator
                     $this->ctx->type($method->lroMetadataType);
                 }
             }
+        }
+        foreach ($this->serviceDetails->methods as $method) {
+            $this->ctx->type($method->requestType);
         }
         // Generate file content
         $file = AST::file($this->generateClass())
@@ -317,7 +321,6 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
-        // TODO: Test field with no proto-doc to make sure the PhpDoc is generated correctly.
         $request = AST::var('request');
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
@@ -340,22 +343,34 @@ class GapicClientGenerator
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
                 PhpDoc::example($this->examples->rpcMethodExample($method), PhpDoc::text('Sample code:')),
-                Vector::zip($method->requiredFields, $required,
+                $isStreamedRequest ? null : Vector::zip($method->requiredFields, $required,
                     fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines), $this->ctx->type($field->type))),
-                PhpDoc::param($optionalArgs, PhpDoc::block(
-                    PhpDoc::Text('Optional.'),
-                    $method->optionalFields->map(fn($x) =>
-                        PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->camelName, PhpDoc::preFormattedText($x->docLines))
-                    ),
-                    PhpDoc::type(
-                        Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
-                        'retrySettings', PhpDoc::Text(
-                            // TODO(vNext): Don't use a fully-qualified type here.
-                            'Retry settings to use for this call. Can be a ', $this->ctx->Type($retrySettingsType, 1),
-                            ' object, or an associative array of retry settings parameters. See the documentation on ',
-                            // TODO(vNext): Don't use a fully-qualified type here.
-                            $this->ctx->Type($retrySettingsType, 1), ' for example usage.'))
-                        )),
+                $isStreamedRequest ?
+                    PhpDoc::param($optionalArgs, PhpDoc::block(
+                        PhpDoc::Text('Optional.'),
+                        PhpDoc::type(
+                            Vector::new([$this->ctx->type(Type::int())]),
+                            'timeoutMillis', PhpDoc::text('Timeout to use for this call.')
+                        ))) :
+                    PhpDoc::param($optionalArgs, PhpDoc::block(
+                        PhpDoc::Text('Optional.'),
+                        $method->optionalFields->map(fn($x) =>
+                            PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->camelName, PhpDoc::preFormattedText($x->docLines))
+                        ),
+                        $method->methodType === MethodDetails::SERVER_STREAMING ?
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type(Type::int())]),
+                                'timeoutMillis', PhpDoc::text('Timeout to use for this call.')
+                            ) :
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
+                                'retrySettings', PhpDoc::text(
+                                    // TODO(vNext): Don't use a fully-qualified type here.
+                                    'Retry settings to use for this call. Can be a ', $this->ctx->Type($retrySettingsType, 1),
+                                    ' object, or an associative array of retry settings parameters. See the documentation on ',
+                                    // TODO(vNext): Don't use a fully-qualified type here.
+                                    $this->ctx->Type($retrySettingsType, 1), ' for example usage.'))
+                                )),
                 // TODO(vNext): Don't use a fully-qualified type here.
                 PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ApiException::class)),

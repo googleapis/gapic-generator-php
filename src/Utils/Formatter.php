@@ -72,14 +72,17 @@ class Formatter
     }
 
     // TODO(vNext): Remove this method when no longer required.
-    public static function moveUseTo(string $code, string $typeName, int $index): string
+    public static function moveUseTo(string $codeStr, string $typeName, int $index): string
     {
-        $code = Vector::new(explode("\n", $code));
+        $code = Vector::new(explode("\n", $codeStr));
         $pre = $code->takeWhile(fn($x) => strpos($x, 'use ') !== 0);
         $usings = $code->skip(count($pre))->takeWhile(fn($x) => strpos($x, 'use ') === 0);
         $post = $code->skip(count($pre) + count($usings));
 
         $line = "use {$typeName};";
+        if (!$usings->any(fn($x) => $x === $line)) {
+            return $codeStr;
+        }
         $usings = $usings->filter(fn($x) => $x !== $line);
         $index = $index >= 0 ? $index : count($usings) + $index + 1;
         $usings = $usings->take($index)->append($line)->concat($usings->skip($index));

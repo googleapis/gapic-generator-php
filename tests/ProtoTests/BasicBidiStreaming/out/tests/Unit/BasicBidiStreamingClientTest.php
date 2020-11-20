@@ -37,6 +37,7 @@ use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use PHPUnit\Framework\TestCase;
 use Testing\BasicBidiStreaming\BasicBidiStreamingGrpcClient;
+use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
 use stdClass;
@@ -85,13 +86,13 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $expectedResponse3 = new Response();
         $transport->addResponse($expectedResponse3);
         // Mock request
-        $aNumber = 0;
+        $aNumber = 1071982361;
         $request = new Request();
         $request->setANumber($aNumber);
-        $aNumber2 = 0;
+        $aNumber2 = 617105114;
         $request2 = new Request();
         $request2->setANumber($aNumber2);
-        $aNumber3 = 0;
+        $aNumber3 = 617105115;
         $request3 = new Request();
         $request3->setANumber($aNumber3);
         $bidi = $client->methodBidi();
@@ -149,6 +150,94 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
         $bidi = $client->methodBidi();
+        $results = $bidi->closeWriteAndReadAll();
+        try {
+            iterator_to_array($results);
+            // If the close stream method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+// Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function methodEmptyTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        $expectedResponse2 = new Response();
+        $transport->addResponse($expectedResponse2);
+        $expectedResponse3 = new Response();
+        $transport->addResponse($expectedResponse3);
+        // Mock request
+        $request = new EmptyRequest();
+        $request2 = new EmptyRequest();
+        $request3 = new EmptyRequest();
+        $bidi = $client->methodEmpty();
+        $this->assertInstanceOf(BidiStream::class, $bidi);
+        $bidi->write($request);
+        $responses = [];
+        $responses[] = $bidi->read();
+        $bidi->writeAll([
+            $request2,
+            $request3,
+        ]);
+        foreach ($bidi->closeWriteAndReadAll() as $response) {
+            $responses[] = $response;
+        }
+
+        $expectedResponses = [];
+        $expectedResponses[] = $expectedResponse;
+        $expectedResponses[] = $expectedResponse2;
+        $expectedResponses[] = $expectedResponse3;
+        $this->assertEquals($expectedResponses, $responses);
+        $createStreamRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($createStreamRequests));
+        $streamFuncCall = $createStreamRequests[0]->getFuncCall();
+        $streamRequestObject = $createStreamRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basicbidistreaming.BasicBidiStreaming/MethodEmpty', $streamFuncCall);
+        $this->assertNull($streamRequestObject);
+        $callObjects = $transport->popCallObjects();
+        $this->assertSame(1, count($callObjects));
+        $bidiCall = $callObjects[0];
+        $writeRequests = $bidiCall->popReceivedCalls();
+        $expectedRequests = [];
+        $expectedRequests[] = $request;
+        $expectedRequests[] = $request2;
+        $expectedRequests[] = $request3;
+        $this->assertEquals($expectedRequests, $writeRequests);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function methodEmptyExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->setStreamingStatus($status);
+        $this->assertTrue($transport->isExhausted());
+        $bidi = $client->methodEmpty();
         $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);

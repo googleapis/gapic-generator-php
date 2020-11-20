@@ -37,6 +37,8 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicBidiStreaming\BasicBidiStreamingGrpcClient;
+use Testing\BasicBidiStreaming\EmptyRequest;
+use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
 
 /**
@@ -105,10 +107,7 @@ class BasicBidiStreamingGapicClient
     const CODEGEN_NAME = 'gapic';
 
     /** The default scopes required by the service. */
-    public static $serviceScopes = [
-        'scope1',
-        'scope2',
-    ];
+    public static $serviceScopes = [];
 
     private static function getClientDefaults()
     {
@@ -232,18 +231,14 @@ class BasicBidiStreamingGapicClient
      * }
      * ```
      *
-     * @param int   $aNumber
      * @param array $optionalArgs {
      *     Optional.
      *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
      * }
      *
-     * @return \Testing\BasicBidiStreaming\Response
+     * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
      *
@@ -252,5 +247,65 @@ class BasicBidiStreamingGapicClient
     public function methodBidi(array $optionalArgs = [])
     {
         return $this->startCall('MethodBidi', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $basicBidiStreamingClient = new BasicBidiStreamingClient();
+     * try {
+     *     $request = new EmptyRequest();
+     *     // Write all requests to the server, then read all responses until the
+     *     // stream is complete
+     *     $requests = [
+     *         $request,
+     *     ];
+     *     $stream = $basicBidiStreamingClient->methodEmpty();
+     *     $stream->writeAll($requests);
+     *     foreach ($stream->closeWriteAndReadAll() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * // Alternatively:
+     *     // Write requests individually, making read() calls if
+     *     // required. Call closeWrite() once writes are complete, and read the
+     *     // remaining responses from the server.
+     *     $requests = [
+     *         $request,
+     *     ];
+     *     $stream = $basicBidiStreamingClient->methodEmpty();
+     *     foreach ($requests as $request) {
+     *         $stream->write($request);
+     *         // if required, read a single response from the stream
+     *         $element = $stream->read();
+     *         // doSomethingWith($element)
+     *     }
+     *     $stream->closeWrite();
+     *     $element = $stream->read();
+     *     while (!is_null($element)) {
+     *         // doSomethingWith($element)
+     *         $element = $stream->read();
+     *     }
+     * } finally {
+     *     $basicBidiStreamingClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
+     * }
+     *
+     * @return \Google\ApiCore\BidiStream
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function methodEmpty(array $optionalArgs = [])
+    {
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }
