@@ -25,8 +25,6 @@ error_reporting(E_ALL);
 // Compare output of monolith and micro generators.
 // They should match except for whitespace and trailing commas.
 
-// Initially run for just the "basic" proto as defined in the basic unit test.
-
 $ok = true;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/Basic/basic.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
