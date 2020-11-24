@@ -127,23 +127,43 @@ class ServiceDetails {
         // Resource-names
         // Wildcard patterns are ignored.
         // A resource-name which has just a single wild-card pattern is ignored.
-        // TODO: Support child-type references.
         $messageResourceDefs = $this->methods
             ->map(fn($x) => ProtoHelpers::getCustomOption($x->inputMsg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
             ->filter(fn($x) => !is_null($x));
-        $refResourceDefs = $this->methods
+        $resourceRefs = $this->methods
             ->flatMap(fn($x) => $x->allFields)
             ->map(fn($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
-            ->filter(fn($x) => !is_null($x))
+            ->filter(fn($x) => !is_null($x));
+        $typeRefResourceDefs = $resourceRefs
+            ->filter(fn($x) => $x->getType() !== '')
             ->map(fn($x) => $catalog->resourcesByType[$x->getType()]);
+        // Child-type refs: Ignore any that contain a wildcard resource; else find parent resource by pattern(s).
+        $childTypeRefResourceDefs = $resourceRefs
+            ->filter(fn($x) => $x->getChildType() !== '')
+            ->map(fn($x) => $catalog->resourcesByType[$x->getChildType()])
+            ->filter(fn($childResource) => !Vector::new($childResource->getPattern())->any(fn($pattern) => $pattern === '*'))
+            ->flatMap(fn($childResource) => Vector::new($childResource->getPattern()))
+            ->map(fn($childPattern) => $catalog->resourcesByPattern[$this->parentPattern($childPattern)]);
         $resourceDefs = $messageResourceDefs
-            ->concat($refResourceDefs)
+            ->concat($typeRefResourceDefs)
+            ->concat($childTypeRefResourceDefs)
             ->map(fn($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
             ->filter(fn($x) => $x->patterns->any())
             ->concat($resourceDefs->flatMap(fn($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
             ->distinct(fn($x) => $x->getNameCamelCase())
             ->orderBy(fn($x) => $x->getNameCamelCase());
+    }
+
+    private function parentPattern(string $pattern): string
+    {
+        $parts = Vector::new(explode('/', $pattern));
+        $skipCount = (strpos($parts[-1], '}') > 0) ? 2 : 1;
+        $parts = $parts->skipLast($skipCount);
+        if (count($parts) === 0) {
+            throw new \Exception("Resource-name pattern '{$pattern}' has no parent.");
+        }
+        return $parts->join('/');
     }
 
     public function packageFullName(string $typeName): string

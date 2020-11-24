@@ -72,6 +72,14 @@ final class VectorTest extends TestCase
         $this->assertFalse(Vector::new([1, Vector::new([1])])->isEqualTo(Vector::new([1, Vector::new(['1'])])));
     }
 
+    public function testIndex(): void
+    {
+        $this->assertEquals(1, Vector::new([1, 2])[0]);
+        $this->assertEquals(2, Vector::new([1, 2])[1]);
+        $this->assertEquals(1, Vector::new([1, 2])[-2]);
+        $this->assertEquals(2, Vector::new([1, 2])[-1]);
+    }
+
     public function testPrepend(): void
     {
         $v0 = Vector::new([]);

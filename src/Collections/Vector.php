@@ -116,13 +116,13 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /** @inheritDoc */
     public function offsetExists($offset): bool
     {
-        return isset($this->data[$offset]);
+        return isset($this->data[$offset < 0 ? count($this->data) + $offset : $offset]);
     }
 
     /** @inheritDoc */
     public function offsetGet($offset)
     {
-        return $this->data[$offset];
+        return $this->data[$offset < 0 ? count($this->data) + $offset : $offset];
     }
 
     /** @inheritDoc */

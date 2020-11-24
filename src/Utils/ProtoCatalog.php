@@ -32,6 +32,9 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
     public Map $resourcesByType;
 
+    /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by pattern. First pattern wins, if duplicates. */
+    public Map $resourcesByPattern;
+
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
         return Vector::new($desc->getNestedType())
@@ -57,6 +60,11 @@ class ProtoCatalog
         $fileResourceDefs = $fileDescs
             ->flatMap(fn($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
         $resourceDefs = $messagsResourceDefs->concat($fileResourceDefs);
-        $this->resourceByType = $resourceDefs->toMap(fn($x) => $x->getType());
+        $this->resourcesByType = $resourceDefs->toMap(fn($x) => $x->getType());
+        // Use 'distinct()' here to keep just the first resource if there are multiple resources with the same pattern.
+        $this->resourcesByPattern = $resourceDefs->flatMap(fn($res) =>
+                Vector::new($res->getPattern())->map(fn($pattern) => [$pattern, $res]))
+            ->distinct(fn($x) => $x[0])
+            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
     }
 }
