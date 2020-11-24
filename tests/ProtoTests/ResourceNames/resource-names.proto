@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package testing.resourcenames;
+
+option php_namespace = "Testing\\ResourceNames";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/resource.proto";
+import "google/api/field_behavior.proto";
+
+service ResourceNames {
+  option (google.api.default_host) = "resourcenames.example.com";
+
+  rpc SinglePatternMethod(SinglePattern) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:singlePatternMethod"
+      body: "*"
+    };
+  }
+
+  rpc MultiPatternMethod(MultiPattern) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:multiPatternMethod"
+      body: "*"
+    };
+  }
+}
+
+message SinglePattern {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/SinglePattern"
+    pattern: "items1/{item1_id}/items2/{item2_id}"
+    name_field: "real_name"
+  };
+  // Test non-standard field name.
+  string real_name = 1;
+}
+
+message MultiPattern {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/MultiPattern"
+    pattern: "items1/{item1_id}/items2/{item2_id}" // Test duplicate pattern, also in SinglePattern
+    pattern: "items3/{item3_id}"
+    pattern: "items4/{item4_id}/items5/{item5_id}/items6/{item6_id}"
+  };
+  string name = 1;
+}
+
+message Response {
+}

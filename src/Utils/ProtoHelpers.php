@@ -142,8 +142,16 @@ class ProtoHelpers
      *
      * @return Vector Will be an empty Vector if the option does not exist.
      */
-    public static function getCustomOptionRepeated($message, int $optionId): Vector
+    public static function getCustomOptionRepeated($message, int $optionId, ?string $msgClass = null): Vector
     {
-        return static::getCustomOptionRaw(static::conformMessage($message), $optionId, true);
+        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true);
+        if (!is_null($msgClass)) {
+            $result = $result->map(function($x) use($msgClass) {
+                $msg = new $msgClass();
+                $msg->mergeFromString($x);
+                return $msg;
+            });
+        }
+        return $result;
     }
 }

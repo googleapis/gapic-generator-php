@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Api\ResourceDescriptor;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Collections\Map;
 use Google\Generator\Utils\ProtoHelpers;
@@ -25,10 +26,11 @@ use Google\Protobuf\Internal\DescriptorProto;
 
 class ProtoCatalog
 {
-    /**
-     * @var Map *Readonly* Map<string, DescriptorProto> of all proto msgs by full name.
-     */
+    /** @var Map *Readonly* Map<string, DescriptorProto> of all proto msgs by full name. */
     public Map $msgsByFullname;
+
+    /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
+    public Map $resourcesByType;
 
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
@@ -48,5 +50,13 @@ class ProtoCatalog
             ->flatMap(fn($x) => Vector::new($x->getMessageType()))
             ->flatMap(fn($x) => static::msgPlusNested($x));
         $this->msgsByFullname = $allMsgs->toMap(fn($x) => '.' . $x->desc->getFullName());
+
+        $messagsResourceDefs = $allMsgs
+            ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
+            ->filter(fn($x) => !is_null($x));
+        $fileResourceDefs = $fileDescs
+            ->flatMap(fn($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
+        $resourceDefs = $messagsResourceDefs->concat($fileResourceDefs);
+        $this->resourceByType = $resourceDefs->toMap(fn($x) => $x->getType());
     }
 }

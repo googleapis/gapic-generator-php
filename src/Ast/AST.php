@@ -211,6 +211,27 @@ abstract class AST
     }
 
     /**
+     * Create an interpolated string, using double quotes as delimiters.
+     *
+     * @param string $value The value of the string.
+     *
+     * @return Expression
+     */
+    public static function interpolatedString(string $value): Expression
+    {
+        return new class($value) extends Expression {
+            public function __construct($value)
+            {
+                $this->value = $value;
+            }
+            public function toCode(): string
+            {
+                return '"' . $this->value . '"';
+            }
+        };
+    }
+
+    /**
      * Create a PHP variable.
      *
      * @param string $name The name of the variable, without leading '$'.
@@ -239,6 +260,27 @@ abstract class AST
             public function toCode(): string
             {
                 return 'return ' . static::toPhp($this->expr);
+            }
+        };
+    }
+
+    /**
+     * Create a 'throw' statement, throwing the specified expression.
+     *
+     * @param Expression $expr Expression to throw.
+     *
+     * @return AST
+     */
+    public static function throw(Expression $expr): AST
+    {
+        return new class($expr) extends AST {
+            public function __construct($expr)
+            {
+                $this->expr = $expr;
+            }
+            public function toCode(): string
+            {
+                return 'throw ' . static::toPhp($this->expr);
             }
         };
     }
@@ -581,21 +623,24 @@ abstract class AST
      *
      * @param Expression $expr The expression to foreach over.
      * @param Variable $var The variable into which each element is placed.
+     * @param Variable $indexVar Optional; The index variable, if required.
      *
      * @return Callable The returned Callable returns a foreach statement once called with the foreach body code.
      */
-    public static function foreach(Expression $expr, Variable $var): Callable
+    public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): Callable
     {
-        return fn(...$code) => new class($expr, $var, $code) extends AST {
-            public function __construct($expr, $var, $code)
+        return fn(...$code) => new class($expr, $var, $indexVar, $code) extends AST {
+            public function __construct($expr, $var, $indexVar, $code)
             {
                 $this->expr = $expr;
                 $this->var = $var;
+                $this->indexVar = $indexVar;
                 $this->code = AST::block(...$code);
             }
             public function toCode(): string
             {
-                return 'foreach (' . static::toPhp($this->expr) . ' as ' . static::toPhp($this->var) . ") {\n" .
+                $index = is_null($this->indexVar) ? '' : (static::toPhp($this->indexVar) . ' => ');
+                return 'foreach (' . static::toPhp($this->expr) . ' as ' . $index . static::toPhp($this->var) . ") {\n" .
                     static::toPhp($this->code) .
                     "}\n";
             }

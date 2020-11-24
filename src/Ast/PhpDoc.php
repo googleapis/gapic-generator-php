@@ -234,7 +234,7 @@ abstract class PhpDoc
             }
             protected function toLines(Map $info): Vector
             {
-                $doc = is_null($this->doc) ? '' : ' ' . $this->doc->toLines(Map::new())->join(' ');
+                $doc = is_null($this->doc) ? '' : (' ' . $this->doc->toLines(Map::new())->join(' '));
                 return Vector::new(["@throws {$this->type->toCode()}{$doc}"]);
             }
         };
@@ -244,19 +244,22 @@ abstract class PhpDoc
      * Add a @return tag to the PHP doc block.
      *
      * @param ResolvedType $type The type of the value that is returned.
+     * @param ?PhpDoc $doc Optional; Documentation for the return value.
      *
      * @return PhpDoc
      */
-    public static function return(ResolvedType $type): PhpDoc
+    public static function return(ResolvedType $type, ?PhpDoc $doc = null): PhpDoc
     {
-        return new class($type) extends PhpDoc {
-            public function __construct($type)
+        return new class($type, $doc) extends PhpDoc {
+            public function __construct($type, $doc)
             {
                 $this->type = $type;
+                $this->doc = $doc;
             }
             protected function toLines(Map $info): Vector
             {
-                return Vector::new(["@return {$this->type->toCode()}"]);
+                $doc = is_null($this->doc) ? '' : (' ' . $this->doc->toLines(Map::new())->join(' '));
+                return Vector::new(["@return {$this->type->toCode()}{$doc}"]);
             }
         };
     }

@@ -18,6 +18,9 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
+use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
@@ -88,6 +91,9 @@ class ServiceDetails {
     /** @var bool *Readonly* This service contains at least one LRO method. */
     public bool $hasLro;
 
+    /** @var Set *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
+    public Vector $resourceParts;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -118,6 +124,24 @@ class ServiceDetails {
         $this->filePath = $fileDesc->getName();
         $this->unitTestGroupName = strtolower($desc->getName());
         $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
+        // Resource-names
+        // TODO: Support child-type references.
+        // TODO: Wildcard patterns.
+        $messageResourceDefs = $this->methods
+            ->map(fn($x) => ProtoHelpers::getCustomOption($x->inputMsg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
+            ->filter(fn($x) => !is_null($x));
+        $refResourceDefs = $this->methods
+            ->flatMap(fn($x) => $x->allFields)
+            ->map(fn($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+            ->filter(fn($x) => !is_null($x))
+            ->map(fn($x) => $catalog->resourcesByType[$x->getType()]);
+        $resourceDefs = $messageResourceDefs
+            ->concat($refResourceDefs)
+            ->map(fn($res) => new ResourceDetails($res));
+        $this->resourceParts = $resourceDefs
+            ->concat($resourceDefs->flatMap(fn($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
+            ->distinct(fn($x) => $x->getNameCamelCase())
+            ->orderBy(fn($x) => $x->getNameCamelCase());
     }
 
     public function packageFullName(string $typeName): string
