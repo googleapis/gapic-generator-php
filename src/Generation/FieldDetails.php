@@ -64,7 +64,7 @@ class FieldDetails
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
-        $this->docLines = $docLinesOverride ?? $field->leadingComments;
+        $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
     }
 
     public function testValue(?string $nameOverride = null)
