@@ -125,8 +125,9 @@ class ServiceDetails {
         $this->unitTestGroupName = strtolower($desc->getName());
         $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
         // Resource-names
+        // Wildcard patterns are ignored.
+        // A resource-name which has just a single wild-card pattern is ignored.
         // TODO: Support child-type references.
-        // TODO: Wildcard patterns.
         $messageResourceDefs = $this->methods
             ->map(fn($x) => ProtoHelpers::getCustomOption($x->inputMsg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
             ->filter(fn($x) => !is_null($x));
@@ -139,6 +140,7 @@ class ServiceDetails {
             ->concat($refResourceDefs)
             ->map(fn($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
+            ->filter(fn($x) => $x->patterns->any())
             ->concat($resourceDefs->flatMap(fn($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
             ->distinct(fn($x) => $x->getNameCamelCase())
             ->orderBy(fn($x) => $x->getNameCamelCase());
