@@ -25,6 +25,20 @@ service ResourceNames {
       body: "*"
     };
   }
+
+  rpc WildcardMethod(WildcardPattern) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:wildcardMethod"
+      body: "*"
+    };
+  }
+
+  rpc WildcardMultiMethod(WildcardMultiPattern) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:wildcardMultiMethod"
+      body: "*"
+    };
+  }
 }
 
 message SinglePattern {
@@ -46,6 +60,25 @@ message MultiPattern {
   };
   string name = 1;
 }
+
+message WildcardPattern {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/WildcardPattern"
+    pattern: "*" // Test single wildcard pattern
+  };
+  string name = 1;
+}
+
+message WildcardMultiPattern {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/WildcardMultiPattern"
+    pattern: "items1/{items1_id}"
+    pattern: "*" // Test wildcard pattern among non-wildcard patterns
+    pattern: "items2/{items2_id}"
+  };
+  string name = 1;
+}
+
 
 message Response {
 }

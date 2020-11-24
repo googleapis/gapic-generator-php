@@ -40,7 +40,9 @@ class ResourceDetails implements ResourcePart
         $this->templateProperty = Ast::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase('get_' . $typeParts[1]) . 'NameTemplate');
         $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
-        $this->patterns = Vector::new($desc->getPattern())->map(fn($x) => new ResourcePatternDetails($x));
+        $this->patterns = Vector::new($desc->getPattern())
+            ->filter(fn($x) => $x !== '*')
+            ->map(fn($x) => new ResourcePatternDetails($x));
     }
 
     /** @var string The type name (unique resource name) of this resource. */
