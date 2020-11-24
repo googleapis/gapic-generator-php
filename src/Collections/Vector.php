@@ -303,17 +303,30 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function distinct(): Vector
+    public function distinct(?Callable $fnBy = null): Vector
     {
         $set = Set::New();
         $data = [];
         foreach ($this->data as $item) {
-            if (!$set[$item]) {
-                $set = $set->add($item);
+            $by = is_null($fnBy) ? $item : $fnBy($item);
+            if (!$set[$by]) {
+                $set = $set->add($by);
                 $data[] = $item;
             }
         }
         return new Vector($data);
+    }
+
+    public function orderBy(?Callable $fnBy = null): Vector
+    {
+        $toOrder = is_null($fnBy) ?
+            $this->map(fn($x, $index) => [$index, $x, $x])->toArray() :
+            $this->map(fn($x, $index) => [$index, $fnBy($x), $x])->toArray();
+        usort($toOrder, function($a, $b) {
+            $result = $this->compare($a[1], $b[1]);
+            return $result === 0 ? $a[0] <=> $b[0] : $result;
+        });
+        return (new Vector($toOrder))->map(fn($x) => $x[2]);
     }
 
     /**

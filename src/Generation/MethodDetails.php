@@ -24,6 +24,7 @@ use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ServerStream;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
 use Google\Generator\Ast\AST;
@@ -270,6 +271,9 @@ abstract class MethodDetails
     /** @var string *Readonly* The name of the test method testing the exceptional case. */
     public string $testExceptionMethodName;
 
+    /** @var DescriptorProto *Readonly* The input proto msg descriptor proto of this method. */
+    public DescriptorProto $inputMsg;
+
     /** @var Type *Readonly* The type of the method request message. */
     public Type $requestType;
 
@@ -278,6 +282,9 @@ abstract class MethodDetails
 
     /** @var Type *Readonly* The return type of the PHP method. */
     public Type $methodReturnType;
+
+    /** @var Vector *Readonly* Vector of FieldDetails; all request fields. */
+    public Vector $allFields;
 
     /** @var Vector *Readonly* Vector of FieldDetails; all required request fields. */
     public Vector $requiredFields;
@@ -300,18 +307,18 @@ abstract class MethodDetails
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
         $catalog = $svc->catalog;
-        $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+        $this->inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
         $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
         $this->name = $desc->getName();
         $this->methodName = Helpers::toCamelCase($this->name);
         $this->testSuccessMethodName = $this->methodName . 'Test';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
-        $this->requestType = Type::fromMessage($inputMsg->desc);
+        $this->requestType = Type::fromMessage($this->inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
         $this->methodReturnType = $this->responseType;
-        $allFields = Vector::new($inputMsg->getField())->map(fn($x) => new FieldDetails($x));
-        $this->requiredFields = $allFields->filter(fn($x) => $x->isRequired);
-        $this->optionalFields = $allFields->filter(fn($x) => !$x->isRequired);
+        $this->allFields = Vector::new($this->inputMsg->getField())->map(fn($x) => new FieldDetails($x));
+        $this->requiredFields = $this->allFields->filter(fn($x) => $x->isRequired);
+        $this->optionalFields = $this->allFields->filter(fn($x) => !$x->isRequired);
         $this->docLines = $desc->leadingComments;
         $http = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
         if (is_null($http)) {

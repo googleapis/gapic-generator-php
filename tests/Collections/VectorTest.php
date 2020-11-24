@@ -153,6 +153,22 @@ final class VectorTest extends TestCase
         $this->assertEquals([1, 2, 3], $v->toArray());
     }
 
+    public function testDistinctBy(): void
+    {
+        $v = Vector::new(['a', 'b', 'cc', 'd', 'eee', 'ff']);
+        $v = $v->distinct(fn($x) => strlen($x));
+        $this->assertEquals(['a', 'cc', 'eee'], $v->toArray());
+    }
+
+    public function testOrderBy(): void
+    {
+        $v = Vector::new(['a', 'b', 'cc', 'd', 'eee', 'ff']);
+        $v = $v->orderBy(fn($x) => strlen($x));
+        $this->assertEquals(['a', 'b', 'd', 'cc', 'ff', 'eee'], $v->toArray());
+        $v = $v->orderBy();
+        $this->assertEquals(['a', 'b', 'cc', 'd', 'eee', 'ff'], $v->toArray());
+    }
+
     public function testTake(): void
     {
         $v = Vector::new([1, 2, 3]);
