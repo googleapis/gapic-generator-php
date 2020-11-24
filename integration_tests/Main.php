@@ -35,6 +35,7 @@ $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicBidiStreaming/basic-bid
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicServerStreaming/basic-server-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicClientStreaming/basic-client-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/ResourceNames/resource-names.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/ProtoTests/ProtoDocs/proto-docs.proto')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");

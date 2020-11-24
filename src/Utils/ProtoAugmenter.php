@@ -51,6 +51,7 @@ class ProtoAugmenter
     private static function augmentFile(FileDescriptorProto $fileDesc)
     {
         $fnLeadingComments = fn($x) => $x->getLeadingComments();
+        $fnTrailingComments = fn($x) => $x->getTrailingComments();
 
         $sci = $fileDesc->getSourceCodeInfo();
         $locsByPath = Vector::new($sci->getLocation())
@@ -71,7 +72,7 @@ class ProtoAugmenter
         // Messages
         $mergeMessage = null;
         $mergeMessage = function(Vector $messagePath, DescriptorProto $message, Vector $outerMsgs)
-                use(&$mergeMessage, $locsByPath, $fnLeadingComments, $fileDesc) {
+                use(&$mergeMessage, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fileDesc) {
             // Create higher-level message descriptor, and link in both directions.
             $message->desc = Descriptor::buildFromProto($message, $fileDesc, $outerMsgs->join('.'));
             $message->desc->underlyingProto = $message;
@@ -87,6 +88,7 @@ class ProtoAugmenter
                 $fieldPath = $messagePath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
                 $fieldLocations = $locsByPath[$fieldPath];
                 $field->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
+                $field->trailingComments = static::getComments($fieldLocations, $fnTrailingComments);
             }
             foreach ($message->getNestedType() as $nestedMessageIndex => $nestedMessage) {
                 $nestedMessagePath = $messagePath->concat(Vector::new([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
