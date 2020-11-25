@@ -53,6 +53,9 @@ abstract class AST
     /** @var string Constant to reference `is_null`. */
     public const IS_NULL = "\0is_null";
 
+    /** @var string Constant to reference `array_merge`. */
+    public const ARRAY_MERGE = "\0array_merge";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';

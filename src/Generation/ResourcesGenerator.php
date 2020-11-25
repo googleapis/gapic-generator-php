@@ -91,6 +91,13 @@ class ResourcesGenerator
                     'method' => $method->restMethod,
                     'uriTemplate' => $method->restUriTemplate,
                     'body' => $method->restBody,
+                    'placeholders' => count($method->restRoutingHeaders) === 0 ? null : AST::array(
+                        $method->restRoutingHeaders
+                            ->mapValues(fn($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
+                            ->values()
+                            ->orderBy(fn($x) => $x[0])
+                            ->toArray(fn($x) => $x[0], fn($x) => $x[1])
+                    )
                 ])
             );
         $return = AST::return(
@@ -150,7 +157,7 @@ class ResourcesGenerator
                         $method->name,
                         ['timeout_millis' => 60_000,
                     ] + ($method->isStreaming() ? [] : [
-                        'retry_codes_name' => 'non_idempotent',
+                        'retry_codes_name' => $method->restMethod === 'get' ? 'idempotent' : 'non_idempotent',
                         'retry_params_name' => 'default',
                     ])];
                 } else {

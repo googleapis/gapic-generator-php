@@ -24,6 +24,7 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
@@ -61,7 +62,7 @@ class GapicClientGenerator
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
-        $this->ctx->type(Type::fromName(\Google\ApiCore\RequestParamsHeaderDescriptor::class));
+        $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
         $this->ctx->type($this->serviceDetails->grpcClientType);
         if ($this->serviceDetails->hasLro) {
@@ -437,7 +438,11 @@ class GapicClientGenerator
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
+        $requestParams = AST::var('requestParams');
         $isStreamedRequest = $method->methodType === MethodDetails::BIDI_STREAMING || $method->methodType === MethodDetails::CLIENT_STREAMING;
+        // TODO(vNext): Only producing routing headers when there is only a single routing element may be incorrect.
+        [$restRoutingKey, $restRoutingGetters] = count($method->restRoutingHeaders) !== 1 ? [null, null] :
+            [$method->restRoutingHeaders->keys()[0], $method->restRoutingHeaders->values()[0]];
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
@@ -449,6 +454,17 @@ class GapicClientGenerator
                     Vector::zip($method->requiredFields, $required, fn($field, $param) => AST::call($request, $field->setter)($param)),
                     $method->optionalFields->map(fn($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
                         ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
+                    is_null($restRoutingKey) ? null : Vector::new([
+                        AST::assign($requestParams, AST::new($this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class)))(
+                            AST::array([$restRoutingKey => $restRoutingGetters->reduce($request,
+                                fn($acc, $getterName) => AST::call($acc, AST::method($getterName))())])
+                        )),
+                        AST::assign($optionalArgs->var['headers'], AST::ternary(
+                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
+                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                            $requestParams->getHeader()
+                        ))
+                    ])
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))
