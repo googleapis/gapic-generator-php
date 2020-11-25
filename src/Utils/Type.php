@@ -23,6 +23,7 @@ use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ProtoCatalog;
 
 /** A fully-specified PHP type. */
 class Type implements Equality
@@ -95,7 +96,7 @@ class Type implements Equality
      *
      * @return Type
      */
-    public static function fromField(FieldDescriptor $desc): Type
+    public static function fromField(ProtoCatalog $catalog, FieldDescriptor $desc): Type
     {
         switch ($desc->getType()) {
             case GPBType::INT32: // 5
@@ -105,7 +106,7 @@ class Type implements Equality
             case GPBType::STRING: // 9
                 return static::string();
             case GPBType::MESSAGE: // 11
-                return static::fromMessage($desc->getMessage());
+                return static::fromMessage($catalog->msgsByFullname[$desc->getMessageType()]->desc);
             default:
                 throw new \Exception("Cannot get field type of type: {$desc->getType()}");
         }

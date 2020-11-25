@@ -22,6 +22,7 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\FieldDescriptorProto;
@@ -53,13 +54,13 @@ class FieldDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
-    public function __construct(FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
+    public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->desc = $field;
         $desc = $field->desc;
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
-        $this->type = Type::fromField($desc);
+        $this->type = Type::fromField($catalog, $desc);
         $this->getter = new PhpMethod($desc->getGetter());
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)

@@ -277,6 +277,22 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     }
 
     /**
+     * Reduce this vector to a value.
+     *
+     * @param mixed $value The initial value to reduce from.
+     * @param Callable $fnReducer The reducer function to call for each item in this vector.
+     *
+     * @return mixed
+     */
+    public function reduce($value, Callable $fnReducer)
+    {
+        foreach ($this->data as $item) {
+            $value = $fnReducer($value, $item);
+        }
+        return $value;
+    }
+
+    /**
      * Group elements of this vector using a key function.
      *
      * @param Callable $fnKey The function to return a group key for each element.

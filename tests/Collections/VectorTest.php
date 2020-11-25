@@ -144,6 +144,11 @@ final class VectorTest extends TestCase
             Vector::new([Vector::new(['a', 'b']), Vector::new(['c', 'd'])])->flatten()->toArray());
     }
 
+    public function testReduce(): void
+    {
+        $this->assertEquals(24, Vector::new([1, 2, 3, 4])->reduce(1, fn($acc, $x) => $acc * $x));
+    }
+
     public function testGroupBy(): void
     {
         $v = Vector::new(['1:a', '2:b', '2:c', '3:d', '3:e', '3:f']);
