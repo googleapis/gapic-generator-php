@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package testing.keywords;
+
+option php_namespace = "Testing\\Keywords";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/resource.proto";
+
+service Keywords {
+  option (google.api.default_host) = "keywords.example.com";
+
+  rpc Method1(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
+  }
+
+  rpc Method2(Resource) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:method2"
+      body: "*"
+    };
+  }
+}
+
+message Resource {
+  option (google.api.resource) = {
+    type: "keywords.example.com/Resource"
+    pattern: "items/{item_id}"
+    name_field: "while"
+  };
+  string while = 1;
+}
+
+message Request {
+  string function = 1 [(google.api.resource_reference).type = "keywords.example.com/Resource"];
+  int32 switch = 2;
+  string request = 3; // Also check a field named the same as the enclosing message.
+}
+
+message Response{
+}
