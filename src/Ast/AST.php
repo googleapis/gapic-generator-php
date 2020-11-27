@@ -217,7 +217,7 @@ abstract class AST
     }
 
     /**
-     * Create a literal expression. The value specified is output exactly is-as.
+     * Create a literal expression. The value specified is output exactly as-is.
      *
      * @param string $value The value of the literal.
      *
