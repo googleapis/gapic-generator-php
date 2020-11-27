@@ -118,7 +118,7 @@ abstract class MethodDetails
         $pageToken = $inputMsg->desc->getFieldByName('page_token');
         $nextPageToken = $outputMsg->desc->getFieldByName('next_page_token');
         $resources = $outputMsg->desc->getFieldByNumber(1);
-        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken)) {
+        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources)) {
             return null;
         } else {
             if ($pageSize->isRepeated() || $pageSize->getType() !== GPBType::INT32) {
@@ -130,7 +130,11 @@ abstract class MethodDetails
             if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
                 throw new \Exception("next_page_token field must be of type string.");
             }
-            if (!$resources->isRepeated() || $resources->isMap()) {
+            // TODO: Currently the proto descriptors are constructed incorrectly, meaning that some of their
+            // internal details are not complete. This means ->isMap() cannot currently be called.
+            // This will be fixed in a near-future PR.
+            //if (!$resources->isRepeated() || $resources->isMap()) {
+            if (!$resources->isRepeated()) {
                 throw new \Exception("Item resources field must be a repeated field with field-number 1.");
             }
             return new class($svc, $desc, $pageSize, $pageToken, $nextPageToken, $resources) extends MethodDetails {

@@ -168,7 +168,7 @@ class FieldDetails
                 $prefix = is_null($nameOverride) ? $this->camelName : Helpers::toCamelCase($nameOverride);
                 return $prefix . $javaHash;
             case GPBType::MESSAGE: // 11
-                return AST::new($ctx->type(Type::fromField($this->catalog, $this->desc->desc)))();
+                return AST::new($ctx->type(Type::fromField($this->catalog, $this->desc->desc, false)))();
             case GPBType::BYTES: // 12
                 $v = $javaHashCode($name) & 0xff;
                 return strval($v <= 0x7f ? $v : $v - 0x100);
