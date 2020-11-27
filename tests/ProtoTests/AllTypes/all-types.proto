@@ -8,6 +8,7 @@ import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/resource.proto";
 import "google/api/field_behavior.proto";
+import "google/longrunning/operations.proto";
 
 service AllTypes {
   option (google.api.default_host) = "alltypes.example.com";
@@ -19,7 +20,18 @@ service AllTypes {
     };
   }
 
-  // TODO: test LRO, paginated, and server-streaming RPCs
+  rpc MethodLro(Request) returns(google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/path:methodLro"
+      body: "*"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "LroResponse"
+      metadata_type: "LroMetadata"
+    };
+  }
+
+  // TODO: test paginated, and server-streaming RPCs
 }
 
 // TODO: test non-nested message and enum fields.
@@ -124,4 +136,10 @@ message Request {
 }
 
 message Response {
+}
+
+message LroResponse {
+}
+
+message LroMetadata {
 }
