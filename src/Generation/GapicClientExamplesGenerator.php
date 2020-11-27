@@ -20,56 +20,60 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\GPBType;
 
 class GapicClientExamplesGenerator
 {
     public function __construct(ServiceDetails $serviceDetails)
     {
         $this->serviceDetails = $serviceDetails;
+        // Create a separate context, as this code isn't part of the generated client.
+        $this->ctx = new SourceFileContext('');
     }
 
     private ServiceDetails $serviceDetails;
+    private SourceFileContext $ctx;
 
     public function rpcMethodExample(MethodDetails $method): AST
     {
+        // Each GapicClientExamplesGenerator instance can only generate a single example.
         // TODO: Handle special arg types; e.g. resources.
-        // Create a separate context, as this code isn't part of the generated client.
-        $exampleCtx = new SourceFileContext('');
         switch ($method->methodType) {
             case MethodDetails::NORMAL:
-                $code = $this->rpcMethodExampleNormal($exampleCtx, $method);
+                $code = $this->rpcMethodExampleNormal($method);
                 break;
             case MethodDetails::LRO:
-                $code = $this->rpcMethodExampleLro($exampleCtx, $method);
+                $code = $this->rpcMethodExampleLro($method);
                 break;
             case MethodDetails::PAGINATED:
-                $code = $this->rpcMethodExamplePaginated($exampleCtx, $method);
+                $code = $this->rpcMethodExamplePaginated($method);
                 break;
             case MethodDetails::BIDI_STREAMING:
-                $code = $this->rpcMethodExampleBidiStreaming($exampleCtx, $method);
+                $code = $this->rpcMethodExampleBidiStreaming($method);
                 break;
             case MethodDetails::SERVER_STREAMING:
-                $code = $this->rpcMethodExampleServerStreaming($exampleCtx, $method);
+                $code = $this->rpcMethodExampleServerStreaming($method);
                 break;
             case MethodDetails::CLIENT_STREAMING:
-                $code = $this->rpcMethodExampleClientStreaming($exampleCtx, $method);
+                $code = $this->rpcMethodExampleClientStreaming($method);
                 break;
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
-        $exampleCtx->finalize(null);
+        $this->ctx->finalize(null);
         return $code;
     }
 
-    private function rpcMethodExampleNormal(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExampleNormal(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $response = AST::var('response');
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 AST::assign($response, AST::call($serviceClient, AST::method($method->methodName))($callVars))
             )->finally(
                 AST::call($serviceClient, AST::method('close'))()
@@ -77,7 +81,7 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExampleLro(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExampleLro(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
@@ -96,9 +100,9 @@ class GapicClientExamplesGenerator
                 '// handleError($error)'
             );
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 AST::assign($operationResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
                 $operationResponse->pollUntilComplete(),
                 $useResponseFn($operationResponse),
@@ -119,7 +123,7 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExamplePaginated(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExamplePaginated(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
@@ -127,9 +131,9 @@ class GapicClientExamplesGenerator
         $page = AST::var('page');
         $element = AST::var('element');
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 '// Iterate over pages of elements',
                 AST::assign($pagedResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
                 AST::foreach($pagedResponse->iteratePages(), $page)(
@@ -149,7 +153,7 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExampleBidiStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExampleBidiStreaming(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
@@ -158,10 +162,10 @@ class GapicClientExamplesGenerator
         $stream = AST::var('stream');
         $element = AST::var('element');
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
-                AST::assign($request, AST::new($ctx->type($method->requestType))()),
+                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
+                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                 Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write all requests to the server, then read all responses until the',
                 '// stream is complete',
@@ -195,16 +199,16 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExampleServerStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExampleServerStreaming(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $callVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
         $stream = AST::var('stream');
         $element = AST::var('element');
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
+                Vector::zip($callVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 '// Read all responses until the stream is complete',
                 AST::assign($stream, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
                 AST::foreach($stream->readAll(), $element)(
@@ -216,7 +220,7 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExampleClientStreaming(SourceFileContext $ctx, MethodDetails $method): AST
+    private function rpcMethodExampleClientStreaming(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
@@ -225,10 +229,10 @@ class GapicClientExamplesGenerator
         $stream = AST::var('stream');
         $result = AST::var('result');
         return AST::block(
-            AST::assign($serviceClient, AST::new($ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->type->defaultValue())),
-                AST::assign($request, AST::new($ctx->type($method->requestType))()),
+                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
+                AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                 Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write data to server and wait for a response',
                 AST::assign($requests, AST::array([$request])),

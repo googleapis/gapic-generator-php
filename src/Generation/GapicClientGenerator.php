@@ -38,6 +38,7 @@ use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
@@ -49,13 +50,11 @@ class GapicClientGenerator
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
-    private GapicClientExamplesGenerator $examples;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
-        $this->examples = new GapicClientExamplesGenerator($serviceDetails);
     }
 
     private function generateImpl(): PhpFile
@@ -86,6 +85,11 @@ class GapicClientGenerator
         return $this->ctx->finalize($file);
     }
 
+    private function examples(): GapicClientExamplesGenerator
+    {
+        return new GapicClientExamplesGenerator($this->serviceDetails);
+    }
+
     private function generateClass(): PhpClass
     {
         return AST::class($this->serviceDetails->gapicClientType)
@@ -97,7 +101,7 @@ class GapicClientGenerator
                     'calls that map to API methods. Sample code to get started:'
                 ])),
                 count($this->serviceDetails->methods) === 0 ? null :
-                    PhpDoc::example($this->examples->rpcMethodExample($this->serviceDetails->methods[0])),
+                    PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
                 count($this->serviceDetails->resourceParts) === 0 ? null :
                      PhpDoc::text(
                         'Many parameters require resource names to be formatted in a particular way. To assist' .
@@ -434,6 +438,36 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
+        $docType = function($field): ResolvedType {
+            if ($field->desc->desc->isRepeated()) {
+                if ($field->isEnum) {
+                    // TODO(vNext): Remove this unnecessary import.
+                    $this->ctx->type($field->typeSingular);
+                    return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
+                }
+                return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
+            } else {
+                if ($field->isEnum) {
+                    // TODO(vNext): Remove this unnecessary import.
+                    $this->ctx->type($field->type);
+                    return $this->ctx->type(Type::int());
+                } else {
+                    return $this->ctx->type($field->type);
+                }
+            }
+        };
+        $docExtra = function($field): Vector {
+            if ($field->isEnum) {
+                // TODO(vNext): Don't use a fully-qualified name here; and import correctly.
+                $enumType = $field->typeSingular->getFullname();
+                return Vector::new([
+                    "For allowed values, use constants defined on {@see {$enumType}}"
+                ]);
+            } else {
+                return Vector::new([]);
+            }
+        };
+
         $request = AST::var('request');
         $required = $method->requiredFields->map(fn($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
@@ -470,9 +504,9 @@ class GapicClientGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
-                PhpDoc::example($this->examples->rpcMethodExample($method), PhpDoc::text('Sample code:')),
-                $isStreamedRequest ? null : Vector::zip($method->requiredFields, $required,
-                    fn($field, $param) => PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines), $this->ctx->type($field->type))),
+                PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
+                $isStreamedRequest ? null : Vector::zip($method->requiredFields, $required, fn($field, $param) =>
+                    PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines->concat($docExtra($field))), $docType($field))),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
@@ -482,8 +516,9 @@ class GapicClientGenerator
                         ))) :
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
-                        $method->optionalFields->map(fn($x) =>
-                            PhpDoc::type(Vector::new([$this->ctx->type($x->type)]), $x->camelName, PhpDoc::preFormattedText($x->docLines))
+                        $method->optionalFields->map(fn($field) =>
+                            PhpDoc::type(Vector::new([$docType($field)]), $field->camelName,
+                                PhpDoc::preFormattedText($field->docLines->concat($docExtra($field))))
                         ),
                         $method->methodType === MethodDetails::SERVER_STREAMING ?
                             PhpDoc::type(

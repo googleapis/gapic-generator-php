@@ -76,8 +76,11 @@ abstract class AST
                 // Otherwise strings are treated as string literals.
                 return "'{$x}'";
             }
-        } elseif (is_numeric($x)) {
+        } elseif (is_int($x)) {
             return strval($x);
+        } elseif (is_float($x)) {
+            $result = strval($x);
+            return strpos($result, '.') === false ? $result . '.0' : $result;
         } elseif (is_bool($x)) {
             return $x ? 'true' : 'false';
         } elseif ($x instanceof PhpClassMember) {
@@ -209,6 +212,27 @@ abstract class AST
                 return $this->code
                     ->map(fn($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
+            }
+        };
+    }
+
+    /**
+     * Create a literal expression. The value specified is output exactly is-as.
+     *
+     * @param string $value The value of the literal.
+     *
+     * @return Expression
+     */
+    public static function literal(string $value): Expression
+    {
+        return new class($value) extends Expression {
+            public function __construct($value)
+            {
+                $this->value = $value;
+            }
+            public function toCode(): string
+            {
+                return $this->value;
             }
         };
     }
