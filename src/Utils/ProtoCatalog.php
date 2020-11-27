@@ -29,6 +29,9 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, DescriptorProto> of all proto msgs by full name. */
     public Map $msgsByFullname;
 
+    /** @var Map *Readonly* Map<string, EnumDescriptorProto> of all enums by faull name. */
+    public Map $enumsByFullname;
+
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
     public Map $resourcesByType;
 
@@ -53,6 +56,11 @@ class ProtoCatalog
             ->flatMap(fn($x) => Vector::new($x->getMessageType()))
             ->flatMap(fn($x) => static::msgPlusNested($x));
         $this->msgsByFullname = $allMsgs->toMap(fn($x) => '.' . $x->desc->getFullName());
+
+        $allEnums = $fileDescs
+            ->flatMap(fn($x) => Vector::new($x->getEnumType()))
+            ->concat($allMsgs->flatMap(fn($x) => Vector::new($x->getEnumType())));
+        $this->enumsByFullname = $allEnums->toMap(fn($x) => '.' . $x->desc->getFullName());
 
         $messagsResourceDefs = $allMsgs
             ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))

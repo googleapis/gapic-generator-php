@@ -218,7 +218,7 @@ class UnitTestsGenerator
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertEquals)($expectedResponse, $response),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
@@ -263,7 +263,7 @@ class UnitTestsGenerator
                 $transport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::try(
                     $client->instanceCall(AST::method($method->methodName))(...$requestVars),
                     '// If the $client method call did not throw, fail the test',
@@ -305,7 +305,7 @@ class UnitTestsGenerator
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
-                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->lroResponseType))()),
                 Vector::zip($method->lroResponseFields, $lroResponseVars, fn($f, $v) => $expectedResponse->instanceCall($f->setter)($v)),
                 AST::assign($anyResponse, AST::new($this->ctx->type(Type::fromName(Any::class)))()),
@@ -317,7 +317,7 @@ class UnitTestsGenerator
                 $operationsTransport->addResponse($completeOperation),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
@@ -380,7 +380,7 @@ class UnitTestsGenerator
                 $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
@@ -447,8 +447,7 @@ class UnitTestsGenerator
         $response = AST::var('response');
         $resources = AST::var('resources');
         $mockResourceElementValue =
-            $method->resourcesField->testValue($method->resourcesField->name . '_element') ??
-            AST::new($this->ctx->type($method->resourceType));
+            $method->resourcesField->testValue($this->ctx, $method->resourcesField->name . '_element', false);
         $actualRequests = AST::var('actualRequests');
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
@@ -470,7 +469,7 @@ class UnitTestsGenerator
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
                 AST::assign($resources , AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
@@ -527,7 +526,7 @@ class UnitTestsGenerator
                 ])),
                 '// Mock request',
                 Vector::zip($requestList, $requestsVarList, fn($request, $vars) => Vector::new([
-                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::assign($v[0], $f->testValue($v[1]))),
+                    Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::assign($v[0], $f->testValue($this->ctx, $v[1]))),
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     Vector::zip($method->requiredFields, $vars, fn($f, $v) => AST::call($request, $f->setter)($v[0])),
                 ])),
@@ -630,7 +629,7 @@ class UnitTestsGenerator
                     $transport->addResponse($x),
                 ])),
                 '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 ($this->assertInstanceOf)(AST::access($this->ctx->type(Type::fromName(ServerStream::class)), AST::CLS), $serverStream),
                 AST::assign($responses, AST::call(AST::ITERATOR_TO_ARRAY)($serverStream->readAll())),
@@ -679,7 +678,7 @@ class UnitTestsGenerator
                 $transport->setStreamingStatus($status),
                 ($this->assertTrue)($transport->isExhausted()),
                 '// Mock request',
-                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue())),
+                Vector::zip($method->requiredFields, $requestVars, fn($f, $v) => AST::assign($v, $f->testValue($this->ctx))),
                 AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))(...$requestVars)),
                 AST::assign($results, $serverStream->readAll()),
                 AST::try(

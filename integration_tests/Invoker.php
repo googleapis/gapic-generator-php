@@ -32,8 +32,8 @@ class Invoker
         $protobuf = "{$rootDir}/protobuf/src/";
         $googleapis = "{$rootDir}/googleapis/";
         $input = "{$rootDir}/{$protoPath}";
-        $protocCmdLine = "{$protoc} --include_imports --include_source_info -o {$descFilename} " .
-            "-I {$googleapis} -I {$protobuf} -I {$rootDir} {$input} 2>&1";
+        $protocCmdLine = "{$protoc} --include_imports --include_source_info --experimental_allow_proto3_optional " .
+            "-o {$descFilename}  -I {$googleapis} -I {$protobuf} -I {$rootDir} {$input} 2>&1";
         static::execCmd($protocCmdLine, 'protoc');
 
         $rootOutDir = sys_get_temp_dir() . '/php-gapic-' . mt_rand(0, (int)1e8);

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Protobuf\Internal\EnumDescriptor;
+use Google\Protobuf\Internal\FileDescriptor;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\DescriptorProto;
@@ -32,6 +34,7 @@ class ProtoAugmenter
     private const MESSAGE_FIELD = 2;
     private const MESSAGE_MESSAGE = 3;
     private const MESSAGE_ENUM = 4;
+    private const ENUM = 5;
     private const SERVICE = 6;
     private const SERVICE_METHOD = 2;
 
@@ -48,17 +51,17 @@ class ProtoAugmenter
         }
     }
 
-    private static function augmentFile(FileDescriptorProto $fileDesc)
+    private static function augmentFile(FileDescriptorProto $fileProto)
     {
         $fnLeadingComments = fn($x) => $x->getLeadingComments();
         $fnTrailingComments = fn($x) => $x->getTrailingComments();
 
-        $sci = $fileDesc->getSourceCodeInfo();
+        $sci = $fileProto->getSourceCodeInfo();
         $locsByPath = Vector::new($sci->getLocation())
             ->groupBy(fn($x) => Vector::new($x->getPath()));
 
-        // Services
-        foreach ($fileDesc->getService() as $serviceIndex => $service) {
+        // Handle top-level services:
+        foreach ($fileProto->getService() as $serviceIndex => $service) {
             $servicePath = Vector::new([static::SERVICE, $serviceIndex]);
             $serviceLocations = $locsByPath[$servicePath];
             $service->leadingComments = static::getComments($serviceLocations, $fnLeadingComments);
@@ -69,38 +72,70 @@ class ProtoAugmenter
             }
         }
 
-        // Messages
-        $mergeMessage = null;
-        $mergeMessage = function(Vector $messagePath, DescriptorProto $message, Vector $outerMsgs)
-                use(&$mergeMessage, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fileDesc) {
-            // Create higher-level message descriptor, and link in both directions.
-            $message->desc = Descriptor::buildFromProto($message, $fileDesc, $outerMsgs->join('.'));
-            $message->desc->underlyingProto = $message;
-            // Link proto comments.
-            $messageLocations = $locsByPath[$messagePath];
-            $message->leadingComments = static::getComments($messageLocations, $fnLeadingComments);
-            // Recurse into fields and nested msgs.
-            foreach ($message->getField() as $fieldIndex => $field) {
-                // Create higher-level field descriptor, and link in both directions.
-                $field->desc = $message->desc->getFieldByIndex($fieldIndex);
-                $field->desc->underlyingProto = $field;
-                // Link proto coments.
-                $fieldPath = $messagePath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
-                $fieldLocations = $locsByPath[$fieldPath];
-                $field->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
-                $field->trailingComments = static::getComments($fieldLocations, $fnTrailingComments);
-            }
-            foreach ($message->getNestedType() as $nestedMessageIndex => $nestedMessage) {
-                $nestedMessagePath = $messagePath->concat(Vector::new([static::MESSAGE_MESSAGE, $nestedMessageIndex]));
-                $mergeMessage($nestedMessagePath, $nestedMessage, $outerMsgs->append($message->getName()));
-            }
-            // TODO: enums
-        };
-        foreach ($fileDesc->getMessageType() as $messageIndex => $message) {
-            $mergeMessage(Vector::new([static::MESSAGE, $messageIndex]), $message, Vector::new());
-        }
+        // A FileDescriptor only includes msgs and enums, hence services are handled separately above.
+        $fileDesc = FileDescriptor::buildFromProto($fileProto);
 
-        // TODO: enums
+        $fnMergeEnums = function(Vector $path, int $pathId, $proto, $desc) use($locsByPath, $fnLeadingComments) {
+            if ($proto->hasEnumType()) {
+                $enums = Vector::zip(Vector::new($proto->getEnumType()), Vector::new($desc->getEnumType()));
+                foreach ($enums as $enumIndex => [$enumProto, $enumDesc]) {
+                    // Link proto and desc in both directions.
+                    $enumProto->desc = $enumDesc;
+                    $enumDesc->underlyingProto = $enumProto;
+                    // Link proto comments.
+                    $enumPath = $path->concat(Vector::new([$pathId, $enumIndex]));
+                    $enumLocations = $locsByPath[$enumPath];
+                    $enumProto->leadingComments = static::getComments($enumLocations, $fnLeadingComments);
+                }
+            }
+        };
+
+        $fnMergeMsgs = null;
+        $fnMergeMsgs = function(Vector $msgPath, DescriptorProto $msgProto, Descriptor $msgDesc)
+                use(&$fnMergeMsgs, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fnMergeEnums) {
+            // Link proto and desc in both directions.
+            $msgProto->desc = $msgDesc;
+            $msgDesc->underlyingProto = $msgProto;
+            // Link proto comments.
+            $msgLocations = $locsByPath[$msgPath];
+            $msgProto->leadingComments = static::getComments($msgLocations, $fnLeadingComments);
+            // Recurse into nested messages:
+            if ($msgProto->hasNestedType()) {
+                $nestedMsgs = Vector::zip(Vector::new($msgProto->getNestedType()), Vector::new($msgDesc->getNestedType()));
+                foreach ($nestedMsgs as $nestedMsgIndex => [$nestedMsgProto, $nestedMsgDesc]) {
+                    $nestedMsgPath = $msgPath->concat(Vector::new([static::MESSAGE_MESSAGE, $nestedMsgIndex]));
+                    $fnMergeMsgs($nestedMsgPath, $nestedMsgProto, $nestedMsgDesc);
+                }
+            }
+            // Handle fields:
+            if ($msgProto->hasField()) {
+                $fields = Vector::zip(Vector::new($msgProto->getField()), Vector::new($msgDesc->getField()));
+                foreach ($fields as $fieldIndex => [$fieldProto, $fieldDesc]) {
+                    // Link proto and desc in both directions.
+                    $fieldProto->desc = $fieldDesc;
+                    $fieldDesc->underlyingProto = $fieldProto;
+                    // Link proto comments.
+                    $fieldPath = $msgPath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
+                    $fieldLocations = $locsByPath[$fieldPath];
+                    $fieldProto->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
+                    $fieldProto->trailingComments = static::getComments($fieldLocations, $fnTrailingComments);
+                }
+            }
+            // Handle enums:
+            $fnMergeEnums($msgPath, static::MESSAGE_ENUM, $msgProto, $msgDesc);
+        };
+
+        // Handle top-level messages:
+        if ($fileProto->hasMessageType()) {
+            $msgs = Vector::zip(Vector::new($fileProto->getMessageType()), Vector::new($fileDesc->getMessageType()));
+            foreach ($msgs as $msgIndex => [$msgProto, $msgDesc]) {
+                $fnMergeMsgs(Vector::new([static::MESSAGE, $msgIndex]), $msgProto, $msgDesc);
+            }
+        }
+        // Handle top-level enums:
+        if ($fileProto->hasEnumType()) {
+            $fnMergeEnums(Vector::new([]), static::ENUM, $fileProto, $fileDesc);
+        }
     }
 
     private static function getComments(Vector $locations, Callable $fn): Vector
