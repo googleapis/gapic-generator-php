@@ -72,7 +72,7 @@ class ResourcesGenerator
                         $serviceDetails->methods
                             ->map(fn($x) => [$x->name, $perMethod($x)])
                             ->filter(fn($x) => count($x[1]) > 0)
-                            ->toMap(fn($x) => $x[0], fn($x) => AST::array($x[1]))
+                            ->toArray(fn($x) => $x[0], fn($x) => AST::array($x[1]))
                     )
                 ])
             ])
