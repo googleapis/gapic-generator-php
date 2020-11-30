@@ -20,7 +20,9 @@ namespace Google\Generator\Utils;
 
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\CodedInputStream;
+use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Protobuf\Internal\FileDescriptorProto;
+use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\GPBWire;
 use Google\Protobuf\Internal\HasPublicDescriptorTrait;
 use Google\Protobuf\Internal\Message;
@@ -47,6 +49,24 @@ class ProtoHelpers
         return Vector::new(explode('.', $fileDesc->getPackage()))
             ->map(fn($x) => strtoupper($x[0]) . substr($x, 1))
             ->join('\\');
+    }
+
+    /**
+     * Whether the specified field is a map.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param FieldDescriptor The field to check.
+     *
+     * @return bool
+     */
+    public static function isMap(ProtoCatalog $catalog, FieldDescriptor $desc): bool
+    {
+        if ($desc->getType() !== GPBType::MESSAGE) {
+            return false;
+        } else {
+            $msg = $catalog->msgsByFullname[$desc->getMessageType()];
+            return !is_null($msg->getOptions()) && $msg->getOptions()->getMapEntry();
+        }
     }
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,

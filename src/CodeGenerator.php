@@ -78,6 +78,11 @@ class CodeGenerator
     ) {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
+        // Create catalog of all protos and resources.
+        // Note: This constructs proto-descriptors in a slightly non-standard way, not using the
+        // DescriptorPool. Therefore the 'types' contained in descriptors are the proto full-name
+        // strings of types, rather than direct links to the types.
+        $catalog = new ProtoCatalog($fileDescs);
         // Create map of all files to generate, keyed by package name.
         $filesToGenerateSet = $filesToGenerate->toSet();
         $byPackage = $fileDescs
@@ -86,7 +91,6 @@ class CodeGenerator
         if (count($byPackage) === 0) {
             throw new \Exception('No packages specified to build');
         }
-        $catalog = new ProtoCatalog($fileDescs);
         // Generate files for each package.
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
