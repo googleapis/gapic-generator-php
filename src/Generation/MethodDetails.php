@@ -260,6 +260,9 @@ abstract class MethodDetails
         };
     }
 
+    /** @var ProtoCatalog The proto catalog. */
+    public ProtoCatalog $catalog;
+
     /** @var string *Readonly* The method type - e.g. normal, lro, server-streaming, ... */
     public string $methodType;
 
@@ -287,6 +290,9 @@ abstract class MethodDetails
     /** @var Type *Readonly* The return type of the PHP method. */
     public Type $methodReturnType;
 
+    /** @var Vector *Readonly* Vector of FieldDetails; all response fields. */
+    public Vector $responseFields;
+
     /** @var Vector *Readonly* Vector of FieldDetails; all request fields. */
     public Vector $allFields;
 
@@ -313,9 +319,9 @@ abstract class MethodDetails
 
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
-        $catalog = $svc->catalog;
-        $this->inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
-        $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
+        $this->catalog = $svc->catalog;
+        $this->inputMsg = $this->catalog->msgsByFullname[$desc->getInputType()];
+        $outputMsg = $this->catalog->msgsByFullname[$desc->getOutputType()];
         $this->name = $desc->getName();
         $this->methodName = Helpers::toCamelCase($this->name);
         $this->testSuccessMethodName = $this->methodName . 'Test';
@@ -323,7 +329,8 @@ abstract class MethodDetails
         $this->requestType = Type::fromMessage($this->inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
         $this->methodReturnType = $this->responseType;
-        $this->allFields = Vector::new($this->inputMsg->getField())->map(fn($x) => new FieldDetails($catalog, $x));
+        $this->responseFields = Vector::new($outputMsg->getField())->map(fn($x) => new FieldDetails($this->catalog, $x));
+        $this->allFields = Vector::new($this->inputMsg->getField())->map(fn($x) => new FieldDetails($this->catalog, $x));
         $this->requiredFields = $this->allFields->filter(fn($x) => $x->isRequired);
         $this->optionalFields = $this->allFields->filter(fn($x) => !$x->isRequired);
         $this->docLines = $desc->leadingComments;
@@ -347,7 +354,7 @@ abstract class MethodDetails
             $segments = Parser::parseSegments(str_replace(':', '/', substr($this->restUriTemplate, 1)));
             $this->restRoutingHeaders = Vector::new($segments)
                 ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-                ->toMap(fn($x) => $x->getKey(), function($x) use ($catalog) {
+                ->toMap(fn($x) => $x->getKey(), function($x) {
                     $fieldList = Vector::new(explode('.', $x->getKey()));
                     $msg = $this->inputMsg;
                     $result = [];
@@ -363,7 +370,7 @@ abstract class MethodDetails
                             if ($field->getType() !== GPBType::MESSAGE) {
                                 throw new \Exception("Field '{$fieldName}' must be of message type.");
                             }
-                            $msg = $catalog->msgsByFullname[$field->getMessageType()];
+                            $msg = $this->catalog->msgsByFullname[$field->getMessageType()];
                         }
                         $result[] = $field->getGetter();
                     }

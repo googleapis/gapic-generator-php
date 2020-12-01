@@ -48,24 +48,22 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Zip two Vectors, with optional mapping function. If the vectors are not the same
      * length, then the excess elements in the longer vector will be ignored.
      *
-     * @param Vector $a The first Vector to zip.
-     * @param Vector $b The second Vector to zip.
-     * @param ?Callable $fnMap The optional map function. This will be called with two
-     *     parameters, one element from each input vector; an optional third parameter
-     *     is the element index. If this function is omitted, then each element of the
-     *     output vector will contain an array of length two.
+     * Can take an arbitrary number of vectors to zip together, plus an optional map
+     * function as a final argument. This map function will be called with an argument
+     * from each zipped vector, plus an index argument.
      */
-    public static function zip(Vector $a, Vector $b, ?Callable $fnMap = null): Vector
+    public static function zip(...$args): Vector
     {
-        $count = min(count($a), count($b));
+        $fnMap = is_callable($args[count($args) - 1]) ? array_pop($args) : null;
+        $count = min(array_map(fn($x) => count($x), $args));
         $result = [];
-        if ($fnMap) {
+        if (!is_null($fnMap)) {
             for ($i = 0; $i < $count; $i++) {
-                $result[] = $fnMap($a[$i], $b[$i], $i);
+                $result[] = $fnMap(...(array_merge(array_map(fn($x) => $x[$i], $args), [$i])));
             }
         } else {
             for ($i = 0; $i < $count; $i++) {
-                $result[] = [$a[$i], $b[$i]];
+                $result[] = array_map(fn($x) => $x[$i], $args);
             }
         }
         return new Vector($result);

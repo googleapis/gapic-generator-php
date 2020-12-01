@@ -61,6 +61,10 @@ class FieldDetails
     /** @var bool *Readonly* Whether this field is an enum. */
     public bool $isEnum;
 
+    // TODO(vNext): Simplify unit-test response generation.
+    /** @Var bool *Readonly* Whether this field type is populated in a unit-test response. */
+    public bool $isInTestResponse;
+
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
@@ -78,6 +82,7 @@ class FieldDetails
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
         $this->isEnum = $field->getType() === GPBType::ENUM;
+        $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
     }
 
@@ -114,69 +119,6 @@ class FieldDetails
                 return AST::access($ctx->type(Type::fromField($this->catalog, $this->desc->desc)), AST::property($enumValueName));
             default:
                 throw new \Exception("No exampleValue for type: {$this->desc->getType()}");
-        }
-    }
-
-    public function testValue(SourceFileContext $ctx, ?string $nameOverride = null, ?bool $forceRepeated = null)
-    {
-        // Reproduce exactly the Java test value generation:
-        // https://github.com/googleapis/gapic-generator/blob/e3501faea84f61be2f59bd49a7740a486a02fa6b/src/main/java/com/google/api/codegen/util/testing/StandardValueProducer.java
-        // TODO(vNext): Make these more PHPish.
-
-        if ($forceRepeated === true || ($this->desc->desc->isRepeated() && $forceRepeated !== false)) {
-            return AST::array([]);
-        }
-
-        $javaHashCode = function(string $name) {
-            $javaHash = 0;
-            for ($i = 0; $i < strlen($name); $i++) {
-                $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;
-            }
-            return $javaHash > 0x7fffffff ? $javaHash -= 0x100000000 : $javaHash;
-        };
-
-        $name = $nameOverride ?? $this->desc->getName();
-        switch ($this->desc->getType()) {
-            case GPBType::DOUBLE: // 1
-            case GPBType::FLOAT: // 2
-                $v = (float)(int)($javaHashCode($name) / 10);
-                // See: https://docs.oracle.com/javase/7/docs/api/java/lang/Double.html#toString(double)
-                $vAbs = abs($v);
-                if ($vAbs >= 1e-3  && $vAbs < 1e7) {
-                    $s = sprintf('%.1F', $v);
-                } else {
-                    $s = sprintf('%.8E', $v);
-                    $s = str_replace('+', '', $s);
-                }
-                return AST::literal($s);
-            case GPBType::INT64: // 3
-            case GPBType::UINT64: // 4
-            case GPBType::INT32: // 5
-            case GPBType::FIXED64: // 6
-            case GPBType::FIXED32: // 7
-            case GPBType::UINT32: //13
-            case GPBType::SFIXED32: // 15
-            case GPBType::SFIXED64: // 16
-            case GPBType::SINT32: // 17
-            case GPBType::SINT64: // 18
-                $javaHash = $javaHashCode($name);
-                return $javaHash === -0x80000000 ? 0 : abs($javaHash);
-            case GPBType::BOOL: // 8
-                return $javaHashCode($name) % 2 === 0;
-            case GPBType::STRING: // 9
-                $javaHash = $javaHashCode($name);
-                $prefix = is_null($nameOverride) ? $this->camelName : Helpers::toCamelCase($nameOverride);
-                return $prefix . $javaHash;
-            case GPBType::MESSAGE: // 11
-                return AST::new($ctx->type(Type::fromField($this->catalog, $this->desc->desc, false)))();
-            case GPBType::BYTES: // 12
-                $v = $javaHashCode($name) & 0xff;
-                return strval($v <= 0x7f ? $v : $v - 0x100);
-            case GPBType::ENUM: // 14
-                $enumValueName = $this->catalog->enumsByFullname[$this->desc->desc->getEnumType()]->getValue()[0]->getName();
-                return AST::access($ctx->type(Type::fromField($this->catalog, $this->desc->desc)), AST::property($enumValueName));
-            default:
-                throw new \Exception("No testValue for type: {$this->desc->getType()}");
         }
     }
 }
