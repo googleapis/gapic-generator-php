@@ -32,4 +32,22 @@ class Helpers
         $s = implode('', array_map('ucwords', explode('_', $s)));
         return strtolower($s[0]) . substr($s, 1);
     }
+
+    public static function nsVersion(string $namespace): ?string
+    {
+        $parts = explode('\\', $namespace);
+        if (count($parts) > 1) {
+            $v = $parts[count($parts) - 1];
+            // Detected as a 'version' if it starts with 'v' or 'V', followed by a digit.
+            // Any other characters are allowed to follow.
+            if (strtoupper(substr($v, 0, 1)) === 'V')
+            {
+                $num = substr($v, 1, 1);
+                if (strlen($num) === 1 && ctype_digit($num)) {
+                    return $v;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -27,6 +27,7 @@ use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\GrpcServiceConfig;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
@@ -110,6 +111,8 @@ class CodeGenerator
         int $licenseYear,
         ?string $grpcServiceConfigJson
     ) {
+        $version = Helpers::nsVersion($namespace);
+        $version = is_null($version) ? '' : $version . '/';
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
         {
@@ -125,13 +128,13 @@ class CodeGenerator
                 $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["src/Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
+                yield ["src/{$version}Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
                 // Very thin service client wrapper, for manual code additions if required.
                 $ctx = new SourceFileContext($serviceDetails->emptyClientType->getNamespace(), $licenseYear);
                 $file = EmptyClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
-                yield ["src/{$serviceDetails->emptyClientType->name}.php", $code];
+                yield ["src/{$version}{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
                 $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace(), $licenseYear);
                 $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
@@ -140,18 +143,18 @@ class CodeGenerator
                 // TODO(vNext): Remove these non-standard 'use' ordering.
                 $code = Formatter::moveUseTo($code, $serviceDetails->emptyClientType->getFullname(true), 0);
                 $code = Formatter::moveUseTo($code, 'stdClass', -1);
-                yield ["tests/Unit/{$serviceDetails->unitTestsType->name}.php", $code];
+                yield ["tests/Unit/{$version}{$serviceDetails->unitTestsType->name}.php", $code];
                 // Resource: descriptor_config.php
                 $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
                 $code = Formatter::format($code);
-                yield ["src/resources/{$serviceDetails->descriptorConfigFilename}", $code];
+                yield ["src/{$version}resources/{$serviceDetails->descriptorConfigFilename}", $code];
                 // Resource: rest_client_config.php
                 $code = ResourcesGenerator::generateRestConfig($serviceDetails);
                 $code = Formatter::format($code);
-                yield ["src/resources/{$serviceDetails->restConfigFilename}", $code];
+                yield ["src/{$version}resources/{$serviceDetails->restConfigFilename}", $code];
                 // Resource: client_config.json
                 $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig);
-                yield ["src/resources/{$serviceDetails->clientConfigFilename}", $json];
+                yield ["src/{$version}resources/{$serviceDetails->clientConfigFilename}", $json];
             }
             // TODO: Further files, as required.
         }

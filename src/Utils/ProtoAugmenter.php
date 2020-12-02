@@ -63,11 +63,11 @@ class ProtoAugmenter
         // Handle top-level services:
         foreach ($fileProto->getService() as $serviceIndex => $service) {
             $servicePath = Vector::new([static::SERVICE, $serviceIndex]);
-            $serviceLocations = $locsByPath[$servicePath];
+            $serviceLocations = $locsByPath->get($servicePath, null);
             $service->leadingComments = static::getComments($serviceLocations, $fnLeadingComments);
             foreach ($service->getMethod() as $methodIndex => $method) {
                 $methodPath = $servicePath->concat(Vector::new([static::SERVICE_METHOD, $methodIndex]));
-                $methodLocations = $locsByPath[$methodPath];
+                $methodLocations = $locsByPath->get($methodPath, null);
                 $method->leadingComments = static::getComments($methodLocations, $fnLeadingComments);
             }
         }
@@ -84,7 +84,7 @@ class ProtoAugmenter
                     $enumDesc->underlyingProto = $enumProto;
                     // Link proto comments.
                     $enumPath = $path->concat(Vector::new([$pathId, $enumIndex]));
-                    $enumLocations = $locsByPath[$enumPath];
+                    $enumLocations = $locsByPath->get($enumPath, null);
                     $enumProto->leadingComments = static::getComments($enumLocations, $fnLeadingComments);
                 }
             }
@@ -97,7 +97,7 @@ class ProtoAugmenter
             $msgProto->desc = $msgDesc;
             $msgDesc->underlyingProto = $msgProto;
             // Link proto comments.
-            $msgLocations = $locsByPath[$msgPath];
+            $msgLocations = $locsByPath->get($msgPath, null);
             $msgProto->leadingComments = static::getComments($msgLocations, $fnLeadingComments);
             // Recurse into nested messages:
             if ($msgProto->hasNestedType()) {
@@ -116,7 +116,7 @@ class ProtoAugmenter
                     $fieldDesc->underlyingProto = $fieldProto;
                     // Link proto comments.
                     $fieldPath = $msgPath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
-                    $fieldLocations = $locsByPath[$fieldPath];
+                    $fieldLocations = $locsByPath->get($fieldPath, null);
                     $fieldProto->leadingComments = static::getComments($fieldLocations, $fnLeadingComments);
                     $fieldProto->trailingComments = static::getComments($fieldLocations, $fnTrailingComments);
                 }
@@ -138,9 +138,9 @@ class ProtoAugmenter
         }
     }
 
-    private static function getComments(Vector $locations, Callable $fn): Vector
+    private static function getComments(?Vector $locations, Callable $fn): Vector
     {
-        return $locations
+        return is_null($locations) ? Vector::new([]) : $locations
             ->flatMap(fn($x) => Vector::new(explode("\n", $fn($x))))
             ->map(fn($x) => trim($x))
             ->skipLast(1); // Last line is always empty due to trailing \n

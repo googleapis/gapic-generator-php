@@ -106,7 +106,10 @@ class ServiceDetails {
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
-        $this->unitTestsType = Type::fromName("{$namespace}\\Tests\\Unit\\{$desc->getName()}ClientTest");
+        $nsVersion = Helpers::nsVersion($namespace);
+        $unitTestNs = is_null($nsVersion) ? "{$namespace}\\Tests\\Unit" :
+            substr($namespace, 0, strlen($namespace) - strlen($nsVersion) - 1) . '\\Tests\\Unit\\' . $nsVersion;
+        $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
@@ -122,7 +125,11 @@ class ServiceDetails {
         $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
-        $this->unitTestGroupName = strtolower($desc->getName());
+        $unitTestGroupName = strtolower($desc->getName());
+        if (substr($unitTestGroupName, strlen($unitTestGroupName) - 7, 7) === 'service') {
+            $unitTestGroupName = substr($unitTestGroupName, 0, strlen($unitTestGroupName) - 7);
+        }
+        $this->unitTestGroupName = $unitTestGroupName;
         $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
         // Resource-names
         // Wildcard patterns are ignored.

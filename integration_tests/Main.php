@@ -26,6 +26,7 @@ error_reporting(E_ALL);
 // They should match except for whitespace and trailing commas.
 
 $ok = true;
+// Generate and compare test APIs.
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/Basic/basic.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
@@ -37,6 +38,14 @@ $ok = processDiff(Invoker::invoke('tests/ProtoTests/ProtoDocs/proto-docs.proto')
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
+
+// Generate and compare a real API - language.
+// TODO: Real API tests may be more suitable as their own integration test.
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/language/v1/language_service.proto',
+    'google.cloud.language.v1',
+    'googleapis/google/cloud/language/v1/language_gapic.yaml',
+    'googleapis/google/cloud/language/language_v1.yaml')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");
