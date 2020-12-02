@@ -66,7 +66,8 @@ class Formatter
             $code = $tokens->generateCode();
             return $code;
         } catch (\Throwable $ex) {
-            print("\nFailed to format code:\n{$code}\n");
+            $codeWithLineNumbers = Vector::new(explode("\n", $code))->map(fn($x, $i) => "{$i}: {$x}")->join("\n");
+            print("\nFailed to format code:\n{$codeWithLineNumbers}\n");
             throw $ex;
         }
     }

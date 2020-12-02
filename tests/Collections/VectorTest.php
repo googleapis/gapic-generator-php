@@ -43,6 +43,22 @@ final class VectorTest extends TestCase
             fn($a, $b) => "{$a}:{$b}"
         );
         $this->assertEquals(['1:a', '2:b'], $v->toArray());
+
+        $v = Vector::zip(
+            Vector::new([1, 2]),
+            Vector::new(['a', 'b']),
+            Vector::new(['A', 'B'])
+        );
+        $this->assertEquals([[1, 'a', 'A'], [2, 'b', 'B']], $v->toArray());
+
+        $v = Vector::zip(
+            Vector::new([1, 2, 3, 4]),
+            Vector::new(['a', 'b']),
+            Vector::new(['A']),
+            Vector::new([10, 11, 12]),
+            fn($a, $b, $c, $d) => "{$a}:{$b}:{$c}:{$d}"
+        );
+        $this->assertEquals(['1:a:A:10'], $v->toArray());
     }
 
     public function testZipIndex(): void
@@ -53,6 +69,14 @@ final class VectorTest extends TestCase
             fn($a, $b, $index) => "{$index}:{$a}:{$b}"
         );
         $this->assertEquals(['0:1:a', '1:2:b'], $v->toArray());
+
+        $v = Vector::zip(
+            Vector::new([1, 2]),
+            Vector::new(['a', 'b', 'c']),
+            Vector::new(['A', 'B', 'C', 'D']),
+            fn($a, $b, $c, $index) => "{$index}:{$a}:{$b}:{$c}"
+        );
+        $this->assertEquals(['0:1:a:A', '1:2:b:B'], $v->toArray());
     }
 
     public function testRange(): void

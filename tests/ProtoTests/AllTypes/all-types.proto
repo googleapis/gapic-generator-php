@@ -13,25 +13,23 @@ import "google/longrunning/operations.proto";
 service AllTypes {
   option (google.api.default_host) = "alltypes.example.com";
 
-  rpc Method1(Request) returns(Response) {
+  rpc Method1(RequestAndResponse) returns(RequestAndResponse) {
     option (google.api.http) = {
       post: "/path:method1"
       body: "*"
     };
   }
 
-  rpc MethodLro(Request) returns(google.longrunning.Operation) {
+  rpc MethodLro(RequestAndResponse) returns(google.longrunning.Operation) {
     option (google.api.http) = {
       post: "/path:methodLro"
       body: "*"
     };
     option (google.longrunning.operation_info) = {
-      response_type: "LroResponse"
-      metadata_type: "LroMetadata"
+      response_type: "RequestAndResponse"
+      metadata_type: "RequestAndResponse"
     };
   }
-
-  // No need to test bidi or server streaming, as the request is not sent inline.
 
   rpc MethodPaginated(PaginatedRequest) returns(PaginatedResponse) {
     option (google.api.http) = {
@@ -40,7 +38,9 @@ service AllTypes {
     };
   }
 
-  rpc MethodServerStreaming(Request) returns(stream Response);
+  // No need to test bidi or server streaming, as the request is not sent inline.
+
+  rpc MethodServerStreaming(RequestAndResponse) returns(stream RequestAndResponse);
 }
 
 enum TopLevelEnum {
@@ -51,7 +51,7 @@ enum TopLevelEnum {
 message TopLevelMsg {
 }
 
-message Request {
+message RequestAndResponse {
   message NestedMsg {
   }
   enum NestedEnum {
@@ -158,15 +158,6 @@ message Request {
   repeated sint64 rep_req_sint64 = 418 [(google.api.field_behavior) = REQUIRED];
   repeated NestedMsg rep_req_nested_message = 420 [(google.api.field_behavior) = REQUIRED];
   repeated NestedEnum rep_req_nested_enum = 421 [(google.api.field_behavior) = REQUIRED];
-}
-
-message Response {
-}
-
-message LroResponse {
-}
-
-message LroMetadata {
 }
 
 message PaginatedRequest {
