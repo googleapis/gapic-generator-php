@@ -20,7 +20,7 @@ namespace Google\Generator\IntegrationTests;
 
 class Invoker
 {
-    public static function invoke(string $protoPath)
+    public static function invoke(string $protoPath, ?string $package = null, ?string $monoGapicYaml = null, ?string $monoServiceConfig = null)
     {
         $rootDir = __DIR__ . '/..';
 
@@ -39,7 +39,7 @@ class Invoker
         $rootOutDir = sys_get_temp_dir() . '/php-gapic-' . mt_rand(0, (int)1e8);
         mkdir($rootOutDir);
         try {
-            $package = str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
+            $package = $package ?? str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
 
             // Run the monolithic generator.
             $monoDir = "{$rootDir}/gapic-generator";
@@ -57,11 +57,11 @@ class Invoker
                 '--language php ' .
                 "-o {$monoOutDir}";
             $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
-            $monoGapicYaml = $monoConfigBase . '_gapic.yaml';
+            $monoGapicYaml = is_null($monoGapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $monoGapicYaml;
             if (file_exists($monoGapicYaml)) {
                 $monoCmdLine .= " --gapic_yaml {$monoGapicYaml}";
             }
-            $monoServiceConfig = $monoConfigBase . '_service.yaml';
+            $monoServiceConfig = is_null($monoServiceConfig) ? $monoConfigBase . '_service.yaml' : $rootDir . '/' . $monoServiceConfig;
             if (file_exists($monoServiceConfig)) {
                 $monoCmdLine .= " --service_yaml {$monoServiceConfig}";
             }
