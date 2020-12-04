@@ -27,10 +27,12 @@ class GrpcServiceConfig
     public function __construct(string $serviceName, ?string $json)
     {
         if (is_null($json)) {
+            $this->isPresent = false;
             $this->configsByName = Map::new();
             $this->retryPolicies = Vector::new([]);
             $this->timeouts = Vector::new([]);
         } else {
+            $this->isPresent = true;
             $config = new ServiceConfig();
             $config->mergeFromJsonString($json);
             $methods = Vector::new($config->getMethodConfig())
@@ -44,6 +46,9 @@ class GrpcServiceConfig
                 ->map(fn($x) => $x->getTimeout());
         }
     }
+
+    /** @var bool *Readonly* Whether a grpc-service-config is present at all. */
+    public bool $isPresent;
 
     /** @var Map *Readonly* Map<string, \Grpc\Service_config\MethodConfig>; name to indexes. */
     public Map $configsByName;

@@ -133,10 +133,16 @@ class ResourcesGenerator
         $retryCodes = $grpcServiceConfig->retryPolicies
             ->map(fn($x, $i) => ["retry_policy_{$inc($i)}_codes", is_null($x) ? null :
                 Vector::new($x->getRetryableStatusCodes())->map(fn($x) => Code::name($x))->toArray()])
-            ->filter(fn($x) => !is_null($x[1]))
-            ->append(['idempotent', ['DEADLINE_EXCEEDED', 'UNAVAILABLE']])
-            ->append(['non_idempotent', []])
-            ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+            ->filter(fn($x) => !is_null($x[1]));
+        if ($grpcServiceConfig->isPresent) {
+            $retryCodes = $retryCodes
+                ->append(['no_retry_codes', []]);
+        } else {
+            $retryCodes = $retryCodes
+                ->append(['idempotent', ['DEADLINE_EXCEEDED', 'UNAVAILABLE']])
+                ->append(['non_idempotent', []]);
+        }
+        $retryCodes = $retryCodes->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
         $retryParams = Vector::zip($grpcServiceConfig->retryPolicies, $grpcServiceConfig->timeouts, fn($r, $t, $i) =>
             ["retry_policy_{$inc($i)}_params", is_null($r) && is_null($t) ? null :
@@ -150,17 +156,31 @@ class ResourcesGenerator
                     ['total_timeout_millis', is_null($t) ? null : $durationToMillis($t)],
                 ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
             ])
-            ->filter(fn($x) => !is_null($x[1]))
-            ->append(['default', [
-                'initial_retry_delay_millis' => 100,
-                'retry_delay_multiplier' => 1.3,
-                'max_retry_delay_millis' => 60_000,
-                'initial_rpc_timeout_millis' => 20_000,
-                'rpc_timeout_multiplier' => 1.0,
-                'max_rpc_timeout_millis' => 20_000,
-                'total_timeout_millis' => 600_000,
-            ]])
-            ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+            ->filter(fn($x) => !is_null($x[1]));
+        if ($grpcServiceConfig->isPresent) {
+            $retryParams = $retryParams
+                ->append(['no_retry_params', [
+                    'initial_retry_delay_millis' => 0,
+                    'retry_delay_multiplier' => 0.0,
+                    'max_retry_delay_millis' => 0,
+                    'initial_rpc_timeout_millis' => 0,
+                    'rpc_timeout_multiplier' => 1.0,
+                    'max_rpc_timeout_millis' => 0,
+                    'total_timeout_millis' => 0,
+                ]]);
+        } else {
+            $retryParams = $retryParams
+                ->append(['default', [
+                    'initial_retry_delay_millis' => 100,
+                    'retry_delay_multiplier' => 1.3,
+                    'max_retry_delay_millis' => 60_000,
+                    'initial_rpc_timeout_millis' => 20_000,
+                    'rpc_timeout_multiplier' => 1.0,
+                    'max_rpc_timeout_millis' => 20_000,
+                    'total_timeout_millis' => 600_000,
+                ]]);
+        }
+        $retryParams = $retryParams->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
         $serviceName = $serviceDetails->serviceName;
         $methods = $serviceDetails->methods
@@ -172,16 +192,17 @@ class ResourcesGenerator
                         $method->name,
                         ['timeout_millis' => 60_000,
                     ] + ($method->isStreaming() ? [] : [
-                        'retry_codes_name' => $method->restMethod === 'get' ? 'idempotent' : 'non_idempotent',
-                        'retry_params_name' => 'default',
+                        'retry_codes_name' => $grpcServiceConfig->isPresent ? 'no_retry_codes' :
+                            ($method->restMethod === 'get' ? 'idempotent' : 'non_idempotent'),
+                        'retry_params_name' => $grpcServiceConfig->isPresent ? 'no_retry_params' : 'default',
                     ])];
                 } else {
                     return [
                         $method->name,
                         ['timeout_millis' => $durationToMillis($grpcServiceConfig->timeouts[$index])
                     ] + ($method->isStreaming() ? [] : [
-                        'retry_codes_name' => "retry_policy_{$inc($index)}_params",
-                        'retry_params_name' => "retry_policy_{$inc($index)}_codes",
+                        'retry_codes_name' => "retry_policy_{$inc($index)}_codes",
+                        'retry_params_name' => "retry_policy_{$inc($index)}_params",
                     ])];
                 }
             })
