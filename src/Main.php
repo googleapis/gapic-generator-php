@@ -25,7 +25,7 @@ error_reporting(E_ALL);
 // TODO: Provide help/usage if incorrect command-line args provided.
 // Read command-line args.
 // TODO: Include cmd-line arg for grpc-service-config.
-$opts = getopt('', ['descriptor:', 'package:', 'output:']);
+$opts = getopt('', ['descriptor:', 'package:', 'output:', 'gapic_yaml:']);
 if (!isset($opts['descriptor']) || !isset($opts['package'])) {
     print("Invalid arguments. Expect:\n");
     print("  --descriptor <path> The path to the proto descriptor file.\n");
@@ -34,13 +34,21 @@ if (!isset($opts['descriptor']) || !isset($opts['package'])) {
     print("\n");
     exit(1);
 }
-$descBytes = stream_get_contents(fopen($opts['descriptor'], 'rb'));
+$descBytes = file_get_contents($opts['descriptor']);
 $package = $opts['package'];
 $outputDir = $opts['output'];
+if (isset($opts['gapic_yaml'])) {
+    if (!file_exists($opts['gapic_yaml'])) {
+        throw new \Exception('Specified gapi_yaml file does not exist.');
+    }
+    $gapicYaml = file_get_contents($opts['gapic_yaml']);
+} else {
+    $gapicYaml = null;
+}
 
 // Generate PHP code.
 $year = (int)date('Y');
-$files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, null);
+$files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, null, $gapicYaml);
 if (is_null($outputDir)) {
     // TODO: Remove printout; only save files to the specified output path.
     foreach ($files as [$relativeFilename, $fileContent]) {

@@ -21,23 +21,38 @@ namespace Google\Generator\Generation;
 use Google\Generator\Ast\AST;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
 use Google\Rpc\Code;
 
 class ResourcesGenerator
 {
-    public static function generateDescriptorConfig(ServiceDetails $serviceDetails): string
+    public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $perMethod = function($method) {
+        $perMethod = function($method) use ($gapicYamlConfig) {
             switch ($method->methodType) {
                 case MethodDetails::LRO:
+                    $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
+                    if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
+                        $lroConfig = $methodGapicConfig['long_running'];
+                        $initialPollDelayMillis = strval($lroConfig['initial_poll_delay_millis']);
+                        $pollDelayMultiplier = strval($lroConfig['poll_delay_multiplier']);
+                        $maxPollDelayMillis = strval($lroConfig['max_poll_delay_millis']);
+                        $totalPollTimeoutMillis = strval($lroConfig['total_poll_timeout_millis']);
+                    } else {
+                        // Default LRO timings if not specified.
+                        $initialPollDelayMillis = '500';
+                        $pollDelayMultiplier = '1.5';
+                        $maxPollDelayMillis = '5000';
+                        $totalPollTimeoutMillis = '300000';
+                    }
                     return Map::new(['longRunning' => AST::array([
                         'operationReturnType' => $method->lroResponseType->getFullname(),
                         'metadataReturnType' => $method->lroMetadataType->getFullname(),
-                        'initialPollDelayMillis' => '500',
-                        'pollDelayMultiplier' => '1.5',
-                        'maxPollDelayMillis' => '5000',
-                        'totalPollTimeoutMillis' => '300000',
+                        'initialPollDelayMillis' => $initialPollDelayMillis,
+                        'pollDelayMultiplier' => $pollDelayMultiplier,
+                        'maxPollDelayMillis' => $maxPollDelayMillis,
+                        'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
                     ])]);
                 case MethodDetails::PAGINATED:
                     return Map::new(['pageStreaming' => AST::array([

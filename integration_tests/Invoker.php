@@ -20,7 +20,7 @@ namespace Google\Generator\IntegrationTests;
 
 class Invoker
 {
-    public static function invoke(string $protoPath, ?string $package = null, ?string $monoGapicYaml = null, ?string $monoServiceConfig = null)
+    public static function invoke(string $protoPath, ?string $package = null, ?string $gapicYaml = null, ?string $monoServiceConfig = null)
     {
         $rootDir = __DIR__ . '/..';
 
@@ -57,22 +57,24 @@ class Invoker
                 '--language php ' .
                 "-o {$monoOutDir}";
             $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
-            $monoGapicYaml = is_null($monoGapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $monoGapicYaml;
-            if (file_exists($monoGapicYaml)) {
-                $monoCmdLine .= " --gapic_yaml {$monoGapicYaml}";
+            $gapicYamlArg = is_null($gapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $gapicYaml;
+            if (file_exists($gapicYamlArg)) {
+                $monoCmdLine .= " --gapic_yaml {$gapicYamlArg}";
             }
             $monoServiceConfig = is_null($monoServiceConfig) ? $monoConfigBase . '_service.yaml' : $rootDir . '/' . $monoServiceConfig;
             if (file_exists($monoServiceConfig)) {
                 $monoCmdLine .= " --service_yaml {$monoServiceConfig}";
             }
-            static::execCmd("cd {$monoDir}; {$monoCmdLine}", 'mono');
+            static::execCmd("cd {$monoDir}; {$monoCmdLine} 2>&1", 'mono');
 
             // Run the micro-generator.
             $microMain = "{$rootDir}/src/Main.php";
             $microOutDir = "{$rootOutDir}/micro";
-            $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package {$package} --output {$microOutDir} 2>&1";
-            static::execCmd($microCmdLine, 'micro');
-
+            $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package {$package} --output {$microOutDir}";
+            if (file_exists($gapicYamlArg)) {
+                $microCmdLine .= " --gapic_yaml {$gapicYamlArg}";
+            }
+            static::execCmd($microCmdLine . ' 2>&1', 'micro');
             // Read all files in output dirs.
             $mono = static::readFiles($monoOutDir);
             $micro = static::readFiles($microOutDir);

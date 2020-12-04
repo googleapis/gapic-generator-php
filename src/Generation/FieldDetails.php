@@ -62,8 +62,11 @@ class FieldDetails
     public bool $isEnum;
 
     // TODO(vNext): Simplify unit-test response generation.
-    /** @Var bool *Readonly* Whether this field type is populated in a unit-test response. */
+    /** @var bool *Readonly* Whether this field type is populated in a unit-test response. */
     public bool $isInTestResponse;
+
+    /** @var bool *Readonly* Whether this field is repeated. */
+    public bool $isRepeated;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
@@ -83,6 +86,7 @@ class FieldDetails
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
         $this->isEnum = $field->getType() === GPBType::ENUM;
         $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();
+        $this->isRepeated = $field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
     }
 

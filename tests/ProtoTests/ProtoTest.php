@@ -38,7 +38,7 @@ final class ProtoTest extends TestCase
         $grpcServiceConfigPath = 'tests/' . dirname("ProtoTests/{$protoPath}") . '/grpc-service-config.json';
         $grpcServiceConfigJson = file_exists($grpcServiceConfigPath) ? file_get_contents($grpcServiceConfigPath) : null;
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson);
+        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, null);
 
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;

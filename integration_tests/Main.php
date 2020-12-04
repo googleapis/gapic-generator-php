@@ -47,6 +47,15 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_gapic.yaml',
     'googleapis/google/cloud/language/language_v1.yaml')) ? $ok : false;
 
+// TODO: Enable this test, once the REST config is generated identically.
+// REST config generation requires the service-config as an input, which the micro-generator
+// does not currently use.
+// $ok = processDiff(Invoker::invoke(
+//     'googleapis/google/cloud/videointelligence/v1/video_intelligence.proto',
+//     'google.cloud.videointelligence.v1',
+//     'googleapis/google/cloud/videointelligence/v1/videointelligence_gapic.yaml',
+//     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml')) ? $ok : false;
+
 if (!$ok) {
     print("\nFail\n");
     exit(1);
@@ -66,6 +75,11 @@ function processDiff($result)
     $missing = array_diff(array_keys($mono), array_keys($micro));
     $ok = count($missing) === 0 ? $ok : false;
     foreach ($missing as $missingPath) {
+        $ignoreEnding = 'SmokeTest.php';
+        if (substr($missingPath, strlen($missingPath) - strlen($ignoreEnding), strlen($ignoreEnding)) === $ignoreEnding) {
+            // Ignore missing smoke-tests. The micro-generator will not be generating them.
+            continue;
+        }
         print("File missing from micro-generator: '{$missingPath}'\n");
         print($mono[$missingPath]);
         print("\n");
