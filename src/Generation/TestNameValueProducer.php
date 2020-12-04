@@ -23,6 +23,7 @@ use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\Type;
@@ -30,10 +31,11 @@ use Google\Protobuf\Internal\GPBType;
 
 class TestNameValueProducer
 {
-    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx)
+    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx, GapicYamlConfig $gapicYamlConfig)
     {
         $this->catalog = $catalog;
         $this->ctx = $ctx;
+        $this->gapicYamlConfig = $gapicYamlConfig;
         $this->names = Set::new();
         $this->values = Set::new();
         $this->valuesByName = Map::new();
@@ -41,6 +43,7 @@ class TestNameValueProducer
 
     private ProtoCatalog $catalog;
     private SourceFileContext $ctx;
+    private GapicYamlConfig $gapicYamlConfig;
     private Set $names;
     private Set $values;
     private Map $valuesByName;
@@ -58,6 +61,7 @@ class TestNameValueProducer
 
     public function perField(Vector $fields): Vector
     {
+
         return $fields->map(fn($f) => new class($this, $f) {
             public function __construct($prod, $f)
             {
@@ -72,6 +76,95 @@ class TestNameValueProducer
             public Variable $var;
             public $value;
         });
+    }
+
+    public function perFieldRequest(MethodDetails $method): array
+    {
+        // Handle test request value generation, including using values
+        // specified in the gapic-config if present.
+
+        $perField = $method->allFields
+            ->map(fn($f) => new class($this, $method, $f) {
+                public function __construct($prod, $method, $f)
+                {
+                    // This code is arranged in this way, as a name must not be generated
+                    // if this field ends up not being used.
+                    // Name generation is stateful.
+                    // TODO: Consider refactoring this.
+                    $this->field = $f;
+                    $fnVarName = function() use ($prod, $f) {
+                        $this->name = $prod->name($f->name);
+                        $this->var = AST::var(Helpers::toCamelCase($this->name));
+                        return [$this->var, $this->name];
+                    };
+                    $this->initCode = $prod->fieldInit($method, $f, $fnVarName);
+                }
+
+                public FieldDetails $field;
+                public string $name;
+                public Variable $var;
+                public $initCode;
+            })
+            ->filter(fn($x) => !is_null($x->initCode))
+            ->orderBy(fn($x) => $x->field->isRequired ? 0 : 1);
+
+        $callArgs = $perField
+            ->filter(fn($x) => $x->field->isRequired)
+            ->map(fn($x) => $x->var);
+        if ($perField->any(fn($x) => !$x->field->isRequired)) {
+            $callArgs = $callArgs->append(
+                AST::array(
+                    $perField
+                        ->filter(fn($x) => !$x->field->isRequired)
+                        ->toArray(fn($x) => $x->var->name, fn($x) => $x->var)
+                )
+            );
+        }
+
+        return [$perField, $callArgs];
+    }
+
+    // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
+    public function fieldInit(MethodDetails $method, FieldDetails $field, Callable $fnVarName)
+    {
+        $fnInitValue = function(FieldDetails $f, string $value) {
+            if ($f->isEnum) {
+                return AST::access($this->ctx->type($f->typeSingular), AST::constant($value));
+            } else {
+                switch ($f->type->name) {
+                    case 'string':
+                        return $value;
+                    default:
+                        throw new \Exception("Cannot handle init-field of type: '{$f->type->name}'");
+                }
+            }
+        };
+
+        $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
+        $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
+            $config = Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
+        $value = $inits->get($field->name, null);
+        $valueIndex = $inits->get($field->name . '[0]', null);
+        if ($field->isRequired || !is_null($value) || !is_null($valueIndex)) {
+            [$var, $name] = $fnVarName();
+            if (!is_null($value)) {
+                return AST::assign($var, $fnInitValue($field, $value));
+            } elseif (!is_null($valueIndex)) {
+                if (!$field->isRepeated) {
+                    throw new \Exception('Only a repeated field may use indexed init fields');
+                }
+                $initElements = Vector::range(0, 9)
+                    ->takeWhile(fn($i) => isset($inits["{$field->name}[{$i}]"]))
+                    ->map(fn($i) => [AST::var("{$var->name}Element" . ($i === 0 ? '' : $i + 1)), $inits["{$field->name}[{$i}]"]]);
+                return $initElements
+                    ->map(fn($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
+                    ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
+            } else {
+                return AST::assign($var, $this->value($field, $name));
+            }
+        } else {
+            return null;
+        }
     }
 
     // Reproduce exactly the Java test value generation:

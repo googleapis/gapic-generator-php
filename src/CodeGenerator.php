@@ -26,6 +26,7 @@ use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
+use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
@@ -42,6 +43,7 @@ class CodeGenerator
      * @param string $package The package name to generate.
      * @param int $licenseYear The year to use in license headers.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
+     * @param ?string $gapicYaml Optional gapic configuration yaml string.
      *
      * @return string[]
      */
@@ -49,7 +51,8 @@ class CodeGenerator
         string $descBytes,
         string $package,
         int $licenseYear,
-        ?string $grpcServiceConfigJson
+        ?string $grpcServiceConfigJson,
+        ?string $gapicYaml
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -57,7 +60,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn($x) => $x->getPackage() === $package)
             ->map(fn($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson);
+        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml);
     }
 
     /**
@@ -68,6 +71,7 @@ class CodeGenerator
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
      * @param int $licenseYear The year to use in license headers.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
+     * @param ?string $gapicYaml Optional gapic configuration yaml string.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
@@ -75,7 +79,8 @@ class CodeGenerator
         Vector $fileDescs,
         Vector $filesToGenerate,
         int $licenseYear,
-        ?string $grpcServiceConfigJson
+        ?string $grpcServiceConfigJson,
+        ?string $gapicYaml
     ) {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
@@ -100,7 +105,8 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            yield from static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson);
+            yield from static::generatePackage(
+                $catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml);
         }
     }
 
@@ -109,7 +115,8 @@ class CodeGenerator
         string $namespace,
         Vector $fileDescs,
         int $licenseYear,
-        ?string $grpcServiceConfigJson
+        ?string $grpcServiceConfigJson,
+        ?string $gapicYaml
     ) {
         $version = Helpers::nsVersion($namespace);
         $version = is_null($version) ? '' : $version . '/';
@@ -122,10 +129,11 @@ class CodeGenerator
                 $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc);
                 // Load gRPC service config; if it's not provided then defaults will be used.
                 $grpcServiceConfig = new GrpcServiceConfig($serviceDetails->serviceName, $grpcServiceConfigJson);
+                $gapicYamlConfig = new GapicYamlConfig($serviceDetails->serviceName, $gapicYaml);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
                 $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);
-                $file = GapicClientGenerator::generate($ctx, $serviceDetails);
+                $file = GapicClientGenerator::generate($ctx, $serviceDetails, $gapicYamlConfig);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["src/{$version}Gapic/{$serviceDetails->gapicClientType->name}.php", $code];
@@ -137,7 +145,7 @@ class CodeGenerator
                 yield ["src/{$version}{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
                 $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace(), $licenseYear);
-                $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
+                $file = UnitTestsGenerator::generate($ctx, $serviceDetails, $gapicYamlConfig);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 // TODO(vNext): Remove these non-standard 'use' ordering.
@@ -145,7 +153,7 @@ class CodeGenerator
                 $code = Formatter::moveUseTo($code, 'stdClass', -1);
                 yield ["tests/Unit/{$version}{$serviceDetails->unitTestsType->name}.php", $code];
                 // Resource: descriptor_config.php
-                $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails);
+                $code = ResourcesGenerator::generateDescriptorConfig($serviceDetails, $gapicYamlConfig);
                 $code = Formatter::format($code);
                 yield ["src/{$version}resources/{$serviceDetails->descriptorConfigFilename}", $code];
                 // Resource: rest_client_config.php

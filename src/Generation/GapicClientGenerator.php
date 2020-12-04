@@ -38,23 +38,25 @@ use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
 {
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
+        return (new GapicClientGenerator($ctx, $serviceDetails, $gapicYamlConfig))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
+        $this->gapicYamlConfig = $gapicYamlConfig;
     }
 
     private function generateImpl(): PhpFile
@@ -87,7 +89,7 @@ class GapicClientGenerator
 
     private function examples(): GapicClientExamplesGenerator
     {
-        return new GapicClientExamplesGenerator($this->serviceDetails);
+        return new GapicClientExamplesGenerator($this->serviceDetails, $this->gapicYamlConfig);
     }
 
     private function generateClass(): PhpClass
