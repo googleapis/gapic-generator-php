@@ -45,7 +45,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
     'googleapis/google/cloud/language/v1/language_gapic.yaml',
-    'googleapis/google/cloud/language/language_v1.yaml')) ? $ok : false;
+    'googleapis/google/cloud/language/language_v1.yaml',
+    'googleapis/google/cloud/language/v1/language_grpc_service_config.json')) ? $ok : false;
 
 // TODO: Enable this test, once the REST config is generated identically.
 // REST config generation requires the service-config as an input, which the micro-generator
@@ -54,7 +55,8 @@ $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/videointelligence/v1/video_intelligence.proto',
 //     'google.cloud.videointelligence.v1',
 //     'googleapis/google/cloud/videointelligence/v1/videointelligence_gapic.yaml',
-//     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml')) ? $ok : false;
+//     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml',
+//     'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");

@@ -20,8 +20,13 @@ namespace Google\Generator\IntegrationTests;
 
 class Invoker
 {
-    public static function invoke(string $protoPath, ?string $package = null, ?string $gapicYaml = null, ?string $monoServiceConfig = null)
-    {
+    public static function invoke(
+        string $protoPath,
+        ?string $package = null,
+        ?string $gapicYaml = null,
+        ?string $monoServiceConfig = null,
+        ?string $grpcServiceConfig = null
+    ) {
         $rootDir = __DIR__ . '/..';
 
         // Build the proto descriptor.
@@ -65,6 +70,12 @@ class Invoker
             if (file_exists($monoServiceConfig)) {
                 $monoCmdLine .= " --service_yaml {$monoServiceConfig}";
             }
+            $grpcServiceConfigArg = is_null($grpcServiceConfig) ?
+                $rootDir . '/' . dirname($protoPath) . 'grpc-service-config.json' :
+                $rootDir . '/' . $grpcServiceConfig;
+            if (file_exists($grpcServiceConfigArg)) {
+                $monoCmdLine .= " --grpc_service_config {$grpcServiceConfigArg}";
+            }
             static::execCmd("cd {$monoDir}; {$monoCmdLine} 2>&1", 'mono');
 
             // Run the micro-generator.
@@ -73,6 +84,9 @@ class Invoker
             $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package {$package} --output {$microOutDir}";
             if (file_exists($gapicYamlArg)) {
                 $microCmdLine .= " --gapic_yaml {$gapicYamlArg}";
+            }
+            if (file_exists($grpcServiceConfigArg)) {
+                $microCmdLine .= " --grpc_service_config {$grpcServiceConfigArg}";
             }
             static::execCmd($microCmdLine . ' 2>&1', 'micro');
             // Read all files in output dirs.
