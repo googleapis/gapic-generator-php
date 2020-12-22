@@ -24,7 +24,7 @@ class Invoker
         string $protoPath,
         ?string $package = null,
         ?string $gapicYaml = null,
-        ?string $monoServiceConfig = null,
+        ?string $serviceYaml = null,
         ?string $grpcServiceConfig = null
     ) {
         $rootDir = __DIR__ . '/..';
@@ -45,6 +45,14 @@ class Invoker
         mkdir($rootOutDir);
         try {
             $package = $package ?? str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
+            $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
+
+            // Determine locations of config files.
+            $gapicYamlArg = is_null($gapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $gapicYaml;
+            $serviceConfigArg = is_null($serviceYaml) ? $monoConfigBase . '_service.yaml' : $rootDir . '/' . $serviceYaml;
+            $grpcServiceConfigArg = is_null($grpcServiceConfig) ?
+                $rootDir . '/' . dirname($protoPath) . 'grpc-service-config.json' :
+                $rootDir . '/' . $grpcServiceConfig;
 
             // Run the monolithic generator.
             $monoDir = "{$rootDir}/gapic-generator";
@@ -61,18 +69,12 @@ class Invoker
                 "--package {$package} " .
                 '--language php ' .
                 "-o {$monoOutDir}";
-            $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
-            $gapicYamlArg = is_null($gapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $gapicYaml;
             if (file_exists($gapicYamlArg)) {
                 $monoCmdLine .= " --gapic_yaml {$gapicYamlArg}";
             }
-            $monoServiceConfig = is_null($monoServiceConfig) ? $monoConfigBase . '_service.yaml' : $rootDir . '/' . $monoServiceConfig;
-            if (file_exists($monoServiceConfig)) {
-                $monoCmdLine .= " --service_yaml {$monoServiceConfig}";
+            if (file_exists($serviceConfigArg)) {
+                $monoCmdLine .= " --service_yaml {$serviceConfigArg}";
             }
-            $grpcServiceConfigArg = is_null($grpcServiceConfig) ?
-                $rootDir . '/' . dirname($protoPath) . 'grpc-service-config.json' :
-                $rootDir . '/' . $grpcServiceConfig;
             if (file_exists($grpcServiceConfigArg)) {
                 $monoCmdLine .= " --grpc_service_config {$grpcServiceConfigArg}";
             }
@@ -85,10 +87,14 @@ class Invoker
             if (file_exists($gapicYamlArg)) {
                 $microCmdLine .= " --gapic_yaml {$gapicYamlArg}";
             }
+            if (file_exists($serviceConfigArg)) {
+                $microCmdLine .= " --service_yaml {$serviceConfigArg}";
+            }
             if (file_exists($grpcServiceConfigArg)) {
                 $microCmdLine .= " --grpc_service_config {$grpcServiceConfigArg}";
             }
             static::execCmd($microCmdLine . ' 2>&1', 'micro');
+
             // Read all files in output dirs.
             $mono = static::readFiles($monoOutDir);
             $micro = static::readFiles($microOutDir);

@@ -18,11 +18,17 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\HttpRule;
 use Google\Generator\Ast\AST;
+use Google\Generator\Ast\Expression;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
+use Google\Generator\Utils\ProtoCatalog;
+use Google\Generator\Utils\ProtoHelpers;
+use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Rpc\Code;
 
 class ResourcesGenerator
@@ -96,30 +102,52 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
-    public static function generateRestConfig(ServiceDetails $serviceDetails): string
+    private static function restMethodDetails(ProtoCatalog $catalog, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
     {
-        $serviceContent = $serviceDetails->methods
-            ->filter(fn($method) => !is_null($method->restMethod))
-            ->toMap(
-                fn($method) => $method->name,
-                fn($method) => AST::array([
-                    'method' => $method->restMethod,
-                    'uriTemplate' => $method->restUriTemplate,
-                    'body' => $method->restBody,
-                    'placeholders' => count($method->restRoutingHeaders) === 0 ? null : AST::array(
-                        $method->restRoutingHeaders
-                            ->mapValues(fn($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
-                            ->values()
-                            ->orderBy(fn($x) => $x[0])
-                            ->toArray(fn($x) => $x[0], fn($x) => $x[1])
-                    )
-                ])
-            );
+        $httpMethod = $httpRule->getPattern();
+        $uriTemplateGetter = Helpers::toCamelCase("get_{$httpMethod}");
+        $uriTemplate = $httpRule->$uriTemplateGetter();
+        $body = $httpRule->getBody();
+        $restBody = $body === '' ? $defaultBody : $body;
+        $additionalBindings = Vector::new($httpRule->getAdditionalBindings());
+        $placeholders = $topLevel ? ProtoHelpers::restPlaceholders($catalog, $httpRule, null) : Map::new();
+        return AST::array([
+            'method' => $httpMethod,
+            'uriTemplate' => $uriTemplate,
+            'body' => $restBody,
+            'additionalBindings' => !$additionalBindings->any() ? null :
+                AST::array($additionalBindings->map(fn($x) => static::restMethodDetails($catalog, $x, false, $restBody))->toArray()),
+            'placeholders' => count($placeholders) === 0 ? null : AST::array(
+                $placeholders
+                    ->mapValues(fn($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
+                    ->values()
+                    ->orderBy(fn($x) => $x[0])
+                    ->toArray(fn($x) => $x[0], fn($x) => $x[1])
+            )
+        ]);
+    }
+
+    public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
+    {
+        $allInterfaces = $serviceDetails->methods
+            ->filter(fn($method) => !is_null($method->httpRule))
+            ->map(fn($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
+            ->concat($serviceYamlConfig->httpRules->map(fn($x) => [
+                Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),
+                Vector::new(explode('.', $x->getSelector()))->last(),
+                $x
+            ])) // [service name, method name, httpRule]
+            ->groupBy(fn($x) => $x[0])
+            ->mapValues(fn($k, $v) => [$k, $v])
+            ->values()
+            ->orderBy(fn($x) => $x[0]) // order by service name
+            ->toArray(fn($x) => $x[0], fn($x) => AST::array($x[1]->toArray(
+                fn($y) => $y[1],
+                fn($y) => static::restMethodDetails($serviceDetails->catalog, $y[2], true, null),
+            )));
         $return = AST::return(
             AST::array([
-                'interfaces' => AST::array([
-                    $serviceDetails->serviceName => count($serviceContent) === 0 ? null : AST::array($serviceContent)
-                ])
+                'interfaces' => AST::array($allInterfaces)
             ])
         );
         return "<?php\n\n{$return->toCode()};";
