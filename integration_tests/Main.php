@@ -39,7 +39,7 @@ $ok = processDiff(Invoker::invoke('tests/ProtoTests/RoutingHeaders/routing-heade
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
 
-// Generate and compare a real API - language.
+// Generate and compare a real APIs.
 // TODO: Real API tests may be more suitable as their own integration test.
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
@@ -47,16 +47,12 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_gapic.yaml',
     'googleapis/google/cloud/language/language_v1.yaml',
     'googleapis/google/cloud/language/v1/language_grpc_service_config.json')) ? $ok : false;
-
-// TODO: Enable this test, once the REST config is generated identically.
-// REST config generation requires the service-config as an input, which the micro-generator
-// does not currently use.
-// $ok = processDiff(Invoker::invoke(
-//     'googleapis/google/cloud/videointelligence/v1/video_intelligence.proto',
-//     'google.cloud.videointelligence.v1',
-//     'googleapis/google/cloud/videointelligence/v1/videointelligence_gapic.yaml',
-//     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml',
-//     'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json')) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/videointelligence/v1/video_intelligence.proto',
+    'google.cloud.videointelligence.v1',
+    'googleapis/google/cloud/videointelligence/v1/videointelligence_gapic.yaml',
+    'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml',
+    'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");
@@ -75,7 +71,6 @@ function processDiff($result)
 
     // Find missing files.
     $missing = array_diff(array_keys($mono), array_keys($micro));
-    $ok = count($missing) === 0 ? $ok : false;
     foreach ($missing as $missingPath) {
         $ignoreEnding = 'SmokeTest.php';
         if (substr($missingPath, strlen($missingPath) - strlen($ignoreEnding), strlen($ignoreEnding)) === $ignoreEnding) {
@@ -85,13 +80,14 @@ function processDiff($result)
         print("File missing from micro-generator: '{$missingPath}'\n");
         print($mono[$missingPath]);
         print("\n");
+        $ok = false;
     }
 
     // Find excessive files.
     $excess = array_diff(array_keys($micro), array_keys($mono));
-    $ok = count($excess) === 0 ? $ok : false;
     foreach ($excess as $excessPath) {
         print("File mistakenly generated from micro-generator: '{$excessPath}'\n");
+        $ok = false;
     }
 
     // Find incorrectly generated files.

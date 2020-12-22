@@ -23,8 +23,6 @@ use Google\ApiCore\BidiStream;
 use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
-use Google\ApiCore\ResourceTemplate\Parser;
-use Google\ApiCore\ResourceTemplate\Segment;
 use Google\ApiCore\ServerStream;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\GPBType;
@@ -305,17 +303,14 @@ abstract class MethodDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
+    /** @var HttpRule *Readonly* HttpRule for method, if given; null otherwise. */
+    public ?HttpRule $httpRule;
+
     /** @var ?string *Readonly* REST method, if specified in a 'google.api.http' proto option. */
     public ?string $restMethod;
 
-    /** @var ?string *Readonly* REST URI template, if specified in a 'google.api.http' proto option. */
-    public ?string $restUriTemplate;
-
-    /** @var ?string *Readonly* REST body, if specified in a 'google.api.http' proto option. */
-    public ?string $restBody;
-
     /** @var ?Map *Readonly* Map of string to Vector of strings; placeholder name -> list of property getters. */
-    public Map $restRoutingHeaders;
+    public ?Map $restRoutingHeaders;
 
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
@@ -334,49 +329,9 @@ abstract class MethodDetails
         $this->requiredFields = $this->allFields->filter(fn($x) => $x->isRequired);
         $this->optionalFields = $this->allFields->filter(fn($x) => !$x->isRequired);
         $this->docLines = $desc->leadingComments;
-        $http = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
-        if (is_null($http)) {
-            $this->restMethod = null;
-            $this->restUriTemplate = null;
-            $this->restBody = null;
-            $this->restRoutingHeaders = Map::new([]);
-        } else {
-            $this->restMethod = $http->getPattern();
-            $uriTemplateGetter = Helpers::toCamelCase("get_{$http->getPattern()}");
-            $this->restUriTemplate = $http->$uriTemplateGetter();
-            $this->restBody = $http->getBody() === '' ? null : $http->getBody();
-            if ($this->restUriTemplate === '') {
-                throw new \Exception('REST URI must be specified.');
-            }
-            if ($this->restUriTemplate[0] !== '/') {
-                throw new \Exception("REST URI must be an absolute path starting with '/'");
-            }
-            $segments = Parser::parseSegments(str_replace(':', '/', substr($this->restUriTemplate, 1)));
-            $this->restRoutingHeaders = Vector::new($segments)
-                ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-                ->toMap(fn($x) => $x->getKey(), function($x) {
-                    $fieldList = Vector::new(explode('.', $x->getKey()));
-                    $msg = $this->inputMsg;
-                    $result = [];
-                    foreach ($fieldList as $index => $fieldName) {
-                        $field = $msg->desc->getFieldByName($fieldName);
-                        if (is_null($field)) {
-                            throw new \Exception("Field '{$fieldName}' does not exist.");
-                        }
-                        if ($index !== count($fieldList) - 1) {
-                            if ($field->isRepeated()) {
-                                throw new \Exception("Field '{$fieldName}' must not be repeated.");
-                            }
-                            if ($field->getType() !== GPBType::MESSAGE) {
-                                throw new \Exception("Field '{$fieldName}' must be of message type.");
-                            }
-                            $msg = $this->catalog->msgsByFullname[$field->getMessageType()];
-                        }
-                        $result[] = $field->getGetter();
-                    }
-                    return Vector::new($result);
-                });
-        }
+        $this->httpRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
+        $this->restMethod = is_null($this->httpRule) ? null : $this->httpRule->getPattern();
+        $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
     }
 
     public function isStreaming()

@@ -28,6 +28,7 @@ use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
+use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
@@ -44,6 +45,7 @@ class CodeGenerator
      * @param int $licenseYear The year to use in license headers.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
+     * @param ?string $serviceYaml Optional service configuration yaml string.
      *
      * @return string[]
      */
@@ -52,7 +54,8 @@ class CodeGenerator
         string $package,
         int $licenseYear,
         ?string $grpcServiceConfigJson,
-        ?string $gapicYaml
+        ?string $gapicYaml,
+        ?string $serviceYaml
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -60,7 +63,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn($x) => $x->getPackage() === $package)
             ->map(fn($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml);
+        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
     }
 
     /**
@@ -72,6 +75,7 @@ class CodeGenerator
      * @param int $licenseYear The year to use in license headers.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
+     * @param ?string $serviceYaml Optional service configuration yaml string.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
@@ -80,7 +84,8 @@ class CodeGenerator
         Vector $filesToGenerate,
         int $licenseYear,
         ?string $grpcServiceConfigJson,
-        ?string $gapicYaml
+        ?string $gapicYaml,
+        ?string $serviceYaml
     ) {
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
@@ -106,7 +111,7 @@ class CodeGenerator
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
             yield from static::generatePackage(
-                $catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml);
+                $catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
         }
     }
 
@@ -116,7 +121,8 @@ class CodeGenerator
         Vector $fileDescs,
         int $licenseYear,
         ?string $grpcServiceConfigJson,
-        ?string $gapicYaml
+        ?string $gapicYaml,
+        ?string $serviceYaml
     ) {
         $version = Helpers::nsVersion($namespace);
         $version = is_null($version) ? '' : $version . '/';
@@ -130,6 +136,7 @@ class CodeGenerator
                 // Load gRPC service config; if it's not provided then defaults will be used.
                 $grpcServiceConfig = new GrpcServiceConfig($serviceDetails->serviceName, $grpcServiceConfigJson);
                 $gapicYamlConfig = new GapicYamlConfig($serviceDetails->serviceName, $gapicYaml);
+                $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
                 $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);
@@ -157,7 +164,7 @@ class CodeGenerator
                 $code = Formatter::format($code);
                 yield ["src/{$version}resources/{$serviceDetails->descriptorConfigFilename}", $code];
                 // Resource: rest_client_config.php
-                $code = ResourcesGenerator::generateRestConfig($serviceDetails);
+                $code = ResourcesGenerator::generateRestConfig($serviceDetails, $serviceYamlConfig);
                 $code = Formatter::format($code);
                 yield ["src/{$version}resources/{$serviceDetails->restConfigFilename}", $code];
                 // Resource: client_config.json

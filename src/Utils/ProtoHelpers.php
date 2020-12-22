@@ -18,8 +18,13 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Api\HttpRule;
+use Google\ApiCore\ResourceTemplate\Parser;
+use Google\ApiCore\ResourceTemplate\Segment;
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\CodedInputStream;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
@@ -67,6 +72,58 @@ class ProtoHelpers
             $msg = $catalog->msgsByFullname[$desc->getMessageType()];
             return !is_null($msg->getOptions()) && $msg->getOptions()->getMapEntry();
         }
+    }
+
+    /**
+     * Generate REST placeholder getter call information from proto 'httpRule' annotation.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param HttpRule $httpRule The httpRule proto annotation.
+     * @param ?DescriptorProto $msg Optional proto message descriptor;
+     *        if present then get getter call chain is verified against the proto msg(s).
+     *
+     * @return Map
+     */
+    public static function restPlaceholders(ProtoCatalog $catalog, HttpRule $httpRule, ?DescriptorProto $msg): Map
+    {
+        $uriTemplateGetter = Helpers::toCamelCase("get_{$httpRule->getPattern()}");
+        $restUriTemplate = $httpRule->$uriTemplateGetter();
+        if ($restUriTemplate === '') {
+            throw new \Exception('REST URI must be specified.');
+        }
+        if ($restUriTemplate[0] !== '/') {
+            throw new \Exception("REST URI must be an absolute path starting with '/'");
+        }
+        $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
+        return Vector::new($segments)
+            ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
+            ->toMap(fn($x) => $x->getKey(), function($x) use ($msg) {
+                $fieldList = Vector::new(explode('.', $x->getKey()));
+                $result = [];
+                foreach ($fieldList as $index => $fieldName) {
+                    if (is_null($msg)) {
+                        // Cannot verify field name; this occurs when processing service_config.yaml
+                        $result[] = Helpers::toCamelCase("get_{$fieldName}");
+                    } else {
+                        // Verify field names.
+                        $field = $msg->desc->getFieldByName($fieldName);
+                        if (is_null($field)) {
+                            throw new \Exception("Field '{$fieldName}' does not exist.");
+                        }
+                        if ($index !== count($fieldList) - 1) {
+                            if ($field->isRepeated()) {
+                                throw new \Exception("Field '{$fieldName}' must not be repeated.");
+                            }
+                            if ($field->getType() !== GPBType::MESSAGE) {
+                                throw new \Exception("Field '{$fieldName}' must be of message type.");
+                            }
+                            $msg = $catalog->msgsByFullname[$field->getMessageType()];
+                        }
+                        $result[] = $field->getGetter();
+                    }
+                }
+                return Vector::new($result);
+            });
     }
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,

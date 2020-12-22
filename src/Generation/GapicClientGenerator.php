@@ -477,7 +477,8 @@ class GapicClientGenerator
         $requestParams = AST::var('requestParams');
         $isStreamedRequest = $method->methodType === MethodDetails::BIDI_STREAMING || $method->methodType === MethodDetails::CLIENT_STREAMING;
         // TODO(vNext): Only producing routing headers when there is only a single routing element may be incorrect.
-        [$restRoutingKey, $restRoutingGetters] = count($method->restRoutingHeaders) !== 1 ? [null, null] :
+        [$restRoutingKey, $restRoutingGetters] = is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) !== 1 ?
+            [null, null] :
             [$method->restRoutingHeaders->keys()[0], $method->restRoutingHeaders->values()[0]];
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
