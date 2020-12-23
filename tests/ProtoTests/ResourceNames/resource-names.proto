@@ -70,7 +70,7 @@ message MultiPattern {
     type: "resourcenames.example.com/MultiPattern"
     pattern: "items1/{item1_id}/items2/{item2_id}" // Test duplicate pattern, also in SinglePattern
     pattern: "items3/{item3_id}"
-    pattern: "items4/{item4_id}/items5/{item5_id}/items6/{item6_id}"
+    pattern: "items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}" // Test non-/ separators
   };
   string name = 1;
 }

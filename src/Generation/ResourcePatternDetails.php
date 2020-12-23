@@ -32,7 +32,17 @@ class ResourcePatternDetails implements ResourcePart
     public function __construct(string $pattern)
     {
         $this->pattern = $pattern;
-        $segments = Vector::new(Parser::parseSegments($pattern));
+        // Replace the valid non-"/" separators with "/" characters, just for pattern parsing.
+        // This is valid, as all we need to know is the variables within the string, which is
+        // not affected by the separators used.
+        // Non-"/" seperators are only allowed to be single characters between variables,
+        // hence the specific replace code below.
+        $patternToParse = $pattern;
+        $patternToParse = str_replace('}_{', '}/{', $patternToParse);
+        $patternToParse = str_replace('}-{', '}/{', $patternToParse);
+        $patternToParse = str_replace('}.{', '}/{', $patternToParse);
+        $patternToParse = str_replace('}~{', '}/{', $patternToParse);
+        $segments = Vector::new(Parser::parseSegments($patternToParse));
         $varSegments = $segments
             ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->map(fn($x) => $x->getKey());
