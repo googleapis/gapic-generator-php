@@ -53,6 +53,13 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/videointelligence/v1/videointelligence_gapic.yaml',
     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml',
     'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json')) ? $ok : false;
+// TODO: Enable this test once all generation issues are resolved.
+// $ok = processDiff(Invoker::invoke(
+//     'googleapis/google/cloud/vision/v1/*.proto googleapis/google/cloud/common_resources.proto',
+//     'google.cloud.vision.v1',
+//     'googleapis/google/cloud/vision/v1/vision_gapic.yaml',
+//     'googleapis/google/cloud/vision/v1/vision_v1.yaml',
+//     'googleapis/google/cloud/vision/v1/vision_grpc_service_config.json')) ? $ok : false;
 
 if (!$ok) {
     print("\nFail\n");

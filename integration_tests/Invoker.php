@@ -45,7 +45,7 @@ class Invoker
         mkdir($rootOutDir);
         try {
             $package = $package ?? str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
-            $monoConfigBase = $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
+            $monoConfigBase = strpos($protoPath, '*') !== false ? null : $rootDir . '/' . dirname($protoPath) . '/' . basename($protoPath, '.proto');
 
             // Determine locations of config files.
             $gapicYamlArg = is_null($gapicYaml) ? $monoConfigBase . '_gapic.yaml' : $rootDir . '/' . $gapicYaml;

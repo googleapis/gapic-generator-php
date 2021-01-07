@@ -12,6 +12,16 @@ service BasicLro {
   option (google.api.default_host) = "lro.example.com";
   option (google.api.oauth_scopes) = "scope1,scope2";
 
+  rpc MethodNonLro1(Request) returns(Request) {
+    option (google.api.http) = {
+      post: "/path:methodNonLro1"
+      body: "*"
+    };
+  }
+
+  // To test method ordering; LRO methods referenced in gapic.yaml
+  // file are always generated first; so this method will be emitted
+  // before the above MethodNonLro1.
   rpc Method1(Request) returns(google.longrunning.Operation) {
     option (google.api.http) = {
       post: "/path:method1"
@@ -20,6 +30,13 @@ service BasicLro {
     option (google.longrunning.operation_info) = {
       response_type: "LroResponse"
       metadata_type: "LroMetadata"
+    };
+  }
+
+  rpc MethodNonLro2(Request) returns(Request) {
+    option (google.api.http) = {
+      post: "/path:methodNonLro2"
+      body: "*"
     };
   }
 }

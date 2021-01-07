@@ -131,12 +131,13 @@ class CodeGenerator
         {
             foreach ($fileDesc->getService() as $index => $service)
             {
-                // Load service details.
-                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc);
-                // Load gRPC service config; if it's not provided then defaults will be used.
-                $grpcServiceConfig = new GrpcServiceConfig($serviceDetails->serviceName, $grpcServiceConfigJson);
-                $gapicYamlConfig = new GapicYamlConfig($serviceDetails->serviceName, $gapicYaml);
+                $serviceName = "{$fileDesc->getPackage()}.{$service->getName()}";
+                // Load various configs; if they're not provided then defaults will be used.
+                $grpcServiceConfig = new GrpcServiceConfig($serviceName, $grpcServiceConfigJson);
+                $gapicYamlConfig = new GapicYamlConfig($serviceName, $gapicYaml);
                 $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
+                // Load service details.
+                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc, $gapicYamlConfig);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
                 $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);

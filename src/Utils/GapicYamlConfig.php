@@ -26,21 +26,27 @@ class GapicYamlConfig
 {
     public function __construct(string $serviceName, ?string $gapicYaml)
     {
-        if (is_null($gapicYaml)) {
-            $this->configsByMethodName = Map::new([]);
-        } else {
+        // TODO: Refactor to use proto, rather than directly reading yaml.
+        $this->configsByMethodName = Map::new([]);
+        $this->orderByMethodName = Map::new([]);
+        if (!is_null($gapicYaml)) {
             $gapic = Yaml::parse($gapicYaml);
             if (isset($gapic['interfaces'])) {
-                $this->configsByMethodName = Vector::new($gapic['interfaces'])
+                $methods = Vector::new($gapic['interfaces'])
                     ->filter(fn($x) => $x['name'] === $serviceName)
-                    ->flatMap(fn($x) => Vector::new($x['methods']))
+                    ->flatMap(fn($x) => Vector::new($x['methods']));
+                $this->configsByMethodName = $methods
                     ->toMap(fn($x) => $x['name']);
-            } else {
-                $this->configsByMethodName = Map::new([]);
+                $this->orderByMethodName = $methods
+                    ->map(fn($x, $i) => [$i, $x])
+                    ->toMap(fn($x) => $x[1]['name'], fn($x) => $x[0]);
             }
         }
     }
 
     /** @var Map *Readonly* Map of method-name to gapic-yaml config for the method. */
     public Map $configsByMethodName;
+
+    /** @var Map *Readonly* Map of method-name of ordering within the gapic-yaml config file. */
+    public Map $orderByMethodName;
 }

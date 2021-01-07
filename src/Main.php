@@ -66,7 +66,11 @@ if (isset($opts['service_yaml'])) {
 }
 
 // Generate PHP code.
-$year = (int)date('Y');
+// The monolithic generator appears to be fixed to use 2020, so fixing the micro-generator to 2020
+// allows the comparison-based integration tests to run.
+// TODO: Use the current year, not fixed at 2020. Make the monolith use current year.
+$year = 2020;
+// $year = (int)date('Y');
 $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
 if (is_null($outputDir)) {
     // TODO: Remove printout; only save files to the specified output path.
