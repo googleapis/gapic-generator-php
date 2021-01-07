@@ -23,6 +23,7 @@ use Google\Api\ResourceReference;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
+use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
@@ -85,8 +86,8 @@ class ServiceDetails {
     /** @var string *Readonly* The path to the source .proto file containing this service. */
     public string $filePath;
 
-    /** @var string *Readonly* The group name used for grouping unit test. */
-    public string $unitTestGroupName;
+    /** @var ?string *Readonly* The group name used for grouping unit test. */
+    public ?string $unitTestGroupName;
 
     /** @var bool *Readonly* This service contains at least one LRO method. */
     public bool $hasLro;
@@ -99,7 +100,8 @@ class ServiceDetails {
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
-        FileDescriptorProto $fileDesc
+        FileDescriptorProto $fileDesc,
+        GapicYamlConfig $gapicYamlConfig
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
@@ -122,14 +124,17 @@ class ServiceDetails {
         $this->descriptorConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_descriptor_config.php';
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
-        $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x));
+        $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x))
+            ->orderBy(fn($x) => $gapicYamlConfig->orderByMethodName->get($x->name, 10000));
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
-        $unitTestGroupName = strtolower($desc->getName());
-        if (substr($unitTestGroupName, strlen($unitTestGroupName) - 7, 7) === 'service') {
-            $unitTestGroupName = substr($unitTestGroupName, 0, strlen($unitTestGroupName) - 7);
+        // This is a copy of the monolithic way of generating the test group name.
+        $matches = [];
+        if (preg_match('/(\\w+)(\\\\[Vv]\\d+\\w*)*$/', $namespace, $matches) === 1) {
+            $this->unitTestGroupName = strtolower($matches[1]);
+        } else {
+            $this->unitTestGroupName = null;
         }
-        $this->unitTestGroupName = $unitTestGroupName;
         $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
         // Resource-names
         // Wildcard patterns are ignored.

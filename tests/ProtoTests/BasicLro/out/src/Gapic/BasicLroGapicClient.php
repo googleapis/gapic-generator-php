@@ -222,6 +222,9 @@ class BasicLroGapicClient
     }
 
     /**
+     * To test method ordering; LRO methods referenced in gapic.yaml
+     * file are always generated first; so this method will be emitted
+     * before the above MethodNonLro1.
      *
      * Sample code:
      * ```
@@ -278,5 +281,73 @@ class BasicLroGapicClient
     {
         $request = new Request();
         return $this->startOperationsCall('Method1', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $basicLroClient = new BasicLroClient();
+     * try {
+     *     $response = $basicLroClient->methodNonLro1();
+     * } finally {
+     *     $basicLroClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\BasicLro\Request
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function methodNonLro1(array $optionalArgs = [])
+    {
+        $request = new Request();
+        return $this->startCall('MethodNonLro1', Request::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $basicLroClient = new BasicLroClient();
+     * try {
+     *     $response = $basicLroClient->methodNonLro2();
+     * } finally {
+     *     $basicLroClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\BasicLro\Request
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function methodNonLro2(array $optionalArgs = [])
+    {
+        $request = new Request();
+        return $this->startCall('MethodNonLro2', Request::class, $optionalArgs, $request)->wait();
     }
 }

@@ -97,7 +97,7 @@ class ProtoHelpers
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
         return Vector::new($segments)
             ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-            ->toMap(fn($x) => $x->getKey(), function($x) use ($msg) {
+            ->toMap(fn($x) => $x->getKey(), function($x) use ($catalog, $msg) {
                 $fieldList = Vector::new(explode('.', $x->getKey()));
                 $result = [];
                 foreach ($fieldList as $index => $fieldName) {

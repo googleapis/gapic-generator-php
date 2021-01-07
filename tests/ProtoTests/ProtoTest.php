@@ -34,11 +34,17 @@ final class ProtoTest extends TestCase
         // * The expected file contents are based in the same directory as the proto file.
         // * An optional grpc-service-config.json file may be in the same directory as the proto file.
         $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
-        $package = str_replace('-', '', 'testing.' . basename($protoPath, '.proto'));
-        $grpcServiceConfigPath = 'tests/' . dirname("ProtoTests/{$protoPath}") . '/grpc-service-config.json';
-        $grpcServiceConfigJson = file_exists($grpcServiceConfigPath) ? file_get_contents($grpcServiceConfigPath) : null;
+        $baseName = basename($protoPath, '.proto');
+        $package = str_replace('-', '', "testing.{$baseName}");
+        $protoDirName = dirname("ProtoTests/{$protoPath}");
+        $grpcServiceConfigJsonPath = "tests/{$protoDirName}/grpc-service-config.json";
+        $grpcServiceConfigJson = file_exists($grpcServiceConfigJsonPath) ? file_get_contents($grpcServiceConfigJsonPath) : null;
+        $gapicYamlPath = "tests/{$protoDirName}/{$baseName}_gapic.yaml";
+        $gapicYaml = file_exists($gapicYamlPath) ? file_get_contents($gapicYamlPath) : null;
+        $serviceYamlPath = "tests/{$protoDirName}/{$baseName}_service.yaml";
+        $serviceYaml = file_exists($serviceYamlPath) ? file_get_contents($serviceYamlPath) : null;
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, null, null);
+        $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
 
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;

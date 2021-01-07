@@ -104,7 +104,7 @@ class UnitTestsGenerator
     {
         return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::group($this->serviceDetails->unitTestGroupName),
+                is_null($this->serviceDetails->unitTestGroupName) ? null : PhpDoc::group($this->serviceDetails->unitTestGroupName),
                 PhpDoc::group('gapic')
             ))
             ->withMember($this->createTransport())
