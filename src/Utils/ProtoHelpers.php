@@ -95,7 +95,7 @@ class ProtoHelpers
             throw new \Exception("REST URI must be an absolute path starting with '/'");
         }
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
-        return Vector::new($segments)
+        $placeholders = Vector::new($segments)
             ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->toMap(fn($x) => $x->getKey(), function($x) use ($catalog, $msg) {
                 $fieldList = Vector::new(explode('.', $x->getKey()));
@@ -124,6 +124,11 @@ class ProtoHelpers
                 }
                 return Vector::new($result);
             });
+        $nestedPlaceholders = Vector::new($httpRule->getAdditionalBindings())->map(fn($x) => static::restPlaceholders($catalog, $x, $msg));
+        return $nestedPlaceholders->append($placeholders)
+            ->flatMap(fn($x) => $x->mapValues(fn($k, $v) => [$k, $v])->values())
+            ->groupBy(fn($x) => $x[0])
+            ->mapValues(fn($k, $v) => $v[0][1]);
     }
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,

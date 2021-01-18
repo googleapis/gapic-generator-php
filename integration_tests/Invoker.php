@@ -27,13 +27,12 @@ class Invoker
         ?string $serviceYaml = null,
         ?string $grpcServiceConfig = null
     ) {
-        $rootDir = __DIR__ . '/..';
+        $rootDir = realpath(__DIR__ . '/..');
 
         // Build the proto descriptor.
         $protoc = "{$rootDir}/tools/protoc";
         $descRes = tmpfile();
         $descFilename = stream_get_meta_data($descRes)['uri'];
-        $descFilename = "/tmp/desc.desc";
         $protobuf = "{$rootDir}/protobuf/src/";
         $googleapis = "{$rootDir}/googleapis/";
         $input = "{$rootDir}/{$protoPath}";

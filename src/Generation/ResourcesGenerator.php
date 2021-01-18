@@ -110,7 +110,17 @@ class ResourcesGenerator
         $body = $httpRule->getBody();
         $restBody = $body === '' ? $defaultBody : $body;
         $additionalBindings = Vector::new($httpRule->getAdditionalBindings());
-        $placeholders = $topLevel ? ProtoHelpers::restPlaceholders($catalog, $httpRule, null) : Map::new();
+        if ($topLevel) {
+            // Merges plcaeholders for all bindings; ie includes additional bindings.
+            $placeholders = $additionalBindings
+                ->map(fn($x) => ProtoHelpers::restPlaceholders($catalog, $x, null))
+                ->append(ProtoHelpers::restPlaceholders($catalog, $httpRule, null))
+                ->flatMap(fn($x) => $x->mapValues(fn($k, $v) => [$k, $v])->values())
+                ->groupBy(fn($x) => $x[0])
+                ->mapValues(fn($k, $v) => $v[0][1]);
+        } else {
+            $placeholders = Map::new();
+        }
         return AST::array([
             'method' => $httpMethod,
             'uriTemplate' => $uriTemplate,
@@ -155,50 +165,66 @@ class ResourcesGenerator
 
     public static function generateClientConfig(ServiceDetails $serviceDetails, GrpcServiceConfig $grpcServiceConfig): string
     {
-        $inc = fn($i) => $i + 1;
+        $serviceName = $serviceDetails->serviceName;
         $durationToMillis = fn($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
 
-        $retryCodes = $grpcServiceConfig->retryPolicies
-            ->map(fn($x, $i) => ["retry_policy_{$inc($i)}_codes", is_null($x) ? null :
-                Vector::new($x->getRetryableStatusCodes())->map(fn($x) => Code::name($x))->toArray()])
-            ->filter(fn($x) => !is_null($x[1]));
         if ($grpcServiceConfig->isPresent) {
-            $retryCodes = $retryCodes
-                ->append(['no_retry_codes', []]);
-        } else {
-            $retryCodes = $retryCodes
-                ->append(['idempotent', ['DEADLINE_EXCEEDED', 'UNAVAILABLE']])
-                ->append(['non_idempotent', []]);
-        }
-        $retryCodes = $retryCodes->toArray(fn($x) => $x[0], fn($x) => $x[1]);
-
-        $retryParams = Vector::zip($grpcServiceConfig->retryPolicies, $grpcServiceConfig->timeouts, fn($r, $t, $i) =>
-            ["retry_policy_{$inc($i)}_params", is_null($r) && is_null($t) ? null :
-                Vector::new([
-                    ['initial_retry_delay_millis', is_null($r) ? null : $durationToMillis($r->getInitialBackoff())],
-                    ['retry_delay_multiplier', is_null($r) ? null : $r->getBackoffMultiplier()],
-                    ['max_retry_delay_millis', is_null($r) ? null : $durationToMillis($r->getMaxBackoff())],
-                    ['initial_rpc_timeout_millis', is_null($t) ? null : $durationToMillis($t)],
-                    ['rpc_timeout_multiplier', 1.0],
-                    ['max_rpc_timeout_millis', is_null($t) ? null : $durationToMillis($t)],
-                    ['total_timeout_millis', is_null($t) ? null : $durationToMillis($t)],
-                ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
-            ])
-            ->filter(fn($x) => !is_null($x[1]));
-        if ($grpcServiceConfig->isPresent) {
-            $retryParams = $retryParams
-                ->append(['no_retry_params', [
+            $configsByMethodName = Map::new();
+            $retryCodes = Vector::new([
+                ['no_retry_codes', []]
+            ]);
+            $retryParams = Vector::new([
+                ['no_retry_params', [
                     'initial_retry_delay_millis' => 0,
-                    'retry_delay_multiplier' => 0.0,
+                    'retry_delay_multiplier' => 0,
                     'max_retry_delay_millis' => 0,
                     'initial_rpc_timeout_millis' => 0,
                     'rpc_timeout_multiplier' => 1.0,
                     'max_rpc_timeout_millis' => 0,
                     'total_timeout_millis' => 0,
-                ]]);
+                ]]
+            ]);
+            $retryIndex = 1;
+            $noRetryIndex = 1;
+            foreach ($grpcServiceConfig->methods as $method) {
+                $policyName = $method->getRetryOrHedgingPolicy() === 'retry_policy' ? 'retry_policy_' . $retryIndex++ : 'no_retry_' . $noRetryIndex++;
+                // TODO(vNext): This way to check if this specific policy needs to be included is not quite right,
+                // but reproduces monolith behaviour. This code will incorrectly include services which are named with a common
+                // prefix with the current service.
+                // TODO: Understand how the monolith chooses whether to include or omit based on service-name.
+                // if (Vector::new($method->getName())->any(fn($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
+                    $codesName = "{$policyName}_codes";
+                    $paramsName = "{$policyName}_params";
+                    $policy = $method->getRetryPolicy();
+                    $timeout = $method->hasTimeout() ? $durationToMillis($method->getTimeout()) : null;
+                    $retryCodes = $retryCodes->append([
+                        $codesName,
+                        Vector::new(is_null($policy) ? [] : $policy->getRetryableStatusCodes())->map(fn($x) => Code::name($x))->toArray()
+                    ]);
+                    $retryParams = $retryParams->append([
+                        $paramsName, Vector::new([
+                            ['initial_retry_delay_millis', is_null($policy) ? 0 : $durationToMillis($policy->getInitialBackoff())],
+                            ['retry_delay_multiplier', is_null($policy) ? 0 : $policy->getBackoffMultiplier()],
+                            ['max_retry_delay_millis', is_null($policy) ? 0 : $durationToMillis($policy->getMaxBackoff())],
+                            ['initial_rpc_timeout_millis', $timeout],
+                            ['rpc_timeout_multiplier', 1.0],
+                            ['max_rpc_timeout_millis', $timeout],
+                            ['total_timeout_millis', $timeout],
+                        ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
+                    ]);
+                    foreach ($method->getName() as $name) {
+                        $fullName = "{$name->getService()}/{$name->getMethod()}";
+                        $configsByMethodName = $configsByMethodName->set($fullName, [$codesName, $paramsName, $timeout]);
+                    }
+                // }
+            }
         } else {
-            $retryParams = $retryParams
-                ->append(['default', [
+            $retryCodes = Vector::new([
+                ['idempotent', ['DEADLINE_EXCEEDED', 'UNAVAILABLE']],
+                ['non_idempotent', []]
+            ]);
+            $retryParams = Vector::new([
+                ['default', [
                     'initial_retry_delay_millis' => 100,
                     'retry_delay_multiplier' => 1.3,
                     'max_retry_delay_millis' => 60_000,
@@ -206,36 +232,43 @@ class ResourcesGenerator
                     'rpc_timeout_multiplier' => 1.0,
                     'max_rpc_timeout_millis' => 20_000,
                     'total_timeout_millis' => 600_000,
-                ]]);
+            ]]]);
+            $configsByMethodName = Map::new();
         }
-        $retryParams = $retryParams->toArray(fn($x) => $x[0], fn($x) => $x[1]);
 
-        $serviceName = $serviceDetails->serviceName;
+        $retryCodes = $retryCodes->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+        $retryParams = $retryParams->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+        $methods = [];
         $methods = $serviceDetails->methods
-            ->map(function($method) use($grpcServiceConfig, $serviceName, $durationToMillis, $inc) {
-                $index = $grpcServiceConfig->configsByName->get("{$serviceName}/{$method->name}", null) ??
-                    $grpcServiceConfig->configsByName->get("{$serviceName}/", null);
-                if (is_null($index)) {
-                    return [
-                        $method->name,
-                        ['timeout_millis' => 60_000,
-                    ] + ($method->isStreaming() ? [] : [
-                        'retry_codes_name' => $grpcServiceConfig->isPresent ? 'no_retry_codes' :
-                            ($method->restMethod === 'get' ? 'idempotent' : 'non_idempotent'),
-                        'retry_params_name' => $grpcServiceConfig->isPresent ? 'no_retry_params' : 'default',
-                    ])];
+            ->map(function($method) use($grpcServiceConfig, $configsByMethodName, $serviceName) {
+                [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
+                    $configsByMethodName->get("{$serviceName}/", [null, null, null]);
+                if (is_null($codes)) {
+                    $timeoutMillis = 60_000;
+                    if ($method->isStreaming()) {
+                        $retryCodesName = null;
+                        $retryParamsName = null;
+                    } else {
+                        $retryCodesName = $grpcServiceConfig->isPresent ? 'no_retry_codes' : ($method->restMethod === 'get' ? 'idempotent' : 'non_idempotent');
+                        $retryParamsName = $grpcServiceConfig->isPresent ? 'no_retry_params' : 'default';
+                    }
                 } else {
-                    return [
-                        $method->name,
-                        ['timeout_millis' => $durationToMillis($grpcServiceConfig->timeouts[$index])
-                    ] + ($method->isStreaming() ? [] : [
-                        'retry_codes_name' => "retry_policy_{$inc($index)}_codes",
-                        'retry_params_name' => "retry_policy_{$inc($index)}_params",
-                    ])];
+                    $timeoutMillis = $timeout ?? 60_000;
+                    if ($method->isStreaming()) {
+                        $retryCodesName = null;
+                        $retryParamsName = null;
+                    } else {
+                        $retryCodesName = $codes;
+                        $retryParamsName = $params;
+                    }
                 }
+                return [$method->name, Vector::new([
+                    ['timeout_millis', $timeoutMillis],
+                    ['retry_codes_name', $retryCodesName],
+                    ['retry_params_name', $retryParamsName]
+                ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])];
             })
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
-
         $json = [
             'interfaces' => [
                 $serviceDetails->serviceName => [

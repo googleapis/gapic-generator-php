@@ -33,6 +33,7 @@ use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Type;
@@ -91,6 +92,13 @@ class UnitTestsGenerator
         $this->ctx->type($this->serviceDetails->grpcClientType);
         foreach ($this->serviceDetails->methods->filter(fn($x) => $x->methodType !== MethodDetails::CLIENT_STREAMING) as $method) {
             $this->ctx->type($method->requestType);
+        }
+        foreach ($this->serviceDetails->methods as $method) {
+            foreach ($method->allFields as $field) {
+                if ($field->isRepeated && $field->typeSingular->isClass() && $field->isRequired) {
+                    $this->ctx->type($field->typeSingular);
+                }
+            }
         }
         // Generate file content
         $file = AST::file($this->generateClass())
@@ -199,8 +207,6 @@ class UnitTestsGenerator
 
     private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
     {
-        // TODO: Support resource-names in request args.
-        // TODO: Support empty-returning RPCs
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $transport = AST::var('transport');
         $client = AST::var('client');
@@ -227,8 +233,12 @@ class UnitTestsGenerator
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
                 $requestPerField->map(fn($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
-                ($this->assertEquals)($expectedResponse, $response),
+                $method->hasEmptyResponse ?
+                    $client->instanceCall(AST::method($method->methodName))($requestCallArgs) :
+                    Vector::new([
+                        AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                        ($this->assertEquals)($expectedResponse, $response)
+                    ]),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
@@ -245,8 +255,6 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
-        // TODO: Support resource-names in request args.
-        // TODO: Support empty-returning RPCs
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $transport = AST::var('transport');
         $client = AST::var('client');
@@ -291,8 +299,6 @@ class UnitTestsGenerator
 
     private function testSuccessCaseLro(MethodDetails $method): PhpMethod
     {
-        // TODO: Support resource-names in request args.
-        // TODO: Support empty-returning RPCs
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $expectedResponse = AST::var('expectedResponse');
         $anyResponse = AST::var('anyResponse');
@@ -366,8 +372,6 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
     {
-        // TODO: Support resource-names in request args.
-        // TODO: Support empty-returning RPCs
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
@@ -452,11 +456,14 @@ class UnitTestsGenerator
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $transport = AST::var('transport');
         $client = AST::var('client');
-        $nextPageToken = AST::var('nextPageToken');
         $expectedResponse = AST::var('expectedResponse');
         $mockResourceElement = AST::var("{$method->resourcesFieldName}Element");
         $mockResource = AST::var($method->resourcesFieldName);
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        // Response fields must be initialized after request fields, to ensure naming which is compatible with monolith.
+        $responsePerField = $prod->perField(
+            $method->responseFields->filter(fn($x) => $x->isInTestResponse),
+            Map::new(['next_page_token' => '']));
         $response = AST::var('response');
         $resources = AST::var('resources');
         $mockResourceElementValue =
@@ -465,7 +472,6 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
-        // TODO: Support resource-names in request args.
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -473,11 +479,11 @@ class UnitTestsGenerator
                 AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
                 '// Mock response',
-                AST::assign($nextPageToken, ''),
+                $responsePerField->map(fn($x) => AST::assign($x->var, $x->value)),
                 AST::assign($mockResourceElement, $mockResourceElementValue),
                 AST::assign($mockResource, AST::array([$mockResourceElement])),
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
-                $expectedResponse->instanceCall($method->responseNextPageTokenSetter)($nextPageToken),
+                $responsePerField->map(fn($x) => $expectedResponse->instanceCall($x->field->setter)($x->var)),
                 $expectedResponse->instanceCall($method->resourcesSetter)($mockResource),
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 // TODO(vNext): Always add this comment.
@@ -504,7 +510,6 @@ class UnitTestsGenerator
 
     private function testSuccessCaseBidiStreaming(MethodDetails $method): PhpMethod
     {
-        // TODO: Support resource-names in request args.
         $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
         $transport = AST::var('transport');
         $client = AST::var('client');

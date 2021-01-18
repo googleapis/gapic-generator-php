@@ -37,6 +37,7 @@ use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use PHPUnit\Framework\TestCase;
 use Testing\Basic\BasicGrpcClient;
+use Testing\Basic\PartOfRequestA;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -135,7 +136,8 @@ class BasicClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $aString = 'aString-929604177';
-        $response = $client->methodWithArgs($aString);
+        $partOfRequestA = [];
+        $response = $client->methodWithArgs($aString, $partOfRequestA);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -144,6 +146,8 @@ class BasicClientTest extends GeneratedTest
         $this->assertSame('/testing.basic.Basic/MethodWithArgs', $actualFuncCall);
         $actualValue = $actualRequestObject->getAString();
         $this->assertProtobufEquals($aString, $actualValue);
+        $actualValue = $actualRequestObject->getPartOfRequestA();
+        $this->assertProtobufEquals($partOfRequestA, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -167,8 +171,9 @@ class BasicClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $aString = 'aString-929604177';
+        $partOfRequestA = [];
         try {
-            $client->methodWithArgs($aString);
+            $client->methodWithArgs($aString, $partOfRequestA);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

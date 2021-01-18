@@ -77,6 +77,11 @@ class GapicClientGenerator
         }
         foreach ($this->serviceDetails->methods as $method) {
             $this->ctx->type($method->requestType);
+            foreach ($method->allFields as $field) {
+                if ($field->isRepeated && $field->typeSingular->isClass()) {
+                    $this->ctx->type($field->typeSingular);
+                }
+            }
         }
         // Generate file content
         $file = AST::file($this->generateClass())
@@ -122,8 +127,8 @@ class GapicClientGenerator
             ->withMembers($this->resourceProperties())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
-            ->withMembers($this->lroMethods())
             ->withMembers($this->resourceMethods())
+            ->withMembers($this->lroMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn($x) => $this->rpcMethod($x)));
     }
@@ -538,7 +543,7 @@ class GapicClientGenerator
                                     $this->ctx->Type($retrySettingsType, 1), ' for example usage.'))
                                 )),
                 // TODO(vNext): Don't use a fully-qualified type here.
-                PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
+                $method->hasEmptyResponse ? null : PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')),
                 PhpDoc::experimental()

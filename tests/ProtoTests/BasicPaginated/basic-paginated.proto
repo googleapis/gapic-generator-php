@@ -20,6 +20,10 @@ service BasicPaginated {
   }
 }
 
+message PartOfRequestA {}
+message PartOfRequestB {}
+message PartOfRequestC {}
+
 // a_field has no docs, to test that fields without docs
 // are generated correctly.
 message Request {
@@ -28,9 +32,19 @@ message Request {
   int32 page_size = 2;
   // Docs on this required standard page_token field will be ignored.
   string page_token = 3  [(google.api.field_behavior) = REQUIRED];
+  // Monolithic adds an import for a paginated method with a repeated message-typed field (!).
+  repeated PartOfRequestA part_of_request_a = 4 [(google.api.field_behavior) = REQUIRED];
+  repeated PartOfRequestB part_of_request_b = 5;
+  PartOfRequestC part_of_request_c = 6;
 }
 
+// Includes various extra fields in response, to check they
+// are handled correctly in the generated unit-tests.
 message Response {
   repeated string the_results = 1;
-  string next_page_token = 2;
+  int32 page_size = 2;
+  string next_page_token = 3;
+  int32 page_token = 4;
+  bool a_field = 5;
+  string another_field = 6;
 }

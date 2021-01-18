@@ -1,0 +1,136 @@
+{
+  "methodConfig": [
+    {
+      "name": [
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ImageAnnotator",
+          "method": "BatchAnnotateImages"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ImageAnnotator",
+          "method": "BatchAnnotateFiles"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ImageAnnotator",
+          "method": "AsyncBatchAnnotateImages"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ImageAnnotator",
+          "method": "AsyncBatchAnnotateFiles"
+        }
+      ],
+      "timeout": "600s",
+      "retryPolicy": {
+        "initialBackoff": "0.100s",
+        "maxBackoff": "60s",
+        "backoffMultiplier": 1.3,
+        "retryableStatusCodes": [
+          "DEADLINE_EXCEEDED",
+          "UNAVAILABLE"
+        ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "CreateProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "CreateProduct"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "CreateReferenceImage"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "ImportProductSets"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "PurgeProducts"
+        }
+      ],
+      "timeout": "600s",
+      "retryPolicy": {
+        "initialBackoff": "0.100s",
+        "maxBackoff": "60s",
+        "backoffMultiplier": 1.3,
+        "retryableStatusCodes": [
+        ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "ListProductSets"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "GetProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "UpdateProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "DeleteProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "ListProducts"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "GetProduct"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "UpdateProduct"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "DeleteProduct"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "DeleteReferenceImage"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "ListReferenceImages"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "GetReferenceImage"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "AddProductToProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "RemoveProductFromProductSet"
+        },
+        {
+          "service": "tests.ProtoTests.GrpcServiceConfigVision.ProductSearch",
+          "method": "ListProductsInProductSet"
+        }
+      ],
+      "timeout": "600s",
+      "retryPolicy": {
+        "initialBackoff": "0.100s",
+        "maxBackoff": "60s",
+        "backoffMultiplier": 1.3,
+        "retryableStatusCodes": [
+          "DEADLINE_EXCEEDED",
+          "UNAVAILABLE"
+        ]
+      }
+    }
+  ]
+}

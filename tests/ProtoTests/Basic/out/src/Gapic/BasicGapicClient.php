@@ -36,6 +36,9 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\Basic\BasicGrpcClient;
+use Testing\Basic\PartOfRequestA;
+use Testing\Basic\PartOfRequestB;
+use Testing\Basic\PartOfRequestC;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -200,18 +203,23 @@ class BasicGapicClient
      * $basicClient = new BasicClient();
      * try {
      *     $aString = '';
-     *     $response = $basicClient->methodWithArgs($aString);
+     *     $partOfRequestA = [];
+     *     $response = $basicClient->methodWithArgs($aString, $partOfRequestA);
      * } finally {
      *     $basicClient->close();
      * }
      * ```
      *
-     * @param string $aString      A required field...
-     * @param array  $optionalArgs {
+     * @param string           $aString        A required field...
+     * @param PartOfRequestA[] $partOfRequestA ...and a repeated message type, which checks that an extra import is *not* added,
+     *                                         in contrast to a paginated method where an extra import *is* added.
+     * @param array            $optionalArgs   {
      *     Optional.
      *
      *     @type int $anInt
      *           ...and an optional field.
+     *     @type PartOfRequestB[] $partOfRequestB
+     *     @type PartOfRequestC $partOfRequestC
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -225,12 +233,21 @@ class BasicGapicClient
      *
      * @experimental
      */
-    public function methodWithArgs($aString, array $optionalArgs = [])
+    public function methodWithArgs($aString, $partOfRequestA, array $optionalArgs = [])
     {
         $request = new RequestWithArgs();
         $request->setAString($aString);
+        $request->setPartOfRequestA($partOfRequestA);
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
+        }
+
+        if (isset($optionalArgs['partOfRequestB'])) {
+            $request->setPartOfRequestB($optionalArgs['partOfRequestB']);
+        }
+
+        if (isset($optionalArgs['partOfRequestC'])) {
+            $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
         return $this->startCall('MethodWithArgs', Response::class, $optionalArgs, $request)->wait();
