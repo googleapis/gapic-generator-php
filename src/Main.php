@@ -81,7 +81,9 @@ if (is_null($outputDir)) {
 } else {
     foreach ($files as [$relativeFilename, $fileContent]) {
         $path = $outputDir . '/' . $relativeFilename;
-        mkdir(dirname($path), 0777, true);
+        if (!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0777, true);
+        }
         file_put_contents($path, $fileContent);
     }
 }
