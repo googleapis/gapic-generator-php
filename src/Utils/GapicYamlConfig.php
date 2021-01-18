@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Generator\Collections\Map;
+use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Symfony\Component\Yaml\Yaml;
 
@@ -29,12 +30,16 @@ class GapicYamlConfig
         // TODO: Refactor to use proto, rather than directly reading yaml.
         $this->configsByMethodName = Map::new([]);
         $this->orderByMethodName = Map::new([]);
+        $this->interfaces = Set::new();
         if (!is_null($gapicYaml)) {
             $gapic = Yaml::parse($gapicYaml);
             if (isset($gapic['interfaces'])) {
+                $this->interfaces = Vector::new($gapic['interfaces'])
+                    ->map(fn($x) => $x['name'])
+                    ->toSet();
                 $methods = Vector::new($gapic['interfaces'])
                     ->filter(fn($x) => $x['name'] === $serviceName)
-                    ->flatMap(fn($x) => Vector::new($x['methods']));
+                    ->flatMap(fn($x) => Vector::new(isset($x['methods']) ? $x['methods'] : []));
                 $this->configsByMethodName = $methods
                     ->toMap(fn($x) => $x['name']);
                 $this->orderByMethodName = $methods
@@ -43,6 +48,8 @@ class GapicYamlConfig
             }
         }
     }
+
+    public Set $interfaces;
 
     /** @var Map *Readonly* Map of method-name to gapic-yaml config for the method. */
     public Map $configsByMethodName;

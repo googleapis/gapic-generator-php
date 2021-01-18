@@ -163,7 +163,7 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
-    public static function generateClientConfig(ServiceDetails $serviceDetails, GrpcServiceConfig $grpcServiceConfig): string
+    public static function generateClientConfig(ServiceDetails $serviceDetails, GrpcServiceConfig $grpcServiceConfig, GapicYamlConfig $gapicYamlConfig): string
     {
         $serviceName = $serviceDetails->serviceName;
         $durationToMillis = fn($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
@@ -191,8 +191,9 @@ class ResourcesGenerator
                 // TODO(vNext): This way to check if this specific policy needs to be included is not quite right,
                 // but reproduces monolith behaviour. This code will incorrectly include services which are named with a common
                 // prefix with the current service.
-                // TODO: Understand how the monolith chooses whether to include or omit based on service-name.
-                // if (Vector::new($method->getName())->any(fn($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
+                // It also unnessecarily includes irrelevant information if the service is not listed in the gapic config.
+                if (!isset($gapicYamlConfig->interfaces[$serviceName]) ||
+                        Vector::new($method->getName())->any(fn($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
                     $codesName = "{$policyName}_codes";
                     $paramsName = "{$policyName}_params";
                     $policy = $method->getRetryPolicy();
@@ -216,7 +217,7 @@ class ResourcesGenerator
                         $fullName = "{$name->getService()}/{$name->getMethod()}";
                         $configsByMethodName = $configsByMethodName->set($fullName, [$codesName, $paramsName, $timeout]);
                     }
-                // }
+                }
             }
         } else {
             $retryCodes = Vector::new([

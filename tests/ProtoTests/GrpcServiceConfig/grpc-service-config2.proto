@@ -7,20 +7,19 @@ option php_namespace = "Testing\\GrpcServiceConfig";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 
-service GrpcServiceConfig2 {
+service GrpcServiceConfigWithRetry2 {
   option (google.api.default_host) = "grpcserviceconfig.example.com";
 
-  // Note: The monolithic generator has a bug in handling retry for
-  // methods of the same name in two different services within the same API,
-  // so we don't test that condition.
-  rpc MethodLevelRetryMethod2(Request2) returns(Response2) {
+  rpc Method2A(Request2) returns (Response2) {
     option (google.api.http) = {
-      post: "/path:methodLevelRetryMethod2"
+      post: "/path:method2A"
       body: "*"
     };
   };
 }
 
-message Request2 {}
+message Request2 {
+}
 
-message Response2 {}
+message Response2 {
+}

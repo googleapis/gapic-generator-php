@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package testing.grpcserviceconfig;
+
+option php_namespace = "Testing\\GrpcServiceConfig";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/longrunning/operations.proto";
+
+service GrpcServiceConfigWithRetry1 {
+  option (google.api.default_host) = "grpcserviceconfig.example.com";
+
+  rpc Method1A(Request1) returns (Response1) {
+    option (google.api.http) = {
+      post: "/path:method1A"
+      body: "*"
+    };
+  };
+
+  rpc Method1BLro(Request1) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/path:method1BLro"
+      body: "*"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "LroResponse"
+      metadata_type: "LroMetadata"
+    };
+  };
+
+  rpc Method1CServiceLevelRetry(Request1) returns (Response1) {
+    option (google.api.http) = {
+      post: "/path:method1CServiceLevelRetry"
+      body: "*"
+    };
+  }
+
+  rpc Method1DTimeoutOnlyRetry(Request1) returns (Response1) {
+    option (google.api.http) = {
+      post: "/path:method1DTimeoutOnlyRetry"
+      body: "*"
+    };
+  }
+
+  rpc Method1ServerStreaming(Request1) returns (stream Response1);
+  rpc Method1BidiStreaming(stream Request1) returns (stream Response1);
+}
+
+message Request1 {
+}
+
+message Response1 {
+}
+
+message LroResponse {
+}
+
+message LroMetadata {
+}
