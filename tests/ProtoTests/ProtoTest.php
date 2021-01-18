@@ -27,7 +27,7 @@ final class ProtoTest extends TestCase
 {
     use ProtoTrait;
 
-    private function runProtoTest(string $protoPath): void
+    private function runProtoTest(string $protoPath, ?string $package = null): void
     {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
@@ -35,7 +35,7 @@ final class ProtoTest extends TestCase
         // * An optional grpc-service-config.json file may be in the same directory as the proto file.
         $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
         $baseName = basename($protoPath, '.proto');
-        $package = str_replace('-', '', "testing.{$baseName}");
+        $package = $package ?? str_replace('-', '', "testing.{$baseName}");
         $protoDirName = dirname("ProtoTests/{$protoPath}");
         $grpcServiceConfigJsonPath = "tests/{$protoDirName}/grpc-service-config.json";
         $grpcServiceConfigJson = file_exists($grpcServiceConfigJsonPath) ? file_get_contents($grpcServiceConfigJsonPath) : null;
@@ -91,6 +91,6 @@ final class ProtoTest extends TestCase
 
     public function testGrpcServiceConfig(): void
     {
-        $this->runProtoTest('GrpcServiceConfig/grpc-service-config.proto');
+        $this->runProtoTest('GrpcServiceConfig/grpc-service-config1.proto', 'testing.grpcserviceconfig');
     }
 }

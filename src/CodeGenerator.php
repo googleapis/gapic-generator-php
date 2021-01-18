@@ -169,7 +169,7 @@ class CodeGenerator
                 $code = Formatter::format($code);
                 yield ["src/{$version}resources/{$serviceDetails->restConfigFilename}", $code];
                 // Resource: client_config.json
-                $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig);
+                $json = ResourcesGenerator::generateClientConfig($serviceDetails, $grpcServiceConfig, $gapicYamlConfig);
                 yield ["src/{$version}resources/{$serviceDetails->clientConfigFilename}", $json];
             }
             // TODO: Further files, as required.
