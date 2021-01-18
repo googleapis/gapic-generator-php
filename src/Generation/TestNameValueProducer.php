@@ -59,16 +59,16 @@ class TestNameValueProducer
         }
     }
 
-    public function perField(Vector $fields): Vector
+    public function perField(Vector $fields, ?Map $forceValues = null): Vector
     {
 
-        return $fields->map(fn($f) => new class($this, $f) {
-            public function __construct($prod, $f)
+        return $fields->map(fn($f) => new class($this, $f, $forceValues ?? Map::new()) {
+            public function __construct($prod, $f, $forceValues)
             {
                 $this->field = $f;
                 $this->name = $prod->name($f->name);
                 $this->var = AST::var(Helpers::toCamelCase($this->name));
-                $this->value = $prod->value($f, $this->name);
+                $this->value = $forceValues->get($f->name, $prod->value($f, $this->name));
             }
 
             public FieldDetails $field;
@@ -93,7 +93,7 @@ class TestNameValueProducer
                     // TODO: Consider refactoring this.
                     $this->field = $f;
                     $fnVarName = function() use ($prod, $f) {
-                        $this->name = $prod->name($f->name);
+                        $this->name = (is_null($f->resourceDetails) ? '' : 'formatted_') . $prod->name($f->name);
                         $this->var = AST::var(Helpers::toCamelCase($this->name));
                         return [$this->var, $this->name];
                     };
@@ -125,7 +125,7 @@ class TestNameValueProducer
     }
 
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
-    public function fieldInit(MethodDetails $method, FieldDetails $field, Callable $fnVarName)
+    public function fieldInit(MethodDetails $method, FieldDetails $field, Callable $fnVarName, ?Variable $clientVar = null)
     {
         $fnInitValue = function(FieldDetails $f, string $value) {
             if ($f->isEnum) {
@@ -159,6 +159,12 @@ class TestNameValueProducer
                 return $initElements
                     ->map(fn($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
                     ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
+            } elseif (!is_null($field->resourceDetails)) {
+                // TODO: What if it's just a wild-card pattern?
+                $patternDetails = $field->resourceDetails->patterns[0];
+                $args = $patternDetails->params->map(fn($x) => strtoupper("[{$x[0]}]"));
+                $clientVar = $clientVar ?? AST::var('client');
+                return AST::assign($var, $clientVar->instanceCall($field->resourceDetails->formatMethod)($args));
             } else {
                 return AST::assign($var, $this->value($field, $name));
             }

@@ -4,26 +4,54 @@ package testing.grpcserviceconfig;
 
 option php_namespace = "Testing\\GrpcServiceConfig";
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
 
 service GrpcServiceConfigNoRetry {
   option (google.api.default_host) = "grpcserviceconfig.example.com";
 
-  rpc NoRetryMethod(Request) returns(Response);
+  rpc NoRetryMethod(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:noRetryMethod"
+      body: "*"
+    };
+  };
 }
 
-service GrpcServiceConfig {
+service GrpcServiceConfigWithRetry {
   option (google.api.default_host) = "grpcserviceconfig.example.com";
 
-  rpc ServiceLevelRetryMethod(Request) returns(Response);
+  rpc ServiceLevelRetryMethod(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:serviceLevelRetryMethod"
+      body: "*"
+    };
+  };
 
-  rpc MethodLevelRetryMethod(Request) returns(Response);
+  rpc MethodLevelRetryMethod(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodLevelRetryMethod"
+      body: "*"
+    };
+  };
+
+  rpc MethodLevelDuplicatedParamsRetryMethod(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodLevelRetryMethod"
+      body: "*"
+    };
+  };
 
   // TODO: Enable once streaming is supported.
   // rpc MethodWithServerRetry(Request) returns(stream Response);
   // rpc MethodWithBidiRetry(stream Request) returns(stream Response);
 
-  rpc MethodTimeoutOnly(Request) returns(Response);
+  rpc MethodTimeoutOnly(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodTimeoutOnly"
+      body: "*"
+    };
+  };
 }
 
 message Request {

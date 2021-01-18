@@ -23,6 +23,7 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Type;
+use Google\Generator\Utils\Helpers;
 use Google\Protobuf\Internal\GPBType;
 
 class GapicClientExamplesGenerator
@@ -33,11 +34,13 @@ class GapicClientExamplesGenerator
         $this->gapicYamlConfig = $gapicYamlConfig;
         // Create a separate context, as this code isn't part of the generated client.
         $this->ctx = new SourceFileContext('');
+        $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx, $gapicYamlConfig);
     }
 
     private ServiceDetails $serviceDetails;
     private GapicYamlConfig $gapicYamlConfig;
     private SourceFileContext $ctx;
+    private TestNameValueProducer $prod;
 
     public function rpcMethodExample(MethodDetails $method): AST
     {
@@ -90,11 +93,12 @@ class GapicClientExamplesGenerator
         $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
             $config = Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
         $result = $method->allFields
-            ->map(function($f) use($inits, $fnGetValue) {
+            ->map(function($f) use($inits, $fnGetValue, $method) {
                 $value = $inits->get($f->name, null);
                 $valueIndex = $inits->get($f->name . '[0]', null);
                 if ($f->isRequired || !is_null($value) || !is_null($valueIndex)) {
-                    $var = AST::var($f->camelName);
+                    $varName = is_null($f->resourceDetails) ? $f->camelName : Helpers::toCamelCase("formatted_{$f->name}");
+                    $var = AST::var($varName);
                     if (!is_null($value)) {
                         // Look for given init value for this field.
                         $initCode = AST::assign($var, $fnGetValue($f, $value));
@@ -110,8 +114,13 @@ class GapicClientExamplesGenerator
                             ->map(fn($x) => AST::assign($x[0], $fnGetValue($f, $x[1])))
                             ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
                     } else {
-                        // Use a default example value if no values are specified.
-                        $initCode = AST::assign($var, $f->exampleValue($this->ctx));
+                        if (is_null($f->resourceDetails)) {
+                            // Use a default example value if no values are specified.
+                            $initCode = AST::assign($var, $f->exampleValue($this->ctx));
+                        } else {
+                            $serviceClient = AST::var($this->serviceDetails->clientVarName);
+                            $initCode = $this->prod->fieldInit($method, $f, fn() => [$var, $varName], $serviceClient);
+                        }
                     }
                     return [$initCode, $var, $f->isRequired];
                 } else {
@@ -142,7 +151,9 @@ class GapicClientExamplesGenerator
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 $varsInitCode,
-                AST::assign($response, AST::call($serviceClient, AST::method($method->methodName))($callVars))
+                $method->hasEmptyResponse ?
+                    AST::call($serviceClient, AST::method($method->methodName))($callVars) :
+                    AST::assign($response, AST::call($serviceClient, AST::method($method->methodName))($callVars))
             )->finally(
                 AST::call($serviceClient, AST::method('close'))()
             )
@@ -159,8 +170,12 @@ class GapicClientExamplesGenerator
         $newOperationResponse = AST::var('newOperationResponse');
         $useResponseFn = fn($var) => AST::if($var->operationSucceeded())
             ->then(
-                AST::assign($result, $var->getResult()),
-                '// doSomethingWith($result)'
+                $method->hasEmptyLroResponse ?
+                    '// operation succeeded and returns no value' :
+                    Vector::new([
+                        AST::assign($result, $var->getResult()),
+                        '// doSomethingWith($result)'
+                    ])
             )
             ->else(
                 AST::assign($error, $var->getError()),

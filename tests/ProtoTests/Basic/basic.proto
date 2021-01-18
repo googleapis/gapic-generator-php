@@ -33,11 +33,20 @@ service Basic {
 message Request {
 }
 
+message PartOfRequestA {}
+message PartOfRequestB {}
+message PartOfRequestC {}
+
 message RequestWithArgs {
   // A required field...
   string a_string = 1 [(google.api.field_behavior) = REQUIRED];
   // ...and an optional field.
   int32 an_int = 2;
+  // ...and a repeated message type, which checks that an extra import is *not* added,
+  // in contrast to a paginated method where an extra import *is* added.
+  repeated PartOfRequestA part_of_request_a = 4 [(google.api.field_behavior) = REQUIRED];
+  repeated PartOfRequestB part_of_request_b = 5;
+  PartOfRequestC part_of_request_c = 6;
 }
 
 message Response {

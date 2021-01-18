@@ -28,34 +28,18 @@ class GrpcServiceConfig
     {
         if (is_null($json)) {
             $this->isPresent = false;
-            $this->configsByName = Map::new();
-            $this->retryPolicies = Vector::new([]);
-            $this->timeouts = Vector::new([]);
+            $this->methods = Vector::new([]);
         } else {
             $this->isPresent = true;
             $config = new ServiceConfig();
             $config->mergeFromJsonString($json);
-            $methods = Vector::new($config->getMethodConfig())
-                ->filter(fn($x) => Vector::new($x->getName())->any(fn($x) => $x->getService() === $serviceName));
-            $this->configsByName = $methods
-                ->flatMap(fn($conf, $index) => Vector::new($conf->getName())->map(fn($name) => [$name, $index]))
-                ->toMap(fn($x) => "{$x[0]->getService()}/{$x[0]->getMethod()}", fn($x) => $x[1]);
-            $this->retryPolicies = $methods
-                ->map(fn($x) => $x->getRetryPolicy());
-            $this->timeouts = $methods
-                ->map(fn($x) => $x->getTimeout());
+            $this->methods = Vector::new($config->getMethodConfig());
         }
     }
 
     /** @var bool *Readonly* Whether a grpc-service-config is present at all. */
     public bool $isPresent;
 
-    /** @var Map *Readonly* Map<string, \Grpc\Service_config\MethodConfig>; name to indexes. */
-    public Map $configsByName;
-
-    /** @var Vector *Readonly* Vector<\Grpc\Service_config\MethodConfig\RetryPolicy> */
-    public Vector $retryPolicies;
-
-    /** @var Vector *Readonly* Vector<\Google\Protobuf\Duration> */
-    public Vector $timeouts;
+    /** @var Vector *Readonly* Vector<\Grpc\Service_config\MethodConfig>; all methods' service configs. */
+    public Vector $methods;
 }

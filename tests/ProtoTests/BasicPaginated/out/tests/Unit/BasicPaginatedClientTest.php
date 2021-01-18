@@ -37,6 +37,7 @@ use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use PHPUnit\Framework\TestCase;
 use Testing\BasicPaginated\BasicPaginatedGrpcClient;
+use Testing\BasicPaginated\PartOfRequestA;
 use Testing\BasicPaginated\Request;
 use Testing\BasicPaginated\Response;
 use stdClass;
@@ -78,19 +79,28 @@ class BasicPaginatedClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
+        $pageSize = 883849137;
         $nextPageToken = '';
+        $pageToken2 = 649316932;
+        $aField2 = false;
+        $anotherField = 'anotherField1551924414';
         $theResultsElement = 'theResultsElement-1546403867';
         $theResults = [
             $theResultsElement,
         ];
         $expectedResponse = new Response();
+        $expectedResponse->setPageSize($pageSize);
         $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setPageToken($pageToken2);
+        $expectedResponse->setAField($aField2);
+        $expectedResponse->setAnotherField($anotherField);
         $expectedResponse->setTheResults($theResults);
         $transport->addResponse($expectedResponse);
         // Mock request
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
-        $response = $client->methodPaginated($aField, $pageToken);
+        $partOfRequestA = [];
+        $response = $client->methodPaginated($aField, $pageToken, $partOfRequestA);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -104,6 +114,8 @@ class BasicPaginatedClientTest extends GeneratedTest
         $this->assertProtobufEquals($aField, $actualValue);
         $actualValue = $actualRequestObject->getPageToken();
         $this->assertProtobufEquals($pageToken, $actualValue);
+        $actualValue = $actualRequestObject->getPartOfRequestA();
+        $this->assertProtobufEquals($partOfRequestA, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -128,8 +140,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         // Mock request
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
+        $partOfRequestA = [];
         try {
-            $client->methodPaginated($aField, $pageToken);
+            $client->methodPaginated($aField, $pageToken, $partOfRequestA);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

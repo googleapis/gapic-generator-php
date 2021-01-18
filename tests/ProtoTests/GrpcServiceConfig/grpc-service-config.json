@@ -3,7 +3,7 @@
     {
       "name": [
         {
-          "service": "testing.grpcserviceconfig.GrpcServiceConfig"
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry"
         }
       ],
       "timeout": "20s",
@@ -17,7 +17,23 @@
     {
       "name": [
         {
-          "service": "testing.grpcserviceconfig.GrpcServiceConfig",
+          "service": "testing.grpcserviceconfig.GrpcServiceConfig2",
+          "method": "MethodLevelRetryMethod2"
+        }
+      ],
+      "timeout": "60s",
+      "retry_policy": {
+        "max_attempts": 11,
+        "initial_backoff": "2s",
+        "max_backoff": "10s",
+        "backoff_multiplier": 3.0,
+        "retryable_status_codes": [ "UNAVAILABLE" ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry",
           "method": "MethodLevelRetryMethod"
         }
       ],
@@ -33,7 +49,7 @@
     {
       "name": [
         {
-          "service": "testing.grpcserviceconfig.GrpcServiceConfig",
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry",
           "method": "MethodTimeoutOnly"
         }
       ],

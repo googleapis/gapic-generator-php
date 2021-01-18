@@ -62,12 +62,12 @@ class ProtoCatalog
             ->concat($allMsgs->flatMap(fn($x) => Vector::new($x->getEnumType())));
         $this->enumsByFullname = $allEnums->toMap(fn($x) => '.' . $x->desc->getFullName());
 
-        $messagsResourceDefs = $allMsgs
+        $messagesResourceDefs = $allMsgs
             ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
             ->filter(fn($x) => !is_null($x));
         $fileResourceDefs = $fileDescs
             ->flatMap(fn($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
-        $resourceDefs = $messagsResourceDefs->concat($fileResourceDefs);
+        $resourceDefs = $messagesResourceDefs->concat($fileResourceDefs);
         $this->resourcesByType = $resourceDefs->toMap(fn($x) => $x->getType());
         // Use 'distinct()' here to keep just the first resource if there are multiple resources with the same pattern.
         $this->resourcesByPattern = $resourceDefs->flatMap(fn($res) =>

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
@@ -26,6 +28,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 
@@ -71,7 +74,10 @@ class FieldDetails
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
-    public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
+    /** @var ?ResourceDetails The resource details, if this field is a resource; null otherwise. */
+    public ?ResourceDetails $resourceDetails;
+
+    public function __construct(ProtoCatalog $catalog, DescriptorProto $parentMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
         $this->desc = $field;
@@ -88,6 +94,19 @@ class FieldDetails
         $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();
         $this->isRepeated = $field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
+        // Load resource details, if relevant.
+        $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+        if (!is_null($resRef)) {
+            if (!is_null($resRef->getType()) && $resRef->getType() !== '') {
+                $this->resourceDetails = new ResourceDetails($catalog->resourcesByType[$resRef->getType()]);
+            } else {
+                // TODO: Find resource-details for child_type resource reference.
+                $this->resourceDetails = null;
+            }
+        } else {
+            // TODO: Check for resource-definition message.
+            $this->resourceDetails = null;
+        }
     }
 
     public function exampleValue(SourceFileContext $ctx)
