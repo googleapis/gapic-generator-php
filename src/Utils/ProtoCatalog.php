@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Collections\Map;
 use Google\Generator\Utils\ProtoHelpers;
@@ -37,6 +38,9 @@ class ProtoCatalog
 
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by pattern. First pattern wins, if duplicates. */
     public Map $resourcesByPattern;
+
+    /** @var Map *Readonly* Map<string, Vector<ResourceDescriptor>> of all child/parent resources. */
+    public Map $parentResourceByChildType;
 
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
@@ -74,5 +78,33 @@ class ProtoCatalog
                 Vector::new($res->getPattern())->map(fn($pattern) => [$pattern, $res]))
             ->distinct(fn($x) => $x[0])
             ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
+
+        $this->parentResourceByChildType = $allMsgs
+            ->flatMap(fn($x) => Vector::new($x->getField()))
+            ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+            ->filter(fn($x) => !is_null($x) && $x->getChildType() !== '')
+            ->map(fn($x) => $x->getChildType())
+            ->distinct()
+            ->map(function($childType) {
+                $childPatterns = Vector::new($this->resourcesByType[$childType]->getPattern());
+                if ($childPatterns->any(fn($x) => $x === '*')) {
+                    return null;
+                }
+                $parentPatterns = $childPatterns->map(fn($childPattern) => static::parentPattern($childPattern));
+                return [$childType, $parentPatterns->map(fn($x) => $this->resourcesByPattern[$x])];
+            })
+            ->filter(fn($x) => !is_null($x))
+            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
+    }
+
+    private static function parentPattern(string $pattern): string
+    {
+        $parts = Vector::new(explode('/', $pattern));
+        $skipCount = (strpos($parts[-1], '}') > 0) ? 2 : 1;
+        $parts = $parts->skipLast($skipCount);
+        if (count($parts) === 0) {
+            throw new \Exception("Resource-name pattern '{$pattern}' has no parent.");
+        }
+        return $parts->join('/');
     }
 }

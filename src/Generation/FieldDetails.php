@@ -83,7 +83,7 @@ class FieldDetails
     /** @var bool Whether tests and examples should use use a resource-type value. */
     public bool $useResourceTestValue;
 
-    public function __construct(ProtoCatalog $catalog, DescriptorProto $parentMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
+    public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
         $this->desc = $field;
@@ -104,10 +104,21 @@ class FieldDetails
         // Load resource details, if relevant.
         $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
         if (!is_null($resRef)) {
-            if (!is_null($resRef->getType()) && $resRef->getType() !== '') {
+            if ($resRef->getType() === '' && $resRef->getChildType() === '') {
+                throw new \Exception('type of child_type must be set to a value.');
+            }
+            if ($resRef->getType() !== '' && $resRef->getType() !== '*') {
                 $this->resourceDetails = new ResourceDetails($catalog->resourcesByType[$resRef->getType()]);
+            } elseif ($resRef->getChildType() !== '' && $resRef->getChildType() !== '*') {
+                // Get the first of possibly multiple resources.
+                // This lookup can (correctly) fail if the parent resource contains a '*' pattern.
+                $parentResources = $catalog->parentResourceByChildType->get($resRef->getChildType(), null);
+                if (!is_null($parentResources) && $parentResources->any()) {
+                    $this->resourceDetails = new ResourceDetails($parentResources[0]);
+                } else {
+                    $this->resourceDetails = null;
+                }
             } else {
-                // TODO: Find resource-details for child_type resource reference.
                 $this->resourceDetails = null;
             }
         } else {
