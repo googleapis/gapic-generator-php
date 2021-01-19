@@ -93,6 +93,13 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/billing/budgets/v1/billingbudgets_grpc_service_config.json'
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/channel/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.channel.v1',
+    'googleapis/google/cloud/channel/v1/cloudchannel_gapic.yaml',
+    'googleapis/google/cloud/channel/v1/cloudchannel_v1.yaml',
+    'googleapis/google/cloud/channel/v1/cloudchannel_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
     'googleapis/google/cloud/language/v1/language_gapic.yaml',
