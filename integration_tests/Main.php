@@ -49,6 +49,20 @@ $ok = processDiff(Invoker::invoke(
 // Generate and compare a real APIs.
 // TODO: Real API tests may be more suitable as their own integration test.
 $ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/accessapproval/v1/*.proto',
+    'google.cloud.accessapproval.v1',
+    'googleapis/google/cloud/accessapproval/v1/accessapproval_gapic.yaml',
+    'googleapis/google/cloud/accessapproval/v1/accessapproval_v1.yaml',
+    'googleapis/google/cloud/accessapproval/v1/accessapproval_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/asset/v1/*.proto',
+    'google.cloud.asset.v1',
+    'googleapis/google/cloud/asset/v1/cloudasset_gapic.yaml',
+    'googleapis/google/cloud/asset/v1/cloudasset_v1.yaml',
+    'googleapis/google/cloud/asset/v1/cloudasset_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
     'googleapis/google/cloud/language/v1/language_gapic.yaml',

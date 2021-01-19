@@ -93,6 +93,7 @@ class ResourcesGenerator
                         $serviceDetails->methods
                             ->map(fn($x) => [$x->name, $perMethod($x)])
                             ->filter(fn($x) => count($x[1]) > 0)
+                            ->orderBy(fn($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
                             ->toArray(fn($x) => $x[0], fn($x) => AST::array($x[1]))
                     )
                 ])
