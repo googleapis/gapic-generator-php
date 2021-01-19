@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\PhpFile;
-use Google\Generator\Collections\Set;
+use Google\Generator\Collections\Map;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
@@ -27,7 +27,7 @@ use Google\Generator\Utils\Type;
 class SourceFileContext
 {
     private string $namespace;
-    private Set $uses;
+    private Map $usesByShortName;
     private bool $isFinalized;
 
     /** @var *Readonly* Year value for license headers, if set. */
@@ -37,7 +37,7 @@ class SourceFileContext
     {
         $this->namespace = $namespace;
         $this->licenseYear = $licenseYear;
-        $this->uses = Set::new();
+        $this->usesByShortName = Map::new();
         $this->isFinalized = false;
     }
 
@@ -70,19 +70,28 @@ class SourceFileContext
                 return is_int($fullyQualify) ? substr($type->getFullname(), $fullyQualify) : $type->getFullname();
             });
         } else {
-            // TODO: Handle type name collisions.
+            // TODO(vNext): Maybe improve collision handling; this replicates monolith behaviour.
+            $resolvedName = $type->name;
             if ($type->isClass()) {
+                // No 'use' required if type is in the current namespace
                 if ($type->getNamespace() !== $this->namespace) {
-                    // No 'use' required if type is in the current namespace
                     // TODO(vNext): Remove this terrible brokenness.
                     if (!$brokenNoImport) {
-                        $this->uses = $this->uses->add($type);
+                        $fullName = $this->usesByShortName->get($type->name, null);
+                        if (is_null($fullName)) {
+                            // Not yet imported; no collision; import now.
+                            $this->usesByShortName = $this->usesByShortName->set($type->name, $type->getFullname(true));
+                        } else if ($fullName !== $type->getFullname(true)) {
+                            // Collision; use fully-qualifed name for this type.
+                            $resolvedName = $type->getFullname(true);
+                        }
+                        // otherwise this is already imported, and is not a collision, so nothing further to do.
                     }
                 }
             }
-            return new ResolvedType($type, function() use($type) {
+            return new ResolvedType($type, function() use($resolvedName) {
                 $this->checkFinalized(true);
-                return $type->name;
+                return $resolvedName;
             });
         }
     }
@@ -99,7 +108,7 @@ class SourceFileContext
     public function finalize(?PhpFile $file): ?PhpFile
     {
         if (!is_null($file)) {
-            $result = $file->withUses($this->uses);
+            $result = $file->withUses($this->usesByShortName->values()->toSet());
         } else {
             $result = null;
         }

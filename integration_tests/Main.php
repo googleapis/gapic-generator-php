@@ -63,6 +63,13 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/asset/v1/cloudasset_grpc_service_config.json'
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/automl/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.automl.v1',
+    'googleapis/google/cloud/automl/v1/automl_gapic.yaml',
+    'googleapis/google/cloud/automl/v1/automl_v1.yaml',
+    'googleapis/google/cloud/automl/v1/automl_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
     'googleapis/google/cloud/language/v1/language_gapic.yaml',

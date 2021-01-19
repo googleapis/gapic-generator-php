@@ -64,6 +64,9 @@ class FieldDetails
     /** @var bool *Readonly* Whether this field is an enum. */
     public bool $isEnum;
 
+    /** @var bool *Readonly* Whether this field is a map. */
+    public bool $isMap;
+
     // TODO(vNext): Simplify unit-test response generation.
     /** @var bool *Readonly* Whether this field type is populated in a unit-test response. */
     public bool $isInTestResponse;
@@ -94,6 +97,7 @@ class FieldDetails
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
         $this->isEnum = $field->getType() === GPBType::ENUM;
+        $this->isMap = ProtoHelpers::isMap($catalog, $desc);
         $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();
         $this->isRepeated = $field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);

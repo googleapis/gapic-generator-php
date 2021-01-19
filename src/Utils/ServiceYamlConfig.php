@@ -28,6 +28,7 @@ class ServiceYamlConfig
     public function __construct(?string $serviceYaml)
     {
         $this->httpRules = Vector::new([]);
+        $this->backendRules = Vector::new([]);
         if (!is_null($serviceYaml)) {
             $service = new Service();
             $service->mergeFromJsonString(json_encode(Yaml::parse($serviceYaml)));
@@ -35,9 +36,19 @@ class ServiceYamlConfig
             if (!is_null($http)) {
                 $this->httpRules = Vector::new($http->getRules());
             }
+            $backend = $service->getBackend();
+            if (!is_null($backend)) {
+                $rules = $backend->getRules();
+                if (!is_null($rules)) {
+                    $this->backendRules = Vector::new($rules);
+                }
+            }
         }
     }
 
     /** @var Vector *Readonly* Vector of \Google\Api\HttpRule */
     public Vector $httpRules;
+
+    /** @var Vector *Readonly* Vector of \Google\Api\BackendRule */
+    public Vector $backendRules;
 }
