@@ -83,7 +83,7 @@ class SourceFileContext
                             $this->usesByShortName = $this->usesByShortName->set($type->name, $type->getFullname(true));
                         } else if ($fullName !== $type->getFullname(true)) {
                             // Collision; use fully-qualifed name for this type.
-                            $resolvedName = $type->getFullname(true);
+                            $resolvedName = $type->getFullname();
                         }
                         // otherwise this is already imported, and is not a collision, so nothing further to do.
                     }
