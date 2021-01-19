@@ -64,6 +64,8 @@ class Formatter
             }
 
             $code = $tokens->generateCode();
+            // TODO(vNext): Remove this call.
+            $code = static::orderUse($code);
 
             return $code;
         } catch (\Throwable $ex) {
@@ -71,6 +73,20 @@ class Formatter
             print("\nFailed to format code:\n{$codeWithLineNumbers}\n");
             throw $ex;
         }
+    }
+
+    // TODO(vNext): Remove this method when no longer required.
+    // Monolith orders 'use' statements by ASCII order, whereas they should be ordered case-insensitively.
+    private static function orderUse(string $codeStr): string
+    {
+        $code = Vector::new(explode("\n", $codeStr));
+        $pre = $code->takeWhile(fn($x) => strpos($x, 'use ') !== 0);
+        $usings = $code->skip(count($pre))->takeWhile(fn($x) => strpos($x, 'use ') === 0);
+        $post = $code->skip(count($pre) + count($usings));
+
+        $usings = $usings->orderBy(fn($x) => $x);
+
+        return $pre->concat($usings)->concat($post)->join("\n");
     }
 
     // TODO(vNext): Remove this method when no longer required.

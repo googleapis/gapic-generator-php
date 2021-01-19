@@ -164,8 +164,12 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
-    public static function generateClientConfig(ServiceDetails $serviceDetails, GrpcServiceConfig $grpcServiceConfig, GapicYamlConfig $gapicYamlConfig): string
-    {
+    public static function generateClientConfig(
+        ServiceDetails $serviceDetails,
+        GrpcServiceConfig $grpcServiceConfig,
+        ServiceYamlConfig $serviceYamlConfig,
+        GapicYamlConfig $gapicYamlConfig
+    ): string {
         $serviceName = $serviceDetails->serviceName;
         $durationToMillis = fn($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
 
@@ -241,8 +245,11 @@ class ResourcesGenerator
         $retryCodes = $retryCodes->toArray(fn($x) => $x[0], fn($x) => $x[1]);
         $retryParams = $retryParams->toArray(fn($x) => $x[0], fn($x) => $x[1]);
         $methods = [];
+        $serviceYamlBackendRules = $serviceYamlConfig->backendRules
+            ->flatMap(fn($x) => Vector::new(explode(',', $x->getSelector()))->map(fn($y) => [trim($y), $x]))
+            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
         $methods = $serviceDetails->methods
-            ->map(function($method) use($grpcServiceConfig, $configsByMethodName, $serviceName) {
+            ->map(function($method) use($grpcServiceConfig, $configsByMethodName, $serviceName, $serviceYamlBackendRules) {
                 [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
                     $configsByMethodName->get("{$serviceName}/", [null, null, null]);
                 if (is_null($codes)) {
@@ -264,6 +271,13 @@ class ResourcesGenerator
                         $retryParamsName = $params;
                     }
                 }
+                // A timeout in service config yaml overrides timeout in grpc service config.
+                // Note that this monolith-compatible behaviour is broken, as it doesn't handle wildcard selectors at all.
+                // TODO(vNext): Remove this override.
+                $rule = $serviceYamlBackendRules->get("{$serviceName}.{$method->name}", null);
+                if (!is_null($rule)){
+                    $timeoutMillis = $rule->getDeadline() * 1000;
+                }
                 return [$method->name, Vector::new([
                     ['timeout_millis', $timeoutMillis],
                     ['retry_codes_name', $retryCodesName],
@@ -271,6 +285,7 @@ class ResourcesGenerator
                 ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])];
             })
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+
         $json = [
             'interfaces' => [
                 $serviceDetails->serviceName => [

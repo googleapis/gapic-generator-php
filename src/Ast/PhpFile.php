@@ -100,7 +100,7 @@ final class PhpFile extends AST
             "\n" .
             "namespace {$this->class->type->getNamespace()};\n" .
             "\n" .
-            $this->uses->toVector()->map(fn($x) => "use {$x->getFullname(true)};\n")->join() .
+            $this->uses->toVector()->map(fn($x) => "use {$x};\n")->join() .
             (count($this->uses) >= 1 ? "\n" : '') .
             static::toPhp($this->class);
     }

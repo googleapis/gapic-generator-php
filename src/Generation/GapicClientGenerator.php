@@ -451,8 +451,11 @@ class GapicClientGenerator
                     // TODO(vNext): Remove this unnecessary import.
                     $this->ctx->type($field->typeSingular);
                     return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
+                } elseif ($field->isMap) {
+                    return $this->ctx->type(Type::array());
+                } else {
+                    return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
-                return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
             } else {
                 if ($field->isEnum) {
                     // TODO(vNext): Remove this unnecessary import.
