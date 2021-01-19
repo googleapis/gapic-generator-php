@@ -55,6 +55,14 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/accessapproval/v1/accessapproval_v1.yaml',
     'googleapis/google/cloud/accessapproval/v1/accessapproval_grpc_service_config.json'
 )) ? $ok : false;
+// TODO: googleapis/google/cloud/apigateway/v1/ doesn't have a gapic_config, so monolith crashes
+// $ok = processDiff(Invoker::invoke(
+//     'googleapis/google/cloud/apigateway/v1/*.proto',
+//     'google.cloud.apigateway.v1',
+//     null,
+//     'googleapis/google/cloud/apigateway/v1/apigateway_v1.yaml',
+//     'googleapis/google/cloud/apigateway/v1/apigateway_grpc_service_config.json'
+// )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/asset/v1/*.proto',
     'google.cloud.asset.v1',
@@ -68,6 +76,21 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/automl/v1/automl_gapic.yaml',
     'googleapis/google/cloud/automl/v1/automl_v1.yaml',
     'googleapis/google/cloud/automl/v1/automl_grpc_service_config.json'
+)) ? $ok : false;
+// TODO: BigQuery
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/billing/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.billing.v1',
+    'googleapis/google/cloud/billing/v1/cloud_billing_gapic.yaml',
+    'googleapis/google/cloud/billing/v1/cloudbilling.yaml',
+    'googleapis/google/cloud/billing/v1/cloud_billing_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/billing/budgets/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.billing.budgets.v1',
+    'googleapis/google/cloud/billing/budgets/v1/billingbudget_gapic.yaml',
+    'googleapis/google/cloud/billing/budgets/v1/billingbudgets.yaml',
+    'googleapis/google/cloud/billing/budgets/v1/billingbudgets_grpc_service_config.json'
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
