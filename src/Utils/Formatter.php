@@ -53,11 +53,6 @@ class Formatter
         // new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
         // TODO: Understand why this fixer causes too many blank line insertions in some cases.
 
-        // '*/' within a multi-line comment causes comment to end, replace '*' with '&#42;'.
-        $code = Vector::new(explode("\n", $code))
-            ->map(fn($line) => substr(trim($line), 0, 1) === '*' && trim($line) !== '*/' ? str_replace('*/', '&#42;/', $line) : $line)
-            ->join("\n");
-
         try
         {
             $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);

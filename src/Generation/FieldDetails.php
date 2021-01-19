@@ -77,6 +77,9 @@ class FieldDetails
     /** @var ?ResourceDetails The resource details, if this field is a resource; null otherwise. */
     public ?ResourceDetails $resourceDetails;
 
+    /** @var bool Whether tests and examples should use use a resource-type value. */
+    public bool $useResourceTestValue;
+
     public function __construct(ProtoCatalog $catalog, DescriptorProto $parentMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
@@ -107,6 +110,7 @@ class FieldDetails
             // TODO: Check for resource-definition message.
             $this->resourceDetails = null;
         }
+        $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) === 1;
     }
 
     public function exampleValue(SourceFileContext $ctx)

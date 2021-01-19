@@ -26,6 +26,19 @@ use Google\Generator\Utils\Type;
 
 abstract class PhpDoc
 {
+    protected static function cleanComment(string $line): string
+    {
+        $line = str_replace('*/', '&#42;/', $line);
+        $line = str_replace('@', '&#64;', $line);
+        $line = str_replace('{&#64;see', '{@see', $line); // TODO: This is terrible; fix.
+        return $line;
+    }
+
+    protected static function cleanComments(Vector $v): Vector
+    {
+        return $v->map(fn($line) => static::cleanComment($line));
+    }
+
     /**
      * Create a PHP Documentation block.
      * Items passed in make up the content of the block.
@@ -88,7 +101,7 @@ abstract class PhpDoc
      */
     public static function preFormattedText(Vector $lines): PhpDoc
     {
-        return new class($lines) extends PhpDoc
+        return new class(static::cleanComments($lines)) extends PhpDoc
         {
             public function __construct($lines)
             {
@@ -144,6 +157,7 @@ abstract class PhpDoc
                 foreach ($this->parts as $part) {
                     // TODO: Add further type-specific processing as required.
                     if (is_string($part)) {
+                        $part = static::cleanComment($part);
                         $words = explode(' ', $part);
                         foreach ($words as $word) {
                             if ($word !== '') {

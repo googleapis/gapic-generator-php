@@ -97,7 +97,7 @@ class GapicClientExamplesGenerator
                 $value = $inits->get($f->name, null);
                 $valueIndex = $inits->get($f->name . '[0]', null);
                 if ($f->isRequired || !is_null($value) || !is_null($valueIndex)) {
-                    $varName = is_null($f->resourceDetails) ? $f->camelName : Helpers::toCamelCase("formatted_{$f->name}");
+                    $varName = $f->useResourceTestValue ? Helpers::toCamelCase("formatted_{$f->name}") : $f->camelName;
                     $var = AST::var($varName);
                     if (!is_null($value)) {
                         // Look for given init value for this field.
@@ -114,7 +114,7 @@ class GapicClientExamplesGenerator
                             ->map(fn($x) => AST::assign($x[0], $fnGetValue($f, $x[1])))
                             ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
                     } else {
-                        if (is_null($f->resourceDetails)) {
+                        if (!$f->useResourceTestValue) {
                             // Use a default example value if no values are specified.
                             $initCode = AST::assign($var, $f->exampleValue($this->ctx));
                         } else {

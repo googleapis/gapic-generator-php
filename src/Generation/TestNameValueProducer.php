@@ -93,7 +93,7 @@ class TestNameValueProducer
                     // TODO: Consider refactoring this.
                     $this->field = $f;
                     $fnVarName = function() use ($prod, $f) {
-                        $this->name = (is_null($f->resourceDetails) ? '' : 'formatted_') . $prod->name($f->name);
+                        $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
                         $this->var = AST::var(Helpers::toCamelCase($this->name));
                         return [$this->var, $this->name];
                     };
@@ -159,7 +159,7 @@ class TestNameValueProducer
                 return $initElements
                     ->map(fn($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
                     ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
-            } elseif (!is_null($field->resourceDetails)) {
+            } elseif ($field->useResourceTestValue) {
                 // TODO: What if it's just a wild-card pattern?
                 $patternDetails = $field->resourceDetails->patterns[0];
                 $args = $patternDetails->params->map(fn($x) => strtoupper("[{$x[0]}]"));
