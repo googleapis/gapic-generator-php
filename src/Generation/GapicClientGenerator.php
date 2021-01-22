@@ -344,7 +344,7 @@ class GapicClientGenerator
                     'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->descriptorConfigFilename}"),
                     'gcpApiConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}"),
                     'credentialsConfig' => AST::array([
-                        'scopes' => AST::access(AST::SELF, $this->serviceScopes()),
+                        'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
                     ]),
                     'transportConfig' => AST::array([
                         'rest' => AST::array([
