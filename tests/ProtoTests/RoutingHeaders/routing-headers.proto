@@ -29,6 +29,11 @@ service RoutingHeaders {
     // PHP orders alphabetical by field-name; test that here.
     option (google.api.http).get = "/{nest1.nest2.name=items/*}/child1/{name=items/*}/child2/{another_name=more_items/*/and_more/*}/child3";
   };
+
+  rpc OrderingMethod(OrderRequest) returns(Response) {
+    // Test ordering of placeholders
+    option (google.api.http).get = "/{a=a}/{c=c}/{aa=aa}/{b=b}/{d=d}/{a_id=a_id}/{b_id=b_id}/{e=e}";
+  }
 }
 
 message SimpleRequest {
@@ -45,6 +50,17 @@ message NestedRequest {
   Inner1 nest1 = 1;
   string name = 2;
   string another_name = 3;
+}
+
+message OrderRequest {
+  string a = 1;
+  string b = 2;
+  string d = 3;
+  string c = 4;
+  string a_id = 5;
+  string e = 6;
+  string b_id = 7;
+  string aa = 8;
 }
 
 message Response {

@@ -79,19 +79,25 @@ class ProtoCatalog
             ->distinct(fn($x) => $x[0])
             ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
 
+        $order = $fileResourceDefs->concat($messagesResourceDefs)
+            ->map(fn($x, $i) => [$i, $x])
+            ->toMap(fn($x) => $x[1]->getType(), fn($x) => $x[0]);
         $this->parentResourceByChildType = $allMsgs
             ->flatMap(fn($x) => Vector::new($x->getField()))
             ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
             ->filter(fn($x) => !is_null($x) && $x->getChildType() !== '')
             ->map(fn($x) => $x->getChildType())
             ->distinct()
-            ->map(function($childType) {
+            ->map(function($childType) use($order) {
                 $childPatterns = Vector::new($this->resourcesByType[$childType]->getPattern());
                 if ($childPatterns->any(fn($x) => $x === '*')) {
                     return null;
                 }
                 $parentPatterns = $childPatterns->map(fn($childPattern) => static::parentPattern($childPattern));
-                return [$childType, $parentPatterns->map(fn($x) => $this->resourcesByPattern[$x])];
+                // Ordering matters, to exactly reproduce monolith behaviour.
+                // parents must be in file order of option-defined resource, followed by file order of message-defined resource.
+                // This is important when selecting a resource to use in test and example methods.
+                return [$childType, $parentPatterns->map(fn($x) => $this->resourcesByPattern[$x])->orderBy(fn($x) => $order[$x->getType()])];
             })
             ->filter(fn($x) => !is_null($x))
             ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
