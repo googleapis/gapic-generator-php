@@ -36,11 +36,7 @@ class ResourcesGenerator
     // TODO(vNext): Remove this; only required for monolith compatibility.
     private static function ensureDecimal(string $s): string
     {
-        if (strpos($s, '.') === false) {
-            return $s . '.0';
-        } else {
-            return $s;
-        }
+        return strpos($s, '.') === false ? ($s . '.0') : $s;
     }
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
