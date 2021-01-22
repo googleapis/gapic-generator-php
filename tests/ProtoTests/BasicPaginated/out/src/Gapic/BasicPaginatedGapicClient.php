@@ -106,7 +106,7 @@ class BasicPaginatedGapicClient
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_paginated_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_paginated_grpc_config.json',
             'credentialsConfig' => [
-                'scopes' => self::$serviceScopes,
+                'defaultScopes' => self::$serviceScopes,
             ],
             'transportConfig' => [
                 'rest' => [

@@ -106,7 +106,7 @@ class BasicClientStreamingGapicClient
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_client_streaming_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_client_streaming_grpc_config.json',
             'credentialsConfig' => [
-                'scopes' => self::$serviceScopes,
+                'defaultScopes' => self::$serviceScopes,
             ],
             'transportConfig' => [
                 'rest' => [
