@@ -121,34 +121,81 @@ option (google.api.resource_definition) = {
 };
 
 option (google.api.resource_definition) = {
-  type: "resourcenames.example.com/Folder1",
+  type: "resourcenames.example.com/Folder1"
   pattern: "folders1/{folder1_id}"
 };
 
 option (google.api.resource_definition) = {
-  type: "resourcenames.example.com/Folder2",
+  type: "resourcenames.example.com/Folder2"
   pattern: "folders2/{folder2_id}"
 };
 
 // Test behaviour on multi-pattern child-type reference.
 option (google.api.resource_definition) = {
-  type: "resourcenames.example.com/FileMulti",
+  type: "resourcenames.example.com/FileMulti"
   pattern: "folders1/{folder1_id}/files/{file_id}"
   pattern: "folders2/{folder2_id}/files/{file_id}"
+};
+
+// Test behaviour on multi-pattern child-type reference with the (obsolete) history.
+// And use opposite order to FileMulti patterns.
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/FileMultiHistory"
+  pattern: "folders2/{folder2_id}/files/{file_id}"
+  pattern: "folders1/{folder1_id}/files/{file_id}"
+  history: ORIGINALLY_SINGLE_PATTERN
 };
 
 // Test behaviour on multi-pattern child-type reference with wildcard.
 // No parent lookups are performed.
 option (google.api.resource_definition) = {
-  type: "resourcenames.example.com/FileMultiWildcard",
+  type: "resourcenames.example.com/FileMultiWildcard"
   pattern: "folders3/{folder3_id}/files/{file_id}"
   pattern: "*"
+};
+
+message Order1 {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/Order1"
+    pattern: "orders1/{order1_id}"
+  };
+  string name = 1;
+}
+
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/Order2"
+  pattern: "orders2/{order2_id}"
+};
+
+message Order3 {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/Order3"
+    pattern: "orders3/{order3_id}"
+  };
+  string name = 1;
+}
+
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/OrderTest1"
+  pattern: "orders1/{order1_id}/items/{item_id}"
+  pattern: "orders2/{order2_id}/items/{item_id}"
+};
+
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/OrderTest2"
+  pattern: "orders2/{order2_id}/items/{item_id}"
+  pattern: "orders3/{order3_id}/items/{item_id}"
 };
 
 message FileLevelChildTypeRef {
     string folder_name = 1 [(google.api.resource_reference).child_type = "resourcenames.example.com/File"];
     string folder_multi_name = 2 [(google.api.resource_reference).child_type = "resourcenames.example.com/FileMulti"];
     string folder_multi_wildcard_name = 3 [(google.api.resource_reference).child_type = "resourcenames.example.com/FileMultiWildcard"];
+    string req_folder_name = 4 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/File"];
+    string req_folder_multi_name = 5 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/FileMulti"];
+    string req_folder_multi_name_history = 6 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/FileMultiHistory"];
+    string req_order_test1 = 7 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/OrderTest1"];
+    string req_order_test2 = 8 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/OrderTest2"];
 }
 
 // This isn't referenced anywhere, so should be ignored.

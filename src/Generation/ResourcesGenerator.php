@@ -33,6 +33,16 @@ use Google\Rpc\Code;
 
 class ResourcesGenerator
 {
+    // TODO(vNext): Remove this; only required for monolith compatibility.
+    private static function ensureDecimal(string $s): string
+    {
+        if (strpos($s, '.') === false) {
+            return $s . '.0';
+        } else {
+            return $s;
+        }
+    }
+
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
         $perMethod = function($method) use ($gapicYamlConfig) {
@@ -56,7 +66,7 @@ class ResourcesGenerator
                         'operationReturnType' => $method->lroResponseType->getFullname(),
                         'metadataReturnType' => $method->lroMetadataType->getFullname(),
                         'initialPollDelayMillis' => $initialPollDelayMillis,
-                        'pollDelayMultiplier' => $pollDelayMultiplier,
+                        'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
                         'maxPollDelayMillis' => $maxPollDelayMillis,
                         'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
                     ])]);
