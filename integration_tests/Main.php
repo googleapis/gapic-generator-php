@@ -99,15 +99,13 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/channel/v1/cloudchannel_v1.yaml',
     'googleapis/google/cloud/channel/v1/cloudchannel_grpc_service_config.json'
 )) ? $ok : false;
-// Inconsistent PHP namespace casing between monolith and micro.
-// Micro-generator gets PHP namespace from proto; monolith gets it from service config, which is missing for this API.
-// $ok = processDiff(Invoker::invoke(
-//     'googleapis/google/cloud/datacatalog/v1/*.proto googleapis/google/cloud/common_resources.proto',
-//     'google.cloud.datacatalog.v1',
-//     'googleapis/google/cloud/datacatalog/v1/datacatalog_gapic.yaml',
-//     'googleapis/google/cloud/datacatalog/v1/datacatalog_v1.yaml',
-//     'googleapis/google/cloud/datacatalog/v1/datacatalog_grpc_service_config.json'
-// )) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/datacatalog/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.datacatalog.v1',
+    'googleapis/google/cloud/datacatalog/v1/datacatalog_gapic.yaml',
+    'googleapis/google/cloud/datacatalog/v1/datacatalog_v1.yaml',
+    'googleapis/google/cloud/datacatalog/v1/datacatalog_grpc_service_config.json'
+)) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dataproc/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.dataproc.v1',
