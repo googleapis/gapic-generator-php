@@ -83,6 +83,9 @@ class FieldDetails
     /** @var bool Whether tests and examples should use use a resource-type value. */
     public bool $useResourceTestValue;
 
+    /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
+    public ?int $oneOfIndex;
+
     public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
@@ -126,6 +129,7 @@ class FieldDetails
             $this->resourceDetails = null;
         }
         $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) === 1;
+        $this->oneOfIndex = $field->hasOneOfIndex() ? $field->getOneofIndex() : null;
     }
 
     public function exampleValue(SourceFileContext $ctx)

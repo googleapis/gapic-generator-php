@@ -514,6 +514,8 @@ class UnitTestsGenerator
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponseList = Vector::range(1, 3)->map(fn($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
+        $expectedResponsesVarList = Vector::range(1, 3)->map(fn($i) => $prod->perField(
+            $method->responseFields->filter(fn($x) => $x->isInTestResponse)));
         $requestList = Vector::range(1, 3)->map(fn($i) => AST::var('request' . ($i === 1 ? '' : $i)));
         $requestsVarList = Vector::range(1, 3)->map(fn($i) => $prod->perFieldRequest($method));
         $bidi = AST::var('bidi');
@@ -534,9 +536,11 @@ class UnitTestsGenerator
                 AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
                 '// Mock response',
-                $expectedResponseList->map(fn($x) => Vector::new([
-                    AST::assign($x, AST::new($this->ctx->type($method->responseType))()),
-                    $transport->addResponse($x),
+                Vector::zip($expectedResponseList, $expectedResponsesVarList, fn($responseVar, $xs) => Vector::new([
+                    $xs->map(fn($x) => AST::assign($x->var, $x->value)),
+                    AST::assign($responseVar, AST::new($this->ctx->type($method->responseType))()),
+                    $xs->map(fn($x) => $responseVar->instancecall($x->field->setter)($x->var)),
+                    $transport->addResponse($responseVar),
                 ])),
                 '// Mock request',
                 Vector::zip($requestList, $requestsVarList, fn($request, $xs) => Vector::new([

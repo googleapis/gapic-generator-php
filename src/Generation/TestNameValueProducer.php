@@ -59,23 +59,40 @@ class TestNameValueProducer
         }
     }
 
+    private static function filterFirstOneOf(Vector $fields): Vector
+    {
+        $oneOfs = Set::new();
+        return $fields
+            ->filter(function($f) use(&$oneOfs) {
+                if (is_null($f->oneOfIndex)) {
+                    return true;
+                } elseif ($oneOfs[$f->oneOfIndex]) {
+                    return false;
+                } else {
+                    $oneOfs = $oneOfs->add($f->oneOfIndex);
+                    return true;
+                }
+            });
+    }
+
     public function perField(Vector $fields, ?Map $forceValues = null): Vector
     {
+        $oneOfs = Set::new();
+        return static::filterFirstOneOf($fields)
+            ->map(fn($f) => new class($this, $f, $forceValues ?? Map::new()) {
+                public function __construct($prod, $f, $forceValues)
+                {
+                    $this->field = $f;
+                    $this->name = $prod->name($f->name);
+                    $this->var = AST::var(Helpers::toCamelCase($this->name));
+                    $this->value = $forceValues->get($f->name, $prod->value($f, $this->name));
+                }
 
-        return $fields->map(fn($f) => new class($this, $f, $forceValues ?? Map::new()) {
-            public function __construct($prod, $f, $forceValues)
-            {
-                $this->field = $f;
-                $this->name = $prod->name($f->name);
-                $this->var = AST::var(Helpers::toCamelCase($this->name));
-                $this->value = $forceValues->get($f->name, $prod->value($f, $this->name));
-            }
-
-            public FieldDetails $field;
-            public string $name;
-            public Variable $var;
-            public $value;
-        });
+                public FieldDetails $field;
+                public string $name;
+                public Variable $var;
+                public $value;
+            });
     }
 
     public function perFieldRequest(MethodDetails $method): array
@@ -83,7 +100,7 @@ class TestNameValueProducer
         // Handle test request value generation, including using values
         // specified in the gapic-config if present.
 
-        $perField = $method->allFields
+        $perField = static::filterFirstOneOf($method->allFields)
             ->map(fn($f) => new class($this, $method, $f) {
                 public function __construct($prod, $method, $f)
                 {
