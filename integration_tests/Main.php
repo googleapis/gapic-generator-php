@@ -114,6 +114,13 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dataproc/v1/dataproc_grpc_service_config.json'
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/dialogflow/v2/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.dialogflow.v2',
+    'googleapis/google/cloud/dialogflow/v2/dialogflow_gapic.yaml',
+    'googleapis/google/cloud/dialogflow/v2/dialogflow_v2.yaml',
+    'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json'
+)) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
     'googleapis/google/cloud/language/v1/language_gapic.yaml',
