@@ -33,8 +33,7 @@ option (google.api.resource_definition) = {
 
 message Request {
     string name = 1 [(google.api.resource_reference).type = "example.com/CommonResource"];
-    // TODO: Ensure bazel rules work with an optional field
-    //optional int32 number = 2;
+    optional int32 number = 2;
 }
 
 message Response {
