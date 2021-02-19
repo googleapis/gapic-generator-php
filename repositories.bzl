@@ -28,8 +28,8 @@ def gapic_generator_php_repositories():
         php,
         name = "php",
         prebuilt_phps = ["@gapic_generator_php//:rules_php_gapic/resources/php-7.4.15_linux_x86_64.tar.gz"],
-        urls = ["https://windows.php.net/downloads/releases/php-7.4.15-src.zip"],
-        strip_prefix = "php-7.4.15-src",
+        urls = ["https://www.php.net/distributions/php-7.4.15.tar.gz"],
+        strip_prefix = "php-7.4.15",
     )
     maybe(
         php_composer_install,

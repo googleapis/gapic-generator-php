@@ -67,3 +67,6 @@ local_repository(
     name = "gapic_generator_php",
     path = "../",
 )
+
+load("@gapic_generator_php//:repositories.bzl", "gapic_generator_php_repositories")
+gapic_generator_php_repositories()

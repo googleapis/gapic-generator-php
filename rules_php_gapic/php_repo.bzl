@@ -96,12 +96,12 @@ def _php_composer_install_impl(ctx):
     # The entire workspace is required, as the php entry-point may reference
     # arbitrary other files and directories within the workspace.
     # This copy is used during the execution of the PHP, as it has all files available.
-    _execute_and_check_result(ctx, ["cp", "-rHs",  "--preserve=links", str(ws_path), "install"])
+    _execute_and_check_result(ctx, ["cp", "-rHs",  "--preserve=links", str(ws_path), "."])
+    _execute_and_check_result(ctx, ["mv", "./" + ws_path.basename, "./install"])
     ctx.execute(["rm", "-rf", "./install/vendor"]) # This will fail if dir doesn't exist, so don't check
     php_path = ctx.path(ctx.attr.php)
     composer_path = ctx.path(ctx.attr.composer_phar)
-    #_execute_and_check_result(ctx, [php_path, composer_path, "install"], working_directory="./install/")
-    _execute_and_check_result(ctx, ["php", composer_path, "install"], working_directory="./install/")
+    _execute_and_check_result(ctx, [php_path, composer_path, "install"], working_directory="./install/")
     ctx.file("BUILD.bazel", """exports_files(["install"])""")
 
 php_composer_install = repository_rule(
