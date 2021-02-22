@@ -38,6 +38,12 @@ function showUsageAndExit()
     exit(1);
 }
 
+// The monolithic generator appears to be fixed to use 2020, so fixing the micro-generator to 2020
+// allows the comparison-based integration tests to run.
+// TODO: Use the current year, not fixed at 2020. Make the monolith use current year.
+$year = 2020;
+// $year = (int)date('Y');
+
 if ($argc === 1) {
     // No args, probably being called from protoc.
     // However, timeout after a couple of seconds of no data in stdin,
@@ -73,7 +79,12 @@ if ($argc === 1) {
                 return $desc;
             });
         $filesToGen = Vector::new($genRequest->getFileToGenerate());
-        $files = CodeGenerator::generate($fileDescs, $filesToGen, 2020, null, null, null);
+        $opts = Vector::new(explode(',', $genRequest->getParameter()))
+            ->filter(fn($x) => !is_null($x) && $x !== '')
+            ->map(fn($x) => explode('=', $x, 2))
+            ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts);
+        $files = CodeGenerator::generate($fileDescs, $filesToGen, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
             $file = new File();
@@ -95,7 +106,29 @@ if ($argc === 1) {
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts);
 
+    // Generate PHP code.
+    $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
+
+    if (is_null($outputDir)) {
+        // TODO: Remove printout; only save files to the specified output path.
+        foreach ($files as [$relativeFilename, $fileContent]) {
+            print("File: '{$relativeFilename}':\n");
+            print($fileContent . "\n");
+        }
+    } else {
+        foreach ($files as [$relativeFilename, $fileContent]) {
+            $path = $outputDir . '/' . $relativeFilename;
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0777, true);
+            }
+            file_put_contents($path, $fileContent);
+        }
+    }
+}
+
+function readOptions($opts) {
     if (isset($opts['grpc_service_config'])) {
         if (!file_exists($opts['grpc_service_config'])) {
             throw new \Exception('Specified grpc_service_config file does not exist.');
@@ -123,27 +156,5 @@ if ($argc === 1) {
         $serviceYaml = null;
     }
 
-    // Generate PHP code.
-    // The monolithic generator appears to be fixed to use 2020, so fixing the micro-generator to 2020
-    // allows the comparison-based integration tests to run.
-    // TODO: Use the current year, not fixed at 2020. Make the monolith use current year.
-    $year = 2020;
-    // $year = (int)date('Y');
-    $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
-
-    if (is_null($outputDir)) {
-        // TODO: Remove printout; only save files to the specified output path.
-        foreach ($files as [$relativeFilename, $fileContent]) {
-            print("File: '{$relativeFilename}':\n");
-            print($fileContent . "\n");
-        }
-    } else {
-        foreach ($files as [$relativeFilename, $fileContent]) {
-            $path = $outputDir . '/' . $relativeFilename;
-            if (!file_exists(dirname($path))) {
-                mkdir(dirname($path), 0777, true);
-            }
-            file_put_contents($path, $fileContent);
-        }
-    }
+    return [$grpcServiceConfig, $gapicYaml, $serviceYaml];
 }
