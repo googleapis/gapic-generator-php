@@ -19,9 +19,10 @@ def _php_binary_impl(ctx):
     # I don't understand why this is required:
     entry_point_relative = entry_point_relative[len("rules_php_gapic/"):]
     cmd = """
-cp -r {install_path} {out_dir_path}
+cp -rL {install_path} {out_dir_path}
 # Overwrite symlinks to .php files with actual files; PHP '__DIR__ ' fails on symlinks
-find {install_path} -name '*.php' | cpio -p {out_dir_path}
+# TODO: This doesn't work, hence the -L in the above cp. Ideally remove the -L and just copy .php files
+#find {install_path} -name '*.php' | cpio -p {out_dir_path}
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,
@@ -32,8 +33,9 @@ find {install_path} -name '*.php' | cpio -p {out_dir_path}
         command = cmd
     )
     run_sh = """#!/bin/bash
-$(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{php_short_path} \
-    $(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{out_short_path}/install/{entry_point}
+PHP="$(pwd)/$(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{php_short_path}"
+cd $(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{out_short_path}/install
+$PHP ./{entry_point}
     """.format(
         php_short_path = ctx.file.php.short_path,
         out_short_path = out_dir.short_path,

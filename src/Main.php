@@ -59,7 +59,12 @@ if ($argc === 1) {
     }
     $genRequest = new CodeGeneratorRequest();
     $genRequest->mergeFromString($protocRequest);
+    if ($genRequest->serializeToString() === (new CodeGeneratorRequest())->serializeToString()) {
+        // Nothing passed in; probably run from cmd-line and ^D (EOF) sent.
+        showUsageAndExit();
+    }
     $genResponse = new CodeGeneratorResponse();
+    $genResponse->setSupportedFeatures(Feature::FEATURE_PROTO3_OPTIONAL);
     try {
         $fileDescs = Vector::new($genRequest->getProtoFile())
             ->map(function($bytes) {
@@ -76,7 +81,6 @@ if ($argc === 1) {
             $file->setContent($fileContent);
             return $file;
         });
-        $genResponse->setSupportedFeatures(Feature::FEATURE_PROTO3_OPTIONAL);
         $genResponse->setFile($files->toArray());
     } catch (\Exception $e) {
         $genResponse->setError("Error from PHP gapic generator:\n" . $e->getMessage());
