@@ -18,11 +18,10 @@ def _php_binary_impl(ctx):
     entry_point_relative = ctx.file.entry_point.path[len(ctx.attr.entry_point.label.workspace_root):].strip("/")
     # I don't understand why this is required:
     entry_point_relative = entry_point_relative[len("rules_php_gapic/"):]
+    # copy uses -L to dereference symlinks, as the PHP __DIR__ constant is incorrect if the src file is symlinked
+    # Ideally this cp would symlink all files except *.php files.
     cmd = """
 cp -rL {install_path} {out_dir_path}
-# Overwrite symlinks to .php files with actual files; PHP '__DIR__ ' fails on symlinks
-# TODO: This doesn't work, hence the -L in the above cp. Ideally remove the -L and just copy .php files
-#find {install_path} -name '*.php' | cpio -p {out_dir_path}
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,
@@ -32,6 +31,8 @@ cp -rL {install_path} {out_dir_path}
         outputs = [out_dir],
         command = cmd
     )
+    # This changes directory to the PHP src install path before running php.
+    # Without this the php code fails to execute.
     run_sh = """#!/bin/bash
 PHP="$(pwd)/$(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{php_short_path}"
 cd $(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{out_short_path}/install

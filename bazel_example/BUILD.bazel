@@ -52,6 +52,7 @@ php_gapic_library(
         ":example_php_proto",
         ":example_php_grpc",
     ],
+    # TODO: Include config yaml files
     gapic_yaml = None,
     service_yaml = None,
 )
