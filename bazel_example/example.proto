@@ -25,14 +25,13 @@ service Example {
     rpc ExampleMethod(Request) returns(Response);
 }
 
-// This is defined as a common resource, so is not generated.
 option (google.api.resource_definition) = {
-  type: "example.com/CommonResource",
+  type: "example.com/AResource",
   pattern: "items/{item}"
 };
 
 message Request {
-    string name = 1 [(google.api.resource_reference).type = "example.com/CommonResource"];
+    string name = 1 [(google.api.resource_reference).type = "example.com/AResource"];
     optional int32 number = 2;
 }
 
