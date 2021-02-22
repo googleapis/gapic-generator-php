@@ -154,7 +154,18 @@ function processDiff($result)
 {
     $mono = $result['mono'];
     $micro = $result['micro'];
+    $microProtoc = $result['micro_protoc'];
 
+    print("------ mono <-> micro-standalone ------\n");
+    $microOk = processSingleDiff($mono, $micro);
+    print("------ mono <-> micro-protoc ------\n");
+    $microProtocOk = processSingleDiff($mono, $microProtoc);
+
+    return $microOk && $microProtocOk;
+}
+
+function processSingleDiff($mono, $micro)
+{
     $ok = true;
 
     // Find missing files.

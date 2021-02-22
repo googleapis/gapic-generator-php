@@ -56,8 +56,12 @@ def php_gapic_srcjar(
         **kwargs):
 
     plugin_file_args = {}
+    if gapic_yaml:
+        plugin_file_args[gapic_yaml] = "gapic_yaml"
+    if service_yaml:
+        plugin_file_args[service_yaml] = "service_yaml"
     if grpc_service_config:
-        plugin_file_args[grpc_service_config] = "grpc-service-config"
+        plugin_file_args[grpc_service_config] = "grpc_service_config"
 
     proto_custom_library(
         name = name,
@@ -85,10 +89,10 @@ _php_gapic_library_add_gapicinfo = rule(
 def php_gapic_library(
         name,
         src,
-        gapic_yaml,
-        service_yaml,
-        package = None,
         deps = [],
+        gapic_yaml = None,
+        service_yaml = None,
+        package = None,
         grpc_service_config = None,
         transport = None,
         **kwargs):

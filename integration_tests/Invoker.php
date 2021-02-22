@@ -36,9 +36,9 @@ class Invoker
         $protobuf = "{$rootDir}/protobuf/src/";
         $googleapis = "{$rootDir}/googleapis/";
         $input = "{$rootDir}/{$protoPath}";
-        $protocCmdLine = "{$protoc} --include_imports --include_source_info --experimental_allow_proto3_optional " .
-            "-o {$descFilename}  -I {$googleapis} -I {$protobuf} -I {$rootDir} {$input} 2>&1";
-        static::execCmd($protocCmdLine, 'protoc');
+        $protocCmdLinePrefix = "{$protoc} --include_imports --include_source_info --experimental_allow_proto3_optional " .
+            "-o {$descFilename}  -I {$googleapis} -I {$protobuf} -I {$rootDir}";
+        static::execCmd($protocCmdLinePrefix . " {$input} 2>&1", 'protoc');
 
         $rootOutDir = sys_get_temp_dir() . '/php-gapic-' . mt_rand(0, (int)1e8);
         mkdir($rootOutDir);
@@ -79,7 +79,27 @@ class Invoker
             }
             static::execCmd("cd {$monoDir}; {$monoCmdLine} 2>&1", 'mono');
 
-            // Run the micro-generator.
+            // Run the micro-generator via protoc.
+            $microProtocOutDir = "{$rootOutDir}/micro_protoc";
+            mkdir($microProtocOutDir); // protoc requires this directory to already exist.
+            $protocMicroCmdLine = $protocCmdLinePrefix .
+                " --plugin=protoc-gen-gapic={$rootDir}/integration_tests/run_protoc_plugin.sh --gapic_out={$microProtocOutDir}";
+            $protocOpts = [];
+            if (file_exists($gapicYamlArg)) {
+                $protocOpts[] = "gapic_yaml={$gapicYamlArg}";
+            }
+            if (file_exists($serviceConfigArg)) {
+                $protocOpts[] = "service_yaml={$serviceConfigArg}";
+            }
+            if (file_exists($grpcServiceConfigArg)) {
+                $protocOpts[] = "grpc_service_config={$grpcServiceConfigArg}";
+            }
+            if (count($protocOpts) > 0) {
+                $protocMicroCmdLine .= " --gapic_opt=" . implode(',', $protocOpts);
+            }
+            static::execCmd($protocMicroCmdLine . " {$input} 2>&1", 'protoc micro plugin');
+
+            // Run the micro-generator standalone.
             $microMain = "{$rootDir}/src/Main.php";
             $microOutDir = "{$rootOutDir}/micro";
             $microCmdLine = "php {$microMain} --descriptor {$descFilename} --package {$package} --output {$microOutDir}";
@@ -97,10 +117,12 @@ class Invoker
             // Read all files in output dirs.
             $mono = static::readFiles($monoOutDir);
             $micro = static::readFiles($microOutDir);
+            $microProtoc = static::readFiles($microProtocOutDir);
 
             return [
                 'mono' => $mono,
                 'micro' => $micro,
+                'micro_protoc' => $microProtoc,
             ];
         } finally {
             // Delete temp directory
