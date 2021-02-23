@@ -39,3 +39,11 @@ jobs:
     - name: Verify grpc service json was honoured
       run: |
         grep '"timeout_millis": 942000' ./bazel_example/example_php_pkg/src/resources/example_client_config.json
+
+    - name: Verify gapic yaml was honoured
+      run: |
+        grep "'initialPollDelayMillis' => '42042'" ./bazel_example/example_php_pkg/src/resources/example_descriptor_config.php
+
+    - name: Verify service yaml was honoured
+      run: |
+        grep '"timeout_millis": 4242000' ./bazel_example/example_php_pkg/src/resources/example_client_config.json
