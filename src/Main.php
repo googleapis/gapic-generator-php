@@ -49,7 +49,7 @@ $year = 2020;
 
 // When running as a protoc plugin, an optional root directory may be passed in to set the
 // root location of the side-loaded configuration files:
-// - grpc sevrice config json
+// - grpc service config json
 // - service yaml
 // - gapic yaml
 // This is required when running under bazel, as the PHP working directory has to be different to the
