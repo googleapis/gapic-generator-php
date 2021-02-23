@@ -82,8 +82,6 @@ class Invoker
             // Run the micro-generator via protoc.
             $microProtocOutDir = "{$rootOutDir}/micro_protoc";
             mkdir($microProtocOutDir); // protoc requires this directory to already exist.
-            $protocMicroCmdLine = $protocCmdLinePrefix .
-                " --plugin=protoc-gen-gapic={$rootDir}/integration_tests/run_protoc_plugin.sh --gapic_out={$microProtocOutDir}";
             $protocOpts = [];
             if (file_exists($gapicYamlArg)) {
                 $protocOpts[] = "gapic_yaml={$gapicYamlArg}";
@@ -94,9 +92,10 @@ class Invoker
             if (file_exists($grpcServiceConfigArg)) {
                 $protocOpts[] = "grpc_service_config={$grpcServiceConfigArg}";
             }
-            if (count($protocOpts) > 0) {
-                $protocMicroCmdLine .= " --gapic_opt=" . implode(',', $protocOpts);
-            }
+            // This matches how the bazel invocation of protoc provides options to the plugin.
+            $protocOpts = count($protocOpts) > 0 ? implode(',', $protocOpts) . ':' : '';
+            $protocMicroCmdLine = $protocCmdLinePrefix .
+                " --plugin=protoc-gen-gapic={$rootDir}/integration_tests/run_protoc_plugin.sh --gapic_out={$protocOpts}{$microProtocOutDir}";
             static::execCmd($protocMicroCmdLine . " {$input} 2>&1", 'protoc micro plugin');
 
             // Run the micro-generator standalone.

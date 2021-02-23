@@ -33,14 +33,20 @@ cp -rL {install_path} {out_dir_path}
     )
     # This changes directory to the PHP src install path before running php.
     # Without this the php code fails to execute.
+    if ctx.attr.working_directory_flag_name:
+        working_directory_flag = '--{name} "$WD"'.format(name=ctx.attr.working_directory_flag_name)
+    else:
+        working_directory_flag = ""
     run_sh = """#!/bin/bash
-PHP="$(pwd)/$(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{php_short_path}"
-cd $(dirname $0)/run.sh.runfiles/$(basename $(pwd))/{out_short_path}/install
-$PHP ./{entry_point}
+WD=$(pwd)
+PHP="$WD/$(dirname $0)/run.sh.runfiles/$(basename $WD)/{php_short_path}"
+cd "$(dirname $0)/run.sh.runfiles/$(basename $WD)/{out_short_path}/install"
+"$PHP" -n './{entry_point}' {working_directory_flag}
     """.format(
         php_short_path = ctx.file.php.short_path,
         out_short_path = out_dir.short_path,
         entry_point = entry_point_relative,
+        working_directory_flag = working_directory_flag,
     )
     ctx.actions.write(out_run_sh, run_sh, is_executable=True)
     return [DefaultInfo(
@@ -55,6 +61,7 @@ php_binary = rule(
         "php": attr.label(default=Label("@php//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
         "php_composer_install": attr.label(allow_single_file=True),
         "entry_point": attr.label(allow_single_file=True),
+        "working_directory_flag_name": attr.string(),
     },
     executable = True,
 )

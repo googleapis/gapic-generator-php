@@ -103,6 +103,7 @@ class CodeGenerator
             throw new \Exception('No packages specified to build');
         }
         // Generate files for each package.
+        $result = [];
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
                 ->map(fn($x) => ProtoHelpers::getNamespace($x))
@@ -110,9 +111,11 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            yield from static::generatePackage(
-                $catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
+            foreach (static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml) as $file) {
+                $result[] = $file;
+            }
         }
+        return $result;
     }
 
     private static function generatePackage(

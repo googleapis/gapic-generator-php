@@ -33,7 +33,10 @@ function showUsageAndExit()
     print("Invalid arguments. Expect:\n");
     print("  --descriptor <path> The path to the proto descriptor file.\n");
     print("  --package <string> The proto package to generate.\n");
-    print("  --output <path> The output directory.\n");
+    print("  --output <path> [Optional] The output directory.\n");
+    print("  --grpc_service_config <path> [Optional] The client-side gRPC service config.\n");
+    print("  --gapic_yaml <path> [Optional] The gapic yaml.\n");
+    print("  --service_yaml <path> [Optional] The service yaml.\n");
     print("\n");
     exit(1);
 }
@@ -44,8 +47,23 @@ function showUsageAndExit()
 $year = 2020;
 // $year = (int)date('Y');
 
-if ($argc === 1) {
-    // No args, probably being called from protoc.
+// When running as a protoc plugin, an optional root directory may be passed in to set the
+// root location of the side-loaded configuration files:
+// - grpc sevrice config json
+// - service yaml
+// - gapic yaml
+// This is required when running under bazel, as the PHP working directory has to be different to the
+// bazel working directory; but the side-loaded config files are passed relative to the bazel working
+// directory. Passing the bazel working directory as side_loaded_root_dir allows these files to be
+// loaded successfully.
+// This is because PHP uses the same working directory for its own code, and application-level
+// file loading.
+$opts = getopt('', ['side_loaded_root_dir:']);
+$sideLoadedRootDir = isset($opts['side_loaded_root_dir']) ? rtrim($opts['side_loaded_root_dir'], '/') : null;
+
+// argc <= 3 to allow both "--side_loaded_root_dir=path" and "--side_loaded_root_dir path"
+if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
+    // No args or just side_loaded_root_dir arg, probably being called from protoc.
     // However, timeout after a couple of seconds of no data in stdin,
     // in case this has been run interactively with zero args.
     $protocRequest = '';
@@ -83,7 +101,7 @@ if ($argc === 1) {
             ->filter(fn($x) => !is_null($x) && $x !== '')
             ->map(fn($x) => explode('=', $x, 2))
             ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts);
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts, $sideLoadedRootDir);
         $files = CodeGenerator::generate($fileDescs, $filesToGen, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
@@ -128,30 +146,43 @@ if ($argc === 1) {
     }
 }
 
-function readOptions($opts) {
-    if (isset($opts['grpc_service_config'])) {
-        if (!file_exists($opts['grpc_service_config'])) {
-            throw new \Exception('Specified grpc_service_config file does not exist.');
+function readOptions($opts, $sideLoadedRootDir = null) {
+    $makePath = function($path) use($sideLoadedRootDir) {
+        if (strlen($path) > 0 && $path[0] === '/') {
+            if (!is_null($sideLoadedRootDir)) {
+                throw new \Exception("Cannot use --side_loaded_root_dir with absolute config paths");
+            }
+            return $path;
+        } else {
+            return $sideLoadedRootDir . '/' . $path;
         }
-        $grpcServiceConfig = file_get_contents($opts['grpc_service_config']);
+    };
+    if (isset($opts['grpc_service_config'])) {
+        $grpcServiceConfigPath = $makePath($opts['grpc_service_config']);
+        if (!file_exists($grpcServiceConfigPath)) {
+            throw new \Exception("Specified grpc_service_config file does not exist: '{$grpcServiceConfigPath}'");
+        }
+        $grpcServiceConfig = file_get_contents($grpcServiceConfigPath);
     } else {
         $grpcServiceConfig = null;
     }
 
     if (isset($opts['gapic_yaml'])) {
-        if (!file_exists($opts['gapic_yaml'])) {
+        $gapicYamlPath = $makePath($opts['gapic_yaml']);
+        if (!file_exists($gapicYamlPath)) {
             throw new \Exception('Specified gapi_yaml file does not exist.');
         }
-        $gapicYaml = file_get_contents($opts['gapic_yaml']);
+        $gapicYaml = file_get_contents($gapicYamlPath);
     } else {
         $gapicYaml = null;
     }
 
     if (isset($opts['service_yaml'])) {
-        if (!file_exists($opts['service_yaml'])) {
+        $serviceYamlPath = $makePath($opts['service_yaml']);
+        if (!file_exists($serviceYamlPath)) {
             throw new \Exception('Specified service_yaml file does not exist.');
         }
-        $serviceYaml = file_get_contents($opts['service_yaml']);
+        $serviceYaml = file_get_contents($serviceYamlPath);
     } else {
         $serviceYaml = null;
     }
