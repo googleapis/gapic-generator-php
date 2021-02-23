@@ -23,6 +23,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/longrunning:operations_proto",
     ],
 )
 
@@ -52,9 +53,8 @@ php_gapic_library(
         ":example_php_proto",
         ":example_php_grpc",
     ],
-    # TODO: Include config yaml files
-    gapic_yaml = None,
-    service_yaml = None,
+    gapic_yaml = ":example-gapic.yaml",
+    service_yaml = ":example-service.yaml",
     grpc_service_config = ":example-grpc-service-config.json",
 )
 
