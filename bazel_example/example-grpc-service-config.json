@@ -1,0 +1,20 @@
+{
+  "method_config": [
+    {
+      "name": [
+        {
+          "service": "example.Example",
+          "method": "ExampleMethod"
+        }
+      ],
+      "timeout": "942s",
+      "retry_policy": {
+        "max_attempts": 99,
+        "initial_backoff": "1s",
+        "max_backoff": "142s",
+        "backoff_multiplier": 1.0,
+        "retryable_status_codes": [ "UNAVAILABLE", "DEADLINE_EXCEEDED" ]
+      }
+    }
+  ]
+}

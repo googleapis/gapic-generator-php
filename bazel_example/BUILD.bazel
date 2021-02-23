@@ -55,6 +55,7 @@ php_gapic_library(
     # TODO: Include config yaml files
     gapic_yaml = None,
     service_yaml = None,
+    grpc_service_config = ":example-grpc-service-config.json",
 )
 
 php_gapic_assembly_pkg(
