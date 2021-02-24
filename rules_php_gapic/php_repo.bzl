@@ -63,7 +63,15 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
     )
     _execute_and_check_result(
         ctx,
-        ["./configure", "--enable-static", "--without-pear", "--without-iconv", "--prefix=%s" % root_path.realpath],
+        ["./configure",
+            "--enable-static",
+            "--without-pear",
+            "--without-iconv",
+            "--enable-mbstring",
+            "--disable-mbregex",
+            "--with-openssl",
+            "--enable-bcmath",
+            "--prefix=%s" % root_path.realpath],
         working_directory = srcs_dir,
         quiet = False,
     )

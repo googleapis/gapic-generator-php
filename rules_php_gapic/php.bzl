@@ -31,8 +31,21 @@ cp -rL {install_path} {out_dir_path}
         outputs = [out_dir],
         command = cmd
     )
-    # This changes directory to the PHP src install path before running php.
-    # Without this the php code fails to execute.
+    # PHP is run via this "run.sh" script, which changes directory required by php.
+    # Optionally the _bazel_ working directory can be passed as a cmd-line flag to
+    # the php process.
+    # This is required as php does not differentiate between a source working directory
+    # and a "run-time" working directory; however some tooling (e.g. bazel) requires this
+    # conceptual separation.
+    # The working directory is changed in this script (cd ...) to where php expects, which
+    # means php can find its sources (ie *.php files) successfully. The bazel working directory
+    # is optionally passed to the script, so the script can find further resources (if required).
+    #
+    # Note that debugging issues with php running via this script can be painful, especially if
+    # running within another process, for example protoc; especially again when issues may only
+    # occur when running in CI (e.g. github actions).
+    # One useful debugging technique is to redirect stdout and/or stderr of the php process i
+    # this script to a file; then dump the file contents afterwards.
     if ctx.attr.working_directory_flag_name:
         working_directory_flag = '--{name} "$WD"'.format(name=ctx.attr.working_directory_flag_name)
     else:
