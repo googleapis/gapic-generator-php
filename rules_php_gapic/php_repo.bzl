@@ -115,7 +115,7 @@ def _php_composer_install_impl(ctx):
 php_composer_install = repository_rule(
     implementation = _php_composer_install_impl,
     attrs = {
-        "php": attr.label(default=Label("@php//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
+        "php": attr.label(default=Label("@php_micro//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
         "composer_phar": attr.label(default="@gapic_generator_php//:rules_php_gapic/resources/composer.phar"),
         "composer_json": attr.label(allow_single_file=True),
     }

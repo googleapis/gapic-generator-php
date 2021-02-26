@@ -75,7 +75,7 @@ cd "$(dirname $0)/run.sh.runfiles/$(basename $WD)/{out_short_path}/install"
 php_binary = rule(
     implementation = _php_binary_impl,
     attrs = {
-        "php": attr.label(default=Label("@php//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
+        "php": attr.label(default=Label("@php_micro//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
         "php_composer_install": attr.label(allow_single_file=True),
         "entry_point": attr.label(allow_single_file=True),
         "working_directory_flag_name": attr.string(),
