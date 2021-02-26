@@ -18,10 +18,14 @@ def _php_binary_impl(ctx):
     entry_point_relative = ctx.file.entry_point.path[len(ctx.attr.entry_point.label.workspace_root):].strip("/")
     # I don't understand why this is required:
     entry_point_relative = entry_point_relative[len("rules_php_gapic/"):]
-    # copy uses -L to dereference symlinks, as the PHP __DIR__ constant is incorrect if the src file is symlinked
-    # Ideally this cp would symlink all files except *.php files.
+    # PHP files must be copied, as the PHP __DIR__ constant is incorrect if the src file is symlinked.
+    # Ideally this would cp with everything being symlinks except php files.
+    # However that's difficult, so copy every thing; using tar as this allows excluding of directories.
     cmd = """
-cp -rL {install_path} {out_dir_path}
+DEST="$(pwd)/{out_dir_path}/install"
+mkdir "$DEST"
+cd '{install_path}'
+tar cf - --dereference --exclude=.git '--exclude=bazel-*' . | (cd "$DEST" && tar xf -)
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,
@@ -51,10 +55,10 @@ cp -rL {install_path} {out_dir_path}
     else:
         working_directory_flag = ""
     run_sh = """#!/bin/bash
-WD=$(pwd)
+WD="$(pwd)"
 PHP="$WD/$(dirname $0)/run.sh.runfiles/$(basename $WD)/{php_short_path}"
 cd "$(dirname $0)/run.sh.runfiles/$(basename $WD)/{out_short_path}/install"
-"$PHP" -n './{entry_point}' {working_directory_flag}
+"$PHP" -n -d memory_limit=512M './{entry_point}' {working_directory_flag}
     """.format(
         php_short_path = ctx.file.php.short_path,
         out_short_path = out_dir.short_path,
