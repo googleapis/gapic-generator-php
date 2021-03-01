@@ -59,8 +59,8 @@ switched_rules_by_language(name = "com_google_googleapis_imports", gapic = True)
 # Use the following to use the bazel rules defined in github.
 #http_archive(
 #    name = "gapic_generator_php",
-#    urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.0-beta01.zip"],
-#    strip_prefix = "gapic-generator-php-1.0.0-beta01",
+#    urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.0-beta03.zip"],
+#    strip_prefix = "gapic-generator-php-1.0.0-beta03",
 #)
 # Use the following to use the bazel rules defined locally, rather than fetched from github.
 local_repository(
