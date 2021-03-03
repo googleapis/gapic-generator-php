@@ -221,6 +221,7 @@ class ResourcesGenerator
                             ['initial_rpc_timeout_millis', $timeout],
                             ['rpc_timeout_multiplier', 1.0],
                             ['max_rpc_timeout_millis', $timeout],
+
                             ['total_timeout_millis', $timeout],
                         ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
                     ]);
