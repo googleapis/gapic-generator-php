@@ -91,7 +91,7 @@ class GapicClientExamplesGenerator
 
         $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
         $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
-            $config = Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
+            Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
         $result = $method->allFields
             ->map(function($f) use($inits, $fnGetValue, $method) {
                 $value = $inits->get($f->name, null);
