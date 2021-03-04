@@ -44,5 +44,6 @@
 -   Integration tests. These may take 5 minutes or so to run.
 
     ```
-    php integration_tests/Main.php
+    cd integration_tests
+    php Main.php
     ```
