@@ -216,7 +216,7 @@ class ResourcesGenerator
                     $retryParams = $retryParams->append([
                         $paramsName, Vector::new([
                             ['initial_retry_delay_millis', is_null($policy) ? 0 : $durationToMillis($policy->getInitialBackoff())],
-                            ['retry_delay_multiplier', is_null($policy) ? 0 : $policy->getBackoffMultiplier()],
+                            ['retry_delay_multiplier', is_null($policy) ? 0 : round($policy->getBackoffMultiplier(), 5)],
                             ['max_retry_delay_millis', is_null($policy) ? 0 : $durationToMillis($policy->getMaxBackoff())],
                             ['initial_rpc_timeout_millis', $timeout],
                             ['rpc_timeout_multiplier', 1.0],
