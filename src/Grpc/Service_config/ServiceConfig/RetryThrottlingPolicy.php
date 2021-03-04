@@ -59,7 +59,8 @@ class RetryThrottlingPolicy extends \Google\Protobuf\Internal\Message
      *           places are supported.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -125,9 +126,7 @@ class RetryThrottlingPolicy extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(RetryThrottlingPolicy::class, \Grpc\Service_config\ServiceConfig_RetryThrottlingPolicy::class);
-

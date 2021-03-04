@@ -70,7 +70,8 @@ class HedgingPolicy extends \Google\Protobuf\Internal\Message
      *           This field is optional.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -182,9 +183,7 @@ class HedgingPolicy extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(HedgingPolicy::class, \Grpc\Service_config\MethodConfig_HedgingPolicy::class);
-

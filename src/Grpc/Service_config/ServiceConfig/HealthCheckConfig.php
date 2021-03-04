@@ -30,7 +30,8 @@ class HealthCheckConfig extends \Google\Protobuf\Internal\Message
      *           Service name to use in the health-checking request.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -96,10 +97,9 @@ class HealthCheckConfig extends \Google\Protobuf\Internal\Message
     public function setServiceNameUnwrapped($var)
     {
         $this->writeWrapperValue("service_name", $var);
-        return $this;}
-
+        return $this;
+    }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(HealthCheckConfig::class, \Grpc\Service_config\ServiceConfig_HealthCheckConfig::class);
-

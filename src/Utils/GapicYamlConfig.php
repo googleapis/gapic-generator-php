@@ -35,16 +35,16 @@ class GapicYamlConfig
             $gapic = Yaml::parse($gapicYaml);
             if (isset($gapic['interfaces'])) {
                 $this->interfaces = Vector::new($gapic['interfaces'])
-                    ->map(fn($x) => $x['name'])
+                    ->map(fn ($x) => $x['name'])
                     ->toSet();
                 $methods = Vector::new($gapic['interfaces'])
-                    ->filter(fn($x) => $x['name'] === $serviceName)
-                    ->flatMap(fn($x) => Vector::new(isset($x['methods']) ? $x['methods'] : []));
+                    ->filter(fn ($x) => $x['name'] === $serviceName)
+                    ->flatMap(fn ($x) => Vector::new(isset($x['methods']) ? $x['methods'] : []));
                 $this->configsByMethodName = $methods
-                    ->toMap(fn($x) => $x['name']);
+                    ->toMap(fn ($x) => $x['name']);
                 $this->orderByMethodName = $methods
-                    ->map(fn($x, $i) => [$i, $x])
-                    ->toMap(fn($x) => $x[1]['name'], fn($x) => $x[0]);
+                    ->map(fn ($x, $i) => [$i, $x])
+                    ->toMap(fn ($x) => $x[1]['name'], fn ($x) => $x[0]);
             }
         }
     }

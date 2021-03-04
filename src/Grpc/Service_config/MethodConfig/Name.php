@@ -59,7 +59,8 @@ class Name extends \Google\Protobuf\Internal\Message
      *     @type string $method
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -84,7 +85,7 @@ class Name extends \Google\Protobuf\Internal\Message
      */
     public function setService($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->service = $var;
 
         return $this;
@@ -106,14 +107,12 @@ class Name extends \Google\Protobuf\Internal\Message
      */
     public function setMethod($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->method = $var;
 
         return $this;
     }
-
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(Name::class, \Grpc\Service_config\MethodConfig_Name::class);
-

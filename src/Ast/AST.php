@@ -94,7 +94,7 @@ abstract class AST
         }
     }
 
-    protected function clone(Callable $fnOnClone)
+    protected function clone(callable $fnOnClone)
     {
         $clone = clone $this;
         $fnOnClone($clone);
@@ -200,7 +200,7 @@ abstract class AST
     {
         $code = Vector::new($code)
             ->flatten()
-            ->filter(fn($x) => !is_null($x));
+            ->filter(fn ($x) => !is_null($x));
         return new class($code) extends AST {
             public function __construct($code)
             {
@@ -210,7 +210,7 @@ abstract class AST
             {
                 $omitSemicolon = false;
                 return $this->code
-                    ->map(fn($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
+                    ->map(fn ($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
             }
         };
@@ -323,10 +323,10 @@ abstract class AST
     public static function array($data): Expression
     {
         if (is_array($data)) {
-            $keyValues = Vector::new(array_map(fn($v, $k) => [$k, $v], $data, array_keys($data)))
-                ->filter(fn($x) => !is_null($x[1]));
+            $keyValues = Vector::new(array_map(fn ($v, $k) => [$k, $v], $data, array_keys($data)))
+                ->filter(fn ($x) => !is_null($x[1]));
         } elseif ($data instanceof Map) {
-            $keyValues = $data->mapValues(fn($k, $v) => [$k, $v])->values();
+            $keyValues = $data->mapValues(fn ($k, $v) => [$k, $v])->values();
         } else {
             throw new \Exception('$data must be an array or a Map.');
         }
@@ -337,11 +337,11 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $isAssocArray = $this->keyValues->map(fn($x) => $x[0])->toArray() !== range(0, count($this->keyValues) - 1);
+                $isAssocArray = $this->keyValues->map(fn ($x) => $x[0])->toArray() !== range(0, count($this->keyValues) - 1);
                 $items = $isAssocArray ?
-                    $this->keyValues->map(fn($x) => static::toPhp($x[0]) . ' => ' . static::toPhp($x[1])) :
-                    $this->keyValues->map(fn($x) => static::toPhp($x[1]));
-                $itemsStr = $items->map(fn($x) => "{$x},\n")->join();
+                    $this->keyValues->map(fn ($x) => static::toPhp($x[0]) . ' => ' . static::toPhp($x[1])) :
+                    $this->keyValues->map(fn ($x) => static::toPhp($x[1]));
+                $itemsStr = $items->map(fn ($x) => "{$x},\n")->join();
                 $firstNl = count($items) === 0 ? '' : "\n";
                 return "[{$firstNl}{$itemsStr}]";
             }
@@ -420,9 +420,9 @@ abstract class AST
      *
      * @return Callable The returned Callable returns an Expression once called with callee args.
      */
-    public static function call($obj, $callee = null): Callable
+    public static function call($obj, $callee = null): callable
     {
-        return fn(...$args) => new class($obj, $callee, $args) extends Expression {
+        return fn (...$args) => new class($obj, $callee, $args) extends Expression {
             public function __construct($obj, $callee, $args)
             {
                 $this->obj = $obj;
@@ -431,7 +431,7 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $args = $this->args->map(fn($x) => static::toPhp($x))->join(', ');
+                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                 if (is_null($this->callee)) {
                     return static::toPhp($this->obj) . "({$args})";
                 } else {
@@ -448,9 +448,9 @@ abstract class AST
      *
      * @return Callable The returned Callable returns an Expression once called with callee args.
      */
-    public static function new(ResolvedType $type): Callable
+    public static function new(ResolvedType $type): callable
     {
-        return fn(...$args) => new class($type, Vector::new($args)) extends Expression {
+        return fn (...$args) => new class($type, Vector::new($args)) extends Expression {
             public function __construct($type, $args)
             {
                 $this->type = $type;
@@ -458,7 +458,7 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $args = $this->args->map(fn($x) => static::toPhp($x))->join(', ');
+                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                 return 'new ' . static::toPhp($this->type) . "({$args})";
             }
         };
@@ -474,16 +474,15 @@ abstract class AST
     public static function concat(...$items): ?Expression
     {
         $items = Vector::New($items);
-        $null = $items->any(fn($x) => is_null($x));
-        return $null ? null : new class($items) extends Expression
-        {
+        $null = $items->any(fn ($x) => is_null($x));
+        return $null ? null : new class($items) extends Expression {
             public function __construct($items)
             {
                 $this->items = $items;
             }
             public function toCode(): string
             {
-                return $this->items->map(fn($x) => static::toPhp($x))->join(' . ');
+                return $this->items->map(fn ($x) => static::toPhp($x))->join(' . ');
             }
         };
     }
@@ -575,15 +574,15 @@ abstract class AST
             }
             public function then(...$code)
             {
-                return $this->clone(fn($clone) => $clone->then = AST::block(...$code));
+                return $this->clone(fn ($clone) => $clone->then = AST::block(...$code));
             }
             public function else(...$code)
             {
-                return $this->clone(fn($clone) => $clone->else = AST::block(...$code));
+                return $this->clone(fn ($clone) => $clone->else = AST::block(...$code));
             }
             public function toCode(): string
             {
-                $else = is_null($this->else ) ? '' :
+                $else = is_null($this->else) ? '' :
                     " else {\n" .
                     static::toPhp($this->else) . "\n" .
                     "}";
@@ -628,9 +627,9 @@ abstract class AST
      *
      * @return Callable The returned Callable returns a while statement once called with the loop code.
      */
-    public static function while(Expression $condition): Callable
+    public static function while(Expression $condition): callable
     {
-        return fn(...$code) => new class($condition, $code) extends AST {
+        return fn (...$code) => new class($condition, $code) extends AST {
             public function __construct($condition, $code)
             {
                 $this->condition = $condition;
@@ -654,9 +653,9 @@ abstract class AST
      *
      * @return Callable The returned Callable returns a foreach statement once called with the foreach body code.
      */
-    public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): Callable
+    public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): callable
     {
-        return fn(...$code) => new class($expr, $var, $indexVar, $code) extends AST {
+        return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST {
             public function __construct($expr, $var, $indexVar, $code)
             {
                 $this->expr = $expr;
@@ -690,14 +689,14 @@ abstract class AST
                 $this->catch = null;
                 $this->finallyCode = null;
             }
-            public function catch(ResolvedType $type, Variable $var): Callable
+            public function catch(ResolvedType $type, Variable $var): callable
             {
-                return fn(...$catchCode) =>
-                    $this->clone(fn($clone) => $clone->catch = [$type, $var, AST::block(...$catchCode)]);
+                return fn (...$catchCode) =>
+                    $this->clone(fn ($clone) => $clone->catch = [$type, $var, AST::block(...$catchCode)]);
             }
             public function finally(...$finallyCode): AST
             {
-                return $this->clone(fn($clone) => $clone->finallyCode = AST::block(...$finallyCode));
+                return $this->clone(fn ($clone) => $clone->finallyCode = AST::block(...$finallyCode));
             }
             public function toCode(): string
             {
@@ -719,5 +718,5 @@ abstract class AST
      *
      * @return string
      */
-    public abstract function toCode(): string;
+    abstract public function toCode(): string;
 }

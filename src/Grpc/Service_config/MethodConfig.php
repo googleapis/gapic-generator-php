@@ -142,7 +142,8 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
      *     @type \Grpc\Service_config\MethodConfig\HedgingPolicy $hedging_policy
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -262,7 +263,8 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
     public function setWaitForReadyUnwrapped($var)
     {
         $this->writeWrapperValue("wait_for_ready", $var);
-        return $this;}
+        return $this;
+    }
 
     /**
      * The default timeout in seconds for RPCs sent to this method. This can be
@@ -423,7 +425,8 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
     public function setMaxRequestMessageBytesUnwrapped($var)
     {
         $this->writeWrapperValue("max_request_message_bytes", $var);
-        return $this;}
+        return $this;
+    }
 
     /**
      * The maximum allowed payload size for an individual response or object in a
@@ -534,7 +537,8 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
     public function setMaxResponseMessageBytesUnwrapped($var)
     {
         $this->writeWrapperValue("max_response_message_bytes", $var);
-        return $this;}
+        return $this;
+    }
 
     /**
      * Generated from protobuf field <code>.grpc.service_config.MethodConfig.RetryPolicy retry_policy = 6;</code>
@@ -597,6 +601,4 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
     {
         return $this->whichOneof("retry_or_hedging_policy");
     }
-
 }
-

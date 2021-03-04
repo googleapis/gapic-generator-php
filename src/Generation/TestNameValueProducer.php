@@ -63,7 +63,7 @@ class TestNameValueProducer
     {
         $oneOfs = Set::new();
         return $fields
-            ->filter(function($f) use(&$oneOfs) {
+            ->filter(function ($f) use (&$oneOfs) {
                 if (is_null($f->oneOfIndex)) {
                     return true;
                 } elseif ($oneOfs[$f->oneOfIndex]) {
@@ -79,7 +79,7 @@ class TestNameValueProducer
     {
         $oneOfs = Set::new();
         return static::filterFirstOneOf($fields)
-            ->map(fn($f) => new class($this, $f, $forceValues ?? Map::new()) {
+            ->map(fn ($f) => new class($this, $f, $forceValues ?? Map::new()) {
                 public function __construct($prod, $f, $forceValues)
                 {
                     $this->field = $f;
@@ -101,7 +101,7 @@ class TestNameValueProducer
         // specified in the gapic-config if present.
 
         $perField = static::filterFirstOneOf($method->allFields)
-            ->map(fn($f) => new class($this, $method, $f) {
+            ->map(fn ($f) => new class($this, $method, $f) {
                 public function __construct($prod, $method, $f)
                 {
                     // This code is arranged in this way, as a name must not be generated
@@ -109,7 +109,7 @@ class TestNameValueProducer
                     // Name generation is stateful.
                     // TODO: Consider refactoring this.
                     $this->field = $f;
-                    $fnVarName = function() use ($prod, $f) {
+                    $fnVarName = function () use ($prod, $f) {
                         $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
                         $this->var = AST::var(Helpers::toCamelCase($this->name));
                         return [$this->var, $this->name];
@@ -122,18 +122,18 @@ class TestNameValueProducer
                 public Variable $var;
                 public $initCode;
             })
-            ->filter(fn($x) => !is_null($x->initCode))
-            ->orderBy(fn($x) => $x->field->isRequired ? 0 : 1);
+            ->filter(fn ($x) => !is_null($x->initCode))
+            ->orderBy(fn ($x) => $x->field->isRequired ? 0 : 1);
 
         $callArgs = $perField
-            ->filter(fn($x) => $x->field->isRequired)
-            ->map(fn($x) => $x->var);
-        if ($perField->any(fn($x) => !$x->field->isRequired)) {
+            ->filter(fn ($x) => $x->field->isRequired)
+            ->map(fn ($x) => $x->var);
+        if ($perField->any(fn ($x) => !$x->field->isRequired)) {
             $callArgs = $callArgs->append(
                 AST::array(
                     $perField
-                        ->filter(fn($x) => !$x->field->isRequired)
-                        ->toArray(fn($x) => $x->var->name, fn($x) => $x->var)
+                        ->filter(fn ($x) => !$x->field->isRequired)
+                        ->toArray(fn ($x) => $x->var->name, fn ($x) => $x->var)
                 )
             );
         }
@@ -142,9 +142,9 @@ class TestNameValueProducer
     }
 
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
-    public function fieldInit(MethodDetails $method, FieldDetails $field, Callable $fnVarName, ?Variable $clientVar = null)
+    public function fieldInit(MethodDetails $method, FieldDetails $field, callable $fnVarName, ?Variable $clientVar = null)
     {
-        $fnInitValue = function(FieldDetails $f, string $value) {
+        $fnInitValue = function (FieldDetails $f, string $value) {
             if ($f->isEnum) {
                 return AST::access($this->ctx->type($f->typeSingular), AST::constant($value));
             } else {
@@ -159,7 +159,7 @@ class TestNameValueProducer
 
         $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
         $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
-            Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
+            Map::fromPairs(array_map(fn ($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
         $value = $inits->get($field->name, null);
         $valueIndex = $inits->get($field->name . '[0]', null);
         if ($field->isRequired || !is_null($value) || !is_null($valueIndex)) {
@@ -171,15 +171,15 @@ class TestNameValueProducer
                     throw new \Exception('Only a repeated field may use indexed init fields');
                 }
                 $initElements = Vector::range(0, 9)
-                    ->takeWhile(fn($i) => isset($inits["{$field->name}[{$i}]"]))
-                    ->map(fn($i) => [AST::var("{$var->name}Element" . ($i === 0 ? '' : $i + 1)), $inits["{$field->name}[{$i}]"]]);
+                    ->takeWhile(fn ($i) => isset($inits["{$field->name}[{$i}]"]))
+                    ->map(fn ($i) => [AST::var("{$var->name}Element" . ($i === 0 ? '' : $i + 1)), $inits["{$field->name}[{$i}]"]]);
                 return $initElements
-                    ->map(fn($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
-                    ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
+                    ->map(fn ($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
+                    ->append(AST::assign($var, AST::array($initElements->map(fn ($x) => $x[0])->toArray())));
             } elseif ($field->useResourceTestValue) {
                 // TODO: What if it's just a wild-card pattern?
                 $patternDetails = $field->resourceDetails->patterns[0];
-                $args = $patternDetails->params->map(fn($x) => strtoupper("[{$x[0]}]"));
+                $args = $patternDetails->params->map(fn ($x) => strtoupper("[{$x[0]}]"));
                 $clientVar = $clientVar ?? AST::var('client');
                 return AST::assign($var, $clientVar->instanceCall($field->resourceDetails->formatMethod)($args));
             } else {
@@ -222,7 +222,7 @@ class TestNameValueProducer
 
     private function valueImpl(FieldDetails $field, string $name)
     {
-        $javaHashCode = function() use($name) {
+        $javaHashCode = function () use ($name) {
             $javaHash = 0;
             for ($i = 0; $i < strlen($name); $i++) {
                 $javaHash = (((31 * $javaHash) & 0xffffffff) + ord($name[$i])) & 0xffffffff;

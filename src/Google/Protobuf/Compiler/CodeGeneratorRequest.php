@@ -84,7 +84,8 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      *           The version number of protocol compiler.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Plugin::initOnce();
         parent::__construct($data);
     }
@@ -139,7 +140,7 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      */
     public function setParameter($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->parameter = $var;
 
         return $this;
@@ -230,6 +231,4 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
-

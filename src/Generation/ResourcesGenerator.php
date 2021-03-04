@@ -41,7 +41,7 @@ class ResourcesGenerator
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $perMethod = function($method) use ($gapicYamlConfig) {
+        $perMethod = function ($method) use ($gapicYamlConfig) {
             switch ($method->methodType) {
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
@@ -97,10 +97,10 @@ class ResourcesGenerator
                 'interfaces' => AST::array([
                     $serviceDetails->serviceName => AST::array(
                         $serviceDetails->methods
-                            ->map(fn($x) => [$x->name, $perMethod($x)])
-                            ->filter(fn($x) => count($x[1]) > 0)
-                            ->orderBy(fn($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
-                            ->toArray(fn($x) => $x[0], fn($x) => AST::array($x[1]))
+                            ->map(fn ($x) => [$x->name, $perMethod($x)])
+                            ->filter(fn ($x) => count($x[1]) > 0)
+                            ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
+                            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]))
                     )
                 ])
             ])
@@ -120,11 +120,11 @@ class ResourcesGenerator
         if ($topLevel) {
             // Merges plcaeholders for all bindings; ie includes additional bindings.
             $placeholders = $additionalBindings
-                ->map(fn($x) => ProtoHelpers::restPlaceholders($catalog, $x, null))
+                ->map(fn ($x) => ProtoHelpers::restPlaceholders($catalog, $x, null))
                 ->append(ProtoHelpers::restPlaceholders($catalog, $httpRule, null))
-                ->flatMap(fn($x) => $x->mapValues(fn($k, $v) => [$k, $v])->values())
-                ->groupBy(fn($x) => $x[0])
-                ->mapValues(fn($k, $v) => $v[0][1]);
+                ->flatMap(fn ($x) => $x->mapValues(fn ($k, $v) => [$k, $v])->values())
+                ->groupBy(fn ($x) => $x[0])
+                ->mapValues(fn ($k, $v) => $v[0][1]);
         } else {
             $placeholders = Map::new();
         }
@@ -133,13 +133,13 @@ class ResourcesGenerator
             'uriTemplate' => $uriTemplate,
             'body' => $restBody,
             'additionalBindings' => !$additionalBindings->any() ? null :
-                AST::array($additionalBindings->map(fn($x) => static::restMethodDetails($catalog, $x, false, $restBody))->toArray()),
+                AST::array($additionalBindings->map(fn ($x) => static::restMethodDetails($catalog, $x, false, $restBody))->toArray()),
             'placeholders' => count($placeholders) === 0 ? null : AST::array(
                 $placeholders
-                    ->mapValues(fn($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
+                    ->mapValues(fn ($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
                     ->values()
-                    ->orderBy(fn($x) => $x[0])
-                    ->toArray(fn($x) => $x[0], fn($x) => $x[1])
+                    ->orderBy(fn ($x) => $x[0])
+                    ->toArray(fn ($x) => $x[0], fn ($x) => $x[1])
             )
         ]);
     }
@@ -147,20 +147,20 @@ class ResourcesGenerator
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
         $allInterfaces = $serviceDetails->methods
-            ->filter(fn($method) => !is_null($method->httpRule))
-            ->map(fn($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
-            ->concat($serviceYamlConfig->httpRules->map(fn($x) => [
+            ->filter(fn ($method) => !is_null($method->httpRule))
+            ->map(fn ($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
+            ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
                 Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),
                 Vector::new(explode('.', $x->getSelector()))->last(),
                 $x
             ])) // [service name, method name, httpRule]
-            ->groupBy(fn($x) => $x[0])
-            ->mapValues(fn($k, $v) => [$k, $v])
+            ->groupBy(fn ($x) => $x[0])
+            ->mapValues(fn ($k, $v) => [$k, $v])
             ->values()
-            ->orderBy(fn($x) => $x[0]) // order by service name
-            ->toArray(fn($x) => $x[0], fn($x) => AST::array($x[1]->toArray(
-                fn($y) => $y[1],
-                fn($y) => static::restMethodDetails($serviceDetails->catalog, $y[2], true, null),
+            ->orderBy(fn ($x) => $x[0]) // order by service name
+            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]->toArray(
+                fn ($y) => $y[1],
+                fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[2], true, null),
             )));
         $return = AST::return(
             AST::array([
@@ -177,7 +177,7 @@ class ResourcesGenerator
         GapicYamlConfig $gapicYamlConfig
     ): string {
         $serviceName = $serviceDetails->serviceName;
-        $durationToMillis = fn($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
+        $durationToMillis = fn ($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
 
         if ($grpcServiceConfig->isPresent) {
             $configsByMethodName = Map::new();
@@ -204,14 +204,14 @@ class ResourcesGenerator
                 // prefix with the current service.
                 // It also unnessecarily includes irrelevant information if the service is not listed in the gapic config.
                 if (!isset($gapicYamlConfig->interfaces[$serviceName]) ||
-                        Vector::new($method->getName())->any(fn($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
+                        Vector::new($method->getName())->any(fn ($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
                     $codesName = "{$policyName}_codes";
                     $paramsName = "{$policyName}_params";
                     $policy = $method->getRetryPolicy();
                     $timeout = $method->hasTimeout() ? $durationToMillis($method->getTimeout()) : null;
                     $retryCodes = $retryCodes->append([
                         $codesName,
-                        Vector::new(is_null($policy) ? [] : $policy->getRetryableStatusCodes())->map(fn($x) => Code::name($x))->toArray()
+                        Vector::new(is_null($policy) ? [] : $policy->getRetryableStatusCodes())->map(fn ($x) => Code::name($x))->toArray()
                     ]);
                     $retryParams = $retryParams->append([
                         $paramsName, Vector::new([
@@ -222,7 +222,7 @@ class ResourcesGenerator
                             ['rpc_timeout_multiplier', 1.0],
                             ['max_rpc_timeout_millis', $timeout],
                             ['total_timeout_millis', $timeout],
-                        ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])
+                        ])->filter(fn ($x) => !is_null($x[1]))->toArray(fn ($x) => $x[0], fn ($x) => $x[1])
                     ]);
                     foreach ($method->getName() as $name) {
                         $fullName = "{$name->getService()}/{$name->getMethod()}";
@@ -248,14 +248,14 @@ class ResourcesGenerator
             $configsByMethodName = Map::new();
         }
 
-        $retryCodes = $retryCodes->toArray(fn($x) => $x[0], fn($x) => $x[1]);
-        $retryParams = $retryParams->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+        $retryCodes = $retryCodes->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
+        $retryParams = $retryParams->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = [];
         $serviceYamlBackendRules = $serviceYamlConfig->backendRules
-            ->flatMap(fn($x) => Vector::new(explode(',', $x->getSelector()))->map(fn($y) => [trim($y), $x]))
-            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
+            ->flatMap(fn ($x) => Vector::new(explode(',', $x->getSelector()))->map(fn ($y) => [trim($y), $x]))
+            ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = $serviceDetails->methods
-            ->map(function($method) use($grpcServiceConfig, $configsByMethodName, $serviceName, $serviceYamlBackendRules) {
+            ->map(function ($method) use ($grpcServiceConfig, $configsByMethodName, $serviceName, $serviceYamlBackendRules) {
                 [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
                     $configsByMethodName->get("{$serviceName}/", [null, null, null]);
                 if (is_null($codes)) {
@@ -281,16 +281,16 @@ class ResourcesGenerator
                 // Note that this monolith-compatible behaviour is broken, as it doesn't handle wildcard selectors at all.
                 // TODO(vNext): Remove this override.
                 $rule = $serviceYamlBackendRules->get("{$serviceName}.{$method->name}", null);
-                if (!is_null($rule)){
+                if (!is_null($rule)) {
                     $timeoutMillis = $rule->getDeadline() * 1000;
                 }
                 return [$method->name, Vector::new([
                     ['timeout_millis', $timeoutMillis],
                     ['retry_codes_name', $retryCodesName],
                     ['retry_params_name', $retryParamsName]
-                ])->filter(fn($x) => !is_null($x[1]))->toArray(fn($x) => $x[0], fn($x) => $x[1])];
+                ])->filter(fn ($x) => !is_null($x[1]))->toArray(fn ($x) => $x[0], fn ($x) => $x[1])];
             })
-            ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+            ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
 
         $json = [
             'interfaces' => [
@@ -312,7 +312,7 @@ class ResourcesGenerator
     {
         // Force multplier values to have a ".0" if no decimal point present, required for monolith compatibility.
         return Vector::new(explode("\n", $json))
-            ->map(function($line) {
+            ->map(function ($line) {
                 if (strpos($line, 'multiplier') !== false) {
                     $parts = explode(':', $line);
                     if (count($parts) === 2 && strpos($parts[1], '.') === false) {

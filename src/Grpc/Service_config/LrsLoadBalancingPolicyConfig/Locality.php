@@ -39,7 +39,8 @@ class Locality extends \Google\Protobuf\Internal\Message
      *     @type string $subzone
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -60,7 +61,7 @@ class Locality extends \Google\Protobuf\Internal\Message
      */
     public function setRegion($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->region = $var;
 
         return $this;
@@ -82,7 +83,7 @@ class Locality extends \Google\Protobuf\Internal\Message
      */
     public function setZone($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->zone = $var;
 
         return $this;
@@ -104,14 +105,12 @@ class Locality extends \Google\Protobuf\Internal\Message
      */
     public function setSubzone($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->subzone = $var;
 
         return $this;
     }
-
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(Locality::class, \Grpc\Service_config\LrsLoadBalancingPolicyConfig_Locality::class);
-

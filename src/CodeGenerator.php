@@ -61,8 +61,8 @@ class CodeGenerator
         $descSet->mergeFromString($descBytes);
         $fileDescs = Vector::new($descSet->getFile());
         $filesToGenerate = $fileDescs
-            ->filter(fn($x) => $x->getPackage() === $package)
-            ->map(fn($x) => $x->getName());
+            ->filter(fn ($x) => $x->getPackage() === $package)
+            ->map(fn ($x) => $x->getName());
         yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
     }
 
@@ -97,8 +97,8 @@ class CodeGenerator
         // Create map of all files to generate, keyed by package name.
         $filesToGenerateSet = $filesToGenerate->toSet();
         $byPackage = $fileDescs
-            ->filter(fn($x) => $filesToGenerateSet[$x->getName()])
-            ->groupBy(fn($x) => $x->getPackage());
+            ->filter(fn ($x) => $filesToGenerateSet[$x->getName()])
+            ->groupBy(fn ($x) => $x->getPackage());
         if (count($byPackage) === 0) {
             throw new \Exception('No packages specified to build');
         }
@@ -106,7 +106,7 @@ class CodeGenerator
         $result = [];
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
-                ->map(fn($x) => ProtoHelpers::getNamespace($x))
+                ->map(fn ($x) => ProtoHelpers::getNamespace($x))
                 ->distinct();
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
@@ -130,10 +130,8 @@ class CodeGenerator
         $version = Helpers::nsVersion($namespace);
         $version = is_null($version) ? '' : $version . '/';
         // $fileDescs: Vector<FileDescriptorProto>
-        foreach ($fileDescs as $fileDesc)
-        {
-            foreach ($fileDesc->getService() as $index => $service)
-            {
+        foreach ($fileDescs as $fileDesc) {
+            foreach ($fileDesc->getService() as $index => $service) {
                 $serviceName = "{$fileDesc->getPackage()}.{$service->getName()}";
                 // Load various configs; if they're not provided then defaults will be used.
                 $grpcServiceConfig = new GrpcServiceConfig($serviceName, $grpcServiceConfigJson);

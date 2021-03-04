@@ -56,7 +56,8 @@ class ListOperationsRequest extends \Google\Protobuf\Internal\Message
      *           The standard list page token.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -81,7 +82,7 @@ class ListOperationsRequest extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->name = $var;
 
         return $this;
@@ -107,7 +108,7 @@ class ListOperationsRequest extends \Google\Protobuf\Internal\Message
      */
     public function setFilter($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->filter = $var;
 
         return $this;
@@ -159,11 +160,9 @@ class ListOperationsRequest extends \Google\Protobuf\Internal\Message
      */
     public function setPageToken($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->page_token = $var;
 
         return $this;
     }
-
 }
-

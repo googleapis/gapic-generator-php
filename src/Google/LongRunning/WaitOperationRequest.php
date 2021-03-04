@@ -44,7 +44,8 @@ class WaitOperationRequest extends \Google\Protobuf\Internal\Message
      *           If RPC context deadline is also specified, the shorter one will be used.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -69,7 +70,7 @@ class WaitOperationRequest extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->name = $var;
 
         return $this;
@@ -104,6 +105,4 @@ class WaitOperationRequest extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
-

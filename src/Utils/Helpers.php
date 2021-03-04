@@ -40,8 +40,7 @@ class Helpers
             $v = $parts[count($parts) - 1];
             // Detected as a 'version' if it starts with 'v' or 'V', followed by a digit.
             // Any other characters are allowed to follow.
-            if (strtoupper(substr($v, 0, 1)) === 'V')
-            {
+            if (strtoupper(substr($v, 0, 1)) === 'V') {
                 $num = substr($v, 1, 1);
                 if (strlen($num) === 1 && ctype_digit($num)) {
                     return $v;

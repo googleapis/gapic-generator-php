@@ -53,12 +53,12 @@ class ProtoAugmenter
 
     private static function augmentFile(FileDescriptorProto $fileProto)
     {
-        $fnLeadingComments = fn($x) => $x->getLeadingComments();
-        $fnTrailingComments = fn($x) => $x->getTrailingComments();
+        $fnLeadingComments = fn ($x) => $x->getLeadingComments();
+        $fnTrailingComments = fn ($x) => $x->getTrailingComments();
 
         $sci = $fileProto->getSourceCodeInfo();
         $locsByPath = Vector::new($sci->getLocation())
-            ->groupBy(fn($x) => Vector::new($x->getPath()));
+            ->groupBy(fn ($x) => Vector::new($x->getPath()));
 
         // Handle top-level services:
         foreach ($fileProto->getService() as $serviceIndex => $service) {
@@ -75,7 +75,7 @@ class ProtoAugmenter
         // A FileDescriptor only includes msgs and enums, hence services are handled separately above.
         $fileDesc = FileDescriptor::buildFromProto($fileProto);
 
-        $fnMergeEnums = function(Vector $path, int $pathId, $proto, $desc) use($locsByPath, $fnLeadingComments) {
+        $fnMergeEnums = function (Vector $path, int $pathId, $proto, $desc) use ($locsByPath, $fnLeadingComments) {
             $enums = Vector::zip(Vector::new($proto->getEnumType()), Vector::new($desc->getEnumType()));
             foreach ($enums as $enumIndex => [$enumProto, $enumDesc]) {
                 // Link proto and desc in both directions.
@@ -89,8 +89,7 @@ class ProtoAugmenter
         };
 
         $fnMergeMsgs = null;
-        $fnMergeMsgs = function(Vector $msgPath, DescriptorProto $msgProto, Descriptor $msgDesc)
-                use(&$fnMergeMsgs, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fnMergeEnums) {
+        $fnMergeMsgs = function (Vector $msgPath, DescriptorProto $msgProto, Descriptor $msgDesc) use (&$fnMergeMsgs, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fnMergeEnums) {
             // Link proto and desc in both directions.
             $msgProto->desc = $msgDesc;
             $msgDesc->underlyingProto = $msgProto;
@@ -128,11 +127,11 @@ class ProtoAugmenter
         $fnMergeEnums(Vector::new([]), static::ENUM, $fileProto, $fileDesc);
     }
 
-    private static function getComments(?Vector $locations, Callable $fn): Vector
+    private static function getComments(?Vector $locations, callable $fn): Vector
     {
         return is_null($locations) ? Vector::new([]) : $locations
-            ->flatMap(fn($x) => Vector::new(explode("\n", $fn($x))))
-            ->map(fn($x) => trim($x))
+            ->flatMap(fn ($x) => Vector::new(explode("\n", $fn($x))))
+            ->map(fn ($x) => trim($x))
             ->skipLast(1); // Last line is always empty due to trailing \n
     }
 }

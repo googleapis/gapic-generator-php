@@ -76,7 +76,7 @@ class GapicClientExamplesGenerator
     // Return: [Vector of init code, Vector or args to pass to RPC call]
     private function initCallVars(MethodDetails $method): array
     {
-        $fnGetValue = function(FieldDetails $f, string $value) {
+        $fnGetValue = function (FieldDetails $f, string $value) {
             if ($f->isEnum) {
                 return AST::access($this->ctx->type($f->typeSingular), AST::constant($value));
             } else {
@@ -91,9 +91,9 @@ class GapicClientExamplesGenerator
 
         $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
         $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
-            Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
+            Map::fromPairs(array_map(fn ($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
         $result = $method->allFields
-            ->map(function($f) use($inits, $fnGetValue, $method) {
+            ->map(function ($f) use ($inits, $fnGetValue, $method) {
                 $value = $inits->get($f->name, null);
                 $valueIndex = $inits->get($f->name . '[0]', null);
                 if ($f->isRequired || !is_null($value) || !is_null($valueIndex)) {
@@ -102,24 +102,24 @@ class GapicClientExamplesGenerator
                     if (!is_null($value)) {
                         // Look for given init value for this field.
                         $initCode = AST::assign($var, $fnGetValue($f, $value));
-                    } else if (!is_null($valueIndex)) {
+                    } elseif (!is_null($valueIndex)) {
                         // Look for given indexed init value for this field.
                         if (!$f->isRepeated) {
                             throw new \Exception('Only a repeated field may use indexed init fields');
                         }
                         $initElements = Vector::range(0, 9)
-                            ->map(fn($i) => [AST::var("{$f->camelName}Element" . ($i === 0 ? '' : $i + 1)), $inits->get("{$f->name}[{$i}]", null)])
-                            ->takeWhile(fn($x) => !is_null($x[1]));
+                            ->map(fn ($i) => [AST::var("{$f->camelName}Element" . ($i === 0 ? '' : $i + 1)), $inits->get("{$f->name}[{$i}]", null)])
+                            ->takeWhile(fn ($x) => !is_null($x[1]));
                         $initCode = $initElements
-                            ->map(fn($x) => AST::assign($x[0], $fnGetValue($f, $x[1])))
-                            ->append(AST::assign($var, AST::array($initElements->map(fn($x) => $x[0])->toArray())));
+                            ->map(fn ($x) => AST::assign($x[0], $fnGetValue($f, $x[1])))
+                            ->append(AST::assign($var, AST::array($initElements->map(fn ($x) => $x[0])->toArray())));
                     } else {
                         if (!$f->useResourceTestValue) {
                             // Use a default example value if no values are specified.
                             $initCode = AST::assign($var, $f->exampleValue($this->ctx));
                         } else {
                             $serviceClient = AST::var($this->serviceDetails->clientVarName);
-                            $initCode = $this->prod->fieldInit($method, $f, fn() => [$var, $varName], $serviceClient);
+                            $initCode = $this->prod->fieldInit($method, $f, fn () => [$var, $varName], $serviceClient);
                         }
                     }
                     return [$initCode, $var, $f->isRequired];
@@ -127,16 +127,16 @@ class GapicClientExamplesGenerator
                     return null;
                 }
             })
-            ->filter(fn($x) => !is_null($x))
-            ->orderBy(fn($x) => $x[2] ? 0 : 1);
+            ->filter(fn ($x) => !is_null($x))
+            ->orderBy(fn ($x) => $x[2] ? 0 : 1);
 
         return [
             // Output var init code.
-            $result->map(fn($x) => $x[0]),
+            $result->map(fn ($x) => $x[0]),
             // Output args to pass to RPC method. Required args are passed individually, optional args passed in array.
-            $result->takeWhile(fn($x) => $x[2])->map(fn($x) => $x[1])->concat(
-                $result->any(fn($x) => !$x[2]) ?
-                    Vector::new([AST::array($result->skipWhile(fn($x) => $x[2])->toArray(fn($x) => $x[1]->name, fn($x) => $x[1]))]) :
+            $result->takeWhile(fn ($x) => $x[2])->map(fn ($x) => $x[1])->concat(
+                $result->any(fn ($x) => !$x[2]) ?
+                    Vector::new([AST::array($result->skipWhile(fn ($x) => $x[2])->toArray(fn ($x) => $x[1]->name, fn ($x) => $x[1]))]) :
                     Vector::new([])
             )
         ];
@@ -168,7 +168,7 @@ class GapicClientExamplesGenerator
         $error = AST::var('error');
         $operationName = AST::var('operationName');
         $newOperationResponse = AST::var('newOperationResponse');
-        $useResponseFn = fn($var) => AST::if($var->operationSucceeded())
+        $useResponseFn = fn ($var) => AST::if($var->operationSucceeded())
             ->then(
                 $method->hasEmptyLroResponse ?
                     '// operation succeeded and returns no value' :
@@ -239,7 +239,7 @@ class GapicClientExamplesGenerator
     private function rpcMethodExampleBidiStreaming(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $requestVars = $method->requiredFields->map(fn ($x) => AST::var($x->camelName));
         $request = AST::var('request');
         $requests = AST::var('requests');
         $stream = AST::var('stream');
@@ -247,9 +247,9 @@ class GapicClientExamplesGenerator
         return AST::block(
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
+                Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                Vector::zip($method->requiredFields, $requestVars, fn ($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write all requests to the server, then read all responses until the',
                 '// stream is complete',
                 AST::assign($requests, AST::array([$request])),
@@ -306,7 +306,7 @@ class GapicClientExamplesGenerator
     private function rpcMethodExampleClientStreaming(MethodDetails $method): AST
     {
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
-        $requestVars = $method->requiredFields->map(fn($x) => AST::var($x->camelName));
+        $requestVars = $method->requiredFields->map(fn ($x) => AST::var($x->camelName));
         $request = AST::var('request');
         $requests = AST::var('requests');
         $stream = AST::var('stream');
@@ -314,9 +314,9 @@ class GapicClientExamplesGenerator
         return AST::block(
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
-                Vector::zip($requestVars, $method->requiredFields, fn($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
+                Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
                 AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                Vector::zip($method->requiredFields, $requestVars, fn($field, $param) => AST::call($request, $field->setter)($param)),
+                Vector::zip($method->requiredFields, $requestVars, fn ($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write data to server and wait for a response',
                 AST::assign($requests, AST::array([$request])),
                 AST::assign($stream, $serviceClient->instanceCall(AST::method($method->methodName))()),

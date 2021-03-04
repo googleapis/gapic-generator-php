@@ -59,7 +59,8 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
      *     @type \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]|\Google\Protobuf\Internal\RepeatedField $file
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Plugin::initOnce();
         parent::__construct($data);
     }
@@ -96,7 +97,7 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
      */
     public function setError($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->error = $var;
 
         return $this;
@@ -151,6 +152,4 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
-

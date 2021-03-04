@@ -55,7 +55,8 @@ class EmptyClientGenerator
             ->withPhpDoc(PhpDoc::block(PhpDoc::inherit()))
             ->withMember(AST::comment(PhpDoc::text(
                 'This class is intentionally empty, and is intended to hold manual additions to the generated',
-                $this->ctx->type($this->serviceDetails->gapicClientType), 'class.'
+                $this->ctx->type($this->serviceDetails->gapicClientType),
+                'class.'
             )));
     }
 }

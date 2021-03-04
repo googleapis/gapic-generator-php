@@ -67,7 +67,8 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      *           Endpoint-picking policy.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -92,7 +93,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      */
     public function setClusterName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->cluster_name = $var;
 
         return $this;
@@ -120,7 +121,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      */
     public function setEdsServiceName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->eds_service_name = $var;
 
         return $this;
@@ -150,7 +151,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      */
     public function setLrsLoadReportingServerName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->lrs_load_reporting_server_name = $var;
 
         return $this;
@@ -213,6 +214,4 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
-

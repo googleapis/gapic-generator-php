@@ -32,7 +32,8 @@ class CancelOperationRequest extends \Google\Protobuf\Internal\Message
      *           The name of the operation resource to be cancelled.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -57,11 +58,9 @@ class CancelOperationRequest extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->name = $var;
 
         return $this;
     }
-
 }
-

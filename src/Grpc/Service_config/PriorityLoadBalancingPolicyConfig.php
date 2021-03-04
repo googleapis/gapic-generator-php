@@ -39,7 +39,8 @@ class PriorityLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Messag
      *           (i.e., first element is the highest priority).
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -93,6 +94,4 @@ class PriorityLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Messag
 
         return $this;
     }
-
 }
-

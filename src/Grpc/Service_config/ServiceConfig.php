@@ -60,7 +60,8 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      *     @type \Grpc\Service_config\ServiceConfig\HealthCheckConfig $health_check_config
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -206,6 +207,4 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
-

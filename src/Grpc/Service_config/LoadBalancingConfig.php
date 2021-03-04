@@ -52,7 +52,8 @@ class LoadBalancingConfig extends \Google\Protobuf\Internal\Message
      *           is ready for public use.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -358,6 +359,4 @@ class LoadBalancingConfig extends \Google\Protobuf\Internal\Message
     {
         return $this->whichOneof("policy");
     }
-
 }
-

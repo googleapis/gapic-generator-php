@@ -32,7 +32,8 @@ class Target extends \Google\Protobuf\Internal\Message
      *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $child_policy
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -80,9 +81,7 @@ class Target extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
-
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(Target::class, \Grpc\Service_config\WeightedTargetLoadBalancingPolicyConfig_Target::class);
-

@@ -40,7 +40,8 @@ class ListOperationsResponse extends \Google\Protobuf\Internal\Message
      *           The standard List next-page token.
      * }
      */
-    public function __construct($data = NULL) {
+    public function __construct($data = null)
+    {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -91,11 +92,9 @@ class ListOperationsResponse extends \Google\Protobuf\Internal\Message
      */
     public function setNextPageToken($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, true);
         $this->next_page_token = $var;
 
         return $this;
     }
-
 }
-
