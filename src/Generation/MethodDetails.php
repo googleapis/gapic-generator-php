@@ -139,7 +139,7 @@ abstract class MethodDetails
                 throw new \Exception("next_page_token field must be of type string.");
             }
             if (!$resourceFieldValid) {
-                throw new \Exception("Item resources field must be a repeated field with field-number 1.");
+                throw new \Exception("Item resources field must be the first repeated field by number and position.");
             }
             return new class($svc, $desc, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg) extends MethodDetails {
                 public function __construct($svc, $desc, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg)
