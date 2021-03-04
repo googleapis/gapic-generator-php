@@ -115,7 +115,17 @@ abstract class MethodDetails
         $pageSize = $inputMsg->desc->getFieldByName('page_size');
         $pageToken = $inputMsg->desc->getFieldByName('page_token');
         $nextPageToken = $outputMsg->desc->getFieldByName('next_page_token');
-        $resources = $outputMsg->desc->getFieldByNumber(1);
+        // Find the resoures field. Although AIP states that the resource field should be field number 1,
+        // this isn't always the case.
+        $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor
+        $resourceCandidates = Vector::new(array_keys($rawFields))
+            ->map(fn($k) => [$k, $rawFields[$k]])
+            ->filter(fn($x) => $x[1]->isRepeated());
+        $resourceByNumber = $resourceCandidates->orderBy(fn($x) => $x[0])->firstOrNull();
+        $resourceByPosition = $resourceCandidates->firstOrNull();
+        $resources = is_null($resourceByNumber) ? null : $resourceByNumber[1];
+        // Valid if it's the first field by position and number, and is not a map.
+        $resourceFieldValid = !is_null($resources) && $resourceByNumber[0] === $resourceByPosition[0] && !ProtoHelpers::isMap($catalog, $resources);
         if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources)) {
             return null;
         } else {
@@ -128,8 +138,8 @@ abstract class MethodDetails
             if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
                 throw new \Exception("next_page_token field must be of type string.");
             }
-            if (!$resources->isRepeated() || ProtoHelpers::isMap($catalog, $resources)) {
-                throw new \Exception("Item resources field must be a repeated field with field-number 1.");
+            if (!$resourceFieldValid) {
+                throw new \Exception("Item resources field must be the first repeated field by number and position.");
             }
             return new class($svc, $desc, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg) extends MethodDetails {
                 public function __construct($svc, $desc, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg)

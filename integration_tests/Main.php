@@ -120,6 +120,21 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/dialogflow_v2.yaml',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json'
 )) ? $ok : false;
+// // TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
+// $ok = processDiff(Invoker::invoke(
+//     'googleapis/google/cloud/dialogflow/cx/v3/*.proto googleapis/google/cloud/common_resources.proto',
+//     'google.cloud.dialogflow.cx.v3',
+//     'googleapis/google/cloud/dialogflow/cx/v3/dialogflow_gapic.yaml',
+//     'googleapis/google/cloud/dialogflow/cx/v3/dialogflow_v3.yaml',
+//     'googleapis/google/cloud/dialogflow/cx/v3/dialogflow_grpc_service_config.json'
+// )) ? $ok : false;
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/cloud/functions/v1/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.cloud.functions.v1',
+    'googleapis/google/cloud/functions/v1/functions_gapic.yaml',
+    'googleapis/google/cloud/functions/v1/cloudfunctions_v1.yaml',
+    'googleapis/google/cloud/functions/v1/functions_grpc_service_config.json'
+)) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
