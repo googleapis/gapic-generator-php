@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@com_google_api_codegen//rules_gapic:gapic.bzl", "proto_custom_library", "GapicInfo")
+load("@com_google_api_codegen//rules_gapic:gapic.bzl", "GapicInfo", "proto_custom_library")
 
 def php_proto_library(name, deps, plugin_args = [], **kwargs):
     srcjar_target_name = name
@@ -50,11 +50,9 @@ def php_gapic_srcjar(
         src,
         gapic_yaml,
         service_yaml,
-        package,
         grpc_service_config = None,
         transport = None,
         **kwargs):
-
     plugin_file_args = {}
     if gapic_yaml:
         plugin_file_args[gapic_yaml] = "gapic_yaml"
@@ -82,8 +80,8 @@ def _php_gapic_library_add_gapicinfo_impl(ctx):
 _php_gapic_library_add_gapicinfo = rule(
     implementation = _php_gapic_library_add_gapicinfo_impl,
     attrs = {
-        "output": attr.label(allow_single_file = True)
-    }
+        "output": attr.label(allow_single_file = True),
+    },
 )
 
 def php_gapic_library(
@@ -92,7 +90,6 @@ def php_gapic_library(
         deps = [],
         gapic_yaml = None,
         service_yaml = None,
-        package = None,
         grpc_service_config = None,
         transport = None,
         **kwargs):
@@ -103,7 +100,6 @@ def php_gapic_library(
         src = src,
         gapic_yaml = gapic_yaml,
         service_yaml = service_yaml,
-        package = package,
         grpc_service_config = grpc_service_config,
         transport = transport,
         **kwargs
