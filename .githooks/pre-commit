@@ -90,8 +90,11 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking integration tests..."
-  bazel test integration_tests:asset
+  cd integration_tests
+  php Main.php
   TEST_STATUS=$?
+  cd ..
+
   if [ $TEST_STATUS != 0 ]
   then
     echo_error "Tests failed." "Please fix them and try again."
