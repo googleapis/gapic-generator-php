@@ -22,7 +22,7 @@ def gapic_generator_php_repositories():
         name = "com_google_api_codegen",
         strip_prefix = "gapic-generator-2.2.0",
         urls = ["https://github.com/googleapis/gapic-generator/archive/v2.2.0.zip"],
-        sha256 = "0633651c7e7cdbea16231025de8a8e55773c224ad840507a8f3b38f96461ad30"
+        sha256 = "0633651c7e7cdbea16231025de8a8e55773c224ad840507a8f3b38f96461ad30",
     )
     maybe(
         php,
@@ -35,4 +35,22 @@ def gapic_generator_php_repositories():
         php_composer_install,
         name = "php_gapic_generator_composer_install",
         composer_json = "@gapic_generator_php//:composer.json",
+    )
+
+    # Import Bazel-only dependencies  The versions are shared in the properties file.
+    _protobuf_version = "3.13.0"
+    maybe(
+        http_archive,
+        name = "com_google_protobuf",
+        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _protobuf_version],
+        strip_prefix = "protobuf-%s" % _protobuf_version,
+    )
+
+    maybe(
+        http_archive,
+        name = "com_google_googleapis",
+        strip_prefix = "googleapis-e41506dc28a42bae9b86c7b45e889bdf6d786648",
+        urls = [
+            "https://github.com/googleapis/googleapis/archive/e41506dc28a42bae9b86c7b45e889bdf6d786648.zip",
+        ],
     )
