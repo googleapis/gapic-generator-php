@@ -47,7 +47,7 @@ def php_grpc_library(name, srcs, deps, plugin_args = [], **kwargs):
 
 def php_gapic_srcjar(
         name,
-        src,
+        srcs,
         gapic_yaml,
         service_yaml,
         package,
@@ -65,7 +65,7 @@ def php_gapic_srcjar(
 
     proto_custom_library(
         name = name,
-        deps = src,
+        deps = srcs,
         plugin = Label("//rules_php_gapic:php_gapic_generator_binary"),
         plugin_file_args = plugin_file_args,
         output_type = "gapic",
@@ -88,7 +88,7 @@ _php_gapic_library_add_gapicinfo = rule(
 
 def php_gapic_library(
         name,
-        src,
+        srcs,
         deps = [],
         gapic_yaml = None,
         service_yaml = None,
@@ -100,7 +100,7 @@ def php_gapic_library(
 
     php_gapic_srcjar(
         name = srcjar_name,
-        src = src,
+        srcs = srcs,
         gapic_yaml = gapic_yaml,
         service_yaml = service_yaml,
         package = package,
