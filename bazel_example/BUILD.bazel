@@ -46,7 +46,7 @@ php_grpc_library(
 
 php_gapic_library(
     name = "example_php_gapic",
-    src = [
+    srcs = [
         ":example_proto",
     ],
     deps = [
