@@ -120,7 +120,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/dialogflow_v2.yaml',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json'
 )) ? $ok : false;
-// // TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
+// TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
 // $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/dialogflow/cx/v3/*.proto googleapis/google/cloud/common_resources.proto',
 //     'google.cloud.dialogflow.cx.v3',
@@ -155,6 +155,14 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/vision/v1/vision_gapic.yaml',
     'googleapis/google/cloud/vision/v1/vision_v1.yaml',
     'googleapis/google/cloud/vision/v1/vision_grpc_service_config.json'
+)) ? $ok : false;
+
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/ads/googleads/v6/**/*.proto',
+    'google.ads.googleads.v6',
+    'googleapis/google/ads/googleads/v6/googleads_gapic.yaml',
+    'googleapis/google/ads/googleads/v6/googleads_v6.yaml',
+    'googleapis/google/ads/googleads/v6/googleads_grpc_service_config.json'//,
 )) ? $ok : false;
 
 if (!$ok) {

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Generator\Collections\Vector;
+
 class Helpers
 {
     public static function toSnakeCase(string $s)
@@ -33,20 +35,19 @@ class Helpers
         return strtolower($s[0]) . substr($s, 1);
     }
 
-    public static function nsVersion(string $namespace): ?string
+    public static function nsVersionAndSuffixPath(string $namespace): string
     {
-        $parts = explode('\\', $namespace);
-        if (count($parts) > 1) {
-            $v = $parts[count($parts) - 1];
-            // Detected as a 'version' if it starts with 'v' or 'V', followed by a digit.
-            // Any other characters are allowed to follow.
-            if (strtoupper(substr($v, 0, 1)) === 'V') {
-                $num = substr($v, 1, 1);
-                if (strlen($num) === 1 && ctype_digit($num)) {
-                    return $v;
+        // Extract version and suffix from the namespace by looking for a version in the namespace.
+        // E.g. ".../V6/Services" returns "V6/Services".
+        // A version is heuristically detected by [v|V] followed by at least one digit.
+        // Return empty string if no version part found.
+        return Vector::new(explode('\\', $namespace))
+            ->skipWhile(function ($s){
+                if (strlen($s) < 2 || strtoupper(substr($s, 0, 1)) != 'V') {
+                    return true;
                 }
-            }
-        }
-        return null;
+                return !ctype_digit(substr($s, 1, 1));
+            })
+            ->join('/');
     }
 }
