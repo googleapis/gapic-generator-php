@@ -150,6 +150,7 @@ class ServiceDetails {
             }
             $msgsSeen = $msgsSeen->add($msg->desc->getFullname());
             // Only top-level resource-defs are included; matches monolith behaviour.
+            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
             $messageResourceDef = $level === 0 ?
                 ProtoHelpers::getCustomOption($msg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class) :
                 null;
@@ -164,6 +165,7 @@ class ServiceDetails {
                 ->filter(fn($x) => $x->getChildType() !== '')
                 ->flatMap(fn($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
             // Recurse one level down into message fields; matches monolith behaviour.
+            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
             if ($level === 0) {
                 $nestedDefs = $fields
                     ->filter(fn($f) => $f->getType() === GPBType::MESSAGE)

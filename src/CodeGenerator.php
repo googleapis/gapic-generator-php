@@ -127,6 +127,9 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml
     ) {
+        // Look for a version string, "Vn..." as a part of the namespace.
+        // If found, then the output directories for src and tests use it,
+        // as can be seen in the 'yield ...' code below.
         $version = Helpers::nsVersionAndSuffixPath($namespace);
         if ($version !== '') {
             $version .= '/';
