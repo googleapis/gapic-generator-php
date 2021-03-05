@@ -37,7 +37,7 @@ def gapic_generator_php_repositories():
         composer_json = "@gapic_generator_php//:composer.json",
     )
 
-    # Import Bazel-only dependencies  The versions are shared in the properties file.
+    # Import Bazel-only dependencies.
     _protobuf_version = "3.13.0"
     maybe(
         http_archive,
