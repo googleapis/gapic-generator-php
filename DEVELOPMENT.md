@@ -36,12 +36,14 @@
     2.  Install `php-cs-fixer` globally.
 
     ```
-    > composer global require friendsofphp/php-cs-fixer
+    > curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
+    > sudo chmod a+x php-cs-fixer
+    > sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
     ```
 
     3.  Optional: Enable PHP-CS-Fixer linting in your IDE.
 
-        1.  Vim: [vim-php-cs-fixer](https://github.com/stephpy/vim-php-cs-fixer)
+        1.  Vim: Set up [vim-php-cs-fixer](https://github.com/stephpy/vim-php-cs-fixer), and apply [this fix](https://github.com/stephpy/vim-php-cs-fixer/pull/47)
 
 5.  Initialize the submodules
 
