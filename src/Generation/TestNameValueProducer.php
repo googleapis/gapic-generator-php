@@ -159,7 +159,7 @@ class TestNameValueProducer
 
         $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
         $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
-            $config = Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
+            Map::fromPairs(array_map(fn($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
         $value = $inits->get($field->name, null);
         $valueIndex = $inits->get($field->name . '[0]', null);
         if ($field->isRequired || !is_null($value) || !is_null($valueIndex)) {

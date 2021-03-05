@@ -1,2 +1,6 @@
 vendor/
 bazel-*
+
+# Vim
+*.sw*
+*.vim
