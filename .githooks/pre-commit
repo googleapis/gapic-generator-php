@@ -70,7 +70,18 @@ if [ -x /usr/lib/git-core/google_hook ]; then
   /usr/lib/git-core/google_hook pre-commit "$@"
 fi
 
-# TODO(miraleung): Add a linter check here.
+# Check PHP lint format.
+if [ $NUM_JAVA_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Running PHP-CS-Fixer..."
+  ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2 --dry-run
+  FORMAT_STATUS=$?
+  if [ $FORMAT_STATUS != 0 ]
+  then
+    echo_error "Linting failed." "Please try again after running ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2"
+    exit 1
+  fi
+fi
 
 # Check unit tests.
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
