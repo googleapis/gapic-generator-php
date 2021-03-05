@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\IntegrationTests;
 
+use Google\Generator\Collections\Vector;
+
 class Invoker
 {
     public static function invoke(
@@ -35,7 +37,9 @@ class Invoker
         $descFilename = stream_get_meta_data($descRes)['uri'];
         $protobuf = "{$rootDir}/protobuf/src/";
         $googleapis = "{$rootDir}/googleapis/";
-        $input = "{$rootDir}/{$protoPath}";
+        $input = Vector::new(explode(' ', $protoPath)) // Assumes paths don't contain spaces
+            ->map(fn($path) => "{$rootDir}/{$path}")
+            ->join(' ');
         $protocCmdLinePrefix = "{$protoc} --include_imports --include_source_info --experimental_allow_proto3_optional " .
             "-o {$descFilename}  -I {$googleapis} -I {$protobuf} -I {$rootDir}";
         static::execCmd($protocCmdLinePrefix . " {$input} 2>&1", 'protoc');

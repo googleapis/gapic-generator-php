@@ -61,7 +61,7 @@ class CodeGenerator
         $descSet->mergeFromString($descBytes);
         $fileDescs = Vector::new($descSet->getFile());
         $filesToGenerate = $fileDescs
-            ->filter(fn($x) => $x->getPackage() === $package)
+            ->filter(fn($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn($x) => $x->getName());
         yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
     }
@@ -127,8 +127,13 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml
     ) {
-        $version = Helpers::nsVersion($namespace);
-        $version = is_null($version) ? '' : $version . '/';
+        // Look for a version string, "Vn..." as a part of the namespace.
+        // If found, then the output directories for src and tests use it,
+        // as can be seen in the 'yield ...' code below.
+        $version = Helpers::nsVersionAndSuffixPath($namespace);
+        if ($version !== '') {
+            $version .= '/';
+        }
         // $fileDescs: Vector<FileDescriptorProto>
         foreach ($fileDescs as $fileDesc)
         {

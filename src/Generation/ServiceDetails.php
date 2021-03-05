@@ -28,6 +28,8 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\ServiceDescriptorProto;
 
@@ -108,9 +110,10 @@ class ServiceDetails {
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
-        $nsVersion = Helpers::nsVersion($namespace);
-        $unitTestNs = is_null($nsVersion) ? "{$namespace}\\Tests\\Unit" :
-            substr($namespace, 0, strlen($namespace) - strlen($nsVersion) - 1) . '\\Tests\\Unit\\' . $nsVersion;
+        $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
+        $unitTestNs = $nsVersionAndSuffix === '' ?
+            "{$namespace}\\Tests\\Unit" :
+            substr($namespace, 0, -strlen($nsVersionAndSuffix)) . 'Tests\\Unit\\' . str_replace('/', '\\', $nsVersionAndSuffix);
         $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
@@ -139,22 +142,43 @@ class ServiceDetails {
         // Resource-names
         // Wildcard patterns are ignored.
         // A resource-name which has just a single wild-card pattern is ignored.
-        $messageResourceDefs = $this->methods
-            ->map(fn($x) => ProtoHelpers::getCustomOption($x->inputMsg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
-            ->filter(fn($x) => !is_null($x));
-        $resourceRefs = $this->methods
-            ->flatMap(fn($x) => $x->allFields)
-            ->map(fn($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
-            ->filter(fn($x) => !is_null($x));
-        $typeRefResourceDefs = $resourceRefs
-            ->filter(fn($x) => $x->getType() !== '' && $x->getType() !== '*')
-            ->map(fn($x) => $catalog->resourcesByType[$x->getType()]);
-        $childTypeRefResourceDefs = $resourceRefs
-            ->filter(fn($x) => $x->getChildType() !== '')
-            ->flatMap(fn($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
-        $resourceDefs = $messageResourceDefs
-            ->concat($typeRefResourceDefs)
-            ->concat($childTypeRefResourceDefs)
+        $msgsSeen = Set::new();
+        $gatherMsgResDefs = null;
+        $gatherMsgResDefs = function(DescriptorProto $msg, int $level) use(&$gatherMsgResDefs, &$msgsSeen, $catalog): Vector {
+            if ($msgsSeen[$msg->desc->getFullname()]) {
+                return Vector::new([]);
+            }
+            $msgsSeen = $msgsSeen->add($msg->desc->getFullname());
+            // Only top-level resource-defs are included; matches monolith behaviour.
+            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
+            $messageResourceDef = $level === 0 ?
+                ProtoHelpers::getCustomOption($msg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class) :
+                null;
+            $fields = Vector::new($msg->getField());
+            $resourceRefs = $fields
+                ->map(fn($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+                ->filter(fn($x) => !is_null($x));
+            $typeRefResourceDefs = $resourceRefs
+                ->filter(fn($x) => $x->getType() !== '' && $x->getType() !== '*')
+                ->map(fn($x) => $catalog->resourcesByType[$x->getType()]);
+            $childTypeRefResourceDefs = $resourceRefs
+                ->filter(fn($x) => $x->getChildType() !== '')
+                ->flatMap(fn($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
+            // Recurse one level down into message fields; matches monolith behaviour.
+            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
+            if ($level === 0) {
+                $nestedDefs = $fields
+                    ->filter(fn($f) => $f->getType() === GPBType::MESSAGE)
+                    ->map(fn($f) => $catalog->msgsByFullname[$f->desc->getMessageType()])
+                    ->flatMap(fn($nestedMsg) => $gatherMsgResDefs($nestedMsg, $level + 1));
+            } else {
+                $nestedDefs = Vector::new([]);
+            }
+            return $typeRefResourceDefs->concat($childTypeRefResourceDefs)->append($messageResourceDef)->concat($nestedDefs);
+        };
+        $resourceDefs = $this->methods
+            ->flatMap(fn($x) => $gatherMsgResDefs($x->inputMsg, 0))
+            ->filter(fn($x) => !is_null($x))
             ->map(fn($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
             ->filter(fn($x) => $x->patterns->any())

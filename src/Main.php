@@ -154,7 +154,7 @@ function readOptions($opts, $sideLoadedRootDir = null) {
             }
             return $path;
         } else {
-            return $sideLoadedRootDir . '/' . $path;
+            return is_null($sideLoadedRootDir) ? $path : ($sideLoadedRootDir . '/' . $path);
         }
     };
     if (isset($opts['grpc_service_config'])) {
