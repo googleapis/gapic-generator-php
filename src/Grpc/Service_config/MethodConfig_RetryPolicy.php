@@ -9,9 +9,8 @@ if (false) {
      * This class is deprecated. Use Grpc\Service_config\MethodConfig\RetryPolicy instead.
      * @deprecated
      */
-    class MethodConfig_RetryPolicy
-    {
-    }
+    class MethodConfig_RetryPolicy {}
 }
 class_exists(MethodConfig\RetryPolicy::class);
 @trigger_error('Grpc\Service_config\MethodConfig_RetryPolicy is deprecated and will be removed in the next major release. Use Grpc\Service_config\MethodConfig\RetryPolicy instead', E_USER_DEPRECATED);
+

@@ -9,9 +9,8 @@ if (false) {
      * This class is deprecated. Use Google\Protobuf\Compiler\CodeGeneratorResponse\Feature instead.
      * @deprecated
      */
-    class CodeGeneratorResponse_Feature
-    {
-    }
+    class CodeGeneratorResponse_Feature {}
 }
 class_exists(CodeGeneratorResponse\Feature::class);
 @trigger_error('Google\Protobuf\Compiler\CodeGeneratorResponse_Feature is deprecated and will be removed in the next major release. Use Google\Protobuf\Compiler\CodeGeneratorResponse\Feature instead', E_USER_DEPRECATED);
+

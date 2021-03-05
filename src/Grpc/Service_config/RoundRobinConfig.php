@@ -24,9 +24,10 @@ class RoundRobinConfig extends \Google\Protobuf\Internal\Message
      *
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
+
 }
+

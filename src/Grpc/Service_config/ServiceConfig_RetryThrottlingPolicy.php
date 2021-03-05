@@ -9,9 +9,8 @@ if (false) {
      * This class is deprecated. Use Grpc\Service_config\ServiceConfig\RetryThrottlingPolicy instead.
      * @deprecated
      */
-    class ServiceConfig_RetryThrottlingPolicy
-    {
-    }
+    class ServiceConfig_RetryThrottlingPolicy {}
 }
 class_exists(ServiceConfig\RetryThrottlingPolicy::class);
 @trigger_error('Grpc\Service_config\ServiceConfig_RetryThrottlingPolicy is deprecated and will be removed in the next major release. Use Grpc\Service_config\ServiceConfig\RetryThrottlingPolicy instead', E_USER_DEPRECATED);
+

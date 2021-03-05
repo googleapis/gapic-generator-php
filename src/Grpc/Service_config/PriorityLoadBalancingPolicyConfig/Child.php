@@ -32,8 +32,7 @@ class Child extends \Google\Protobuf\Internal\Message
      *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $config
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -59,7 +58,9 @@ class Child extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
+
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(Child::class, \Grpc\Service_config\PriorityLoadBalancingPolicyConfig_Child::class);
+

@@ -84,8 +84,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      *           server that we obtained CDS data from.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -110,7 +109,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      */
     public function setBalancerName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->balancer_name = $var;
 
         return $this;
@@ -202,7 +201,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      */
     public function setEdsServiceName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->eds_service_name = $var;
 
         return $this;
@@ -281,6 +280,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
     public function setLrsLoadReportingServerNameUnwrapped($var)
     {
         $this->writeWrapperValue("lrs_load_reporting_server_name", $var);
-        return $this;
-    }
+        return $this;}
+
 }
+

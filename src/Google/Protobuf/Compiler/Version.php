@@ -49,8 +49,7 @@ class Version extends \Google\Protobuf\Internal\Message
      *           be empty for mainline stable releases.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Plugin::initOnce();
         parent::__construct($data);
     }
@@ -143,9 +142,11 @@ class Version extends \Google\Protobuf\Internal\Message
      */
     public function setSuffix($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->suffix = $var;
 
         return $this;
     }
+
 }
+

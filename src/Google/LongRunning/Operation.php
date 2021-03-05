@@ -75,8 +75,7 @@ class Operation extends \Google\Protobuf\Internal\Message
      *           `TakeSnapshotResponse`.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -105,7 +104,7 @@ class Operation extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->name = $var;
 
         return $this;
@@ -246,4 +245,6 @@ class Operation extends \Google\Protobuf\Internal\Message
     {
         return $this->whichOneof("result");
     }
+
 }
+

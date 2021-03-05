@@ -130,8 +130,7 @@ class File extends \Google\Protobuf\Internal\Message
      *           The file contents.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Plugin::initOnce();
         parent::__construct($data);
     }
@@ -174,7 +173,7 @@ class File extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->name = $var;
 
         return $this;
@@ -264,7 +263,7 @@ class File extends \Google\Protobuf\Internal\Message
      */
     public function setInsertionPoint($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->insertion_point = $var;
 
         return $this;
@@ -290,12 +289,14 @@ class File extends \Google\Protobuf\Internal\Message
      */
     public function setContent($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->content = $var;
 
         return $this;
     }
+
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(File::class, \Google\Protobuf\Compiler\CodeGeneratorResponse_File::class);
+

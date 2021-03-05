@@ -9,9 +9,8 @@ if (false) {
      * This class is deprecated. Use Grpc\Service_config\ServiceConfig\LoadBalancingPolicy instead.
      * @deprecated
      */
-    class ServiceConfig_LoadBalancingPolicy
-    {
-    }
+    class ServiceConfig_LoadBalancingPolicy {}
 }
 class_exists(ServiceConfig\LoadBalancingPolicy::class);
 @trigger_error('Grpc\Service_config\ServiceConfig_LoadBalancingPolicy is deprecated and will be removed in the next major release. Use Grpc\Service_config\ServiceConfig\LoadBalancingPolicy instead', E_USER_DEPRECATED);
+

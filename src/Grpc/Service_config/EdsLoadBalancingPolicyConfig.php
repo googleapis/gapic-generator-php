@@ -88,8 +88,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      *           Optional; defaults to "round_robin".
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -114,7 +113,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      */
     public function setCluster($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->cluster = $var;
 
         return $this;
@@ -142,7 +141,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      */
     public function setEdsServiceName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->eds_service_name = $var;
 
         return $this;
@@ -221,8 +220,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
     public function setLrsLoadReportingServerNameUnwrapped($var)
     {
         $this->writeWrapperValue("lrs_load_reporting_server_name", $var);
-        return $this;
-    }
+        return $this;}
 
     /**
      * Locality-picking policy.
@@ -291,4 +289,6 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
+
 }
+

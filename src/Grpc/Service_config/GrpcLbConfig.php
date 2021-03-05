@@ -52,8 +52,7 @@ class GrpcLbConfig extends \Google\Protobuf\Internal\Message
      *           the balancer.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -116,9 +115,11 @@ class GrpcLbConfig extends \Google\Protobuf\Internal\Message
      */
     public function setServiceName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->service_name = $var;
 
         return $this;
     }
+
 }
+

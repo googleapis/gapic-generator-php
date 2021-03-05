@@ -78,8 +78,7 @@ class RetryPolicy extends \Google\Protobuf\Internal\Message
      *           This field is required and must be non-empty.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -247,7 +246,9 @@ class RetryPolicy extends \Google\Protobuf\Internal\Message
 
         return $this;
     }
+
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.
 class_alias(RetryPolicy::class, \Grpc\Service_config\MethodConfig_RetryPolicy::class);
+

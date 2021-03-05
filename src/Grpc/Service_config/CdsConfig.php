@@ -32,8 +32,7 @@ class CdsConfig extends \Google\Protobuf\Internal\Message
      *           Required.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -58,9 +57,11 @@ class CdsConfig extends \Google\Protobuf\Internal\Message
      */
     public function setCluster($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->cluster = $var;
 
         return $this;
     }
+
 }
+

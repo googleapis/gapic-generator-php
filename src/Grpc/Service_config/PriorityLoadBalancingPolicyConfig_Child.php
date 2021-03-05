@@ -9,9 +9,8 @@ if (false) {
      * This class is deprecated. Use Grpc\Service_config\PriorityLoadBalancingPolicyConfig\Child instead.
      * @deprecated
      */
-    class PriorityLoadBalancingPolicyConfig_Child
-    {
-    }
+    class PriorityLoadBalancingPolicyConfig_Child {}
 }
 class_exists(PriorityLoadBalancingPolicyConfig\Child::class);
 @trigger_error('Grpc\Service_config\PriorityLoadBalancingPolicyConfig_Child is deprecated and will be removed in the next major release. Use Grpc\Service_config\PriorityLoadBalancingPolicyConfig\Child instead', E_USER_DEPRECATED);
+

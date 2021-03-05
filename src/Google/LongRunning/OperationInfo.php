@@ -66,8 +66,7 @@ class OperationInfo extends \Google\Protobuf\Internal\Message
      *           Note: Altering this value constitutes a breaking change.
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Google\Longrunning\Operations::initOnce();
         parent::__construct($data);
     }
@@ -102,7 +101,7 @@ class OperationInfo extends \Google\Protobuf\Internal\Message
      */
     public function setResponseType($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->response_type = $var;
 
         return $this;
@@ -136,9 +135,11 @@ class OperationInfo extends \Google\Protobuf\Internal\Message
      */
     public function setMetadataType($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->metadata_type = $var;
 
         return $this;
     }
+
 }
+

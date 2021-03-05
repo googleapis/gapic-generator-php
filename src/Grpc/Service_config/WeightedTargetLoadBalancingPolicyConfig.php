@@ -29,8 +29,7 @@ class WeightedTargetLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\
      *     @type array|\Google\Protobuf\Internal\MapField $targets
      * }
      */
-    public function __construct($data = null)
-    {
+    public function __construct($data = NULL) {
         \GPBMetadata\Grpc\ServiceConfig\ServiceConfig::initOnce();
         parent::__construct($data);
     }
@@ -56,4 +55,6 @@ class WeightedTargetLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\
 
         return $this;
     }
+
 }
+
