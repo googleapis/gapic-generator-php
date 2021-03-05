@@ -58,6 +58,7 @@ NUM_TOTAL_FILES_CHANGED=$(git diff --cached --name-only | wc -l)
 NUM_PHP_FILES_CHANGED=$(git diff --cached --name-only "*.php" | wc -l)
 NUM_UNIT_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/ProtoTests/*/*.php" | wc -l)
 NUM_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "*BUILD.bazel" | wc -l)
+NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "integration_tests/goldens/*/*.*" | wc -l)
 
 if [ $NUM_TOTAL_FILES_CHANGED -le 0 ]
 then
@@ -85,22 +86,21 @@ then
   fi
 fi
 
-: << 'END'
-# Uncomment when integration tests can run more quickly.
-# Check integration tests.
-if [ $NUM_PHP_FILES_CHANGED -gt 0 ] \
-  || [ $NUM_INTEGRATION_BAZEL_FILES_CHANGED -gt 0 ]
+# Check Bazel integration tests.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking integration tests..."
+  cd integration_tests
   php Main.php
   TEST_STATUS=$?
+  cd ..
+
   if [ $TEST_STATUS != 0 ]
   then
     echo_error "Tests failed." "Please fix them and try again."
     exit 1
   fi
 fi
-END
 
 # Check and fix Bazel format.
 if [ $NUM_BAZEL_FILES_CHANGED -gt 0 ]

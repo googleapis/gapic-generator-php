@@ -65,9 +65,23 @@
     ./vendor/bin/phpunit --bootstrap tests/autoload.php tests
     ```
 
--   Integration tests. These may take 5 minutes or so to run.
+-   Monolith integration tests. These may take 5 minutes or so to run.
 
     ```
     cd integration_tests
     php Main.php
+    ```
+
+-   Bazel integration tests.
+
+    -   Running:
+
+    ```
+    bazel test integration_tests:asset
+    ```
+
+    -   Updating goldens:
+
+    ```
+    bazel run integration_tests:asset_update
     ```
