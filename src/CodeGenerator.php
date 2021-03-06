@@ -61,8 +61,8 @@ class CodeGenerator
         $descSet->mergeFromString($descBytes);
         $fileDescs = Vector::new($descSet->getFile());
         $filesToGenerate = $fileDescs
-            ->filter(fn($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
-            ->map(fn($x) => $x->getName());
+            ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
+            ->map(fn ($x) => $x->getName());
         yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
     }
 

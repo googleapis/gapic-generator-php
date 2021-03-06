@@ -42,7 +42,7 @@ class Helpers
         // A version is heuristically detected by [v|V] followed by at least one digit.
         // Return empty string if no version part found.
         return Vector::new(explode('\\', $namespace))
-            ->skipWhile(function ($s){
+            ->skipWhile(function ($s) {
                 if (strlen($s) < 2 || strtoupper(substr($s, 0, 1)) != 'V') {
                     return true;
                 }
