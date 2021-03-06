@@ -16,7 +16,7 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\IntegrationTests;
+namespace Google\Generator\Tests\Tools;
 
 class SourceComparer
 {
