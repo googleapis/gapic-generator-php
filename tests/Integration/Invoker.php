@@ -16,7 +16,7 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\IntegrationTests;
+namespace Google\Generator\Tests\Integration;;
 
 use Google\Generator\Collections\Vector;
 
@@ -29,7 +29,7 @@ class Invoker
         ?string $serviceYaml = null,
         ?string $grpcServiceConfig = null
     ) {
-        $rootDir = realpath(__DIR__ . '/..');
+        $rootDir = realpath(__DIR__ . '/../..');
 
         // Build the proto descriptor.
         $protoc = "{$rootDir}/tools/protoc";

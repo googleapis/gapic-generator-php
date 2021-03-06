@@ -16,11 +16,11 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\IntegrationTests;
+namespace Google\Generator\Tests\Integration;
 
 use Google\Generator\Tests\Tools\SourceComparer;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 error_reporting(E_ALL);
 
 // Initial integration test.
@@ -29,23 +29,23 @@ error_reporting(E_ALL);
 
 $ok = true;
 // Generate and compare test APIs.
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/Basic/basic.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicBidiStreaming/basic-bidi-streaming.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicServerStreaming/basic-server-streaming.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/BasicClientStreaming/basic-client-streaming.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/ResourceNames/resource-names.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/ProtoDocs/proto-docs.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/Basic/basic.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicLro/basic-lro.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicBidiStreaming/basic-bidi-streaming.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicServerStreaming/basic-server-streaming.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicClientStreaming/basic-client-streaming.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/ResourceNames/resource-names.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/ProtoDocs/proto-docs.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
+$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
-    'tests/ProtoTests/GrpcServiceConfig/*.proto',
+    'tests/Unit/ProtoTests/GrpcServiceConfig/*.proto',
     'testing.grpcserviceconfig',
-    'tests/ProtoTests/GrpcServiceConfig/grpc-service-config_gapic.yaml',
-    'tests/ProtoTests/GrpcServiceConfig/grpc-service-config.yaml',
-    'tests/ProtoTests/GrpcServiceConfig/grpc-service-config.json'
+    'tests/Unit/ProtoTests/GrpcServiceConfig/grpc-service-config_gapic.yaml',
+    'tests/Unit/ProtoTests/GrpcServiceConfig/grpc-service-config.yaml',
+    'tests/Unit/ProtoTests/GrpcServiceConfig/grpc-service-config.json'
 )) ? $ok : false;
 
 // Generate and compare a real APIs.
