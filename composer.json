@@ -11,13 +11,13 @@
     "autoload-dev": {
         "psr-4": {
             "Google\\Generator\\IntegrationTests\\": "integration_tests",
-            "Testing\\Basic\\": "tests/ProtoTests/Basic/out/src",
-            "Testing\\BasicBidiStreaming\\": "tests/ProtoTests/BasicBidiStreaming/out/src",
-            "Testing\\BasicClientStreaming\\": "tests/ProtoTests/BasicClientStreaming/out/src",
-            "Testing\\BasicLro\\": "tests/ProtoTests/BasicLro/out/src",
-            "Testing\\BasicPaginated\\": "tests/ProtoTests/BasicPaginated/out/src",
-            "Testing\\BasicServerStreaming\\": "tests/ProtoTests/BasicServerStreaming/out/src",
-            "Testing\\GrpcServiceConfig\\": "tests/ProtoTests/GrpcServiceConfig/out/src"
+            "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
+            "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
+            "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",
+            "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
+            "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
+            "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
+            "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src"
         }
     },
     "require": {

@@ -77,7 +77,7 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking unit tests..."
-  ./vendor/bin/phpunit --bootstrap tests/autoload.php tests
+  ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
   TEST_STATUS=$?
   if [ $TEST_STATUS != 0 ]
   then
