@@ -99,7 +99,7 @@ class Invoker
             // This matches how the bazel invocation of protoc provides options to the plugin.
             $protocOpts = count($protocOpts) > 0 ? implode(',', $protocOpts) . ':' : '';
             $protocMicroCmdLine = $protocCmdLinePrefix .
-                " --plugin=protoc-gen-gapic={$rootDir}/integration_tests/run_protoc_plugin.sh --gapic_out={$protocOpts}{$microProtocOutDir}";
+                " --plugin=protoc-gen-gapic={$rootDir}/scripts/run_protoc_plugin.sh --gapic_out={$protocOpts}{$microProtocOutDir}";
             static::execCmd($protocMicroCmdLine . " {$input} 2>&1", 'protoc micro plugin');
 
             // Run the micro-generator standalone.
