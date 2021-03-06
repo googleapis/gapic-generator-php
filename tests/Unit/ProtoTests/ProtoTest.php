@@ -21,10 +21,12 @@ namespace Google\Generator\Tests\Unit\ProtoTests;
 use PHPUnit\Framework\TestCase;
 use Google\Generator\CodeGenerator;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Tests\Unit\ConfigTrait;
 use Google\Generator\Tests\Unit\ProtoTrait;
 
 final class ProtoTest extends TestCase
 {
+    use ConfigTrait;
     use ProtoTrait;
 
     private function runProtoTest(string $protoPath, ?string $package = null): void
@@ -37,13 +39,10 @@ final class ProtoTest extends TestCase
         $baseName = basename($protoPath, '.proto');
         $package = $package ?? str_replace('-', '', "testing.{$baseName}");
         $protoDirName = dirname("ProtoTests/{$protoPath}");
-        // TODO(miraleung) :Consolidate test file loading under one class.
-        $grpcServiceConfigJsonPath = "tests/Unit/{$protoDirName}/grpc-service-config.json";
-        $grpcServiceConfigJson = file_exists($grpcServiceConfigJsonPath) ? file_get_contents($grpcServiceConfigJsonPath) : null;
-        $gapicYamlPath = "tests/Unit/{$protoDirName}/{$baseName}_gapic.yaml";
-        $gapicYaml = file_exists($gapicYamlPath) ? file_get_contents($gapicYamlPath) : null;
-        $serviceYamlPath = "tests/Unit/{$protoDirName}/{$baseName}_service.yaml";
-        $serviceYaml = file_exists($serviceYamlPath) ? file_get_contents($serviceYamlPath) : null;
+        $grpcServiceConfigJson = $this->loadConfig("{$protoDirName}/grpc-service-config.json");
+        $gapicYaml = $this->loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
+        $serviceYaml = $this->loadConfig("{$protoDirName}/{$baseName}_service.yaml");
+
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
         $codeIterator = CodeGenerator::GenerateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
 
