@@ -44,3 +44,18 @@ switched_rules_by_language(
     grpc = True,
     php = True,
 )
+
+# gRPC.
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = "3c432b6e3ba5eaf8c2593f4e6f61eaf363463eb533557a98a9a9adafc5e0e625",
+    urls = ["https://github.com/grpc/grpc/archive/v1.35.0.zip"],
+    strip_prefix = "grpc-1.35.0",
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
+
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+grpc_extra_deps()
+
