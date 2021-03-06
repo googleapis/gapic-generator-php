@@ -35,7 +35,7 @@ final class PhpFile extends AST
 
     public function withUses(Set $uses)
     {
-        return $this->clone(fn($clone) => $clone->uses = $uses);
+        return $this->clone(fn ($clone) => $clone->uses = $uses);
     }
 
     public function withApacheLicense(int $year)
@@ -59,7 +59,7 @@ final class PhpFile extends AST
 
             EOF;
         $license = Vector::new(explode("\n", $license));
-        return $this->clone(fn($clone) => $clone->headerLines = $clone->headerLines->concat($license));
+        return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($license));
     }
 
     public function withGeneratedCodeWarning()
@@ -72,7 +72,7 @@ final class PhpFile extends AST
 
             EOF;
         $warning = Vector::new(explode("\n", $warning));
-        return $this->clone(fn($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
+        return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
     public function withGeneratedFromProtoCodeWarning(string $filePath)
@@ -88,19 +88,19 @@ final class PhpFile extends AST
              */
             EOF;
         $warning = Vector::new(explode("\n", $warning));
-        return $this->clone(fn($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
+        return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
     public function toCode(): string
     {
         return
             "<?php\n" .
-            $this->headerLines->map(fn($x) => "{$x}\n")->join() .
+            $this->headerLines->map(fn ($x) => "{$x}\n")->join() .
             // TODO(vNext): Insert `declare(strict_types=1);`
             "\n" .
             "namespace {$this->class->type->getNamespace()};\n" .
             "\n" .
-            $this->uses->toVector()->map(fn($x) => "use {$x};\n")->join() .
+            $this->uses->toVector()->map(fn ($x) => "use {$x};\n")->join() .
             (count($this->uses) >= 1 ? "\n" : '') .
             static::toPhp($this->class);
     }

@@ -45,7 +45,7 @@ class ProtoCatalog
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
         return Vector::new($desc->getNestedType())
-            ->flatMap(fn($x) => static::MsgPlusNested($x))
+            ->flatMap(fn ($x) => static::MsgPlusNested($x))
             ->append($desc);
     }
 
@@ -57,50 +57,50 @@ class ProtoCatalog
     public function __construct(Vector $fileDescs)
     {
         $allMsgs = $fileDescs
-            ->flatMap(fn($x) => Vector::new($x->getMessageType()))
-            ->flatMap(fn($x) => static::msgPlusNested($x));
-        $this->msgsByFullname = $allMsgs->toMap(fn($x) => '.' . $x->desc->getFullName());
+            ->flatMap(fn ($x) => Vector::new($x->getMessageType()))
+            ->flatMap(fn ($x) => static::msgPlusNested($x));
+        $this->msgsByFullname = $allMsgs->toMap(fn ($x) => '.' . $x->desc->getFullName());
 
         $allEnums = $fileDescs
-            ->flatMap(fn($x) => Vector::new($x->getEnumType()))
-            ->concat($allMsgs->flatMap(fn($x) => Vector::new($x->getEnumType())));
-        $this->enumsByFullname = $allEnums->toMap(fn($x) => '.' . $x->desc->getFullName());
+            ->flatMap(fn ($x) => Vector::new($x->getEnumType()))
+            ->concat($allMsgs->flatMap(fn ($x) => Vector::new($x->getEnumType())));
+        $this->enumsByFullname = $allEnums->toMap(fn ($x) => '.' . $x->desc->getFullName());
 
         $messagesResourceDefs = $allMsgs
-            ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
-            ->filter(fn($x) => !is_null($x));
+            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
+            ->filter(fn ($x) => !is_null($x));
         $fileResourceDefs = $fileDescs
-            ->flatMap(fn($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
+            ->flatMap(fn ($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
         $resourceDefs = $messagesResourceDefs->concat($fileResourceDefs);
-        $this->resourcesByType = $resourceDefs->toMap(fn($x) => $x->getType());
+        $this->resourcesByType = $resourceDefs->toMap(fn ($x) => $x->getType());
         // Use 'distinct()' here to keep just the first resource if there are multiple resources with the same pattern.
-        $this->resourcesByPattern = $resourceDefs->flatMap(fn($res) =>
-                Vector::new($res->getPattern())->map(fn($pattern) => [$pattern, $res]))
-            ->distinct(fn($x) => $x[0])
-            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
+        $this->resourcesByPattern = $resourceDefs->flatMap(fn ($res) =>
+                Vector::new($res->getPattern())->map(fn ($pattern) => [$pattern, $res]))
+            ->distinct(fn ($x) => $x[0])
+            ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
 
         $order = $fileResourceDefs->concat($messagesResourceDefs)
-            ->map(fn($x, $i) => [$i, $x])
-            ->toMap(fn($x) => $x[1]->getType(), fn($x) => $x[0]);
+            ->map(fn ($x, $i) => [$i, $x])
+            ->toMap(fn ($x) => $x[1]->getType(), fn ($x) => $x[0]);
         $this->parentResourceByChildType = $allMsgs
-            ->flatMap(fn($x) => Vector::new($x->getField()))
-            ->map(fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
-            ->filter(fn($x) => !is_null($x) && $x->getChildType() !== '')
-            ->map(fn($x) => $x->getChildType())
+            ->flatMap(fn ($x) => Vector::new($x->getField()))
+            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+            ->filter(fn ($x) => !is_null($x) && $x->getChildType() !== '')
+            ->map(fn ($x) => $x->getChildType())
             ->distinct()
-            ->map(function($childType) use($order) {
+            ->map(function ($childType) use ($order) {
                 $childPatterns = Vector::new($this->resourcesByType[$childType]->getPattern());
-                if ($childPatterns->any(fn($x) => $x === '*')) {
+                if ($childPatterns->any(fn ($x) => $x === '*')) {
                     return null;
                 }
-                $parentPatterns = $childPatterns->map(fn($childPattern) => static::parentPattern($childPattern));
+                $parentPatterns = $childPatterns->map(fn ($childPattern) => static::parentPattern($childPattern));
                 // Ordering matters, to exactly reproduce monolith behaviour.
                 // parents must be in file order of option-defined resource, followed by file order of message-defined resource.
                 // This is important when selecting a resource to use in test and example methods.
-                return [$childType, $parentPatterns->map(fn($x) => $this->resourcesByPattern[$x])->orderBy(fn($x) => $order[$x->getType()])];
+                return [$childType, $parentPatterns->map(fn ($x) => $this->resourcesByPattern[$x])->orderBy(fn ($x) => $order[$x->getType()])];
             })
-            ->filter(fn($x) => !is_null($x))
-            ->toMap(fn($x) => $x[0], fn($x) => $x[1]);
+            ->filter(fn ($x) => !is_null($x))
+            ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
     }
 
     private static function parentPattern(string $pattern): string

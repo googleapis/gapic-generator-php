@@ -42,17 +42,15 @@ class ProtoHelpers
      */
     public static function getNamespace(FileDescriptorProto $fileDesc): string
     {
-        if ($fileDesc->hasOptions())
-        {
+        if ($fileDesc->hasOptions()) {
             $opts = $fileDesc->getOptions();
-            if ($opts->hasPhpNamespace())
-            {
+            if ($opts->hasPhpNamespace()) {
                 return $opts->getPhpNamespace();
             }
         }
         // Fallback to munging the proto package.
         return Vector::new(explode('.', $fileDesc->getPackage()))
-            ->map(fn($x) => strtoupper($x[0]) . substr($x, 1))
+            ->map(fn ($x) => strtoupper($x[0]) . substr($x, 1))
             ->join('\\');
     }
 
@@ -96,8 +94,8 @@ class ProtoHelpers
         }
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
         $placeholders = Vector::new($segments)
-            ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-            ->toMap(fn($x) => $x->getKey(), function($x) use ($catalog, $msg) {
+            ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
+            ->toMap(fn ($x) => $x->getKey(), function ($x) use ($catalog, $msg) {
                 $fieldList = Vector::new(explode('.', $x->getKey()));
                 $result = [];
                 foreach ($fieldList as $index => $fieldName) {
@@ -124,11 +122,11 @@ class ProtoHelpers
                 }
                 return Vector::new($result);
             });
-        $nestedPlaceholders = Vector::new($httpRule->getAdditionalBindings())->map(fn($x) => static::restPlaceholders($catalog, $x, $msg));
+        $nestedPlaceholders = Vector::new($httpRule->getAdditionalBindings())->map(fn ($x) => static::restPlaceholders($catalog, $x, $msg));
         return $nestedPlaceholders->append($placeholders)
-            ->flatMap(fn($x) => $x->mapValues(fn($k, $v) => [$k, $v])->values())
-            ->groupBy(fn($x) => $x[0])
-            ->mapValues(fn($k, $v) => $v[0][1]);
+            ->flatMap(fn ($x) => $x->mapValues(fn ($k, $v) => [$k, $v])->values())
+            ->groupBy(fn ($x) => $x[0])
+            ->mapValues(fn ($k, $v) => $v[0][1]);
     }
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,
@@ -136,26 +134,22 @@ class ProtoHelpers
     private static function getCustomOptionRaw(Message $message, int $optionId, bool $repeated)
     {
         static $messageUnknown;
-        if (!$messageUnknown)
-        {
+        if (!$messageUnknown) {
             $ref = new \ReflectionClass('Google\Protobuf\Internal\Message');
             $messageUnknown = $ref->getProperty('unknown');
             $messageUnknown->setAccessible(true);
         }
 
         $values = [];
-        if ($message->hasOptions())
-        {
+        if ($message->hasOptions()) {
             $opts = $message->getOptions();
             $unknown = $messageUnknown->getValue($opts);
-            if ($unknown)
-            {
+            if ($unknown) {
                 $unknownStream = new CodedInputStream($unknown);
                 // Read through the stream of all custom options, looking for
                 // the requested option-id. If it's repeated, then all options
                 // must be parsed, otherwise return the first found.
-                while (($tag = $unknownStream->readTag()) !== 0)
-                {
+                while (($tag = $unknownStream->readTag()) !== 0) {
                     $value = 0;
                     // TODO: Handle extra option types as required.
                     switch (GPBWire::getTagWireType($tag)) {
@@ -228,7 +222,7 @@ class ProtoHelpers
     {
         $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true);
         if (!is_null($msgClass)) {
-            $result = $result->map(function($x) use($msgClass) {
+            $result = $result->map(function ($x) use ($msgClass) {
                 $msg = new $msgClass();
                 $msg->mergeFromString($x);
                 return $msg;

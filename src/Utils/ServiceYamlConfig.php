@@ -25,11 +25,13 @@ use Symfony\Component\Yaml\Yaml;
 
 class ServiceYamlConfig
 {
-    private static function isWhitespace(string $c): bool {
+    private static function isWhitespace(string $c): bool
+    {
         return $c === ' ' || $c === "\t";
     }
 
-    private static function fixYaml(string $yaml): string {
+    private static function fixYaml(string $yaml): string
+    {
         // The PHP YAML parser fails on a multi-line string which is not indented.
         // This is valid YAML, so fix it up here.
         // This is currently required for the cloud-functions API.

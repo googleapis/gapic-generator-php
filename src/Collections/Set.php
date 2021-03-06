@@ -39,7 +39,7 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
         if (is_array($data)) {
             $pairs = [];
             foreach ($data as $v) {
-                $pairs[] = [$v, TRUE];
+                $pairs[] = [$v, true];
             }
             return new Set(Map::fromPairs($pairs));
         }
@@ -58,7 +58,7 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
     /** @inheritDoc */
     public function getIterator()
     {
-        return (function() {
+        return (function () {
             foreach ($this->map as [$k]) {
                 yield $k;
             }

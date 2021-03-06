@@ -36,7 +36,7 @@ abstract class PhpDoc
 
     protected static function cleanComments(Vector $v): Vector
     {
-        return $v->map(fn($line) => static::cleanComment($line));
+        return $v->map(fn ($line) => static::cleanComment($line));
     }
 
     /**
@@ -49,8 +49,7 @@ abstract class PhpDoc
      */
     public static function block(...$items): PhpDoc
     {
-        return new class(Vector::new($items)->flatten()->filter(fn($x) => !is_null($x))) extends PhpDoc
-        {
+        return new class(Vector::new($items)->flatten()->filter(fn ($x) => !is_null($x))) extends PhpDoc {
             public function __construct($items)
             {
                 $this->items = $items;
@@ -59,11 +58,10 @@ abstract class PhpDoc
             protected function toLines(Map $info): Vector
             {
                 $info = Map::new();
-                foreach ($this->items as $item)
-                {
+                foreach ($this->items as $item) {
                     $info = $item->preProcess($info);
                 }
-                return Vector::zip($this->items, $this->items->skip(1)->append(null))->flatMap(function($x) use($info) {
+                return Vector::zip($this->items, $this->items->skip(1)->append(null))->flatMap(function ($x) use ($info) {
                     [$item, $next] = $x;
                     $result = $item->toLines($info);
                     if (!is_null($next) && !(isset($item->isParam) && isset($next->isParam))) {
@@ -82,8 +80,7 @@ abstract class PhpDoc
      */
     public static function newLine(): PhpDoc
     {
-        return new class extends PhpDoc
-        {
+        return new class extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new();
@@ -101,8 +98,7 @@ abstract class PhpDoc
      */
     public static function preFormattedText(Vector $lines): PhpDoc
     {
-        return new class(static::cleanComments($lines)) extends PhpDoc
-        {
+        return new class(static::cleanComments($lines)) extends PhpDoc {
             public function __construct($lines)
             {
                 $this->lines = $lines;
@@ -125,8 +121,7 @@ abstract class PhpDoc
      */
     public static function text(...$parts): PhpDoc
     {
-        return new class(Vector::new($parts)) extends PhpDoc
-        {
+        return new class(Vector::new($parts)) extends PhpDoc {
             public function __construct($parts)
             {
                 $this->parts = $parts;
@@ -137,13 +132,13 @@ abstract class PhpDoc
                 $lines = Vector::new();
                 $line = '';
 
-                $commitLine = function() use(&$lines, &$line) {
+                $commitLine = function () use (&$lines, &$line) {
                     if ($line !== '') {
                         $lines = $lines->append($line);
                         $line = '';
                     }
                 };
-                $add = function($s) use(&$lines, &$line, $lineLen, $commitLine) {
+                $add = function ($s) use (&$lines, &$line, $lineLen, $commitLine) {
                     if (strlen($line) + 1 + strlen($s) > $lineLen && $line !== '') {
                         $commitLine();
                     }
@@ -294,7 +289,7 @@ abstract class PhpDoc
             protected function preProcess(Map $info): Map
             {
                 // This may be called multiple times.
-                $this->typesJoined = $this->types->map(fn($x) => $x->toCode())->join('|');
+                $this->typesJoined = $this->types->map(fn ($x) => $x->toCode())->join('|');
                 $this->name = $this->varOrName instanceof AST ? $this->varOrName->toCode() : '$' . $this->varOrName;
                 if ($this->tag === 'param') {
                     // Parameters align the param name and the description, so get max lengths.
@@ -318,19 +313,19 @@ abstract class PhpDoc
                     } else {
                         if (isset($this->doc->isBlock)) {
                             return $lines
-                                ->map(fn($x) => '    ' . $x)
+                                ->map(fn ($x) => '    ' . $x)
                                 ->prepend($intro . '{')
                                 ->append('}');
                         } else {
                             $pad = str_repeat(' ', strlen($intro));
-                            return $lines->skip(1)->map(fn($x) => $pad . $x)
+                            return $lines->skip(1)->map(fn ($x) => $pad . $x)
                                 ->prepend($intro . ($lines->firstOrNull() ?? ''));
                         }
                     }
                 } else {
                     $indent = str_repeat(' ', strlen("@{$this->tag} "));
                     return Vector::new(["@{$this->tag} {$this->typesJoined} {$this->name}"])
-                        ->concat($lines->map(fn($x) => $indent . $x));
+                        ->concat($lines->map(fn ($x) => $indent . $x));
                 }
             }
         };
@@ -347,8 +342,12 @@ abstract class PhpDoc
      */
     public static function param(PhpParam $param, PhpDoc $doc, ?ResolvedType $forceType = null): PhpDoc
     {
-        return static::paramOrType('param',
-            Vector::new([$forceType ?? $param->type ?? ResolvedType::mixed()]), $param->var, $doc);
+        return static::paramOrType(
+            'param',
+            Vector::new([$forceType ?? $param->type ?? ResolvedType::mixed()]),
+            $param->var,
+            $doc
+        );
     }
 
     /**
@@ -376,8 +375,7 @@ abstract class PhpDoc
      */
     public static function example(AST $ast, ?PhpDoc $intro = null, bool $noBackticks = false): PhpDoc
     {
-        return new class($ast, $intro, $noBackticks) extends PhpDoc
-        {
+        return new class($ast, $intro, $noBackticks) extends PhpDoc {
             public function __construct($ast, $intro, $noBackticks)
             {
                 $this->ast = $ast;
@@ -393,7 +391,7 @@ abstract class PhpDoc
                 $code = str_replace('[ELLIPSIS]', '[...]', $code);
                 $code = Vector::new(explode("\n", $code))
                     ->skip(2)->skipLast(1)
-                    ->filter(fn($x) => $x !== '');
+                    ->filter(fn ($x) => $x !== '');
                 if (!$this->noBackticks) {
                     $code = $code->prepend('```')->append('```');
                 }
@@ -406,8 +404,7 @@ abstract class PhpDoc
 
     public static function group(string $groupName): PhpDoc
     {
-        return new class($groupName) extends PhpDoc
-        {
+        return new class($groupName) extends PhpDoc {
             public function __construct($groupName)
             {
                 $this->groupName = $groupName;
@@ -426,7 +423,7 @@ abstract class PhpDoc
     }
 
     /** Override to convert this PhpDoc to lines of text. */
-    protected abstract function toLines(Map $info): Vector;
+    abstract protected function toLines(Map $info): Vector;
 
     /**
      * Convert this PhpDoc block to lines of text suitable for directly
@@ -439,8 +436,8 @@ abstract class PhpDoc
         $lines = $this->toLines(Map::new());
         if ($singleLine) {
             return $lines
-                ->map(fn($x) => rtrim($x))
-                ->map(fn($x) => '    //' . (strlen($x) === 0 ? "\n" : " {$x}\n"))
+                ->map(fn ($x) => rtrim($x))
+                ->map(fn ($x) => '    //' . (strlen($x) === 0 ? "\n" : " {$x}\n"))
                 ->join();
         } else {
             if (count($lines) <= 1) {
@@ -449,8 +446,8 @@ abstract class PhpDoc
                 return
                     "/**\n" .
                     $lines
-                        ->map(fn($x) => rtrim($x))
-                        ->map(fn($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
+                        ->map(fn ($x) => rtrim($x))
+                        ->map(fn ($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
                     " */\n";
             }
         }

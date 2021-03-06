@@ -35,7 +35,7 @@ final class PhpConstant extends PhpClassMember
      */
     public function withValue($value): PhpConstant
     {
-        return $this->clone(fn($clone) => $clone->value = $value);
+        return $this->clone(fn ($clone) => $clone->value = $value);
     }
 
     public function getName(): string

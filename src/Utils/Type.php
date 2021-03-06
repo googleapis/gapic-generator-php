@@ -87,7 +87,7 @@ class Type implements Equality
     public static function fromName(string $fullname): Type
     {
         $parts = Vector::new(explode('\\', $fullname))
-            ->skipWhile(fn($x) => $x === ''); // First element will be empty if leading '\' given.
+            ->skipWhile(fn ($x) => $x === ''); // First element will be empty if leading '\' given.
         return new Type($parts->skipLast(1), $parts->last());
     }
 
@@ -202,7 +202,7 @@ class Type implements Equality
     public function getFullname($omitLeadingBackslash = false): string
     {
         return $this->isClass() ?
-            ($omitLeadingBackslash ? '' : '\\') . $this->namespaceParts->map(fn($x) => $x . '\\')->join() . $this->name :
+            ($omitLeadingBackslash ? '' : '\\') . $this->namespaceParts->map(fn ($x) => $x . '\\')->join() . $this->name :
             $this->name;
     }
 

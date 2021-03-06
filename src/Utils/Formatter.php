@@ -53,8 +53,7 @@ class Formatter
         // new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
         // TODO: Understand why this fixer causes too many blank line insertions in some cases.
 
-        try
-        {
+        try {
             $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);
 
             // All the fixers we'll use don't reference the file passed in, so use a dummy file.
@@ -69,7 +68,7 @@ class Formatter
 
             return $code;
         } catch (\Throwable $ex) {
-            $codeWithLineNumbers = Vector::new(explode("\n", $code))->map(fn($x, $i) => "{$i}: {$x}")->join("\n");
+            $codeWithLineNumbers = Vector::new(explode("\n", $code))->map(fn ($x, $i) => "{$i}: {$x}")->join("\n");
             print("\nFailed to format code:\n{$codeWithLineNumbers}\n");
             throw $ex;
         }
@@ -80,11 +79,11 @@ class Formatter
     private static function orderUse(string $codeStr): string
     {
         $code = Vector::new(explode("\n", $codeStr));
-        $pre = $code->takeWhile(fn($x) => strpos($x, 'use ') !== 0);
-        $usings = $code->skip(count($pre))->takeWhile(fn($x) => strpos($x, 'use ') === 0);
+        $pre = $code->takeWhile(fn ($x) => strpos($x, 'use ') !== 0);
+        $usings = $code->skip(count($pre))->takeWhile(fn ($x) => strpos($x, 'use ') === 0);
         $post = $code->skip(count($pre) + count($usings));
 
-        $usings = $usings->orderBy(fn($x) => $x);
+        $usings = $usings->orderBy(fn ($x) => $x);
 
         return $pre->concat($usings)->concat($post)->join("\n");
     }
@@ -93,15 +92,15 @@ class Formatter
     public static function moveUseTo(string $codeStr, string $typeName, int $index): string
     {
         $code = Vector::new(explode("\n", $codeStr));
-        $pre = $code->takeWhile(fn($x) => strpos($x, 'use ') !== 0);
-        $usings = $code->skip(count($pre))->takeWhile(fn($x) => strpos($x, 'use ') === 0);
+        $pre = $code->takeWhile(fn ($x) => strpos($x, 'use ') !== 0);
+        $usings = $code->skip(count($pre))->takeWhile(fn ($x) => strpos($x, 'use ') === 0);
         $post = $code->skip(count($pre) + count($usings));
 
         $line = "use {$typeName};";
-        if (!$usings->any(fn($x) => $x === $line)) {
+        if (!$usings->any(fn ($x) => $x === $line)) {
             return $codeStr;
         }
-        $usings = $usings->filter(fn($x) => $x !== $line);
+        $usings = $usings->filter(fn ($x) => $x !== $line);
         $index = $index >= 0 ? $index : count($usings) + $index + 1;
         $usings = $usings->take($index)->append($line)->concat($usings->skip($index));
 

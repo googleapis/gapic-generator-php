@@ -65,7 +65,7 @@ class SourceFileContext
         $this->checkFinalized(false);
         // TODO(vNext): Remove `fullyQualify` support when no longer required.
         if ($fullyQualify) {
-            return new ResolvedType($type, function() use($type, $fullyQualify) {
+            return new ResolvedType($type, function () use ($type, $fullyQualify) {
                 $this->checkFinalized(true);
                 return is_int($fullyQualify) ? substr($type->getFullname(), $fullyQualify) : $type->getFullname();
             });
@@ -81,7 +81,7 @@ class SourceFileContext
                         if (is_null($fullName)) {
                             // Not yet imported; no collision; import now.
                             $this->usesByShortName = $this->usesByShortName->set($type->name, $type->getFullname(true));
-                        } else if ($fullName !== $type->getFullname(true)) {
+                        } elseif ($fullName !== $type->getFullname(true)) {
                             // Collision; use fully-qualifed name for this type.
                             $resolvedName = $type->getFullname();
                         }
@@ -89,7 +89,7 @@ class SourceFileContext
                     }
                 }
             }
-            return new ResolvedType($type, function() use($resolvedName) {
+            return new ResolvedType($type, function () use ($resolvedName) {
                 $this->checkFinalized(true);
                 return $resolvedName;
             });

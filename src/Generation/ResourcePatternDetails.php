@@ -44,14 +44,14 @@ class ResourcePatternDetails implements ResourcePart
         $patternToParse = str_replace('}~{', '}/{', $patternToParse);
         $segments = Vector::new(Parser::parseSegments($patternToParse));
         $varSegments = $segments
-            ->filter(fn($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-            ->map(fn($x) => $x->getKey());
+            ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
+            ->map(fn ($x) => $x->getKey());
         $this->nameSnakeCase = $varSegments->join('_');
         $this->nameCamelCase = Helpers::toCamelCase($this->nameSnakeCase);
         $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase("get_{$this->nameCamelCase}") . 'NameTemplate');
         $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
-        $this->params = $varSegments->map(fn($x) => [$x, AST::param(null, AST::var(Helpers::toCamelCase($x)))]);
+        $this->params = $varSegments->map(fn ($x) => [$x, AST::param(null, AST::var(Helpers::toCamelCase($x)))]);
     }
 
     /** @var string The pattern. */

@@ -28,7 +28,7 @@ abstract class Expression extends AST implements \ArrayAccess
      *
      * @return Callable The returned Callable returns an Expression once called with callee args.
      */
-    public function instanceCall($callee): Callable
+    public function instanceCall($callee): callable
     {
         return AST::call($this, $callee);
     }
@@ -57,7 +57,7 @@ abstract class Expression extends AST implements \ArrayAccess
 
     // Allow a method-call as a shortcut for AST::call(...)
 
-    public function __call(string $name ,array $arguments): Expression
+    public function __call(string $name, array $arguments): Expression
     {
         return AST::call($this, AST::method($name))(...$arguments);
     }

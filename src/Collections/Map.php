@@ -117,7 +117,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     /** @inheritDoc */
     public function getIterator()
     {
-        return (function() {
+        return (function () {
             foreach ($this->data as $kvs) {
                 foreach ($kvs as $kv) {
                     // Returns [<key>, <value>] pairs.
@@ -192,7 +192,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Map
      */
-    public function filter(Callable $fnPredicate): Map
+    public function filter(callable $fnPredicate): Map
     {
         $resultPairs = [];
         foreach ($this as [$k, $v]) {
@@ -212,7 +212,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Map
      */
-    public function mapValues(Callable $fnMap): Map
+    public function mapValues(callable $fnMap): Map
     {
         $resultPairs = [];
         foreach ($this as [$k, $v]) {

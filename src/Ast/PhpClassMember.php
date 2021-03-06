@@ -24,5 +24,5 @@ abstract class PhpClassMember extends AST
     use HasPhpDoc;
     use HasAccess;
 
-    abstract function getName(): string;
+    abstract public function getName(): string;
 }

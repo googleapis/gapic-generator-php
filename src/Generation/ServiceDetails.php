@@ -33,7 +33,8 @@ use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\ServiceDescriptorProto;
 
-class ServiceDetails {
+class ServiceDetails
+{
     /** @var ProtoCatalog *Readonly* The proto-catalog containing all source protos. */
     public ProtoCatalog $catalog;
 
@@ -121,14 +122,14 @@ class ServiceDetails {
         $this->defaultPort = 443;
         $this->defaultScopes =
             Vector::new(explode(',', ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
-                ->filter(fn($x) => $x != '')
-                ->map(fn($x) => trim($x));
+                ->filter(fn ($x) => $x != '')
+                ->map(fn ($x) => trim($x));
         $this->clientConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_client_config.json';
         $this->descriptorConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_descriptor_config.php';
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
-        $this->methods = Vector::new($desc->getMethod())->map(fn($x) => MethodDetails::create($this, $x))
-            ->orderBy(fn($x) => $gapicYamlConfig->orderByMethodName->get($x->name, 10000));
+        $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
+            ->orderBy(fn ($x) => $gapicYamlConfig->orderByMethodName->get($x->name, 10000));
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
         // This is a copy of the monolithic way of generating the test group name.
@@ -138,7 +139,7 @@ class ServiceDetails {
         } else {
             $this->unitTestGroupName = null;
         }
-        $this->hasLro = $this->methods->any(fn($x) => $x->methodType === MethodDetails::LRO);
+        $this->hasLro = $this->methods->any(fn ($x) => $x->methodType === MethodDetails::LRO);
         // Resource-names
         // Wildcard patterns are ignored.
         // A resource-name which has just a single wild-card pattern is ignored.
@@ -181,10 +182,10 @@ class ServiceDetails {
             ->filter(fn($x) => !is_null($x))
             ->map(fn($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
-            ->filter(fn($x) => $x->patterns->any())
-            ->concat($resourceDefs->flatMap(fn($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
-            ->distinct(fn($x) => $x->getNameCamelCase())
-            ->orderBy(fn($x) => $x->getNameCamelCase());
+            ->filter(fn ($x) => $x->patterns->any())
+            ->concat($resourceDefs->flatMap(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
+            ->distinct(fn ($x) => $x->getNameCamelCase())
+            ->orderBy(fn ($x) => $x->getNameCamelCase());
     }
 
     public function packageFullName(string $typeName): string

@@ -91,16 +91,16 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     $genResponse->setSupportedFeatures(Feature::FEATURE_PROTO3_OPTIONAL);
     try {
         $fileDescs = Vector::new($genRequest->getProtoFile())
-            ->map(function($bytes) {
+            ->map(function ($bytes) {
                 $desc = new FileDescriptorProto();
                 $desc->mergeFromString($bytes);
                 return $desc;
             });
         $filesToGen = Vector::new($genRequest->getFileToGenerate());
         $opts = Vector::new(explode(',', $genRequest->getParameter()))
-            ->filter(fn($x) => !is_null($x) && $x !== '')
-            ->map(fn($x) => explode('=', $x, 2))
-            ->toArray(fn($x) => $x[0], fn($x) => $x[1]);
+            ->filter(fn ($x) => !is_null($x) && $x !== '')
+            ->map(fn ($x) => explode('=', $x, 2))
+            ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts, $sideLoadedRootDir);
         $files = CodeGenerator::generate($fileDescs, $filesToGen, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
         $files = Vector::new($files)->map(function ($fileData) {
@@ -146,8 +146,9 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     }
 }
 
-function readOptions($opts, $sideLoadedRootDir = null) {
-    $makePath = function($path) use($sideLoadedRootDir) {
+function readOptions($opts, $sideLoadedRootDir = null)
+{
+    $makePath = function ($path) use ($sideLoadedRootDir) {
         if (strlen($path) > 0 && $path[0] === '/') {
             if (!is_null($sideLoadedRootDir)) {
                 throw new \Exception("Cannot use --side_loaded_root_dir with absolute config paths");

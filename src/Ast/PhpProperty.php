@@ -36,7 +36,7 @@ final class PhpProperty extends PhpClassMember
      */
     public function withValue(Expression $value): PhpProperty
     {
-        return $this->clone(fn($clone) => $clone->value = $value);
+        return $this->clone(fn ($clone) => $clone->value = $value);
     }
 
     public function getName(): string
