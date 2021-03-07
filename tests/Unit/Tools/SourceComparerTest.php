@@ -43,18 +43,59 @@ final class SourceComparerTest extends TestCase
     {
         // One of the JSON strings is empty.
         $jsonString = '{"a" : 1, "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonString, '', False));
-        $this->assertFalse(SourceComparer::compareJson('', $jsonString, False));
+        $this->assertFalse(SourceComparer::compareJson($jsonString, '', false));
+        $this->assertFalse(SourceComparer::compareJson('', $jsonString, false));
 
         // One different value.
         $jsonOne = '{"a" : 1, "b" : 2, "c" : 3}';
         $jsonTwo = '{1 : "a", "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, False));
-        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, False));
+        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, false));
+        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, false));
 
         // One extra value.
         $jsonTwo = '{1 : "a", "a" : 1, "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, False));
-        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, False));
+        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, false));
+        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, false));
+    }
+
+    public function testCompareSuccessCases(): void
+    {
+        // Both values are empty.
+        $this->assertTrue(SourceComparer::compare('', ''));
+
+        // Identical strings.
+        $stringOne = 'The quick brown fox
+        jumped over
+        the lazy
+        dog';
+        $this->assertTrue(SourceComparer::compare($stringOne, $stringOne));
+
+        // Whitespace diffs.
+        $stringTwo = 'The quick brown fox jumped over the lazy dog';
+        $this->assertTrue(SourceComparer::compare($stringOne, $stringTwo));
+        $this->assertTrue(SourceComparer::compare($stringTwo, $stringOne));
+
+        $stringTwo = '    The quick
+        brown fox  jumped
+        over       the     lazy dog ';
+        $this->assertTrue(SourceComparer::compare($stringOne, $stringTwo));
+        $this->assertTrue(SourceComparer::compare($stringTwo, $stringOne));
+    }
+
+    public function testCompareFailureCases(): void
+    {
+        // One of the strings is empty.
+        $stringOne = 'The quick brown fox jumped over the lazy dog';
+        $this->assertFalse(SourceComparer::compare($stringOne, '', False));
+        $this->assertFalse(SourceComparer::compare('', $stringOne, False));
+
+        // Different values.
+        $stringTwo = 'The Quick brown fox jumped over the lazy dog';
+        $this->assertFalse(SourceComparer::compare($stringOne, $stringTwo, False));
+        $this->assertFalse(SourceComparer::compare($stringTwo, $stringOne, False));
+
+        // Substring.
+        $this->assertFalse(SourceComparer::compare($stringOne, 'The', False));
+        $this->assertFalse(SourceComparer::compare('The', $stringOne, False));
     }
 }
