@@ -127,8 +127,10 @@ class SourceComparer
             $microPos++;
         }
         if ($monoPos < $monoLen || $microPos < $microLen) {
-            print("One file is a prefix of the other.\n");
-            if ($monoPos < $monoLen) {
+            if ($printDiffs) {
+                print("One file is a prefix of the other.\n");
+            }
+            if ($monoPos < $monoLen && $printDiffs) {
                 print(substr($mono, $monoPos) . "\n");
             }
             return false;
