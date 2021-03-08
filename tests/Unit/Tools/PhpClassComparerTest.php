@@ -301,6 +301,20 @@ class Coffee {
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
         $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
 
+        // Different ordering and implementation.
+        $phpClassTwo = '<?php
+namespace FooBar;
+class Coffee {
+  public function blendName(): string {
+    return "Pumpkin Spice";
+  }
+  public function roastName(): string {
+    return "Medium";
+ }
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
         // Different whitespacing in the class and methods.
         $phpClassTwo = '<?php
 namespace FooBar;
@@ -309,5 +323,66 @@ class Coffee {
   public function blendName(): string { return "Hazelnut"; } }';
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
         $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+    }
+
+    public function testCompareConsts(): void
+    {
+        // Same consts and order.
+        $phpClassOne = '<?php
+class Coffee {
+    /** The name of the service. */
+    const SERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
+
+    /** The default address of the service. */
+    const SERVICE_ADDRESS = "coffee.googleapis.com";
+
+    /** The default port of the service. */
+    const DEFAULT_SERVICE_PORT = 443;
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassOne));
+
+        // Different comments.
+        $phpClassTwo = '<?php
+class Coffee {
+    /** The name of the coffee service. */
+    const SERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
+
+    const SERVICE_ADDRESS = "coffee.googleapis.com"; // New comment here.
+
+    // Service port.
+    const DEFAULT_SERVICE_PORT = 443;
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
+        $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+
+        // No comments and different whitespacing.
+        $phpClassTwo = '<?php
+class Coffee {
+    const SERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
+    const SERVICE_ADDRESS = "coffee.googleapis.com";
+    const DEFAULT_SERVICE_PORT = 443;
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
+        $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+
+        // Different variable names.
+        $phpClassTwo = '<?php
+class Coffee {
+    const ZERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
+    const SERVICE_ADDRESS = "coffee.googleapis.com";
+    const DEFAULT_SERVICE_PORT = 443;
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, ));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
+        // Different values.
+        $phpClassTwo = '<?php
+class Coffee {
+    const SERVICE_NAME = "google.cloud.coffee.v1.SeattlesBest";
+    const SERVICE_ADDRESS = "coffee.googleapis.com";
+    const DEFAULT_SERVICE_PORT = 443;
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
     }
 }
