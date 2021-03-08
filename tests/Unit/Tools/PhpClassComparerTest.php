@@ -365,6 +365,15 @@ class Coffee {
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
         $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
 
+        // Missing const.
+        $phpClassTwo = '<?php
+class Coffee {
+    const SERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
+    const SERVICE_ADDRESS = "coffee.googleapis.com";
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, ));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
         // Different variable names.
         $phpClassTwo = '<?php
 class Coffee {
@@ -384,5 +393,81 @@ class Coffee {
 }';
         $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
         $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+    }
+
+    public function testCompareProperties(): void
+    {
+        // Same properties and order.
+        $phpClassOne = '<?php
+class Coffee {
+    /** The default scopes required by the service. */
+    public static $serviceScopes = [
+        "https://www.googleapis.com/auth/cloud-platform",
+    ];
+
+    private static $blend = "Hazelnut";
+
+    private $roast = "Medium";
+
+    private $brand;
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassOne));
+
+        // Different comments.
+        $phpClassTwo = '<?php
+class Coffee {
+    public static $serviceScopes = [
+        "https://www.googleapis.com/auth/cloud-platform",
+    ];
+
+    private static $blend = "Hazelnut";  // The blend.
+
+    /**
+     * Another multiline comment.
+     */
+    private $roast = "Medium";
+
+    private $brand;
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
+        $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+
+        // No comments, different whitespacing, different ordering.
+        $phpClassTwo = '<?php
+class Coffee {
+    private $roast = "Medium";
+    private static $blend = "Hazelnut";
+    private $brand;
+    public static $serviceScopes = [ "https://www.googleapis.com/auth/cloud-platform"  ];
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
+        $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+
+        // Different variable names.
+        $phpClassTwo = '<?php
+class Coffee {
+    private $roaste = "Medium";
+    private static $blend = "Hazelnut";
+    private $brande;
+    public static $serviceScopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ];
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
+        // Different values.
+        $phpClassTwo = '<?php
+class Coffee {
+    private $roaste = "medium";
+    private static $blend = "Hazelnut";
+    private $brande;
+    public static $serviceScopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ];
+}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
     }
 }
