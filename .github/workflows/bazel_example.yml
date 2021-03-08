@@ -1,4 +1,4 @@
-name: Bazel - build example pkg
+name: Bazel Build
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    container: gcr.io/gapic-images/googleapis-bazel:20210105
 
     steps:
     - name: Checkout code
@@ -16,10 +17,27 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Install Bazel v4.0.0
-      uses: abhinavsingh/setup-bazel@v3
+    - name: Bazel File Cache Setup
+      id: cache-bazel
+      uses: actions/cache@v2
       with:
-        version: 4.0.0
+        path: ~/.cache/bazel
+        key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+
+    - name: Bazel Cache Not Found
+      if: steps.cache-bazel.outputs.cache-hit != 'true'
+      run: |
+        echo "No cache found."
+    - name: Bazel Cache Found
+      if: steps.cache-bazel.outputs.cache-hit == 'true'
+      run: |
+        echo -n "Cache found. Cache size: "
+        du -sh ~/.cache/bazel
+        echo "If the cache seems broken, update the CACHE_VERSION secret in"
+        echo "https://github.com/googleapis/googleapis-discovery/settings/secrets/actions"
+        echo "(use any random string, any GUID will work)"
+        echo "and it will start over with a clean cache."
+        echo "The old one will disappear after 7 days."
 
     - name: Show bazel version
       run: |
@@ -30,20 +48,30 @@ jobs:
         cd bazel_example;
         bazel build ...
 
-    - name: Extract bazel pkg output
+    - name: Extract Bazel package output
       run: |
         cd bazel_example;
         tar -xf ./bazel-bin/example_php_pkg.tar.gz
 
     # grep returns 1 if no matches are found; and 0 if >0 matches are found.
-    - name: Verify grpc service json was honoured
+    - name: Verify grpc_service_config.json was honoured
       run: |
         grep '"timeout_millis": 942000' ./bazel_example/example_php_pkg/src/resources/example_client_config.json
 
-    - name: Verify gapic yaml was honoured
+    - name: Verify gapic.yaml was honoured
       run: |
         grep "'initialPollDelayMillis' => '42042'" ./bazel_example/example_php_pkg/src/resources/example_descriptor_config.php
 
-    - name: Verify service yaml was honoured
+    - name: Verify service.yaml was honoured
       run: |
         grep '"timeout_millis": 4242000' ./bazel_example/example_php_pkg/src/resources/example_client_config.json
+
+    - name: Integration Tests
+      run: bazel --batch test tests/Integration:asset --noshow_progress
+
+    - uses: actions/upload-artifact@v2
+      if: ${{ failure() }}
+      with:
+        name: test-artifacts
+        path: ~/.cache/bazel/*/*/*/gapic_generator_php/bazel-out/*/testlogs/*
+        retention-days: 5
