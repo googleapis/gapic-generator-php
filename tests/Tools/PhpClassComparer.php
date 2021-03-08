@@ -21,6 +21,7 @@ namespace Google\Generator\Tests\Tools;
 use Google\Generator\Tests\Tools\SourceComparer;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\Error;
@@ -50,10 +51,10 @@ class PhpClassComparer
         $astTwo = static::parseToAst($phpParser, $phpClassTwo, "micro", $printDiffs);
 
         if (!$astOne || !$astTwo) {
-          if ($printDiffs) {
-            print("Failed to parse " . (!$astOne ? "micro" : "mono") . " AST");
-          }
-          return false;
+            if ($printDiffs) {
+                print("Failed to parse " . (!$astOne ? "micro" : "mono") . " AST");
+            }
+            return false;
         }
 
         // Class names.
@@ -67,7 +68,39 @@ class PhpClassComparer
             $diffFindings[] = "mono class name $classOneName != micro class name $classTwoName\n\n";
         }
 
-        // TODO(miraleung): Namespace, properties, consts.
+        // Namespace only.
+        $namespaceOne = $astNodeFinder->findFirstInstanceOf($astOne, Namespace_::class);
+        $namespaceTwo = $astNodeFinder->findFirstInstanceOf($astTwo, Namespace_::class);
+        $astTraverser = new NodeTraverser;
+        $astTraverser->addVisitor(new class extends NodeVisitorAbstract {
+          public function enterNode(Node $node) {
+            if ($node instanceof Namespace_) {
+              // Clean out all nodes inside.
+              $node->stmts = [];
+              return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            }
+          }
+        });
+        $astPrinter = new PrettyPrinter\Standard;
+        $namespaceOneString = is_null($namespaceOne)
+          ? ""
+          // Clone the nodes, because altering the AST affects the original ones.
+          : $astPrinter->prettyPrint($astTraverser->traverse(array(clone $namespaceOne)));
+        $namespaceTwoString = is_null($namespaceTwo)
+          ? ""
+          : $astPrinter->prettyPrint($astTraverser->traverse(array(clone $namespaceTwo)));
+        $namespacePattern = "/namespace .*;/i";
+        if (preg_match($namespacePattern, $namespaceOneString, $actualNamespaceValue)) {
+          $namespaceOneString = $actualNamespaceValue[0];
+        }
+        if (preg_match($namespacePattern, $namespaceTwoString, $actualNamespaceValue)) {
+          $namespaceTwoString = $actualNamespaceValue[0];
+        }
+        if ($namespaceOneString !== $namespaceTwoString) {
+            $diffFindings[] = "mono namespace $namespaceOneString != micro namespace $namespaceTwoString\n\n";
+        }
+
+        // TODO(miraleung): properties, consts.
 
         // Class methods.
         $methodsOne = $astNodeFinder->findInstanceOf($astOne, ClassMethod::class);
@@ -100,9 +133,9 @@ class PhpClassComparer
         try {
             $ast = $phpParser->parse($phpClass);
         } catch (Error $error) {
-          if ($printDiffs) {
-            print("Could not parse AST for $astLabel: {$error->getMessage()}\n");
-          }
+            if ($printDiffs) {
+                print("Could not parse AST for $astLabel: {$error->getMessage()}\n");
+            }
             return null;
         }
 

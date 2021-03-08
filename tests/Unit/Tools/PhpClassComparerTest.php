@@ -30,11 +30,19 @@ namespace FooBar;
 class Coffee {}';
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassOne));
 
+        // Different namespace.
+        $phpClassTwo = '<?php
+namespace Foo;
+class Coffee {}';
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
+        $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
+
         // Add a file comment.
         $phpClassTwo = '<?php
 /*
  * Copyright Notice Goes Here.
  */
+
 namespace FooBar;
 class Coffee {}';
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
