@@ -3,9 +3,9 @@
         "psr-4": {
             "Google\\Generator\\": "src",
             "Google\\Generator\\Tests\\": "tests",
-            "Google\\": "src/Google",
-            "Grpc\\": "src/Grpc",
-            "GPBMetadata\\": "src/GPBMetadata"
+            "Google\\": "generated/Google",
+            "Grpc\\": "generated/Grpc",
+            "GPBMetadata\\": "generated/GPBMetadata"
         }
     },
     "autoload-dev": {

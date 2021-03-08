@@ -145,7 +145,7 @@ class ServiceDetails
         // A resource-name which has just a single wild-card pattern is ignored.
         $msgsSeen = Set::new();
         $gatherMsgResDefs = null;
-        $gatherMsgResDefs = function(DescriptorProto $msg, int $level) use(&$gatherMsgResDefs, &$msgsSeen, $catalog): Vector {
+        $gatherMsgResDefs = function (DescriptorProto $msg, int $level) use (&$gatherMsgResDefs, &$msgsSeen, $catalog): Vector {
             if ($msgsSeen[$msg->desc->getFullname()]) {
                 return Vector::new([]);
             }
@@ -157,30 +157,30 @@ class ServiceDetails
                 null;
             $fields = Vector::new($msg->getField());
             $resourceRefs = $fields
-                ->map(fn($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
-                ->filter(fn($x) => !is_null($x));
+                ->map(fn ($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+                ->filter(fn ($x) => !is_null($x));
             $typeRefResourceDefs = $resourceRefs
-                ->filter(fn($x) => $x->getType() !== '' && $x->getType() !== '*')
-                ->map(fn($x) => $catalog->resourcesByType[$x->getType()]);
+                ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
+                ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
             $childTypeRefResourceDefs = $resourceRefs
-                ->filter(fn($x) => $x->getChildType() !== '')
-                ->flatMap(fn($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
+                ->filter(fn ($x) => $x->getChildType() !== '')
+                ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
             // Recurse one level down into message fields; matches monolith behaviour.
             // TODO(vNext): Decide if this behaviour is correct, posibly modify.
             if ($level === 0) {
                 $nestedDefs = $fields
-                    ->filter(fn($f) => $f->getType() === GPBType::MESSAGE)
-                    ->map(fn($f) => $catalog->msgsByFullname[$f->desc->getMessageType()])
-                    ->flatMap(fn($nestedMsg) => $gatherMsgResDefs($nestedMsg, $level + 1));
+                    ->filter(fn ($f) => $f->getType() === GPBType::MESSAGE)
+                    ->map(fn ($f) => $catalog->msgsByFullname[$f->desc->getMessageType()])
+                    ->flatMap(fn ($nestedMsg) => $gatherMsgResDefs($nestedMsg, $level + 1));
             } else {
                 $nestedDefs = Vector::new([]);
             }
             return $typeRefResourceDefs->concat($childTypeRefResourceDefs)->append($messageResourceDef)->concat($nestedDefs);
         };
         $resourceDefs = $this->methods
-            ->flatMap(fn($x) => $gatherMsgResDefs($x->inputMsg, 0))
-            ->filter(fn($x) => !is_null($x))
-            ->map(fn($res) => new ResourceDetails($res));
+            ->flatMap(fn ($x) => $gatherMsgResDefs($x->inputMsg, 0))
+            ->filter(fn ($x) => !is_null($x))
+            ->map(fn ($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
             ->filter(fn ($x) => $x->patterns->any())
             ->concat($resourceDefs->flatMap(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))

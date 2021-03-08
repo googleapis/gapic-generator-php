@@ -147,9 +147,9 @@ class ResourcesGenerator
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
         $allInterfaces = $serviceDetails->methods
-            ->filter(fn($method) => !is_null($method->httpRule) && !$method->isStreaming())
-            ->map(fn($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
-            ->concat($serviceYamlConfig->httpRules->map(fn($x) => [
+            ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming())
+            ->map(fn ($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
+            ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
                 Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),
                 Vector::new(explode('.', $x->getSelector()))->last(),
                 $x
