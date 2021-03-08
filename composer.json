@@ -10,7 +10,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Google\\Generator\\IntegrationTests\\": "integration_tests",
             "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
             "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
             "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",

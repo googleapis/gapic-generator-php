@@ -58,7 +58,7 @@ NUM_TOTAL_FILES_CHANGED=$(git diff --cached --name-only | wc -l)
 NUM_PHP_FILES_CHANGED=$(git diff --cached --name-only "*.php" | wc -l)
 NUM_UNIT_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/ProtoTests/*/*.php" | wc -l)
 NUM_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "*BUILD.bazel" | wc -l)
-NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "integration_tests/goldens/*/*.*" | wc -l)
+NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/Integration/goldens/*/*.*" | wc -l)
 
 if [ $NUM_TOTAL_FILES_CHANGED -le 0 ]
 then
@@ -89,11 +89,9 @@ fi
 # Check Bazel integration tests.
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
 then
-  echo_status "Checking integration tests..."
-  cd integration_tests
-  php Main.php
+  echo_status "Checking PHP integration tests..."
+  php tests/Integration/Main.php
   TEST_STATUS=$?
-  cd ..
 
   if [ $TEST_STATUS != 0 ]
   then
