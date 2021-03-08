@@ -20,25 +20,25 @@ namespace Google\Generator\Tests\Tools;
 
 class SourceComparer
 {
-    public static function compareJson(string $mono, string $micro): bool
+    public static function compareJson(string $mono, string $micro, bool $printDiffs = true): bool
     {
         $monoJson = json_decode($mono);
         $microJson = json_decode($micro);
 
         $sort = null;
-        $sort = function($a) use(&$sort) {
+        $sort = function ($a) use (&$sort) {
             $a = (array)$a;
             ksort($a);
-            return array_map(fn($x) => is_array($x) || is_object($x) ? $sort($x) : $x, $a);
+            return array_map(fn ($x) => is_array($x) || is_object($x) ? $sort($x) : $x, $a);
         };
 
         $mono = $sort($monoJson);
         $micro = $sort($microJson);
 
-        return static::compare(json_encode($mono, JSON_PRETTY_PRINT), json_encode($micro, JSON_PRETTY_PRINT));
+        return static::compare(json_encode($mono, JSON_PRETTY_PRINT), json_encode($micro, JSON_PRETTY_PRINT), $printDiffs);
     }
 
-    public static function compare(string $mono, string $micro): bool
+    public static function compare(string $mono, string $micro, bool $printDiffs = true): bool
     {
         // Compare ignoring whitespace, except within strings.
         // Ignore '*' in comments.
@@ -49,19 +49,35 @@ class SourceComparer
         $microPos = 0;
         $inString = false;
         $inComment = false;
-        $skip = function($chars, $pos, $len) use(&$inComment) {
-            if ($pos >= $len) return false;
-            if (static::isWhitespace($chars[$pos])) return true;
-            if ($inComment && $chars[$pos] === '*') return true;
-            if (substr($chars, $pos, 2) === ",\n") return true;
-            if (substr($chars, $pos - 1, 2) === '//') return true;
-            if (substr($chars, $pos, 2) === '//') return true;
+        $skip = function ($chars, $pos, $len) use (&$inComment) {
+            if ($pos >= $len) {
+                return false;
+            }
+            if (static::isWhitespace($chars[$pos])) {
+                return true;
+            }
+            if ($inComment && $chars[$pos] === '*') {
+                return true;
+            }
+            if (substr($chars, $pos, 2) === ",\n") {
+                return true;
+            }
+            if (substr($chars, $pos - 1, 2) === '//') {
+                return true;
+            }
+            if (substr($chars, $pos, 2) === '//') {
+                return true;
+            }
             return false;
         };
         while ($monoPos < $monoLen && $microPos < $microLen) {
             if ($mono[$monoPos] !== $micro[$microPos]) {
-                while ($skip($mono, $monoPos, $monoLen)) $monoPos++;
-                while ($skip($micro, $microPos, $microLen)) $microPos++;
+                while ($skip($mono, $monoPos, $monoLen)) {
+                    $monoPos++;
+                }
+                while ($skip($micro, $microPos, $microLen)) {
+                    $microPos++;
+                }
                 if ($monoPos >= $monoLen || $microPos >= $microLen) {
                     break;
                 }
@@ -69,28 +85,47 @@ class SourceComparer
             $c = $mono[$monoPos];
             if ($c !== $micro[$microPos]) {
                 $lines = 5;
-                for ($monoFrom = $monoPos, $c = 0; $c < $lines && $monoFrom > 0; $monoFrom--) $c += $mono[$monoFrom] === "\n" ? 1 : 0;
-                for ($monoTo = $monoPos, $c = 0; $c < $lines && $monoTo < $monoLen; $monoTo++) $c += $mono[$monoTo] === "\n" ? 1 : 0;
-                for ($microFrom = $microPos, $c = 0; $c < $lines && $microFrom > 0; $microFrom--) $c += $micro[$microFrom] === "\n" ? 1 : 0;
-                for ($microTo = $microPos, $c = 0; $c < $lines && $microTo < $microLen; $microTo++) $c += $micro[$microTo] === "\n" ? 1 : 0;
-                print("-----\nmono:\n");
-                print(substr($mono, $monoFrom + 2, $monoTo - $monoFrom - 2));
-                print("----- '{$mono[$monoPos]}' -> '{$micro[$microPos]}'\nmicro:\n");
-                print(substr($micro, $microFrom + 2, $microTo - $microFrom - 2));
-                print("-----\n");
+                for ($monoFrom = $monoPos, $c = 0; $c < $lines && $monoFrom > 0; $monoFrom--) {
+                    $c += $mono[$monoFrom] === "\n" ? 1 : 0;
+                }
+                for ($monoTo = $monoPos, $c = 0; $c < $lines && $monoTo < $monoLen; $monoTo++) {
+                    $c += $mono[$monoTo] === "\n" ? 1 : 0;
+                }
+                for ($microFrom = $microPos, $c = 0; $c < $lines && $microFrom > 0; $microFrom--) {
+                    $c += $micro[$microFrom] === "\n" ? 1 : 0;
+                }
+                for ($microTo = $microPos, $c = 0; $c < $lines && $microTo < $microLen; $microTo++) {
+                    $c += $micro[$microTo] === "\n" ? 1 : 0;
+                }
+                if ($printDiffs) {
+                    print("-----\nmono:\n");
+                    print(substr($mono, $monoFrom + 2, $monoTo - $monoFrom - 2));
+                    print("----- '{$mono[$monoPos]}' -> '{$micro[$microPos]}'\nmicro:\n");
+                    print(substr($micro, $microFrom + 2, $microTo - $microFrom - 2));
+                    print("-----\n");
+                }
                 return false;
             }
-            if ($c === '"') $inString = $inString === false ? '"' : ($inString === '"' ? false : $inString);
-            elseif ($c === "'") $inString = $inString === false ? "'" : ($inString === "'" ? false : $inString);
-            else if (!$inString) {
-                if (!$inComment && substr($mono, $monoPos - 1, 2) === '/*') $inComment = true;
-                elseif ($inComment && substr($mono, $monoPos - 1, 2) === '*/') $inComment = false;
+            if ($c === '"') {
+                $inString = $inString === false ? '"' : ($inString === '"' ? false : $inString);
+            } elseif ($c === "'") {
+                $inString = $inString === false ? "'" : ($inString === "'" ? false : $inString);
+            } elseif (!$inString) {
+                if (!$inComment && substr($mono, $monoPos - 1, 2) === '/*') {
+                    $inComment = true;
+                } elseif ($inComment && substr($mono, $monoPos - 1, 2) === '*/') {
+                    $inComment = false;
+                }
             }
             $monoPos++;
             $microPos++;
         }
-        while ($monoPos < $monoLen && static::isWhiteSpace($mono[$monoPos])) $monoPos++;
-        while ($microPos < $microLen && static::isWhitespace($micro[$microPos])) $microPos++;
+        while ($monoPos < $monoLen && static::isWhiteSpace($mono[$monoPos])) {
+            $monoPos++;
+        }
+        while ($microPos < $microLen && static::isWhitespace($micro[$microPos])) {
+            $microPos++;
+        }
         if ($monoPos < $monoLen || $microPos < $microLen) {
             print("One file is a prefix of the other.\n");
             if ($monoPos < $monoLen) {
