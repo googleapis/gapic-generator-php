@@ -23,7 +23,7 @@ use Google\Generator\Tests\Tools\SourceComparer;
 
 final class SourceComparerTest extends TestCase
 {
-    public function testCompareJsonBasicSuccessCases(): void
+    public function testCompareJsonSucceeds(): void
     {
         // Both values are empty.
         $this->assertTrue(SourceComparer::compareJson('', ''));
@@ -39,7 +39,7 @@ final class SourceComparerTest extends TestCase
         $this->assertTrue(SourceComparer::compareJson($microJson, $monoJson));
     }
 
-    public function testCompareJsonBasicFailureCases(): void
+    public function testCompareJsonFails(): void
     {
         // One of the JSON strings is empty.
         $jsonString = '{"a" : 1, "b" : 2, "c" : 3}';
