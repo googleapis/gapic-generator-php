@@ -16,13 +16,13 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Tests\Unit;
+namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
-trait ConfigTrait
+trait ConfigLoader
 {
     /**
      * Load a config file from the specified path, which must be relative to the `tests/Unit` directory.
@@ -31,7 +31,7 @@ trait ConfigTrait
      *
      * @return string|null the file contents if the config file exists, null otherwise.
      */
-    function loadConfig(string $filePath): ?string
+    public static function loadConfig(string $filePath): ?string
     {
         $fullPath = "tests/Unit/$filePath";
         return file_exists($fullPath) ? file_get_contents($fullPath) : null;

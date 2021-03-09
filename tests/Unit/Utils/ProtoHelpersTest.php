@@ -20,17 +20,15 @@ namespace Google\Generator\Tests\Unit\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Tests\Unit\ProtoTrait;
+use Google\Generator\Tests\Tools\ProtoLoader;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
 
 final class ProtoHelpersTest extends TestCase
 {
-    use ProtoTrait;
-
     public function testProtoCustomOptions(): void
     {
-        $file = $this->loadDescriptor('Utils/custom_options.proto');
+        $file = ProtoLoader::loadDescriptor('Utils/custom_options.proto');
 
         // Check custom options are loaded successfully.
         $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
@@ -41,7 +39,7 @@ final class ProtoHelpersTest extends TestCase
 
     public function testProtoComments(): void
     {
-        $file = $this->loadDescriptor('Utils/comments.proto');
+        $file = ProtoLoader::loadDescriptor('Utils/comments.proto');
         ProtoAugmenter::Augment(Vector::new([$file]));
 
         // Check comments are merged from all proto structures.
