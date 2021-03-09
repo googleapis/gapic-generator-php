@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Integration;
 
+use Google\Generator\Tests\Tools\PhpClassComparer;
+use Google\Generator\Tests\Tools\PhpConfigComparer;
 use Google\Generator\Tests\Tools\SourceComparer;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -217,11 +219,22 @@ function processSingleDiff($mono, $micro)
     // Find incorrectly generated files.
     foreach (array_intersect(array_keys($mono), array_keys($micro)) as $path) {
         print("Comparing: '{$path}':\n");
+        $sameContent = true;
         $isJson = substr($path, -5) === '.json';
-        $sameContent = $isJson ?
-            SourceComparer::compareJson($mono[$path], $micro[$path]) :
-            SourceComparer::compare($mono[$path], $micro[$path]);
-        $ok = $sameContent ? $ok : false;
+        if ($isJson) {
+          $sameContent = SourceComparer::compareJson($mono[$path], $micro[$path]);
+        } else {
+          $configFileEnding = "_config.php";
+          $isConfig = substr($path, -strlen($configFileEnding)) === $configFileEnding;
+          if ($isConfig) {
+            // Note that the configs are PHP arrays, not the string ccontents of the file
+            // as in the other sources.
+            $sameContent = PhpConfigComparer::compare($mono[$path], $micro[$path]);
+          } else {
+            $sameContent = PhpClassComparer::compare($mono[$path], $micro[$path]);
+          }
+        }
+        $ok &= $sameContent;
     }
 
     return $ok;

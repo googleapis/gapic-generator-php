@@ -16,7 +16,9 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Tests\Integration;;
+namespace Google\Generator\Tests\Integration;
+
+;
 
 use Google\Generator\Collections\Vector;
 
@@ -38,7 +40,7 @@ class Invoker
         $protobuf = "{$rootDir}/protobuf/src/";
         $googleapis = "{$rootDir}/googleapis/";
         $input = Vector::new(explode(' ', $protoPath)) // Assumes paths don't contain spaces
-            ->map(fn($path) => "{$rootDir}/{$path}")
+            ->map(fn ($path) => "{$rootDir}/{$path}")
             ->join(' ');
         $protocCmdLinePrefix = "{$protoc} --include_imports --include_source_info --experimental_allow_proto3_optional " .
             "-o {$descFilename}  -I {$googleapis} -I {$protobuf} -I {$rootDir}";
@@ -155,13 +157,19 @@ class Invoker
             if (is_dir($fullFileName)) {
                 $result += static::readFiles($fullFileName, "{$prefix}/{$fileName}");
             } elseif (is_file($fullFileName)) {
-                $result["{$prefix}/{$fileName}"] = file_get_contents($fullFileName);
+                // Configs are read in as PHP array values.
+                // The alternative would have been to parse the string into an array, but that
+                // would  require significant refactoring.
+                $configFileEnding = "_config.php";
+                $isConfig = substr($fullFileName, -strlen($configFileEnding)) === $configFileEnding;
+                $result["{$prefix}/{$fileName}"] = $isConfig ? require($fullFileName) : file_get_contents($fullFileName);
             }
         }
         return $result;
     }
 
-    private static function delTree(string $dir) {
+    private static function delTree(string $dir)
+    {
         $files = array_diff(scandir($dir), array('.','..'));
         foreach ($files as $file) {
             $path = "{$dir}/{$file}";
@@ -169,5 +177,4 @@ class Invoker
         }
         return rmdir($dir);
     }
-
 }
