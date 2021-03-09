@@ -371,7 +371,7 @@ class Coffee {
     const SERVICE_NAME = "google.cloud.coffee.v1.CoffeeService";
     const SERVICE_ADDRESS = "coffee.googleapis.com";
 }';
-        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, ));
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
         $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
 
         // Different variable names.
@@ -381,7 +381,7 @@ class Coffee {
     const SERVICE_ADDRESS = "coffee.googleapis.com";
     const DEFAULT_SERVICE_PORT = 443;
 }';
-        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, ));
+        $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
         $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
 
         // Different values.
