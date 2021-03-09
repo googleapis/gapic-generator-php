@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\Service;
-use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Symfony\Component\Yaml\Yaml;
 

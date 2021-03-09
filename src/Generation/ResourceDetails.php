@@ -22,7 +22,6 @@ use Google\Api\ResourceDescriptor;
 use Google\Generator\Ast\Ast;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpProperty;
-use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 

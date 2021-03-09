@@ -75,7 +75,7 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ]
 then
   echo_status "Running PHP-CS-Fixer..."
-  ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2 --dry-run
+  ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2,no_unused_imports --dry-run
   FORMAT_STATUS=$?
   if [ $FORMAT_STATUS != 0 ]
   then

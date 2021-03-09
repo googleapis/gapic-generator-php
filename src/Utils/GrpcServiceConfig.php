@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Grpc\Service_config\ServiceConfig;
 

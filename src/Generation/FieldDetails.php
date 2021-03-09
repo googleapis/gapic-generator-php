@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Api\ResourceDescriptor;
 use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
@@ -28,7 +27,6 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 

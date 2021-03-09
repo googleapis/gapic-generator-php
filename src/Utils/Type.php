@@ -24,7 +24,6 @@ use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\ProtoCatalog;
 
 /** A fully-specified PHP type. */
 class Type implements Equality

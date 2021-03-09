@@ -22,9 +22,7 @@ use Google\Generator\Ast\AST;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\GapicYamlConfig;
-use Google\Generator\Utils\Type;
 use Google\Generator\Utils\Helpers;
-use Google\Protobuf\Internal\GPBType;
 
 class GapicClientExamplesGenerator
 {
