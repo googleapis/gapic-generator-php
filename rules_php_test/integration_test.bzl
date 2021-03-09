@@ -20,7 +20,6 @@ def _php_diff_integration_goldens_impl(ctx):
         input_srcs = gapic_library[DefaultInfo].files.to_list()[0].path,
         api_name = api_name,
     )
-    print("DEL: " + str(gapic_library[DefaultInfo].files.to_list()))
     ctx.actions.run_shell(
         inputs = srcs + [
             gapic_library[DefaultInfo].files.to_list()[0],
