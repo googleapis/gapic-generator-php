@@ -28,5 +28,4 @@ jobs:
 
     - name: Run tests
       run: |
-        cd integration_tests;
-        php Main.php
+        php tests/Integration/Main.php
