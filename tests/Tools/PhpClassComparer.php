@@ -27,6 +27,7 @@ use PhpParser\NodeFinder;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Const_;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\PrettyPrinter;
 use PhpParser\NodeTraverser;
@@ -102,6 +103,13 @@ class PhpClassComparer
 
         // TODO(miraleung): properties, consts.
 
+        // Consts.
+        $constsOne = $astNodeFinder->findInstanceOf($astOne, Const_::class);
+        $constsTwo = $astNodeFinder->findInstanceOf($astTwo, Const_::class);
+        $diffFindings =
+          array_merge($diffFindings, static::diffAstNodesWithoutComments($constsOne, $constsTwo, "const", $printDiffs));
+
+
         // Class methods.
         $methodsOne = $astNodeFinder->findInstanceOf($astOne, ClassMethod::class);
         $methodsTwo = $astNodeFinder->findInstanceOf($astTwo, ClassMethod::class);
@@ -143,11 +151,34 @@ class PhpClassComparer
     }
 
     /**
+     * Diffs two lists of AST nodes, removing comments.
+     * Assumes the LHS arg (nodesOne) is from the monolith,
+     * and the RHS one from the microgenerator.
+     * @return string[] text diffs of the nodes in source form.
+     */
+    private static function diffAstNodesWithoutComments(
+      $nodesOne, $nodesTwo, $nodeTypeName, bool $printDiffs = true): array
+    {
+      return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, true, $printDiffs);
+    }
+
+    /**
      * Diffs two lists of AST nodes. Assumes the LHS arg (nodesOne) is from the monolith,
      * and the RHS one from the microgenerator.
      * @return string[] text diffs of the nodes in source form.
      */
     private static function diffAstNodes($nodesOne, $nodesTwo, $nodeTypeName, bool $printDiffs = true): array
+    {
+      return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, false, $printDiffs);
+    }
+
+    /**
+     * Diffs two lists of AST nodes. Assumes the LHS arg (nodesOne) is from the monolith,
+     * and the RHS one from the microgenerator.
+     * @return string[] text diffs of the nodes in source form.
+     */
+    private static function diffAstNodesHelper(
+      $nodesOne, $nodesTwo, $nodeTypeName, bool $removeComments, bool $printDiffs = true): array
     {
         $astNodeCmp = function ($nodeA, $nodeB) {
             return strcmp($nodeA->name->name, $nodeB->name->name);
@@ -179,6 +210,11 @@ class PhpClassComparer
             }
             $nodeStringOne = $astPrinter->prettyPrint(array($nodeMapOne[$nodeName]));
             $nodeStringTwo = $astPrinter->prettyPrint(array($nodeMapTwo[$nodeName]));
+            if ($removeComments) {
+              $catchallCommentPattern = '!/\*.*?\*/!s';
+              $nodeStringOne = preg_replace($catchallCommentPattern, '', $nodeStringOne);
+              $nodeStringTwo = preg_replace($catchallCommentPattern, '', $nodeStringTwo);
+            }
             $sourceIdentical = SourceComparer::compare($nodeStringOne, $nodeStringTwo, $printDiffs);
             if (!$sourceIdentical) {
                 $diffFindings[] = "Diff found in $nodeTypeName $nodeName for mono and micro";
