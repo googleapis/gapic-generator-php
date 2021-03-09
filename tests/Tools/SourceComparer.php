@@ -38,6 +38,12 @@ class SourceComparer
         return static::compare(json_encode($mono, JSON_PRETTY_PRINT), json_encode($micro, JSON_PRETTY_PRINT), $printDiffs);
     }
 
+    /**
+     * Compares two source strings.
+     * @param mono the first source string, assumed to be the monolith (original or expected value).
+     * @param micro the second source string, assumed to be the microgenerator (new or actual value).
+     * @return bool true if the source strings are the same, false otherwise.
+     */
     public static function compare(string $mono, string $micro, bool $printDiffs = true): bool
     {
         // Compare ignoring whitespace, except within strings.
