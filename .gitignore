@@ -1,6 +1,9 @@
 vendor/
 bazel-*
 
+# PHP
+.php_cs.cache
+
 # Vim
 *.sw*
 *.vim
