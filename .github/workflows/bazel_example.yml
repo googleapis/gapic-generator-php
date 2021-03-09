@@ -75,4 +75,3 @@ jobs:
         name: test-artifacts
         path: ~/.cache/bazel/*/*/*/gapic_generator_php/bazel-out/*/testlogs/*
         retention-days: 5
-
