@@ -28,7 +28,7 @@ trait ProtoTrait
      * Load a descriptor set bytes from the specified proto path.
      * The proto path must be relative to the `tests/Unit` directory.
      *
-     * @param string $protoPath The proto path relative to the `tests` directory.
+     * @param string $protoPath The proto path relative to the `tests/Unit` directory.
      *
      * @return string
      */
@@ -58,9 +58,9 @@ trait ProtoTrait
 
     /**
      * Load a file descriptor from the specified proto path.
-     * The proto path must be relative to the `tests` directory.
+     * The proto path must be relative to the `tests/Unit` directory.
      *
-     * @param string $protoPath The proto path relative to the `tests` directory.
+     * @param string $protoPath The proto path relative to the `tests/Unit` directory.
      *
      * @return FileDescriptorProto
      */
