@@ -67,7 +67,7 @@ jobs:
         grep '"timeout_millis": 4242000' ./bazel_example/example_php_pkg/src/resources/example_client_config.json
 
     - name: Integration Tests
-      run: bazel --batch test tests/Integration:asset --noshow_progress
+      run: bazel --batch test tests/Integration:asset tests/Integration:speech --noshow_progress
 
     - uses: actions/upload-artifact@v2
       if: ${{ failure() }}

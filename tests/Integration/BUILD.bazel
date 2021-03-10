@@ -10,18 +10,26 @@ load("//:rules_php_test/integration_test.bzl", "php_golden_update", "php_integra
 ####################################################
 # Integration Test Rules
 ####################################################
-INTEGRATION_TEST_LIBRARIES = ["asset"]
+INTEGRATION_TEST_LIBRARIES = [
+    "asset",  # Basic case.
+    "speech",  # sample_code field in gapic.yaml.
+]
+
+API_GAPIC_TARGETS = {
+    "asset": "asset_php_gapic",
+    "speech": "speech_php_gapic",
+}
 
 [php_integration_test(
     name = lib_name,
     data = ["//tests/Integration/goldens/%s:goldens_files" % lib_name],
-    target = "%s_php_gapic" % lib_name,
+    target = API_GAPIC_TARGETS[lib_name],
 ) for lib_name in INTEGRATION_TEST_LIBRARIES]
 
 [php_golden_update(
     name = "%s_update" % lib_name,
     data = ["//tests/Integration/goldens/%s:goldens_files" % lib_name],
-    target = "%s_php_gapic" % lib_name,
+    target = API_GAPIC_TARGETS[lib_name],
 ) for lib_name in INTEGRATION_TEST_LIBRARIES]
 
 ####################################################
@@ -54,12 +62,45 @@ php_gapic_library(
     ],
 )
 
-# Open Source Packages
 php_gapic_assembly_pkg(
     name = "google-cloud-asset-v1-php",
     deps = [
         ":asset_php_gapic",
         ":asset_php_grpc",
         ":asset_php_proto",
+    ],
+)
+
+# Speech - sample_code.
+php_proto_library(
+    name = "speech_php_proto",
+    deps = ["@com_google_googleapis//google/cloud/speech/v1:speech_proto"],
+)
+
+php_grpc_library(
+    name = "speech_php_grpc",
+    srcs = ["@com_google_googleapis//google/cloud/speech/v1:speech_proto"],
+    deps = [":speech_php_proto"],
+)
+
+php_gapic_library(
+    name = "speech_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/speech/v1:speech_proto_with_info"],
+    gapic_yaml = "@com_google_googleapis//google/cloud/speech/v1:speech_gapic.yaml",
+    grpc_service_config = "@com_google_googleapis//google/cloud/speech/v1:speech_grpc_service_config.json",
+    service_yaml = "@com_google_googleapis//google/cloud/speech/v1:speech_v1.yaml",
+    deps = [
+        ":speech_php_grpc",
+        ":speech_php_proto",
+    ],
+)
+
+# Open Source Packages
+php_gapic_assembly_pkg(
+    name = "google-cloud-speech-v1-php",
+    deps = [
+        ":speech_php_gapic",
+        ":speech_php_grpc",
+        ":speech_php_proto",
     ],
 )
