@@ -222,7 +222,7 @@ function processSingleDiff($mono, $micro)
         $sameContent = true;
         $isJson = substr($path, -5) === '.json';
         if ($isJson) {
-          $sameContent = SourceComparer::compareJson($mono[$path], $micro[$path]);
+          $sameContent = SourceComparer::compareJsonMonoMicroClientConfig($mono[$path], $micro[$path]);
         } else {
           $configFileEnding = "_config.php";
           $isConfig = substr($path, -strlen($configFileEnding)) === $configFileEnding;

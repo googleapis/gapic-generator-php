@@ -20,23 +20,18 @@ namespace Google\Generator\Tests\Tools;
 
 class SourceComparer
 {
+  /**
+   * Same as compareJson, but with some exceptions to allow for monolith versus microgenerator differences.
+   */
+    public static function compareJsonMonoMicroClientConfig(string $mono, string $micro, bool $printDiffs = true): bool
+    {
+        return static::compareJsonHelper($mono, $micro, true, $printDiffs);
+    }
+
     public static function compareJson(string $mono, string $micro, bool $printDiffs = true): bool
     {
-        $monoJson = json_decode($mono);
-        $microJson = json_decode($micro);
-
-        $sort = null;
-        $sort = function ($a) use (&$sort) {
-            $a = (array)$a;
-            ksort($a);
-            return array_map(fn ($x) => is_array($x) || is_object($x) ? $sort($x) : $x, $a);
-        };
-
-        $mono = $sort($monoJson);
-        $micro = $sort($microJson);
-
-        return static::compare(json_encode($mono, JSON_PRETTY_PRINT), json_encode($micro, JSON_PRETTY_PRINT), $printDiffs);
-    }
+        return static::compareJsonHelper($mono, $micro, false, $printDiffs);
+      }
 
     /**
      * Compares two source strings.
@@ -143,6 +138,36 @@ class SourceComparer
         }
         return true;
     }
+
+    private static function compareJsonHelper(string $mono, string $micro, bool $doMonoMicroProcessing, bool $printDiffs = true): bool
+    {
+        $monoJson = json_decode($mono);
+        $microJson = json_decode($micro);
+
+        $sort = null;
+        $sort = function ($a) use (&$sort) {
+            $a = (array)$a;
+            ksort($a);
+            return array_map(fn ($x) => is_array($x) || is_object($x) ? $sort($x) : $x, $a);
+        };
+
+        $mono = $sort($monoJson);
+        $micro = $sort($microJson);
+        $monoJsonString = json_encode($mono, JSON_PRETTY_PRINT);
+        $microJsonString = json_encode($micro, JSON_PRETTY_PRINT);
+        // Do string processing because the decoded JSON has inaccessible objects.
+        if ($doMonoMicroProcessing) {
+          $unwantedWords = '"timeout_millis"';
+          $replaceMatch = '/^.*' . $unwantedWords . '.*$(?:\r\n|\n)?/m';
+          // Remove any timeout_setting strings.
+          // This is needed to decouple timeout settings from service.yaml.
+          $monoJsonString = preg_replace($replaceMatch, '', $monoJsonString);
+          $microJsonString = preg_replace($replaceMatch, '', $microJsonString);
+        }
+
+        return static::compare($monoJsonString, $microJsonString, $printDiffs);
+    }
+
 
     private static function isWhitespace($c)
     {

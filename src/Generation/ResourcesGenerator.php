@@ -277,13 +277,6 @@ class ResourcesGenerator
                         $retryParamsName = $params;
                     }
                 }
-                // A timeout in service config yaml overrides timeout in grpc service config.
-                // Note that this monolith-compatible behaviour is broken, as it doesn't handle wildcard selectors at all.
-                // TODO(vNext): Remove this override.
-                $rule = $serviceYamlBackendRules->get("{$serviceName}.{$method->name}", null);
-                if (!is_null($rule)) {
-                    $timeoutMillis = $rule->getDeadline() * 1000;
-                }
                 return [$method->name, Vector::new([
                     ['timeout_millis', $timeoutMillis],
                     ['retry_codes_name', $retryCodesName],
