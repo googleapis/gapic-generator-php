@@ -16,8 +16,10 @@ def _php_binary_impl(ctx):
     out_dir = ctx.actions.declare_directory("out")
     out_run_sh = ctx.actions.declare_file("run.sh")
     entry_point_relative = ctx.file.entry_point.path[len(ctx.attr.entry_point.label.workspace_root):].strip("/")
+
     # I don't understand why this is required:
     entry_point_relative = entry_point_relative[len("rules_php_gapic/"):]
+
     # PHP files must be copied, as the PHP __DIR__ constant is incorrect if the src file is symlinked.
     # Ideally this would cp with everything being symlinks except php files.
     # However that's difficult, so copy every thing; using tar as this allows excluding of directories.
@@ -25,7 +27,7 @@ def _php_binary_impl(ctx):
 DEST="$(pwd)/{out_dir_path}/install"
 mkdir "$DEST"
 cd '{install_path}'
-tar cf - --dereference --exclude=.git '--exclude=bazel-*' . | (cd "$DEST" && tar xf -)
+tar cf - --dereference src/  generated/ googleapis/ tools/ vendor/ composer.json | (cd "$DEST" && tar xf -)
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,
@@ -33,8 +35,9 @@ tar cf - --dereference --exclude=.git '--exclude=bazel-*' . | (cd "$DEST" && tar
     ctx.actions.run_shell(
         inputs = [ctx.file.php_composer_install],
         outputs = [out_dir],
-        command = cmd
+        command = cmd,
     )
+
     # PHP is run via this "run.sh" script, which changes directory required by php.
     # Optionally the _bazel_ working directory can be passed as a cmd-line flag to
     # the php process.
@@ -51,7 +54,7 @@ tar cf - --dereference --exclude=.git '--exclude=bazel-*' . | (cd "$DEST" && tar
     # One useful debugging technique is to redirect stdout and/or stderr of the php process i
     # this script to a file; then dump the file contents afterwards.
     if ctx.attr.working_directory_flag_name:
-        working_directory_flag = '--{name} "$WD"'.format(name=ctx.attr.working_directory_flag_name)
+        working_directory_flag = '--{name} "$WD"'.format(name = ctx.attr.working_directory_flag_name)
     else:
         working_directory_flag = ""
     run_sh = """#!/bin/bash
@@ -65,19 +68,19 @@ cd "$(dirname $0)/run.sh.runfiles/$(basename $WD)/{out_short_path}/install"
         entry_point = entry_point_relative,
         working_directory_flag = working_directory_flag,
     )
-    ctx.actions.write(out_run_sh, run_sh, is_executable=True)
+    ctx.actions.write(out_run_sh, run_sh, is_executable = True)
     return [DefaultInfo(
-        files=depset([out_dir]),
-        runfiles=ctx.runfiles([out_run_sh, out_dir, ctx.file.php]),
-        executable=out_run_sh,
+        files = depset([out_dir]),
+        runfiles = ctx.runfiles([out_run_sh, out_dir, ctx.file.php]),
+        executable = out_run_sh,
     )]
 
 php_binary = rule(
     implementation = _php_binary_impl,
     attrs = {
-        "php": attr.label(default=Label("@php_micro//:bin/php"), allow_single_file=True, executable=True, cfg="host"),
-        "php_composer_install": attr.label(allow_single_file=True),
-        "entry_point": attr.label(allow_single_file=True),
+        "php": attr.label(default = Label("@php_micro//:bin/php"), allow_single_file = True, executable = True, cfg = "host"),
+        "php_composer_install": attr.label(allow_single_file = True),
+        "entry_point": attr.label(allow_single_file = True),
         "working_directory_flag_name": attr.string(),
     },
     executable = True,
