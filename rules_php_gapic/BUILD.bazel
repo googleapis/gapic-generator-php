@@ -16,8 +16,8 @@ load(":php.bzl", "php_binary")
 
 php_binary(
     name = "php_gapic_generator_binary",
-    php_composer_install = "@php_gapic_generator_composer_install//:install",
     entry_point = "src/Main.php",
-    working_directory_flag_name = "side_loaded_root_dir",
+    php_composer_install = "@php_gapic_generator_composer_install//:install",
     visibility = ["//visibility:public"],
+    working_directory_flag_name = "side_loaded_root_dir",
 )

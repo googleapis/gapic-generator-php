@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@gapic_generator_php//rules_php_gapic:php_gapic.bzl", "php_proto_library", "php_grpc_library", "php_gapic_library")
+load("@gapic_generator_php//rules_php_gapic:php_gapic.bzl", "php_gapic_library", "php_grpc_library", "php_proto_library")
 load("@gapic_generator_php//rules_php_gapic:php_gapic_pkg.bzl", "php_gapic_assembly_pkg")
 
 proto_library(
@@ -41,7 +41,7 @@ php_grpc_library(
     ],
     deps = [
         ":example_php_proto",
-    ]
+    ],
 )
 
 php_gapic_library(
@@ -49,20 +49,20 @@ php_gapic_library(
     srcs = [
         ":example_proto",
     ],
-    deps = [
-        ":example_php_proto",
-        ":example_php_grpc",
-    ],
     gapic_yaml = ":example-gapic.yaml",
-    service_yaml = ":example-service.yaml",
     grpc_service_config = ":example-grpc-service-config.json",
+    service_yaml = ":example-service.yaml",
+    deps = [
+        ":example_php_grpc",
+        ":example_php_proto",
+    ],
 )
 
 php_gapic_assembly_pkg(
     name = "example_php_pkg",
     deps = [
-        ":example_php_proto",
-        ":example_php_grpc",
         ":example_php_gapic",
-    ]
+        ":example_php_grpc",
+        ":example_php_proto",
+    ],
 )
