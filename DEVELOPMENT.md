@@ -25,15 +25,15 @@
 
     ```
     > php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    > php -r "if (hash_file('sha384', 'composer-setup.php') === \ 
+    > php -r "if (hash_file('sha384', 'composer-setup.php') === \
          '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { \
          echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); \
          } echo PHP_EOL;"
     Installer verified
     > sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
     ```
-    
-    2.  Install `php-cs-fixer` globally.
+
+    1.  Install `php-cs-fixer` globally.
 
     ```
     > curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
@@ -41,9 +41,12 @@
     > sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
     ```
 
-    3.  Optional: Enable PHP-CS-Fixer linting in your IDE.
+    1.  Optional: Enable PHP-CS-Fixer linting in your IDE.
 
-        1.  Vim: Set up [vim-php-cs-fixer](https://github.com/stephpy/vim-php-cs-fixer), and apply [this fix](https://github.com/stephpy/vim-php-cs-fixer/pull/47)
+        1.  Vim: Set up
+            [vim-php-cs-fixer](https://github.com/stephpy/vim-php-cs-fixer), and
+            apply
+            [this fix](https://github.com/stephpy/vim-php-cs-fixer/pull/47)
 
 5.  Initialize the submodules
 
@@ -68,7 +71,7 @@
 -   Monolith integration tests. These may take 5 minutes or so to run.
 
     ```
-    cd integration_tests
+    cd tests/Integration
     php Main.php
     ```
 
@@ -77,11 +80,11 @@
     -   Running:
 
     ```
-    bazel test integration_tests:asset
+    bazel test tests/Integration:asset
     ```
 
     -   Updating goldens:
 
     ```
-    bazel run integration_tests:asset_update
+    bazel run tests/Integration:asset_update
     ```
