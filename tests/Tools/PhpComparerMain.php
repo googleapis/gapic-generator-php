@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Tools;
 
 use Google\Generator\Tests\Tools\PhpClassComparer;
+use Google\Generator\Tests\Tools\PhpConfigComparer;
 
 require __DIR__ . '../../../vendor/autoload.php';
 error_reporting(E_ALL);
@@ -37,6 +38,17 @@ function compareFiles($argv): bool {
     if (count($argv) < 3) {
         print("Insufficient arguments\nUsage example: php MethodComparer.php /path/to/file1.php /path/to/file2.php");
         exit(1);
+    }
+
+    $filePathOne = $argv[1];
+    $filePathTwo = $argv[2];
+    $configFileEnding = "_config.php";
+    $configEndLength = strlen($configFileEnding);
+    if (substr($filePathOne, -$configEndLength) == $configFileEnding &&
+      substr($filePathOne, -$configEndLength) == $configFileEnding) {
+      $configOne = require($filePathOne);
+      $configTwo = require($filePathTwo);
+      return PhpConfigComparer::compare($configOne, $configTwo);
     }
 
     $fileContentsOne = parseFileToString($argv[1]);
