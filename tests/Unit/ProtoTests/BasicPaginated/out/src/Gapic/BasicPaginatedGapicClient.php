@@ -51,8 +51,8 @@ use Testing\BasicPaginated\Response;
  * ```
  * $basicPaginatedClient = new BasicPaginatedClient();
  * try {
- *     $aField = '';
- *     $pageToken = '';
+ *     $aField = 'a_field';
+ *     $pageToken = 'page_token';
  *     $partOfRequestA = [];
  *     // Iterate over pages of elements
  *     $pagedResponse = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
@@ -181,8 +181,8 @@ class BasicPaginatedGapicClient
      * ```
      * $basicPaginatedClient = new BasicPaginatedClient();
      * try {
-     *     $aField = '';
-     *     $pageToken = '';
+     *     $aField = 'a_field';
+     *     $pageToken = 'page_token';
      *     $partOfRequestA = [];
      *     // Iterate over pages of elements
      *     $pagedResponse = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);

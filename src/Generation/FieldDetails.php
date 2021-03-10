@@ -153,7 +153,7 @@ class FieldDetails
             case GPBType::BOOL: // 8
                 return false;
             case GPBType::STRING: // 9
-                return '';
+                return $this->name;
             case GPBType::MESSAGE: // 11
                 return AST::new($ctx->type(Type::fromField($this->catalog, $this->desc->desc)))();
             case GPBType::BYTES: // 12

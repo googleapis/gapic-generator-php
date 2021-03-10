@@ -77,7 +77,7 @@ use Google\Protobuf\Timestamp;
  * ```
  * $assetServiceClient = new AssetServiceClient();
  * try {
- *     $parent = '';
+ *     $parent = 'parent';
  *     $outputConfig = new OutputConfig();
  *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
  *     $operationResponse->pollUntilComplete();
@@ -451,7 +451,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $parent = '';
+     *     $parent = 'parent';
      *     $outputConfig = new OutputConfig();
      *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
      *     $operationResponse->pollUntilComplete();
@@ -571,7 +571,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $parent = '';
+     *     $parent = 'parent';
      *     $response = $assetServiceClient->batchGetAssetsHistory($parent);
      * } finally {
      *     $assetServiceClient->close();
@@ -647,8 +647,8 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $parent = '';
-     *     $feedId = '';
+     *     $parent = 'parent';
+     *     $feedId = 'feed_id';
      *     $feed = new Feed();
      *     $response = $assetServiceClient->createFeed($parent, $feedId, $feed);
      * } finally {
@@ -704,7 +704,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $name = '';
+     *     $name = 'name';
      *     $response = $assetServiceClient->getFeed($name);
      * } finally {
      *     $assetServiceClient->close();
@@ -749,7 +749,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $parent = '';
+     *     $parent = 'parent';
      *     $response = $assetServiceClient->listFeeds($parent);
      * } finally {
      *     $assetServiceClient->close();
@@ -844,7 +844,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $name = '';
+     *     $name = 'name';
      *     $assetServiceClient->deleteFeed($name);
      * } finally {
      *     $assetServiceClient->close();
@@ -890,7 +890,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $scope = '';
+     *     $scope = 'scope';
      *     // Iterate over pages of elements
      *     $pagedResponse = $assetServiceClient->searchAllResources($scope);
      *     foreach ($pagedResponse->iteratePages() as $page) {
@@ -1036,7 +1036,7 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $scope = '';
+     *     $scope = 'scope';
      *     // Iterate over pages of elements
      *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
      *     foreach ($pagedResponse->iteratePages() as $page) {
