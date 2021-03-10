@@ -168,6 +168,19 @@ class Coffee {
         $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
         $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
 
+        // Different method comments.
+        $phpClassTwo = '<?php
+namespace FooBar;
+class Coffee {
+  /**
+   * This is a comment.
+   */
+  private function __construct() {}
+}';
+        $this->assertTrue(PhpClassComparer::compare($phpClassOne, $phpClassTwo));
+        $this->assertTrue(PhpClassComparer::compare($phpClassTwo, $phpClassOne));
+
+
         // Different method names.
         $phpClassOne = '<?php
 namespace FooBar;
@@ -468,6 +481,5 @@ class Coffee {
 }';
         $this->assertFalse(PhpClassComparer::compare($phpClassOne, $phpClassTwo, false));
         $this->assertFalse(PhpClassComparer::compare($phpClassTwo, $phpClassOne, false));
-
     }
 }
