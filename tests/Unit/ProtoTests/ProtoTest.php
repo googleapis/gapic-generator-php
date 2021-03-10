@@ -46,6 +46,13 @@ final class ProtoTest extends TestCase
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
         $codeIterator = CodeGenerator::generateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
 
+        $expectedGeneratedFilenameEndings  =  array(
+          'Client.php',
+          'ClientTest.php',
+          '_descriptor_config.php',
+          '_rest_client_config.php',
+          '_client_config.json'
+        );
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;
             // Check "expected-code" file exists, then compare generated code against expected code.
@@ -55,8 +62,22 @@ final class ProtoTest extends TestCase
             if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {
                 $this->assertEquals($expectedCode, $code);
             }
+            $actualFileEnding = '';
+            foreach ($expectedGeneratedFilenameEndings as $fileEnding) {
+                if (substr($relativeFilename, -strlen($fileEnding)) === $fileEnding) {
+                    $actualFileEnding = $fileEnding;
+                }
+            }
+            if (($key = array_search($actualFileEnding, $expectedGeneratedFilenameEndings)) !== false) {
+                unset($expectedGeneratedFilenameEndings[$key]);
+            }
         }
-        // TODO: Check that all expected files are actually generated!
+
+        // Ensure all files ahve been generated.
+        $this->assertTrue(
+            empty($expectedGeneratedFilenameEndings),
+            "Expected files not generated for files ending in " . implode(",", $expectedGeneratedFilenameEndings)
+        );
     }
 
     public function testBasic0(): void
