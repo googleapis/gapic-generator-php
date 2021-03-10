@@ -20,12 +20,11 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 
 class GapicClientExamplesGenerator
 {
-  public function __construct(ServiceDetails $serviceDetails)
+    public function __construct(ServiceDetails $serviceDetails)
     {
         $this->serviceDetails = $serviceDetails;
         // Create a separate context, as this code isn't part of the generated client.
