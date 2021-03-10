@@ -294,6 +294,66 @@ class GrpcServiceConfigWithRetry1GapicClient
      * ```
      * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
      * try {
+     *     $request = new Request1();
+     *     // Write all requests to the server, then read all responses until the
+     *     // stream is complete
+     *     $requests = [
+     *         $request,
+     *     ];
+     *     $stream = $grpcServiceConfigWithRetry1Client->method1BidiStreaming();
+     *     $stream->writeAll($requests);
+     *     foreach ($stream->closeWriteAndReadAll() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     *     // Alternatively:
+     *     // Write requests individually, making read() calls if
+     *     // required. Call closeWrite() once writes are complete, and read the
+     *     // remaining responses from the server.
+     *     $requests = [
+     *         $request,
+     *     ];
+     *     $stream = $grpcServiceConfigWithRetry1Client->method1BidiStreaming();
+     *     foreach ($requests as $request) {
+     *         $stream->write($request);
+     *         // if required, read a single response from the stream
+     *         $element = $stream->read();
+     *         // doSomethingWith($element)
+     *     }
+     *     $stream->closeWrite();
+     *     $element = $stream->read();
+     *     while (!is_null($element)) {
+     *         // doSomethingWith($element)
+     *         $element = $stream->read();
+     *     }
+     * } finally {
+     *     $grpcServiceConfigWithRetry1Client->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
+     * }
+     *
+     * @return \Google\ApiCore\BidiStream
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function method1BidiStreaming(array $optionalArgs = [])
+    {
+        return $this->startCall('Method1BidiStreaming', Response1::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+     * try {
      *     $response = $grpcServiceConfigWithRetry1Client->method1CServiceLevelRetry();
      * } finally {
      *     $grpcServiceConfigWithRetry1Client->close();
@@ -389,65 +449,5 @@ class GrpcServiceConfigWithRetry1GapicClient
     {
         $request = new Request1();
         return $this->startCall('Method1ServerStreaming', Response1::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-     * try {
-     *     $request = new Request1();
-     *     // Write all requests to the server, then read all responses until the
-     *     // stream is complete
-     *     $requests = [
-     *         $request,
-     *     ];
-     *     $stream = $grpcServiceConfigWithRetry1Client->method1BidiStreaming();
-     *     $stream->writeAll($requests);
-     *     foreach ($stream->closeWriteAndReadAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     *     // Alternatively:
-     *     // Write requests individually, making read() calls if
-     *     // required. Call closeWrite() once writes are complete, and read the
-     *     // remaining responses from the server.
-     *     $requests = [
-     *         $request,
-     *     ];
-     *     $stream = $grpcServiceConfigWithRetry1Client->method1BidiStreaming();
-     *     foreach ($requests as $request) {
-     *         $stream->write($request);
-     *         // if required, read a single response from the stream
-     *         $element = $stream->read();
-     *         // doSomethingWith($element)
-     *     }
-     *     $stream->closeWrite();
-     *     $element = $stream->read();
-     *     while (!is_null($element)) {
-     *         // doSomethingWith($element)
-     *         $element = $stream->read();
-     *     }
-     * } finally {
-     *     $grpcServiceConfigWithRetry1Client->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $timeoutMillis
-     *           Timeout to use for this call.
-     * }
-     *
-     * @return \Google\ApiCore\BidiStream
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function method1BidiStreaming(array $optionalArgs = [])
-    {
-        return $this->startCall('Method1BidiStreaming', Response1::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }

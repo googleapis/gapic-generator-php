@@ -100,14 +100,8 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $featuresElement = Feature::LABEL_DETECTION;
-        $features = [
-            $featuresElement,
-        ];
-        $inputUri = 'gs://cloud-samples-data/video/cat.mp4';
-        $response = $client->annotateVideo($features, [
-            'inputUri' => $inputUri,
-        ]);
+        $features = [];
+        $response = $client->annotateVideo($features);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -119,8 +113,6 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $this->assertSame('/google.cloud.videointelligence.v1.VideoIntelligenceService/AnnotateVideo', $actualApiFuncCall);
         $actualValue = $actualApiRequestObject->getFeatures();
         $this->assertProtobufEquals($features, $actualValue);
-        $actualValue = $actualApiRequestObject->getInputUri();
-        $this->assertProtobufEquals($inputUri, $actualValue);
         $expectedOperationsRequestObject = new GetOperationRequest();
         $expectedOperationsRequestObject->setName('operations/annotateVideoTest');
         $response->pollUntilComplete([
@@ -172,14 +164,8 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $featuresElement = Feature::LABEL_DETECTION;
-        $features = [
-            $featuresElement,
-        ];
-        $inputUri = 'gs://cloud-samples-data/video/cat.mp4';
-        $response = $client->annotateVideo($features, [
-            'inputUri' => $inputUri,
-        ]);
+        $features = [];
+        $response = $client->annotateVideo($features);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();

@@ -20,10 +20,10 @@
                 }
             },
             "methods": {
-                "MethodServer": {
+                "MethodEmpty": {
                     "timeout_millis": 60000
                 },
-                "MethodEmpty": {
+                "MethodServer": {
                     "timeout_millis": 60000
                 }
             }

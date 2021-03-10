@@ -61,7 +61,32 @@ use Google\LongRunning\Operation;
  * try {
  *     $config = new RecognitionConfig();
  *     $audio = new RecognitionAudio();
- *     $response = $speechClient->recognize($config, $audio);
+ *     $operationResponse = $speechClient->longRunningRecognize($config, $audio);
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         $result = $operationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ *     // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $speechClient->longRunningRecognize($config, $audio);
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $speechClient->resumeOperation($operationName, 'longRunningRecognize');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         $result = $newOperationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $speechClient->close();
  * }
@@ -205,49 +230,6 @@ class SpeechGapicClient
     }
 
     /**
-     * Performs synchronous speech recognition: receive results after all audio
-     * has been sent and processed.
-     *
-     * Sample code:
-     * ```
-     * $speechClient = new SpeechClient();
-     * try {
-     *     $config = new RecognitionConfig();
-     *     $audio = new RecognitionAudio();
-     *     $response = $speechClient->recognize($config, $audio);
-     * } finally {
-     *     $speechClient->close();
-     * }
-     * ```
-     *
-     * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
-     *                                        process the request.
-     * @param RecognitionAudio  $audio        Required. The audio data to be recognized.
-     * @param array             $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Speech\V1\RecognizeResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function recognize($config, $audio, array $optionalArgs = [])
-    {
-        $request = new RecognizeRequest();
-        $request->setConfig($config);
-        $request->setAudio($audio);
-        return $this->startCall('Recognize', RecognizeResponse::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
      * Performs asynchronous speech recognition: receive results via the
      * google.longrunning.Operations interface. Returns either an
      * `Operation.error` or an `Operation.response` which contains
@@ -317,6 +299,49 @@ class SpeechGapicClient
         $request->setConfig($config);
         $request->setAudio($audio);
         return $this->startOperationsCall('LongRunningRecognize', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Performs synchronous speech recognition: receive results after all audio
+     * has been sent and processed.
+     *
+     * Sample code:
+     * ```
+     * $speechClient = new SpeechClient();
+     * try {
+     *     $config = new RecognitionConfig();
+     *     $audio = new RecognitionAudio();
+     *     $response = $speechClient->recognize($config, $audio);
+     * } finally {
+     *     $speechClient->close();
+     * }
+     * ```
+     *
+     * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
+     *                                        process the request.
+     * @param RecognitionAudio  $audio        Required. The audio data to be recognized.
+     * @param array             $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Speech\V1\RecognizeResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function recognize($config, $audio, array $optionalArgs = [])
+    {
+        $request = new RecognizeRequest();
+        $request->setConfig($config);
+        $request->setAudio($audio);
+        return $this->startCall('Recognize', RecognizeResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
