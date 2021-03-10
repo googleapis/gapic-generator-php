@@ -159,7 +159,7 @@ class CodeGenerator
                 yield ["src/{$version}{$serviceDetails->emptyClientType->name}.php", $code];
                 // Unit tests.
                 $ctx = new SourceFileContext($serviceDetails->unitTestsType->getNamespace(), $licenseYear);
-                $file = UnitTestsGenerator::generate($ctx, $serviceDetails, $gapicYamlConfig);
+                $file = UnitTestsGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 // TODO(vNext): Remove these non-standard 'use' ordering.
