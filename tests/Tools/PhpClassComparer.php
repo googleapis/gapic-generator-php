@@ -37,15 +37,15 @@ use PhpParser\NodeDumper;
 
 class PhpClassComparer
 {
-  const BLOCK_COMMENT_PATTERN = '!/\*.*?\*/!s';
+    const BLOCK_COMMENT_PATTERN = '!/\*.*?\*/!s';
 
-  /**
-   * Compares two PHP classes.
-   * Assumes the LHS arg (nodesOne) is from the monolith, and the RHS one from the microgenerator.
-   * @param phpClassOne the first PHP class as a string literal, such as the contents of a file.
-   * @param phpClassTwo the first PHP class as a string literal, such as the contents of a file.
-   * @return bool true if the classes are semantically equal, false otherwise.
-   */
+    /**
+     * Compares two PHP classes.
+     * Assumes the LHS arg (nodesOne) is from the monolith, and the RHS one from the microgenerator.
+     * @param phpClassOne the first PHP class as a string literal, such as the contents of a file.
+     * @param phpClassTwo the first PHP class as a string literal, such as the contents of a file.
+     * @return bool true if the classes are semantically equal, false otherwise.
+     */
     public static function compare(string $phpClassOne, string $phpClassTwo, bool $printDiffs = true): bool
     {
         $phpParser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -75,13 +75,14 @@ class PhpClassComparer
         $namespaceTwo = $astNodeFinder->findFirstInstanceOf($astTwo, Namespace_::class);
         $astTraverser = new NodeTraverser;
         $astTraverser->addVisitor(new class extends NodeVisitorAbstract {
-          public function enterNode(Node $node) {
-            if ($node instanceof Namespace_) {
-              // Clean out all nodes inside.
-              $node->stmts = [];
-              return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            public function enterNode(Node $node)
+            {
+                if ($node instanceof Namespace_) {
+                    // Clean out all nodes inside.
+                    $node->stmts = [];
+                    return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+                }
             }
-          }
         });
         $astPrinter = new PrettyPrinter\Standard;
         $namespaceOneString = is_null($namespaceOne)
@@ -93,10 +94,10 @@ class PhpClassComparer
           : $astPrinter->prettyPrint($astTraverser->traverse(array(clone $namespaceTwo)));
         $namespacePattern = "/namespace .*;/i";
         if (preg_match($namespacePattern, $namespaceOneString, $actualNamespaceValue)) {
-          $namespaceOneString = $actualNamespaceValue[0];
+            $namespaceOneString = $actualNamespaceValue[0];
         }
         if (preg_match($namespacePattern, $namespaceTwoString, $actualNamespaceValue)) {
-          $namespaceTwoString = $actualNamespaceValue[0];
+            $namespaceTwoString = $actualNamespaceValue[0];
         }
         if ($namespaceOneString !== $namespaceTwoString) {
             $diffFindings[] = "mono namespace $namespaceOneString != micro namespace $namespaceTwoString\n\n";
@@ -107,37 +108,37 @@ class PhpClassComparer
         $propertiesTwo = $astNodeFinder->findInstanceOf($astTwo, Property::class);
         $propertiesOneArray = [];
         $propNodeCmp = function ($propA, $propB) {
-          return strcmp($propA->props[0]->name->name, $propB->props[0]->name->name);
+            return strcmp($propA->props[0]->name->name, $propB->props[0]->name->name);
         };
         if (!is_null($propertiesOne)) {
-          usort($propertiesOne, $propNodeCmp);
-          $rawValue = $astPrinter->prettyPrint($propertiesOne);
-          $rawValue = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $rawValue);
-          $rawValue = preg_replace('/ {2,}/', ' ', trim($rawValue));
-          $propertiesOneArray = explode("\n", $rawValue);
+            usort($propertiesOne, $propNodeCmp);
+            $rawValue = $astPrinter->prettyPrint($propertiesOne);
+            $rawValue = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $rawValue);
+            $rawValue = preg_replace('/ {2,}/', ' ', trim($rawValue));
+            $propertiesOneArray = explode("\n", $rawValue);
         }
         $propertiesTwoArray = [];
         if (!is_null($propertiesTwo)) {
-          usort($propertiesTwo, $propNodeCmp);
-          $rawValue = $astPrinter->prettyPrint($propertiesTwo);
-          $rawValue = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $rawValue);
-          $rawValue = preg_replace('/ {2,}/', ' ', trim($rawValue));
-          $propertiesTwoArray = explode("\n", $rawValue);
+            usort($propertiesTwo, $propNodeCmp);
+            $rawValue = $astPrinter->prettyPrint($propertiesTwo);
+            $rawValue = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $rawValue);
+            $rawValue = preg_replace('/ {2,}/', ' ', trim($rawValue));
+            $propertiesTwoArray = explode("\n", $rawValue);
         }
         if (!empty($propertiesOneArray) || !empty($propertiesTwoArray)) {
-          $allPropertiesAsStrings = array_unique(array_merge($propertiesOneArray, $propertiesTwoArray));
-          sort($allPropertiesAsStrings);
-          foreach ($allPropertiesAsStrings as $propertyString) {
-            if (substr($propertyString, 0, 3) == '// ' || trim($propertyString) == '') {
-              continue;
+            $allPropertiesAsStrings = array_unique(array_merge($propertiesOneArray, $propertiesTwoArray));
+            sort($allPropertiesAsStrings);
+            foreach ($allPropertiesAsStrings as $propertyString) {
+                if (substr($propertyString, 0, 3) == '// ' || trim($propertyString) == '') {
+                    continue;
+                }
+                if (!in_array($propertyString, $propertiesOneArray)) {
+                    $diffFindings[] = "mono missing property $propertyString\n";
+                }
+                if (!in_array($propertyString, $propertiesTwoArray)) {
+                    $diffFindings[] = "micro missing property $propertyString\n";
+                }
             }
-            if (!in_array($propertyString, $propertiesOneArray)) {
-              $diffFindings[] = "mono missing property $propertyString\n";
-            }
-            if (!in_array($propertyString, $propertiesTwoArray)) {
-              $diffFindings[] = "micro missing property $propertyString\n";
-            }
-          }
         }
 
         // Consts.
@@ -150,7 +151,7 @@ class PhpClassComparer
         $methodsOne = $astNodeFinder->findInstanceOf($astOne, ClassMethod::class);
         $methodsTwo = $astNodeFinder->findInstanceOf($astTwo, ClassMethod::class);
         $diffFindings =
-          array_merge($diffFindings, static::diffAstNodes($methodsOne, $methodsTwo, "method", $printDiffs));
+          array_merge($diffFindings, static::diffAstNodesWithoutComments($methodsOne, $methodsTwo, "method", $printDiffs));
 
         // Functions.
         $functionsOne = $astNodeFinder->findInstanceOf($astOne, Function_::class);
@@ -193,9 +194,13 @@ class PhpClassComparer
      * @return string[] text diffs of the nodes in source form.
      */
     private static function diffAstNodesWithoutComments(
-      $nodesOne, $nodesTwo, $nodeTypeName, bool $printDiffs = true): array
+        $nodesOne,
+        $nodesTwo,
+        $nodeTypeName,
+        bool $printDiffs = true
+    ): array
     {
-      return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, true, $printDiffs);
+        return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, true, $printDiffs);
     }
 
     /**
@@ -205,7 +210,7 @@ class PhpClassComparer
      */
     private static function diffAstNodes($nodesOne, $nodesTwo, $nodeTypeName, bool $printDiffs = true): array
     {
-      return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, false, $printDiffs);
+        return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, false, $printDiffs);
     }
 
     /**
@@ -214,7 +219,12 @@ class PhpClassComparer
      * @return string[] text diffs of the nodes in source form.
      */
     private static function diffAstNodesHelper(
-      $nodesOne, $nodesTwo, $nodeTypeName, bool $removeComments, bool $printDiffs = true): array
+        $nodesOne,
+        $nodesTwo,
+        $nodeTypeName,
+        bool $removeComments,
+        bool $printDiffs = true
+    ): array
     {
         $astNodeCmp = function ($nodeA, $nodeB) {
             return strcmp($nodeA->name->name, $nodeB->name->name);
@@ -247,8 +257,8 @@ class PhpClassComparer
             $nodeStringOne = $astPrinter->prettyPrint(array($nodeMapOne[$nodeName]));
             $nodeStringTwo = $astPrinter->prettyPrint(array($nodeMapTwo[$nodeName]));
             if ($removeComments) {
-              $nodeStringOne = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $nodeStringOne);
-              $nodeStringTwo = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $nodeStringTwo);
+                $nodeStringOne = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $nodeStringOne);
+                $nodeStringTwo = preg_replace(self::BLOCK_COMMENT_PATTERN, '', $nodeStringTwo);
             }
             $sourceIdentical = SourceComparer::compare($nodeStringOne, $nodeStringTwo, $printDiffs);
             if (!$sourceIdentical) {
