@@ -64,7 +64,7 @@ use Google\LongRunning\Operation;
  *         $error = $operationResponse->getError();
  *         // handleError($error)
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
  *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
  *     $operationName = $operationResponse->getName();
@@ -243,7 +243,7 @@ class VideoIntelligenceServiceGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
      *     $operationName = $operationResponse->getName();

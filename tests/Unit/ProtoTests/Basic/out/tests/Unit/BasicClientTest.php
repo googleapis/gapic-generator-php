@@ -20,7 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-
 namespace Testing\Basic\Tests\Unit;
 
 use Testing\Basic\BasicClient;
@@ -116,9 +115,9 @@ class BasicClientTest extends GeneratedTest
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage , $ex->getMessage());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
@@ -178,9 +177,9 @@ class BasicClientTest extends GeneratedTest
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage , $ex->getMessage());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }

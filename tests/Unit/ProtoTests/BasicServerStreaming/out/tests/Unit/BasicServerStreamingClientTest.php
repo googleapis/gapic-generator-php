@@ -20,7 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-
 namespace Testing\BasicServerStreaming\Tests\Unit;
 
 use Testing\BasicServerStreaming\BasicServerStreamingClient;
@@ -135,7 +134,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
             $this->assertEquals($status->code, $ex->getCode());
             $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
@@ -201,7 +200,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
             $this->assertEquals($status->code, $ex->getCode());
             $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }

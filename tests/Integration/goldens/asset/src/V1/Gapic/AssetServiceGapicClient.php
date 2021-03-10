@@ -88,7 +88,7 @@ use Google\Protobuf\Timestamp;
  *         $error = $operationResponse->getError();
  *         // handleError($error)
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
  *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
  *     $operationName = $operationResponse->getName();
@@ -336,7 +336,6 @@ class AssetServiceGapicClient
             } catch (ValidationException $ex) {
                 // Swallow the exception to continue trying other path templates
             }
-        
         }
 
         throw new ValidationException("Input did not match any known format. Input: $formattedName");
@@ -462,7 +461,7 @@ class AssetServiceGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
      *     $operationName = $operationResponse->getName();
@@ -897,9 +896,8 @@ class AssetServiceGapicClient
      *         foreach ($page as $element) {
      *             // doSomethingWith($element);
      *         }
-     *
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Iterate through all elements
      *     $pagedResponse = $assetServiceClient->searchAllResources($scope);
      *     foreach ($pagedResponse->iterateAllElements() as $element) {
@@ -1043,9 +1041,8 @@ class AssetServiceGapicClient
      *         foreach ($page as $element) {
      *             // doSomethingWith($element);
      *         }
-     *
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Iterate through all elements
      *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
      *     foreach ($pagedResponse->iterateAllElements() as $element) {
@@ -1227,7 +1224,7 @@ class AssetServiceGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
      *     $operationName = $operationResponse->getName();

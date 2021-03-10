@@ -20,7 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-
 namespace Testing\BasicBidiStreaming\Tests\Unit;
 
 use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
@@ -159,7 +158,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
             $this->assertEquals($status->code, $ex->getCode());
             $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
@@ -247,7 +246,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
             $this->assertEquals($status->code, $ex->getCode());
             $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stub is exhausted
+        // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
