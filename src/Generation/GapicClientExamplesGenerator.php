@@ -31,7 +31,7 @@ class GapicClientExamplesGenerator
         $this->gapicYamlConfig = $gapicYamlConfig;
         // Create a separate context, as this code isn't part of the generated client.
         $this->ctx = new SourceFileContext('');
-        $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx, $gapicYamlConfig);
+        $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx);
     }
 
     private ServiceDetails $serviceDetails;

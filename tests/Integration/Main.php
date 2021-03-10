@@ -146,6 +146,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/language_v1.yaml',
     'googleapis/google/cloud/language/v1/language_grpc_service_config.json'
 )) ? $ok : false;
+/*
+// Commented-out due to sample_code_init_fields usage in unit tests.
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/videointelligence/v1/video_intelligence.proto',
     'google.cloud.videointelligence.v1',
@@ -153,6 +155,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/videointelligence/v1/videointelligence_v1.yaml',
     'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json'
 )) ? $ok : false;
+ */
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/vision/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.vision.v1',
