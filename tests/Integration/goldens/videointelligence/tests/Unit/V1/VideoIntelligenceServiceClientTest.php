@@ -20,7 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-
 namespace Google\Cloud\VideoIntelligence\Tests\Unit\V1;
 
 use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
@@ -195,7 +194,7 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
             $this->assertEquals($status->code, $ex->getCode());
             $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
         }
-// Call popReceivedCalls to ensure the stubs are exhausted
+        // Call popReceivedCalls to ensure the stubs are exhausted
         $transport->popReceivedCalls();
         $operationsTransport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());

@@ -270,7 +270,7 @@ class SpeechGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $speechClient->longRunningRecognize($config, $audio);
      *     $operationName = $operationResponse->getName();
@@ -338,7 +338,7 @@ class SpeechGapicClient
      *     foreach ($stream->closeWriteAndReadAll() as $element) {
      *         // doSomethingWith($element);
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Write requests individually, making read() calls if
      *     // required. Call closeWrite() once writes are complete, and read the
      *     // remaining responses from the server.

@@ -63,7 +63,7 @@ use Testing\BasicBidiStreaming\Response;
  *     foreach ($stream->closeWriteAndReadAll() as $element) {
  *         // doSomethingWith($element);
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // Write requests individually, making read() calls if
  *     // required. Call closeWrite() once writes are complete, and read the
  *     // remaining responses from the server.
@@ -206,7 +206,7 @@ class BasicBidiStreamingGapicClient
      *     foreach ($stream->closeWriteAndReadAll() as $element) {
      *         // doSomethingWith($element);
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Write requests individually, making read() calls if
      *     // required. Call closeWrite() once writes are complete, and read the
      *     // remaining responses from the server.
@@ -266,7 +266,7 @@ class BasicBidiStreamingGapicClient
      *     foreach ($stream->closeWriteAndReadAll() as $element) {
      *         // doSomethingWith($element);
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Write requests individually, making read() calls if
      *     // required. Call closeWrite() once writes are complete, and read the
      *     // remaining responses from the server.

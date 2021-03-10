@@ -290,7 +290,6 @@ class UnitTestsGenerator
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
                     ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
                 ),
-                // TODO: Fix formatted error (wrong indent) in this comment.
                 '// Call popReceivedCalls to ensure the stub is exhausted',
                 $transport->instanceCall(AST::method('popReceivedCalls'))(),
                 ($this->assertTrue)($transport->instanceCall(AST::method('isExhausted'))()),

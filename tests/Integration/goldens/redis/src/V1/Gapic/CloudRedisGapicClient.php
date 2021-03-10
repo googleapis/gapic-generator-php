@@ -92,7 +92,7 @@ use Google\Protobuf\GPBEmpty;
  *         $error = $operationResponse->getError();
  *         // handleError($error)
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
  *     $operationResponse = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
  *     $operationName = $operationResponse->getName();
@@ -278,7 +278,6 @@ class CloudRedisGapicClient
             } catch (ValidationException $ex) {
                 // Swallow the exception to continue trying other path templates
             }
-        
         }
 
         throw new ValidationException("Input did not match any known format. Input: $formattedName");
@@ -407,7 +406,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
      *     $operationName = $operationResponse->getName();
@@ -492,7 +491,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->updateInstance($updateMask, $instance);
      *     $operationName = $operationResponse->getName();
@@ -577,7 +576,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
      *     $operationName = $operationResponse->getName();
@@ -654,7 +653,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
      *     $operationName = $operationResponse->getName();
@@ -726,7 +725,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->failoverInstance($formattedName);
      *     $operationName = $operationResponse->getName();
@@ -803,7 +802,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->deleteInstance($formattedName);
      *     $operationName = $operationResponse->getName();
@@ -876,9 +875,8 @@ class CloudRedisGapicClient
      *         foreach ($page as $element) {
      *             // doSomethingWith($element);
      *         }
-     *
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Iterate through all elements
      *     $pagedResponse = $cloudRedisClient->listInstances($formattedParent);
      *     foreach ($pagedResponse->iterateAllElements() as $element) {
@@ -999,7 +997,7 @@ class CloudRedisGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $cloudRedisClient->upgradeInstance($formattedName, $redisVersion);
      *     $operationName = $operationResponse->getName();

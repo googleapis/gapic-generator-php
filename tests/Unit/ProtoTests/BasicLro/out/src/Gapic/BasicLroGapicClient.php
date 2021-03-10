@@ -61,7 +61,7 @@ use Testing\BasicLro\Request;
  *         $error = $operationResponse->getError();
  *         // handleError($error)
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
  *     $operationResponse = $basicLroClient->method1();
  *     $operationName = $operationResponse->getName();
@@ -239,7 +239,7 @@ class BasicLroGapicClient
      *         $error = $operationResponse->getError();
      *         // handleError($error)
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
      *     $operationResponse = $basicLroClient->method1();
      *     $operationName = $operationResponse->getName();

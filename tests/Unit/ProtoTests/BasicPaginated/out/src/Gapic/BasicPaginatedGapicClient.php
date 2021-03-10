@@ -60,9 +60,8 @@ use Testing\BasicPaginated\Response;
  *         foreach ($page as $element) {
  *             // doSomethingWith($element);
  *         }
- *
  *     }
- * // Alternatively:
+ *     // Alternatively:
  *     // Iterate through all elements
  *     $pagedResponse = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
  *     foreach ($pagedResponse->iterateAllElements() as $element) {
@@ -190,9 +189,8 @@ class BasicPaginatedGapicClient
      *         foreach ($page as $element) {
      *             // doSomethingWith($element);
      *         }
-     *
      *     }
-     * // Alternatively:
+     *     // Alternatively:
      *     // Iterate through all elements
      *     $pagedResponse = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
      *     foreach ($pagedResponse->iterateAllElements() as $element) {
