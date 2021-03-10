@@ -143,11 +143,11 @@ class CodeGenerator
                 $gapicYamlConfig = new GapicYamlConfig($serviceName, $gapicYaml);
                 $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
                 // Load service details.
-                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc, $gapicYamlConfig);
+                $serviceDetails = new ServiceDetails($catalog, $namespace, $fileDesc->getPackage(), $service, $fileDesc);
                 // TODO: Refactor this code when it's clearer where the common elements are.
                 // Service client.
                 $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), $licenseYear);
-                $file = GapicClientGenerator::generate($ctx, $serviceDetails, $gapicYamlConfig);
+                $file = GapicClientGenerator::generate($ctx, $serviceDetails);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["src/{$version}Gapic/{$serviceDetails->gapicClientType->name}.php", $code];

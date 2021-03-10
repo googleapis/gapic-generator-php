@@ -103,8 +103,7 @@ class ServiceDetails
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
-        FileDescriptorProto $fileDesc,
-        GapicYamlConfig $gapicYamlConfig
+        FileDescriptorProto $fileDesc
     ) {
         $this->catalog = $catalog;
         $this->package = $package;

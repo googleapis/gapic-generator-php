@@ -44,15 +44,15 @@ use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
 {
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails, $gapicYamlConfig))->generateImpl();
+        return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
@@ -94,7 +94,7 @@ class GapicClientGenerator
 
     private function examples(): GapicClientExamplesGenerator
     {
-        return new GapicClientExamplesGenerator($this->serviceDetails, $this->gapicYamlConfig);
+      return new GapicClientExamplesGenerator($this->serviceDetails);
     }
 
     private function generateClass(): PhpClass
