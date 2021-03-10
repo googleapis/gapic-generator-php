@@ -1,7 +1,7 @@
 def _php_diff_integration_goldens_impl(ctx):
     # Extract the Java source files from the generated 3 srcjars from API bazel target,
     # and put them in the temporary folder `codegen_tmp`.
-    # Compare the `codegen_tmp` with the goldens folder (e.g integration_tests/goldens/asset)
+    # Compare the `codegen_tmp` with the goldens folder (e.g tests/Integration/goldens/asset)
     # and save the differences in output file `diff_output.txt`.
 
     diff_output = ctx.outputs.diff_output
@@ -13,7 +13,7 @@ def _php_diff_integration_goldens_impl(ctx):
     script = """
     mkdir codegen_tmp
     unzip {input_srcs} -d codegen_tmp
-    diff -r codegen_tmp/ integration_tests/goldens/{api_name}/ > {diff_output}
+    diff -r codegen_tmp/ tests/Integration/goldens/{api_name}/ > {diff_output}
     exit 0   # Avoid a build failure.
     """.format(
         diff_output = diff_output.path,
@@ -37,8 +37,8 @@ def _php_diff_integration_goldens_impl(ctx):
     # is enabled, it only emits the comparison results to the test.log.
     # We could not copy the diff_output.txt to the test.log ($XML_OUTPUT_FILE) because that
     # file is not existing at the moment. It is generated once test is finished.
-    cat $PWD/integration_tests/{api_name}_diff_output.txt
-    if [ -s $PWD/integration_tests/{api_name}_diff_output.txt ]
+    cat $PWD/tests/Integration/{api_name}_diff_output.txt
+    if [ -s $PWD/tests/Integration/{api_name}_diff_output.txt ]
     then
         exit 1
     fi
@@ -80,7 +80,7 @@ def php_integration_test(name, target, data):
 def _php_overwrite_golden_impl(ctx):
     # Extract source files from the srcjar generated from php_gapic_library into
     # a temporary folder (codegen_tmp) and zip into goldens_output_zip.
-    # Overwrite the goldens dir (e.g integration_tests/goldens/asset) with newly generated code.
+    # Overwrite the goldens dir (e.g tests/Integration/goldens/asset) with newly generated code.
     gapic_library = ctx.attr.gapic_library
     srcs = ctx.files.srcs
 
@@ -111,9 +111,9 @@ def _php_overwrite_golden_impl(ctx):
     golden_update_script_content = """
     cd ${{BUILD_WORKSPACE_DIRECTORY}}
     # Filename pattern-based removal is needed to preserve the BUILD.bazel file.
-    find integration_tests/goldens/{api_name}/ -name \\*.php -type f -delete
-    find integration_tests/goldens/{api_name}/ -name \\*.json -type f -delete
-    unzip -ao {goldens_output_zip} -d integration_tests/goldens/{api_name}
+    find tests/Integration/goldens/{api_name}/ -name \\*.php -type f -delete
+    find tests/Integration/goldens/{api_name}/ -name \\*.json -type f -delete
+    unzip -ao {goldens_output_zip} -d tests/Integration/goldens/{api_name}
     """.format(
         goldens_output_zip = goldens_output_zip.path,
         api_name = api_name,
