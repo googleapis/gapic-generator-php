@@ -18,12 +18,10 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FileDescriptor;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\DescriptorProto;
-use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Vector;
 
 class ProtoAugmenter

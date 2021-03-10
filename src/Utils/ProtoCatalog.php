@@ -22,7 +22,6 @@ use Google\Api\ResourceDescriptor;
 use Google\Api\ResourceReference;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Collections\Map;
-use Google\Generator\Utils\ProtoHelpers;
 use Google\Protobuf\Internal\DescriptorProto;
 
 class ProtoCatalog

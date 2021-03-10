@@ -29,7 +29,6 @@ use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\GPBWire;
-use Google\Protobuf\Internal\HasPublicDescriptorTrait;
 use Google\Protobuf\Internal\Message;
 
 class ProtoHelpers

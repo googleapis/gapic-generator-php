@@ -21,7 +21,6 @@ namespace Google\Generator\Generation;
 use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Ast\Ast;
-use Google\Generator\Ast\Access;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpProperty;
 use Google\Generator\Collections\Vector;
