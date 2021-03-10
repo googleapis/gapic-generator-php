@@ -64,7 +64,12 @@
                 }
             },
             "methods": {
-                "ExportAssets": {
+                "AnalyzeIamPolicy": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "retry_policy_3_codes",
+                    "retry_params_name": "retry_policy_3_params"
+                },
+                "AnalyzeIamPolicyLongrunning": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "no_retry_1_codes",
                     "retry_params_name": "no_retry_1_params"
@@ -79,6 +84,16 @@
                     "retry_codes_name": "no_retry_1_codes",
                     "retry_params_name": "no_retry_1_params"
                 },
+                "DeleteFeed": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "retry_policy_1_codes",
+                    "retry_params_name": "retry_policy_1_params"
+                },
+                "ExportAssets": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_1_codes",
+                    "retry_params_name": "no_retry_1_params"
+                },
                 "GetFeed": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_1_codes",
@@ -89,32 +104,17 @@
                     "retry_codes_name": "retry_policy_1_codes",
                     "retry_params_name": "retry_policy_1_params"
                 },
-                "UpdateFeed": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "no_retry_1_codes",
-                    "retry_params_name": "no_retry_1_params"
-                },
-                "DeleteFeed": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "retry_policy_1_codes",
-                    "retry_params_name": "retry_policy_1_params"
+                "SearchAllIamPolicies": {
+                    "timeout_millis": 15000,
+                    "retry_codes_name": "retry_policy_2_codes",
+                    "retry_params_name": "retry_policy_2_params"
                 },
                 "SearchAllResources": {
                     "timeout_millis": 15000,
                     "retry_codes_name": "retry_policy_2_codes",
                     "retry_params_name": "retry_policy_2_params"
                 },
-                "SearchAllIamPolicies": {
-                    "timeout_millis": 15000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "AnalyzeIamPolicy": {
-                    "timeout_millis": 300000,
-                    "retry_codes_name": "retry_policy_3_codes",
-                    "retry_params_name": "retry_policy_3_params"
-                },
-                "AnalyzeIamPolicyLongrunning": {
+                "UpdateFeed": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "no_retry_1_codes",
                     "retry_params_name": "no_retry_1_params"

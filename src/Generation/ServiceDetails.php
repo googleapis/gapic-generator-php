@@ -129,7 +129,7 @@ class ServiceDetails
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
-            ->orderBy(fn ($x) => $gapicYamlConfig->orderByMethodName->get($x->name, 10000));
+                                                        ->orderBy(fn ($x) => $x->name);
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
         // This is a copy of the monolithic way of generating the test group name.

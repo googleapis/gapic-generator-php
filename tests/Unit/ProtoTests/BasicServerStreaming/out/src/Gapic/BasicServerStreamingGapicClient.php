@@ -50,9 +50,8 @@ use Testing\BasicServerStreaming\Response;
  * ```
  * $basicServerStreamingClient = new BasicServerStreamingClient();
  * try {
- *     $aNumber = 0;
  *     // Read all responses until the stream is complete
- *     $stream = $basicServerStreamingClient->methodServer($aNumber);
+ *     $stream = $basicServerStreamingClient->methodEmpty();
  *     foreach ($stream->readAll() as $element) {
  *         // doSomethingWith($element);
  *     }
@@ -166,6 +165,41 @@ class BasicServerStreamingGapicClient
      * ```
      * $basicServerStreamingClient = new BasicServerStreamingClient();
      * try {
+     *     // Read all responses until the stream is complete
+     *     $stream = $basicServerStreamingClient->methodEmpty();
+     *     foreach ($stream->readAll() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $basicServerStreamingClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
+     * }
+     *
+     * @return \Google\ApiCore\ServerStream
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function methodEmpty(array $optionalArgs = [])
+    {
+        $request = new EmptyRequest();
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $basicServerStreamingClient = new BasicServerStreamingClient();
+     * try {
      *     $aNumber = 0;
      *     // Read all responses until the stream is complete
      *     $stream = $basicServerStreamingClient->methodServer($aNumber);
@@ -201,40 +235,5 @@ class BasicServerStreamingGapicClient
         }
 
         return $this->startCall('MethodServer', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodEmpty();
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $timeoutMillis
-     *           Timeout to use for this call.
-     * }
-     *
-     * @return \Google\ApiCore\ServerStream
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function methodEmpty(array $optionalArgs = [])
-    {
-        $request = new EmptyRequest();
-        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }

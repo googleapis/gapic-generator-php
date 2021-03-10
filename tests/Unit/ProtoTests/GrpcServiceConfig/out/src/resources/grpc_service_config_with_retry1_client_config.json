@@ -71,6 +71,9 @@
                     "retry_codes_name": "retry_policy_1_codes",
                     "retry_params_name": "retry_policy_1_params"
                 },
+                "Method1BidiStreaming": {
+                    "timeout_millis": 9000
+                },
                 "Method1CServiceLevelRetry": {
                     "timeout_millis": 9000,
                     "retry_codes_name": "retry_policy_1_codes",
@@ -82,9 +85,6 @@
                     "retry_params_name": "no_retry_1_params"
                 },
                 "Method1ServerStreaming": {
-                    "timeout_millis": 9000
-                },
-                "Method1BidiStreaming": {
                     "timeout_millis": 9000
                 }
             }

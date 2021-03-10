@@ -234,6 +234,94 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     }
 
     /** @test */
+    public function method1BidiStreamingTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response1();
+        $transport->addResponse($expectedResponse);
+        $expectedResponse2 = new Response1();
+        $transport->addResponse($expectedResponse2);
+        $expectedResponse3 = new Response1();
+        $transport->addResponse($expectedResponse3);
+        // Mock request
+        $request = new Request1();
+        $request2 = new Request1();
+        $request3 = new Request1();
+        $bidi = $client->method1BidiStreaming();
+        $this->assertInstanceOf(BidiStream::class, $bidi);
+        $bidi->write($request);
+        $responses = [];
+        $responses[] = $bidi->read();
+        $bidi->writeAll([
+            $request2,
+            $request3,
+        ]);
+        foreach ($bidi->closeWriteAndReadAll() as $response) {
+            $responses[] = $response;
+        }
+
+        $expectedResponses = [];
+        $expectedResponses[] = $expectedResponse;
+        $expectedResponses[] = $expectedResponse2;
+        $expectedResponses[] = $expectedResponse3;
+        $this->assertEquals($expectedResponses, $responses);
+        $createStreamRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($createStreamRequests));
+        $streamFuncCall = $createStreamRequests[0]->getFuncCall();
+        $streamRequestObject = $createStreamRequests[0]->getRequestObject();
+        $this->assertSame('/testing.grpcserviceconfig.GrpcServiceConfigWithRetry1/Method1BidiStreaming', $streamFuncCall);
+        $this->assertNull($streamRequestObject);
+        $callObjects = $transport->popCallObjects();
+        $this->assertSame(1, count($callObjects));
+        $bidiCall = $callObjects[0];
+        $writeRequests = $bidiCall->popReceivedCalls();
+        $expectedRequests = [];
+        $expectedRequests[] = $request;
+        $expectedRequests[] = $request2;
+        $expectedRequests[] = $request3;
+        $this->assertEquals($expectedRequests, $writeRequests);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function method1BidiStreamingExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->setStreamingStatus($status);
+        $this->assertTrue($transport->isExhausted());
+        $bidi = $client->method1BidiStreaming();
+        $results = $bidi->closeWriteAndReadAll();
+        try {
+            iterator_to_array($results);
+            // If the close stream method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
     public function method1CServiceLevelRetryTest()
     {
         $transport = $this->createTransport();
@@ -390,94 +478,6 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         // Mock request
         $serverStream = $client->method1ServerStreaming();
         $results = $serverStream->readAll();
-        try {
-            iterator_to_array($results);
-            // If the close stream method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function method1BidiStreamingTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $expectedResponse = new Response1();
-        $transport->addResponse($expectedResponse);
-        $expectedResponse2 = new Response1();
-        $transport->addResponse($expectedResponse2);
-        $expectedResponse3 = new Response1();
-        $transport->addResponse($expectedResponse3);
-        // Mock request
-        $request = new Request1();
-        $request2 = new Request1();
-        $request3 = new Request1();
-        $bidi = $client->method1BidiStreaming();
-        $this->assertInstanceOf(BidiStream::class, $bidi);
-        $bidi->write($request);
-        $responses = [];
-        $responses[] = $bidi->read();
-        $bidi->writeAll([
-            $request2,
-            $request3,
-        ]);
-        foreach ($bidi->closeWriteAndReadAll() as $response) {
-            $responses[] = $response;
-        }
-
-        $expectedResponses = [];
-        $expectedResponses[] = $expectedResponse;
-        $expectedResponses[] = $expectedResponse2;
-        $expectedResponses[] = $expectedResponse3;
-        $this->assertEquals($expectedResponses, $responses);
-        $createStreamRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($createStreamRequests));
-        $streamFuncCall = $createStreamRequests[0]->getFuncCall();
-        $streamRequestObject = $createStreamRequests[0]->getRequestObject();
-        $this->assertSame('/testing.grpcserviceconfig.GrpcServiceConfigWithRetry1/Method1BidiStreaming', $streamFuncCall);
-        $this->assertNull($streamRequestObject);
-        $callObjects = $transport->popCallObjects();
-        $this->assertSame(1, count($callObjects));
-        $bidiCall = $callObjects[0];
-        $writeRequests = $bidiCall->popReceivedCalls();
-        $expectedRequests = [];
-        $expectedRequests[] = $request;
-        $expectedRequests[] = $request2;
-        $expectedRequests[] = $request3;
-        $this->assertEquals($expectedRequests, $writeRequests);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function method1BidiStreamingExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->setStreamingStatus($status);
-        $this->assertTrue($transport->isExhausted());
-        $bidi = $client->method1BidiStreaming();
-        $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);
             // If the close stream method call did not throw, fail the test
