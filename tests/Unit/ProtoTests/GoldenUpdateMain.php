@@ -74,7 +74,7 @@ while ($selection < 0 || $selection > sizeof(array_keys(UNIT_TESTS))) {
 if ($selection !== 0) {
     updateGolden($selection);
 } else {
-    foreach (array_keys($unitTest) as $testIndex) {
+    foreach (array_keys(UNIT_TESTS) as $testIndex) {
         updateGolden($testIndex);
         print("\n");
     }
