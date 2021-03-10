@@ -16,13 +16,13 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Tests\Unit;
+namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
-trait ProtoTrait
+class ProtoLoader
 {
     /**
      * Load a descriptor set bytes from the specified proto path.
@@ -32,7 +32,7 @@ trait ProtoTrait
      *
      * @return string
      */
-    function loadDescriptorBytes(string $protoPath): string
+    public static function loadDescriptorBytes(string $protoPath): string
     {
         // Set up required file locations and create tmp output file for protoc invocation.
         // Assumes test are executed from within the repo root directory.
@@ -50,7 +50,10 @@ trait ProtoTrait
         $result = -1;
         exec($protocCmdLine, $output, $result);
         // Fail with helpful error message if protoc failed.
-        $this->assertEquals(0, $result, implode("\n", $output));
+        if ($result !== 0) {
+          print("Protoc failed: " .  implode("\n", $output) . "\n");
+          return "";
+        }
 
         // Load the proto descriptors.
         return stream_get_contents($descRes);
@@ -67,7 +70,7 @@ trait ProtoTrait
     function loadDescriptor(string $protoPath): FileDescriptorProto
     {
         // Load descriptor bytes into a DescriptorSet.
-        $descBytes = $this->loadDescriptorBytes($protoPath);
+        $descBytes = static::loadDescriptorBytes($protoPath);
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
         // Select the correct file from the descriptor-set.

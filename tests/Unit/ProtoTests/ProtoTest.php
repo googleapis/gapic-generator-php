@@ -21,31 +21,14 @@ namespace Google\Generator\Tests\Unit\ProtoTests;
 use PHPUnit\Framework\TestCase;
 use Google\Generator\CodeGenerator;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Tests\Unit\ConfigTrait;
-use Google\Generator\Tests\Unit\ProtoTrait;
+use Google\Generator\Tests\Tools\GeneratorUtils;
+use Google\Generator\Tests\Tools\ProtoLoader;
 
 final class ProtoTest extends TestCase
 {
-    use ConfigTrait;
-    use ProtoTrait;
-
     private function runProtoTest(string $protoPath, ?string $package = null): void
     {
-        // Conventions:
-        // * The proto package is 'testing.<proto-name>'.
-        // * The expected file contents are based in the same directory as the proto file.
-        // * An optional grpc-service-config.json file may be in the same directory as the proto file.
-        $descBytes = $this->loadDescriptorBytes("ProtoTests/{$protoPath}");
-        $baseName = basename($protoPath, '.proto');
-        $package = $package ?? str_replace('-', '', "testing.{$baseName}");
-        $protoDirName = dirname("ProtoTests/{$protoPath}");
-        $grpcServiceConfigJson = $this->loadConfig("{$protoDirName}/grpc-service-config.json");
-        $gapicYaml = $this->loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
-        $serviceYaml = $this->loadConfig("{$protoDirName}/{$baseName}_service.yaml");
-
-        // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::generateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
-
+        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package);
         $expectedGeneratedFilenameEndings  =  array(
           'Client.php',
           'ClientTest.php',
