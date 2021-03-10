@@ -81,7 +81,7 @@ use Google\Protobuf\GPBEmpty;
  * $cloudRedisClient = new CloudRedisClient();
  * try {
  *     $formattedParent = $cloudRedisClient->locationName('[PROJECT]', '[LOCATION]');
- *     $instanceId = '"test_instance"';
+ *     $instanceId = 'instance_id';
  *     $instance = new Instance();
  *     $operationResponse = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
  *     $operationResponse->pollUntilComplete();
@@ -396,7 +396,7 @@ class CloudRedisGapicClient
      * $cloudRedisClient = new CloudRedisClient();
      * try {
      *     $formattedParent = $cloudRedisClient->locationName('[PROJECT]', '[LOCATION]');
-     *     $instanceId = '"test_instance"';
+     *     $instanceId = 'instance_id';
      *     $instance = new Instance();
      *     $operationResponse = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
      *     $operationResponse->pollUntilComplete();
@@ -566,7 +566,7 @@ class CloudRedisGapicClient
      * ```
      * $cloudRedisClient = new CloudRedisClient();
      * try {
-     *     $name = '';
+     *     $name = 'name';
      *     $inputConfig = new InputConfig();
      *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
      *     $operationResponse->pollUntilComplete();
@@ -643,7 +643,7 @@ class CloudRedisGapicClient
      * ```
      * $cloudRedisClient = new CloudRedisClient();
      * try {
-     *     $name = '';
+     *     $name = 'name';
      *     $outputConfig = new OutputConfig();
      *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
      *     $operationResponse->pollUntilComplete();
@@ -989,7 +989,7 @@ class CloudRedisGapicClient
      * $cloudRedisClient = new CloudRedisClient();
      * try {
      *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-     *     $redisVersion = '';
+     *     $redisVersion = 'redis_version';
      *     $operationResponse = $cloudRedisClient->upgradeInstance($formattedName, $redisVersion);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {

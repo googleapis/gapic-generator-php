@@ -202,7 +202,7 @@ class BasicGapicClient
      * ```
      * $basicClient = new BasicClient();
      * try {
-     *     $aString = '';
+     *     $aString = 'a_string';
      *     $partOfRequestA = [];
      *     $response = $basicClient->methodWithArgs($aString, $partOfRequestA);
      * } finally {
