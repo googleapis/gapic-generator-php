@@ -22,24 +22,18 @@
 
 namespace Testing\BasicServerStreaming\Tests\Unit;
 
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
-use Testing\BasicServerStreaming\BasicServerStreamingGrpcClient;
-use Testing\BasicServerStreaming\EmptyRequest;
+use stdClass;
+use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
-use stdClass;
 
 /**
  * @group basicserverstreaming

@@ -22,29 +22,26 @@
 
 namespace Google\Cloud\Speech\Tests\Unit\V1;
 
-use Google\Cloud\Speech\V1\SpeechClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
+
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Speech\V1\LongRunningRecognizeRequest;
 use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
+
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
-use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
-use Google\Cloud\Speech\V1\SpeechGrpcClient;
+use Google\Cloud\Speech\V1\SpeechClient;
 use Google\Cloud\Speech\V1\StreamingRecognizeRequest;
 use Google\Cloud\Speech\V1\StreamingRecognizeResponse;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**

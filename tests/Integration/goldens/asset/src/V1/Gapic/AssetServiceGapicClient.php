@@ -29,8 +29,11 @@ namespace Google\Cloud\Asset\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\LongRunning\OperationsClient;
+
 use Google\ApiCore\OperationResponse;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -38,17 +41,13 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest;
-use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyRequest;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse;
-use Google\Cloud\Asset\V1\AssetServiceGrpcClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
-use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\CreateFeedRequest;
 use Google\Cloud\Asset\V1\DeleteFeedRequest;
 use Google\Cloud\Asset\V1\ExportAssetsRequest;
-use Google\Cloud\Asset\V1\ExportAssetsResponse;
 use Google\Cloud\Asset\V1\Feed;
 use Google\Cloud\Asset\V1\GetFeedRequest;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisOutputConfig;
@@ -58,6 +57,7 @@ use Google\Cloud\Asset\V1\ListFeedsResponse;
 use Google\Cloud\Asset\V1\OutputConfig;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesResponse;
+
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesResponse;
 use Google\Cloud\Asset\V1\TimeWindow;

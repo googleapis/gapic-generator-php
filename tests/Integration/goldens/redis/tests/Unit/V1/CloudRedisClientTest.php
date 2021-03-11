@@ -22,35 +22,25 @@
 
 namespace Google\Cloud\Redis\Tests\Unit\V1;
 
-use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Redis\V1\CloudRedisGrpcClient;
-use Google\Cloud\Redis\V1\CreateInstanceRequest;
-use Google\Cloud\Redis\V1\DeleteInstanceRequest;
-use Google\Cloud\Redis\V1\ExportInstanceRequest;
-use Google\Cloud\Redis\V1\FailoverInstanceRequest;
-use Google\Cloud\Redis\V1\GetInstanceRequest;
-use Google\Cloud\Redis\V1\ImportInstanceRequest;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\InputConfig;
+
 use Google\Cloud\Redis\V1\Instance;
-use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\ListInstancesResponse;
 use Google\Cloud\Redis\V1\OutputConfig;
-use Google\Cloud\Redis\V1\UpdateInstanceRequest;
-use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
