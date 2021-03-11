@@ -101,7 +101,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         // the presence of the --metadata flag evaluates to false.
         // Don't set the above to false - that leads to this variable becoming unset.
         if (array_key_exists('metadata', $opts)) {
-          $opts['metadata'] = false;
+            $opts['metadata'] = false;
         }
 
         [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] =
