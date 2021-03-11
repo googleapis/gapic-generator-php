@@ -1,0 +1,48 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.grpcserviceconfig",
+    "libraryPackage": "Testing\\GrpcServiceConfig",
+    "services": {
+        "testing.grpcserviceconfig.GrpcServiceConfigWithRetry1": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "GrpcServiceConfigWithRetry1GapicClient",
+                    "rpcs": {
+                        "Method1A": {
+                            "methods": [
+                                "method1A"
+                            ]
+                        },
+                        "Method1BLro": {
+                            "methods": [
+                                "method1BLro"
+                            ]
+                        },
+                        "Method1BidiStreaming": {
+                            "methods": [
+                                "method1BidiStreaming"
+                            ]
+                        },
+                        "Method1CServiceLevelRetry": {
+                            "methods": [
+                                "method1CServiceLevelRetry"
+                            ]
+                        },
+                        "Method1DTimeoutOnlyRetry": {
+                            "methods": [
+                                "method1DTimeoutOnlyRetry"
+                            ]
+                        },
+                        "Method1ServerStreaming": {
+                            "methods": [
+                                "method1ServerStreaming"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

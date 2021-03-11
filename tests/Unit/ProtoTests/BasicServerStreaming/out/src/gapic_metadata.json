@@ -1,0 +1,28 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.basicserverstreaming",
+    "libraryPackage": "Testing\\BasicServerStreaming",
+    "services": {
+        "testing.basicserverstreaming.BasicServerStreaming": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BasicServerStreamingGapicClient",
+                    "rpcs": {
+                        "MethodEmpty": {
+                            "methods": [
+                                "methodEmpty"
+                            ]
+                        },
+                        "MethodServer": {
+                            "methods": [
+                                "methodServer"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

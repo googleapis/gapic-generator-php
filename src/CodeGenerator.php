@@ -20,6 +20,7 @@ namespace Google\Generator;
 
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\EmptyClientGenerator;
+use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
@@ -42,16 +43,18 @@ class CodeGenerator
      *
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
-     * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
+     * @param int $licenseYear The year to use in license headers.
      *
      * @return string[]
      */
     public static function generateFromDescriptor(
         string $descBytes,
         string $package,
+        bool $generateGapicMetadata,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
@@ -63,7 +66,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
+        yield from static::generate($fileDescs, $filesToGenerate, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
     }
 
     /**
@@ -72,16 +75,18 @@ class CodeGenerator
      *
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
-     * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
+     * @param int $licenseYear The year to use in license headers.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
     public static function generate(
         Vector $fileDescs,
         Vector $filesToGenerate,
+        bool $generateGapicMetadata,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
@@ -114,7 +119,16 @@ class CodeGenerator
             if (count($namespaces) > 1) {
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
-            foreach (static::generatePackage($catalog, $namespaces[0], $singlePackageFileDescs, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml) as $file) {
+            foreach (static::generatePackage(
+                $catalog,
+                $namespaces[0],
+                $singlePackageFileDescs,
+                $generateGapicMetadata,
+                $grpcServiceConfigJson,
+                $gapicYaml,
+                $serviceYaml,
+                $licenseYear
+            ) as $file) {
                 $result[] = $file;
             }
         }
@@ -125,10 +139,11 @@ class CodeGenerator
         ProtoCatalog $catalog,
         string $namespace,
         Vector $fileDescs,
-        int $licenseYear,
+        bool $generateGapicMetadata,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
-        ?string $serviceYaml
+        ?string $serviceYaml,
+        int $licenseYear
     ) {
         // Look for a version string, "Vn..." as a part of the namespace.
         // If found, then the output directories for src and tests use it,
@@ -182,6 +197,10 @@ class CodeGenerator
                 yield ["src/{$version}resources/{$serviceDetails->clientConfigFilename}", $json];
             }
             // TODO: Further files, as required.
+        }
+        if ($generateGapicMetadata) {
+            $gapicMetadataJson = GapicMetadataGenerator::generate($catalog, $fileDescs, $namespace);
+            yield(["src/{$version}gapic_metadata.json", $gapicMetadataJson]);
         }
     }
 }
