@@ -53,11 +53,11 @@ class GapicMetadataGenerator
                         fn ($method) => $method->name,
                         fn ($method) => (new GapicMetadata\MethodList())->setMethods([$method->methodName])
                     )
-            );
+                );
             $transport = new GapicMetadata\ServiceForTransport();
             $transport->setClients(['grpc' => $libraryClient]);
-            $gapicMetadataServices[$service->serviceName] = $transport;
-        }
+            $gapicMetadataServices[$service->shortName] = $transport;
+            }
         $gapicMetadata->setServices($gapicMetadataServices);
         return json_encode(json_decode($gapicMetadata->serializeToJsonString()), JSON_PRETTY_PRINT);
     }
