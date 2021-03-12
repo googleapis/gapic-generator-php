@@ -101,7 +101,9 @@ $ok = processDiff(Invoker::invoke(
     'google.cloud.channel.v1',
     'googleapis/google/cloud/channel/v1/cloudchannel_gapic.yaml',
     'googleapis/google/cloud/channel/v1/cloudchannel_v1.yaml',
-    'googleapis/google/cloud/channel/v1/cloudchannel_grpc_service_config.json'
+    'googleapis/google/cloud/channel/v1/cloudchannel_grpc_service_config.json',
+    false,
+    true // For HTTP rules.
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/datacatalog/v1/*.proto googleapis/google/cloud/common_resources.proto',
@@ -115,14 +117,18 @@ $ok = processDiff(Invoker::invoke(
     'google.cloud.dataproc.v1',
     'googleapis/google/cloud/dataproc/v1/dataproc_gapic.yaml',
     'googleapis/google/cloud/dataproc/v1/dataproc_v1.yaml',
-    'googleapis/google/cloud/dataproc/v1/dataproc_grpc_service_config.json'
+    'googleapis/google/cloud/dataproc/v1/dataproc_grpc_service_config.json',
+    true, // LROs.
+    true  // HTTP Rules.
 )) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.dialogflow.v2',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_gapic.yaml',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_v2.yaml',
-    'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json'
+    'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json',
+     false,
+     true  // For HTTP rules.
 )) ? $ok : false;
 // TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
 // $ok = processDiff(Invoker::invoke(
@@ -161,17 +167,20 @@ $ok = processDiff(Invoker::invoke(
     'google.cloud.vision.v1',
     'googleapis/google/cloud/vision/v1/vision_gapic.yaml',
     'googleapis/google/cloud/vision/v1/vision_v1.yaml',
-    'googleapis/google/cloud/vision/v1/vision_grpc_service_config.json'
+    'googleapis/google/cloud/vision/v1/vision_grpc_service_config.json',
+    true,  // For LRO configs.
+     true // HTTP rules.
 )) ? $ok : false;
-
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/ads/googleads/v6/**/*.proto',
     'google.ads.googleads.v6',
     'googleapis/google/ads/googleads/v6/googleads_gapic.yaml',
     'googleapis/google/ads/googleads/v6/googleads_v6.yaml',
-    'googleapis/google/ads/googleads/v6/googleads_grpc_service_config.json'//,
+    'googleapis/google/ads/googleads/v6/googleads_grpc_service_config.json',
+    true, // For LROs.
+    true  // For HTTP rules.
 )) ? $ok : false;
-
+//
 if (!$ok) {
     print("\nFail\n");
     exit(1);
@@ -225,17 +234,17 @@ function processSingleDiff($mono, $micro)
         $sameContent = true;
         $isJson = substr($path, -5) === '.json';
         if ($isJson) {
-          $sameContent = JsonComparer::compareMonoMicroClientConfig($mono[$path], $micro[$path]);
+            $sameContent = JsonComparer::compareMonoMicroClientConfig($mono[$path], $micro[$path]);
         } else {
-          $configFileEnding = "_config.php";
-          $isConfig = substr($path, -strlen($configFileEnding)) === $configFileEnding;
-          if ($isConfig) {
-            // Note that the configs are PHP arrays, not the string ccontents of the file
-            // as in the other sources.
-            $sameContent = PhpConfigComparer::compare($mono[$path], $micro[$path]);
-          } else {
-            $sameContent = PhpClassComparer::compare($mono[$path], $micro[$path]);
-          }
+            $configFileEnding = "_config.php";
+            $isConfig = substr($path, -strlen($configFileEnding)) === $configFileEnding;
+            if ($isConfig) {
+                // Note that the configs are PHP arrays, not the string ccontents of the file
+                // as in the other sources.
+                $sameContent = PhpConfigComparer::compare($mono[$path], $micro[$path]);
+            } else {
+                $sameContent = PhpClassComparer::compare($mono[$path], $micro[$path]);
+            }
         }
         $ok &= $sameContent;
     }
