@@ -5,7 +5,7 @@
     "protoPackage": "google.cloud.videointelligence.v1",
     "libraryPackage": "Google\\Cloud\\VideoIntelligence\\V1",
     "services": {
-        "google.cloud.videointelligence.v1.VideoIntelligenceService": {
+        "VideoIntelligenceService": {
             "clients": {
                 "grpc": {
                     "libraryClient": "VideoIntelligenceServiceGapicClient",
