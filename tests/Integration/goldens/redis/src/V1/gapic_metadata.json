@@ -5,7 +5,7 @@
     "protoPackage": "google.cloud.redis.v1",
     "libraryPackage": "Google\\Cloud\\Redis\\V1",
     "services": {
-        "google.cloud.redis.v1.CloudRedis": {
+        "CloudRedis": {
             "clients": {
                 "grpc": {
                     "libraryClient": "CloudRedisGapicClient",

@@ -5,7 +5,7 @@
     "protoPackage": "testing.basicclientstreaming",
     "libraryPackage": "Testing\\BasicClientStreaming",
     "services": {
-        "testing.basicclientstreaming.BasicClientStreaming": {
+        "BasicClientStreaming": {
             "clients": {
                 "grpc": {
                     "libraryClient": "BasicClientStreamingGapicClient",

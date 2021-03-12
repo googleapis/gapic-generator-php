@@ -61,6 +61,9 @@ class ServiceDetails
     /** @var string *Readonly* The full name of the service. */
     public string $serviceName;
 
+    /** @var string *Readonly* The canonical, short name of the service (as it appears in the proto). */
+    public string $shortName;
+
     /** @var string *Readonly* The default hostname of the service. */
     public string $defaultHost;
 
@@ -120,6 +123,7 @@ class ServiceDetails
         $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
+        $this->shortName = $desc->getName();
         $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
         $this->defaultPort = 443;
         $this->defaultScopes =
