@@ -5,7 +5,7 @@
     "protoPackage": "google.cloud.kms.v1",
     "libraryPackage": "Google\\Cloud\\Kms\\V1",
     "services": {
-        "google.cloud.kms.v1.KeyManagementService": {
+        "KeyManagementService": {
             "clients": {
                 "grpc": {
                     "libraryClient": "KeyManagementServiceGapicClient",
