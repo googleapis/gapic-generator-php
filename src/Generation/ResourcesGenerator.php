@@ -172,8 +172,7 @@ class ResourcesGenerator
 
     public static function generateClientConfig(
         ServiceDetails $serviceDetails,
-        GrpcServiceConfig $grpcServiceConfig,
-        ServiceYamlConfig $serviceYamlConfig
+        GrpcServiceConfig $grpcServiceConfig
     ): string {
         $serviceName = $serviceDetails->serviceName;
         $durationToMillis = fn ($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
@@ -245,11 +244,8 @@ class ResourcesGenerator
         $retryCodes = $retryCodes->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $retryParams = $retryParams->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = [];
-        $serviceYamlBackendRules = $serviceYamlConfig->backendRules
-            ->flatMap(fn ($x) => Vector::new(explode(',', $x->getSelector()))->map(fn ($y) => [trim($y), $x]))
-            ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = $serviceDetails->methods
-            ->map(function ($method) use ($grpcServiceConfig, $configsByMethodName, $serviceName, $serviceYamlBackendRules) {
+            ->map(function ($method) use ($grpcServiceConfig, $configsByMethodName, $serviceName) {
                 [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
                     $configsByMethodName->get("{$serviceName}/", [null, null, null]);
                 if (is_null($codes)) {
