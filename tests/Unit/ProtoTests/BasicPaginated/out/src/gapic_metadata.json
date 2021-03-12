@@ -5,7 +5,7 @@
     "protoPackage": "testing.basicpaginated",
     "libraryPackage": "Testing\\BasicPaginated",
     "services": {
-        "testing.basicpaginated.BasicPaginated": {
+        "BasicPaginated": {
             "clients": {
                 "grpc": {
                     "libraryClient": "BasicPaginatedGapicClient",
