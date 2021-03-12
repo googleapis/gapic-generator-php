@@ -18,9 +18,9 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Integration;
 
+use Google\Generator\Tests\Tools\JsonComparer;
 use Google\Generator\Tests\Tools\PhpClassComparer;
 use Google\Generator\Tests\Tools\PhpConfigComparer;
-use Google\Generator\Tests\Tools\SourceComparer;
 
 require __DIR__ . '/../../vendor/autoload.php';
 error_reporting(E_ALL);
@@ -225,7 +225,7 @@ function processSingleDiff($mono, $micro)
         $sameContent = true;
         $isJson = substr($path, -5) === '.json';
         if ($isJson) {
-          $sameContent = SourceComparer::compareJsonMonoMicroClientConfig($mono[$path], $micro[$path]);
+          $sameContent = JsonComparer::compareMonoMicroClientConfig($mono[$path], $micro[$path]);
         } else {
           $configFileEnding = "_config.php";
           $isConfig = substr($path, -strlen($configFileEnding)) === $configFileEnding;
