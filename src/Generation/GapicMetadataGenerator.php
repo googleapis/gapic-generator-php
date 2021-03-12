@@ -61,7 +61,7 @@ class GapicMetadataGenerator
                 $this->gapicMetadata->setProtoPackage($fileDesc->getPackage());
             }
             foreach ($fileDesc->getService() as $index => $service) {
-                $serviceName = "{$fileDesc->getPackage()}.{$service->getName()}";
+                $serviceShortName = $service->getName();
                 $serviceDetails =
           new ServiceDetails($this->catalog, $this->namespace, $fileDesc->getPackage(), $service, $fileDesc);
                 $gapicMetadataClients = [];
@@ -80,7 +80,7 @@ class GapicMetadataGenerator
                 );
                 $transport = new GapicMetadata\ServiceForTransport();
                 $transport->setClients(['grpc' => $libraryClient]);
-                $gapicMetadataServices[$serviceDetails->serviceName] = $transport;
+                $gapicMetadataServices[$serviceShortName] = $transport;
             }
         }
         $this->gapicMetadata->setServices($gapicMetadataServices);
