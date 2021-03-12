@@ -50,9 +50,9 @@ class GapicMetadataGenerator
             $libraryClient->setLibraryClient($service->gapicClientType->name);
             $libraryClient->setRpcs(
                 $service->methods->toArray(
-                        fn ($method) => $method->name,
-                        fn ($method) => (new GapicMetadata\MethodList())->setMethods([$method->methodName])
-                    )
+                    fn ($method) => $method->name,
+                    fn ($method) => (new GapicMetadata\MethodList())->setMethods([$method->methodName])
+                )
             );
             $transport = new GapicMetadata\ServiceForTransport();
             $transport->setClients(['grpc' => $libraryClient]);

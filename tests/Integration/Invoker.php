@@ -29,7 +29,9 @@ class Invoker
         ?string $package = null,
         ?string $gapicYaml = null,
         ?string $serviceYaml = null,
-        ?string $grpcServiceConfig = null
+        ?string $grpcServiceConfig = null,
+        bool $microUsesGapicYaml = false,
+        bool $microUsesServiceYaml = false
     ) {
         $rootDir = realpath(__DIR__ . '/../..');
 
@@ -89,10 +91,10 @@ class Invoker
             $microProtocOutDir = "{$rootOutDir}/micro_protoc";
             mkdir($microProtocOutDir); // protoc requires this directory to already exist.
             $protocOpts = [];
-            if (file_exists($gapicYamlArg)) {
+            if ($microUsesGapicYaml && file_exists($gapicYamlArg)) {
                 $protocOpts[] = "gapic_yaml={$gapicYamlArg}";
             }
-            if (file_exists($serviceConfigArg)) {
+            if ($microUsesServiceYaml && file_exists($serviceConfigArg)) {
                 $protocOpts[] = "service_yaml={$serviceConfigArg}";
             }
             if (file_exists($grpcServiceConfigArg)) {
