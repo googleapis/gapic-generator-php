@@ -121,8 +121,6 @@ use Google\Protobuf\Int64Value;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class KeyManagementServiceGapicClient
 {
@@ -247,8 +245,6 @@ class KeyManagementServiceGapicClient
      * @param string $cryptoKey
      *
      * @return string The formatted crypto_key resource.
-     *
-     * @experimental
      */
     public static function cryptoKeyName($project, $location, $keyRing, $cryptoKey)
     {
@@ -271,8 +267,6 @@ class KeyManagementServiceGapicClient
      * @param string $cryptoKeyVersion
      *
      * @return string The formatted crypto_key_version resource.
-     *
-     * @experimental
      */
     public static function cryptoKeyVersionName($project, $location, $keyRing, $cryptoKey, $cryptoKeyVersion)
     {
@@ -295,8 +289,6 @@ class KeyManagementServiceGapicClient
      * @param string $importJob
      *
      * @return string The formatted import_job resource.
-     *
-     * @experimental
      */
     public static function importJobName($project, $location, $keyRing, $importJob)
     {
@@ -317,8 +309,6 @@ class KeyManagementServiceGapicClient
      * @param string $keyRing
      *
      * @return string The formatted key_ring resource.
-     *
-     * @experimental
      */
     public static function keyRingName($project, $location, $keyRing)
     {
@@ -337,8 +327,6 @@ class KeyManagementServiceGapicClient
      * @param string $location
      *
      * @return string The formatted location resource.
-     *
-     * @experimental
      */
     public static function locationName($project, $location)
     {
@@ -370,8 +358,6 @@ class KeyManagementServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -445,8 +431,6 @@ class KeyManagementServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -514,8 +498,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\AsymmetricDecryptResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function asymmetricDecrypt($name, $ciphertext, array $optionalArgs = [])
     {
@@ -593,8 +575,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\AsymmetricSignResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function asymmetricSign($name, $digest, array $optionalArgs = [])
     {
@@ -661,8 +641,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKey
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createCryptoKey($parent, $cryptoKeyId, $cryptoKey, array $optionalArgs = [])
     {
@@ -719,8 +697,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createCryptoKeyVersion($parent, $cryptoKeyVersion, array $optionalArgs = [])
     {
@@ -774,8 +750,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\ImportJob
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createImportJob($parent, $importJobId, $importJob, array $optionalArgs = [])
     {
@@ -827,8 +801,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\KeyRing
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createKeyRing($parent, $keyRingId, $keyRing, array $optionalArgs = [])
     {
@@ -926,8 +898,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\DecryptResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function decrypt($name, $ciphertext, array $optionalArgs = [])
     {
@@ -999,8 +969,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function destroyCryptoKeyVersion($name, array $optionalArgs = [])
     {
@@ -1116,8 +1084,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\EncryptResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function encrypt($name, $plaintext, array $optionalArgs = [])
     {
@@ -1174,8 +1140,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKey
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getCryptoKey($name, array $optionalArgs = [])
     {
@@ -1218,8 +1182,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getCryptoKeyVersion($name, array $optionalArgs = [])
     {
@@ -1266,8 +1228,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Iam\V1\Policy
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
@@ -1313,8 +1273,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\ImportJob
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getImportJob($name, array $optionalArgs = [])
     {
@@ -1356,8 +1314,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\KeyRing
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getKeyRing($name, array $optionalArgs = [])
     {
@@ -1404,8 +1360,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\PublicKey
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getPublicKey($name, array $optionalArgs = [])
     {
@@ -1487,8 +1441,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function importCryptoKeyVersion($parent, $algorithm, $importJob, array $optionalArgs = [])
     {
@@ -1571,8 +1523,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listCryptoKeyVersions($parent, array $optionalArgs = [])
     {
@@ -1668,8 +1618,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listCryptoKeys($parent, array $optionalArgs = [])
     {
@@ -1762,8 +1710,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listImportJobs($parent, array $optionalArgs = [])
     {
@@ -1853,8 +1799,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listKeyRings($parent, array $optionalArgs = [])
     {
@@ -1920,8 +1864,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function restoreCryptoKeyVersion($name, array $optionalArgs = [])
     {
@@ -1964,8 +1906,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKey
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateCryptoKey($cryptoKey, $updateMask, array $optionalArgs = [])
     {
@@ -2015,8 +1955,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKey
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateCryptoKeyPrimaryVersion($name, $cryptoKeyVersionId, array $optionalArgs = [])
     {
@@ -2072,8 +2010,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Kms\V1\CryptoKeyVersion
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateCryptoKeyVersion($cryptoKeyVersion, $updateMask, array $optionalArgs = [])
     {
@@ -2121,8 +2057,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Iam\V1\Policy
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
@@ -2174,8 +2108,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Iam\V1\Policy
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
@@ -2229,8 +2161,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Iam\V1\TestIamPermissionsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
@@ -2272,8 +2202,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\Cloud\Location\Location
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getLocation(array $optionalArgs = [])
     {
@@ -2340,8 +2268,6 @@ class KeyManagementServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listLocations(array $optionalArgs = [])
     {

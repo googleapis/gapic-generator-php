@@ -117,8 +117,6 @@ use Google\Protobuf\FieldMask;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class CloudRedisGapicClient
 {
@@ -207,8 +205,6 @@ class CloudRedisGapicClient
      * @param string $instance
      *
      * @return string The formatted instance resource.
-     *
-     * @experimental
      */
     public static function instanceName($project, $location, $instance)
     {
@@ -227,8 +223,6 @@ class CloudRedisGapicClient
      * @param string $location
      *
      * @return string The formatted location resource.
-     *
-     * @experimental
      */
     public static function locationName($project, $location)
     {
@@ -257,8 +251,6 @@ class CloudRedisGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -286,8 +278,6 @@ class CloudRedisGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -304,8 +294,6 @@ class CloudRedisGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -365,8 +353,6 @@ class CloudRedisGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -452,8 +438,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createInstance($parent, $instanceId, $instance, array $optionalArgs = [])
     {
@@ -522,8 +506,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function deleteInstance($name, array $optionalArgs = [])
     {
@@ -598,8 +580,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function exportInstance($name, $outputConfig, array $optionalArgs = [])
     {
@@ -673,8 +653,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function failoverInstance($name, array $optionalArgs = [])
     {
@@ -721,8 +699,6 @@ class CloudRedisGapicClient
      * @return \Google\Cloud\Redis\V1\Instance
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getInstance($name, array $optionalArgs = [])
     {
@@ -799,8 +775,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function importInstance($name, $inputConfig, array $optionalArgs = [])
     {
@@ -873,8 +847,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listInstances($parent, array $optionalArgs = [])
     {
@@ -962,8 +934,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateInstance($updateMask, $instance, array $optionalArgs = [])
     {
@@ -1035,8 +1005,6 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function upgradeInstance($name, $redisVersion, array $optionalArgs = [])
     {

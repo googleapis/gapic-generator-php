@@ -56,8 +56,6 @@ use Testing\GrpcServiceConfig\Response1;
  *     $grpcServiceConfigWithRetry1Client->close();
  * }
  * ```
- *
- * @experimental
  */
 class GrpcServiceConfigWithRetry1GapicClient
 {
@@ -103,8 +101,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -121,8 +117,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -182,8 +176,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -217,8 +209,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Testing\GrpcServiceConfig\Response1
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1A(array $optionalArgs = [])
     {
@@ -276,8 +266,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1BLro(array $optionalArgs = [])
     {
@@ -337,8 +325,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1BidiStreaming(array $optionalArgs = [])
     {
@@ -370,8 +356,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Testing\GrpcServiceConfig\Response1
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1CServiceLevelRetry(array $optionalArgs = [])
     {
@@ -404,8 +388,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Testing\GrpcServiceConfig\Response1
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
     {
@@ -439,8 +421,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Google\ApiCore\ServerStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1ServerStreaming(array $optionalArgs = [])
     {

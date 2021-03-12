@@ -88,8 +88,6 @@ use Google\Protobuf\Timestamp;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class AssetServiceGapicClient
 {
@@ -201,8 +199,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted feed resource.
-     *
-     * @experimental
      */
     public static function feedName($project, $feed)
     {
@@ -220,8 +216,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted folder_feed resource.
-     *
-     * @experimental
      */
     public static function folderFeedName($folder, $feed)
     {
@@ -239,8 +233,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted organization_feed resource.
-     *
-     * @experimental
      */
     public static function organizationFeedName($organization, $feed)
     {
@@ -258,8 +250,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted project_feed resource.
-     *
-     * @experimental
      */
     public static function projectFeedName($project, $feed)
     {
@@ -290,8 +280,6 @@ class AssetServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -319,8 +307,6 @@ class AssetServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -337,8 +323,6 @@ class AssetServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -398,8 +382,6 @@ class AssetServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -448,8 +430,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function analyzeIamPolicy($analysisQuery, array $optionalArgs = [])
     {
@@ -529,8 +509,6 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $optionalArgs = [])
     {
@@ -599,8 +577,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function batchGetAssetsHistory($parent, array $optionalArgs = [])
     {
@@ -667,8 +643,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\Feed
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createFeed($parent, $feedId, $feed, array $optionalArgs = [])
     {
@@ -712,8 +686,6 @@ class AssetServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function deleteFeed($name, array $optionalArgs = [])
     {
@@ -822,8 +794,6 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function exportAssets($parent, $outputConfig, array $optionalArgs = [])
     {
@@ -880,8 +850,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\Feed
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getFeed($name, array $optionalArgs = [])
     {
@@ -924,8 +892,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\ListFeedsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listFeeds($parent, array $optionalArgs = [])
     {
@@ -1028,8 +994,6 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function searchAllIamPolicies($scope, array $optionalArgs = [])
     {
@@ -1165,8 +1129,6 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function searchAllResources($scope, array $optionalArgs = [])
     {
@@ -1235,8 +1197,6 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\Feed
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateFeed($feed, $updateMask, array $optionalArgs = [])
     {
