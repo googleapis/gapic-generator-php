@@ -51,12 +51,22 @@ class JsonComparer
         $microJsonString = json_encode($micro, JSON_PRETTY_PRINT);
         // Do string processing because the decoded JSON has inaccessible objects.
         if ($doMonoMicroProcessing) {
-          $unwantedWords = '"timeout_millis"';
-          $replaceMatch = '/^.*' . $unwantedWords . '.*$(?:\r\n|\n)?/m';
           // Remove any timeout_setting strings.
           // This is needed to decouple timeout settings from service.yaml.
+          $unwantedWords = '"timeout_millis"';
+          $replaceMatch = '/^.*' . $unwantedWords . '.*$(?:\r\n|\n)?/m';
           $monoJsonString = preg_replace($replaceMatch, '', $monoJsonString);
           $microJsonString = preg_replace($replaceMatch, '', $microJsonString);
+
+          // This is needed to decouple the generation of unused code definitions from gapic.yaml.
+          // Remove retry_codes, no_retry_{1,2}_params, and retry_policy_2_params.
+          // It just happens that any collisions occur on these definitions.
+          $matchingBraceRegex = '\{(?:[^}{]+|(?R))*+\}'; // Matches everything within a pair of brackets.
+          foreach (['retry_codes', 'no_retry_(1|2)_params', 'retry_policy_\d_params'] as $paramName) {
+            $replaceMatch = '/"' . $paramName . '": ' . $matchingBraceRegex . '/m';
+          $monoJsonString = preg_replace($replaceMatch, '', $monoJsonString);
+          $microJsonString = preg_replace($replaceMatch, '', $microJsonString);
+          }
         }
 
         return SourceComparer::compare($monoJsonString, $microJsonString, $printDiffs);
