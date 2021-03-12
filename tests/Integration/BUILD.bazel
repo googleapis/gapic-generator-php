@@ -1,17 +1,20 @@
 load(
     "@com_google_googleapis_imports//:imports.bzl",
+    "proto_library_with_info",
     php_gapic_assembly_pkg = "php_gapic_assembly_pkg2",
     php_gapic_library = "php_gapic_library2",
     php_grpc_library = "php_grpc_library2",
     php_proto_library = "php_proto_library2",
 )
 load("//:rules_php_test/integration_test.bzl", "php_golden_update", "php_integration_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 ####################################################
 # Integration Test Rules
 ####################################################
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
+    "kms",  # Mixins.
     "speech",  # sample_code field in gapic.yaml.
     "redis",  # sample_code field in gapic.yaml.
     "videointelligence",  # sample_code field in gapic.yaml.
@@ -164,5 +167,92 @@ php_gapic_assembly_pkg(
         ":videointelligence_php_gapic",
         ":videointelligence_php_grpc",
         ":videointelligence_php_proto",
+    ],
+)
+
+# KMS - mixins.
+proto_library(
+    name = "kms_proto",
+    srcs = [
+        "apis/kms/v1/resources.proto",
+        "apis/kms/v1/service.proto",
+    ],
+    deps = [
+        "@com_google_googleapis//google/api:annotations_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/cloud/location:location_proto",
+        "@com_google_googleapis//google/iam/v1:iam_policy_proto",
+        "@com_google_googleapis//google/iam/v1:policy_proto",
+        "@com_google_protobuf//:duration_proto",
+        "@com_google_protobuf//:field_mask_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+        "@com_google_protobuf//:wrappers_proto",
+    ],
+)
+
+proto_library_with_info(
+    name = "kms_proto_with_info",
+    deps = [
+        ":kms_proto",
+        "@com_google_googleapis//google/cloud:common_resources_proto",
+        "@com_google_googleapis//google/cloud/location:location_proto",
+        "@com_google_googleapis//google/iam/v1:iam_policy_proto",
+        "@com_google_googleapis//google/iam/v1:policy_proto",
+    ],
+)
+
+# IAM deps.
+php_proto_library(
+    name = "iam_php_proto",
+    deps = [
+        "@com_google_googleapis//google/iam/v1:iam_policy_proto",
+        "@com_google_googleapis//google/iam/v1:options_proto",
+        "@com_google_googleapis//google/iam/v1:policy_proto",
+    ],
+)
+
+php_grpc_library(
+    name = "iam_php_grpc",
+    srcs = ["@com_google_googleapis//google/iam/v1:iam_policy_proto"],
+    deps = [":iam_php_proto"],
+)
+
+php_proto_library(
+    name = "kms_php_proto",
+    deps = [":kms_proto"],
+)
+
+php_grpc_library(
+    name = "kms_php_grpc",
+    srcs = [":kms_proto"],
+    deps = [":kms_php_proto"],
+)
+
+php_gapic_library(
+    name = "kms_php_gapic",
+    srcs = [":kms_proto_with_info"],
+    grpc_service_config = "apis/kms/v1/cloudkms_grpc_service_config.json",
+    # For the IAM mixin.
+    service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
+    deps = [
+        #        ":iam_php_proto",
+        ":kms_php_proto",
+        #        "@com_google_googleapis//google/cloud/location:location_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-kms-v1-php",
+    deps = [
+        ":iam_php_grpc",
+        ":kms_php_gapic",
+        ":kms_php_grpc",
+        ":kms_php_proto",
+        ":kms_proto",
+        "@com_google_googleapis//google/cloud/location:location_php_grpc",
+        "@com_google_googleapis//google/cloud/location:location_php_proto",
     ],
 )

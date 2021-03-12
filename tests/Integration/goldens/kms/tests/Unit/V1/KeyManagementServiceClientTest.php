@@ -1686,7 +1686,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetIamPolicy', $actualFuncCall);
+        $this->assertSame('/google.iam.v1.IAMPolicy/GetIamPolicy', $actualFuncCall);
         $actualValue = $actualRequestObject->getResource();
         $this->assertProtobufEquals($resource, $actualValue);
         $this->assertTrue($transport->isExhausted());
@@ -1749,7 +1749,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/SetIamPolicy', $actualFuncCall);
+        $this->assertSame('/google.iam.v1.IAMPolicy/SetIamPolicy', $actualFuncCall);
         $actualValue = $actualRequestObject->getResource();
         $this->assertProtobufEquals($resource, $actualValue);
         $actualValue = $actualRequestObject->getPolicy();
@@ -1811,7 +1811,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/TestIamPermissions', $actualFuncCall);
+        $this->assertSame('/google.iam.v1.IAMPolicy/TestIamPermissions', $actualFuncCall);
         $actualValue = $actualRequestObject->getResource();
         $this->assertProtobufEquals($resource, $actualValue);
         $actualValue = $actualRequestObject->getPermissions();
@@ -1876,7 +1876,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetLocation', $actualFuncCall);
+        $this->assertSame('/google.cloud.location.Locations/GetLocation', $actualFuncCall);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -1938,7 +1938,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ListLocations', $actualFuncCall);
+        $this->assertSame('/google.cloud.location.Locations/ListLocations', $actualFuncCall);
         $this->assertTrue($transport->isExhausted());
     }
 

@@ -284,64 +284,6 @@ return [
                     ],
                 ],
             ],
-            'SetIamPolicy' => [
-                'method' => 'post',
-                'uriTemplate' => '/v1/{resource=**}:setIamPolicy',
-                'body' => '*',
-                'placeholders' => [
-                    'resource' => [
-                        'getters' => [
-                            'getResource',
-                        ],
-                    ],
-                ],
-            ],
-            'TestIamPermissions' => [
-                'method' => 'post',
-                'uriTemplate' => '/v1/{resource=**}:testIamPermissions',
-                'body' => '*',
-                'placeholders' => [
-                    'resource' => [
-                        'getters' => [
-                            'getResource',
-                        ],
-                    ],
-                ],
-            ],
-            'GetLocation' => [
-                'method' => 'get',
-                'uriTemplate' => '/v1/{name=locations/*}',
-                'additionalBindings' => [
-                    [
-                        'method' => 'get',
-                        'uriTemplate' => '/v1/{name=projects/*/locations/*}',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
-            'ListLocations' => [
-                'method' => 'get',
-                'uriTemplate' => '/v1/{name=locations}',
-                'additionalBindings' => [
-                    [
-                        'method' => 'get',
-                        'uriTemplate' => '/v1/{name=projects/*}/locations',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
         ],
         'google.iam.v1.IAMPolicy' => [
             'GetIamPolicy' => [

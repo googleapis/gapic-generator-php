@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\ProtoCatalog;
 use Google\Gapic\Metadata\GapicMetadata;
 
 class GapicMetadataGenerator
@@ -27,63 +25,40 @@ class GapicMetadataGenerator
     /**
      *  Generates the contents of a gapic_metadata.json file.
      */
-    public static function generate(ProtoCatalog $catalog, Vector $fileDescriptors, string $namespace): string
+    public static function generate(array $servicesToGenerate, string $namespace): string
     {
-        return (new GapicMetadataGenerator($catalog, $fileDescriptors, $namespace))->generateImpl();
-    }
-
-    private ProtoCatalog $catalog;
-    private Vector $fileDescriptors;
-    private string $namespace;
-    private GapicMetadata $gapicMetadata;
-
-    private function __construct(ProtoCatalog $catalog, Vector $fileDescriptors, string $namespace)
-    {
-        $this->catalog = $catalog;
-        $this->fileDescriptors = $fileDescriptors;
-        $this->namespace = $namespace;
-        $this->gapicMetadata = new GapicMetadata();
-    }
-
-    private function generateImpl(): string
-    {
+        $gapicMetadata = new GapicMetadata();
         // Initialization.
-        $this->gapicMetadata->setSchema("1.0");
-        $this->gapicMetadata->setComment("This file maps proto services/RPCs to the corresponding library clients/methods");
-        $this->gapicMetadata->setLanguage("php");
-        $this->gapicMetadata->setLibraryPackage($this->namespace);
+        $gapicMetadata->setSchema("1.0");
+        $gapicMetadata->setComment("This file maps proto services/RPCs to the corresponding library clients/methods");
+        $gapicMetadata->setLanguage("php");
+        $gapicMetadata->setLibraryPackage($namespace);
 
         $gapicMetadataServices = [];
-        // TODO: Filter out mixed-in services.
-        foreach ($this->fileDescriptors as $fileDesc) {
+        foreach ($servicesToGenerate as $service) {
             // Only need to set this once.
-            if (empty($this->gapicMetadata->getProtoPackage)) {
-                $this->gapicMetadata->setProtoPackage($fileDesc->getPackage());
+            if (empty($gapicMetadata->getProtoPackage)) {
+                $gapicMetadata->setProtoPackage($service->package);
             }
-            foreach ($fileDesc->getService() as $index => $service) {
-                $serviceName = "{$fileDesc->getPackage()}.{$service->getName()}";
-                $serviceDetails =
-          new ServiceDetails($this->catalog, $this->namespace, $fileDesc->getPackage(), $service, $fileDesc);
-                $gapicMetadataClients = [];
-                $rpcs = $serviceDetails->methods->toArray(
-                    fn ($method) => $method->name,
-                    fn ($method) => [$method->methodName]
-                );
+            $gapicMetadataClients = [];
+            $rpcs = $service->methods->toArray(
+                fn ($method) => $method->name,
+                fn ($method) => [$method->methodName]
+            );
 
-                $libraryClient = new GapicMetadata\ServiceAsClient();
-                $libraryClient->setLibraryClient($serviceDetails->gapicClientType->name);
-                $libraryClient->setRpcs(
-                    $serviceDetails->methods->toArray(
+            $libraryClient = new GapicMetadata\ServiceAsClient();
+            $libraryClient->setLibraryClient($service->gapicClientType->name);
+            $libraryClient->setRpcs(
+                $service->methods->toArray(
                         fn ($method) => $method->name,
                         fn ($method) => (new GapicMetadata\MethodList())->setMethods([$method->methodName])
                     )
-                );
-                $transport = new GapicMetadata\ServiceForTransport();
-                $transport->setClients(['grpc' => $libraryClient]);
-                $gapicMetadataServices[$serviceDetails->serviceName] = $transport;
-            }
+            );
+            $transport = new GapicMetadata\ServiceForTransport();
+            $transport->setClients(['grpc' => $libraryClient]);
+            $gapicMetadataServices[$service->serviceName] = $transport;
         }
-        $this->gapicMetadata->setServices($gapicMetadataServices);
-        return json_encode(json_decode($this->gapicMetadata->serializeToJsonString()), JSON_PRETTY_PRINT);
+        $gapicMetadata->setServices($gapicMetadataServices);
+        return json_encode(json_decode($gapicMetadata->serializeToJsonString()), JSON_PRETTY_PRINT);
     }
 }

@@ -194,7 +194,7 @@ class UnitTestsGenerator
                 yield $this->testExceptionalCaseServerStreaming($method);
                 break;
             case MethodDetails::CLIENT_STREAMING:
-                // The monolithic generator does not generate client-streaming test code.
+                // TODO(vNext): The monolithic generator does not generate client-streaming test code.
                 // That behaviour is reproduced here, but we may add new tests after the
                 // initial release of this micro-generator.
                 break;
@@ -217,6 +217,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -241,7 +242,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
                 AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),
@@ -470,6 +471,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -496,7 +498,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
                 AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),
@@ -528,6 +530,7 @@ class UnitTestsGenerator
         $bidiCall = AST::var('bidiCall');
         $writeRequests = AST::var('writeRequests');
         $expectedRequests = AST::var('expectedRequests');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -563,7 +566,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($createStreamRequests)),
                 AST::assign($streamFuncCall, $createStreamRequests[0]->getFuncCall()),
                 AST::assign($streamRequestObject, $createStreamRequests[0]->getRequestObject()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $streamFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $streamFuncCall),
                 ($this->assertNull)($streamRequestObject),
                 AST::assign($callObjects, $transport->popCallObjects()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($callObjects)),
@@ -646,6 +649,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -671,7 +675,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, $actualRequests[0]->getFuncCall()),
                 AST::assign($actualRequestObject, $actualRequests[0]->getRequestObject()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),

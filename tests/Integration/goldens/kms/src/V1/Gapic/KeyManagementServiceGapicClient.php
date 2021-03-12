@@ -27,9 +27,10 @@
 namespace Google\Cloud\Kms\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -78,8 +79,8 @@ use Google\Cloud\Kms\V1\ListKeyRingsResponse;
 use Google\Cloud\Kms\V1\PublicKey;
 use Google\Cloud\Kms\V1\RestoreCryptoKeyVersionRequest;
 use Google\Cloud\Kms\V1\UpdateCryptoKeyPrimaryVersionRequest;
-use Google\Cloud\Kms\V1\UpdateCryptoKeyRequest;
 
+use Google\Cloud\Kms\V1\UpdateCryptoKeyRequest;
 use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
@@ -2135,7 +2136,7 @@ class KeyManagementServiceGapicClient
             'resource' => $request->getResource(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
 
     /**
@@ -2185,7 +2186,7 @@ class KeyManagementServiceGapicClient
             'resource' => $request->getResource(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
 
     /**
@@ -2240,7 +2241,7 @@ class KeyManagementServiceGapicClient
             'resource' => $request->getResource(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
 
     /**
@@ -2285,7 +2286,7 @@ class KeyManagementServiceGapicClient
             'name' => $request->getName(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
     }
 
     /**
@@ -2365,6 +2366,6 @@ class KeyManagementServiceGapicClient
             'name' => $request->getName(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request);
+        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
     }
 }

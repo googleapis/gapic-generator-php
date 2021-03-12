@@ -74,6 +74,8 @@ class GapicClientGenerator
             }
         }
         foreach ($this->serviceDetails->methods as $method) {
+            if ($method->requestType === null) {
+            }
             $this->ctx->type($method->requestType);
             foreach ($method->allFields as $field) {
                 if ($field->isRepeated && $field->typeSingular->isClass()) {
@@ -635,54 +637,68 @@ class GapicClientGenerator
 
     private function startCall($method, $optionalArgs, $request): AST
     {
+        $startCallArgs = [
+        $method->name,
+        AST::access($this->ctx->type($method->responseType), AST::CLS),
+        $optionalArgs->var
+      ];
         switch ($method->methodType) {
-            case MethodDetails::NORMAL:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    $request
-                )->wait();
-            case MethodDetails::LRO:
-                return AST::call(AST::THIS, AST::method('startOperationsCall'))(
-                    $method->name,
-                    $optionalArgs->var,
-                    $request,
-                    AST::call(AST::THIS, AST::method('getOperationsClient'))()
-                )->wait();
-            case MethodDetails::PAGINATED:
-                return AST::call(AST::THIS, AST::method('getPagedListResponse'))(
-                    $method->name,
-                    $optionalArgs->var,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $request
-                );
-            case MethodDetails::BIDI_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    AST::NULL,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'))
-                );
-            case MethodDetails::SERVER_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    $request,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'))
-                );
-            case MethodDetails::CLIENT_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    AST::NULL,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'))
-                );
-            default:
-                throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+      case MethodDetails::NORMAL:
+        $startCallArgs[] = $request;
+        if ($method->isMixin()) {
+            $startCallArgs[] =
+                AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
+            $startCallArgs[] = $method->mixinServiceFullname;
         }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
+      case MethodDetails::LRO:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          $request,
+          AST::call(AST::THIS, AST::method('getOperationsClient'))()
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+      case MethodDetails::PAGINATED:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          AST::access($this->ctx->type($method->responseType), AST::CLS),
+          $request
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
+      case MethodDetails::BIDI_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::SERVER_STREAMING:
+        $startCallArgs[] = $request;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::CLIENT_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      default:
+        throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+      }
     }
 }
