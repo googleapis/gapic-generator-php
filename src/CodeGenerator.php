@@ -198,7 +198,7 @@ class CodeGenerator
             }
             // TODO: Further files, as required.
         }
-        if ($generateGapicMetadata) {
+        if ($generateGapicMetadata && $version !== '') {
             $gapicMetadataJson = GapicMetadataGenerator::generate($catalog, $fileDescs, $namespace);
             yield(["src/{$version}gapic_metadata.json", $gapicMetadataJson]);
         }
