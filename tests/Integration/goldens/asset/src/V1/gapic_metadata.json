@@ -5,7 +5,7 @@
     "protoPackage": "google.cloud.asset.v1",
     "libraryPackage": "Google\\Cloud\\Asset\\V1",
     "services": {
-        "google.cloud.asset.v1.AssetService": {
+        "AssetService": {
             "clients": {
                 "grpc": {
                     "libraryClient": "AssetServiceGapicClient",
