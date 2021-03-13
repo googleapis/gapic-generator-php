@@ -145,7 +145,7 @@ class CodeGenerator
             }
         }
 
-        if (empty($servicesToGenerate) === 0 && !empty($mixinServices)) {
+        if (empty($servicesToGenerate) && !empty($mixinServices)) {
             // TODO: Handle the case where a mixin-allowlisted API mixes in another one in that list.
             // For instance, IAM mixing-in Locations. We don't handle this because it currently does
             // not occur, so checking for non-empty is a sufficient proxy for identifying the case
