@@ -204,22 +204,6 @@ proto_library_with_info(
     ],
 )
 
-# IAM deps.
-php_proto_library(
-    name = "iam_php_proto",
-    deps = [
-        "@com_google_googleapis//google/iam/v1:iam_policy_proto",
-        "@com_google_googleapis//google/iam/v1:options_proto",
-        "@com_google_googleapis//google/iam/v1:policy_proto",
-    ],
-)
-
-php_grpc_library(
-    name = "iam_php_grpc",
-    srcs = ["@com_google_googleapis//google/iam/v1:iam_policy_proto"],
-    deps = [":iam_php_proto"],
-)
-
 php_proto_library(
     name = "kms_php_proto",
     deps = [":kms_proto"],
@@ -238,21 +222,53 @@ php_gapic_library(
     # For the IAM mixin.
     service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
     deps = [
-        #        ":iam_php_proto",
         ":kms_php_proto",
-        #        "@com_google_googleapis//google/cloud/location:location_php_proto",
     ],
 )
 
 php_gapic_assembly_pkg(
     name = "google-cloud-kms-v1-php",
     deps = [
-        ":iam_php_grpc",
+        #":iam_php_grpc",
         ":kms_php_gapic",
         ":kms_php_grpc",
         ":kms_php_proto",
-        ":kms_proto",
-        "@com_google_googleapis//google/cloud/location:location_php_grpc",
-        "@com_google_googleapis//google/cloud/location:location_php_proto",
+        #"@com_google_googleapis//google/cloud/location:location_php_grpc",
+        #"@com_google_googleapis//google/cloud/location:location_php_proto",
+    ],
+)
+
+# IAM - standalone mixed-in proto.
+php_proto_library(
+    name = "iam_php_proto",
+    deps = [
+        "@com_google_googleapis//google/iam/v1:iam_policy_proto",
+        "@com_google_googleapis//google/iam/v1:options_proto",
+        "@com_google_googleapis//google/iam/v1:policy_proto",
+    ],
+)
+
+php_grpc_library(
+    name = "iam_php_grpc",
+    srcs = ["@com_google_googleapis//google/iam/v1:iam_policy_proto"],
+    deps = [":iam_php_proto"],
+)
+
+php_gapic_library(
+    name = "iam_php_gapic",
+    srcs = ["@com_google_googleapis//google/iam/v1:iam_proto_with_info"],
+    grpc_service_config = "iam_grpc_service_config.json",
+    service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
+    deps = [
+        ":iam_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-iam-v1-php",
+    deps = [
+        ":iam_php_gapic",
+        ":iam_php_grpc",
+        ":iam_php_proto",
     ],
 )

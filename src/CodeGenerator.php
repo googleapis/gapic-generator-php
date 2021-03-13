@@ -38,11 +38,8 @@ use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
 {
-    const MIXIN_SERVICES =  [
-        "google.iam.v1.IAMPolicy",
-          "google.longrunning.Operations",
-          "google.cloud.location.Locations"
-  ];
+    const MIXIN_SERVICES =  ["google.iam.v1.IAMPolicy", "google.longrunning.Operations", "google.cloud.location.Locations"];
+
     /**
      * Generate from a FileSet descriptor; used when evoked from the command-line.
      *
@@ -121,6 +118,7 @@ class CodeGenerator
         $definedRpcNames = [];
         $mixinServices = [];
         $mixinRpcNames = [];
+        $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
               ->map(fn ($x) => ProtoHelpers::getNamespace($x))
@@ -135,14 +133,24 @@ class CodeGenerator
                     $serviceDetails = new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc);
                     $serviceName = $serviceDetails->serviceName;
                     if (in_array($serviceName, self::MIXIN_SERVICES)) {
-                        $mixinServices[] = $serviceDetails;
-                        array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        if ($serviceYamlConfig->apiNames->contains($serviceName)) {
+                            $mixinServices[] = $serviceDetails;
+                            array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        }
                     } else {
                         $servicesToGenerate[] = $serviceDetails;
                         array_merge($definedRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
                     }
                 }
             }
+        }
+
+        if (empty($servicesToGenerate) === 0 && !empty($mixinServices)) {
+            // TODO: Handle the case where a mixin-allowlisted API mixes in another one in that list.
+            // For instance, IAM mixing-in Locations. We don't handle this because it currently does
+            // not occur, so checking for non-empty is a sufficient proxy for identifying the case
+            // where we generate a client for one of those services.
+            $servicesToGenerate = $mixinServices;
         }
 
         $rpcNameBlocklist = array_diff($mixinRpcNames, $definedRpcNames);
@@ -154,7 +162,6 @@ class CodeGenerator
 
         // Generate files for each package.
         $result = [];
-        $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
         foreach (static::generateServices(
             $servicesToGenerate,
             $grpcServiceConfigJson,
