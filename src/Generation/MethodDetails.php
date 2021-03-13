@@ -242,7 +242,8 @@ abstract class MethodDetails
                     $catalog = $svc->catalog;
                     $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
                     if (is_null($lroData)) {
-                        throw new \Exception('An LRO method must provide a `google.api.operation` option.');
+                        // TODO(miraleung): This currently breaks when building a GAPIC for LRO.
+                        throw new \Exception("An LRO method must provide a `google.api.operation` option, missing from {$this->name}.");
                     }
                     $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
                     $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
