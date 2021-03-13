@@ -27,15 +27,13 @@
 namespace Testing\Basic\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\Basic\BasicGrpcClient;
 use Testing\Basic\PartOfRequestA;
 use Testing\Basic\PartOfRequestB;
 use Testing\Basic\PartOfRequestC;

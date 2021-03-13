@@ -22,25 +22,17 @@
 
 namespace Testing\Basic\Tests\Unit;
 
-use Testing\Basic\BasicClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
+
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
-use Testing\Basic\BasicGrpcClient;
-use Testing\Basic\PartOfRequestA;
-use Testing\Basic\Request;
-use Testing\Basic\RequestWithArgs;
-use Testing\Basic\Response;
 use stdClass;
+use Testing\Basic\BasicClient;
+use Testing\Basic\Request;
+use Testing\Basic\Response;
 
 /**
  * @group basic

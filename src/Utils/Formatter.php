@@ -71,6 +71,7 @@ class Formatter
           new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
           new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
           new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer(), // -10
           new \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer(), // -11, PSR2
           new \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer(), // -19
           new \PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(), // -20, PSR2

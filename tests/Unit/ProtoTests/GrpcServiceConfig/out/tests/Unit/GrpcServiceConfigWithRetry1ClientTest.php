@@ -22,25 +22,24 @@
 
 namespace Testing\GrpcServiceConfig\Tests\Unit;
 
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\ServerStream;
+
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\GetOperationRequest;
+
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1GrpcClient;
+use stdClass;
+use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\LroResponse;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
-use stdClass;
 
 /**
  * @group grpcserviceconfig

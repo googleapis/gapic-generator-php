@@ -22,24 +22,20 @@
 
 namespace Google\Cloud\VideoIntelligence\Tests\Unit\V1;
 
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
+
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
-use Google\Cloud\VideoIntelligence\V1\Feature;
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceGrpcClient;
+
+use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**

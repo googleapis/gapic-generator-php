@@ -27,20 +27,17 @@
 namespace Testing\BasicLro\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
-use Testing\BasicLro\BasicLroGrpcClient;
-use Testing\BasicLro\LroMetadata;
-use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
 
 /**
