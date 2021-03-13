@@ -52,10 +52,10 @@ class CodeGenerator
     public static function generateFromDescriptor(
         string $descBytes,
         string $package,
-        int $licenseYear,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
-        ?string $serviceYaml
+        ?string $serviceYaml,
+        int $licenseYear = -1
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -63,7 +63,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $licenseYear, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
+        yield from static::generate($fileDescs, $filesToGenerate, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
     }
 
     /**
@@ -82,11 +82,14 @@ class CodeGenerator
     public static function generate(
         Vector $fileDescs,
         Vector $filesToGenerate,
-        int $licenseYear,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
-        ?string $serviceYaml
+        ?string $serviceYaml,
+        int $licenseYear = -1
     ) {
+        if ($licenseYear < 0) {
+            $licenseYear = (int)date('Y');
+        }
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
         // Create catalog of all protos and resources.

@@ -46,7 +46,7 @@ class GeneratorUtils
         $serviceYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_service.yaml");
 
         // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::generateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
+        $codeIterator = CodeGenerator::generateFromDescriptor($descBytes, $package, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, 2020);
         return $codeIterator;
     }
 }

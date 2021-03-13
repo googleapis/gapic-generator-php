@@ -41,12 +41,6 @@ function showUsageAndExit()
     exit(1);
 }
 
-// The monolithic generator appears to be fixed to use 2020, so fixing the micro-generator to 2020
-// allows the comparison-based integration tests to run.
-// TODO: Use the current year, not fixed at 2020. Make the monolith use current year.
-$year = 2020;
-// $year = (int)date('Y');
-
 // When running as a protoc plugin, an optional root directory may be passed in to set the
 // root location of the side-loaded configuration files:
 // - grpc service config json
@@ -102,7 +96,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             ->map(fn ($x) => explode('=', $x, 2))
             ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts, $sideLoadedRootDir);
-        $files = CodeGenerator::generate($fileDescs, $filesToGen, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
+        $files = CodeGenerator::generate($fileDescs, $filesToGen, $grpcServiceConfig, $gapicYaml, $serviceYaml);
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
             $file = new File();
@@ -127,7 +121,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts);
 
     // Generate PHP code.
-    $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
+    $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $grpcServiceConfig, $gapicYaml, $serviceYaml);
 
     if (is_null($outputDir)) {
         // TODO: Remove printout; only save files to the specified output path.
