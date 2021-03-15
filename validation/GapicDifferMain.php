@@ -35,7 +35,7 @@ if (!compareLibraries($argv)) {
     print("FAIL - Differences found\n\n");
     exit(1);
 }
-print("PASS");
+print("\nPASS\n\n");
 
 /**
  * Compares the files in the two directories. Assumes the LHS one is the original
@@ -64,7 +64,7 @@ function compareLibraries($argv): bool
     $microFilesRelativePaths = array_merge($srcFilepaths, $testFilepaths);
 
     $diffFindings = [];
-    $diffsFound = false;
+    $clientsSame = true;
     $gapicMetadataFileName = "gapic_metadata.json";
     foreach ($microFilesRelativePaths as $file) {
         // Ignore the gapic_metadata.json file.
@@ -94,15 +94,18 @@ function compareLibraries($argv): bool
         $fileFindings = [];
         $isJson = substr($file, -5) === '.json';
         if ($isJson) {
-            $diffsFound &= JsonComparer::compareMonoMicroClientConfig($monoFileContents, $microFileContents);
+            $clientsSame &= JsonComparer::compareMonoMicroClientConfig($monoFileContents, $microFileContents);
         } elseif ($isConfig) {
             $diffsFound &= PhpConfigComparer::compare($monoFileContents, $microFileContents);
         } else {
-            $diffsFound &= PhpClassComparer::compare($monoFileContents, $microFileContents);
+            $monoPhpFileContents = $monoFileContents;
+            $microPhpFileContents = processMicroPhpFile($microFileContents, $file);
+            $clientsSame &= PhpClassComparer::compare($monoPhpFileContents, $microPhpFileContents);
         }
     }
 
-    if (!empty($diffFindings) || $diffsFound) {
+    if (!empty($diffFindings) || !$clientsSame) {
+        print(sizeof($clientsSame) . " differences found: ");
         print(implode("\n", $diffFindings) . "\n");
         return false;
     }
@@ -120,4 +123,17 @@ function getDirContents(string $prefixPath, string $dir, &$results): void
             getDirContents("$prefixPath/$subpath", $actualPath, $results);
         }
     }
+}
+
+function processMicroPhpFile(string $microFileContents, string $relativeFile): string
+{
+    $gapicClientFileEnding = "GapicClient.php";
+    if (substr($relativeFile, -strlen($gapicClientFileEnding)) !== $gapicClientFileEnding) {
+        return $microFileContents;
+    }
+
+    // Flip arguments in `if (self::$someField == null) {`.
+    $unwantedWords = "if \((self::.*) == null\) \{";
+    $replaceMatch = '/' . $unwantedWords . '.*/';
+    return preg_replace($replaceMatch, 'if (null == $1) {', $microFileContents);
 }
