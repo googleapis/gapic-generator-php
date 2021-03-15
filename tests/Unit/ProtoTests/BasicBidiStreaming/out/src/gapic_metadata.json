@@ -5,7 +5,7 @@
     "protoPackage": "testing.basicbidistreaming",
     "libraryPackage": "Testing\\BasicBidiStreaming",
     "services": {
-        "testing.basicbidistreaming.BasicBidiStreaming": {
+        "BasicBidiStreaming": {
             "clients": {
                 "grpc": {
                     "libraryClient": "BasicBidiStreamingGapicClient",

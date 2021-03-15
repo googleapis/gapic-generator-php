@@ -74,8 +74,6 @@ class GapicClientGenerator
             }
         }
         foreach ($this->serviceDetails->methods as $method) {
-            if ($method->requestType === null) {
-            }
             $this->ctx->type($method->requestType);
             foreach ($method->allFields as $field) {
                 if ($field->isRepeated && $field->typeSingular->isClass()) {

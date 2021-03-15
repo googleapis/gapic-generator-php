@@ -2,27 +2,27 @@
     "schema": "1.0",
     "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
     "language": "php",
-    "protoPackage": "testing.basiclro",
-    "libraryPackage": "Testing\\BasicLro",
+    "protoPackage": "google.iam.v1",
+    "libraryPackage": "Google\\Cloud\\Iam\\V1",
     "services": {
-        "BasicLro": {
+        "IAMPolicy": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicLroGapicClient",
+                    "libraryClient": "IAMPolicyGapicClient",
                     "rpcs": {
-                        "Method1": {
+                        "GetIamPolicy": {
                             "methods": [
-                                "method1"
+                                "getIamPolicy"
                             ]
                         },
-                        "MethodNonLro1": {
+                        "SetIamPolicy": {
                             "methods": [
-                                "methodNonLro1"
+                                "setIamPolicy"
                             ]
                         },
-                        "MethodNonLro2": {
+                        "TestIamPermissions": {
                             "methods": [
-                                "methodNonLro2"
+                                "testIamPermissions"
                             ]
                         }
                     }

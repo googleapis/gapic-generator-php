@@ -15,6 +15,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
     "kms",  # Mixins.
+    "iam",  # Standalone service that's in the mixin allowlist.
     "speech",  # sample_code field in gapic.yaml.
     "redis",  # sample_code field in gapic.yaml.
     "videointelligence",  # sample_code field in gapic.yaml.
