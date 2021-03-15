@@ -5,7 +5,7 @@
     "protoPackage": "testing.grpcserviceconfig",
     "libraryPackage": "Testing\\GrpcServiceConfig",
     "services": {
-        "testing.grpcserviceconfig.GrpcServiceConfigWithRetry1": {
+        "GrpcServiceConfigWithRetry1": {
             "clients": {
                 "grpc": {
                     "libraryClient": "GrpcServiceConfigWithRetry1GapicClient",

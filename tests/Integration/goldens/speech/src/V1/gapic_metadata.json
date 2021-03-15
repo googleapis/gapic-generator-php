@@ -5,7 +5,7 @@
     "protoPackage": "google.cloud.speech.v1",
     "libraryPackage": "Google\\Cloud\\Speech\\V1",
     "services": {
-        "google.cloud.speech.v1.Speech": {
+        "Speech": {
             "clients": {
                 "grpc": {
                     "libraryClient": "SpeechGapicClient",

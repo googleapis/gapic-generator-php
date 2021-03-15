@@ -5,7 +5,7 @@
     "protoPackage": "testing.basic",
     "libraryPackage": "Testing\\Basic",
     "services": {
-        "testing.basic.Basic": {
+        "Basic": {
             "clients": {
                 "grpc": {
                     "libraryClient": "BasicGapicClient",
