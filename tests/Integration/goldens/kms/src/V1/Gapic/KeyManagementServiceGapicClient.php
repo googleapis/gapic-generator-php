@@ -40,9 +40,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
-use Google\Cloud\Iam\V1\SetIamPolicyRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\Cloud\Kms\V1\AsymmetricDecryptRequest;
 use Google\Cloud\Kms\V1\AsymmetricDecryptResponse;
 use Google\Cloud\Kms\V1\AsymmetricSignRequest;
@@ -79,8 +76,8 @@ use Google\Cloud\Kms\V1\ListKeyRingsResponse;
 use Google\Cloud\Kms\V1\PublicKey;
 use Google\Cloud\Kms\V1\RestoreCryptoKeyVersionRequest;
 use Google\Cloud\Kms\V1\UpdateCryptoKeyPrimaryVersionRequest;
-
 use Google\Cloud\Kms\V1\UpdateCryptoKeyRequest;
+
 use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
