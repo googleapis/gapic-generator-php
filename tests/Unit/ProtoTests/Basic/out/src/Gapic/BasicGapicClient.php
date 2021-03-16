@@ -55,8 +55,6 @@ use Testing\Basic\Response;
  *     $basicClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicGapicClient
 {
@@ -149,8 +147,6 @@ class BasicGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -184,8 +180,6 @@ class BasicGapicClient
      * @return \Testing\Basic\Response
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function aMethod(array $optionalArgs = [])
     {
@@ -228,8 +222,6 @@ class BasicGapicClient
      * @return \Testing\Basic\Response
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodWithArgs($aString, $partOfRequestA, array $optionalArgs = [])
     {

@@ -79,8 +79,6 @@ use Testing\BasicLro\Request;
  *     $basicLroClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicLroGapicClient
 {
@@ -129,8 +127,6 @@ class BasicLroGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -147,8 +143,6 @@ class BasicLroGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -208,8 +202,6 @@ class BasicLroGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -271,8 +263,6 @@ class BasicLroGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1(array $optionalArgs = [])
     {
@@ -305,8 +295,6 @@ class BasicLroGapicClient
      * @return \Testing\BasicLro\Request
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodNonLro1(array $optionalArgs = [])
     {
@@ -339,8 +327,6 @@ class BasicLroGapicClient
      * @return \Testing\BasicLro\Request
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodNonLro2(array $optionalArgs = [])
     {

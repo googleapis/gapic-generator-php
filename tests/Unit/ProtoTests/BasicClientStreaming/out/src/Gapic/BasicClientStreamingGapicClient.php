@@ -71,8 +71,6 @@ use Testing\BasicClientStreaming\Response;
  *     $basicClientStreamingClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicClientStreamingGapicClient
 {
@@ -162,8 +160,6 @@ class BasicClientStreamingGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -213,8 +209,6 @@ class BasicClientStreamingGapicClient
      * @return \Google\ApiCore\ClientStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodClient(array $optionalArgs = [])
     {
@@ -261,8 +255,6 @@ class BasicClientStreamingGapicClient
      * @return \Google\ApiCore\ClientStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodEmpty(array $optionalArgs = [])
     {

@@ -83,8 +83,6 @@ use Testing\BasicBidiStreaming\Response;
  *     $basicBidiStreamingClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicBidiStreamingGapicClient
 {
@@ -174,8 +172,6 @@ class BasicBidiStreamingGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -237,8 +233,6 @@ class BasicBidiStreamingGapicClient
      * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodBidi(array $optionalArgs = [])
     {
@@ -297,8 +291,6 @@ class BasicBidiStreamingGapicClient
      * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodEmpty(array $optionalArgs = [])
     {

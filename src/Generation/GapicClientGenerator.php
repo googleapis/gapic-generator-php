@@ -113,8 +113,7 @@ class GapicClientGenerator
                         'with these names, this class includes a format method for each type of name, and additionally' .
                         'a parseName method to extract the individual identifiers contained within formatted names' .
                         'that are returned by the API.'
-                     ),
-                PhpDoc::experimental(),
+                     )
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())
@@ -226,8 +225,7 @@ class GapicClientGenerator
                             'resource.'
                         ),
                         $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
-                        PhpDoc::experimental()
+                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.'))
                     )));
             $formattedName = AST::param(null, AST::var('formattedName'));
             $template = AST::param(null, AST::var('template'), AST::NULL);
@@ -274,8 +272,7 @@ class GapicClientGenerator
                     PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
                     PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
                     PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
-                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
-                    PhpDoc::experimental()
+                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.'))
                 ));
             return $templateGetters->append($getPathTemplateMap)->concat($formatMethods)->append($parseMethod);
         } else {
@@ -303,8 +300,7 @@ class GapicClientGenerator
                 ))
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
-                    PhpDoc::experimental()
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class)))
                 ));
             $operationName = AST::var('operationName');
             $methodName = AST::var('methodName');
@@ -343,8 +339,7 @@ class GapicClientGenerator
                         AST::param($this->ctx->type(Type::string()), $methodName),
                         PhpDoc::text('The name of the method used to start the operation')
                     ),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
-                    PhpDoc::experimental()
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class)))
                 ));
             return Vector::new([$getOperationsClient, $resumeOperation]);
         } else {
@@ -501,8 +496,7 @@ class GapicClientGenerator
                         )
                     )
                 )),
-                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
-                PhpDoc::experimental()
+                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)))
             ));
     }
 
@@ -628,8 +622,7 @@ class GapicClientGenerator
                 PhpDoc::throws(
                     $this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')
-                ),
-                PhpDoc::experimental()
+                )
             ));
     }
 

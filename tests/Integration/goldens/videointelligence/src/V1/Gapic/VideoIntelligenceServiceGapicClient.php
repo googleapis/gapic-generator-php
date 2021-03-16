@@ -83,8 +83,6 @@ use Google\LongRunning\Operation;
  *     $videoIntelligenceServiceClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class VideoIntelligenceServiceGapicClient
 {
@@ -132,8 +130,6 @@ class VideoIntelligenceServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -150,8 +146,6 @@ class VideoIntelligenceServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -211,8 +205,6 @@ class VideoIntelligenceServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -309,8 +301,6 @@ class VideoIntelligenceServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function annotateVideo($features, array $optionalArgs = [])
     {

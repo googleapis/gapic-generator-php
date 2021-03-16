@@ -69,8 +69,6 @@ use Testing\BasicPaginated\Response;
  *     $basicPaginatedClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicPaginatedGapicClient
 {
@@ -163,8 +161,6 @@ class BasicPaginatedGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -224,8 +220,6 @@ class BasicPaginatedGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodPaginated($aField, $pageToken, $partOfRequestA, array $optionalArgs = [])
     {

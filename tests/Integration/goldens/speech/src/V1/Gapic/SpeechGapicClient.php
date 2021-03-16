@@ -89,8 +89,6 @@ use Google\LongRunning\Operation;
  *     $speechClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class SpeechGapicClient
 {
@@ -138,8 +136,6 @@ class SpeechGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -156,8 +152,6 @@ class SpeechGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -217,8 +211,6 @@ class SpeechGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -288,8 +280,6 @@ class SpeechGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function longRunningRecognize($config, $audio, array $optionalArgs = [])
     {
@@ -331,8 +321,6 @@ class SpeechGapicClient
      * @return \Google\Cloud\Speech\V1\RecognizeResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function recognize($config, $audio, array $optionalArgs = [])
     {
@@ -396,8 +384,6 @@ class SpeechGapicClient
      * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function streamingRecognize(array $optionalArgs = [])
     {
