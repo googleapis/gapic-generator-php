@@ -15,6 +15,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
     "kms",  # Mixins.
+    "iam",  # Standalone service that's in the mixin allowlist.
     "speech",  # sample_code field in gapic.yaml.
     "redis",  # sample_code field in gapic.yaml.
     "videointelligence",  # sample_code field in gapic.yaml.
@@ -229,12 +230,9 @@ php_gapic_library(
 php_gapic_assembly_pkg(
     name = "google-cloud-kms-v1-php",
     deps = [
-        #":iam_php_grpc",
         ":kms_php_gapic",
         ":kms_php_grpc",
         ":kms_php_proto",
-        #"@com_google_googleapis//google/cloud/location:location_php_grpc",
-        #"@com_google_googleapis//google/cloud/location:location_php_proto",
     ],
 )
 
@@ -257,8 +255,8 @@ php_grpc_library(
 php_gapic_library(
     name = "iam_php_gapic",
     srcs = ["@com_google_googleapis//google/iam/v1:iam_proto_with_info"],
-    grpc_service_config = "iam_grpc_service_config.json",
-    service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
+    gapic_yaml = "apis/iam/v1/iam_gapic.yaml",
+    service_yaml = "apis/iam/v1/iam_api.yaml",
     deps = [
         ":iam_php_proto",
     ],
