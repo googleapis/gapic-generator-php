@@ -27,9 +27,10 @@
 namespace Google\Cloud\Kms\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -39,9 +40,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
-use Google\Cloud\Iam\V1\SetIamPolicyRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\Cloud\Kms\V1\AsymmetricDecryptRequest;
 use Google\Cloud\Kms\V1\AsymmetricDecryptResponse;
 use Google\Cloud\Kms\V1\AsymmetricSignRequest;
@@ -2087,163 +2085,6 @@ class KeyManagementServiceGapicClient
     }
 
     /**
-     * Gets the access control policy for a resource.
-     * Returns an empty policy if the resource exists and does not have a policy
-     * set.
-     *
-     * Sample code:
-     * ```
-     * $keyManagementServiceClient = new KeyManagementServiceClient();
-     * try {
-     *     $resource = 'resource';
-     *     $response = $keyManagementServiceClient->getIamPolicy($resource);
-     * } finally {
-     *     $keyManagementServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $resource     REQUIRED: The resource for which the policy is being requested.
-     *                             See the operation documentation for the appropriate value for this field.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type GetPolicyOptions $options
-     *           OPTIONAL: A `GetPolicyOptions` object for specifying options to
-     *           `GetIamPolicy`. This field is only used by Cloud IAM.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Iam\V1\Policy
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function getIamPolicy($resource, array $optionalArgs = [])
-    {
-        $request = new GetIamPolicyRequest();
-        $request->setResource($resource);
-        if (isset($optionalArgs['options'])) {
-            $request->setOptions($optionalArgs['options']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Sets the access control policy on the specified resource. Replaces any
-     * existing policy.
-     *
-     * Sample code:
-     * ```
-     * $keyManagementServiceClient = new KeyManagementServiceClient();
-     * try {
-     *     $resource = 'resource';
-     *     $policy = new Policy();
-     *     $response = $keyManagementServiceClient->setIamPolicy($resource, $policy);
-     * } finally {
-     *     $keyManagementServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $resource     REQUIRED: The resource for which the policy is being specified.
-     *                             See the operation documentation for the appropriate value for this field.
-     * @param Policy $policy       REQUIRED: The complete policy to be applied to the `resource`. The size of
-     *                             the policy is limited to a few 10s of KB. An empty policy is a
-     *                             valid policy but certain Cloud Platform services (such as Projects)
-     *                             might reject them.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Iam\V1\Policy
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function setIamPolicy($resource, $policy, array $optionalArgs = [])
-    {
-        $request = new SetIamPolicyRequest();
-        $request->setResource($resource);
-        $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Returns permissions that a caller has on the specified resource.
-     * If the resource does not exist, this will return an empty set of
-     * permissions, not a NOT_FOUND error.
-     *
-     * Note: This operation is designed to be used for building permission-aware
-     * UIs and command-line tools, not for authorization checking. This operation
-     * may "fail open" without warning.
-     *
-     * Sample code:
-     * ```
-     * $keyManagementServiceClient = new KeyManagementServiceClient();
-     * try {
-     *     $resource = 'resource';
-     *     $permissions = [];
-     *     $response = $keyManagementServiceClient->testIamPermissions($resource, $permissions);
-     * } finally {
-     *     $keyManagementServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string   $resource     REQUIRED: The resource for which the policy detail is being requested.
-     *                               See the operation documentation for the appropriate value for this field.
-     * @param string[] $permissions  The set of permissions to check for the `resource`. Permissions with
-     *                               wildcards (such as '*' or 'storage.*') are not allowed. For more
-     *                               information see
-     *                               [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-     * @param array    $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Iam\V1\TestIamPermissionsResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
-    {
-        $request = new TestIamPermissionsRequest();
-        $request->setResource($resource);
-        $request->setPermissions($permissions);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
      * Gets information about a location.
      *
      * Sample code:
@@ -2285,7 +2126,7 @@ class KeyManagementServiceGapicClient
             'name' => $request->getName(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
     }
 
     /**
@@ -2365,6 +2206,6 @@ class KeyManagementServiceGapicClient
             'name' => $request->getName(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request);
+        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
     }
 }

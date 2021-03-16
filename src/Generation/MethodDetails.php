@@ -59,6 +59,13 @@ abstract class MethodDetails
             static::createNormal($svc, $desc);
     }
 
+    public static function createMixin(ServiceDetails $svc, MethodDescriptorProto $desc, string $mixinHostServiceFullname): MethodDetails
+    {
+        $methodDetails = static::create($svc, $desc);
+        $methodDetails->mixinServiceFullname = $mixinHostServiceFullname;
+        return $methodDetails;
+    }
+
     private static function maybeCreateClientStreaming(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
     {
         if (!$desc->getClientStreaming()) {
@@ -235,7 +242,8 @@ abstract class MethodDetails
                     $catalog = $svc->catalog;
                     $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
                     if (is_null($lroData)) {
-                        throw new \Exception('An LRO method must provide a `google.api.operation` option.');
+                        // TODO(miraleung): This currently breaks when building a GAPIC for LRO.
+                        throw new \Exception("An LRO method must provide a `google.api.operation` option, missing from {$this->name}.");
                     }
                     $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
                     $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
@@ -284,6 +292,9 @@ abstract class MethodDetails
 
     /** @var string *Readonly* The name of this method, as required for PHP code. */
     public string $methodName;
+
+    /** @var ?string The full name of this method's original service if it is a mixin, null otherwise. */
+    public ?string $mixinServiceFullname;
 
     /** @var string *Readonly* The name of the test method testing the success case. */
     public string $testSuccessMethodName;
@@ -337,6 +348,7 @@ abstract class MethodDetails
         $outputMsg = $this->catalog->msgsByFullname[$desc->getOutputType()];
         $this->name = $desc->getName();
         $this->methodName = Helpers::toCamelCase($this->name);
+        $this->mixinServiceFullname = null;
         $this->testSuccessMethodName = $this->methodName . 'Test';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
         $this->requestType = Type::fromMessage($this->inputMsg->desc);
@@ -353,10 +365,15 @@ abstract class MethodDetails
         $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
     }
 
-    public function isStreaming()
+    public function isStreaming(): bool
     {
         return $this->methodType === static::BIDI_STREAMING ||
             $this->methodType === static::SERVER_STREAMING ||
             $this->methodType === static::CLIENT_STREAMING;
+    }
+
+    public function isMixin(): bool
+    {
+        return $this->mixinServiceFullname !== null;
     }
 }
