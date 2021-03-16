@@ -96,7 +96,9 @@ function compareLibraries($argv): bool
         if ($isJson) {
             $clientsSame &= JsonComparer::compareMonoMicroClientConfig($monoFileContents, $microFileContents);
         } elseif ($isConfig) {
-            $diffsFound &= PhpConfigComparer::compare($monoFileContents, $microFileContents);
+            recurKsort($monoFileContents);
+            recurKsort($microFileContents);
+            $clientsSame &= PhpConfigComparer::compare($monoFileContents, $microFileContents);
         } else {
             $monoPhpFileContents = $monoFileContents;
             $microPhpFileContents = processMicroPhpFile($microFileContents, $file);
@@ -105,7 +107,7 @@ function compareLibraries($argv): bool
     }
 
     if (!empty($diffFindings) || !$clientsSame) {
-        print(sizeof($clientsSame) . " differences found: ");
+        print(sizeof($diffFindings) . " differences found: ");
         print(implode("\n", $diffFindings) . "\n");
         return false;
     }
@@ -136,4 +138,14 @@ function processMicroPhpFile(string $microFileContents, string $relativeFile): s
     $unwantedWords = "if \((self::.*) == null\) \{";
     $replaceMatch = '/' . $unwantedWords . '.*/';
     return preg_replace($replaceMatch, 'if (null == $1) {', $microFileContents);
+}
+
+function recurKsort(array &$ra)
+{
+    foreach ($ra as &$val) {
+        if (is_array($val)) {
+            recurKsort($val);
+        }
+    }
+    ksort($ra);
 }
