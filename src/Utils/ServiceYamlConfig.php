@@ -56,6 +56,7 @@ class ServiceYamlConfig
     {
         $this->httpRules = Vector::new([]);
         $this->backendRules = Vector::new([]);
+        $this->apiNames = Vector::new([]);
         if (!is_null($serviceYaml)) {
             $service = new Service();
             $serviceYaml = static::fixYaml($serviceYaml);
@@ -71,6 +72,10 @@ class ServiceYamlConfig
                     $this->backendRules = Vector::new($rules);
                 }
             }
+            $apis = $service->getApis();
+            if (!is_null($apis)) {
+                $this->apiNames = Vector::new($apis)->map(fn ($a) => $a->getName());
+            }
         }
     }
 
@@ -79,4 +84,7 @@ class ServiceYamlConfig
 
     /** @var Vector *Readonly* Vector of \Google\Api\BackendRule */
     public Vector $backendRules;
+
+    /** @var Vector *Readonly* Vector of API names. */
+    public Vector $apiNames;
 }
