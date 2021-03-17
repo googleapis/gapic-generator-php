@@ -45,6 +45,11 @@ class ResourcePatternDetails implements ResourcePart
         $varSegments = $segments
             ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->map(fn ($x) => $x->getKey());
+        // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
+        $tokens = explode("/", $pattern);
+        if (substr(end($tokens), 0, 1) !== "{" && substr($pattern, strlen($pattern) - 1) !== "}") {
+            $varSegments = $varSegments->append(end($tokens));
+        }
         $this->nameSnakeCase = $varSegments->join('_');
         $this->nameCamelCase = Helpers::toCamelCase($this->nameSnakeCase);
         $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
