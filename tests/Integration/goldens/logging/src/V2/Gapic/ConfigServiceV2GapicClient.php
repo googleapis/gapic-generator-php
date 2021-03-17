@@ -565,15 +565,13 @@ class ConfigServiceV2GapicClient
      * billing_account_cmekSettings resource.
      *
      * @param string $billingAccount
-     * @param string $cmekSettings
      *
      * @return string The formatted billing_account_cmekSettings resource.
      */
-    public static function billingAccountCmekSettingsName($billingAccount, $cmekSettings)
+    public static function billingAccountCmekSettingsName($billingAccount)
     {
         return self::getBillingAccountCmekSettingsNameTemplate()->render([
             'billing_account' => $billingAccount,
-            'cmekSettings' => $cmekSettings,
         ]);
     }
 
@@ -673,15 +671,13 @@ class ConfigServiceV2GapicClient
      * cmek_settings resource.
      *
      * @param string $project
-     * @param string $cmekSettings
      *
      * @return string The formatted cmek_settings resource.
      */
-    public static function cmekSettingsName($project, $cmekSettings)
+    public static function cmekSettingsName($project)
     {
         return self::getCmekSettingsNameTemplate()->render([
             'project' => $project,
-            'cmekSettings' => $cmekSettings,
         ]);
     }
 
@@ -705,15 +701,13 @@ class ConfigServiceV2GapicClient
      * folder_cmekSettings resource.
      *
      * @param string $folder
-     * @param string $cmekSettings
      *
      * @return string The formatted folder_cmekSettings resource.
      */
-    public static function folderCmekSettingsName($folder, $cmekSettings)
+    public static function folderCmekSettingsName($folder)
     {
         return self::getFolderCmekSettingsNameTemplate()->render([
             'folder' => $folder,
-            'cmekSettings' => $cmekSettings,
         ]);
     }
 
@@ -919,15 +913,13 @@ class ConfigServiceV2GapicClient
      * organization_cmekSettings resource.
      *
      * @param string $organization
-     * @param string $cmekSettings
      *
      * @return string The formatted organization_cmekSettings resource.
      */
-    public static function organizationCmekSettingsName($organization, $cmekSettings)
+    public static function organizationCmekSettingsName($organization)
     {
         return self::getOrganizationCmekSettingsNameTemplate()->render([
             'organization' => $organization,
-            'cmekSettings' => $cmekSettings,
         ]);
     }
 
@@ -1042,15 +1034,13 @@ class ConfigServiceV2GapicClient
      * project_cmekSettings resource.
      *
      * @param string $project
-     * @param string $cmekSettings
      *
      * @return string The formatted project_cmekSettings resource.
      */
-    public static function projectCmekSettingsName($project, $cmekSettings)
+    public static function projectCmekSettingsName($project)
     {
         return self::getProjectCmekSettingsNameTemplate()->render([
             'project' => $project,
-            'cmekSettings' => $cmekSettings,
         ]);
     }
 

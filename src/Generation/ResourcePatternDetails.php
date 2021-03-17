@@ -47,10 +47,11 @@ class ResourcePatternDetails implements ResourcePart
             ->map(fn ($x) => $x->getKey());
         // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
         $tokens = explode("/", $pattern);
+        $nameSegments = $varSegments;
         if (substr(end($tokens), 0, 1) !== "{" && substr($pattern, strlen($pattern) - 1) !== "}") {
-            $varSegments = $varSegments->append(end($tokens));
+            $nameSegments = $nameSegments->append(end($tokens));
         }
-        $this->nameSnakeCase = $varSegments->join('_');
+        $this->nameSnakeCase = $nameSegments->join('_');
         $this->nameCamelCase = Helpers::toCamelCase($this->nameSnakeCase);
         $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase("get_{$this->nameCamelCase}") . 'NameTemplate');
