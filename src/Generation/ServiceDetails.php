@@ -189,7 +189,8 @@ class ServiceDetails
             ->map(fn ($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
             ->filter(fn ($x) => $x->patterns->any())
-            ->concat($resourceDefs->flatMap(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
+            // CAREFUL! This is a mix of ResourceDetails and ResourcePatternDetails.
+            ->concat($resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
             ->distinct(fn ($x) => $x->getNameCamelCase())
             ->orderBy(fn ($x) => $x->getNameCamelCase());
     }

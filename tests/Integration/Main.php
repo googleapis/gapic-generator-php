@@ -84,6 +84,18 @@ $ok = processDiff(Invoker::invoke(
     false,
     true
 )) ? $ok : false;
+/*
+// Monolith crashses when invoked from Java.
+$ok = processDiff(Invoker::invoke(
+    'googleapis/google/bigtable/admin/v2/*.proto googleapis/google/cloud/common_resources.proto',
+    'google.bigtable.admin.v2',
+    'googleapis/google/bigtable/admin/v2/bigtableadmin_gapic.legacy.yaml',
+    'googleapis/google/bigtable/v2/admin/bigtableadmin_v2.yaml',
+    'googleapis/google/bigtable/admin/v2/bigtableadmin_grpc_service_config.json',
+    false,
+    true
+)) ? $ok : false;
+ */
 // TODO: BigQuery
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/billing/v1/*.proto googleapis/google/cloud/common_resources.proto',
