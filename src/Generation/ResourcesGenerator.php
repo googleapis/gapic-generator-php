@@ -172,6 +172,7 @@ class ResourcesGenerator
 
     public static function generateClientConfig(
         ServiceDetails $serviceDetails,
+        GapicYamlConfig $gapicYamlConfig,
         GrpcServiceConfig $grpcServiceConfig
     ): string {
         $serviceName = $serviceDetails->serviceName;
@@ -245,7 +246,7 @@ class ResourcesGenerator
         $retryParams = $retryParams->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = [];
         $methods = $serviceDetails->methods
-            ->map(function ($method) use ($grpcServiceConfig, $configsByMethodName, $serviceName) {
+            ->map(function ($method) use ($gapicYamlConfig, $grpcServiceConfig, $configsByMethodName, $serviceName) {
                 [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
                     $configsByMethodName->get("{$serviceName}/", [null, null, null]);
                 if (is_null($codes)) {
@@ -267,11 +268,44 @@ class ResourcesGenerator
                         $retryParamsName = $params;
                     }
                 }
-                return [$method->name, Vector::new([
+                $methodClientConfig = Vector::new([
                     ['timeout_millis', $timeoutMillis],
                     ['retry_codes_name', $retryCodesName],
                     ['retry_params_name', $retryParamsName]
-                ])->filter(fn ($x) => !is_null($x[1]))->toArray(fn ($x) => $x[0], fn ($x) => $x[1])];
+                ]);
+                // Handles batching settings in gapic.yaml.
+                if ($gapicYamlConfig !== null
+                  && $gapicYamlConfig->configsByMethodName->get($method->name, null)) {
+                    $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
+                    if (isset($methodGapicConfig['batching'])
+                        && isset($methodGapicConfig['batching']['thresholds'])) {
+                        $batchingGapicConfig = $methodGapicConfig['batching']['thresholds'];
+                        $batchingGapicKeys = [
+                            'element_count_threshold',
+                            'request_byte_threshold',
+                            'delay_threshold_millis',
+                            'request_byte_threshold',
+                            'request_byte_limit'
+                        ];
+                        $batchingConfig = [];
+                        foreach ($batchingGapicKeys as $k) {
+                          if (isset($batchingGapicConfig[$k])) {
+                            $batchingConfig[$k] = $batchingGapicConfig[$k];
+                          }
+                        }
+                        if (!empty($batchingConfig)) {
+                            ksort($batchingConfig);
+                            $methodClientConfig = $methodClientConfig->append(['bundling', $batchingConfig]);
+                        }
+                    }
+                }
+
+                return [
+                  $method->name,
+                  $methodClientConfig
+                    ->filter(fn ($x) => !is_null($x[1]))
+                    ->toArray(fn ($x) => $x[0], fn ($x) => $x[1])
+                ];
             })
             ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
 
