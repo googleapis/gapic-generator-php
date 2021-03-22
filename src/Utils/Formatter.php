@@ -63,6 +63,7 @@ class Formatter
           new \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
           new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1, Critical to preserving sample code.
           new \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer(), // 1, PSR2
+          new \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer(), // 0, Multiline comment.
           new \PhpCsFixer\Fixer\ControlStructure\ElseifFixer(), // 0, PSR2
           new \PhpCsFixer\Fixer\Whitespace\LineEndingFixer(), // 0, PSR2
           new \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer(), // 0, PSR2,
