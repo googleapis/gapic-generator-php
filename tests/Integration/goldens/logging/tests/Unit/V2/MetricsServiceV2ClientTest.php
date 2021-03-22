@@ -42,19 +42,25 @@ use stdClass;
  */
 class MetricsServiceV2ClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return MetricsServiceV2Client */
+    /**
+     * @return MetricsServiceV2Client
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -63,7 +69,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         return new MetricsServiceV2Client($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createLogMetricTest()
     {
         $transport = $this->createTransport();
@@ -99,7 +107,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
@@ -133,7 +143,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLogMetricTest()
     {
         $transport = $this->createTransport();
@@ -157,7 +169,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
@@ -190,7 +204,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLogMetricTest()
     {
         $transport = $this->createTransport();
@@ -223,7 +239,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
@@ -256,7 +274,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogMetricsTest()
     {
         $transport = $this->createTransport();
@@ -291,7 +311,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogMetricsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -324,7 +346,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateLogMetricTest()
     {
         $transport = $this->createTransport();
@@ -360,7 +384,9 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateLogMetricExceptionTest()
     {
         $transport = $this->createTransport();

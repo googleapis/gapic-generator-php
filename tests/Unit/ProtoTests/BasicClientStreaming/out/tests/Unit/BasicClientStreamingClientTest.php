@@ -33,19 +33,25 @@ use Google\ApiCore\Testing\MockTransport;
  */
 class BasicClientStreamingClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicClientStreamingClient */
+    /**
+     * @return BasicClientStreamingClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
