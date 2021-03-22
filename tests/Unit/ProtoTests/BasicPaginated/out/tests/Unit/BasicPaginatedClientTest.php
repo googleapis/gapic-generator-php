@@ -41,19 +41,25 @@ use Testing\BasicPaginated\Response;
  */
 class BasicPaginatedClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicPaginatedClient */
+    /**
+     * @return BasicPaginatedClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -62,7 +68,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         return new BasicPaginatedClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodPaginatedTest()
     {
         $transport = $this->createTransport();
@@ -111,7 +119,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodPaginatedExceptionTest()
     {
         $transport = $this->createTransport();

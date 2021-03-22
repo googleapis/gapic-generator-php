@@ -43,19 +43,25 @@ use Testing\BasicBidiStreaming\Response;
  */
 class BasicBidiStreamingClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicBidiStreamingClient */
+    /**
+     * @return BasicBidiStreamingClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -64,7 +70,9 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         return new BasicBidiStreamingClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodBidiTest()
     {
         $transport = $this->createTransport();
@@ -125,7 +133,9 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodBidiExceptionTest()
     {
         $transport = $this->createTransport();
@@ -158,7 +168,9 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodEmptyTest()
     {
         $transport = $this->createTransport();
@@ -213,7 +225,9 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodEmptyExceptionTest()
     {
         $transport = $this->createTransport();
