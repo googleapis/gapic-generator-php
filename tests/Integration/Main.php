@@ -33,7 +33,13 @@ $ok = true;
 // Generate and compare test APIs.
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/Basic/basic.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
-    'tests/Unit/ProtoTests/BasicLro/basic-lro.proto', null, null, null, null, true)) ? $ok : false;
+    'tests/Unit/ProtoTests/BasicLro/basic-lro.proto',
+    null,
+    null,
+    null,
+    null,
+    true
+)) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicBidiStreaming/basic-bidi-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicServerStreaming/basic-server-streaming.proto')) ? $ok : false;
@@ -142,8 +148,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/dialogflow_gapic.yaml',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_v2.yaml',
     'googleapis/google/cloud/dialogflow/v2/dialogflow_grpc_service_config.json',
-     false,
-     true  // For HTTP rules.
+    false,
+    true  // For HTTP rules.
 )) ? $ok : false;
 // TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
 // $ok = processDiff(Invoker::invoke(

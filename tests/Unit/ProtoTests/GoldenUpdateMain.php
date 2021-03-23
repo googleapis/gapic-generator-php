@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
-use Google\Generator\Tests\Unit\ProtoTests\UnitGoldenUpdater;
-
 require __DIR__ . '../../../../vendor/autoload.php';
 error_reporting(E_ALL);
 

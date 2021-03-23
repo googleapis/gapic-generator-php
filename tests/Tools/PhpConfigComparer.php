@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Tools;
 
-use Google\Generator\Tests\Tools\SourceComparer;
-
 class PhpConfigComparer
 {
     /**

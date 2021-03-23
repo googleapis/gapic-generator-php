@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\Unit\Ast;
 
 use PHPUnit\Framework\TestCase;
-use Google\Generator\Collections\Vector;
 use Google\Generator\Ast\AST;
 
 final class ASTTest extends TestCase

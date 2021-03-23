@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\CodeGenerator;
-use Google\Generator\Tests\Tools\ProtoLoader;
 
 class GeneratorUtils
 {

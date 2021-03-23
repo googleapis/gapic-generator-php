@@ -20,7 +20,6 @@ namespace Google\Generator\Tests\Unit\Collections;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Set;
-use Google\Generator\Collections\Equality;
 
 final class SetTest extends TestCase
 {
