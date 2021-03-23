@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Tools;
 
-use Google\Generator\Tests\Tools\SourceComparer;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Namespace_;
@@ -32,8 +31,6 @@ use PhpParser\Node\Stmt\Function_;
 use PhpParser\PrettyPrinter;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
-
-use PhpParser\NodeDumper;
 
 class PhpClassComparer
 {
@@ -198,8 +195,7 @@ class PhpClassComparer
         $nodesTwo,
         $nodeTypeName,
         bool $printDiffs = true
-    ): array
-    {
+    ): array {
         return self::diffAstNodesHelper($nodesOne, $nodesTwo, $nodeTypeName, true, $printDiffs);
     }
 
@@ -224,8 +220,7 @@ class PhpClassComparer
         $nodeTypeName,
         bool $removeComments,
         bool $printDiffs = true
-    ): array
-    {
+    ): array {
         $astNodeCmp = function ($nodeA, $nodeB) {
             return strcmp($nodeA->name->name, $nodeB->name->name);
         };

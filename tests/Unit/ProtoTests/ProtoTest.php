@@ -19,10 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
 use PHPUnit\Framework\TestCase;
-use Google\Generator\CodeGenerator;
-use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\Tools\GeneratorUtils;
-use Google\Generator\Tests\Tools\ProtoLoader;
 
 final class ProtoTest extends TestCase
 {

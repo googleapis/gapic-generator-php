@@ -289,9 +289,9 @@ class ResourcesGenerator
                         ];
                         $batchingConfig = [];
                         foreach ($batchingGapicKeys as $k) {
-                          if (isset($batchingGapicConfig[$k])) {
-                            $batchingConfig[$k] = $batchingGapicConfig[$k];
-                          }
+                            if (isset($batchingGapicConfig[$k])) {
+                                $batchingConfig[$k] = $batchingGapicConfig[$k];
+                            }
                         }
                         if (!empty($batchingConfig)) {
                             ksort($batchingConfig);

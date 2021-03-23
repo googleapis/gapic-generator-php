@@ -29,7 +29,9 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         }
     }
 
-    public function __construct() { }
+    public function __construct()
+    {
+    }
 
     public function __call(string $name, array $arguments)
     {

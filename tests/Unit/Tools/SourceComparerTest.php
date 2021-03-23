@@ -51,16 +51,16 @@ final class SourceComparerTest extends TestCase
     {
         // One of the strings is empty.
         $stringOne = 'The quick brown fox jumped over the lazy dog';
-        $this->assertFalse(SourceComparer::compare($stringOne, '', False));
-        $this->assertFalse(SourceComparer::compare('', $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, '', false));
+        $this->assertFalse(SourceComparer::compare('', $stringOne, false));
 
         // Different values.
         $stringTwo = 'The Quick brown fox jumped over the lazy dog';
-        $this->assertFalse(SourceComparer::compare($stringOne, $stringTwo, False));
-        $this->assertFalse(SourceComparer::compare($stringTwo, $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, $stringTwo, false));
+        $this->assertFalse(SourceComparer::compare($stringTwo, $stringOne, false));
 
         // Substring.
-        $this->assertFalse(SourceComparer::compare($stringOne, 'The', False));
-        $this->assertFalse(SourceComparer::compare('The', $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, 'The', false));
+        $this->assertFalse(SourceComparer::compare('The', $stringOne, false));
     }
 }

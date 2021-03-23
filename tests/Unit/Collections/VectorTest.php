@@ -40,7 +40,7 @@ final class VectorTest extends TestCase
         $v = Vector::zip(
             Vector::new([1, 2]),
             Vector::new(['a', 'b', 'c']),
-            fn($a, $b) => "{$a}:{$b}"
+            fn ($a, $b) => "{$a}:{$b}"
         );
         $this->assertEquals(['1:a', '2:b'], $v->toArray());
 
@@ -56,7 +56,7 @@ final class VectorTest extends TestCase
             Vector::new(['a', 'b']),
             Vector::new(['A']),
             Vector::new([10, 11, 12]),
-            fn($a, $b, $c, $d) => "{$a}:{$b}:{$c}:{$d}"
+            fn ($a, $b, $c, $d) => "{$a}:{$b}:{$c}:{$d}"
         );
         $this->assertEquals(['1:a:A:10'], $v->toArray());
     }
@@ -66,7 +66,7 @@ final class VectorTest extends TestCase
         $v = Vector::zip(
             Vector::new([1, 2]),
             Vector::new(['a', 'b', 'c']),
-            fn($a, $b, $index) => "{$index}:{$a}:{$b}"
+            fn ($a, $b, $index) => "{$index}:{$a}:{$b}"
         );
         $this->assertEquals(['0:1:a', '1:2:b'], $v->toArray());
 
@@ -74,7 +74,7 @@ final class VectorTest extends TestCase
             Vector::new([1, 2]),
             Vector::new(['a', 'b', 'c']),
             Vector::new(['A', 'B', 'C', 'D']),
-            fn($a, $b, $c, $index) => "{$index}:{$a}:{$b}:{$c}"
+            fn ($a, $b, $c, $index) => "{$index}:{$a}:{$b}:{$c}"
         );
         $this->assertEquals(['0:1:a:A', '1:2:b:B'], $v->toArray());
     }
@@ -134,28 +134,28 @@ final class VectorTest extends TestCase
     public function testMap(): void
     {
         $v = Vector::new(['one', 'two']);
-        $v = $v->map(fn($x) => "{$x}{$x}");
+        $v = $v->map(fn ($x) => "{$x}{$x}");
         $this->assertEquals(['oneone', 'twotwo'], $v->toArray());
     }
 
     public function testMapIndex(): void
     {
         $v = Vector::new(['one', 'two']);
-        $v = $v->map(fn($x, $index) => "{$index}{$x}");
+        $v = $v->map(fn ($x, $index) => "{$index}{$x}");
         $this->assertEquals(['0one', '1two'], $v->toArray());
     }
 
     public function testFlatMap(): void
     {
         $v = Vector::new([1, 2]);
-        $v = $v->flatMap(fn($x) => Vector::new([$x, $x]));
+        $v = $v->flatMap(fn ($x) => Vector::new([$x, $x]));
         $this->assertEquals([1, 1, 2, 2], $v->toArray());
     }
 
     public function testFlatMapIndex(): void
     {
         $v = Vector::new([1, 2]);
-        $v = $v->flatMap(fn($x, $index) => Vector::new([$index, $x]));
+        $v = $v->flatMap(fn ($x, $index) => Vector::new([$index, $x]));
         $this->assertEquals([0, 1, 1, 2], $v->toArray());
     }
 
@@ -164,19 +164,21 @@ final class VectorTest extends TestCase
         $v1 = Vector::new([1, 2]);
         $v2 = Vector::new([3, Vector::new([4, 5])]);
         $this->assertEquals([1, 2, 3, 4, 5], Vector::new([$v1, $v2])->flatten()->toArray());
-        $this->assertEquals(['a', 'b', 'c', 'd'],
-            Vector::new([Vector::new(['a', 'b']), Vector::new(['c', 'd'])])->flatten()->toArray());
+        $this->assertEquals(
+            ['a', 'b', 'c', 'd'],
+            Vector::new([Vector::new(['a', 'b']), Vector::new(['c', 'd'])])->flatten()->toArray()
+        );
     }
 
     public function testReduce(): void
     {
-        $this->assertEquals(24, Vector::new([1, 2, 3, 4])->reduce(1, fn($acc, $x) => $acc * $x));
+        $this->assertEquals(24, Vector::new([1, 2, 3, 4])->reduce(1, fn ($acc, $x) => $acc * $x));
     }
 
     public function testGroupBy(): void
     {
         $v = Vector::new(['1:a', '2:b', '2:c', '3:d', '3:e', '3:f']);
-        $g = $v->groupBy(fn($x) => intval(explode(':', $x)[0]), fn($x) => explode(':', $x)[1]);
+        $g = $v->groupBy(fn ($x) => intval(explode(':', $x)[0]), fn ($x) => explode(':', $x)[1]);
         $this->assertEquals(3, count($g));
         $this->assertEquals(['a'], $g[1]->toArray());
         $this->assertEquals(['b', 'c'], $g[2]->toArray());
@@ -193,14 +195,14 @@ final class VectorTest extends TestCase
     public function testDistinctBy(): void
     {
         $v = Vector::new(['a', 'b', 'cc', 'd', 'eee', 'ff']);
-        $v = $v->distinct(fn($x) => strlen($x));
+        $v = $v->distinct(fn ($x) => strlen($x));
         $this->assertEquals(['a', 'cc', 'eee'], $v->toArray());
     }
 
     public function testOrderBy(): void
     {
         $v = Vector::new(['a', 'b', 'cc', 'd', 'eee', 'ff']);
-        $v = $v->orderBy(fn($x) => strlen($x));
+        $v = $v->orderBy(fn ($x) => strlen($x));
         $this->assertEquals(['a', 'b', 'd', 'cc', 'ff', 'eee'], $v->toArray());
         $v = $v->orderBy();
         $this->assertEquals(['a', 'b', 'cc', 'd', 'eee', 'ff'], $v->toArray());
@@ -227,9 +229,9 @@ final class VectorTest extends TestCase
     public function testTakeWhile(): void
     {
         $v = Vector::new([1, 2, 0]);
-        $this->assertEquals([1, 2, 0], $v->takeWhile(fn($x) => $x < 3)->toArray());
-        $this->assertEquals([1, 2], $v->takeWhile(fn($x) => $x > 0)->toArray());
-        $this->assertEquals([], $v->takeWhile(fn($x) => $x > 3)->toArray());
+        $this->assertEquals([1, 2, 0], $v->takeWhile(fn ($x) => $x < 3)->toArray());
+        $this->assertEquals([1, 2], $v->takeWhile(fn ($x) => $x > 0)->toArray());
+        $this->assertEquals([], $v->takeWhile(fn ($x) => $x > 3)->toArray());
     }
 
     public function testSkip(): void
@@ -253,17 +255,17 @@ final class VectorTest extends TestCase
     public function testSkipWhile(): void
     {
         $v = Vector::new([1, 2, 0]);
-        $this->assertEquals([1, 2, 0], $v->skipWhile(fn($x) => $x < 1)->toArray());
-        $this->assertEquals([2, 0], $v->skipWhile(fn($x) => $x < 2)->toArray());
-        $this->assertEquals([], $v->skipWhile(fn($x) => $x < 3)->toArray());
+        $this->assertEquals([1, 2, 0], $v->skipWhile(fn ($x) => $x < 1)->toArray());
+        $this->assertEquals([2, 0], $v->skipWhile(fn ($x) => $x < 2)->toArray());
+        $this->assertEquals([], $v->skipWhile(fn ($x) => $x < 3)->toArray());
     }
 
     public function testSkipLastWhile(): void
     {
         $v = Vector::new([1, 2, 0]);
-        $this->assertEquals([1, 2, 0], $v->skipLastWhile(fn($x) => $x < 0)->toArray());
-        $this->assertEquals([1, 2], $v->skipLastWhile(fn($x) => $x < 2)->toArray());
-        $this->assertEquals([], $v->skipLastWhile(fn($x) => $x < 3)->toArray());
+        $this->assertEquals([1, 2, 0], $v->skipLastWhile(fn ($x) => $x < 0)->toArray());
+        $this->assertEquals([1, 2], $v->skipLastWhile(fn ($x) => $x < 2)->toArray());
+        $this->assertEquals([], $v->skipLastWhile(fn ($x) => $x < 3)->toArray());
     }
 
     public function testLast(): void
@@ -275,8 +277,8 @@ final class VectorTest extends TestCase
     public function testAny(): void
     {
         $v = Vector::new([1, 2]);
-        $this->assertTrue($v->any(fn($x) => $x === 1));
-        $this->assertFalse($v->any(fn($x) => $x === 11));
+        $this->assertTrue($v->any(fn ($x) => $x === 1));
+        $this->assertFalse($v->any(fn ($x) => $x === 11));
         $this->assertTrue($v->any());
         $this->assertFalse(Vector::new()->any());
     }
@@ -300,8 +302,9 @@ final class VectorTest extends TestCase
     {
         $v = Vector::new(['1:one', '2:two']);
         $m = $v->toMap(
-            fn($x) => intval(explode(':', $x)[0]),
-            fn($x) => explode(':', $x)[1]);
+            fn ($x) => intval(explode(':', $x)[0]),
+            fn ($x) => explode(':', $x)[1]
+        );
         $this->assertCount(2, $m);
         $this->assertEquals('one', $m[1]);
         $this->assertEquals('two', $m[2]);
@@ -339,9 +342,9 @@ final class VectorTest extends TestCase
     public function testToArrayAssoc(): void
     {
         $v = Vector::new([1, 2]);
-        $a = $v->toArray(fn($x) => "key_{$x}");
+        $a = $v->toArray(fn ($x) => "key_{$x}");
         $this->assertEquals(['key_1' => 1, 'key_2' => 2], $a);
-        $a = $v->toArray(fn($x) => "key_{$x}", fn($x) => $x * 10);
+        $a = $v->toArray(fn ($x) => "key_{$x}", fn ($x) => $x * 10);
         $this->assertEquals(['key_1' => 10, 'key_2' => 20], $a);
     }
 }
