@@ -362,6 +362,7 @@ abstract class MethodDetails
         $this->docLines = $desc->leadingComments;
         $this->httpRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
         $this->restMethod = is_null($this->httpRule) ? null : $this->httpRule->getPattern();
+        // DO NOT SORT - currently in reverse order of the first-seen variables.
         $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
     }
 
