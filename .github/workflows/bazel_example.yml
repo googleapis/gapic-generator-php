@@ -63,7 +63,7 @@ jobs:
         grep "'initialPollDelayMillis' => '42042'" ./bazel_example/example_php_pkg/src/resources/example_descriptor_config.php
 
     - name: Integration Tests
-      run: bazel --batch test tests/Integration:asset tests/Integration:speech --noshow_progress
+      run: bazel --batch test tests/Integration:asset tests/Integration:container tests/Integration:kms tests/Integration:iam tests/Integration:logging tests/Integration:speech tests/Integration:redis tests/Integration:videointelligence --noshow_progress
 
     - uses: actions/upload-artifact@v2
       if: ${{ failure() }}

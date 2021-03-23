@@ -118,7 +118,7 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking Bazel integration tests..."
-  bazel test tests/Integration:asset tests/Integration:speech
+  bazel test tests/Integration:asset tests/Integration:container tests/Integration:kms tests/Integration:iam tests/Integration:logging tests/Integration:speech tests/Integration:redis tests/Integration:videointelligence --noshow_progress
   TEST_STATUS=$?
 
   if [ $TEST_STATUS != 0 ]
