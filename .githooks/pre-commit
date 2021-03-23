@@ -75,11 +75,14 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ]
 then
   echo_status "Running PHP-CS-Fixer..."
+  for TEMP_DIR in src validation tests
+    do ./vendor/bin/php-cs-fixer fix "$TEMP_DIR"/ --rules=@PSR2,no_unused_imports
+  done
   ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2,no_unused_imports --dry-run
   FORMAT_STATUS=$?
   if [ $FORMAT_STATUS != 0 ]
   then
-    echo_error "Linting failed." "Please try again after running ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2"
+    echo_error "Linting failed." "Please try again after running for f in src validation tests; do ./vendor/bin/php-cs-fixer fix \$f/ --rules=@PSR2,no_unused_imports; done"
     exit 1
   fi
 fi
