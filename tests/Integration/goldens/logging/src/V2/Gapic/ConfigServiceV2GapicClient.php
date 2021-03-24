@@ -1303,12 +1303,12 @@ class ConfigServiceV2GapicClient
     public function createBucket($parent, $bucketId, $bucket, array $optionalArgs = [])
     {
         $request = new CreateBucketRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setBucketId($bucketId);
         $request->setBucket($bucket);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
@@ -1357,11 +1357,11 @@ class ConfigServiceV2GapicClient
     public function createExclusion($parent, $exclusion, array $optionalArgs = [])
     {
         $request = new CreateExclusionRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setExclusion($exclusion);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
@@ -1423,15 +1423,15 @@ class ConfigServiceV2GapicClient
     public function createSink($parent, $sink, array $optionalArgs = [])
     {
         $request = new CreateSinkRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setSink($sink);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['uniqueWriterIdentity'])) {
             $request->setUniqueWriterIdentity($optionalArgs['uniqueWriterIdentity']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateSink', LogSink::class, $optionalArgs, $request)->wait();
     }
@@ -1478,12 +1478,12 @@ class ConfigServiceV2GapicClient
     public function createView($parent, $viewId, $view, array $optionalArgs = [])
     {
         $request = new CreateViewRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setViewId($viewId);
         $request->setView($view);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateView', LogView::class, $optionalArgs, $request)->wait();
     }
@@ -1529,10 +1529,10 @@ class ConfigServiceV2GapicClient
     public function deleteBucket($name, array $optionalArgs = [])
     {
         $request = new DeleteBucketRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteBucket', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -1574,10 +1574,10 @@ class ConfigServiceV2GapicClient
     public function deleteExclusion($name, array $optionalArgs = [])
     {
         $request = new DeleteExclusionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteExclusion', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -1621,10 +1621,10 @@ class ConfigServiceV2GapicClient
     public function deleteSink($sinkName, array $optionalArgs = [])
     {
         $request = new DeleteSinkRequest();
+        $requestParamHeaders = [];
         $request->setSinkName($sinkName);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'sink_name' => $request->getSinkName(),
-        ]);
+        $requestParamHeaders['sink_name'] = $sinkName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteSink', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -1664,10 +1664,10 @@ class ConfigServiceV2GapicClient
     public function deleteView($name, array $optionalArgs = [])
     {
         $request = new DeleteViewRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteView', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -1712,10 +1712,10 @@ class ConfigServiceV2GapicClient
     public function getBucket($name, array $optionalArgs = [])
     {
         $request = new GetBucketRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
@@ -1771,10 +1771,10 @@ class ConfigServiceV2GapicClient
     public function getCmekSettings($name, array $optionalArgs = [])
     {
         $request = new GetCmekSettingsRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetCmekSettings', CmekSettings::class, $optionalArgs, $request)->wait();
     }
@@ -1818,10 +1818,10 @@ class ConfigServiceV2GapicClient
     public function getExclusion($name, array $optionalArgs = [])
     {
         $request = new GetExclusionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
@@ -1865,10 +1865,10 @@ class ConfigServiceV2GapicClient
     public function getSink($sinkName, array $optionalArgs = [])
     {
         $request = new GetSinkRequest();
+        $requestParamHeaders = [];
         $request->setSinkName($sinkName);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'sink_name' => $request->getSinkName(),
-        ]);
+        $requestParamHeaders['sink_name'] = $sinkName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetSink', LogSink::class, $optionalArgs, $request)->wait();
     }
@@ -1910,10 +1910,10 @@ class ConfigServiceV2GapicClient
     public function getView($name, array $optionalArgs = [])
     {
         $request = new GetViewRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetView', LogView::class, $optionalArgs, $request)->wait();
     }
@@ -1980,7 +1980,9 @@ class ConfigServiceV2GapicClient
     public function listBuckets($parent, array $optionalArgs = [])
     {
         $request = new ListBucketsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -1989,9 +1991,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListBuckets', $optionalArgs, ListBucketsResponse::class, $request);
     }
@@ -2054,7 +2054,9 @@ class ConfigServiceV2GapicClient
     public function listExclusions($parent, array $optionalArgs = [])
     {
         $request = new ListExclusionsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -2063,9 +2065,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListExclusions', $optionalArgs, ListExclusionsResponse::class, $request);
     }
@@ -2128,7 +2128,9 @@ class ConfigServiceV2GapicClient
     public function listSinks($parent, array $optionalArgs = [])
     {
         $request = new ListSinksRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -2137,9 +2139,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListSinks', $optionalArgs, ListSinksResponse::class, $request);
     }
@@ -2199,7 +2199,9 @@ class ConfigServiceV2GapicClient
     public function listViews($parent, array $optionalArgs = [])
     {
         $request = new ListViewsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -2208,9 +2210,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListViews', $optionalArgs, ListViewsResponse::class, $request);
     }
@@ -2254,10 +2254,10 @@ class ConfigServiceV2GapicClient
     public function undeleteBucket($name, array $optionalArgs = [])
     {
         $request = new UndeleteBucketRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UndeleteBucket', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -2324,12 +2324,12 @@ class ConfigServiceV2GapicClient
     public function updateBucket($name, $bucket, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateBucketRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setBucket($bucket);
         $request->setUpdateMask($updateMask);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
@@ -2405,15 +2405,15 @@ class ConfigServiceV2GapicClient
     public function updateCmekSettings($name, $cmekSettings, array $optionalArgs = [])
     {
         $request = new UpdateCmekSettingsRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setCmekSettings($cmekSettings);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateCmekSettings', CmekSettings::class, $optionalArgs, $request)->wait();
     }
@@ -2468,12 +2468,12 @@ class ConfigServiceV2GapicClient
     public function updateExclusion($name, $exclusion, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateExclusionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setExclusion($exclusion);
         $request->setUpdateMask($updateMask);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
@@ -2552,8 +2552,10 @@ class ConfigServiceV2GapicClient
     public function updateSink($sinkName, $sink, array $optionalArgs = [])
     {
         $request = new UpdateSinkRequest();
+        $requestParamHeaders = [];
         $request->setSinkName($sinkName);
         $request->setSink($sink);
+        $requestParamHeaders['sink_name'] = $sinkName;
         if (isset($optionalArgs['uniqueWriterIdentity'])) {
             $request->setUniqueWriterIdentity($optionalArgs['uniqueWriterIdentity']);
         }
@@ -2562,9 +2564,7 @@ class ConfigServiceV2GapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'sink_name' => $request->getSinkName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateSink', LogSink::class, $optionalArgs, $request)->wait();
     }
@@ -2618,15 +2618,15 @@ class ConfigServiceV2GapicClient
     public function updateView($name, $view, array $optionalArgs = [])
     {
         $request = new UpdateViewRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setView($view);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateView', LogView::class, $optionalArgs, $request)->wait();
     }

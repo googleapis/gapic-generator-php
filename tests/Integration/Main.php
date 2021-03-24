@@ -265,6 +265,12 @@ function processSingleDiff($mono, $micro)
 
     // Find incorrectly generated files.
     foreach (array_intersect(array_keys($mono), array_keys($micro)) as $path) {
+        // Skip anything ending in GapicClient.php, this is now meaningless due to the requestParameters fix.
+        $gapicClientEnding = "GapicClient.php";
+        if (substr($path, -strlen($gapicClientEnding)) == $gapicClientEnding) {
+            print("Skipping $path\n");
+            continue;
+        }
         print("Comparing: '{$path}':\n");
         $sameContent = true;
         $isJson = substr($path, -5) === '.json';

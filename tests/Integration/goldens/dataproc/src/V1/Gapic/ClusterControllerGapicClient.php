@@ -311,17 +311,17 @@ class ClusterControllerGapicClient
     public function createCluster($projectId, $region, $cluster, array $optionalArgs = [])
     {
         $request = new CreateClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setCluster($cluster);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('CreateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -403,9 +403,13 @@ class ClusterControllerGapicClient
     public function deleteCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new DeleteClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['clusterUuid'])) {
             $request->setClusterUuid($optionalArgs['clusterUuid']);
         }
@@ -414,11 +418,7 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-            'cluster_name' => $request->getClusterName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('DeleteCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -491,14 +491,14 @@ class ClusterControllerGapicClient
     public function diagnoseCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new DiagnoseClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-            'cluster_name' => $request->getClusterName(),
-        ]);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('DiagnoseCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -540,14 +540,14 @@ class ClusterControllerGapicClient
     public function getCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new GetClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-            'cluster_name' => $request->getClusterName(),
-        ]);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetCluster', Cluster::class, $optionalArgs, $request)->wait();
     }
@@ -628,8 +628,11 @@ class ClusterControllerGapicClient
     public function listClusters($projectId, $region, array $optionalArgs = [])
     {
         $request = new ListClustersRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -642,10 +645,7 @@ class ClusterControllerGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListClusters', $optionalArgs, ListClustersResponse::class, $request);
     }
@@ -790,11 +790,15 @@ class ClusterControllerGapicClient
     public function updateCluster($projectId, $region, $clusterName, $cluster, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
         $request->setCluster($cluster);
         $request->setUpdateMask($updateMask);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['gracefulDecommissionTimeout'])) {
             $request->setGracefulDecommissionTimeout($optionalArgs['gracefulDecommissionTimeout']);
         }
@@ -803,11 +807,7 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'project_id' => $request->getProjectId(),
-            'region' => $request->getRegion(),
-            'cluster_name' => $request->getClusterName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('UpdateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }

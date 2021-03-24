@@ -426,11 +426,11 @@ class AutoscalingPolicyServiceGapicClient
     public function createAutoscalingPolicy($parent, $policy, array $optionalArgs = [])
     {
         $request = new CreateAutoscalingPolicyRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
     }
@@ -475,10 +475,10 @@ class AutoscalingPolicyServiceGapicClient
     public function deleteAutoscalingPolicy($name, array $optionalArgs = [])
     {
         $request = new DeleteAutoscalingPolicyRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteAutoscalingPolicy', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -524,10 +524,10 @@ class AutoscalingPolicyServiceGapicClient
     public function getAutoscalingPolicy($name, array $optionalArgs = [])
     {
         $request = new GetAutoscalingPolicyRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
     }
@@ -594,7 +594,9 @@ class AutoscalingPolicyServiceGapicClient
     public function listAutoscalingPolicies($parent, array $optionalArgs = [])
     {
         $request = new ListAutoscalingPoliciesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -603,9 +605,7 @@ class AutoscalingPolicyServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListAutoscalingPolicies', $optionalArgs, ListAutoscalingPoliciesResponse::class, $request);
     }
@@ -645,10 +645,10 @@ class AutoscalingPolicyServiceGapicClient
     public function updateAutoscalingPolicy($policy, array $optionalArgs = [])
     {
         $request = new UpdateAutoscalingPolicyRequest();
+        $requestParamHeaders = [];
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'policy.name' => $request->getPolicy()->getName(),
-        ]);
+        $requestParamHeaders['policy.name'] = $policy->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
     }

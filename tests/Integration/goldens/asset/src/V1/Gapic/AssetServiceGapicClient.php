@@ -444,14 +444,14 @@ class AssetServiceGapicClient
     public function analyzeIamPolicy($analysisQuery, array $optionalArgs = [])
     {
         $request = new AnalyzeIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setAnalysisQuery($analysisQuery);
+        $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
         if (isset($optionalArgs['executionTimeout'])) {
             $request->setExecutionTimeout($optionalArgs['executionTimeout']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'analysis_query.scope' => $request->getAnalysisQuery()->getScope(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('AnalyzeIamPolicy', AnalyzeIamPolicyResponse::class, $optionalArgs, $request)->wait();
     }
@@ -523,11 +523,11 @@ class AssetServiceGapicClient
     public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $optionalArgs = [])
     {
         $request = new AnalyzeIamPolicyLongrunningRequest();
+        $requestParamHeaders = [];
         $request->setAnalysisQuery($analysisQuery);
         $request->setOutputConfig($outputConfig);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'analysis_query.scope' => $request->getAnalysisQuery()->getScope(),
-        ]);
+        $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('AnalyzeIamPolicyLongrunning', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -591,7 +591,9 @@ class AssetServiceGapicClient
     public function batchGetAssetsHistory($parent, array $optionalArgs = [])
     {
         $request = new BatchGetAssetsHistoryRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['assetNames'])) {
             $request->setAssetNames($optionalArgs['assetNames']);
         }
@@ -604,9 +606,7 @@ class AssetServiceGapicClient
             $request->setReadTimeWindow($optionalArgs['readTimeWindow']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('BatchGetAssetsHistory', BatchGetAssetsHistoryResponse::class, $optionalArgs, $request)->wait();
     }
@@ -657,12 +657,12 @@ class AssetServiceGapicClient
     public function createFeed($parent, $feedId, $feed, array $optionalArgs = [])
     {
         $request = new CreateFeedRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFeedId($feedId);
         $request->setFeed($feed);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateFeed', Feed::class, $optionalArgs, $request)->wait();
     }
@@ -700,10 +700,10 @@ class AssetServiceGapicClient
     public function deleteFeed($name, array $optionalArgs = [])
     {
         $request = new DeleteFeedRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteFeed', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -808,8 +808,10 @@ class AssetServiceGapicClient
     public function exportAssets($parent, $outputConfig, array $optionalArgs = [])
     {
         $request = new ExportAssetsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['readTime'])) {
             $request->setReadTime($optionalArgs['readTime']);
         }
@@ -822,9 +824,7 @@ class AssetServiceGapicClient
             $request->setContentType($optionalArgs['contentType']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('ExportAssets', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -864,10 +864,10 @@ class AssetServiceGapicClient
     public function getFeed($name, array $optionalArgs = [])
     {
         $request = new GetFeedRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetFeed', Feed::class, $optionalArgs, $request)->wait();
     }
@@ -906,10 +906,10 @@ class AssetServiceGapicClient
     public function listFeeds($parent, array $optionalArgs = [])
     {
         $request = new ListFeedsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('ListFeeds', ListFeedsResponse::class, $optionalArgs, $request)->wait();
     }
@@ -1008,7 +1008,9 @@ class AssetServiceGapicClient
     public function searchAllIamPolicies($scope, array $optionalArgs = [])
     {
         $request = new SearchAllIamPoliciesRequest();
+        $requestParamHeaders = [];
         $request->setScope($scope);
+        $requestParamHeaders['scope'] = $scope;
         if (isset($optionalArgs['query'])) {
             $request->setQuery($optionalArgs['query']);
         }
@@ -1021,9 +1023,7 @@ class AssetServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'scope' => $request->getScope(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('SearchAllIamPolicies', $optionalArgs, SearchAllIamPoliciesResponse::class, $request);
     }
@@ -1143,7 +1143,9 @@ class AssetServiceGapicClient
     public function searchAllResources($scope, array $optionalArgs = [])
     {
         $request = new SearchAllResourcesRequest();
+        $requestParamHeaders = [];
         $request->setScope($scope);
+        $requestParamHeaders['scope'] = $scope;
         if (isset($optionalArgs['query'])) {
             $request->setQuery($optionalArgs['query']);
         }
@@ -1164,9 +1166,7 @@ class AssetServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'scope' => $request->getScope(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('SearchAllResources', $optionalArgs, SearchAllResourcesResponse::class, $request);
     }
@@ -1211,11 +1211,11 @@ class AssetServiceGapicClient
     public function updateFeed($feed, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateFeedRequest();
+        $requestParamHeaders = [];
         $request->setFeed($feed);
         $request->setUpdateMask($updateMask);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'feed.name' => $request->getFeed()->getName(),
-        ]);
+        $requestParamHeaders['feed.name'] = $feed->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateFeed', Feed::class, $optionalArgs, $request)->wait();
     }

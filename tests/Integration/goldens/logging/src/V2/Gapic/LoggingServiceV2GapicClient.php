@@ -543,10 +543,10 @@ class LoggingServiceV2GapicClient
     public function deleteLog($logName, array $optionalArgs = [])
     {
         $request = new DeleteLogRequest();
+        $requestParamHeaders = [];
         $request->setLogName($logName);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'log_name' => $request->getLogName(),
-        ]);
+        $requestParamHeaders['log_name'] = $logName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteLog', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -727,7 +727,9 @@ class LoggingServiceV2GapicClient
     public function listLogs($parent, array $optionalArgs = [])
     {
         $request = new ListLogsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -740,9 +742,7 @@ class LoggingServiceV2GapicClient
             $request->setResourceNames($optionalArgs['resourceNames']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListLogs', $optionalArgs, ListLogsResponse::class, $request);
     }

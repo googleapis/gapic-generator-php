@@ -373,11 +373,11 @@ class CloudFunctionsServiceGapicClient
     public function callFunction($name, $data, array $optionalArgs = [])
     {
         $request = new CallFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setData($data);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CallFunction', CallFunctionResponse::class, $optionalArgs, $request)->wait();
     }
@@ -444,11 +444,11 @@ class CloudFunctionsServiceGapicClient
     public function createFunction($location, $function, array $optionalArgs = [])
     {
         $request = new CreateFunctionRequest();
+        $requestParamHeaders = [];
         $request->setLocation($location);
         $request->setFunction($function);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'location' => $request->getLocation(),
-        ]);
+        $requestParamHeaders['location'] = $location;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('CreateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -510,10 +510,10 @@ class CloudFunctionsServiceGapicClient
     public function deleteFunction($name, array $optionalArgs = [])
     {
         $request = new DeleteFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('DeleteFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -558,14 +558,18 @@ class CloudFunctionsServiceGapicClient
     public function generateDownloadUrl(array $optionalArgs = [])
     {
         $request = new GenerateDownloadUrlRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
         if (isset($optionalArgs['versionId'])) {
             $request->setVersionId($optionalArgs['versionId']);
         }
 
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GenerateDownloadUrl', GenerateDownloadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -626,10 +630,14 @@ class CloudFunctionsServiceGapicClient
     public function generateUploadUrl(array $optionalArgs = [])
     {
         $request = new GenerateUploadUrlRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['parent'])) {
             $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GenerateUploadUrl', GenerateUploadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -665,10 +673,10 @@ class CloudFunctionsServiceGapicClient
     public function getFunction($name, array $optionalArgs = [])
     {
         $request = new GetFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetFunction', CloudFunction::class, $optionalArgs, $request)->wait();
     }
@@ -711,14 +719,14 @@ class CloudFunctionsServiceGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
@@ -781,8 +789,10 @@ class CloudFunctionsServiceGapicClient
     public function listFunctions(array $optionalArgs = [])
     {
         $request = new ListFunctionsRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['parent'])) {
             $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
         if (isset($optionalArgs['pageSize'])) {
@@ -793,6 +803,8 @@ class CloudFunctionsServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListFunctions', $optionalArgs, ListFunctionsResponse::class, $request);
     }
 
@@ -835,11 +847,11 @@ class CloudFunctionsServiceGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
@@ -885,11 +897,11 @@ class CloudFunctionsServiceGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
@@ -953,14 +965,14 @@ class CloudFunctionsServiceGapicClient
     public function updateFunction($function, array $optionalArgs = [])
     {
         $request = new UpdateFunctionRequest();
+        $requestParamHeaders = [];
         $request->setFunction($function);
+        $requestParamHeaders['function.name'] = $function->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'function.name' => $request->getFunction()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('UpdateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
