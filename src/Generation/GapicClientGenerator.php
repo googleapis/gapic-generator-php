@@ -37,6 +37,7 @@ use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
@@ -540,13 +541,49 @@ class GapicClientGenerator
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $requestParams = AST::var('requestParams');
-        $isStreamedRequest = $method->methodType === MethodDetails::BIDI_STREAMING || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        [$restRoutingKey, $restRoutingGetters] = is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
-            ? [null, null]
-            : [
-              array_slice($method->restRoutingHeaders->keys()->toArray(), -1)[0],
-              array_slice($method->restRoutingHeaders->values()->toArray(), -1)[0]
-            ];
+        $isStreamedRequest =
+            $method->methodType === MethodDetails::BIDI_STREAMING
+            || $method->methodType === MethodDetails::CLIENT_STREAMING;
+
+        // Request parameter handling.
+        $requiredFieldNames =
+            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
+        // Set only the headers that are passed in as required parameters.
+        $restRoutingHeaders =
+            is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
+            ? Map::new([])
+            : $method->restRoutingHeaders->filter(
+                  fn ($k, $v) => $requiredFieldNames->contains(explode('.', $k)[0]));
+
+        $requestParamsAssignExpr = null;
+        if (count($restRoutingHeaders) > 0) {
+          // Use any routing headers that aren't already included in $method->requiredFields.
+          $requestParamsHeader =
+            AST::array(
+            array_combine(
+              $restRoutingHeaders->keys()->toArray(),
+              $restRoutingHeaders
+                     ->values()
+                     // This reduce chains getter methods together for nested names like foo.bar.car.
+                     ->map(fn ($getter) => $getter->reduce(
+                       $request,
+                       fn ($acc, $g) => AST::call($acc, AST::method($g))()))
+                     ->toArray()
+          ));
+
+          $requestParamsAssignExpr =
+            Vector::new([
+              AST::assign($requestParams,
+              AST::new($this->ctx->type(
+                Type::fromName(RequestParamsHeaderDescriptor::class)))($requestParamsHeader)),
+              AST::assign($optionalArgs->var['headers'],
+                AST::ternary(
+                  AST::call(AST::ISSET)($optionalArgs->var['headers']),
+                  AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                  $requestParams->getHeader()
+              ))
+            ]);
+        }
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
@@ -559,19 +596,7 @@ class GapicClientGenerator
                     Vector::zip($method->requiredFields, $required, fn ($field, $param) => AST::call($request, $field->setter)($param)),
                     $method->optionalFields->map(fn ($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
                         ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
-                    is_null($restRoutingKey) ? null : Vector::new([
-                        AST::assign($requestParams, AST::new($this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class)))(
-                            AST::array([$restRoutingKey => $restRoutingGetters->reduce(
-                                $request,
-                                fn ($acc, $getterName) => AST::call($acc, AST::method($getterName))()
-                            )])
-                        )),
-                        AST::assign($optionalArgs->var['headers'], AST::ternary(
-                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
-                            $requestParams->getHeader()
-                        ))
-                    ])
+                    $requestParamsAssignExpr,
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))

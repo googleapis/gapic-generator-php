@@ -2066,10 +2066,6 @@ class KeyManagementServiceGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetLocation', Location::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
     }
 
@@ -2144,10 +2140,6 @@ class KeyManagementServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
     }
 }

@@ -94,4 +94,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('GrpcServiceConfig/grpc-service-config1.proto', 'testing.grpcserviceconfig');
     }
+
+    public function testRoutingHeaders(): void
+    {
+        $this->runProtoTest('RoutingHeaders/routing-headers.proto');
+    }
 }

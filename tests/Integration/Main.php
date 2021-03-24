@@ -46,7 +46,8 @@ $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicServerStreaming/ba
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicClientStreaming/basic-client-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/ResourceNames/resource-names.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/ProtoDocs/proto-docs.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
+// Commented-out because the monolith did not adhere to aip.dev/4122.
+//$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
@@ -59,6 +60,8 @@ $ok = processDiff(Invoker::invoke(
 
 // Generate and compare a real APIs.
 // TODO: Real API tests may be more suitable as their own integration test.
+// Commented-out because of the request parameter bug in the monolith.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/accessapproval/v1/*.proto',
     'google.cloud.accessapproval.v1',
@@ -66,6 +69,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/accessapproval/v1/accessapproval_v1.yaml',
     'googleapis/google/cloud/accessapproval/v1/accessapproval_grpc_service_config.json'
 )) ? $ok : false;
+ */
 // TODO: googleapis/google/cloud/apigateway/v1/ doesn't have a gapic_config, so monolith crashes
 // $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/apigateway/v1/*.proto',
@@ -133,6 +137,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/datacatalog/v1/datacatalog_v1.yaml',
     'googleapis/google/cloud/datacatalog/v1/datacatalog_grpc_service_config.json'
 )) ? $ok : false;
+// Commented-out because the monolith did not adhere to aip.dev/4122.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dataproc/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.dataproc.v1',
@@ -142,6 +148,7 @@ $ok = processDiff(Invoker::invoke(
     true, // LROs.
     true  // HTTP Rules.
 )) ? $ok : false;
+ */
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.dialogflow.v2',
@@ -159,6 +166,8 @@ $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/dialogflow/cx/v3/dialogflow_v3.yaml',
 //     'googleapis/google/cloud/dialogflow/cx/v3/dialogflow_grpc_service_config.json'
 // )) ? $ok : false;
+// Commented-out because of the request parameter bug in the monolith.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/functions/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.functions.v1',
@@ -166,6 +175,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/functions/v1/cloudfunctions_v1.yaml',
     'googleapis/google/cloud/functions/v1/functions_grpc_service_config.json'
 )) ? $ok : false;
+ */
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/language/v1/language_service.proto',
     'google.cloud.language.v1',
@@ -183,6 +193,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/videointelligence/v1/videointelligence_grpc_service_config.json'
 )) ? $ok : false;
  */
+// Commented-out because of the request parameter bug in the monolith.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/vision/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.vision.v1',
@@ -192,15 +204,17 @@ $ok = processDiff(Invoker::invoke(
     true,  // For LRO configs.
      true // HTTP rules.
 )) ? $ok : false;
-$ok = processDiff(Invoker::invoke(
-    'googleapis/google/ads/googleads/v6/**/*.proto',
-    'google.ads.googleads.v6',
-    'googleapis/google/ads/googleads/v6/googleads_gapic.yaml',
-    'googleapis/google/ads/googleads/v6/googleads_v6.yaml',
-    'googleapis/google/ads/googleads/v6/googleads_grpc_service_config.json',
-    true, // For LROs.
-    true  // For HTTP rules.
-)) ? $ok : false;
+ */
+// Commented-out because of the request parameter bug in the monolith.
+// $ok = processDiff(Invoker::invoke(
+//     'googleapis/google/ads/googleads/v6/**/*.proto',
+//     'google.ads.googleads.v6',
+//     'googleapis/google/ads/googleads/v6/googleads_gapic.yaml',
+//     'googleapis/google/ads/googleads/v6/googleads_v6.yaml',
+//     'googleapis/google/ads/googleads/v6/googleads_grpc_service_config.json',
+//     true, // For LROs.
+//     true  // For HTTP rules.
+// )) ? $ok : false;
 //
 if (!$ok) {
     print("\nFail\n");

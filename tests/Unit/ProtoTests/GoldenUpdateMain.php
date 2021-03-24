@@ -50,6 +50,10 @@ const UNIT_TESTS = [
     'name' => 'GrpcServiceConfig',
     'protoPath' => 'GrpcServiceConfig/grpc-service-config1.proto',
     'package' => 'testing.grpcserviceconfig'
+  ],
+  8 => [
+    'name' => 'RoutingHeaders',
+    'protoPath' => 'RoutingHeaders/routing-headers.proto'
   ]
 ];
 

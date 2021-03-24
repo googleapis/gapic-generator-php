@@ -253,6 +253,8 @@ class JobControllerGapicClient
         $request->setRegion($region);
         $request->setJobId($jobId);
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
+            'region' => $request->getRegion(),
             'job_id' => $request->getJobId(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -299,6 +301,8 @@ class JobControllerGapicClient
         $request->setRegion($region);
         $request->setJobId($jobId);
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
+            'region' => $request->getRegion(),
             'job_id' => $request->getJobId(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -346,6 +350,8 @@ class JobControllerGapicClient
         $request->setRegion($region);
         $request->setJobId($jobId);
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
+            'region' => $request->getRegion(),
             'job_id' => $request->getJobId(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -455,6 +461,7 @@ class JobControllerGapicClient
         }
 
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
             'region' => $request->getRegion(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -518,6 +525,7 @@ class JobControllerGapicClient
         }
 
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
             'region' => $request->getRegion(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -606,6 +614,7 @@ class JobControllerGapicClient
         }
 
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
             'region' => $request->getRegion(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
@@ -664,6 +673,8 @@ class JobControllerGapicClient
         $request->setJob($job);
         $request->setUpdateMask($updateMask);
         $requestParams = new RequestParamsHeaderDescriptor([
+            'project_id' => $request->getProjectId(),
+            'region' => $request->getRegion(),
             'job_id' => $request->getJobId(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
