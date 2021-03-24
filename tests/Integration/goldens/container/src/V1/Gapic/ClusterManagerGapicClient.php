@@ -270,10 +270,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CancelOperation', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
@@ -338,10 +334,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CompleteIPRotation', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -416,10 +408,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateCluster', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -488,10 +476,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateNodePool', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -564,10 +548,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteCluster', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -640,10 +620,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteNodePool', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -708,10 +684,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetCluster', Cluster::class, $optionalArgs, $request)->wait();
     }
 
@@ -755,10 +727,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetJSONWebKeys', GetJSONWebKeysResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -831,10 +799,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetNodePool', NodePool::class, $optionalArgs, $request)->wait();
     }
 
@@ -899,10 +863,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetOperation', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -960,10 +920,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetServerConfig', ServerConfig::class, $optionalArgs, $request)->wait();
     }
 
@@ -1023,10 +979,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('ListClusters', ListClustersResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -1091,10 +1043,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('ListNodePools', ListNodePoolsResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -1153,10 +1101,6 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('ListOperations', ListOperationsResponse::class, $optionalArgs, $request)->wait();
     }
 
@@ -1235,10 +1179,6 @@ class ClusterManagerGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListUsableSubnetworks', $optionalArgs, ListUsableSubnetworksResponse::class, $request);
     }
 
@@ -1312,10 +1252,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('RollbackNodePoolUpgrade', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1384,10 +1320,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetAddonsConfig', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1463,10 +1395,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetLabels', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1534,10 +1462,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetLegacyAbac', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1614,10 +1538,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetLocations', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1695,10 +1615,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetLoggingService', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1757,7 +1673,9 @@ class ClusterManagerGapicClient
         }
 
         $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
+            'project_id' => $request->getProjectId(),
+            'zone' => $request->getZone(),
+            'cluster_id' => $request->getClusterId(),
         ]);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetMaintenancePolicy', Operation::class, $optionalArgs, $request)->wait();
@@ -1833,10 +1751,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetMasterAuth', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1914,10 +1828,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetMonitoringService', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -1985,10 +1895,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetNetworkPolicy', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2064,10 +1970,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetNodePoolAutoscaling', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2143,10 +2045,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetNodePoolManagement', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2222,10 +2120,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetNodePoolSize', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2296,10 +2190,6 @@ class ClusterManagerGapicClient
             $request->setRotateCredentials($optionalArgs['rotateCredentials']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('StartIPRotation', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2367,10 +2257,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateCluster', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2447,10 +2333,6 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateMaster', Operation::class, $optionalArgs, $request)->wait();
     }
 
@@ -2561,10 +2443,6 @@ class ClusterManagerGapicClient
             $request->setUpgradeSettings($optionalArgs['upgradeSettings']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateNodePool', Operation::class, $optionalArgs, $request)->wait();
     }
 }
