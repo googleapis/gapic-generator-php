@@ -226,14 +226,14 @@ class IAMPolicyGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
@@ -277,11 +277,11 @@ class IAMPolicyGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
@@ -330,11 +330,11 @@ class IAMPolicyGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
@@ -377,14 +377,14 @@ class IAMPolicyGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
@@ -428,11 +428,11 @@ class IAMPolicyGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
@@ -481,11 +481,11 @@ class IAMPolicyGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }

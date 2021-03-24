@@ -465,11 +465,11 @@ class WorkflowTemplateServiceGapicClient
     public function createWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new CreateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTemplate($template);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
@@ -517,14 +517,14 @@ class WorkflowTemplateServiceGapicClient
     public function deleteWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new DeleteWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteWorkflowTemplate', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -578,14 +578,14 @@ class WorkflowTemplateServiceGapicClient
     public function getWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new GetWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
@@ -689,15 +689,15 @@ class WorkflowTemplateServiceGapicClient
     public function instantiateInlineWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new InstantiateInlineWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTemplate($template);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('InstantiateInlineWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -805,7 +805,9 @@ class WorkflowTemplateServiceGapicClient
     public function instantiateWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new InstantiateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
@@ -818,9 +820,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setParameters($optionalArgs['parameters']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('InstantiateWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -887,7 +887,9 @@ class WorkflowTemplateServiceGapicClient
     public function listWorkflowTemplates($parent, array $optionalArgs = [])
     {
         $request = new ListWorkflowTemplatesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -896,9 +898,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListWorkflowTemplates', $optionalArgs, ListWorkflowTemplatesResponse::class, $request);
     }
@@ -938,10 +938,10 @@ class WorkflowTemplateServiceGapicClient
     public function updateWorkflowTemplate($template, array $optionalArgs = [])
     {
         $request = new UpdateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setTemplate($template);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'template.name' => $request->getTemplate()->getName(),
-        ]);
+        $requestParamHeaders['template.name'] = $template->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
