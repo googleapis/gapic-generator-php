@@ -23,6 +23,7 @@ INTEGRATION_TEST_LIBRARIES = [
     "redis",  # sample_code field in gapic.yaml.
     "securitycenter",  # Exercises pathTemplateMap .
     "speech",  # sample_code field in gapic.yaml.
+    "talent",  # Path template and duplicate name template properties.
     "videointelligence",  # sample_code field in gapic.yaml.
 ]
 
@@ -431,5 +432,37 @@ php_gapic_assembly_pkg(
         ":iam_php_gapic",
         ":iam_php_grpc",
         ":iam_php_proto",
+    ],
+)
+
+# Talent.
+php_proto_library(
+    name = "talent_php_proto",
+    deps = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto"],
+)
+
+php_grpc_library(
+    name = "talent_php_grpc",
+    srcs = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto"],
+    deps = [":talent_php_proto"],
+)
+
+php_gapic_library(
+    name = "talent_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/talent/v4:talent_grpc_service_config.json",
+    service_yaml = "@com_google_googleapis//google/cloud/talent:talent_v4.yaml",
+    deps = [
+        ":talent_php_grpc",
+        ":talent_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-talent-v4-php",
+    deps = [
+        ":talent_php_gapic",
+        ":talent_php_grpc",
+        ":talent_php_proto",
     ],
 )
