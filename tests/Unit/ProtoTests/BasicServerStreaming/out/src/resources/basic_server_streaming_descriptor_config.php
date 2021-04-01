@@ -3,12 +3,12 @@
 return [
     'interfaces' => [
         'testing.basicserverstreaming.BasicServerStreaming' => [
-            'MethodServer' => [
+            'MethodEmpty' => [
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'ServerStreaming',
                 ],
             ],
-            'MethodEmpty' => [
+            'MethodServer' => [
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'ServerStreaming',
                 ],

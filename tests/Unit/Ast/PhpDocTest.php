@@ -47,7 +47,8 @@ final class PhpDocTest extends TestCase
         )->toCode();
         $this->assertEquals(
             "/**\n * Some text which will be formatted to a fixed line length of 80 characters, with\n * auto line wrapping at that point :)\n */\n",
-            $doc);
+            $doc
+        );
     }
 
     public function testNewLine(): void

@@ -25,8 +25,8 @@ require __DIR__ . '../../../vendor/autoload.php';
 error_reporting(E_ALL);
 
 if (!compareFiles($argv)) {
-  print("FAIL\n\n");
-  exit(1);
+    print("FAIL\n\n");
+    exit(1);
 }
 
 print("PASS\n\n");
@@ -34,7 +34,8 @@ print("PASS\n\n");
 /**
  * Compares two PHP files. Assumes the LHS arg (nodesOne) is from the monolith, and the RHS one from the microgenerator.
  */
-function compareFiles($argv): bool {
+function compareFiles($argv): bool
+{
     if (count($argv) < 3) {
         print("Insufficient arguments\nUsage example: php MethodComparer.php /path/to/file1.php /path/to/file2.php");
         exit(1);
@@ -46,15 +47,15 @@ function compareFiles($argv): bool {
     $configEndLength = strlen($configFileEnding);
     if (substr($filePathOne, -$configEndLength) == $configFileEnding &&
       substr($filePathOne, -$configEndLength) == $configFileEnding) {
-      $configOne = require($filePathOne);
-      $configTwo = require($filePathTwo);
-      return PhpConfigComparer::compare($configOne, $configTwo);
+        $configOne = require($filePathOne);
+        $configTwo = require($filePathTwo);
+        return PhpConfigComparer::compare($configOne, $configTwo);
     }
 
     $fileContentsOne = parseFileToString($argv[1]);
     $fileContentsTwo = parseFileToString($argv[2]);
     if (is_null($fileContentsOne) || is_null($fileContentsTwo)) {
-      exit(1);
+        exit(1);
     }
 
     return PhpClassComparer::compare($fileContentsOne, $fileContentsTwo);
@@ -64,7 +65,8 @@ function compareFiles($argv): bool {
  * Parses the file to a string.
  * @return ?string the file contens, or null upon a file parsing error.
  */
-function parseFileToString(string $filePath): ?string {
+function parseFileToString(string $filePath): ?string
+{
     if (!file_exists($filePath)) {
         print("File $filePath does not exist");
         return null;

@@ -30,13 +30,9 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
-use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicClientStreaming\BasicClientStreamingGrpcClient;
 use Testing\BasicClientStreaming\EmptyRequest;
 use Testing\BasicClientStreaming\Request;
 use Testing\BasicClientStreaming\Response;
@@ -75,26 +71,34 @@ use Testing\BasicClientStreaming\Response;
  *     $basicClientStreamingClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicClientStreamingGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.basicclientstreaming.BasicClientStreaming';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'clientstreaming.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [];
 
     private static function getClientDefaults()
@@ -166,8 +170,6 @@ class BasicClientStreamingGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -217,8 +219,6 @@ class BasicClientStreamingGapicClient
      * @return \Google\ApiCore\ClientStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodClient(array $optionalArgs = [])
     {
@@ -265,8 +265,6 @@ class BasicClientStreamingGapicClient
      * @return \Google\ApiCore\ClientStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodEmpty(array $optionalArgs = [])
     {

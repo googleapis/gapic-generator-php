@@ -22,24 +22,17 @@
 
 namespace Testing\BasicPaginated\Tests\Unit;
 
-use Testing\BasicPaginated\BasicPaginatedClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
+
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
-use Testing\BasicPaginated\BasicPaginatedGrpcClient;
-use Testing\BasicPaginated\PartOfRequestA;
+use stdClass;
+use Testing\BasicPaginated\BasicPaginatedClient;
 use Testing\BasicPaginated\Request;
 use Testing\BasicPaginated\Response;
-use stdClass;
 
 /**
  * @group basicpaginated
@@ -48,19 +41,25 @@ use stdClass;
  */
 class BasicPaginatedClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicPaginatedClient */
+    /**
+     * @return BasicPaginatedClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -69,7 +68,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         return new BasicPaginatedClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodPaginatedTest()
     {
         $transport = $this->createTransport();
@@ -118,7 +119,9 @@ class BasicPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodPaginatedExceptionTest()
     {
         $transport = $this->createTransport();

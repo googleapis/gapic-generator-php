@@ -1,0 +1,33 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.basiclro",
+    "libraryPackage": "Testing\\BasicLro",
+    "services": {
+        "BasicLro": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BasicLroGapicClient",
+                    "rpcs": {
+                        "Method1": {
+                            "methods": [
+                                "method1"
+                            ]
+                        },
+                        "MethodNonLro1": {
+                            "methods": [
+                                "methodNonLro1"
+                            ]
+                        },
+                        "MethodNonLro2": {
+                            "methods": [
+                                "methodNonLro2"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

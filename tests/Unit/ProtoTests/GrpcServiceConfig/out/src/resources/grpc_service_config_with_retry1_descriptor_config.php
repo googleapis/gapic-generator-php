@@ -13,14 +13,14 @@ return [
                     'totalPollTimeoutMillis' => '300000',
                 ],
             ],
-            'Method1ServerStreaming' => [
-                'grpcStreaming' => [
-                    'grpcStreamingType' => 'ServerStreaming',
-                ],
-            ],
             'Method1BidiStreaming' => [
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'BidiStreaming',
+                ],
+            ],
+            'Method1ServerStreaming' => [
+                'grpcStreaming' => [
+                    'grpcStreamingType' => 'ServerStreaming',
                 ],
             ],
         ],

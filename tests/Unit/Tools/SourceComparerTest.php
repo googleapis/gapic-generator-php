@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,41 +23,6 @@ use Google\Generator\Tests\Tools\SourceComparer;
 
 final class SourceComparerTest extends TestCase
 {
-    public function testCompareJsonSucceeds(): void
-    {
-        // Both values are empty.
-        $this->assertTrue(SourceComparer::compareJson('', ''));
-
-        // Sane order.
-        $monoJson = '{"a" : 1, "b" : 2, "c" : 3}';
-        $microJson = '{"a" : 1, "b" : 2, "c" : 3}';
-        $this->assertTrue(SourceComparer::compareJson($monoJson, $microJson));
-
-        // Different order.
-        $microJson = '{"c" : 3, "a" : 1, "b" : 2}';
-        $this->assertTrue(SourceComparer::compareJson($monoJson, $microJson));
-        $this->assertTrue(SourceComparer::compareJson($microJson, $monoJson));
-    }
-
-    public function testCompareJsonFails(): void
-    {
-        // One of the JSON strings is empty.
-        $jsonString = '{"a" : 1, "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonString, '', false));
-        $this->assertFalse(SourceComparer::compareJson('', $jsonString, false));
-
-        // One different value.
-        $jsonOne = '{"a" : 1, "b" : 2, "c" : 3}';
-        $jsonTwo = '{1 : "a", "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, false));
-        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, false));
-
-        // One extra value.
-        $jsonTwo = '{1 : "a", "a" : 1, "b" : 2, "c" : 3}';
-        $this->assertFalse(SourceComparer::compareJson($jsonOne, $jsonTwo, false));
-        $this->assertFalse(SourceComparer::compareJson($jsonTwo, $jsonOne, false));
-    }
-
     public function testCompareSuccessCases(): void
     {
         // Both values are empty.
@@ -86,16 +51,16 @@ final class SourceComparerTest extends TestCase
     {
         // One of the strings is empty.
         $stringOne = 'The quick brown fox jumped over the lazy dog';
-        $this->assertFalse(SourceComparer::compare($stringOne, '', False));
-        $this->assertFalse(SourceComparer::compare('', $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, '', false));
+        $this->assertFalse(SourceComparer::compare('', $stringOne, false));
 
         // Different values.
         $stringTwo = 'The Quick brown fox jumped over the lazy dog';
-        $this->assertFalse(SourceComparer::compare($stringOne, $stringTwo, False));
-        $this->assertFalse(SourceComparer::compare($stringTwo, $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, $stringTwo, false));
+        $this->assertFalse(SourceComparer::compare($stringTwo, $stringOne, false));
 
         // Substring.
-        $this->assertFalse(SourceComparer::compare($stringOne, 'The', False));
-        $this->assertFalse(SourceComparer::compare('The', $stringOne, False));
+        $this->assertFalse(SourceComparer::compare($stringOne, 'The', false));
+        $this->assertFalse(SourceComparer::compare('The', $stringOne, false));
     }
 }

@@ -22,24 +22,18 @@
 
 namespace Testing\BasicServerStreaming\Tests\Unit;
 
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
-use Testing\BasicServerStreaming\BasicServerStreamingGrpcClient;
-use Testing\BasicServerStreaming\EmptyRequest;
+use stdClass;
+use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
-use stdClass;
 
 /**
  * @group basicserverstreaming
@@ -48,19 +42,25 @@ use stdClass;
  */
 class BasicServerStreamingClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicServerStreamingClient */
+    /**
+     * @return BasicServerStreamingClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -69,7 +69,79 @@ class BasicServerStreamingClientTest extends GeneratedTest
         return new BasicServerStreamingClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
+    public function methodEmptyTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        $expectedResponse2 = new Response();
+        $transport->addResponse($expectedResponse2);
+        $expectedResponse3 = new Response();
+        $transport->addResponse($expectedResponse3);
+        // Mock request
+        $serverStream = $client->methodEmpty();
+        $this->assertInstanceOf(ServerStream::class, $serverStream);
+        $responses = iterator_to_array($serverStream->readAll());
+        $expectedResponses = [];
+        $expectedResponses[] = $expectedResponse;
+        $expectedResponses[] = $expectedResponse2;
+        $expectedResponses[] = $expectedResponse3;
+        $this->assertEquals($expectedResponses, $responses);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basicserverstreaming.BasicServerStreaming/MethodEmpty', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function methodEmptyExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->setStreamingStatus($status);
+        $this->assertTrue($transport->isExhausted());
+        // Mock request
+        $serverStream = $client->methodEmpty();
+        $results = $serverStream->readAll();
+        try {
+            iterator_to_array($results);
+            // If the close stream method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function methodServerTest()
     {
         $transport = $this->createTransport();
@@ -104,7 +176,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodServerExceptionTest()
     {
         $transport = $this->createTransport();
@@ -125,72 +199,6 @@ class BasicServerStreamingClientTest extends GeneratedTest
         // Mock request
         $aNumber = 1071982361;
         $serverStream = $client->methodServer($aNumber);
-        $results = $serverStream->readAll();
-        try {
-            iterator_to_array($results);
-            // If the close stream method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function methodEmptyTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $expectedResponse = new Response();
-        $transport->addResponse($expectedResponse);
-        $expectedResponse2 = new Response();
-        $transport->addResponse($expectedResponse2);
-        $expectedResponse3 = new Response();
-        $transport->addResponse($expectedResponse3);
-        // Mock request
-        $serverStream = $client->methodEmpty();
-        $this->assertInstanceOf(ServerStream::class, $serverStream);
-        $responses = iterator_to_array($serverStream->readAll());
-        $expectedResponses = [];
-        $expectedResponses[] = $expectedResponse;
-        $expectedResponses[] = $expectedResponse2;
-        $expectedResponses[] = $expectedResponse3;
-        $this->assertEquals($expectedResponses, $responses);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basicserverstreaming.BasicServerStreaming/MethodEmpty', $actualFuncCall);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function methodEmptyExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->setStreamingStatus($status);
-        $this->assertTrue($transport->isExhausted());
-        // Mock request
-        $serverStream = $client->methodEmpty();
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);

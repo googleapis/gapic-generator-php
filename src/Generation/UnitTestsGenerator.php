@@ -35,7 +35,6 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -44,14 +43,13 @@ use Google\Rpc\Code;
 
 class UnitTestsGenerator
 {
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new UnitTestsGenerator($ctx, $serviceDetails, $gapicYamlConfig))->generateImpl();
+        return (new UnitTestsGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
-    private GapicYamlConfig $gapicYamlConfig;
     private $assertTrue;
     private $assertFalse;
     private $assertEquals;
@@ -61,11 +59,10 @@ class UnitTestsGenerator
     private $assertInstanceOf;
     private $fail;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
-        $this->gapicYamlConfig = $gapicYamlConfig;
         $this->assertTrue = AST::call(AST::THIS, AST::method('assertTrue'));
         $this->assertFalse = AST::call(AST::THIS, AST::method('assertFalse'));
         $this->assertEquals = AST::call(AST::THIS, AST::method('assertEquals'));
@@ -197,7 +194,7 @@ class UnitTestsGenerator
                 yield $this->testExceptionalCaseServerStreaming($method);
                 break;
             case MethodDetails::CLIENT_STREAMING:
-                // The monolithic generator does not generate client-streaming test code.
+                // TODO(vNext): The monolithic generator does not generate client-streaming test code.
                 // That behaviour is reproduced here, but we may add new tests after the
                 // initial release of this micro-generator.
                 break;
@@ -208,7 +205,7 @@ class UnitTestsGenerator
 
     private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
@@ -220,6 +217,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -244,7 +242,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
                 AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),
@@ -256,7 +254,7 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $status = AST::var('status');
@@ -299,7 +297,7 @@ class UnitTestsGenerator
 
     private function testSuccessCaseLro(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $expectedResponse = AST::var('expectedResponse');
         $anyResponse = AST::var('anyResponse');
         $completeOperation = AST::var('completeOperation');
@@ -372,7 +370,7 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
@@ -453,7 +451,7 @@ class UnitTestsGenerator
 
     private function testSuccessCasePaginated(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponse = AST::var('expectedResponse');
@@ -473,6 +471,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -499,7 +498,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),
                 AST::assign($actualRequestObject, AST::index($actualRequests, 0)->instanceCall(AST::method('getRequestObject'))()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),
@@ -511,7 +510,7 @@ class UnitTestsGenerator
 
     private function testSuccessCaseBidiStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -531,6 +530,7 @@ class UnitTestsGenerator
         $bidiCall = AST::var('bidiCall');
         $writeRequests = AST::var('writeRequests');
         $expectedRequests = AST::var('expectedRequests');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -566,7 +566,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($createStreamRequests)),
                 AST::assign($streamFuncCall, $createStreamRequests[0]->getFuncCall()),
                 AST::assign($streamRequestObject, $createStreamRequests[0]->getRequestObject()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $streamFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $streamFuncCall),
                 ($this->assertNull)($streamRequestObject),
                 AST::assign($callObjects, $transport->popCallObjects()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($callObjects)),
@@ -626,7 +626,7 @@ class UnitTestsGenerator
     private function testSuccessCaseServerStreaming(MethodDetails $method): PhpMethod
     {
         // TODO: Support resource-names in request args.
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -649,6 +649,7 @@ class UnitTestsGenerator
         $actualFuncCall = AST::var('actualFuncCall');
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
+        $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -674,7 +675,7 @@ class UnitTestsGenerator
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, $actualRequests[0]->getFuncCall()),
                 AST::assign($actualRequestObject, $actualRequests[0]->getRequestObject()),
-                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualFuncCall),
+                ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
                     ($this->assertProtobufEquals)($x->var, $actualValue),
@@ -686,7 +687,7 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseServerStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, $this->gapicYamlConfig);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var('client');
         $status = AST::var('status');

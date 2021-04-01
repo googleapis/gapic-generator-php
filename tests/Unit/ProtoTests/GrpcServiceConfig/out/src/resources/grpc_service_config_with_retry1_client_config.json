@@ -10,8 +10,7 @@
                 "retry_policy_2_codes": [
                     "UNAVAILABLE"
                 ],
-                "no_retry_1_codes": [],
-                "retry_policy_3_codes": []
+                "no_retry_1_codes": []
             },
             "retry_params": {
                 "no_retry_params": {
@@ -49,15 +48,6 @@
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 11000,
                     "total_timeout_millis": 11000
-                },
-                "retry_policy_3_params": {
-                    "initial_retry_delay_millis": 2000,
-                    "retry_delay_multiplier": 1.2,
-                    "max_retry_delay_millis": 20000,
-                    "initial_rpc_timeout_millis": 22000,
-                    "rpc_timeout_multiplier": 1.0,
-                    "max_rpc_timeout_millis": 22000,
-                    "total_timeout_millis": 22000
                 }
             },
             "methods": {
@@ -71,6 +61,9 @@
                     "retry_codes_name": "retry_policy_1_codes",
                     "retry_params_name": "retry_policy_1_params"
                 },
+                "Method1BidiStreaming": {
+                    "timeout_millis": 9000
+                },
                 "Method1CServiceLevelRetry": {
                     "timeout_millis": 9000,
                     "retry_codes_name": "retry_policy_1_codes",
@@ -82,9 +75,6 @@
                     "retry_params_name": "no_retry_1_params"
                 },
                 "Method1ServerStreaming": {
-                    "timeout_millis": 9000
-                },
-                "Method1BidiStreaming": {
                     "timeout_millis": 9000
                 }
             }

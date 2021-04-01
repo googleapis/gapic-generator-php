@@ -5,35 +5,52 @@ package testing.routingheaders;
 option php_namespace = "Testing\\RoutingHeaders";
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/api/client.proto";
 
 service RoutingHeaders {
   option (google.api.default_host) = "routingheaders.example.com";
 
-  rpc GetMethod(SimpleRequest) returns(Response) { option (google.api.http).get = "/{name=items/*}/child"; };
-  rpc PostMethod(SimpleRequest) returns(Response) { option (google.api.http).post = "/{name=items/*}/child"; };
-  rpc PutMethod(SimpleRequest) returns(Response) { option (google.api.http).put = "/{name=items/*}/child"; };
-  rpc PatchMethod(SimpleRequest) returns(Response) { option (google.api.http).patch = "/{name=items/*}/child"; };
-  rpc DeleteMethod(SimpleRequest) returns(Response) { option (google.api.http).delete = "/{name=items/*}/child"; };
+  rpc GetMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).get = "/{name=items/*}/child";
+  };
+  rpc PostMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).post = "/{name=items/*}/child";
+  };
+  rpc PutMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).put = "/{name=items/*}/child";
+  };
+  rpc PatchMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).patch = "/{name=items/*}/child";
+  };
+  rpc DeleteMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).delete = "/{name=items/*}/child";
+  };
 
-  rpc GetNoTemplateMethod(SimpleRequest) returns(Response) { option (google.api.http).get = "/{name}/child"; };
+  rpc GetNoTemplateMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).get = "/{name}/child";
+  };
 
-  rpc GetNoPlaceholdersMethod(SimpleRequest) returns(Response) { option (google.api.http).get = "/root/child"; };
+  rpc GetNoPlaceholdersMethod(SimpleRequest) returns (Response) {
+    option (google.api.http).get = "/root/child";
+  };
 
-  rpc NestedMethod(NestedRequest) returns(Response) {
+  rpc NestedMethod(NestedRequest) returns (Response) {
     option (google.api.http).get = "/{nest1.nest2.name=items/*}/child";
   };
 
-  rpc NestedMultiMethod(NestedRequest) returns(Response) {
+  rpc NestedMultiMethod(NestedRequest) returns (Response) {
     // Test multiple and nested routing headers.
     // PHP orders alphabetical by field-name; test that here.
-    option (google.api.http).get = "/{nest1.nest2.name=items/*}/child1/{name=items/*}/child2/{another_name=more_items/*/and_more/*}/child3";
+    option (google.api.http).get =
+        "/{nest1.nest2.name=items/*}/child1/{name=items/*}/child2/{another_name=more_items/*/and_more/*}/child3";
   };
 
-  rpc OrderingMethod(OrderRequest) returns(Response) {
+  rpc OrderingMethod(OrderRequest) returns (Response) {
     // Test ordering of placeholders
-    option (google.api.http).get = "/{a=a}/{c=c}/{aa=aa}/{b=b}/{d=d}/{a_id=a_id}/{b_id=b_id}/{e=e}";
-  }
+    option (google.api.http).get =
+        "/{a=a}/{c=c}/{aa=aa}/{b=b}/{d=d}/{a_id=a_id}/{b_id=b_id}/{e=e}";
+  };
 }
 
 message SimpleRequest {
@@ -49,19 +66,18 @@ message NestedRequest {
   }
   Inner1 nest1 = 1;
   string name = 2;
-  string another_name = 3;
+  string another_name = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 message OrderRequest {
-  string a = 1;
-  string b = 2;
-  string d = 3;
-  string c = 4;
+  string a = 1 [(google.api.field_behavior) = REQUIRED];
+  string b = 2 [(google.api.field_behavior) = REQUIRED];
+  string d = 3 [(google.api.field_behavior) = REQUIRED];
+  string c = 4 [(google.api.field_behavior) = REQUIRED];
   string a_id = 5;
-  string e = 6;
+  string e = 6 [(google.api.field_behavior) = REQUIRED];
   string b_id = 7;
   string aa = 8;
 }
 
-message Response {
-}
+message Response {}

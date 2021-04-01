@@ -27,21 +27,18 @@
 namespace Testing\GrpcServiceConfig\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\Call;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1GrpcClient;
-use Testing\GrpcServiceConfig\LroMetadata;
-use Testing\GrpcServiceConfig\LroResponse;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
@@ -59,26 +56,34 @@ use Testing\GrpcServiceConfig\Response1;
  *     $grpcServiceConfigWithRetry1Client->close();
  * }
  * ```
- *
- * @experimental
  */
 class GrpcServiceConfigWithRetry1GapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.grpcserviceconfig.GrpcServiceConfigWithRetry1';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'grpcserviceconfig.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [];
 
     private $operationsClient;
@@ -106,8 +111,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -124,8 +127,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -185,8 +186,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -220,8 +219,6 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Testing\GrpcServiceConfig\Response1
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1A(array $optionalArgs = [])
     {
@@ -279,116 +276,11 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1BLro(array $optionalArgs = [])
     {
         $request = new Request1();
         return $this->startOperationsCall('Method1BLro', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-     * try {
-     *     $response = $grpcServiceConfigWithRetry1Client->method1CServiceLevelRetry();
-     * } finally {
-     *     $grpcServiceConfigWithRetry1Client->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\GrpcServiceConfig\Response1
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function method1CServiceLevelRetry(array $optionalArgs = [])
-    {
-        $request = new Request1();
-        return $this->startCall('Method1CServiceLevelRetry', Response1::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-     * try {
-     *     $response = $grpcServiceConfigWithRetry1Client->method1DTimeoutOnlyRetry();
-     * } finally {
-     *     $grpcServiceConfigWithRetry1Client->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\GrpcServiceConfig\Response1
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
-    {
-        $request = new Request1();
-        return $this->startCall('Method1DTimeoutOnlyRetry', Response1::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-     * try {
-     *     // Read all responses until the stream is complete
-     *     $stream = $grpcServiceConfigWithRetry1Client->method1ServerStreaming();
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $grpcServiceConfigWithRetry1Client->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $timeoutMillis
-     *           Timeout to use for this call.
-     * }
-     *
-     * @return \Google\ApiCore\ServerStream
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function method1ServerStreaming(array $optionalArgs = [])
-    {
-        $request = new Request1();
-        return $this->startCall('Method1ServerStreaming', Response1::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 
     /**
@@ -443,11 +335,106 @@ class GrpcServiceConfigWithRetry1GapicClient
      * @return \Google\ApiCore\BidiStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1BidiStreaming(array $optionalArgs = [])
     {
         return $this->startCall('Method1BidiStreaming', Response1::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+     * try {
+     *     $response = $grpcServiceConfigWithRetry1Client->method1CServiceLevelRetry();
+     * } finally {
+     *     $grpcServiceConfigWithRetry1Client->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\GrpcServiceConfig\Response1
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function method1CServiceLevelRetry(array $optionalArgs = [])
+    {
+        $request = new Request1();
+        return $this->startCall('Method1CServiceLevelRetry', Response1::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+     * try {
+     *     $response = $grpcServiceConfigWithRetry1Client->method1DTimeoutOnlyRetry();
+     * } finally {
+     *     $grpcServiceConfigWithRetry1Client->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\GrpcServiceConfig\Response1
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
+    {
+        $request = new Request1();
+        return $this->startCall('Method1DTimeoutOnlyRetry', Response1::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+     * try {
+     *     // Read all responses until the stream is complete
+     *     $stream = $grpcServiceConfigWithRetry1Client->method1ServerStreaming();
+     *     foreach ($stream->readAll() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $grpcServiceConfigWithRetry1Client->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
+     * }
+     *
+     * @return \Google\ApiCore\ServerStream
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function method1ServerStreaming(array $optionalArgs = [])
+    {
+        $request = new Request1();
+        return $this->startCall('Method1ServerStreaming', Response1::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }

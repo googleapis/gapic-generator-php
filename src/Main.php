@@ -37,15 +37,10 @@ function showUsageAndExit()
     print("  --grpc_service_config <path> [Optional] The client-side gRPC service config.\n");
     print("  --gapic_yaml <path> [Optional] The gapic yaml.\n");
     print("  --service_yaml <path> [Optional] The service yaml.\n");
+    print("  --metadata [Optional] Whether to generate gapic_metadata.json files\n");
     print("\n");
     exit(1);
 }
-
-// The monolithic generator appears to be fixed to use 2020, so fixing the micro-generator to 2020
-// allows the comparison-based integration tests to run.
-// TODO: Use the current year, not fixed at 2020. Make the monolith use current year.
-$year = 2020;
-// $year = (int)date('Y');
 
 // When running as a protoc plugin, an optional root directory may be passed in to set the
 // root location of the side-loaded configuration files:
@@ -100,9 +95,26 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $opts = Vector::new(explode(',', $genRequest->getParameter()))
             ->filter(fn ($x) => !is_null($x) && $x !== '')
             ->map(fn ($x) => explode('=', $x, 2))
-            ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts, $sideLoadedRootDir);
-        $files = CodeGenerator::generate($fileDescs, $filesToGen, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
+            ->toArray(fn ($x) => $x[0], fn ($x) => array_key_exists(1, $x) ? $x[1] : true);
+
+        // Flip the flag value for consistency with actual PHP CLI invocation, where
+        // the presence of the --metadata flag evaluates to false.
+        // Don't set the above to false - that leads to this variable becoming unset.
+        if (array_key_exists('metadata', $opts)) {
+            $opts['metadata'] = false;
+        }
+
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] =
+            readOptions($opts, $sideLoadedRootDir);
+
+        $files = CodeGenerator::generate(
+            $fileDescs,
+            $filesToGen,
+            $generateGapicMetadata,
+            $grpcServiceConfig,
+            $gapicYaml,
+            $serviceYaml
+        );
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
             $file = new File();
@@ -117,17 +129,24 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     fwrite(STDOUT, $genResponse->serializeToString());
 } else {
     // Read command-line args, being run interactively from cmd-line.
-    $opts = getopt('', ['descriptor:', 'package:', 'output:', 'grpc_service_config:', 'gapic_yaml:', 'service_yaml:']);
+    $opts = getopt('', ['descriptor:', 'package:', 'output:', 'grpc_service_config:', 'gapic_yaml:', 'service_yaml:', 'metadata:']);
     if (!isset($opts['descriptor']) || !isset($opts['package'])) {
         showUsageAndExit();
     }
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
-    [$grpcServiceConfig, $gapicYaml, $serviceYaml] = readOptions($opts);
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] = readOptions($opts);
 
     // Generate PHP code.
-    $files = CodeGenerator::generateFromDescriptor($descBytes, $package, $year, $grpcServiceConfig, $gapicYaml, $serviceYaml);
+    $files = CodeGenerator::generateFromDescriptor(
+        $descBytes,
+        $package,
+        $generateGapicMetadata,
+        $grpcServiceConfig,
+        $gapicYaml,
+        $serviceYaml
+    );
 
     if (is_null($outputDir)) {
         // TODO: Remove printout; only save files to the specified output path.
@@ -188,5 +207,8 @@ function readOptions($opts, $sideLoadedRootDir = null)
         $serviceYaml = null;
     }
 
-    return [$grpcServiceConfig, $gapicYaml, $serviceYaml];
+    // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.
+    $generateGapicMetadata =  (isset($opts['metadata']) && !$opts['metadata']);
+
+    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata];
 }

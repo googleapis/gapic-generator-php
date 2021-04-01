@@ -18,10 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Tools;
 
-use Google\Generator\Collections\Vector;
-use Google\Protobuf\Internal\FileDescriptorProto;
-use Google\Protobuf\Internal\FileDescriptorSet;
-
 trait ConfigLoader
 {
     /**

@@ -23,7 +23,6 @@ use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\Type;
@@ -31,11 +30,10 @@ use Google\Protobuf\Internal\GPBType;
 
 class TestNameValueProducer
 {
-    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx, GapicYamlConfig $gapicYamlConfig)
+    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx)
     {
         $this->catalog = $catalog;
         $this->ctx = $ctx;
-        $this->gapicYamlConfig = $gapicYamlConfig;
         $this->names = Set::new();
         $this->values = Set::new();
         $this->valuesByName = Map::new();
@@ -43,7 +41,6 @@ class TestNameValueProducer
 
     private ProtoCatalog $catalog;
     private SourceFileContext $ctx;
-    private GapicYamlConfig $gapicYamlConfig;
     private Set $names;
     private Set $values;
     private Map $valuesByName;
@@ -157,26 +154,9 @@ class TestNameValueProducer
             }
         };
 
-        $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
-        $inits = !is_null($config) && isset($config['sample_code_init_fields']) ?
-            Map::fromPairs(array_map(fn ($x) => explode('=', $x, 2), $config['sample_code_init_fields'])) : Map::new();
-        $value = $inits->get($field->name, null);
-        $valueIndex = $inits->get($field->name . '[0]', null);
-        if ($field->isRequired || !is_null($value) || !is_null($valueIndex)) {
+        if ($field->isRequired) {
             [$var, $name] = $fnVarName();
-            if (!is_null($value)) {
-                return AST::assign($var, $fnInitValue($field, $value));
-            } elseif (!is_null($valueIndex)) {
-                if (!$field->isRepeated) {
-                    throw new \Exception('Only a repeated field may use indexed init fields');
-                }
-                $initElements = Vector::range(0, 9)
-                    ->takeWhile(fn ($i) => isset($inits["{$field->name}[{$i}]"]))
-                    ->map(fn ($i) => [AST::var("{$var->name}Element" . ($i === 0 ? '' : $i + 1)), $inits["{$field->name}[{$i}]"]]);
-                return $initElements
-                    ->map(fn ($x) => AST::assign($x[0], $fnInitValue($field, $x[1])))
-                    ->append(AST::assign($var, AST::array($initElements->map(fn ($x) => $x[0])->toArray())));
-            } elseif ($field->useResourceTestValue) {
+            if ($field->useResourceTestValue) {
                 // TODO: What if it's just a wild-card pattern?
                 $patternDetails = $field->resourceDetails->patterns[0];
                 $args = $patternDetails->params->map(fn ($x) => strtoupper("[{$x[0]}]"));

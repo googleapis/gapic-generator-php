@@ -27,15 +27,13 @@
 namespace Testing\Basic\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\Basic\BasicGrpcClient;
 use Testing\Basic\PartOfRequestA;
 use Testing\Basic\PartOfRequestB;
 use Testing\Basic\PartOfRequestC;
@@ -57,26 +55,34 @@ use Testing\Basic\Response;
  *     $basicClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.basic.Basic';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'basic.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'scope1',
         'scope2',
@@ -151,8 +157,6 @@ class BasicGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -186,8 +190,6 @@ class BasicGapicClient
      * @return \Testing\Basic\Response
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function aMethod(array $optionalArgs = [])
     {
@@ -230,8 +232,6 @@ class BasicGapicClient
      * @return \Testing\Basic\Response
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodWithArgs($aString, $partOfRequestA, array $optionalArgs = [])
     {
