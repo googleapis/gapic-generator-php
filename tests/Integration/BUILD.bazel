@@ -20,8 +20,9 @@ INTEGRATION_TEST_LIBRARIES = [
     "kms",  # Mixins.
     "iam",  # Standalone service that's in the mixin allowlist.
     "logging",  # Singleton resource names.
-    "speech",  # sample_code field in gapic.yaml.
     "redis",  # sample_code field in gapic.yaml.
+    "securitycenter",  # Exercises pathTemplateMap.
+    "speech",  # sample_code field in gapic.yaml.
     "videointelligence",  # sample_code field in gapic.yaml.
 ]
 
@@ -200,6 +201,38 @@ php_gapic_assembly_pkg(
         ":logging_php_gapic",
         ":logging_php_grpc",
         ":logging_php_proto",
+    ],
+)
+
+# Securitycenter.
+php_proto_library(
+    name = "securitycenter_php_proto",
+    deps = ["@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_proto"],
+)
+
+php_grpc_library(
+    name = "securitycenter_php_grpc",
+    srcs = ["@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_proto"],
+    deps = [":securitycenter_php_proto"],
+)
+
+php_gapic_library(
+    name = "securitycenter_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_grpc_service_config.json",
+    service_yaml = "@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_v1.yaml",
+    deps = [
+        ":securitycenter_php_grpc",
+        ":securitycenter_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-securitycenter-v1beta1-php",
+    deps = [
+        ":securitycenter_php_gapic",
+        ":securitycenter_php_grpc",
+        ":securitycenter_php_proto",
     ],
 )
 
