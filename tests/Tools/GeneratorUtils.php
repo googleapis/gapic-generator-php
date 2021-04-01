@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\CodeGenerator;
-use Google\Generator\Tests\Tools\ProtoLoader;
 
 class GeneratorUtils
 {
@@ -45,8 +44,17 @@ class GeneratorUtils
         $gapicYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
         $serviceYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_service.yaml");
 
-        // Use the fixed year 2020 for test generation, so tests won't fail in the future.
-        $codeIterator = CodeGenerator::generateFromDescriptor($descBytes, $package, 2020, $grpcServiceConfigJson, $gapicYaml, $serviceYaml);
+        $licenseYear = 2020; // Avoid updating tests all the time.
+        $generateGapicMetadata = true;
+        $codeIterator = CodeGenerator::generateFromDescriptor(
+            $descBytes,
+            $package,
+            $generateGapicMetadata,
+            $grpcServiceConfigJson,
+            $gapicYaml,
+            $serviceYaml,
+            $licenseYear
+        );
         return $codeIterator;
     }
 }

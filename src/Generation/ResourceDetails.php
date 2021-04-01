@@ -42,6 +42,7 @@ class ResourceDetails implements ResourcePart
         $this->patterns = Vector::new($desc->getPattern())
             ->filter(fn ($x) => $x !== '*')
             ->map(fn ($x) => new ResourcePatternDetails($x));
+        //print("DEL: Initing for " . $desc->getType() . ", pats: " . implode(", ", $this->patterns->map(fn ($r) => $r->pattern)->toArray()) . ", actuals: " . $desc->getPattern()[0] . "\n");
     }
 
     /** @var string The type name (unique resource name) of this resource. */

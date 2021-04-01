@@ -1,0 +1,68 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.routingheaders",
+    "libraryPackage": "Testing\\RoutingHeaders",
+    "services": {
+        "RoutingHeaders": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "RoutingHeadersGapicClient",
+                    "rpcs": {
+                        "DeleteMethod": {
+                            "methods": [
+                                "deleteMethod"
+                            ]
+                        },
+                        "GetMethod": {
+                            "methods": [
+                                "getMethod"
+                            ]
+                        },
+                        "GetNoPlaceholdersMethod": {
+                            "methods": [
+                                "getNoPlaceholdersMethod"
+                            ]
+                        },
+                        "GetNoTemplateMethod": {
+                            "methods": [
+                                "getNoTemplateMethod"
+                            ]
+                        },
+                        "NestedMethod": {
+                            "methods": [
+                                "nestedMethod"
+                            ]
+                        },
+                        "NestedMultiMethod": {
+                            "methods": [
+                                "nestedMultiMethod"
+                            ]
+                        },
+                        "OrderingMethod": {
+                            "methods": [
+                                "orderingMethod"
+                            ]
+                        },
+                        "PatchMethod": {
+                            "methods": [
+                                "patchMethod"
+                            ]
+                        },
+                        "PostMethod": {
+                            "methods": [
+                                "postMethod"
+                            ]
+                        },
+                        "PutMethod": {
+                            "methods": [
+                                "putMethod"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

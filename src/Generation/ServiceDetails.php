@@ -23,7 +23,6 @@ use Google\Api\ResourceReference;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
@@ -40,6 +39,9 @@ class ServiceDetails
 
     /** @var string *Readonly* The proto package name for this service. */
     public string $package;
+
+    /** @var string *Readonly* The PHP namespace for this service.  */
+    public string $namespace;
 
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
@@ -58,6 +60,9 @@ class ServiceDetails
 
     /** @var string *Readonly* The full name of the service. */
     public string $serviceName;
+
+    /** @var string *Readonly* The canonical, short name of the service (as it appears in the proto). */
+    public string $shortName;
 
     /** @var string *Readonly* The default hostname of the service. */
     public string $defaultHost;
@@ -103,11 +108,11 @@ class ServiceDetails
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
-        FileDescriptorProto $fileDesc,
-        GapicYamlConfig $gapicYamlConfig
+        FileDescriptorProto $fileDesc
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
+        $this->namespace = $namespace;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
@@ -118,6 +123,7 @@ class ServiceDetails
         $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
+        $this->shortName = $desc->getName();
         $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
         $this->defaultPort = 443;
         $this->defaultScopes =
@@ -129,7 +135,7 @@ class ServiceDetails
         $this->grpcConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_grpc_config.json';
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
-            ->orderBy(fn ($x) => $gapicYamlConfig->orderByMethodName->get($x->name, 10000));
+                                                        ->orderBy(fn ($x) => $x->name);
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
         // This is a copy of the monolithic way of generating the test group name.
@@ -183,9 +189,27 @@ class ServiceDetails
             ->map(fn ($res) => new ResourceDetails($res));
         $this->resourceParts = $resourceDefs
             ->filter(fn ($x) => $x->patterns->any())
-            ->concat($resourceDefs->flatMap(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns))
+            // CAREFUL! This is a mix of ResourceDetails and ResourcePatternDetails.
+            ->concat($resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
             ->distinct(fn ($x) => $x->getNameCamelCase())
             ->orderBy(fn ($x) => $x->getNameCamelCase());
+    }
+
+    /**
+     * Adds the methods from $mixinService to this one.
+     * @param ServiceDetails $mixinService the service to be mixed into this one.
+     */
+    public function addMixins(ServiceDetails $mixinService, array $rpcNameBlocklist): void
+    {
+        // Less elegant because  PHP 7.2 doesn't support multiline lambdas.
+        $mixinMethods = $mixinService->methods
+          ->filter(fn ($m) => !in_array($m->name, $rpcNameBlocklist))
+          ->orderBy(fn ($m) => $m->name);
+        foreach ($mixinMethods as $method) {
+            $method->mixinServiceFullname = $mixinService->serviceName;
+        }
+        $originalMethods = $this->methods;
+        $this->methods = $originalMethods->concat($mixinMethods);
     }
 
     public function packageFullName(string $typeName): string

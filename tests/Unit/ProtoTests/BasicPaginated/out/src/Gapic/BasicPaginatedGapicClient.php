@@ -27,15 +27,13 @@
 namespace Testing\BasicPaginated\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicPaginated\BasicPaginatedGrpcClient;
 use Testing\BasicPaginated\PartOfRequestA;
 use Testing\BasicPaginated\PartOfRequestB;
 use Testing\BasicPaginated\PartOfRequestC;
@@ -71,26 +69,34 @@ use Testing\BasicPaginated\Response;
  *     $basicPaginatedClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicPaginatedGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.basicpaginated.BasicPaginated';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'paginated.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'scope1',
         'scope2',
@@ -165,8 +171,6 @@ class BasicPaginatedGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -226,8 +230,6 @@ class BasicPaginatedGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodPaginated($aField, $pageToken, $partOfRequestA, array $optionalArgs = [])
     {

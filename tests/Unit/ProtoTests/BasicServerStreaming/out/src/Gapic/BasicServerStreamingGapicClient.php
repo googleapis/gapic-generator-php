@@ -30,13 +30,9 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
-use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicServerStreaming\BasicServerStreamingGrpcClient;
 use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
@@ -50,9 +46,8 @@ use Testing\BasicServerStreaming\Response;
  * ```
  * $basicServerStreamingClient = new BasicServerStreamingClient();
  * try {
- *     $aNumber = 0;
  *     // Read all responses until the stream is complete
- *     $stream = $basicServerStreamingClient->methodServer($aNumber);
+ *     $stream = $basicServerStreamingClient->methodEmpty();
  *     foreach ($stream->readAll() as $element) {
  *         // doSomethingWith($element);
  *     }
@@ -60,26 +55,34 @@ use Testing\BasicServerStreaming\Response;
  *     $basicServerStreamingClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicServerStreamingGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.basicserverstreaming.BasicServerStreaming';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'serverstreaming.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [];
 
     private static function getClientDefaults()
@@ -151,13 +154,44 @@ class BasicServerStreamingGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $basicServerStreamingClient = new BasicServerStreamingClient();
+     * try {
+     *     // Read all responses until the stream is complete
+     *     $stream = $basicServerStreamingClient->methodEmpty();
+     *     foreach ($stream->readAll() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $basicServerStreamingClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $timeoutMillis
+     *           Timeout to use for this call.
+     * }
+     *
+     * @return \Google\ApiCore\ServerStream
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function methodEmpty(array $optionalArgs = [])
+    {
+        $request = new EmptyRequest();
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 
     /**
@@ -189,8 +223,6 @@ class BasicServerStreamingGapicClient
      * @return \Google\ApiCore\ServerStream
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodServer($aNumber, array $optionalArgs = [])
     {
@@ -201,40 +233,5 @@ class BasicServerStreamingGapicClient
         }
 
         return $this->startCall('MethodServer', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodEmpty();
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $timeoutMillis
-     *           Timeout to use for this call.
-     * }
-     *
-     * @return \Google\ApiCore\ServerStream
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function methodEmpty(array $optionalArgs = [])
-    {
-        $request = new EmptyRequest();
-        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }

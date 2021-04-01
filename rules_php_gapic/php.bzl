@@ -27,7 +27,7 @@ def _php_binary_impl(ctx):
 DEST="$(pwd)/{out_dir_path}/install"
 mkdir "$DEST"
 cd '{install_path}'
-tar cf - --dereference src/  generated/ googleapis/ tools/ vendor/ composer.json | (cd "$DEST" && tar xf -)
+tar cf - --dereference src/ gapic-generator/ generated/ googleapis/ tools/ vendor/ composer.json | (cd "$DEST" && tar xf -)
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,

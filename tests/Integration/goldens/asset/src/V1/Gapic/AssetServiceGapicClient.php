@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,11 @@ namespace Google\Cloud\Asset\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\LongRunning\OperationsClient;
+
 use Google\ApiCore\OperationResponse;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -38,17 +41,13 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest;
-use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyRequest;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse;
-use Google\Cloud\Asset\V1\AssetServiceGrpcClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
-use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\CreateFeedRequest;
 use Google\Cloud\Asset\V1\DeleteFeedRequest;
 use Google\Cloud\Asset\V1\ExportAssetsRequest;
-use Google\Cloud\Asset\V1\ExportAssetsResponse;
 use Google\Cloud\Asset\V1\Feed;
 use Google\Cloud\Asset\V1\GetFeedRequest;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisOutputConfig;
@@ -58,6 +57,7 @@ use Google\Cloud\Asset\V1\ListFeedsResponse;
 use Google\Cloud\Asset\V1\OutputConfig;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesResponse;
+
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesResponse;
 use Google\Cloud\Asset\V1\TimeWindow;
@@ -77,34 +77,8 @@ use Google\Protobuf\Timestamp;
  * ```
  * $assetServiceClient = new AssetServiceClient();
  * try {
- *     $parent = 'parent';
- *     $outputConfig = new OutputConfig();
- *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
- *     $operationResponse->pollUntilComplete();
- *     if ($operationResponse->operationSucceeded()) {
- *         $result = $operationResponse->getResult();
- *     // doSomethingWith($result)
- *     } else {
- *         $error = $operationResponse->getError();
- *         // handleError($error)
- *     }
- *     // Alternatively:
- *     // start the operation, keep the operation name, and resume later
- *     $operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
- *     $operationName = $operationResponse->getName();
- *     // ... do other work
- *     $newOperationResponse = $assetServiceClient->resumeOperation($operationName, 'exportAssets');
- *     while (!$newOperationResponse->isDone()) {
- *         // ... do other work
- *         $newOperationResponse->reload();
- *     }
- *     if ($newOperationResponse->operationSucceeded()) {
- *         $result = $newOperationResponse->getResult();
- *     // doSomethingWith($result)
- *     } else {
- *         $error = $newOperationResponse->getError();
- *         // handleError($error)
- *     }
+ *     $analysisQuery = new IamPolicyAnalysisQuery();
+ *     $response = $assetServiceClient->analyzeIamPolicy($analysisQuery);
  * } finally {
  *     $assetServiceClient->close();
  * }
@@ -114,26 +88,34 @@ use Google\Protobuf\Timestamp;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class AssetServiceGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.asset.v1.AssetService';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'cloudasset.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
     ];
@@ -227,8 +209,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted feed resource.
-     *
-     * @experimental
      */
     public static function feedName($project, $feed)
     {
@@ -246,8 +226,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted folder_feed resource.
-     *
-     * @experimental
      */
     public static function folderFeedName($folder, $feed)
     {
@@ -265,8 +243,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted organization_feed resource.
-     *
-     * @experimental
      */
     public static function organizationFeedName($organization, $feed)
     {
@@ -284,8 +260,6 @@ class AssetServiceGapicClient
      * @param string $feed
      *
      * @return string The formatted project_feed resource.
-     *
-     * @experimental
      */
     public static function projectFeedName($project, $feed)
     {
@@ -316,8 +290,6 @@ class AssetServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -345,8 +317,6 @@ class AssetServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -363,8 +333,6 @@ class AssetServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -424,14 +392,320 @@ class AssetServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * Analyzes IAM policies to answer which identities have what accesses on
+     * which resources.
+     *
+     * Sample code:
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * try {
+     *     $analysisQuery = new IamPolicyAnalysisQuery();
+     *     $response = $assetServiceClient->analyzeIamPolicy($analysisQuery);
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param IamPolicyAnalysisQuery $analysisQuery Required. The request query.
+     * @param array                  $optionalArgs  {
+     *     Optional.
+     *
+     *     @type Duration $executionTimeout
+     *           Optional. Amount of time executable has to complete.  See JSON representation of
+     *           [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
+     *
+     *           If this field is set with a value less than the RPC deadline, and the
+     *           execution of your query hasn't finished in the specified
+     *           execution timeout,  you will get a response with partial result.
+     *           Otherwise, your query's execution will continue until the RPC deadline.
+     *           If it's not finished until then, you will get a  DEADLINE_EXCEEDED error.
+     *
+     *           Default is empty.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function analyzeIamPolicy($analysisQuery, array $optionalArgs = [])
+    {
+        $request = new AnalyzeIamPolicyRequest();
+        $requestParamHeaders = [];
+        $request->setAnalysisQuery($analysisQuery);
+        $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
+        if (isset($optionalArgs['executionTimeout'])) {
+            $request->setExecutionTimeout($optionalArgs['executionTimeout']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('AnalyzeIamPolicy', AnalyzeIamPolicyResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Analyzes IAM policies asynchronously to answer which identities have what
+     * accesses on which resources, and writes the analysis results to a Google
+     * Cloud Storage or a BigQuery destination. For Cloud Storage destination, the
+     * output format is the JSON format that represents a
+     * [AnalyzeIamPolicyResponse][google.cloud.asset.v1.AnalyzeIamPolicyResponse]. This method implements the
+     * [google.longrunning.Operation][google.longrunning.Operation], which allows you to track the operation
+     * status. We recommend intervals of at least 2 seconds with exponential
+     * backoff retry to poll the operation result. The metadata contains the
+     * request to help callers to map responses to requests.
+     *
+     * Sample code:
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * try {
+     *     $analysisQuery = new IamPolicyAnalysisQuery();
+     *     $outputConfig = new IamPolicyAnalysisOutputConfig();
+     *     $operationResponse = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $assetServiceClient->resumeOperation($operationName, 'analyzeIamPolicyLongrunning');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param IamPolicyAnalysisQuery        $analysisQuery Required. The request query.
+     * @param IamPolicyAnalysisOutputConfig $outputConfig  Required. Output configuration indicating where the results will be output to.
+     * @param array                         $optionalArgs  {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $optionalArgs = [])
+    {
+        $request = new AnalyzeIamPolicyLongrunningRequest();
+        $requestParamHeaders = [];
+        $request->setAnalysisQuery($analysisQuery);
+        $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('AnalyzeIamPolicyLongrunning', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Batch gets the update history of assets that overlap a time window.
+     * For IAM_POLICY content, this API outputs history when the asset and its
+     * attached IAM POLICY both exist. This can create gaps in the output history.
+     * Otherwise, this API outputs history with asset in both non-delete or
+     * deleted status.
+     * If a specified asset does not exist, this API returns an INVALID_ARGUMENT
+     * error.
+     *
+     * Sample code:
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * try {
+     *     $parent = 'parent';
+     *     $response = $assetServiceClient->batchGetAssetsHistory($parent);
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The relative name of the root asset. It can only be an
+     *                             organization number (such as "organizations/123"), a project ID (such as
+     *                             "projects/my-project-id")", or a project number (such as "projects/12345").
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type string[] $assetNames
+     *           A list of the full names of the assets.
+     *           See: https://cloud.google.com/asset-inventory/docs/resource-name-format
+     *           Example:
+     *
+     *           `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
+     *
+     *           The request becomes a no-op if the asset name list is empty, and the max
+     *           size of the asset name list is 100 in one request.
+     *     @type int $contentType
+     *           Optional. The content type.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Asset\V1\ContentType}
+     *     @type TimeWindow $readTimeWindow
+     *           Optional. The time window for the asset history. Both start_time and
+     *           end_time are optional and if set, it must be after the current time minus
+     *           35 days. If end_time is not set, it is default to current timestamp.
+     *           If start_time is not set, the snapshot of the assets at end_time will be
+     *           returned. The returned results contain all temporal assets whose time
+     *           window overlap with read_time_window.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function batchGetAssetsHistory($parent, array $optionalArgs = [])
+    {
+        $request = new BatchGetAssetsHistoryRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['assetNames'])) {
+            $request->setAssetNames($optionalArgs['assetNames']);
+        }
+
+        if (isset($optionalArgs['contentType'])) {
+            $request->setContentType($optionalArgs['contentType']);
+        }
+
+        if (isset($optionalArgs['readTimeWindow'])) {
+            $request->setReadTimeWindow($optionalArgs['readTimeWindow']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('BatchGetAssetsHistory', BatchGetAssetsHistoryResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Creates a feed in a parent project/folder/organization to listen to its
+     * asset updates.
+     *
+     * Sample code:
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * try {
+     *     $parent = 'parent';
+     *     $feedId = 'feed_id';
+     *     $feed = new Feed();
+     *     $response = $assetServiceClient->createFeed($parent, $feedId, $feed);
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The name of the project/folder/organization where this feed
+     *                             should be created in. It can only be an organization number (such as
+     *                             "organizations/123"), a folder number (such as "folders/123"), a project ID
+     *                             (such as "projects/my-project-id")", or a project number (such as
+     *                             "projects/12345").
+     * @param string $feedId       Required. This is the client-assigned asset feed identifier and it needs to
+     *                             be unique under a specific parent project/folder/organization.
+     * @param Feed   $feed         Required. The feed details. The field `name` must be empty and it will be generated
+     *                             in the format of:
+     *                             projects/project_number/feeds/feed_id
+     *                             folders/folder_number/feeds/feed_id
+     *                             organizations/organization_number/feeds/feed_id
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Asset\V1\Feed
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createFeed($parent, $feedId, $feed, array $optionalArgs = [])
+    {
+        $request = new CreateFeedRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setFeedId($feedId);
+        $request->setFeed($feed);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateFeed', Feed::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Deletes an asset feed.
+     *
+     * Sample code:
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * try {
+     *     $name = 'name';
+     *     $assetServiceClient->deleteFeed($name);
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. The name of the feed and it must be in the format of:
+     *                             projects/project_number/feeds/feed_id
+     *                             folders/folder_number/feeds/feed_id
+     *                             organizations/organization_number/feeds/feed_id
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteFeed($name, array $optionalArgs = [])
+    {
+        $request = new DeleteFeedRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteFeed', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -530,14 +804,14 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function exportAssets($parent, $outputConfig, array $optionalArgs = [])
     {
         $request = new ExportAssetsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['readTime'])) {
             $request->setReadTime($optionalArgs['readTime']);
         }
@@ -550,150 +824,9 @@ class AssetServiceGapicClient
             $request->setContentType($optionalArgs['contentType']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('ExportAssets', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Batch gets the update history of assets that overlap a time window.
-     * For IAM_POLICY content, this API outputs history when the asset and its
-     * attached IAM POLICY both exist. This can create gaps in the output history.
-     * Otherwise, this API outputs history with asset in both non-delete or
-     * deleted status.
-     * If a specified asset does not exist, this API returns an INVALID_ARGUMENT
-     * error.
-     *
-     * Sample code:
-     * ```
-     * $assetServiceClient = new AssetServiceClient();
-     * try {
-     *     $parent = 'parent';
-     *     $response = $assetServiceClient->batchGetAssetsHistory($parent);
-     * } finally {
-     *     $assetServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $parent       Required. The relative name of the root asset. It can only be an
-     *                             organization number (such as "organizations/123"), a project ID (such as
-     *                             "projects/my-project-id")", or a project number (such as "projects/12345").
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type string[] $assetNames
-     *           A list of the full names of the assets.
-     *           See: https://cloud.google.com/asset-inventory/docs/resource-name-format
-     *           Example:
-     *
-     *           `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
-     *
-     *           The request becomes a no-op if the asset name list is empty, and the max
-     *           size of the asset name list is 100 in one request.
-     *     @type int $contentType
-     *           Optional. The content type.
-     *           For allowed values, use constants defined on {@see \Google\Cloud\Asset\V1\ContentType}
-     *     @type TimeWindow $readTimeWindow
-     *           Optional. The time window for the asset history. Both start_time and
-     *           end_time are optional and if set, it must be after the current time minus
-     *           35 days. If end_time is not set, it is default to current timestamp.
-     *           If start_time is not set, the snapshot of the assets at end_time will be
-     *           returned. The returned results contain all temporal assets whose time
-     *           window overlap with read_time_window.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function batchGetAssetsHistory($parent, array $optionalArgs = [])
-    {
-        $request = new BatchGetAssetsHistoryRequest();
-        $request->setParent($parent);
-        if (isset($optionalArgs['assetNames'])) {
-            $request->setAssetNames($optionalArgs['assetNames']);
-        }
-
-        if (isset($optionalArgs['contentType'])) {
-            $request->setContentType($optionalArgs['contentType']);
-        }
-
-        if (isset($optionalArgs['readTimeWindow'])) {
-            $request->setReadTimeWindow($optionalArgs['readTimeWindow']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('BatchGetAssetsHistory', BatchGetAssetsHistoryResponse::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Creates a feed in a parent project/folder/organization to listen to its
-     * asset updates.
-     *
-     * Sample code:
-     * ```
-     * $assetServiceClient = new AssetServiceClient();
-     * try {
-     *     $parent = 'parent';
-     *     $feedId = 'feed_id';
-     *     $feed = new Feed();
-     *     $response = $assetServiceClient->createFeed($parent, $feedId, $feed);
-     * } finally {
-     *     $assetServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $parent       Required. The name of the project/folder/organization where this feed
-     *                             should be created in. It can only be an organization number (such as
-     *                             "organizations/123"), a folder number (such as "folders/123"), a project ID
-     *                             (such as "projects/my-project-id")", or a project number (such as
-     *                             "projects/12345").
-     * @param string $feedId       Required. This is the client-assigned asset feed identifier and it needs to
-     *                             be unique under a specific parent project/folder/organization.
-     * @param Feed   $feed         Required. The feed details. The field `name` must be empty and it will be generated
-     *                             in the format of:
-     *                             projects/project_number/feeds/feed_id
-     *                             folders/folder_number/feeds/feed_id
-     *                             organizations/organization_number/feeds/feed_id
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Asset\V1\Feed
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function createFeed($parent, $feedId, $feed, array $optionalArgs = [])
-    {
-        $request = new CreateFeedRequest();
-        $request->setParent($parent);
-        $request->setFeedId($feedId);
-        $request->setFeed($feed);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateFeed', Feed::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -727,16 +860,14 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\Feed
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getFeed($name, array $optionalArgs = [])
     {
         $request = new GetFeedRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetFeed', Feed::class, $optionalArgs, $request)->wait();
     }
@@ -771,92 +902,98 @@ class AssetServiceGapicClient
      * @return \Google\Cloud\Asset\V1\ListFeedsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listFeeds($parent, array $optionalArgs = [])
     {
         $request = new ListFeedsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('ListFeeds', ListFeedsResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
-     * Updates an asset feed configuration.
+     * Searches all IAM policies within the specified scope, such as a project,
+     * folder, or organization. The caller must be granted the
+     * `cloudasset.assets.searchAllIamPolicies` permission on the desired scope,
+     * otherwise the request will be rejected.
      *
      * Sample code:
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $feed = new Feed();
-     *     $updateMask = new FieldMask();
-     *     $response = $assetServiceClient->updateFeed($feed, $updateMask);
+     *     $scope = 'scope';
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
      * } finally {
      *     $assetServiceClient->close();
      * }
      * ```
      *
-     * @param Feed      $feed         Required. The new values of feed details. It must match an existing feed and the
-     *                                field `name` must be in the format of:
-     *                                projects/project_number/feeds/feed_id or
-     *                                folders/folder_number/feeds/feed_id or
-     *                                organizations/organization_number/feeds/feed_id.
-     * @param FieldMask $updateMask   Required. Only updates the `feed` fields indicated by this mask.
-     *                                The field mask must not be empty, and it must not contain fields that
-     *                                are immutable or only set by the server.
-     * @param array     $optionalArgs {
-     *     Optional.
+     * @param string $scope        Required. A scope can be a project, a folder, or an organization. The search is
+     *                             limited to the IAM policies within the `scope`. The caller must be granted
+     *                             the
+     *                             [`cloudasset.assets.searchAllIamPolicies`](http://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+     *                             permission on the desired scope.
      *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
+     *                             The allowed values are:
      *
-     * @return \Google\Cloud\Asset\V1\Feed
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function updateFeed($feed, $updateMask, array $optionalArgs = [])
-    {
-        $request = new UpdateFeedRequest();
-        $request->setFeed($feed);
-        $request->setUpdateMask($updateMask);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'feed.name' => $request->getFeed()->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateFeed', Feed::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Deletes an asset feed.
-     *
-     * Sample code:
-     * ```
-     * $assetServiceClient = new AssetServiceClient();
-     * try {
-     *     $name = 'name';
-     *     $assetServiceClient->deleteFeed($name);
-     * } finally {
-     *     $assetServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         Required. The name of the feed and it must be in the format of:
-     *                             projects/project_number/feeds/feed_id
-     *                             folders/folder_number/feeds/feed_id
-     *                             organizations/organization_number/feeds/feed_id
+     *                             * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+     *                             * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+     *                             * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+     *                             * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
      * @param array  $optionalArgs {
      *     Optional.
      *
+     *     @type string $query
+     *           Optional. The query statement. See [how to construct a
+     *           query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
+     *           for more information. If not specified or empty, it will search all the
+     *           IAM policies within the specified `scope`.
+     *
+     *           Examples:
+     *
+     *           * `policy:amy&#64;gmail.com` to find IAM policy bindings that specify user
+     *           "amy&#64;gmail.com".
+     *           * `policy:roles/compute.admin` to find IAM policy bindings that specify
+     *           the Compute Admin role.
+     *           * `policy.role.permissions:storage.buckets.update` to find IAM policy
+     *           bindings that specify a role containing "storage.buckets.update"
+     *           permission. Note that if callers don't have `iam.roles.get` access to a
+     *           role's included permissions, policy bindings that specify this role will
+     *           be dropped from the search results.
+     *           * `resource:organizations/123456` to find IAM policy bindings
+     *           that are set on "organizations/123456".
+     *           * `Important` to find IAM policy bindings that contain "Important" as a
+     *           word in any of the searchable fields (except for the included
+     *           permissions).
+     *           * `*por*` to find IAM policy bindings that contain "por" as a substring
+     *           in any of the searchable fields (except for the included permissions).
+     *           * `resource:(instance1 OR instance2) policy:amy` to find
+     *           IAM policy bindings that are set on resources "instance1" or
+     *           "instance2" and also specify user "amy".
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -864,19 +1001,31 @@ class AssetServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @return \Google\ApiCore\PagedListResponse
      *
-     * @experimental
+     * @throws ApiException if the remote call fails
      */
-    public function deleteFeed($name, array $optionalArgs = [])
+    public function searchAllIamPolicies($scope, array $optionalArgs = [])
     {
-        $request = new DeleteFeedRequest();
-        $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $request = new SearchAllIamPoliciesRequest();
+        $requestParamHeaders = [];
+        $request->setScope($scope);
+        $requestParamHeaders['scope'] = $scope;
+        if (isset($optionalArgs['query'])) {
+            $request->setQuery($optionalArgs['query']);
+        }
+
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteFeed', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->getPagedListResponse('SearchAllIamPolicies', $optionalArgs, SearchAllIamPoliciesResponse::class, $request);
     }
 
     /**
@@ -990,13 +1139,13 @@ class AssetServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function searchAllResources($scope, array $optionalArgs = [])
     {
         $request = new SearchAllResourcesRequest();
+        $requestParamHeaders = [];
         $request->setScope($scope);
+        $requestParamHeaders['scope'] = $scope;
         if (isset($optionalArgs['query'])) {
             $request->setQuery($optionalArgs['query']);
         }
@@ -1017,238 +1166,35 @@ class AssetServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'scope' => $request->getScope(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('SearchAllResources', $optionalArgs, SearchAllResourcesResponse::class, $request);
     }
 
     /**
-     * Searches all IAM policies within the specified scope, such as a project,
-     * folder, or organization. The caller must be granted the
-     * `cloudasset.assets.searchAllIamPolicies` permission on the desired scope,
-     * otherwise the request will be rejected.
+     * Updates an asset feed configuration.
      *
      * Sample code:
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $scope = 'scope';
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
+     *     $feed = new Feed();
+     *     $updateMask = new FieldMask();
+     *     $response = $assetServiceClient->updateFeed($feed, $updateMask);
      * } finally {
      *     $assetServiceClient->close();
      * }
      * ```
      *
-     * @param string $scope        Required. A scope can be a project, a folder, or an organization. The search is
-     *                             limited to the IAM policies within the `scope`. The caller must be granted
-     *                             the
-     *                             [`cloudasset.assets.searchAllIamPolicies`](http://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
-     *                             permission on the desired scope.
-     *
-     *                             The allowed values are:
-     *
-     *                             * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-     *                             * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-     *                             * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-     *                             * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type string $query
-     *           Optional. The query statement. See [how to construct a
-     *           query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
-     *           for more information. If not specified or empty, it will search all the
-     *           IAM policies within the specified `scope`.
-     *
-     *           Examples:
-     *
-     *           * `policy:amy&#64;gmail.com` to find IAM policy bindings that specify user
-     *           "amy&#64;gmail.com".
-     *           * `policy:roles/compute.admin` to find IAM policy bindings that specify
-     *           the Compute Admin role.
-     *           * `policy.role.permissions:storage.buckets.update` to find IAM policy
-     *           bindings that specify a role containing "storage.buckets.update"
-     *           permission. Note that if callers don't have `iam.roles.get` access to a
-     *           role's included permissions, policy bindings that specify this role will
-     *           be dropped from the search results.
-     *           * `resource:organizations/123456` to find IAM policy bindings
-     *           that are set on "organizations/123456".
-     *           * `Important` to find IAM policy bindings that contain "Important" as a
-     *           word in any of the searchable fields (except for the included
-     *           permissions).
-     *           * `*por*` to find IAM policy bindings that contain "por" as a substring
-     *           in any of the searchable fields (except for the included permissions).
-     *           * `resource:(instance1 OR instance2) policy:amy` to find
-     *           IAM policy bindings that are set on resources "instance1" or
-     *           "instance2" and also specify user "amy".
-     *     @type int $pageSize
-     *           The maximum number of resources contained in the underlying API
-     *           response. The API may return fewer values in a page, even if
-     *           there are additional values to be retrieved.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\PagedListResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function searchAllIamPolicies($scope, array $optionalArgs = [])
-    {
-        $request = new SearchAllIamPoliciesRequest();
-        $request->setScope($scope);
-        if (isset($optionalArgs['query'])) {
-            $request->setQuery($optionalArgs['query']);
-        }
-
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'scope' => $request->getScope(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchAllIamPolicies', $optionalArgs, SearchAllIamPoliciesResponse::class, $request);
-    }
-
-    /**
-     * Analyzes IAM policies to answer which identities have what accesses on
-     * which resources.
-     *
-     * Sample code:
-     * ```
-     * $assetServiceClient = new AssetServiceClient();
-     * try {
-     *     $analysisQuery = new IamPolicyAnalysisQuery();
-     *     $response = $assetServiceClient->analyzeIamPolicy($analysisQuery);
-     * } finally {
-     *     $assetServiceClient->close();
-     * }
-     * ```
-     *
-     * @param IamPolicyAnalysisQuery $analysisQuery Required. The request query.
-     * @param array                  $optionalArgs  {
-     *     Optional.
-     *
-     *     @type Duration $executionTimeout
-     *           Optional. Amount of time executable has to complete.  See JSON representation of
-     *           [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
-     *
-     *           If this field is set with a value less than the RPC deadline, and the
-     *           execution of your query hasn't finished in the specified
-     *           execution timeout,  you will get a response with partial result.
-     *           Otherwise, your query's execution will continue until the RPC deadline.
-     *           If it's not finished until then, you will get a  DEADLINE_EXCEEDED error.
-     *
-     *           Default is empty.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function analyzeIamPolicy($analysisQuery, array $optionalArgs = [])
-    {
-        $request = new AnalyzeIamPolicyRequest();
-        $request->setAnalysisQuery($analysisQuery);
-        if (isset($optionalArgs['executionTimeout'])) {
-            $request->setExecutionTimeout($optionalArgs['executionTimeout']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'analysis_query.scope' => $request->getAnalysisQuery()->getScope(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('AnalyzeIamPolicy', AnalyzeIamPolicyResponse::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Analyzes IAM policies asynchronously to answer which identities have what
-     * accesses on which resources, and writes the analysis results to a Google
-     * Cloud Storage or a BigQuery destination. For Cloud Storage destination, the
-     * output format is the JSON format that represents a
-     * [AnalyzeIamPolicyResponse][google.cloud.asset.v1.AnalyzeIamPolicyResponse]. This method implements the
-     * [google.longrunning.Operation][google.longrunning.Operation], which allows you to track the operation
-     * status. We recommend intervals of at least 2 seconds with exponential
-     * backoff retry to poll the operation result. The metadata contains the
-     * request to help callers to map responses to requests.
-     *
-     * Sample code:
-     * ```
-     * $assetServiceClient = new AssetServiceClient();
-     * try {
-     *     $analysisQuery = new IamPolicyAnalysisQuery();
-     *     $outputConfig = new IamPolicyAnalysisOutputConfig();
-     *     $operationResponse = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $assetServiceClient->resumeOperation($operationName, 'analyzeIamPolicyLongrunning');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $assetServiceClient->close();
-     * }
-     * ```
-     *
-     * @param IamPolicyAnalysisQuery        $analysisQuery Required. The request query.
-     * @param IamPolicyAnalysisOutputConfig $outputConfig  Required. Output configuration indicating where the results will be output to.
-     * @param array                         $optionalArgs  {
+     * @param Feed      $feed         Required. The new values of feed details. It must match an existing feed and the
+     *                                field `name` must be in the format of:
+     *                                projects/project_number/feeds/feed_id or
+     *                                folders/folder_number/feeds/feed_id or
+     *                                organizations/organization_number/feeds/feed_id.
+     * @param FieldMask $updateMask   Required. Only updates the `feed` fields indicated by this mask.
+     *                                The field mask must not be empty, and it must not contain fields that
+     *                                are immutable or only set by the server.
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1258,21 +1204,19 @@ class AssetServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return \Google\Cloud\Asset\V1\Feed
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
-    public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $optionalArgs = [])
+    public function updateFeed($feed, $updateMask, array $optionalArgs = [])
     {
-        $request = new AnalyzeIamPolicyLongrunningRequest();
-        $request->setAnalysisQuery($analysisQuery);
-        $request->setOutputConfig($outputConfig);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'analysis_query.scope' => $request->getAnalysisQuery()->getScope(),
-        ]);
+        $request = new UpdateFeedRequest();
+        $requestParamHeaders = [];
+        $request->setFeed($feed);
+        $request->setUpdateMask($updateMask);
+        $requestParamHeaders['feed.name'] = $feed->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('AnalyzeIamPolicyLongrunning', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startCall('UpdateFeed', Feed::class, $optionalArgs, $request)->wait();
     }
 }

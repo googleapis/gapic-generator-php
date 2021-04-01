@@ -63,6 +63,7 @@ class Formatter
           new \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
           new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1, Critical to preserving sample code.
           new \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer(), // 1, PSR2
+          new \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer(), // 0, Multiline comment.
           new \PhpCsFixer\Fixer\ControlStructure\ElseifFixer(), // 0, PSR2
           new \PhpCsFixer\Fixer\Whitespace\LineEndingFixer(), // 0, PSR2
           new \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer(), // 0, PSR2,
@@ -71,6 +72,7 @@ class Formatter
           new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
           new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
           new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer(), // -10
           new \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer(), // -11, PSR2
           new \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer(), // -19
           new \PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(), // -20, PSR2

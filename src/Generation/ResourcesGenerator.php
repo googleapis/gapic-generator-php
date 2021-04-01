@@ -147,7 +147,7 @@ class ResourcesGenerator
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
         $allInterfaces = $serviceDetails->methods
-            ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming())
+            ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming() && !$method->isMixin())
             ->map(fn ($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
             ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
                 Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),
@@ -172,9 +172,8 @@ class ResourcesGenerator
 
     public static function generateClientConfig(
         ServiceDetails $serviceDetails,
-        GrpcServiceConfig $grpcServiceConfig,
-        ServiceYamlConfig $serviceYamlConfig,
-        GapicYamlConfig $gapicYamlConfig
+        GapicYamlConfig $gapicYamlConfig,
+        GrpcServiceConfig $grpcServiceConfig
     ): string {
         $serviceName = $serviceDetails->serviceName;
         $durationToMillis = fn ($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
@@ -199,12 +198,7 @@ class ResourcesGenerator
             $noRetryIndex = 1;
             foreach ($grpcServiceConfig->methods as $method) {
                 $policyName = $method->getRetryOrHedgingPolicy() === 'retry_policy' ? 'retry_policy_' . $retryIndex++ : 'no_retry_' . $noRetryIndex++;
-                // TODO(vNext): This way to check if this specific policy needs to be included is not quite right,
-                // but reproduces monolith behaviour. This code will incorrectly include services which are named with a common
-                // prefix with the current service.
-                // It also unnessecarily includes irrelevant information if the service is not listed in the gapic config.
-                if (!isset($gapicYamlConfig->interfaces[$serviceName]) ||
-                        Vector::new($method->getName())->any(fn ($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
+                if (Vector::new($method->getName())->any(fn ($x) => substr($x->getService(), 0, strlen($serviceName)) === $serviceName)) {
                     $codesName = "{$policyName}_codes";
                     $paramsName = "{$policyName}_params";
                     $policy = $method->getRetryPolicy();
@@ -251,11 +245,8 @@ class ResourcesGenerator
         $retryCodes = $retryCodes->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $retryParams = $retryParams->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = [];
-        $serviceYamlBackendRules = $serviceYamlConfig->backendRules
-            ->flatMap(fn ($x) => Vector::new(explode(',', $x->getSelector()))->map(fn ($y) => [trim($y), $x]))
-            ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
         $methods = $serviceDetails->methods
-            ->map(function ($method) use ($grpcServiceConfig, $configsByMethodName, $serviceName, $serviceYamlBackendRules) {
+            ->map(function ($method) use ($gapicYamlConfig, $grpcServiceConfig, $configsByMethodName, $serviceName) {
                 [$codes, $params, $timeout] = $configsByMethodName->get("{$serviceName}/{$method->name}", null) ??
                     $configsByMethodName->get("{$serviceName}/", [null, null, null]);
                 if (is_null($codes)) {
@@ -277,11 +268,44 @@ class ResourcesGenerator
                         $retryParamsName = $params;
                     }
                 }
-                return [$method->name, Vector::new([
+                $methodClientConfig = Vector::new([
                     ['timeout_millis', $timeoutMillis],
                     ['retry_codes_name', $retryCodesName],
                     ['retry_params_name', $retryParamsName]
-                ])->filter(fn ($x) => !is_null($x[1]))->toArray(fn ($x) => $x[0], fn ($x) => $x[1])];
+                ]);
+                // Handles batching settings in gapic.yaml.
+                if ($gapicYamlConfig !== null
+                  && $gapicYamlConfig->configsByMethodName->get($method->name, null)) {
+                    $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
+                    if (isset($methodGapicConfig['batching'])
+                        && isset($methodGapicConfig['batching']['thresholds'])) {
+                        $batchingGapicConfig = $methodGapicConfig['batching']['thresholds'];
+                        $batchingGapicKeys = [
+                            'element_count_threshold',
+                            'request_byte_threshold',
+                            'delay_threshold_millis',
+                            'request_byte_threshold',
+                            'request_byte_limit'
+                        ];
+                        $batchingConfig = [];
+                        foreach ($batchingGapicKeys as $k) {
+                            if (isset($batchingGapicConfig[$k])) {
+                                $batchingConfig[$k] = $batchingGapicConfig[$k];
+                            }
+                        }
+                        if (!empty($batchingConfig)) {
+                            ksort($batchingConfig);
+                            $methodClientConfig = $methodClientConfig->append(['bundling', $batchingConfig]);
+                        }
+                    }
+                }
+
+                return [
+                  $method->name,
+                  $methodClientConfig
+                    ->filter(fn ($x) => !is_null($x[1]))
+                    ->toArray(fn ($x) => $x[0], fn ($x) => $x[1])
+                ];
             })
             ->toArray(fn ($x) => $x[0], fn ($x) => $x[1]);
 

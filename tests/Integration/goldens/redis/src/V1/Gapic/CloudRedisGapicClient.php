@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,33 +29,32 @@ namespace Google\Cloud\Redis\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Cloud\Redis\V1\CloudRedisGrpcClient;
 use Google\Cloud\Redis\V1\CreateInstanceRequest;
 use Google\Cloud\Redis\V1\DeleteInstanceRequest;
 use Google\Cloud\Redis\V1\ExportInstanceRequest;
 use Google\Cloud\Redis\V1\FailoverInstanceRequest;
-use Google\Cloud\Redis\V1\FailoverInstanceRequest\DataProtectionMode;
 use Google\Cloud\Redis\V1\GetInstanceRequest;
 use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\ListInstancesResponse;
-use Google\Cloud\Redis\V1\OperationMetadata;
 use Google\Cloud\Redis\V1\OutputConfig;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
+
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
-use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -118,26 +117,34 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class CloudRedisGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.redis.v1.CloudRedis';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'redis.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
     ];
@@ -208,8 +215,6 @@ class CloudRedisGapicClient
      * @param string $instance
      *
      * @return string The formatted instance resource.
-     *
-     * @experimental
      */
     public static function instanceName($project, $location, $instance)
     {
@@ -228,8 +233,6 @@ class CloudRedisGapicClient
      * @param string $location
      *
      * @return string The formatted location resource.
-     *
-     * @experimental
      */
     public static function locationName($project, $location)
     {
@@ -258,8 +261,6 @@ class CloudRedisGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -287,8 +288,6 @@ class CloudRedisGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -305,8 +304,6 @@ class CloudRedisGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -366,8 +363,6 @@ class CloudRedisGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -453,20 +448,433 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createInstance($parent, $instanceId, $instance, array $optionalArgs = [])
     {
         $request = new CreateInstanceRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInstanceId($instanceId);
         $request->setInstance($instance);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('CreateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Deletes a specific Redis instance.  Instance stops serving and data is
+     * deleted.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
+     *     $operationResponse = $cloudRedisClient->deleteInstance($formattedName);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         // operation succeeded and returns no value
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $cloudRedisClient->deleteInstance($formattedName);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'deleteInstance');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         // operation succeeded and returns no value
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Redis instance resource name using the form:
+     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                             where `location_id` refers to a GCP region.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteInstance($name, array $optionalArgs = [])
+    {
+        $request = new DeleteInstanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Export Redis instance data into a Redis RDB format file in Cloud Storage.
+     *
+     * Redis will continue serving during this operation.
+     *
+     * The returned operation is automatically deleted after a few hours, so
+     * there is no need to call DeleteOperation.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $name = 'name';
+     *     $outputConfig = new OutputConfig();
+     *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'exportInstance');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string       $name         Required. Redis instance resource name using the form:
+     *                                   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                                   where `location_id` refers to a GCP region.
+     * @param OutputConfig $outputConfig Required. Specify data to be exported.
+     * @param array        $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function exportInstance($name, $outputConfig, array $optionalArgs = [])
+    {
+        $request = new ExportInstanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Initiates a failover of the master node to current replica node for a
+     * specific STANDARD tier Cloud Memorystore for Redis instance.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
+     *     $operationResponse = $cloudRedisClient->failoverInstance($formattedName);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $cloudRedisClient->failoverInstance($formattedName);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'failoverInstance');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Redis instance resource name using the form:
+     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                             where `location_id` refers to a GCP region.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $dataProtectionMode
+     *           Optional. Available data protection modes that the user can choose. If it's
+     *           unspecified, data protection mode will be LIMITED_DATA_LOSS by default.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Redis\V1\FailoverInstanceRequest\DataProtectionMode}
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function failoverInstance($name, array $optionalArgs = [])
+    {
+        $request = new FailoverInstanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        if (isset($optionalArgs['dataProtectionMode'])) {
+            $request->setDataProtectionMode($optionalArgs['dataProtectionMode']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('FailoverInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Gets the details of a specific Redis instance.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
+     *     $response = $cloudRedisClient->getInstance($formattedName);
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Redis instance resource name using the form:
+     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                             where `location_id` refers to a GCP region.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Redis\V1\Instance
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getInstance($name, array $optionalArgs = [])
+    {
+        $request = new GetInstanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetInstance', Instance::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
+     *
+     * Redis may stop serving during this operation. Instance state will be
+     * IMPORTING for entire operation. When complete, the instance will contain
+     * only data from the imported file.
+     *
+     * The returned operation is automatically deleted after a few hours, so
+     * there is no need to call DeleteOperation.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $name = 'name';
+     *     $inputConfig = new InputConfig();
+     *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'importInstance');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string      $name         Required. Redis instance resource name using the form:
+     *                                  `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                                  where `location_id` refers to a GCP region.
+     * @param InputConfig $inputConfig  Required. Specify data to be imported.
+     * @param array       $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function importInstance($name, $inputConfig, array $optionalArgs = [])
+    {
+        $request = new ImportInstanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $request->setInputConfig($inputConfig);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Lists all Redis instances owned by a project in either the specified
+     * location (region) or all locations.
+     *
+     * The location should have the following format:
+     *
+     * * `projects/{project_id}/locations/{location_id}`
+     *
+     * If `location_id` is specified as `-` (wildcard), then all regions
+     * available to the project are queried, and the results are aggregated.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedParent = $cloudRedisClient->locationName('[PROJECT]', '[LOCATION]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $cloudRedisClient->listInstances($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $cloudRedisClient->listInstances($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The resource name of the instance location using the form:
+     *                             `projects/{project_id}/locations/{location_id}`
+     *                             where `location_id` refers to a GCP region.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listInstances($parent, array $optionalArgs = [])
+    {
+        $request = new ListInstancesRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListInstances', $optionalArgs, ListInstancesResponse::class, $request);
     }
 
     /**
@@ -536,446 +944,17 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateInstance($updateMask, $instance, array $optionalArgs = [])
     {
         $request = new UpdateInstanceRequest();
+        $requestParamHeaders = [];
         $request->setUpdateMask($updateMask);
         $request->setInstance($instance);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'instance.name' => $request->getInstance()->getName(),
-        ]);
+        $requestParamHeaders['instance.name'] = $instance->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('UpdateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
-     *
-     * Redis may stop serving during this operation. Instance state will be
-     * IMPORTING for entire operation. When complete, the instance will contain
-     * only data from the imported file.
-     *
-     * The returned operation is automatically deleted after a few hours, so
-     * there is no need to call DeleteOperation.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $name = 'name';
-     *     $inputConfig = new InputConfig();
-     *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $cloudRedisClient->importInstance($name, $inputConfig);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'importInstance');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string      $name         Required. Redis instance resource name using the form:
-     *                                  `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
-     *                                  where `location_id` refers to a GCP region.
-     * @param InputConfig $inputConfig  Required. Specify data to be imported.
-     * @param array       $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\OperationResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function importInstance($name, $inputConfig, array $optionalArgs = [])
-    {
-        $request = new ImportInstanceRequest();
-        $request->setName($name);
-        $request->setInputConfig($inputConfig);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ImportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Export Redis instance data into a Redis RDB format file in Cloud Storage.
-     *
-     * Redis will continue serving during this operation.
-     *
-     * The returned operation is automatically deleted after a few hours, so
-     * there is no need to call DeleteOperation.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $name = 'name';
-     *     $outputConfig = new OutputConfig();
-     *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $cloudRedisClient->exportInstance($name, $outputConfig);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'exportInstance');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string       $name         Required. Redis instance resource name using the form:
-     *                                   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
-     *                                   where `location_id` refers to a GCP region.
-     * @param OutputConfig $outputConfig Required. Specify data to be exported.
-     * @param array        $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\OperationResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function exportInstance($name, $outputConfig, array $optionalArgs = [])
-    {
-        $request = new ExportInstanceRequest();
-        $request->setName($name);
-        $request->setOutputConfig($outputConfig);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ExportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Initiates a failover of the master node to current replica node for a
-     * specific STANDARD tier Cloud Memorystore for Redis instance.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-     *     $operationResponse = $cloudRedisClient->failoverInstance($formattedName);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $cloudRedisClient->failoverInstance($formattedName);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'failoverInstance');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         Required. Redis instance resource name using the form:
-     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
-     *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $dataProtectionMode
-     *           Optional. Available data protection modes that the user can choose. If it's
-     *           unspecified, data protection mode will be LIMITED_DATA_LOSS by default.
-     *           For allowed values, use constants defined on {@see \Google\Cloud\Redis\V1\FailoverInstanceRequest\DataProtectionMode}
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\OperationResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function failoverInstance($name, array $optionalArgs = [])
-    {
-        $request = new FailoverInstanceRequest();
-        $request->setName($name);
-        if (isset($optionalArgs['dataProtectionMode'])) {
-            $request->setDataProtectionMode($optionalArgs['dataProtectionMode']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('FailoverInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Deletes a specific Redis instance.  Instance stops serving and data is
-     * deleted.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-     *     $operationResponse = $cloudRedisClient->deleteInstance($formattedName);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         // operation succeeded and returns no value
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $cloudRedisClient->deleteInstance($formattedName);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'deleteInstance');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         // operation succeeded and returns no value
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         Required. Redis instance resource name using the form:
-     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
-     *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\OperationResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function deleteInstance($name, array $optionalArgs = [])
-    {
-        $request = new DeleteInstanceRequest();
-        $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('DeleteInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
-    }
-
-    /**
-     * Lists all Redis instances owned by a project in either the specified
-     * location (region) or all locations.
-     *
-     * The location should have the following format:
-     *
-     * * `projects/{project_id}/locations/{location_id}`
-     *
-     * If `location_id` is specified as `-` (wildcard), then all regions
-     * available to the project are queried, and the results are aggregated.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $formattedParent = $cloudRedisClient->locationName('[PROJECT]', '[LOCATION]');
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $cloudRedisClient->listInstances($formattedParent);
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $cloudRedisClient->listInstances($formattedParent);
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string $parent       Required. The resource name of the instance location using the form:
-     *                             `projects/{project_id}/locations/{location_id}`
-     *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $pageSize
-     *           The maximum number of resources contained in the underlying API
-     *           response. The API may return fewer values in a page, even if
-     *           there are additional values to be retrieved.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\ApiCore\PagedListResponse
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function listInstances($parent, array $optionalArgs = [])
-    {
-        $request = new ListInstancesRequest();
-        $request->setParent($parent);
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListInstances', $optionalArgs, ListInstancesResponse::class, $request);
-    }
-
-    /**
-     * Gets the details of a specific Redis instance.
-     *
-     * Sample code:
-     * ```
-     * $cloudRedisClient = new CloudRedisClient();
-     * try {
-     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-     *     $response = $cloudRedisClient->getInstance($formattedName);
-     * } finally {
-     *     $cloudRedisClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         Required. Redis instance resource name using the form:
-     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
-     *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Redis\V1\Instance
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function getInstance($name, array $optionalArgs = [])
-    {
-        $request = new GetInstanceRequest();
-        $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetInstance', Instance::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1036,17 +1015,15 @@ class CloudRedisGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function upgradeInstance($name, $redisVersion, array $optionalArgs = [])
     {
         $request = new UpgradeInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setRedisVersion($redisVersion);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('UpgradeInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }

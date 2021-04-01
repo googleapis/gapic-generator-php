@@ -21,7 +21,7 @@ INTEGRATION_TEST_LIBRARIES = [
     "iam",  # Standalone service that's in the mixin allowlist.
     "logging",  # Singleton resource names.
     "redis",  # sample_code field in gapic.yaml.
-    "securitycenter",  # Exercises pathTemplateMap .
+    "securitycenter",  # Exercises pathTemplateMap.
     "speech",  # sample_code field in gapic.yaml.
     "talent",  # Path template and duplicate name template properties.
     "videointelligence",  # sample_code field in gapic.yaml.

@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
-use Google\Generator\Tests\Unit\ProtoTests\UnitGoldenUpdater;
-
 require __DIR__ . '../../../../vendor/autoload.php';
 error_reporting(E_ALL);
 
@@ -52,6 +50,10 @@ const UNIT_TESTS = [
     'name' => 'GrpcServiceConfig',
     'protoPath' => 'GrpcServiceConfig/grpc-service-config1.proto',
     'package' => 'testing.grpcserviceconfig'
+  ],
+  8 => [
+    'name' => 'RoutingHeaders',
+    'protoPath' => 'RoutingHeaders/routing-headers.proto'
   ]
 ];
 

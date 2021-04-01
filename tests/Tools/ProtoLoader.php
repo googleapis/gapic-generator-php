@@ -51,8 +51,8 @@ class ProtoLoader
         exec($protocCmdLine, $output, $result);
         // Fail with helpful error message if protoc failed.
         if ($result !== 0) {
-          print("Protoc failed: " .  implode("\n", $output) . "\n");
-          return "";
+            print("Protoc failed: " .  implode("\n", $output) . "\n");
+            return "";
         }
 
         // Load the proto descriptors.
@@ -67,13 +67,13 @@ class ProtoLoader
      *
      * @return FileDescriptorProto
      */
-    function loadDescriptor(string $protoPath): FileDescriptorProto
+    public function loadDescriptor(string $protoPath): FileDescriptorProto
     {
         // Load descriptor bytes into a DescriptorSet.
         $descBytes = static::loadDescriptorBytes($protoPath);
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
         // Select the correct file from the descriptor-set.
-        return Vector::new($descSet->getFile())->filter(fn($x) => $x->getName() === "tests/Unit/{$protoPath}")[0];
+        return Vector::new($descSet->getFile())->filter(fn ($x) => $x->getName() === "tests/Unit/{$protoPath}")[0];
     }
 }

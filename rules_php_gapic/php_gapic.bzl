@@ -48,8 +48,8 @@ def php_grpc_library(name, srcs, deps, plugin_args = [], **kwargs):
 def php_gapic_srcjar(
         name,
         srcs,
-        gapic_yaml,
-        service_yaml,
+        gapic_yaml = None,
+        service_yaml = None,
         grpc_service_config = None,
         transport = None,
         **kwargs):
@@ -61,10 +61,14 @@ def php_gapic_srcjar(
     if grpc_service_config:
         plugin_file_args[grpc_service_config] = "grpc_service_config"
 
+    # Generate the gapic_metadata.json file.
+    plugin_args = ["metadata"]
+
     proto_custom_library(
         name = name,
         deps = srcs,
         plugin = Label("//rules_php_gapic:php_gapic_generator_binary"),
+        plugin_args = plugin_args,
         plugin_file_args = plugin_file_args,
         output_type = "gapic",
         output_suffix = ".srcjar",

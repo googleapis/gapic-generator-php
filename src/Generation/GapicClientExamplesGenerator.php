@@ -20,22 +20,19 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\Helpers;
 
 class GapicClientExamplesGenerator
 {
-    public function __construct(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig)
+    public function __construct(ServiceDetails $serviceDetails)
     {
         $this->serviceDetails = $serviceDetails;
-        $this->gapicYamlConfig = $gapicYamlConfig;
         // Create a separate context, as this code isn't part of the generated client.
         $this->ctx = new SourceFileContext('');
-        $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx, $gapicYamlConfig);
+        $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx);
     }
 
     private ServiceDetails $serviceDetails;
-    private GapicYamlConfig $gapicYamlConfig;
     private SourceFileContext $ctx;
     private TestNameValueProducer $prod;
 
@@ -86,7 +83,6 @@ class GapicClientExamplesGenerator
             }
         };
 
-        $config = $this->gapicYamlConfig->configsByMethodName->get($method->name, null);
         $result = $method->allFields
             ->map(function ($f) use ($fnGetValue, $method) {
                 if ($f->isRequired) {

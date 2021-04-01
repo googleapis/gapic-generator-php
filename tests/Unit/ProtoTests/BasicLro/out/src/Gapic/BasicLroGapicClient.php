@@ -27,20 +27,17 @@
 namespace Testing\BasicLro\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
-use Testing\BasicLro\BasicLroGrpcClient;
-use Testing\BasicLro\LroMetadata;
-use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
 
 /**
@@ -82,26 +79,34 @@ use Testing\BasicLro\Request;
  *     $basicLroClient->close();
  * }
  * ```
- *
- * @experimental
  */
 class BasicLroGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'testing.basiclro.BasicLro';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'lro.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'scope1',
         'scope2',
@@ -132,8 +137,6 @@ class BasicLroGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -150,8 +153,6 @@ class BasicLroGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -211,8 +212,6 @@ class BasicLroGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -274,8 +273,6 @@ class BasicLroGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function method1(array $optionalArgs = [])
     {
@@ -308,8 +305,6 @@ class BasicLroGapicClient
      * @return \Testing\BasicLro\Request
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodNonLro1(array $optionalArgs = [])
     {
@@ -342,8 +337,6 @@ class BasicLroGapicClient
      * @return \Testing\BasicLro\Request
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function methodNonLro2(array $optionalArgs = [])
     {

@@ -37,26 +37,25 @@ use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
 {
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails, $gapicYamlConfig))->generateImpl();
+        return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
-        $this->gapicYamlConfig = $gapicYamlConfig;
     }
 
     private function generateImpl(): PhpFile
@@ -94,7 +93,7 @@ class GapicClientGenerator
 
     private function examples(): GapicClientExamplesGenerator
     {
-        return new GapicClientExamplesGenerator($this->serviceDetails, $this->gapicYamlConfig);
+        return new GapicClientExamplesGenerator($this->serviceDetails);
     }
 
     private function generateClass(): PhpClass
@@ -115,8 +114,7 @@ class GapicClientGenerator
                         'with these names, this class includes a format method for each type of name, and additionally' .
                         'a parseName method to extract the individual identifiers contained within formatted names' .
                         'that are returned by the API.'
-                     ),
-                PhpDoc::experimental(),
+                     )
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())
@@ -228,8 +226,7 @@ class GapicClientGenerator
                             'resource.'
                         ),
                         $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
-                        PhpDoc::experimental()
+                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.'))
                     )));
             $formattedName = AST::param(null, AST::var('formattedName'));
             $template = AST::param(null, AST::var('template'), AST::NULL);
@@ -276,8 +273,7 @@ class GapicClientGenerator
                     PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
                     PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
                     PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
-                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
-                    PhpDoc::experimental()
+                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.'))
                 ));
             return $templateGetters->append($getPathTemplateMap)->concat($formatMethods)->append($parseMethod);
         } else {
@@ -305,8 +301,7 @@ class GapicClientGenerator
                 ))
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
-                    PhpDoc::experimental()
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class)))
                 ));
             $operationName = AST::var('operationName');
             $methodName = AST::var('methodName');
@@ -345,8 +340,7 @@ class GapicClientGenerator
                         AST::param($this->ctx->type(Type::string()), $methodName),
                         PhpDoc::text('The name of the method used to start the operation')
                     ),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
-                    PhpDoc::experimental()
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class)))
                 ));
             return Vector::new([$getOperationsClient, $resumeOperation]);
         } else {
@@ -503,8 +497,7 @@ class GapicClientGenerator
                         )
                     )
                 )),
-                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
-                PhpDoc::experimental()
+                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)))
             ));
     }
 
@@ -544,15 +537,30 @@ class GapicClientGenerator
         };
 
         $request = AST::var('request');
+        $requestParamHeaders = AST::var('requestParamHeaders');
         $required = $method->requiredFields->map(fn ($x) => AST::param(null, AST::var($x->camelName)));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $requestParams = AST::var('requestParams');
-        $isStreamedRequest = $method->methodType === MethodDetails::BIDI_STREAMING || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        // TODO(vNext): Only producing routing headers when there is only a single routing element may be incorrect.
-        [$restRoutingKey, $restRoutingGetters] = is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) !== 1 ?
-            [null, null] :
-            [$method->restRoutingHeaders->keys()[0], $method->restRoutingHeaders->values()[0]];
+        $isStreamedRequest =
+            $method->methodType === MethodDetails::BIDI_STREAMING
+            || $method->methodType === MethodDetails::CLIENT_STREAMING;
+
+        // Request parameter handling.
+        $restRoutingHeaders =
+            is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
+            ? Map::new([])
+            : $method->restRoutingHeaders;
+        // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
+        $requiredFieldNames =
+            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
+        $requiredRestRoutingKeys = $restRoutingHeaders->keys()->filter(fn ($x) =>
+          !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]))->toArray();
+        $requiredFieldNamesInRoutingHeaders =
+          $requiredFieldNames->filter(fn ($x) => !empty($x)
+            && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
+        $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
+        $hasRequestParams = count($restRoutingHeaders) > 0;
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
@@ -562,22 +570,44 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 $isStreamedRequest ? null : Vector::new([
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                    !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip($method->requiredFields, $required, fn ($field, $param) => AST::call($request, $field->setter)($param)),
-                    $method->optionalFields->map(fn ($x) => AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                        ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)))),
-                    is_null($restRoutingKey) ? null : Vector::new([
-                        AST::assign($requestParams, AST::new($this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class)))(
-                            AST::array([$restRoutingKey => $restRoutingGetters->reduce(
-                                $request,
-                                fn ($acc, $getterName) => AST::call($acc, AST::method($getterName))()
-                            )])
-                        )),
-                        AST::assign($optionalArgs->var['headers'], AST::ternary(
-                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
-                            $requestParams->getHeader()
-                        ))
-                    ])
+                    !$hasRequestParams ? null : Vector::zip(
+                      $method->requiredFields, $required,
+                      fn ($field, $param) =>
+                      !isset($requiredFieldToHeaderName[$field->name]) ? null : AST::assign(
+                        AST::index($requestParamHeaders, $requiredFieldToHeaderName[$field->name]),
+                        $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))->count() < 2
+                        ? $param
+                        // This reduce chains getter methods together for nested names like foo.bar.car.
+                        // Example: $foo->getBar()->getCar().
+                        : $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))
+                                             ->skip(1)
+                                             ->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))()))
+                    ),
+                    $method->optionalFields->map(
+                      fn ($x) =>
+                        AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
+                          ->then(
+                            AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
+                            // TODO(miraleung): Consider assigning nested fields on optional params,
+                            // at the risk of errors if they're not set on the message itself.
+                            !$hasRequestParams ? null : ($restRoutingHeaders->keys()->contains($x->name)
+                            ? AST::assign(
+                                AST::index($requestParamHeaders, $x->name),
+                                AST::index($optionalArgs->var, $x->camelName))
+                            : null)
+                    )),
+                    !$hasRequestParams ? null : AST::assign(
+                       $requestParams,
+                       AST::new($this->ctx->type(
+                           Type::fromName(RequestParamsHeaderDescriptor::class)))($requestParamHeaders)),
+                    !$hasRequestParams ? null : AST::assign($optionalArgs->var['headers'],
+                      AST::ternary(
+                        AST::call(AST::ISSET)($optionalArgs->var['headers']),
+                        AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                        $requestParams->getHeader()
+                    ))
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))
@@ -630,61 +660,74 @@ class GapicClientGenerator
                 PhpDoc::throws(
                     $this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')
-                ),
-                PhpDoc::experimental()
+                )
             ));
     }
 
     private function startCall($method, $optionalArgs, $request): AST
     {
+        $startCallArgs = [
+        $method->name,
+        AST::access($this->ctx->type($method->responseType), AST::CLS),
+        $optionalArgs->var
+      ];
         switch ($method->methodType) {
-            case MethodDetails::NORMAL:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    $request
-                )->wait();
-            case MethodDetails::LRO:
-                return AST::call(AST::THIS, AST::method('startOperationsCall'))(
-                    $method->name,
-                    $optionalArgs->var,
-                    $request,
-                    AST::call(AST::THIS, AST::method('getOperationsClient'))()
-                )->wait();
-            case MethodDetails::PAGINATED:
-                return AST::call(AST::THIS, AST::method('getPagedListResponse'))(
-                    $method->name,
-                    $optionalArgs->var,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $request
-                );
-            case MethodDetails::BIDI_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    AST::NULL,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'))
-                );
-            case MethodDetails::SERVER_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    $request,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'))
-                );
-            case MethodDetails::CLIENT_STREAMING:
-                return AST::call(AST::THIS, AST::method('startCall'))(
-                    $method->name,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                    $optionalArgs->var,
-                    AST::NULL,
-                    AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'))
-                );
-            default:
-                throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+      case MethodDetails::NORMAL:
+        $startCallArgs[] = $request;
+        if ($method->isMixin()) {
+            $startCallArgs[] =
+                AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
+            $startCallArgs[] = $method->mixinServiceFullname;
         }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
+      case MethodDetails::LRO:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          $request,
+          AST::call(AST::THIS, AST::method('getOperationsClient'))()
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+      case MethodDetails::PAGINATED:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          AST::access($this->ctx->type($method->responseType), AST::CLS),
+          $request
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
+      case MethodDetails::BIDI_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::SERVER_STREAMING:
+        $startCallArgs[] = $request;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::CLIENT_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      default:
+        throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+      }
     }
 }

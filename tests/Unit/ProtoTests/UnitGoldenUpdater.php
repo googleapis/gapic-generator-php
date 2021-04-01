@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
-use Google\Generator\CodeGenerator;
 use Google\Generator\Tests\Tools\GeneratorUtils;
 
 class UnitGoldenUpdater

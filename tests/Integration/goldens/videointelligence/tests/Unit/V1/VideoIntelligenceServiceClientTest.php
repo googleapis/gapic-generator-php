@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,20 @@
 
 namespace Google\Cloud\VideoIntelligence\Tests\Unit\V1;
 
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
+
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
-use Google\Cloud\VideoIntelligence\V1\Feature;
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceGrpcClient;
+
+use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -49,19 +45,25 @@ use stdClass;
  */
 class VideoIntelligenceServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return VideoIntelligenceServiceClient */
+    /**
+     * @return VideoIntelligenceServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -70,7 +72,9 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         return new VideoIntelligenceServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function annotateVideoTest()
     {
         $operationsTransport = $this->createTransport();
@@ -100,14 +104,8 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $featuresElement = Feature::LABEL_DETECTION;
-        $features = [
-            $featuresElement,
-        ];
-        $inputUri = 'gs://cloud-samples-data/video/cat.mp4';
-        $response = $client->annotateVideo($features, [
-            'inputUri' => $inputUri,
-        ]);
+        $features = [];
+        $response = $client->annotateVideo($features);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -119,8 +117,6 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $this->assertSame('/google.cloud.videointelligence.v1.VideoIntelligenceService/AnnotateVideo', $actualApiFuncCall);
         $actualValue = $actualApiRequestObject->getFeatures();
         $this->assertProtobufEquals($features, $actualValue);
-        $actualValue = $actualApiRequestObject->getInputUri();
-        $this->assertProtobufEquals($inputUri, $actualValue);
         $expectedOperationsRequestObject = new GetOperationRequest();
         $expectedOperationsRequestObject->setName('operations/annotateVideoTest');
         $response->pollUntilComplete([
@@ -140,7 +136,9 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function annotateVideoExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -172,14 +170,8 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $featuresElement = Feature::LABEL_DETECTION;
-        $features = [
-            $featuresElement,
-        ];
-        $inputUri = 'gs://cloud-samples-data/video/cat.mp4';
-        $response = $client->annotateVideo($features, [
-            'inputUri' => $inputUri,
-        ]);
+        $features = [];
+        $response = $client->annotateVideo($features);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();

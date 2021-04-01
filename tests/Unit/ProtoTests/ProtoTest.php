@@ -19,10 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
 use PHPUnit\Framework\TestCase;
-use Google\Generator\CodeGenerator;
-use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\Tools\GeneratorUtils;
-use Google\Generator\Tests\Tools\ProtoLoader;
 
 final class ProtoTest extends TestCase
 {
@@ -96,5 +93,10 @@ final class ProtoTest extends TestCase
     public function testGrpcServiceConfig(): void
     {
         $this->runProtoTest('GrpcServiceConfig/grpc-service-config1.proto', 'testing.grpcserviceconfig');
+    }
+
+    public function testRoutingHeaders(): void
+    {
+        $this->runProtoTest('RoutingHeaders/routing-headers.proto');
     }
 }

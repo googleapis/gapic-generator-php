@@ -28,7 +28,8 @@ class Obj
 
 class ObjEq implements Equality
 {
-    public function __construct($id) {
+    public function __construct($id)
+    {
         $this->id = $id;
     }
 
@@ -116,7 +117,7 @@ final class MapTest extends TestCase
     public function testFilter(): void
     {
         $m = Map::new()->set(1, 'one')->set(2, 'two');
-        $m = $m->filter(fn($k, $v) => $k === 2);
+        $m = $m->filter(fn ($k, $v) => $k === 2);
         $this->assertCount(1, $m);
         $this->assertEquals('two', $m[2]);
     }
@@ -124,7 +125,7 @@ final class MapTest extends TestCase
     public function testMapValues(): void
     {
         $m = Map::new()->set(1, 'one')->set(2, 'two');
-        $m = $m->mapValues(fn($k, $v) => "{$k}:{$v}");
+        $m = $m->mapValues(fn ($k, $v) => "{$k}:{$v}");
         $this->assertCount(2, $m);
         $this->assertEquals('1:one', $m[1]);
         $this->assertEquals('2:two', $m[2]);
