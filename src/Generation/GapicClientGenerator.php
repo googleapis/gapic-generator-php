@@ -170,9 +170,13 @@ class GapicClientGenerator
     private function resourceProperties(): Vector
     {
         if (count($this->serviceDetails->resourceParts) > 0) {
-            $templates = $this->serviceDetails->resourceParts
-                ->map(fn ($x) => $x->getTemplateProperty()
-                    ->withACcess(Access::PRIVATE, Access::STATIC));
+            // Prevent duplicate properties. Vector's toMap currently does not support cloberring keys.
+            $templateMap = [];
+            foreach ($this->serviceDetails->resourceDefs as $r) {
+              $templateMap[$r->nameCamelCase] =
+                  $r->getTemplateProperty()->withAccess(Access::PRIVATE, Access::STATIC);
+            }
+            $templates = Vector::new(array_values($templateMap));
             $pathTemplateMap = AST::property('pathTemplateMap')
                 ->withAccess(Access::PRIVATE, Access::STATIC);
             return Vector::new($templates->append($pathTemplateMap));

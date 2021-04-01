@@ -35,6 +35,12 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
     public Map $resourcesByType;
 
+    /**
+     * @var Map *Readonly* Map<string, ResourceDescriptor> of all message-defined resources
+     * by full message name.
+     */
+    public Map $msgResourcesByFullname;
+
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by pattern. First pattern wins, if duplicates. */
     public Map $resourcesByPattern;
 
@@ -68,6 +74,11 @@ class ProtoCatalog
         $messagesResourceDefs = $allMsgs
             ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
             ->filter(fn ($x) => !is_null($x));
+        $this->msgResourcesByFullname = $allMsgs
+          ->toMap(
+            fn ($x) => $x->desc->getFullName(),
+            fn ($x) =>  ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class)
+          )->filter(fn ($k, $v) => !is_null($v));
         $fileResourceDefs = $fileDescs
             ->flatMap(fn ($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
         $resourceDefs = $messagesResourceDefs->concat($fileResourceDefs);

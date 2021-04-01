@@ -103,6 +103,12 @@ class ServiceDetails
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
+    /**
+     * @var Vector *Readonly* Vector of ResourceDetails; all resource definitions in this service's
+     * RPC's request messages.
+     */
+    public Vector $resourceDefs;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -171,6 +177,32 @@ class ServiceDetails
             $childTypeRefResourceDefs = $resourceRefs
                 ->filter(fn ($x) => $x->getChildType() !== '')
                 ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
+
+            // Find all fields (only one level deep) that are resources defined elsewhere.
+            $typeFieldRefResourceDefs = Vector::new([]);
+            $childFieldTypeRefResourceDefs = Vector::new([]);
+            if ($level == 0) {
+              $fieldDetails = $fields
+                ->filter(fn ($f) => !is_null($f))
+                ->map(fn ($f) => new FieldDetails($catalog, $f));
+
+              $fullnameFn = function ($fd) {
+                return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
+              };
+              $fieldResourceRefs = $fieldDetails
+                ->filter(fn ($x) => $x->isRequired
+                  && $x->isMessage
+                  && !is_null($x->fullname))
+                  ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
+                  ->filter(fn ($x) => !is_null($x));
+            $typeFieldRefResourceDefs = $fieldResourceRefs
+                ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
+                ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
+            $childFieldTypeRefResourceDefs = $fieldResourceRefs
+                ->filter(fn ($x) => $x->getType() !== '')
+                ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getType(), Vector::new([])));
+            }
+
             // Recurse one level down into message fields; matches monolith behaviour.
             // TODO(vNext): Decide if this behaviour is correct, posibly modify.
             if ($level === 0) {
@@ -181,16 +213,21 @@ class ServiceDetails
             } else {
                 $nestedDefs = Vector::new([]);
             }
-            return $typeRefResourceDefs->concat($childTypeRefResourceDefs)->append($messageResourceDef)->concat($nestedDefs);
+            return $typeRefResourceDefs
+              ->concat($typeFieldRefResourceDefs)
+              ->concat($childFieldTypeRefResourceDefs)
+              ->concat($childTypeRefResourceDefs)
+              ->append($messageResourceDef)
+              ->concat($nestedDefs);
         };
-        $resourceDefs = $this->methods
+        $this->resourceDefs = $this->methods
             ->flatMap(fn ($x) => $gatherMsgResDefs($x->inputMsg, 0))
             ->filter(fn ($x) => !is_null($x))
             ->map(fn ($res) => new ResourceDetails($res));
-        $this->resourceParts = $resourceDefs
+        $this->resourceParts = $this->resourceDefs
             ->filter(fn ($x) => $x->patterns->any())
             // CAREFUL! This is a mix of ResourceDetails and ResourcePatternDetails.
-            ->concat($resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
+            ->concat($this->resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
             ->distinct(fn ($x) => $x->getNameCamelCase())
             ->orderBy(fn ($x) => $x->getNameCamelCase());
     }
