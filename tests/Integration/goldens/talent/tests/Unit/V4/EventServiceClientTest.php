@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +22,14 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4;
 
-use Google\Cloud\Talent\V4\EventServiceClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Talent\V4\ClientEvent;
-use Google\Cloud\Talent\V4\CreateClientEventRequest;
-use Google\Cloud\Talent\V4\EventServiceGrpcClient;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
+use Google\Cloud\Talent\V4\EventServiceClient;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -47,19 +39,25 @@ use stdClass;
  */
 class EventServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return EventServiceClient */
+    /**
+     * @return EventServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,7 +66,9 @@ class EventServiceClientTest extends GeneratedTest
         return new EventServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClientEventTest()
     {
         $transport = $this->createTransport();
@@ -102,7 +102,9 @@ class EventServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClientEventExceptionTest()
     {
         $transport = $this->createTransport();

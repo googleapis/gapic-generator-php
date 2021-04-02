@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,63 +22,39 @@
 
 namespace Google\Cloud\SecurityCenter\Tests\Unit\V1;
 
-use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
+
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\Policy;
-use Google\Cloud\Iam\V1\SetIamPolicyRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
-use Google\Cloud\SecurityCenter\V1\CreateFindingRequest;
-use Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest;
-use Google\Cloud\SecurityCenter\V1\CreateSourceRequest;
-use Google\Cloud\SecurityCenter\V1\DeleteNotificationConfigRequest;
+
 use Google\Cloud\SecurityCenter\V1\Finding;
 use Google\Cloud\SecurityCenter\V1\Finding\State;
-use Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest;
-use Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest;
-use Google\Cloud\SecurityCenter\V1\GetSourceRequest;
-use Google\Cloud\SecurityCenter\V1\GroupAssetsRequest;
 use Google\Cloud\SecurityCenter\V1\GroupAssetsResponse;
-use Google\Cloud\SecurityCenter\V1\GroupFindingsRequest;
 use Google\Cloud\SecurityCenter\V1\GroupFindingsResponse;
 use Google\Cloud\SecurityCenter\V1\GroupResult;
-use Google\Cloud\SecurityCenter\V1\ListAssetsRequest;
 use Google\Cloud\SecurityCenter\V1\ListAssetsResponse;
 use Google\Cloud\SecurityCenter\V1\ListAssetsResponse\ListAssetsResult;
-use Google\Cloud\SecurityCenter\V1\ListFindingsRequest;
 use Google\Cloud\SecurityCenter\V1\ListFindingsResponse;
 use Google\Cloud\SecurityCenter\V1\ListFindingsResponse\ListFindingsResult;
-use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest;
 use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse;
-use Google\Cloud\SecurityCenter\V1\ListSourcesRequest;
 use Google\Cloud\SecurityCenter\V1\ListSourcesResponse;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
-use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryResponse;
-use Google\Cloud\SecurityCenter\V1\SecurityCenterGrpcClient;
+use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 use Google\Cloud\SecurityCenter\V1\SecurityMarks;
-use Google\Cloud\SecurityCenter\V1\SetFindingStateRequest;
 use Google\Cloud\SecurityCenter\V1\Source;
-use Google\Cloud\SecurityCenter\V1\UpdateFindingRequest;
-use Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest;
-use Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest;
-use Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest;
-use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Protobuf\GPBEmpty;
 use Google\Protobuf\Timestamp;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -88,19 +64,25 @@ use stdClass;
  */
 class SecurityCenterClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return SecurityCenterClient */
+    /**
+     * @return SecurityCenterClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -109,75 +91,9 @@ class SecurityCenterClientTest extends GeneratedTest
         return new SecurityCenterClient($options);
     }
 
-    /** @test */
-    public function createSourceTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $displayName = 'displayName1615086568';
-        $description = 'description-1724546052';
-        $expectedResponse = new Source();
-        $expectedResponse->setName($name);
-        $expectedResponse->setDisplayName($displayName);
-        $expectedResponse->setDescription($description);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->organizationName('[ORGANIZATION]');
-        $source = new Source();
-        $response = $client->createSource($formattedParent, $source);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.securitycenter.v1.SecurityCenter/CreateSource', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getSource();
-        $this->assertProtobufEquals($source, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function createSourceExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->organizationName('[ORGANIZATION]');
-        $source = new Source();
-        try {
-            $client->createSource($formattedParent, $source);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
+    /**
+     * @test
+     */
     public function createFindingTest()
     {
         $transport = $this->createTransport();
@@ -218,7 +134,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFindingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -253,7 +171,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createNotificationConfigTest()
     {
         $transport = $this->createTransport();
@@ -292,7 +212,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createNotificationConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -327,7 +249,81 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
+    public function createSourceTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $displayName = 'displayName1615086568';
+        $description = 'description-1724546052';
+        $expectedResponse = new Source();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDisplayName($displayName);
+        $expectedResponse->setDescription($description);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $client->organizationName('[ORGANIZATION]');
+        $source = new Source();
+        $response = $client->createSource($formattedParent, $source);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.securitycenter.v1.SecurityCenter/CreateSource', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getSource();
+        $this->assertProtobufEquals($source, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function createSourceExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedParent = $client->organizationName('[ORGANIZATION]');
+        $source = new Source();
+        try {
+            $client->createSource($formattedParent, $source);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function deleteNotificationConfigTest()
     {
         $transport = $this->createTransport();
@@ -351,7 +347,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteNotificationConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -384,7 +382,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -413,7 +413,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -446,7 +448,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getNotificationConfigTest()
     {
         $transport = $this->createTransport();
@@ -479,7 +483,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getNotificationConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -512,7 +518,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getOrganizationSettingsTest()
     {
         $transport = $this->createTransport();
@@ -541,7 +549,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getOrganizationSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -574,7 +584,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSourceTest()
     {
         $transport = $this->createTransport();
@@ -605,7 +617,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSourceExceptionTest()
     {
         $transport = $this->createTransport();
@@ -638,7 +652,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function groupAssetsTest()
     {
         $transport = $this->createTransport();
@@ -678,7 +694,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function groupAssetsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -712,7 +730,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function groupFindingsTest()
     {
         $transport = $this->createTransport();
@@ -752,7 +772,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function groupFindingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -786,7 +808,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listAssetsTest()
     {
         $transport = $this->createTransport();
@@ -823,7 +847,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listAssetsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -856,7 +882,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFindingsTest()
     {
         $transport = $this->createTransport();
@@ -893,7 +921,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFindingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -926,7 +956,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listNotificationConfigsTest()
     {
         $transport = $this->createTransport();
@@ -961,7 +993,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listNotificationConfigsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -994,7 +1028,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSourcesTest()
     {
         $transport = $this->createTransport();
@@ -1029,7 +1065,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSourcesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1062,7 +1100,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function runAssetDiscoveryTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1124,7 +1164,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function runAssetDiscoveryExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1179,7 +1221,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setFindingStateTest()
     {
         $transport = $this->createTransport();
@@ -1220,7 +1264,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setFindingStateExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1255,7 +1301,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1287,7 +1335,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1321,7 +1371,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -1349,7 +1401,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1383,7 +1437,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFindingTest()
     {
         $transport = $this->createTransport();
@@ -1418,7 +1474,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFindingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1451,7 +1509,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateNotificationConfigTest()
     {
         $transport = $this->createTransport();
@@ -1484,7 +1544,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateNotificationConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1517,7 +1579,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateOrganizationSettingsTest()
     {
         $transport = $this->createTransport();
@@ -1546,7 +1610,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateOrganizationSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1579,7 +1645,73 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
+    public function updateSecurityMarksTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $expectedResponse = new SecurityMarks();
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $securityMarks = new SecurityMarks();
+        $response = $client->updateSecurityMarks($securityMarks);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityMarks', $actualFuncCall);
+        $actualValue = $actualRequestObject->getSecurityMarks();
+        $this->assertProtobufEquals($securityMarks, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateSecurityMarksExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $securityMarks = new SecurityMarks();
+        try {
+            $client->updateSecurityMarks($securityMarks);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function updateSourceTest()
     {
         $transport = $this->createTransport();
@@ -1610,7 +1742,9 @@ class SecurityCenterClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSourceExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1632,66 +1766,6 @@ class SecurityCenterClientTest extends GeneratedTest
         $source = new Source();
         try {
             $client->updateSource($source);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function updateSecurityMarksTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $expectedResponse = new SecurityMarks();
-        $expectedResponse->setName($name);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $securityMarks = new SecurityMarks();
-        $response = $client->updateSecurityMarks($securityMarks);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityMarks', $actualFuncCall);
-        $actualValue = $actualRequestObject->getSecurityMarks();
-        $this->assertProtobufEquals($securityMarks, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /** @test */
-    public function updateSecurityMarksExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $securityMarks = new SecurityMarks();
-        try {
-            $client->updateSecurityMarks($securityMarks);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

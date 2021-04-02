@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,9 @@ namespace Google\Cloud\Talent\V4\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\LongRunning\OperationsClient;
+
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
@@ -38,19 +40,14 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4\BatchCreateJobsRequest;
-use Google\Cloud\Talent\V4\BatchCreateJobsResponse;
 use Google\Cloud\Talent\V4\BatchDeleteJobsRequest;
-use Google\Cloud\Talent\V4\BatchDeleteJobsResponse;
-use Google\Cloud\Talent\V4\BatchOperationMetadata;
 use Google\Cloud\Talent\V4\BatchUpdateJobsRequest;
-use Google\Cloud\Talent\V4\BatchUpdateJobsResponse;
 use Google\Cloud\Talent\V4\CreateJobRequest;
 use Google\Cloud\Talent\V4\DeleteJobRequest;
 use Google\Cloud\Talent\V4\GetJobRequest;
 use Google\Cloud\Talent\V4\HistogramQuery;
 use Google\Cloud\Talent\V4\Job;
 use Google\Cloud\Talent\V4\JobQuery;
-use Google\Cloud\Talent\V4\JobServiceGrpcClient;
 use Google\Cloud\Talent\V4\JobView;
 use Google\Cloud\Talent\V4\ListJobsRequest;
 use Google\Cloud\Talent\V4\ListJobsResponse;
@@ -75,8 +72,33 @@ use Google\Protobuf\GPBEmpty;
  * $jobServiceClient = new JobServiceClient();
  * try {
  *     $formattedParent = $jobServiceClient->tenantName('[PROJECT]', '[TENANT]');
- *     $job = new Job();
- *     $response = $jobServiceClient->createJob($formattedParent, $job);
+ *     $jobs = [];
+ *     $operationResponse = $jobServiceClient->batchCreateJobs($formattedParent, $jobs);
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         $result = $operationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ *     // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $jobServiceClient->batchCreateJobs($formattedParent, $jobs);
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $jobServiceClient->resumeOperation($operationName, 'batchCreateJobs');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         $result = $newOperationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $jobServiceClient->close();
  * }
@@ -86,36 +108,44 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class JobServiceGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.talent.v4.JobService';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'jobs.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/jobs',
     ];
 
-    private static $companyNameTemplate;
-
     private static $jobNameTemplate;
 
     private static $tenantNameTemplate;
+
+    private static $companyNameTemplate;
 
     private static $pathTemplateMap;
 
@@ -189,8 +219,6 @@ class JobServiceGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
-     *
-     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -210,8 +238,6 @@ class JobServiceGapicClient
      * @param string $job
      *
      * @return string The formatted job resource.
-     *
-     * @experimental
      */
     public static function jobName($project, $tenant, $job)
     {
@@ -230,8 +256,6 @@ class JobServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
-     *
-     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -261,8 +285,6 @@ class JobServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -290,8 +312,6 @@ class JobServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -308,8 +328,6 @@ class JobServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -369,65 +387,12 @@ class JobServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
-    }
-
-    /**
-     * Creates a new job.
-     *
-     * Typically, the job becomes searchable within 10 seconds, but it may take
-     * up to 5 minutes.
-     *
-     * Sample code:
-     * ```
-     * $jobServiceClient = new JobServiceClient();
-     * try {
-     *     $formattedParent = $jobServiceClient->tenantName('[PROJECT]', '[TENANT]');
-     *     $job = new Job();
-     *     $response = $jobServiceClient->createJob($formattedParent, $job);
-     * } finally {
-     *     $jobServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $parent       Required. The resource name of the tenant under which the job is created.
-     *
-     *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
-     *                             "projects/foo/tenants/bar".
-     * @param Job    $job          Required. The Job to be created.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Talent\V4\Job
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function createJob($parent, $job, array $optionalArgs = [])
-    {
-        $request = new CreateJobRequest();
-        $request->setParent($parent);
-        $request->setJob($job);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -489,44 +454,74 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function batchCreateJobs($parent, $jobs, array $optionalArgs = [])
     {
         $request = new BatchCreateJobsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJobs($jobs);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('BatchCreateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
-     * Retrieves the specified job, whose status is OPEN or recently EXPIRED
-     * within the last 90 days.
+     * Begins executing a batch delete jobs operation.
      *
      * Sample code:
      * ```
      * $jobServiceClient = new JobServiceClient();
      * try {
-     *     $formattedName = $jobServiceClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
-     *     $response = $jobServiceClient->getJob($formattedName);
+     *     $formattedParent = $jobServiceClient->tenantName('[PROJECT]', '[TENANT]');
+     *     $operationResponse = $jobServiceClient->batchDeleteJobs($formattedParent);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $jobServiceClient->batchDeleteJobs($formattedParent);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $jobServiceClient->resumeOperation($operationName, 'batchDeleteJobs');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
      * } finally {
      *     $jobServiceClient->close();
      * }
      * ```
      *
-     * @param string $name         Required. The resource name of the job to retrieve.
+     * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
-     *                             The format is
-     *                             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For
-     *                             example, "projects/foo/tenants/bar/jobs/baz".
+     *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
+     *                             "projects/foo/tenants/bar".
+     *
+     *                             The parent of all of the jobs specified in `names` must match this field.
      * @param array  $optionalArgs {
      *     Optional.
      *
+     *     @type string[] $names
+     *           The names of the jobs to delete.
+     *
+     *           The format is "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
+     *           For example, "projects/foo/tenants/bar/jobs/baz".
+     *
+     *           A maximum of 200 jobs can be deleted in a batch.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -534,78 +529,23 @@ class JobServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Google\Cloud\Talent\V4\Job
+     * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
-    public function getJob($name, array $optionalArgs = [])
+    public function batchDeleteJobs($parent, array $optionalArgs = [])
     {
-        $request = new GetJobRequest();
-        $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Updates specified job.
-     *
-     * Typically, updated contents become visible in search results within 10
-     * seconds, but it may take up to 5 minutes.
-     *
-     * Sample code:
-     * ```
-     * $jobServiceClient = new JobServiceClient();
-     * try {
-     *     $job = new Job();
-     *     $response = $jobServiceClient->updateJob($job);
-     * } finally {
-     *     $jobServiceClient->close();
-     * }
-     * ```
-     *
-     * @param Job   $job          Required. The Job to be updated.
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type FieldMask $updateMask
-     *           Strongly recommended for the best service experience.
-     *
-     *           If [update_mask][google.cloud.talent.v4.UpdateJobRequest.update_mask] is provided, only the specified fields in
-     *           [job][google.cloud.talent.v4.UpdateJobRequest.job] are updated. Otherwise all the fields are updated.
-     *
-     *           A field mask to restrict the fields that are updated. Only
-     *           top level fields of [Job][google.cloud.talent.v4.Job] are supported.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Talent\V4\Job
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function updateJob($job, array $optionalArgs = [])
-    {
-        $request = new UpdateJobRequest();
-        $request->setJob($job);
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
+        $request = new BatchDeleteJobsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['names'])) {
+            $request->setNames($optionalArgs['names']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'job.name' => $request->getJob()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
+        return $this->startOperationsCall('BatchDeleteJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -682,23 +622,70 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function batchUpdateJobs($parent, $jobs, array $optionalArgs = [])
     {
         $request = new BatchUpdateJobsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJobs($jobs);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('BatchUpdateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Creates a new job.
+     *
+     * Typically, the job becomes searchable within 10 seconds, but it may take
+     * up to 5 minutes.
+     *
+     * Sample code:
+     * ```
+     * $jobServiceClient = new JobServiceClient();
+     * try {
+     *     $formattedParent = $jobServiceClient->tenantName('[PROJECT]', '[TENANT]');
+     *     $job = new Job();
+     *     $response = $jobServiceClient->createJob($formattedParent, $job);
+     * } finally {
+     *     $jobServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The resource name of the tenant under which the job is created.
+     *
+     *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
+     *                             "projects/foo/tenants/bar".
+     * @param Job    $job          Required. The Job to be created.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Talent\V4\Job
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createJob($parent, $job, array $optionalArgs = [])
+    {
+        $request = new CreateJobRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setJob($job);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -734,75 +721,41 @@ class JobServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function deleteJob($name, array $optionalArgs = [])
     {
         $request = new DeleteJobRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteJob', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
-     * Begins executing a batch delete jobs operation.
+     * Retrieves the specified job, whose status is OPEN or recently EXPIRED
+     * within the last 90 days.
      *
      * Sample code:
      * ```
      * $jobServiceClient = new JobServiceClient();
      * try {
-     *     $formattedParent = $jobServiceClient->tenantName('[PROJECT]', '[TENANT]');
-     *     $operationResponse = $jobServiceClient->batchDeleteJobs($formattedParent);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $jobServiceClient->batchDeleteJobs($formattedParent);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $jobServiceClient->resumeOperation($operationName, 'batchDeleteJobs');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
+     *     $formattedName = $jobServiceClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+     *     $response = $jobServiceClient->getJob($formattedName);
      * } finally {
      *     $jobServiceClient->close();
      * }
      * ```
      *
-     * @param string $parent       Required. The resource name of the tenant under which the job is created.
+     * @param string $name         Required. The resource name of the job to retrieve.
      *
-     *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
-     *                             "projects/foo/tenants/bar".
-     *
-     *                             The parent of all of the jobs specified in `names` must match this field.
+     *                             The format is
+     *                             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For
+     *                             example, "projects/foo/tenants/bar/jobs/baz".
      * @param array  $optionalArgs {
      *     Optional.
      *
-     *     @type string[] $names
-     *           The names of the jobs to delete.
-     *
-     *           The format is "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-     *           For example, "projects/foo/tenants/bar/jobs/baz".
-     *
-     *           A maximum of 200 jobs can be deleted in a batch.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -810,25 +763,19 @@ class JobServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return \Google\Cloud\Talent\V4\Job
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
-    public function batchDeleteJobs($parent, array $optionalArgs = [])
+    public function getJob($name, array $optionalArgs = [])
     {
-        $request = new BatchDeleteJobsRequest();
-        $request->setParent($parent);
-        if (isset($optionalArgs['names'])) {
-            $request->setNames($optionalArgs['names']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $request = new GetJobRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('BatchDeleteJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -907,14 +854,14 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listJobs($parent, $filter, array $optionalArgs = [])
     {
         $request = new ListJobsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -927,9 +874,7 @@ class JobServiceGapicClient
             $request->setJobView($optionalArgs['jobView']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListJobs', $optionalArgs, ListJobsResponse::class, $request);
     }
@@ -1186,14 +1131,14 @@ class JobServiceGapicClient
      * @return \Google\Cloud\Talent\V4\SearchJobsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function searchJobs($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchJobsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['searchMode'])) {
             $request->setSearchMode($optionalArgs['searchMode']);
         }
@@ -1242,9 +1187,7 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SearchJobs', SearchJobsResponse::class, $optionalArgs, $request)->wait();
     }
@@ -1506,14 +1449,14 @@ class JobServiceGapicClient
      * @return \Google\Cloud\Talent\V4\SearchJobsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function searchJobsForAlert($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchJobsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['searchMode'])) {
             $request->setSearchMode($optionalArgs['searchMode']);
         }
@@ -1562,10 +1505,63 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SearchJobsForAlert', SearchJobsResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates specified job.
+     *
+     * Typically, updated contents become visible in search results within 10
+     * seconds, but it may take up to 5 minutes.
+     *
+     * Sample code:
+     * ```
+     * $jobServiceClient = new JobServiceClient();
+     * try {
+     *     $job = new Job();
+     *     $response = $jobServiceClient->updateJob($job);
+     * } finally {
+     *     $jobServiceClient->close();
+     * }
+     * ```
+     *
+     * @param Job   $job          Required. The Job to be updated.
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           Strongly recommended for the best service experience.
+     *
+     *           If [update_mask][google.cloud.talent.v4.UpdateJobRequest.update_mask] is provided, only the specified fields in
+     *           [job][google.cloud.talent.v4.UpdateJobRequest.job] are updated. Otherwise all the fields are updated.
+     *
+     *           A field mask to restrict the fields that are updated. Only
+     *           top level fields of [Job][google.cloud.talent.v4.Job] are supported.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Talent\V4\Job
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateJob($job, array $optionalArgs = [])
+    {
+        $request = new UpdateJobRequest();
+        $requestParamHeaders = [];
+        $request->setJob($job);
+        $requestParamHeaders['job.name'] = $job->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
     }
 }

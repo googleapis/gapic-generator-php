@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,9 @@ namespace Google\Cloud\SecurityCenter\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\LongRunning\OperationsClient;
+
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
@@ -67,8 +69,6 @@ use Google\Cloud\SecurityCenter\V1\ListSourcesResponse;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest;
-use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryResponse;
-use Google\Cloud\SecurityCenter\V1\SecurityCenterGrpcClient;
 use Google\Cloud\SecurityCenter\V1\SecurityMarks;
 use Google\Cloud\SecurityCenter\V1\SetFindingStateRequest;
 use Google\Cloud\SecurityCenter\V1\Source;
@@ -92,9 +92,10 @@ use Google\Protobuf\Timestamp;
  * ```
  * $securityCenterClient = new SecurityCenterClient();
  * try {
- *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
- *     $source = new Source();
- *     $response = $securityCenterClient->createSource($formattedParent, $source);
+ *     $formattedParent = $securityCenterClient->sourceName('[ORGANIZATION]', '[SOURCE]');
+ *     $findingId = 'finding_id';
+ *     $finding = new Finding();
+ *     $response = $securityCenterClient->createFinding($formattedParent, $findingId, $finding);
  * } finally {
  *     $securityCenterClient->close();
  * }
@@ -104,41 +105,51 @@ use Google\Protobuf\Timestamp;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class SecurityCenterGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.securitycenter.v1.SecurityCenter';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'securitycenter.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
-    private static $findingNameTemplate;
+    private static $sourceNameTemplate;
 
-    private static $notificationConfigNameTemplate;
+    private static $findingNameTemplate;
 
     private static $organizationNameTemplate;
 
-    private static $organizationSettingsNameTemplate;
-
-    private static $sourceNameTemplate;
+    private static $notificationConfigNameTemplate;
 
     private static $topicNameTemplate;
+
+    private static $organizationSettingsNameTemplate;
+
+    private static $securityMarksNameTemplate;
 
     private static $pathTemplateMap;
 
@@ -190,6 +201,15 @@ class SecurityCenterGapicClient
         return self::$organizationNameTemplate;
     }
 
+    private static function getOrganizationAssetSecurityMarksNameTemplate()
+    {
+        if (self::$organizationAssetSecurityMarksNameTemplate == null) {
+            self::$organizationAssetSecurityMarksNameTemplate = new PathTemplate('organizations/{organization}/assets/{asset}/securityMarks');
+        }
+
+        return self::$organizationAssetSecurityMarksNameTemplate;
+    }
+
     private static function getOrganizationSettingsNameTemplate()
     {
         if (self::$organizationSettingsNameTemplate == null) {
@@ -197,6 +217,24 @@ class SecurityCenterGapicClient
         }
 
         return self::$organizationSettingsNameTemplate;
+    }
+
+    private static function getOrganizationSourceFindingSecurityMarksNameTemplate()
+    {
+        if (self::$organizationSourceFindingSecurityMarksNameTemplate == null) {
+            self::$organizationSourceFindingSecurityMarksNameTemplate = new PathTemplate('organizations/{organization}/sources/{source}/findings/{finding}/securityMarks');
+        }
+
+        return self::$organizationSourceFindingSecurityMarksNameTemplate;
+    }
+
+    private static function getSecurityMarksNameTemplate()
+    {
+        if (self::$securityMarksNameTemplate == null) {
+            self::$securityMarksNameTemplate = new PathTemplate('organizations/{organization}/assets/{asset}/securityMarks');
+        }
+
+        return self::$securityMarksNameTemplate;
     }
 
     private static function getSourceNameTemplate()
@@ -224,7 +262,10 @@ class SecurityCenterGapicClient
                 'finding' => self::getFindingNameTemplate(),
                 'notificationConfig' => self::getNotificationConfigNameTemplate(),
                 'organization' => self::getOrganizationNameTemplate(),
+                'organizationAssetSecurityMarks' => self::getOrganizationAssetSecurityMarksNameTemplate(),
                 'organizationSettings' => self::getOrganizationSettingsNameTemplate(),
+                'organizationSourceFindingSecurityMarks' => self::getOrganizationSourceFindingSecurityMarksNameTemplate(),
+                'securityMarks' => self::getSecurityMarksNameTemplate(),
                 'source' => self::getSourceNameTemplate(),
                 'topic' => self::getTopicNameTemplate(),
             ];
@@ -242,8 +283,6 @@ class SecurityCenterGapicClient
      * @param string $finding
      *
      * @return string The formatted finding resource.
-     *
-     * @experimental
      */
     public static function findingName($organization, $source, $finding)
     {
@@ -262,8 +301,6 @@ class SecurityCenterGapicClient
      * @param string $notificationConfig
      *
      * @return string The formatted notification_config resource.
-     *
-     * @experimental
      */
     public static function notificationConfigName($organization, $notificationConfig)
     {
@@ -280,8 +317,6 @@ class SecurityCenterGapicClient
      * @param string $organization
      *
      * @return string The formatted organization resource.
-     *
-     * @experimental
      */
     public static function organizationName($organization)
     {
@@ -292,18 +327,69 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * organization_asset_securityMarks resource.
+     *
+     * @param string $organization
+     * @param string $asset
+     *
+     * @return string The formatted organization_asset_securityMarks resource.
+     */
+    public static function organizationAssetSecurityMarksName($organization, $asset)
+    {
+        return self::getOrganizationAssetSecurityMarksNameTemplate()->render([
+            'organization' => $organization,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * organization_settings resource.
      *
      * @param string $organization
      *
      * @return string The formatted organization_settings resource.
-     *
-     * @experimental
      */
     public static function organizationSettingsName($organization)
     {
         return self::getOrganizationSettingsNameTemplate()->render([
             'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding_securityMarks resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted organization_source_finding_securityMarks resource.
+     */
+    public static function organizationSourceFindingSecurityMarksName($organization, $source, $finding)
+    {
+        return self::getOrganizationSourceFindingSecurityMarksNameTemplate()->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_marks resource.
+     *
+     * @param string $organization
+     * @param string $asset
+     *
+     * @return string The formatted security_marks resource.
+     */
+    public static function securityMarksName($organization, $asset)
+    {
+        return self::getSecurityMarksNameTemplate()->render([
+            'organization' => $organization,
+            'asset' => $asset,
         ]);
     }
 
@@ -315,8 +401,6 @@ class SecurityCenterGapicClient
      * @param string $source
      *
      * @return string The formatted source resource.
-     *
-     * @experimental
      */
     public static function sourceName($organization, $source)
     {
@@ -334,8 +418,6 @@ class SecurityCenterGapicClient
      * @param string $topic
      *
      * @return string The formatted topic resource.
-     *
-     * @experimental
      */
     public static function topicName($project, $topic)
     {
@@ -352,7 +434,10 @@ class SecurityCenterGapicClient
      * - finding: organizations/{organization}/sources/{source}/findings/{finding}
      * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
      * - organization: organizations/{organization}
+     * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - organizationSettings: organizations/{organization}/organizationSettings
+     * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
+     * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - source: organizations/{organization}/sources/{source}
      * - topic: projects/{project}/topics/{topic}
      *
@@ -368,8 +453,6 @@ class SecurityCenterGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -397,8 +480,6 @@ class SecurityCenterGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
-     *
-     * @experimental
      */
     public function getOperationsClient()
     {
@@ -415,8 +496,6 @@ class SecurityCenterGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
-     *
-     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -476,61 +555,12 @@ class SecurityCenterGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
-    }
-
-    /**
-     * Creates a source.
-     *
-     * Sample code:
-     * ```
-     * $securityCenterClient = new SecurityCenterClient();
-     * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
-     *     $source = new Source();
-     *     $response = $securityCenterClient->createSource($formattedParent, $source);
-     * } finally {
-     *     $securityCenterClient->close();
-     * }
-     * ```
-     *
-     * @param string $parent       Required. Resource name of the new source's parent. Its format should be
-     *                             "organizations/[organization_id]".
-     * @param Source $source       Required. The Source being created, only the display_name and description will be
-     *                             used. All other fields will be ignored.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\SecurityCenter\V1\Source
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function createSource($parent, $source, array $optionalArgs = [])
-    {
-        $request = new CreateSourceRequest();
-        $request->setParent($parent);
-        $request->setSource($source);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateSource', Source::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -570,18 +600,16 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\Finding
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createFinding($parent, $findingId, $finding, array $optionalArgs = [])
     {
         $request = new CreateFindingRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFindingId($findingId);
         $request->setFinding($finding);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateFinding', Finding::class, $optionalArgs, $request)->wait();
     }
@@ -623,20 +651,63 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\NotificationConfig
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createNotificationConfig($parent, $configId, $notificationConfig, array $optionalArgs = [])
     {
         $request = new CreateNotificationConfigRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setConfigId($configId);
         $request->setNotificationConfig($notificationConfig);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Creates a source.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $source = new Source();
+     *     $response = $securityCenterClient->createSource($formattedParent, $source);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. Resource name of the new source's parent. Its format should be
+     *                             "organizations/[organization_id]".
+     * @param Source $source       Required. The Source being created, only the display_name and description will be
+     *                             used. All other fields will be ignored.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\Source
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createSource($parent, $source, array $optionalArgs = [])
+    {
+        $request = new CreateSourceRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setSource($source);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateSource', Source::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -666,16 +737,14 @@ class SecurityCenterGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function deleteNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new DeleteNotificationConfigRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('DeleteNotificationConfig', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
@@ -712,20 +781,18 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\Iam\V1\Policy
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
@@ -759,16 +826,14 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\NotificationConfig
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new GetNotificationConfigRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
     }
@@ -802,16 +867,14 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\OrganizationSettings
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getOrganizationSettings($name, array $optionalArgs = [])
     {
         $request = new GetOrganizationSettingsRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
     }
@@ -845,16 +908,14 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\Source
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getSource($name, array $optionalArgs = [])
     {
         $request = new GetSourceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetSource', Source::class, $optionalArgs, $request)->wait();
     }
@@ -1025,14 +1086,14 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function groupAssets($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupAssetsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1053,9 +1114,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('GroupAssets', $optionalArgs, GroupAssetsResponse::class, $request);
     }
@@ -1221,14 +1280,14 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function groupFindings($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupFindingsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1249,9 +1308,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('GroupFindings', $optionalArgs, GroupFindingsResponse::class, $request);
     }
@@ -1425,13 +1482,13 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listAssets($parent, array $optionalArgs = [])
     {
         $request = new ListAssetsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1460,9 +1517,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListAssets', $optionalArgs, ListAssetsResponse::class, $request);
     }
@@ -1631,13 +1686,13 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listFindings($parent, array $optionalArgs = [])
     {
         $request = new ListFindingsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1666,9 +1721,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListFindings', $optionalArgs, ListFindingsResponse::class, $request);
     }
@@ -1723,13 +1776,13 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listNotificationConfigs($parent, array $optionalArgs = [])
     {
         $request = new ListNotificationConfigsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -1738,9 +1791,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListNotificationConfigs', $optionalArgs, ListNotificationConfigsResponse::class, $request);
     }
@@ -1795,13 +1846,13 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listSources($parent, array $optionalArgs = [])
     {
         $request = new ListSourcesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -1810,9 +1861,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListSources', $optionalArgs, ListSourcesResponse::class, $request);
     }
@@ -1876,16 +1925,14 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function runAssetDiscovery($parent, array $optionalArgs = [])
     {
         $request = new RunAssetDiscoveryRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('RunAssetDiscovery', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
@@ -1926,18 +1973,16 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\Finding
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function setFindingState($name, $state, $startTime, array $optionalArgs = [])
     {
         $request = new SetFindingStateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setState($state);
         $request->setStartTime($startTime);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetFindingState', Finding::class, $optionalArgs, $request)->wait();
     }
@@ -1976,17 +2021,15 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\Iam\V1\Policy
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
@@ -2025,17 +2068,15 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\Iam\V1\TestIamPermissionsResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'resource' => $request->getResource(),
-        ]);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
@@ -2082,20 +2123,18 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\Finding
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateFinding($finding, array $optionalArgs = [])
     {
         $request = new UpdateFindingRequest();
+        $requestParamHeaders = [];
         $request->setFinding($finding);
+        $requestParamHeaders['finding.name'] = $finding->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'finding.name' => $request->getFinding()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateFinding', Finding::class, $optionalArgs, $request)->wait();
     }
@@ -2133,20 +2172,18 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\NotificationConfig
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateNotificationConfig($notificationConfig, array $optionalArgs = [])
     {
         $request = new UpdateNotificationConfigRequest();
+        $requestParamHeaders = [];
         $request->setNotificationConfig($notificationConfig);
+        $requestParamHeaders['notification_config.name'] = $notificationConfig->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'notification_config.name' => $request->getNotificationConfig()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
     }
@@ -2183,72 +2220,20 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\OrganizationSettings
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateOrganizationSettings($organizationSettings, array $optionalArgs = [])
     {
         $request = new UpdateOrganizationSettingsRequest();
+        $requestParamHeaders = [];
         $request->setOrganizationSettings($organizationSettings);
+        $requestParamHeaders['organization_settings.name'] = $organizationSettings->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'organization_settings.name' => $request->getOrganizationSettings()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Updates a source.
-     *
-     * Sample code:
-     * ```
-     * $securityCenterClient = new SecurityCenterClient();
-     * try {
-     *     $source = new Source();
-     *     $response = $securityCenterClient->updateSource($source);
-     * } finally {
-     *     $securityCenterClient->close();
-     * }
-     * ```
-     *
-     * @param Source $source       Required. The source resource to update.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type FieldMask $updateMask
-     *           The FieldMask to use when updating the source resource.
-     *
-     *           If empty all mutable fields will be updated.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\SecurityCenter\V1\Source
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function updateSource($source, array $optionalArgs = [])
-    {
-        $request = new UpdateSourceRequest();
-        $request->setSource($source);
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'source.name' => $request->getSource()->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSource', Source::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2289,13 +2274,13 @@ class SecurityCenterGapicClient
      * @return \Google\Cloud\SecurityCenter\V1\SecurityMarks
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function updateSecurityMarks($securityMarks, array $optionalArgs = [])
     {
         $request = new UpdateSecurityMarksRequest();
+        $requestParamHeaders = [];
         $request->setSecurityMarks($securityMarks);
+        $requestParamHeaders['security_marks.name'] = $securityMarks->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
@@ -2304,10 +2289,56 @@ class SecurityCenterGapicClient
             $request->setStartTime($optionalArgs['startTime']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'security_marks.name' => $request->getSecurityMarks()->getName(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateSecurityMarks', SecurityMarks::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates a source.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $source = new Source();
+     *     $response = $securityCenterClient->updateSource($source);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param Source $source       Required. The source resource to update.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           The FieldMask to use when updating the source resource.
+     *
+     *           If empty all mutable fields will be updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\Source
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateSource($source, array $optionalArgs = [])
+    {
+        $request = new UpdateSourceRequest();
+        $requestParamHeaders = [];
+        $request->setSource($source);
+        $requestParamHeaders['source.name'] = $source->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateSource', Source::class, $optionalArgs, $request)->wait();
     }
 }

@@ -62,8 +62,14 @@ class FieldDetails
     /** @var bool *Readonly* Whether this field is an enum. */
     public bool $isEnum;
 
+    /** @var bool *Readonly* Whether this field is a message. */
+    public bool $isMessage;
+
     /** @var bool *Readonly* Whether this field is a map. */
     public bool $isMap;
+
+    /** @var bool *Readonly* The full name of the field's type if this is a message, null otherwise. */
+    public ?string $fullname;
 
     // TODO(vNext): Simplify unit-test response generation.
     /** @var bool *Readonly* Whether this field type is populated in a unit-test response. */
@@ -97,6 +103,8 @@ class FieldDetails
         $this->setter = new PhpMethod($desc->getSetter());
         $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+        $this->isMessage = $field->getType() == GPBType::MESSAGE;
+        $this->fullname = $this->isMessage ? $field->getTypeName() : null;
         $this->isEnum = $field->getType() === GPBType::ENUM;
         $this->isMap = ProtoHelpers::isMap($catalog, $desc);
         $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();

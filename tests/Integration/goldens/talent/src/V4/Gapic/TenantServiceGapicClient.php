@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ namespace Google\Cloud\Talent\V4\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -41,7 +42,6 @@ use Google\Cloud\Talent\V4\GetTenantRequest;
 use Google\Cloud\Talent\V4\ListTenantsRequest;
 use Google\Cloud\Talent\V4\ListTenantsResponse;
 use Google\Cloud\Talent\V4\Tenant;
-use Google\Cloud\Talent\V4\TenantServiceGrpcClient;
 use Google\Cloud\Talent\V4\UpdateTenantRequest;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\GPBEmpty;
@@ -67,26 +67,34 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class TenantServiceGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.talent.v4.TenantService';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'jobs.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/jobs',
@@ -154,8 +162,6 @@ class TenantServiceGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
-     *
-     * @experimental
      */
     public static function projectName($project)
     {
@@ -172,8 +178,6 @@ class TenantServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
-     *
-     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -202,8 +206,6 @@ class TenantServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -277,8 +279,6 @@ class TenantServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -319,19 +319,58 @@ class TenantServiceGapicClient
      * @return \Google\Cloud\Talent\V4\Tenant
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createTenant($parent, $tenant, array $optionalArgs = [])
     {
         $request = new CreateTenantRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTenant($tenant);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateTenant', Tenant::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Deletes specified tenant.
+     *
+     * Sample code:
+     * ```
+     * $tenantServiceClient = new TenantServiceClient();
+     * try {
+     *     $formattedName = $tenantServiceClient->tenantName('[PROJECT]', '[TENANT]');
+     *     $tenantServiceClient->deleteTenant($formattedName);
+     * } finally {
+     *     $tenantServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. The resource name of the tenant to be deleted.
+     *
+     *                             The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+     *                             "projects/foo/tenants/bar".
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteTenant($name, array $optionalArgs = [])
+    {
+        $request = new DeleteTenantRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteTenant', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -365,115 +404,16 @@ class TenantServiceGapicClient
      * @return \Google\Cloud\Talent\V4\Tenant
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function getTenant($name, array $optionalArgs = [])
     {
         $request = new GetTenantRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetTenant', Tenant::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Updates specified tenant.
-     *
-     * Sample code:
-     * ```
-     * $tenantServiceClient = new TenantServiceClient();
-     * try {
-     *     $tenant = new Tenant();
-     *     $response = $tenantServiceClient->updateTenant($tenant);
-     * } finally {
-     *     $tenantServiceClient->close();
-     * }
-     * ```
-     *
-     * @param Tenant $tenant       Required. The tenant resource to replace the current resource in the system.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type FieldMask $updateMask
-     *           Strongly recommended for the best service experience.
-     *
-     *           If [update_mask][google.cloud.talent.v4.UpdateTenantRequest.update_mask] is provided, only the specified fields in
-     *           [tenant][google.cloud.talent.v4.UpdateTenantRequest.tenant] are updated. Otherwise all the fields are updated.
-     *
-     *           A field mask to specify the tenant fields to be updated. Only
-     *           top level fields of [Tenant][google.cloud.talent.v4.Tenant] are supported.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Google\Cloud\Talent\V4\Tenant
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function updateTenant($tenant, array $optionalArgs = [])
-    {
-        $request = new UpdateTenantRequest();
-        $request->setTenant($tenant);
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'tenant.name' => $request->getTenant()->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateTenant', Tenant::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Deletes specified tenant.
-     *
-     * Sample code:
-     * ```
-     * $tenantServiceClient = new TenantServiceClient();
-     * try {
-     *     $formattedName = $tenantServiceClient->tenantName('[PROJECT]', '[TENANT]');
-     *     $tenantServiceClient->deleteTenant($formattedName);
-     * } finally {
-     *     $tenantServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         Required. The resource name of the tenant to be deleted.
-     *
-     *                             The format is "projects/{project_id}/tenants/{tenant_id}", for example,
-     *                             "projects/foo/tenants/bar".
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @throws ApiException if the remote call fails
-     *
-     * @experimental
-     */
-    public function deleteTenant($name, array $optionalArgs = [])
-    {
-        $request = new DeleteTenantRequest();
-        $request->setName($name);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'name' => $request->getName(),
-        ]);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteTenant', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -528,13 +468,13 @@ class TenantServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function listTenants($parent, array $optionalArgs = [])
     {
         $request = new ListTenantsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -543,10 +483,60 @@ class TenantServiceGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListTenants', $optionalArgs, ListTenantsResponse::class, $request);
+    }
+
+    /**
+     * Updates specified tenant.
+     *
+     * Sample code:
+     * ```
+     * $tenantServiceClient = new TenantServiceClient();
+     * try {
+     *     $tenant = new Tenant();
+     *     $response = $tenantServiceClient->updateTenant($tenant);
+     * } finally {
+     *     $tenantServiceClient->close();
+     * }
+     * ```
+     *
+     * @param Tenant $tenant       Required. The tenant resource to replace the current resource in the system.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           Strongly recommended for the best service experience.
+     *
+     *           If [update_mask][google.cloud.talent.v4.UpdateTenantRequest.update_mask] is provided, only the specified fields in
+     *           [tenant][google.cloud.talent.v4.UpdateTenantRequest.tenant] are updated. Otherwise all the fields are updated.
+     *
+     *           A field mask to specify the tenant fields to be updated. Only
+     *           top level fields of [Tenant][google.cloud.talent.v4.Tenant] are supported.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Talent\V4\Tenant
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateTenant($tenant, array $optionalArgs = [])
+    {
+        $request = new UpdateTenantRequest();
+        $requestParamHeaders = [];
+        $request->setTenant($tenant);
+        $requestParamHeaders['tenant.name'] = $tenant->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateTenant', Tenant::class, $optionalArgs, $request)->wait();
     }
 }

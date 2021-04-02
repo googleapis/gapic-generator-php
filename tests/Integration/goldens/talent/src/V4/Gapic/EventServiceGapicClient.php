@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ namespace Google\Cloud\Talent\V4\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -37,7 +38,6 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4\ClientEvent;
 use Google\Cloud\Talent\V4\CreateClientEventRequest;
-use Google\Cloud\Talent\V4\EventServiceGrpcClient;
 
 /**
  * Service Description: A service handles client event report.
@@ -60,26 +60,34 @@ use Google\Cloud\Talent\V4\EventServiceGrpcClient;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class EventServiceGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.talent.v4.EventService';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'jobs.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/jobs',
@@ -136,8 +144,6 @@ class EventServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
-     *
-     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -165,8 +171,6 @@ class EventServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -240,8 +244,6 @@ class EventServiceGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -289,17 +291,15 @@ class EventServiceGapicClient
      * @return \Google\Cloud\Talent\V4\ClientEvent
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function createClientEvent($parent, $clientEvent, array $optionalArgs = [])
     {
         $request = new CreateClientEventRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setClientEvent($clientEvent);
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'parent' => $request->getParent(),
-        ]);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CreateClientEvent', ClientEvent::class, $optionalArgs, $request)->wait();
     }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +22,14 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4;
 
-use Google\Cloud\Talent\V4\CompletionClient;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
+
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Talent\V4\CompleteQueryRequest;
 use Google\Cloud\Talent\V4\CompleteQueryResponse;
-use Google\Cloud\Talent\V4\CompletionGrpcClient;
-use Google\LongRunning\GetOperationRequest;
-use Google\Protobuf\Any;
-use Google\Protobuf\GPBEmpty;
+use Google\Cloud\Talent\V4\CompletionClient;
 use Google\Rpc\Code;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -47,19 +39,25 @@ use stdClass;
  */
 class CompletionClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return CompletionClient */
+    /**
+     * @return CompletionClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,7 +66,9 @@ class CompletionClientTest extends GeneratedTest
         return new CompletionClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryTest()
     {
         $transport = $this->createTransport();
@@ -99,7 +99,9 @@ class CompletionClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryExceptionTest()
     {
         $transport = $this->createTransport();

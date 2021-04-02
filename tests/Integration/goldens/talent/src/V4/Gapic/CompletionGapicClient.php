@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ namespace Google\Cloud\Talent\V4\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
@@ -39,7 +40,6 @@ use Google\Cloud\Talent\V4\CompleteQueryRequest;
 use Google\Cloud\Talent\V4\CompleteQueryRequest\CompletionScope;
 use Google\Cloud\Talent\V4\CompleteQueryRequest\CompletionType;
 use Google\Cloud\Talent\V4\CompleteQueryResponse;
-use Google\Cloud\Talent\V4\CompletionGrpcClient;
 
 /**
  * Service Description: A service handles auto completion.
@@ -63,34 +63,42 @@ use Google\Cloud\Talent\V4\CompletionGrpcClient;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
- *
- * @experimental
  */
 class CompletionGapicClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     const SERVICE_NAME = 'google.cloud.talent.v4.Completion';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     const SERVICE_ADDRESS = 'jobs.googleapis.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     const CODEGEN_NAME = 'gapic';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/jobs',
     ];
 
-    private static $companyNameTemplate;
-
     private static $tenantNameTemplate;
+
+    private static $companyNameTemplate;
 
     private static $pathTemplateMap;
 
@@ -152,8 +160,6 @@ class CompletionGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
-     *
-     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -172,8 +178,6 @@ class CompletionGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
-     *
-     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -202,8 +206,6 @@ class CompletionGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
-     *
-     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -277,8 +279,6 @@ class CompletionGapicClient
      * }
      *
      * @throws ValidationException
-     *
-     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -345,15 +345,15 @@ class CompletionGapicClient
      * @return \Google\Cloud\Talent\V4\CompleteQueryResponse
      *
      * @throws ApiException if the remote call fails
-     *
-     * @experimental
      */
     public function completeQuery($tenant, $query, $pageSize, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
+        $requestParamHeaders = [];
         $request->setTenant($tenant);
         $request->setQuery($query);
         $request->setPageSize($pageSize);
+        $requestParamHeaders['tenant'] = $tenant;
         if (isset($optionalArgs['languageCodes'])) {
             $request->setLanguageCodes($optionalArgs['languageCodes']);
         }
@@ -370,9 +370,7 @@ class CompletionGapicClient
             $request->setType($optionalArgs['type']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor([
-            'tenant' => $request->getTenant(),
-        ]);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
