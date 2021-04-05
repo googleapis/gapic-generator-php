@@ -84,8 +84,8 @@ final class PhpFile extends AST
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
             EOF;
+        print("DEL: HERE in $filePath; isGa eq False?? " . ($isGa === False) . ", isGa? " . $isGa . "\n");
         if ($isGa === False) {
-            print("DEL: HERE in $filePath; isGa eq False?? " . ($isGa === False) . ", isGa? " . $isGa . "\n");
             $warning .= "\n *\n * @experimental";
         }
         $warning .= "\n */";
