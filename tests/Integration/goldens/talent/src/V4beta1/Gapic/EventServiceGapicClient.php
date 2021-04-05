@@ -60,6 +60,8 @@ use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class EventServiceGapicClient
 {
@@ -155,6 +157,8 @@ class EventServiceGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
+     *
+     * @experimental
      */
     public static function projectName($project)
     {
@@ -171,6 +175,8 @@ class EventServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -199,6 +205,8 @@ class EventServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -272,6 +280,8 @@ class EventServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -320,6 +330,8 @@ class EventServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\ClientEvent
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createClientEvent($parent, $clientEvent, array $optionalArgs = [])
     {

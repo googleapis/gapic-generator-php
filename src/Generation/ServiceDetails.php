@@ -255,4 +255,11 @@ class ServiceDetails
             strpos($typeName, '.') === false ? ".{$this->package}.{$typeName}" :
             (substr($typeName, 0, 1) === '.' ? $typeName : ".{$typeName}");
     }
+
+    public function isGa(): bool
+    {
+      $ns_components = explode("\\", $this->namespace);
+      $version = strtolower($ns_components[array_key_last($ns_components)]);
+      return strpos($version, 'alpha') === False && strpos($version, 'beta') === False;
+    }
 }

@@ -75,7 +75,7 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
-    public function withGeneratedFromProtoCodeWarning(string $filePath)
+    public function withGeneratedFromProtoCodeWarning(string $filePath, bool $isGa)
     {
         $warning = <<<EOF
             /*
@@ -83,10 +83,11 @@ final class PhpFile extends AST
              * This file was generated from the file
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
-             *
-             * @experimental
-             */
             EOF;
+        if ($isGa === False) {
+            $warning .= "\n *\n * @experimental";
+        }
+        $warning .= "\n */";
         $warning = Vector::new(explode("\n", $warning));
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }

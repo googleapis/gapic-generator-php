@@ -109,6 +109,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class JobServiceGapicClient
 {
@@ -280,6 +282,8 @@ class JobServiceGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
+     *
+     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -299,6 +303,8 @@ class JobServiceGapicClient
      * @param string $job
      *
      * @return string The formatted job resource.
+     *
+     * @experimental
      */
     public static function jobName($project, $tenant, $job)
     {
@@ -316,6 +322,8 @@ class JobServiceGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
+     *
+     * @experimental
      */
     public static function projectName($project)
     {
@@ -332,6 +340,8 @@ class JobServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_company resource.
+     *
+     * @experimental
      */
     public static function projectCompanyName($project, $company)
     {
@@ -349,6 +359,8 @@ class JobServiceGapicClient
      * @param string $job
      *
      * @return string The formatted project_job resource.
+     *
+     * @experimental
      */
     public static function projectJobName($project, $job)
     {
@@ -367,6 +379,8 @@ class JobServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_tenant_company resource.
+     *
+     * @experimental
      */
     public static function projectTenantCompanyName($project, $tenant, $company)
     {
@@ -386,6 +400,8 @@ class JobServiceGapicClient
      * @param string $job
      *
      * @return string The formatted project_tenant_job resource.
+     *
+     * @experimental
      */
     public static function projectTenantJobName($project, $tenant, $job)
     {
@@ -404,6 +420,8 @@ class JobServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -438,6 +456,8 @@ class JobServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -465,6 +485,8 @@ class JobServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
+     *
+     * @experimental
      */
     public function getOperationsClient()
     {
@@ -481,6 +503,8 @@ class JobServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
+     *
+     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -540,6 +564,8 @@ class JobServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -607,6 +633,8 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function batchCreateJobs($parent, $jobs, array $optionalArgs = [])
     {
@@ -662,6 +690,8 @@ class JobServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function batchDeleteJobs($parent, $filter, array $optionalArgs = [])
     {
@@ -749,6 +779,8 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function batchUpdateJobs($parent, $jobs, array $optionalArgs = [])
     {
@@ -803,6 +835,8 @@ class JobServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Job
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createJob($parent, $job, array $optionalArgs = [])
     {
@@ -852,6 +886,8 @@ class JobServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteJob($name, array $optionalArgs = [])
     {
@@ -900,6 +936,8 @@ class JobServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Job
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getJob($name, array $optionalArgs = [])
     {
@@ -989,6 +1027,8 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listJobs($parent, $filter, array $optionalArgs = [])
     {
@@ -1290,6 +1330,8 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function searchJobs($parent, $requestMetadata, array $optionalArgs = [])
     {
@@ -1636,6 +1678,8 @@ class JobServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function searchJobsForAlert($parent, $requestMetadata, array $optionalArgs = [])
     {
@@ -1740,6 +1784,8 @@ class JobServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Job
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateJob($job, array $optionalArgs = [])
     {

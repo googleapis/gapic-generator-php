@@ -44,7 +44,7 @@ class EmptyClientGenerator
         // Generate file content
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
-            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath);
+            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath, $this->serviceDetails->isGa());
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
