@@ -68,6 +68,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class ApplicationServiceGapicClient
 {
@@ -238,6 +240,8 @@ class ApplicationServiceGapicClient
      * @param string $application
      *
      * @return string The formatted application resource.
+     *
+     * @experimental
      */
     public static function applicationName($project, $tenant, $profile, $application)
     {
@@ -258,6 +262,8 @@ class ApplicationServiceGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
+     *
+     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -277,6 +283,8 @@ class ApplicationServiceGapicClient
      * @param string $job
      *
      * @return string The formatted job resource.
+     *
+     * @experimental
      */
     public static function jobName($project, $tenant, $job)
     {
@@ -296,6 +304,8 @@ class ApplicationServiceGapicClient
      * @param string $profile
      *
      * @return string The formatted profile resource.
+     *
+     * @experimental
      */
     public static function profileName($project, $tenant, $profile)
     {
@@ -314,6 +324,8 @@ class ApplicationServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_company resource.
+     *
+     * @experimental
      */
     public static function projectCompanyName($project, $company)
     {
@@ -331,6 +343,8 @@ class ApplicationServiceGapicClient
      * @param string $job
      *
      * @return string The formatted project_job resource.
+     *
+     * @experimental
      */
     public static function projectJobName($project, $job)
     {
@@ -349,6 +363,8 @@ class ApplicationServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_tenant_company resource.
+     *
+     * @experimental
      */
     public static function projectTenantCompanyName($project, $tenant, $company)
     {
@@ -368,6 +384,8 @@ class ApplicationServiceGapicClient
      * @param string $job
      *
      * @return string The formatted project_tenant_job resource.
+     *
+     * @experimental
      */
     public static function projectTenantJobName($project, $tenant, $job)
     {
@@ -403,6 +421,8 @@ class ApplicationServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -476,6 +496,8 @@ class ApplicationServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -517,6 +539,8 @@ class ApplicationServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Application
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createApplication($parent, $application, array $optionalArgs = [])
     {
@@ -560,6 +584,8 @@ class ApplicationServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteApplication($name, array $optionalArgs = [])
     {
@@ -604,6 +630,8 @@ class ApplicationServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Application
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getApplication($name, array $optionalArgs = [])
     {
@@ -669,6 +697,8 @@ class ApplicationServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listApplications($parent, array $optionalArgs = [])
     {
@@ -725,6 +755,8 @@ class ApplicationServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Application
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateApplication($application, array $optionalArgs = [])
     {

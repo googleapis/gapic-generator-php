@@ -86,7 +86,7 @@ class GapicClientGenerator
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
             // TODO(vNext): Consider if this header is sensible, as it ties this generator to Google cloud.
-            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath);
+            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath, $this->serviceDetails->isGa());
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
@@ -114,7 +114,8 @@ class GapicClientGenerator
                         'with these names, this class includes a format method for each type of name, and additionally' .
                         'a parseName method to extract the individual identifiers contained within formatted names' .
                         'that are returned by the API.'
-                     )
+                     ),
+                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())
@@ -231,7 +232,8 @@ class GapicClientGenerator
                             'resource.'
                         ),
                         $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.'))
+                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
+                        $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                     )));
             $formattedName = AST::param(null, AST::var('formattedName'));
             $template = AST::param(null, AST::var('template'), AST::NULL);
@@ -278,7 +280,8 @@ class GapicClientGenerator
                     PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
                     PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
                     PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
-                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.'))
+                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 ));
             return $templateGetters->append($getPathTemplateMap)->concat($formatMethods)->append($parseMethod);
         } else {
@@ -306,7 +309,8 @@ class GapicClientGenerator
                 ))
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class)))
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 ));
             $operationName = AST::var('operationName');
             $methodName = AST::var('methodName');
@@ -345,7 +349,8 @@ class GapicClientGenerator
                         AST::param($this->ctx->type(Type::string()), $methodName),
                         PhpDoc::text('The name of the method used to start the operation')
                     ),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class)))
+                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 ));
             return Vector::new([$getOperationsClient, $resumeOperation]);
         } else {
@@ -502,7 +507,8 @@ class GapicClientGenerator
                         )
                     )
                 )),
-                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)))
+                PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
             ));
     }
 
@@ -665,7 +671,8 @@ class GapicClientGenerator
                 PhpDoc::throws(
                     $this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')
-                )
+                ),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
             ));
     }
 

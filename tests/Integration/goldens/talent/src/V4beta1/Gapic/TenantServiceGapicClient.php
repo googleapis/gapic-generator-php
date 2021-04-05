@@ -67,6 +67,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class TenantServiceGapicClient
 {
@@ -162,6 +164,8 @@ class TenantServiceGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
+     *
+     * @experimental
      */
     public static function projectName($project)
     {
@@ -178,6 +182,8 @@ class TenantServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -206,6 +212,8 @@ class TenantServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -279,6 +287,8 @@ class TenantServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -319,6 +329,8 @@ class TenantServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Tenant
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createTenant($parent, $tenant, array $optionalArgs = [])
     {
@@ -361,6 +373,8 @@ class TenantServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteTenant($name, array $optionalArgs = [])
     {
@@ -404,6 +418,8 @@ class TenantServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Tenant
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getTenant($name, array $optionalArgs = [])
     {
@@ -468,6 +484,8 @@ class TenantServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listTenants($parent, array $optionalArgs = [])
     {
@@ -524,6 +542,8 @@ class TenantServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Tenant
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateTenant($tenant, array $optionalArgs = [])
     {

@@ -63,6 +63,8 @@ use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class CompletionGapicClient
 {
@@ -196,6 +198,8 @@ class CompletionGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
+     *
+     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -213,6 +217,8 @@ class CompletionGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
+     *
+     * @experimental
      */
     public static function projectName($project)
     {
@@ -229,6 +235,8 @@ class CompletionGapicClient
      * @param string $company
      *
      * @return string The formatted project_company resource.
+     *
+     * @experimental
      */
     public static function projectCompanyName($project, $company)
     {
@@ -247,6 +255,8 @@ class CompletionGapicClient
      * @param string $company
      *
      * @return string The formatted project_tenant_company resource.
+     *
+     * @experimental
      */
     public static function projectTenantCompanyName($project, $tenant, $company)
     {
@@ -265,6 +275,8 @@ class CompletionGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -296,6 +308,8 @@ class CompletionGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -369,6 +383,8 @@ class CompletionGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -441,6 +457,8 @@ class CompletionGapicClient
      * @return \Google\Cloud\Talent\V4beta1\CompleteQueryResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function completeQuery($parent, $query, $pageSize, array $optionalArgs = [])
     {

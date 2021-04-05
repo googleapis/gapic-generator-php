@@ -67,6 +67,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class CompanyServiceGapicClient
 {
@@ -200,6 +202,8 @@ class CompanyServiceGapicClient
      * @param string $company
      *
      * @return string The formatted company resource.
+     *
+     * @experimental
      */
     public static function companyName($project, $tenant, $company)
     {
@@ -217,6 +221,8 @@ class CompanyServiceGapicClient
      * @param string $project
      *
      * @return string The formatted project resource.
+     *
+     * @experimental
      */
     public static function projectName($project)
     {
@@ -233,6 +239,8 @@ class CompanyServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_company resource.
+     *
+     * @experimental
      */
     public static function projectCompanyName($project, $company)
     {
@@ -251,6 +259,8 @@ class CompanyServiceGapicClient
      * @param string $company
      *
      * @return string The formatted project_tenant_company resource.
+     *
+     * @experimental
      */
     public static function projectTenantCompanyName($project, $tenant, $company)
     {
@@ -269,6 +279,8 @@ class CompanyServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -300,6 +312,8 @@ class CompanyServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -373,6 +387,8 @@ class CompanyServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -414,6 +430,8 @@ class CompanyServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Company
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createCompany($parent, $company, array $optionalArgs = [])
     {
@@ -461,6 +479,8 @@ class CompanyServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteCompany($name, array $optionalArgs = [])
     {
@@ -508,6 +528,8 @@ class CompanyServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Company
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getCompany($name, array $optionalArgs = [])
     {
@@ -582,6 +604,8 @@ class CompanyServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listCompanies($parent, array $optionalArgs = [])
     {
@@ -642,6 +666,8 @@ class CompanyServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Company
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateCompany($company, array $optionalArgs = [])
     {

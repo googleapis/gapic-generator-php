@@ -73,6 +73,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class ProfileServiceGapicClient
 {
@@ -170,6 +172,8 @@ class ProfileServiceGapicClient
      * @param string $profile
      *
      * @return string The formatted profile resource.
+     *
+     * @experimental
      */
     public static function profileName($project, $tenant, $profile)
     {
@@ -188,6 +192,8 @@ class ProfileServiceGapicClient
      * @param string $tenant
      *
      * @return string The formatted tenant resource.
+     *
+     * @experimental
      */
     public static function tenantName($project, $tenant)
     {
@@ -216,6 +222,8 @@ class ProfileServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -289,6 +297,8 @@ class ProfileServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -329,6 +339,8 @@ class ProfileServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Profile
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createProfile($parent, $profile, array $optionalArgs = [])
     {
@@ -374,6 +386,8 @@ class ProfileServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteProfile($name, array $optionalArgs = [])
     {
@@ -418,6 +432,8 @@ class ProfileServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Profile
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getProfile($name, array $optionalArgs = [])
     {
@@ -507,6 +523,8 @@ class ProfileServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listProfiles($parent, array $optionalArgs = [])
     {
@@ -746,6 +764,8 @@ class ProfileServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function searchProfiles($parent, $requestMetadata, array $optionalArgs = [])
     {
@@ -831,6 +851,8 @@ class ProfileServiceGapicClient
      * @return \Google\Cloud\Talent\V4beta1\Profile
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateProfile($profile, array $optionalArgs = [])
     {
