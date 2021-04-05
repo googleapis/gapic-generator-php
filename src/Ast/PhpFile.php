@@ -85,6 +85,7 @@ final class PhpFile extends AST
              * and updates to that file get reflected here through a refresh process.
             EOF;
         if ($isGa === False) {
+            print("DEL: HERE in $filePath; isGa eq False?? " . ($isGa === False) . ", isGa? " . $isGa . "\n");
             $warning .= "\n *\n * @experimental";
         }
         $warning .= "\n */";
