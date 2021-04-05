@@ -21,9 +21,10 @@ INTEGRATION_TEST_LIBRARIES = [
     "iam",  # Standalone service that's in the mixin allowlist.
     "logging",  # Singleton resource names.
     "redis",  # sample_code field in gapic.yaml.
+    "retail",  # ALpha.
     "speech",  # sample_code field in gapic.yaml.
     "securitycenter",  # Exercises pathTemplateMap.
-    "talent",  # Path template and duplicate name template properties.
+    "talent",  # Beta; path template and duplicate name template properties.
     "videointelligence",  # sample_code field in gapic.yaml.
 ]
 
@@ -302,6 +303,38 @@ php_gapic_assembly_pkg(
     ],
 )
 
+# Retail - Alpha.
+php_proto_library(
+    name = "retail_php_proto",
+    deps = ["@com_google_googleapis//google/cloud/retail/v2alpha:retail_proto"],
+)
+
+php_grpc_library(
+    name = "retail_php_grpc",
+    srcs = ["@com_google_googleapis//google/cloud/retail/v2alpha:retail_proto"],
+    deps = [":retail_php_proto"],
+)
+
+php_gapic_library(
+    name = "retail_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/retail/v2alpha:retail_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/retail/v2alpha:retail_grpc_service_config.json",
+    service_yaml = "@com_google_googleapis//google/cloud/retail/v2alpha:retail_v2alpha.yaml",
+    deps = [
+        ":retail_php_grpc",
+        ":retail_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-retail-v2alpha-php",
+    deps = [
+        ":retail_php_gapic",
+        ":retail_php_grpc",
+        ":retail_php_proto",
+    ],
+)
+
 # Video intelligence - sample code.
 php_proto_library(
     name = "videointelligence_php_proto",
@@ -438,20 +471,20 @@ php_gapic_assembly_pkg(
 # Talent.
 php_proto_library(
     name = "talent_php_proto",
-    deps = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto"],
+    deps = ["@com_google_googleapis//google/cloud/talent/v4beta1:talent_proto"],
 )
 
 php_grpc_library(
     name = "talent_php_grpc",
-    srcs = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto"],
+    srcs = ["@com_google_googleapis//google/cloud/talent/v4beta1:talent_proto"],
     deps = [":talent_php_proto"],
 )
 
 php_gapic_library(
     name = "talent_php_gapic",
-    srcs = ["@com_google_googleapis//google/cloud/talent/v4:talent_proto_with_info"],
-    grpc_service_config = "@com_google_googleapis//google/cloud/talent/v4:talent_grpc_service_config.json",
-    service_yaml = "@com_google_googleapis//google/cloud/talent:talent_v4.yaml",
+    srcs = ["@com_google_googleapis//google/cloud/talent/v4beta1:talent_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/talent/v4beta1:talent_grpc_service_config.json",
+    service_yaml = "@com_google_googleapis//google/cloud/talent:talent_v4beta1.yaml",
     deps = [
         ":talent_php_grpc",
         ":talent_php_proto",
@@ -459,7 +492,7 @@ php_gapic_library(
 )
 
 php_gapic_assembly_pkg(
-    name = "google-cloud-talent-v4-php",
+    name = "google-cloud-talent-v4beta1-php",
     deps = [
         ":talent_php_gapic",
         ":talent_php_grpc",
