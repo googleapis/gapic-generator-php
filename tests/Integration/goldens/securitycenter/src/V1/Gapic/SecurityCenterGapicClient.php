@@ -137,19 +137,23 @@ class SecurityCenterGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
-    private static $sourceNameTemplate;
-
     private static $findingNameTemplate;
-
-    private static $organizationNameTemplate;
 
     private static $notificationConfigNameTemplate;
 
-    private static $topicNameTemplate;
+    private static $organizationNameTemplate;
+
+    private static $organizationAssetSecurityMarksNameTemplate;
 
     private static $organizationSettingsNameTemplate;
 
+    private static $organizationSourceFindingSecurityMarksNameTemplate;
+
     private static $securityMarksNameTemplate;
+
+    private static $sourceNameTemplate;
+
+    private static $topicNameTemplate;
 
     private static $pathTemplateMap;
 

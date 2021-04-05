@@ -141,11 +141,11 @@ class JobServiceGapicClient
         'https://www.googleapis.com/auth/jobs',
     ];
 
+    private static $companyNameTemplate;
+
     private static $jobNameTemplate;
 
     private static $tenantNameTemplate;
-
-    private static $companyNameTemplate;
 
     private static $pathTemplateMap;
 
