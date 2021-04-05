@@ -160,7 +160,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setEntries($entries);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedResourceNames = $client->projectName('[PROJECT]');
+        $formattedResourceNames = [
+            $client->projectName('[PROJECT]'),
+        ];
         $response = $client->listLogEntries($formattedResourceNames);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -197,7 +199,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedResourceNames = $client->projectName('[PROJECT]');
+        $formattedResourceNames = [
+            $client->projectName('[PROJECT]'),
+        ];
         try {
             $client->listLogEntries($formattedResourceNames);
             // If the $client method call did not throw, fail the test

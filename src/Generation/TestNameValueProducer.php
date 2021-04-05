@@ -156,15 +156,21 @@ class TestNameValueProducer
 
         if ($field->isRequired) {
             [$var, $name] = $fnVarName();
+            $varValue = null;
             if ($field->useResourceTestValue) {
                 // TODO: What if it's just a wild-card pattern?
                 $patternDetails = $field->resourceDetails->patterns[0];
                 $args = $patternDetails->params->map(fn ($x) => strtoupper("[{$x[0]}]"));
                 $clientVar = $clientVar ?? AST::var('client');
-                return AST::assign($var, $clientVar->instanceCall($field->resourceDetails->formatMethod)($args));
+                // TODO: This should be better merged with FieldDetails.
+                $varValue = $clientVar->instanceCall($field->resourceDetails->formatMethod)($args);
+                if ($field->isRepeated) {
+                  $varValue = AST::array([$varValue]);
+                }
             } else {
-                return AST::assign($var, $this->value($field, $name));
+                $varValue = $this->value($field, $name);
             }
+            return AST::assign($var, $varValue);
         } else {
             return null;
         }
