@@ -96,9 +96,9 @@ class CompletionGapicClient
         'https://www.googleapis.com/auth/jobs',
     ];
 
-    private static $tenantNameTemplate;
-
     private static $companyNameTemplate;
+
+    private static $tenantNameTemplate;
 
     private static $pathTemplateMap;
 

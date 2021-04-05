@@ -171,8 +171,9 @@ class GapicClientGenerator
     {
         if (count($this->serviceDetails->resourceParts) > 0) {
             // Prevent duplicate properties. Vector's toMap currently does not support cloberring keys.
+            // Sorts these properties alphabetically as a nice side effect.
             $templateMap = [];
-            foreach ($this->serviceDetails->resourceDefs as $r) {
+            foreach ($this->serviceDetails->resourceParts as $r) {
               $templateMap[$r->nameCamelCase] =
                   $r->getTemplateProperty()->withAccess(Access::PRIVATE, Access::STATIC);
             }
