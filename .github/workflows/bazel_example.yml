@@ -17,13 +17,31 @@ jobs:
       with:
         submodules: 'recursive'
 
+    - name: Bazel File Cache Setup
+      id: cache-bazel
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/bazel
+        key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+
+    - name: Bazel Cache Not Found
+      if: steps.cache-bazel.outputs.cache-hit != 'true'
+      run: |
+        echo "No cache found."
+    - name: Bazel Cache Found
+      if: steps.cache-bazel.outputs.cache-hit == 'true'
+      run: |
+        echo -n "Cache found. Cache size: "
+        du -sh ~/.cache/bazel
+        echo "If the cache seems broken, update the CACHE_VERSION secret in"
+        echo "https://github.com/googleapis/googleapis-discovery/settings/secrets/actions"
+        echo "(use any random string, any GUID will work)"
+        echo "and it will start over with a clean cache."
+        echo "The old one will disappear after 7 days."
+
     - name: Show bazel version
       run: |
         bazel --version
-
-    - name: Bazel Clean Cache
-      id: bazel-clean
-      run: bazel clean --expunge --async
 
     - name: Build example package; all targets
       run: |
@@ -45,8 +63,7 @@ jobs:
         grep "'initialPollDelayMillis' => '42042'" ./bazel_example/example_php_pkg/src/resources/example_descriptor_config.php
 
     - name: Integration Tests
-      run: |
-        bazel --batch test tests/Integration:asset tests/Integration:container tests/Integration:kms tests/Integration:iam tests/Integration:logging tests/Integration:speech tests/Integration:redis tests/Integration:videointelligence --noshow_progress
+      run: bazel --batch test tests/Integration:asset tests/Integration:container tests/Integration:kms tests/Integration:iam tests/Integration:logging tests/Integration:speech tests/Integration:redis tests/Integration:videointelligence --noshow_progress
 
     - uses: actions/upload-artifact@v2
       if: ${{ failure() }}
