@@ -84,10 +84,11 @@ final class PhpFile extends AST
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
             EOF;
-        print("DEL: HERE in $filePath; isGa eq False?? " . ($isGa === False) . ", isGa? " . $isGa . "\n");
         if ($isGa === False) {
             $warning .= "\n *\n * @experimental";
-        }
+        } else {
+          $warning .= "\n * IS GA? $isGa |" . (isGa === False) . "|";
+          }
         $warning .= "\n */";
         $warning = Vector::new(explode("\n", $warning));
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
