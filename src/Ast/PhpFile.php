@@ -83,14 +83,10 @@ final class PhpFile extends AST
              * This file was generated from the file
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
-             *
-             * DO NOT SUBMIT - TEST BAZEL BUILD ON GITHUB ACTIONS
             EOF;
         if ($isGa === False) {
-            $warning .= "\n *\n * @experimental      IS GA? $isGa |" . boolval($isGa) . "|";
-        } else {
-          $warning .= "\n * IS GA? $isGa |" . boolval($isGa) . "; IS? " . (boolval($isGa) === False) . "|";
-          }
+            $warning .= "\n *\n * @experimental";
+        }
         $warning .= "\n */";
         $warning = Vector::new(explode("\n", $warning));
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
