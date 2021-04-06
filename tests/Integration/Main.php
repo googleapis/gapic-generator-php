@@ -78,6 +78,8 @@ $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/apigateway/v1/apigateway_v1.yaml',
 //     'googleapis/google/cloud/apigateway/v1/apigateway_grpc_service_config.json'
 // )) ? $ok : false;
+// Commented-out due to formattedName bug in the monolith.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/asset/v1/*.proto',
     'google.cloud.asset.v1',
@@ -85,6 +87,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/asset/v1/cloudasset_v1.yaml',
     'googleapis/google/cloud/asset/v1/cloudasset_grpc_service_config.json'
 )) ? $ok : false;
+&/
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/automl/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.automl.v1',
@@ -149,6 +152,8 @@ $ok = processDiff(Invoker::invoke(
     true  // HTTP Rules.
 )) ? $ok : false;
  */
+// Commented-out due to formattedName bug in the monolith.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/dialogflow/v2/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.dialogflow.v2',
@@ -158,6 +163,7 @@ $ok = processDiff(Invoker::invoke(
     false,
     true  // For HTTP rules.
 )) ? $ok : false;
+ */
 // TODO: googleapis/google/cloud/dialogflow/cx/v3/ has wrong capitalization somewhere, so monolith crashes
 // $ok = processDiff(Invoker::invoke(
 //     'googleapis/google/cloud/dialogflow/cx/v3/*.proto googleapis/google/cloud/common_resources.proto',
