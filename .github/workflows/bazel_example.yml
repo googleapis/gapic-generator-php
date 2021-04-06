@@ -65,7 +65,7 @@ jobs:
     - name: Integration Tests
       run: |
         # Clear the cached files.
-        rm -r bazel-out/host/bin/rules_php_gapic/*
+        rm -r ~/.cache/bazel/*/*/*/gapic_generator_php/bazel-out/host/bin/rules_php_gapic/*
         bazel --batch test tests/Integration:asset tests/Integration:container tests/Integration:kms tests/Integration:iam tests/Integration:logging tests/Integration:speech tests/Integration:redis tests/Integration:videointelligence --noshow_progress --cache_test_results=no
 
     - uses: actions/upload-artifact@v2
