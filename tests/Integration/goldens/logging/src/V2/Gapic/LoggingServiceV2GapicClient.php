@@ -60,8 +60,8 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $loggingServiceV2Client = new LoggingServiceV2Client();
  * try {
- *     $logName = 'log_name';
- *     $loggingServiceV2Client->deleteLog($logName);
+ *     $formattedLogName = $loggingServiceV2Client->logName('[PROJECT]', '[LOG]');
+ *     $loggingServiceV2Client->deleteLog($formattedLogName);
  * } finally {
  *     $loggingServiceV2Client->close();
  * }
@@ -507,8 +507,8 @@ class LoggingServiceV2GapicClient
      * ```
      * $loggingServiceV2Client = new LoggingServiceV2Client();
      * try {
-     *     $logName = 'log_name';
-     *     $loggingServiceV2Client->deleteLog($logName);
+     *     $formattedLogName = $loggingServiceV2Client->logName('[PROJECT]', '[LOG]');
+     *     $loggingServiceV2Client->deleteLog($formattedLogName);
      * } finally {
      *     $loggingServiceV2Client->close();
      * }

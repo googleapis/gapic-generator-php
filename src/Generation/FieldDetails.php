@@ -134,7 +134,7 @@ class FieldDetails
             // TODO: Check for resource-definition message.
             $this->resourceDetails = null;
         }
-        $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) === 1;
+        $this->useResourceTestValue = !is_null($this->resourceDetails);
         $this->oneOfIndex = $field->hasOneOfIndex() ? $field->getOneofIndex() : null;
     }
 

@@ -860,8 +860,8 @@ class JobServiceGapicClient
      * ```
      * $jobServiceClient = new JobServiceClient();
      * try {
-     *     $name = 'name';
-     *     $jobServiceClient->deleteJob($name);
+     *     $formattedName = $jobServiceClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+     *     $jobServiceClient->deleteJob($formattedName);
      * } finally {
      *     $jobServiceClient->close();
      * }
@@ -908,8 +908,8 @@ class JobServiceGapicClient
      * ```
      * $jobServiceClient = new JobServiceClient();
      * try {
-     *     $name = 'name';
-     *     $response = $jobServiceClient->getJob($name);
+     *     $formattedName = $jobServiceClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+     *     $response = $jobServiceClient->getJob($formattedName);
      * } finally {
      *     $jobServiceClient->close();
      * }

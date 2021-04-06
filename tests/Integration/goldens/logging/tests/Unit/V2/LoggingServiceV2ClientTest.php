@@ -92,15 +92,15 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $logName = 'logName2013526694';
-        $client->deleteLog($logName);
+        $formattedLogName = $client->logName('[PROJECT]', '[LOG]');
+        $client->deleteLog($formattedLogName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.LoggingServiceV2/DeleteLog', $actualFuncCall);
         $actualValue = $actualRequestObject->getLogName();
-        $this->assertProtobufEquals($logName, $actualValue);
+        $this->assertProtobufEquals($formattedLogName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -125,9 +125,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $logName = 'logName2013526694';
+        $formattedLogName = $client->logName('[PROJECT]', '[LOG]');
         try {
-            $client->deleteLog($logName);
+            $client->deleteLog($formattedLogName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

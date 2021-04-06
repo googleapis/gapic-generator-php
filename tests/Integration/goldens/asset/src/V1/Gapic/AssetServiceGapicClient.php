@@ -672,8 +672,8 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $name = 'name';
-     *     $assetServiceClient->deleteFeed($name);
+     *     $formattedName = $assetServiceClient->feedName('[PROJECT]', '[FEED]');
+     *     $assetServiceClient->deleteFeed($formattedName);
      * } finally {
      *     $assetServiceClient->close();
      * }
@@ -834,8 +834,8 @@ class AssetServiceGapicClient
      * ```
      * $assetServiceClient = new AssetServiceClient();
      * try {
-     *     $name = 'name';
-     *     $response = $assetServiceClient->getFeed($name);
+     *     $formattedName = $assetServiceClient->feedName('[PROJECT]', '[FEED]');
+     *     $response = $assetServiceClient->getFeed($formattedName);
      * } finally {
      *     $assetServiceClient->close();
      * }
