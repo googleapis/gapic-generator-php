@@ -559,7 +559,9 @@ class LoggingServiceV2GapicClient
      * ```
      * $loggingServiceV2Client = new LoggingServiceV2Client();
      * try {
-     *     $formattedResourceNames = $loggingServiceV2Client->projectName('[PROJECT]');
+     *     $formattedResourceNames = [
+     *         $loggingServiceV2Client->projectName('[PROJECT]'),
+     *     ];
      *     // Iterate over pages of elements
      *     $pagedResponse = $loggingServiceV2Client->listLogEntries($formattedResourceNames);
      *     foreach ($pagedResponse->iteratePages() as $page) {
