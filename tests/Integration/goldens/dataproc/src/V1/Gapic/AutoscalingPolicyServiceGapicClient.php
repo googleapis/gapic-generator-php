@@ -441,8 +441,8 @@ class AutoscalingPolicyServiceGapicClient
      * ```
      * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
      * try {
-     *     $name = 'name';
-     *     $autoscalingPolicyServiceClient->deleteAutoscalingPolicy($name);
+     *     $formattedName = $autoscalingPolicyServiceClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+     *     $autoscalingPolicyServiceClient->deleteAutoscalingPolicy($formattedName);
      * } finally {
      *     $autoscalingPolicyServiceClient->close();
      * }
@@ -488,8 +488,8 @@ class AutoscalingPolicyServiceGapicClient
      * ```
      * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
      * try {
-     *     $name = 'name';
-     *     $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy($name);
+     *     $formattedName = $autoscalingPolicyServiceClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+     *     $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy($formattedName);
      * } finally {
      *     $autoscalingPolicyServiceClient->close();
      * }

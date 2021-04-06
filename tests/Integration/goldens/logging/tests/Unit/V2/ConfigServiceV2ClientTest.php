@@ -399,15 +399,15 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $client->deleteBucket($name);
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+        $client->deleteBucket($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/DeleteBucket', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -432,9 +432,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->deleteBucket($name);
+            $client->deleteBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -460,15 +460,15 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $client->deleteExclusion($name);
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
+        $client->deleteExclusion($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/DeleteExclusion', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -493,9 +493,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         try {
-            $client->deleteExclusion($name);
+            $client->deleteExclusion($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -521,15 +521,15 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
-        $client->deleteSink($sinkName);
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
+        $client->deleteSink($formattedSinkName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/DeleteSink', $actualFuncCall);
         $actualValue = $actualRequestObject->getSinkName();
-        $this->assertProtobufEquals($sinkName, $actualValue);
+        $this->assertProtobufEquals($formattedSinkName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -554,9 +554,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         try {
-            $client->deleteSink($sinkName);
+            $client->deleteSink($formattedSinkName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -582,15 +582,15 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $client->deleteView($name);
+        $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
+        $client->deleteView($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/DeleteView', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -615,9 +615,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
         try {
-            $client->deleteView($name);
+            $client->deleteView($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -651,8 +651,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setLocked($locked);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $response = $client->getBucket($name);
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+        $response = $client->getBucket($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -660,7 +660,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetBucket', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -685,9 +685,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->getBucket($name);
+            $client->getBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -719,8 +719,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setServiceAccountId($serviceAccountId);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $response = $client->getCmekSettings($name);
+        $formattedName = $client->cmekSettingsName('[PROJECT]');
+        $response = $client->getCmekSettings($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -728,7 +728,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetCmekSettings', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -753,9 +753,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->cmekSettingsName('[PROJECT]');
         try {
-            $client->getCmekSettings($name);
+            $client->getCmekSettings($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -789,8 +789,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setDisabled($disabled);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $response = $client->getExclusion($name);
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
+        $response = $client->getExclusion($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -798,7 +798,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetExclusion', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -823,9 +823,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         try {
-            $client->getExclusion($name);
+            $client->getExclusion($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -865,8 +865,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setIncludeChildren($includeChildren);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
-        $response = $client->getSink($sinkName);
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
+        $response = $client->getSink($formattedSinkName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -874,7 +874,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetSink', $actualFuncCall);
         $actualValue = $actualRequestObject->getSinkName();
-        $this->assertProtobufEquals($sinkName, $actualValue);
+        $this->assertProtobufEquals($formattedSinkName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -899,9 +899,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         try {
-            $client->getSink($sinkName);
+            $client->getSink($formattedSinkName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -933,8 +933,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setFilter($filter);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $response = $client->getView($name);
+        $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
+        $response = $client->getView($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -942,7 +942,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetView', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -967,9 +967,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
         try {
-            $client->getView($name);
+            $client->getView($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1283,15 +1283,15 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $client->undeleteBucket($name);
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+        $client->undeleteBucket($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/UndeleteBucket', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -1316,9 +1316,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->undeleteBucket($name);
+            $client->undeleteBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1352,10 +1352,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setLocked($locked);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         $bucket = new LogBucket();
         $updateMask = new FieldMask();
-        $response = $client->updateBucket($name, $bucket, $updateMask);
+        $response = $client->updateBucket($formattedName, $bucket, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1363,7 +1363,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/UpdateBucket', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $actualValue = $actualRequestObject->getBucket();
         $this->assertProtobufEquals($bucket, $actualValue);
         $actualValue = $actualRequestObject->getUpdateMask();
@@ -1392,11 +1392,11 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         $bucket = new LogBucket();
         $updateMask = new FieldMask();
         try {
-            $client->updateBucket($name, $bucket, $updateMask);
+            $client->updateBucket($formattedName, $bucket, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1502,10 +1502,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setDisabled($disabled);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         $exclusion = new LogExclusion();
         $updateMask = new FieldMask();
-        $response = $client->updateExclusion($name, $exclusion, $updateMask);
+        $response = $client->updateExclusion($formattedName, $exclusion, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1513,7 +1513,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/UpdateExclusion', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $actualValue = $actualRequestObject->getExclusion();
         $this->assertProtobufEquals($exclusion, $actualValue);
         $actualValue = $actualRequestObject->getUpdateMask();
@@ -1542,11 +1542,11 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         $exclusion = new LogExclusion();
         $updateMask = new FieldMask();
         try {
-            $client->updateExclusion($name, $exclusion, $updateMask);
+            $client->updateExclusion($formattedName, $exclusion, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1586,9 +1586,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setIncludeChildren($includeChildren);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         $sink = new LogSink();
-        $response = $client->updateSink($sinkName, $sink);
+        $response = $client->updateSink($formattedSinkName, $sink);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1596,7 +1596,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/UpdateSink', $actualFuncCall);
         $actualValue = $actualRequestObject->getSinkName();
-        $this->assertProtobufEquals($sinkName, $actualValue);
+        $this->assertProtobufEquals($formattedSinkName, $actualValue);
         $actualValue = $actualRequestObject->getSink();
         $this->assertProtobufEquals($sink, $actualValue);
         $this->assertTrue($transport->isExhausted());
@@ -1623,10 +1623,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $sinkName = 'sinkName-1391757129';
+        $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         $sink = new LogSink();
         try {
-            $client->updateSink($sinkName, $sink);
+            $client->updateSink($formattedSinkName, $sink);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

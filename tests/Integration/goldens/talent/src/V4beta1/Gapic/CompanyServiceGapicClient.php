@@ -453,8 +453,8 @@ class CompanyServiceGapicClient
      * ```
      * $companyServiceClient = new CompanyServiceClient();
      * try {
-     *     $name = 'name';
-     *     $companyServiceClient->deleteCompany($name);
+     *     $formattedName = $companyServiceClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+     *     $companyServiceClient->deleteCompany($formattedName);
      * } finally {
      *     $companyServiceClient->close();
      * }
@@ -500,8 +500,8 @@ class CompanyServiceGapicClient
      * ```
      * $companyServiceClient = new CompanyServiceClient();
      * try {
-     *     $name = 'name';
-     *     $response = $companyServiceClient->getCompany($name);
+     *     $formattedName = $companyServiceClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+     *     $response = $companyServiceClient->getCompany($formattedName);
      * } finally {
      *     $companyServiceClient->close();
      * }

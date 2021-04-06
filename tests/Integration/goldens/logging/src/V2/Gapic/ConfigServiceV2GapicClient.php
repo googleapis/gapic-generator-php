@@ -1496,8 +1496,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $configServiceV2Client->deleteBucket($name);
+     *     $formattedName = $configServiceV2Client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+     *     $configServiceV2Client->deleteBucket($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1542,8 +1542,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $configServiceV2Client->deleteExclusion($name);
+     *     $formattedName = $configServiceV2Client->logExclusionName('[PROJECT]', '[EXCLUSION]');
+     *     $configServiceV2Client->deleteExclusion($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1588,8 +1588,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $sinkName = 'sink_name';
-     *     $configServiceV2Client->deleteSink($sinkName);
+     *     $formattedSinkName = $configServiceV2Client->logSinkName('[PROJECT]', '[SINK]');
+     *     $configServiceV2Client->deleteSink($formattedSinkName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1634,8 +1634,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $configServiceV2Client->deleteView($name);
+     *     $formattedName = $configServiceV2Client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
+     *     $configServiceV2Client->deleteView($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1677,8 +1677,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $response = $configServiceV2Client->getBucket($name);
+     *     $formattedName = $configServiceV2Client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+     *     $response = $configServiceV2Client->getBucket($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1733,8 +1733,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $response = $configServiceV2Client->getCmekSettings($name);
+     *     $formattedName = $configServiceV2Client->cmekSettingsName('[PROJECT]');
+     *     $response = $configServiceV2Client->getCmekSettings($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1784,8 +1784,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $response = $configServiceV2Client->getExclusion($name);
+     *     $formattedName = $configServiceV2Client->logExclusionName('[PROJECT]', '[EXCLUSION]');
+     *     $response = $configServiceV2Client->getExclusion($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1831,8 +1831,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $sinkName = 'sink_name';
-     *     $response = $configServiceV2Client->getSink($sinkName);
+     *     $formattedSinkName = $configServiceV2Client->logSinkName('[PROJECT]', '[SINK]');
+     *     $response = $configServiceV2Client->getSink($formattedSinkName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -1878,8 +1878,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $response = $configServiceV2Client->getView($name);
+     *     $formattedName = $configServiceV2Client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
+     *     $response = $configServiceV2Client->getView($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -2221,8 +2221,8 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $configServiceV2Client->undeleteBucket($name);
+     *     $formattedName = $configServiceV2Client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
+     *     $configServiceV2Client->undeleteBucket($formattedName);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -2276,10 +2276,10 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
+     *     $formattedName = $configServiceV2Client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
      *     $bucket = new LogBucket();
      *     $updateMask = new FieldMask();
-     *     $response = $configServiceV2Client->updateBucket($name, $bucket, $updateMask);
+     *     $response = $configServiceV2Client->updateBucket($formattedName, $bucket, $updateMask);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -2423,10 +2423,10 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
+     *     $formattedName = $configServiceV2Client->logExclusionName('[PROJECT]', '[EXCLUSION]');
      *     $exclusion = new LogExclusion();
      *     $updateMask = new FieldMask();
-     *     $response = $configServiceV2Client->updateExclusion($name, $exclusion, $updateMask);
+     *     $response = $configServiceV2Client->updateExclusion($formattedName, $exclusion, $updateMask);
      * } finally {
      *     $configServiceV2Client->close();
      * }
@@ -2487,9 +2487,9 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $sinkName = 'sink_name';
+     *     $formattedSinkName = $configServiceV2Client->logSinkName('[PROJECT]', '[SINK]');
      *     $sink = new LogSink();
-     *     $response = $configServiceV2Client->updateSink($sinkName, $sink);
+     *     $response = $configServiceV2Client->updateSink($formattedSinkName, $sink);
      * } finally {
      *     $configServiceV2Client->close();
      * }

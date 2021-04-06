@@ -169,15 +169,15 @@ class CompanyServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $client->deleteCompany($name);
+        $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $client->deleteCompany($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.cloud.talent.v4beta1.CompanyService/DeleteCompany', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -202,9 +202,9 @@ class CompanyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         try {
-            $client->deleteCompany($name);
+            $client->deleteCompany($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -250,8 +250,8 @@ class CompanyServiceClientTest extends GeneratedTest
         $expectedResponse->setSuspended($suspended);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $response = $client->getCompany($name);
+        $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $response = $client->getCompany($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -259,7 +259,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.cloud.talent.v4beta1.CompanyService/GetCompany', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -284,9 +284,9 @@ class CompanyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         try {
-            $client->getCompany($name);
+            $client->getCompany($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

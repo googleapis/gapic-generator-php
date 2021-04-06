@@ -479,8 +479,8 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $name = 'name';
-     *     $workflowTemplateServiceClient->deleteWorkflowTemplate($name);
+     *     $formattedName = $workflowTemplateServiceClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+     *     $workflowTemplateServiceClient->deleteWorkflowTemplate($formattedName);
      * } finally {
      *     $workflowTemplateServiceClient->close();
      * }
@@ -537,8 +537,8 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $name = 'name';
-     *     $response = $workflowTemplateServiceClient->getWorkflowTemplate($name);
+     *     $formattedName = $workflowTemplateServiceClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+     *     $response = $workflowTemplateServiceClient->getWorkflowTemplate($formattedName);
      * } finally {
      *     $workflowTemplateServiceClient->close();
      * }
@@ -726,8 +726,8 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $name = 'name';
-     *     $operationResponse = $workflowTemplateServiceClient->instantiateWorkflowTemplate($name);
+     *     $formattedName = $workflowTemplateServiceClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+     *     $operationResponse = $workflowTemplateServiceClient->instantiateWorkflowTemplate($formattedName);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
      *         // operation succeeded and returns no value
@@ -737,7 +737,7 @@ class WorkflowTemplateServiceGapicClient
      *     }
      *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $workflowTemplateServiceClient->instantiateWorkflowTemplate($name);
+     *     $operationResponse = $workflowTemplateServiceClient->instantiateWorkflowTemplate($formattedName);
      *     $operationName = $operationResponse->getName();
      *     // ... do other work
      *     $newOperationResponse = $workflowTemplateServiceClient->resumeOperation($operationName, 'instantiateWorkflowTemplate');
