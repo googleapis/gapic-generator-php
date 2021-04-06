@@ -84,9 +84,11 @@ final class PhpFile extends AST
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
             EOF;
-        if (boolval($isGa) === False) {
-            $warning .= "\n *\n * @experimental";
-        }
+        if ($isGa === False) {
+            $warning .= "\n *\n * @experimental      IS GA? $isGa |" . boolval($isGa) . "|";
+        } else {
+          $warning .= "\n * IS GA? $isGa |" . boolval($isGa) . "; IS? " . (boolval($isGa) === False) . "|";
+          }
         $warning .= "\n */";
         $warning = Vector::new(explode("\n", $warning));
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
