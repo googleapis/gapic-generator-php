@@ -83,6 +83,8 @@ final class PhpFile extends AST
              * This file was generated from the file
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
+             *
+             * DO NOT SUBMIT - TEST BAZEL BUILD ON GITHUB ACTIONS
             EOF;
         if ($isGa === False) {
             $warning .= "\n *\n * @experimental      IS GA? $isGa |" . boolval($isGa) . "|";
