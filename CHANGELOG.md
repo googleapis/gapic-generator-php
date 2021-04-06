@@ -1,5 +1,36 @@
 # Changelog
 
+### [0.0.7](https://www.github.com/googleapis/gapic-generator-php/compare/v0.0.6...v0.0.7) (2021-04-06)
+
+
+### Bug Fixes
+
+* add --cache_test_results=no to Bazel CI build ([c02cffc](https://www.github.com/googleapis/gapic-generator-php/commit/c02cffc6584c114127ff7e634c8db0471af225d8))
+* add bazel clean to CI build ([682a556](https://www.github.com/googleapis/gapic-generator-php/commit/682a5564ca0c8cac67c5e0093e862f27738e6c25))
+* add clarifying comments to CI config file ([380c98f](https://www.github.com/googleapis/gapic-generator-php/commit/380c98f8c1d56d412bb44f749b21155b69037847))
+* clean php Bazel artifacts ([feba4d3](https://www.github.com/googleapis/gapic-generator-php/commit/feba4d303218f3ec3128be5c711d19e2dd527b1c))
+* clean php Bazel artifacts, take 2 ([f0ffaa9](https://www.github.com/googleapis/gapic-generator-php/commit/f0ffaa954a9c80da3b61de67fbbffdf5e22c8724))
+* **phpdoc:** Generate [@experimental](https://www.github.com/experimental) tags only for alpha/beta APIs ([99ccdea](https://www.github.com/googleapis/gapic-generator-php/commit/99ccdea05a55ed64a1dc8c7615bec1789153ee1f))
+* remove Bazel cache linking steps ([c57dd26](https://www.github.com/googleapis/gapic-generator-php/commit/c57dd260a655d1e2fcdca0a739919b4a1d851ff8))
+* remove debug printfs ([33cac32](https://www.github.com/googleapis/gapic-generator-php/commit/33cac32a8ca992e35721d99473334be7610363ef))
+* **resnames:** Fix repeated resname default value generation in tests ([ff9fdcb](https://www.github.com/googleapis/gapic-generator-php/commit/ff9fdcb02360664ad33ee0d361ef2b861f03dfa2))
+* **resnames:** Handle message-field resources in path template construction ([d95e29d](https://www.github.com/googleapis/gapic-generator-php/commit/d95e29d8ea6752b8dc8e9fe9ff7906707f833648))
+* **resnames:** Use formattedName helpers in tests and samples ([8b38ce8](https://www.github.com/googleapis/gapic-generator-php/commit/8b38ce80a21c0b018f581afab8c06ba197edbad4))
+* **resnames:** Use resource parts for path template prop names ([4d417b7](https://www.github.com/googleapis/gapic-generator-php/commit/4d417b731de864a7e2ad0d4cce89e8fd6f3d092f))
+* test GitHub actions ([547fbb8](https://www.github.com/googleapis/gapic-generator-php/commit/547fbb80a8fe27e7ffec2fab6d2fad2ab3983d18))
+* test GitHub actions ([019ffe5](https://www.github.com/googleapis/gapic-generator-php/commit/019ffe5ca705c5279ec1e25c67d97cb098558c60))
+* test GitHub actions ([c101ddd](https://www.github.com/googleapis/gapic-generator-php/commit/c101ddd36a7b2ceb213f953ba183342fdee161e4))
+* test GitHub actions ([a51448d](https://www.github.com/googleapis/gapic-generator-php/commit/a51448d8810da775604b62475ee89f896c2a5390))
+* test GitHub actions ([548656a](https://www.github.com/googleapis/gapic-generator-php/commit/548656a3e8233a484660ac48b04ac34c6c7f0ae8))
+* test GitHub actions ([5b82377](https://www.github.com/googleapis/gapic-generator-php/commit/5b82377a42b61f553bb55a19eb76752d01d86d85))
+* test GitHub actions ([0109946](https://www.github.com/googleapis/gapic-generator-php/commit/0109946b07eb585fc1184dcd5b23a73a15874333))
+* **tests:** Update unit test goldens (fix merge, borked Bazel CI) ([24389ec](https://www.github.com/googleapis/gapic-generator-php/commit/24389eca29a9d6b8b7c3380edf555a3901825df2))
+* undo Bazel caching cleaning ([0d57b1a](https://www.github.com/googleapis/gapic-generator-php/commit/0d57b1a33a453a00668bbd368570437bec342925))
+* Update goldens ([e3c52b1](https://www.github.com/googleapis/gapic-generator-php/commit/e3c52b1bb3cde59ad394cd9d0dcd72e965780218))
+* update securitycenter goldens ([89cdcb6](https://www.github.com/googleapis/gapic-generator-php/commit/89cdcb63b6c554a934d9780f9a3f0d2dfbd80e5a))
+* update unit goldens ([a66fcf8](https://www.github.com/googleapis/gapic-generator-php/commit/a66fcf8838a2d3e189177b55e9dea2e641768197))
+* update unit goldens ([feb1435](https://www.github.com/googleapis/gapic-generator-php/commit/feb1435279f677faae534019d26ba114da5e2aee))
+
 ### [0.0.6](https://www.github.com/googleapis/gapic-generator-php/compare/v0.0.5...v0.0.6) (2021-03-24)
 
 
