@@ -87,7 +87,7 @@ final class PhpFile extends AST
         if ($isGa === False) {
             $warning .= "\n *\n * @experimental";
         } else {
-          $warning .= "\n * IS GA? $isGa |" . (isGa === False) . "|";
+          $warning .= "\n * IS GA? $isGa |" . ($isGa === False) . "|";
           }
         $warning .= "\n */";
         $warning = Vector::new(explode("\n", $warning));
