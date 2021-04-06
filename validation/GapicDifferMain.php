@@ -100,7 +100,7 @@ function compareLibraries($argv): bool
             recurKsort($microFileContents);
             $clientsSame &= PhpConfigComparer::compare($monoFileContents, $microFileContents);
         } else {
-            $monoPhpFileContents = $monoFileContents;
+            $monoPhpFileContents = processMonoPhpFile($monoFileContents, $file);
             $microPhpFileContents = processMicroPhpFile($microFileContents, $file);
             $clientsSame &= PhpClassComparer::compare($monoPhpFileContents, $microPhpFileContents);
         }
@@ -127,6 +127,27 @@ function getDirContents(string $prefixPath, string $dir, &$results): void
     }
 }
 
+function processMonoPhpFile(string $monoFileContents, string $relativeFile): string
+{
+    $gapicClientFileEnding = "GapicClient.php";
+    if (substr($relativeFile, -strlen($gapicClientFileEnding)) !== $gapicClientFileEnding) {
+        return $monoFileContents;
+    }
+
+    // Remove any line that assigns a value to $optionalArgs['headers'],
+    // or contains RequestParamsHeaderDescriptor.
+    $newFileContents = $monoFileContents;
+    $replaceTerms = [
+      "optionalArgs\['headers'\] =",
+      "new RequestParamsHeaderDescriptor"
+    ];
+    foreach ($replaceTerms as $term) {
+      $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
+    }
+
+    return $newFileContents;
+}
+
 function processMicroPhpFile(string $microFileContents, string $relativeFile): string
 {
     $gapicClientFileEnding = "GapicClient.php";
@@ -137,7 +158,20 @@ function processMicroPhpFile(string $microFileContents, string $relativeFile): s
     // Flip arguments in `if (self::$someField == null) {`.
     $unwantedWords = "if \((self::.*) == null\) \{";
     $replaceMatch = '/' . $unwantedWords . '.*/';
-    return preg_replace($replaceMatch, 'if (null == $1) {', $microFileContents);
+    $newFileContents = preg_replace($replaceMatch, 'if (null == $1) {', $microFileContents);
+
+    // Remove any line that assigns a value to $optionalArgs['headers'],
+    // contains requestParamHeaders, or contains RequestParamsHeaderDescriptor.
+    $replaceTerms = [
+        "requestParamHeaders.*=",
+        "optionalArgs\['headers'\] =",
+        "new RequestParamsHeaderDescriptor"
+    ];
+    foreach ($replaceTerms as $term) {
+      $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
+    }
+
+    return $newFileContents;
 }
 
 function recurKsort(array &$ra)
