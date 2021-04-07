@@ -141,41 +141,26 @@ class TestNameValueProducer
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
     public function fieldInit(MethodDetails $method, FieldDetails $field, callable $fnVarName, ?Variable $clientVar = null)
     {
-        $fnInitValue = function (FieldDetails $f, string $value) {
-            if ($f->isEnum) {
-                return AST::access($this->ctx->type($f->typeSingular), AST::constant($value));
-            } else {
-                switch ($f->type->name) {
-                    case 'string':
-                        return $value;
-                    default:
-                        throw new \Exception("Cannot handle init-field of type: '{$f->type->name}'");
-                }
-            }
-        };
-
-        if ($field->isRequired) {
-            [$var, $name] = $fnVarName();
-            $varValue = null;
-            if ($field->useResourceTestValue) {
-                // IMPORTANT: The template name getters are always generated with the first
-                // pattern in the proto, so keep that behavior here.
-                // TODO: What if it's just a wild-card pattern?
-                $patternDetails = $field->resourceDetails->patterns[0];
-                $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
-                $clientVar = $clientVar ?? AST::var('client');
-                // TODO: This should be better merged with FieldDetails.
-                $varValue = $clientVar->instanceCall($field->resourceDetails->formatMethod)($args);
-                if ($field->isRepeated) {
-                  $varValue = AST::array([$varValue]);
-                }
-            } else {
-                $varValue = $this->value($field, $name);
-            }
-            return AST::assign($var, $varValue);
-        } else {
+        if (!$field->isRequired) {
             return null;
         }
+        [$var, $name] = $fnVarName();
+        if (!$field->useResourceTestValue) {
+            return AST::assign($var, $this->value($field, $name));
+        }
+
+        // IMPORTANT: The template name getters are always generated with the first
+        // pattern in the proto, so keep that behavior here.
+        // TODO: What if it's just a wild-card pattern?
+        $patternDetails = $field->resourceDetails->patterns[0];
+        $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
+        $clientVar = $clientVar ?? AST::var('client');
+        // TODO: This should be better merged with FieldDetails.
+        $varValue = $clientVar->instanceCall($field->resourceDetails->formatMethod)($args);
+        if ($field->isRepeated) {
+            $varValue = AST::array([$varValue]);
+        }
+        return AST::assign($var, $varValue);
     }
 
     // Reproduce exactly the Java test value generation:
