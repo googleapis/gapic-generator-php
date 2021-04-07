@@ -56,6 +56,8 @@ use Google\Cloud\Retail\V2alpha\UserEvent;
  *     $predictionServiceClient->close();
  * }
  * ```
+ *
+ * @experimental
  */
 class PredictionServiceGapicClient
 {
@@ -157,6 +159,8 @@ class PredictionServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -287,6 +291,8 @@ class PredictionServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\PredictResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function predict($placement, $userEvent, array $optionalArgs = [])
     {

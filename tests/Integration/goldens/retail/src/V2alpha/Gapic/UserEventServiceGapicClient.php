@@ -68,6 +68,8 @@ use Google\LongRunning\Operation;
  *     $userEventServiceClient->close();
  * }
  * ```
+ *
+ * @experimental
  */
 class UserEventServiceGapicClient
 {
@@ -125,6 +127,8 @@ class UserEventServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
+     *
+     * @experimental
      */
     public function getOperationsClient()
     {
@@ -141,6 +145,8 @@ class UserEventServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
+     *
+     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -200,6 +206,8 @@ class UserEventServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -253,6 +261,8 @@ class UserEventServiceGapicClient
      * @return \Google\Api\HttpBody
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function collectUserEvent($parent, $userEvent, array $optionalArgs = [])
     {
@@ -338,6 +348,8 @@ class UserEventServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function importUserEvents($parent, $inputConfig, array $optionalArgs = [])
     {
@@ -442,6 +454,8 @@ class UserEventServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function purgeUserEvents($parent, $filter, array $optionalArgs = [])
     {
@@ -525,6 +539,8 @@ class UserEventServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function rejoinUserEvents($parent, array $optionalArgs = [])
     {
@@ -572,6 +588,8 @@ class UserEventServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\UserEvent
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function writeUserEvent($parent, $userEvent, array $optionalArgs = [])
     {
