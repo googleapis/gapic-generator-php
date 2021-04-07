@@ -74,6 +74,8 @@ use Google\Protobuf\GPBEmpty;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class ProductServiceGapicClient
 {
@@ -173,6 +175,8 @@ class ProductServiceGapicClient
      * @param string $branch
      *
      * @return string The formatted branch resource.
+     *
+     * @experimental
      */
     public static function branchName($project, $location, $catalog, $branch)
     {
@@ -195,6 +199,8 @@ class ProductServiceGapicClient
      * @param string $product
      *
      * @return string The formatted product resource.
+     *
+     * @experimental
      */
     public static function productName($project, $location, $catalog, $branch, $product)
     {
@@ -226,6 +232,8 @@ class ProductServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -253,6 +261,8 @@ class ProductServiceGapicClient
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
+     *
+     * @experimental
      */
     public function getOperationsClient()
     {
@@ -269,6 +279,8 @@ class ProductServiceGapicClient
      * @param string $methodName    The name of the method used to start the operation
      *
      * @return OperationResponse
+     *
+     * @experimental
      */
     public function resumeOperation($operationName, $methodName = null)
     {
@@ -328,6 +340,8 @@ class ProductServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -383,6 +397,8 @@ class ProductServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\Product
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function createProduct($parent, $product, $productId, array $optionalArgs = [])
     {
@@ -432,6 +448,8 @@ class ProductServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function deleteProduct($name, array $optionalArgs = [])
     {
@@ -481,6 +499,8 @@ class ProductServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\Product
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function getProduct($name, array $optionalArgs = [])
     {
@@ -563,6 +583,8 @@ class ProductServiceGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function importProducts($parent, $inputConfig, array $optionalArgs = [])
     {
@@ -627,6 +649,8 @@ class ProductServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\Product
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateProduct($product, array $optionalArgs = [])
     {
