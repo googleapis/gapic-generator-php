@@ -142,7 +142,7 @@ function processMonoPhpFile(string $monoFileContents, string $relativeFile): str
       "new RequestParamsHeaderDescriptor"
     ];
     foreach ($replaceTerms as $term) {
-      $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
+        $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
     }
 
     return $newFileContents;
@@ -168,7 +168,7 @@ function processMicroPhpFile(string $microFileContents, string $relativeFile): s
         "new RequestParamsHeaderDescriptor"
     ];
     foreach ($replaceTerms as $term) {
-      $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
+        $newFileContents = preg_replace("/.*$term(.|\n)*?;\n/", '', $newFileContents);
     }
 
     return $newFileContents;

@@ -49,7 +49,7 @@ abstract class PhpDoc
      */
     public static function block(...$items): PhpDoc
     {
-        return new class(Vector::new($items)->flatten()->filter(fn ($x) => !is_null($x))) extends PhpDoc {
+        return new class(Vector::new($items)->flatten()->filter(fn($x) => !is_null($x))) extends PhpDoc {
             public function __construct($items)
             {
                 $this->items = $items;

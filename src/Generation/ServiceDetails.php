@@ -182,23 +182,23 @@ class ServiceDetails
             $typeFieldRefResourceDefs = Vector::new([]);
             $childFieldTypeRefResourceDefs = Vector::new([]);
             if ($level == 0) {
-              $fieldDetails = $fields
+                $fieldDetails = $fields
                 ->filter(fn ($f) => !is_null($f))
                 ->map(fn ($f) => new FieldDetails($catalog, $f));
 
-              $fullnameFn = function ($fd) {
-                return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
-              };
-              $fieldResourceRefs = $fieldDetails
+                $fullnameFn = function ($fd) {
+                    return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
+                };
+                $fieldResourceRefs = $fieldDetails
                 ->filter(fn ($x) => $x->isRequired
                   && $x->isMessage
                   && !is_null($x->fullname))
                   ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
                   ->filter(fn ($x) => !is_null($x));
-            $typeFieldRefResourceDefs = $fieldResourceRefs
+                $typeFieldRefResourceDefs = $fieldResourceRefs
                 ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
                 ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
-            $childFieldTypeRefResourceDefs = $fieldResourceRefs
+                $childFieldTypeRefResourceDefs = $fieldResourceRefs
                 ->filter(fn ($x) => $x->getType() !== '')
                 ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getType(), Vector::new([])));
             }
@@ -258,8 +258,8 @@ class ServiceDetails
 
     public function isGa(): bool
     {
-      $ns_components = explode("\\", $this->namespace);
-      $version = strtolower($ns_components[array_key_last($ns_components)]);
-      return strpos($version, 'alpha') === False && strpos($version, 'beta') === False;
+        $ns_components = explode("\\", $this->namespace);
+        $version = strtolower($ns_components[array_key_last($ns_components)]);
+        return strpos($version, 'alpha') === false && strpos($version, 'beta') === false;
     }
 }

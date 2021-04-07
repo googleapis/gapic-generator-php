@@ -76,8 +76,8 @@ class ProtoCatalog
             ->filter(fn ($x) => !is_null($x));
         $this->msgResourcesByFullname = $allMsgs
           ->toMap(
-            fn ($x) => $x->desc->getFullName(),
-            fn ($x) =>  ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class)
+              fn ($x) => $x->desc->getFullName(),
+              fn ($x) =>  ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class)
           )->filter(fn ($k, $v) => !is_null($v));
         $fileResourceDefs = $fileDescs
             ->flatMap(fn ($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
