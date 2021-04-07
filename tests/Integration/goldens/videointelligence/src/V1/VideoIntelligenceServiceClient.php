@@ -22,6 +22,8 @@
  * and updates to that file get reflected here through a refresh process.
  */
 
+declare(strict_types=1);
+
 namespace Google\Cloud\VideoIntelligence\V1;
 
 use Google\Cloud\VideoIntelligence\V1\Gapic\VideoIntelligenceServiceGapicClient;

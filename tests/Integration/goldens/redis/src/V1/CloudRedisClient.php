@@ -22,6 +22,8 @@
  * and updates to that file get reflected here through a refresh process.
  */
 
+declare(strict_types=1);
+
 namespace Google\Cloud\Redis\V1;
 
 use Google\Cloud\Redis\V1\Gapic\CloudRedisGapicClient;
