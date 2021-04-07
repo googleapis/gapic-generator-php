@@ -84,7 +84,7 @@ final class PhpFile extends AST
              * https://github.com/google/googleapis/blob/master/{$filePath}
              * and updates to that file get reflected here through a refresh process.
             EOF;
-        if ($isGa === False) {
+        if ($isGa === false) {
             $warning .= "\n *\n * @experimental";
         }
         $warning .= "\n */";
