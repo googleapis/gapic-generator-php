@@ -1,0 +1,28 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.deprecated_service",
+    "libraryPackage": "Testing\\Deprecated",
+    "services": {
+        "DeprecatedService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "DeprecatedServiceGapicClient",
+                    "rpcs": {
+                        "FastFibonacci": {
+                            "methods": [
+                                "fastFibonacci"
+                            ]
+                        },
+                        "SlowFibonacci": {
+                            "methods": [
+                                "slowFibonacci"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
