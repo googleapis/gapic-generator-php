@@ -24,6 +24,8 @@
  * @experimental
  */
 
+declare(strict_types=1);
+
 namespace Google\Cloud\Retail\V2alpha\Gapic;
 
 use Google\ApiCore\ApiException;
@@ -74,6 +76,8 @@ use Google\Protobuf\FieldMask;
  * assistwith these names, this class includes a format method for each type of
  * name, and additionallya parseName method to extract the individual identifiers
  * contained within formatted namesthat are returned by the API.
+ *
+ * @experimental
  */
 class CatalogServiceGapicClient
 {
@@ -170,6 +174,8 @@ class CatalogServiceGapicClient
      * @param string $catalog
      *
      * @return string The formatted catalog resource.
+     *
+     * @experimental
      */
     public static function catalogName($project, $location, $catalog)
     {
@@ -188,6 +194,8 @@ class CatalogServiceGapicClient
      * @param string $location
      *
      * @return string The formatted location resource.
+     *
+     * @experimental
      */
     public static function locationName($project, $location)
     {
@@ -216,6 +224,8 @@ class CatalogServiceGapicClient
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
      */
     public static function parseName($formattedName, $template = null)
     {
@@ -289,6 +299,8 @@ class CatalogServiceGapicClient
      * }
      *
      * @throws ValidationException
+     *
+     * @experimental
      */
     public function __construct(array $options = [])
     {
@@ -351,6 +363,8 @@ class CatalogServiceGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function listCatalogs($parent, array $optionalArgs = [])
     {
@@ -415,6 +429,8 @@ class CatalogServiceGapicClient
      * @return \Google\Cloud\Retail\V2alpha\Catalog
      *
      * @throws ApiException if the remote call fails
+     *
+     * @experimental
      */
     public function updateCatalog($catalog, array $optionalArgs = [])
     {
