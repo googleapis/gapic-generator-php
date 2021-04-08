@@ -94,14 +94,14 @@ final class PhpFile extends AST
 
     public function toCode(): string
     {
-        return
-            "<?php\n" .
-            $this->headerLines->map(fn ($x) => "{$x}\n")->join() .
-            // TODO(vNext): Insert `declare(strict_types=1);`
-            "\n" .
-            "namespace {$this->class->type->getNamespace()};\n" .
-            "\n" .
-            $this->uses->toVector()->map(fn ($x) => "use {$x};\n")->join() .
+        $lines = [
+            "<?php",
+            $this->headerLines->map(fn ($x) => "{$x}\n")->join(),
+            "declare(strict_types=1);\n",
+            "namespace {$this->class->type->getNamespace()};\n",
+            $this->uses->toVector()->map(fn ($x) => "use {$x};\n")->join()
+        ];
+        return implode("\n", $lines) .
             (count($this->uses) >= 1 ? "\n" : '') .
             static::toPhp($this->class);
     }
