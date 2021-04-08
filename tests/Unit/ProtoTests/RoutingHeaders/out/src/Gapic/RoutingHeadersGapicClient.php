@@ -22,6 +22,8 @@
  * and updates to that file get reflected here through a refresh process.
  */
 
+declare(strict_types=1);
+
 namespace Testing\RoutingHeaders\Gapic;
 
 use Google\ApiCore\ApiException;
