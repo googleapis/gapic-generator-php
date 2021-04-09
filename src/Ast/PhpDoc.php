@@ -49,7 +49,7 @@ abstract class PhpDoc
      */
     public static function block(...$items): PhpDoc
     {
-        return new class(Vector::new($items)->flatten()->filter(fn($x) => !is_null($x))) extends PhpDoc {
+        return new class(Vector::new($items)->flatten()->filter(fn ($x) => !is_null($x))) extends PhpDoc {
             public function __construct($items)
             {
                 $this->items = $items;
@@ -194,6 +194,30 @@ abstract class PhpDoc
             }
         };
     }
+
+    /**
+     * Add the @deprecated tag to the PHP doc block.
+     *
+     * @return PhpDoc
+     */
+    public static function deprecated(?string $description): PhpDoc
+    {
+        return new class($description) extends PhpDoc {
+            public function __construct($description)
+            {
+                $this->description = $description;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                $docstring = '@deprecated';
+                if (!is_null($this->description)) {
+                    $docstring .= " $this->description";
+                }
+                return Vector::new([$docstring]);
+            }
+        };
+    }
+
 
     /**
      * Add the @inheritdoc tag to the PHP doc block.

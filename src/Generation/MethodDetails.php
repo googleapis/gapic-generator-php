@@ -47,6 +47,8 @@ abstract class MethodDetails
     public const SERVER_STREAMING = 'server_streaming';
     public const CLIENT_STREAMING = 'client_streaming';
 
+    public const DEPRECATED_MSG = "This method will be removed in the next major version update.";
+
     public static function create(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
         // TODO: Handle further method types; e.g. streaming, paginated, ...
@@ -341,6 +343,9 @@ abstract class MethodDetails
     /** @var ?Map *Readonly* Map of string to Vector of strings; placeholder name -> list of property getters. */
     public ?Map $restRoutingHeaders;
 
+    /** @var bool *Readonly* Whether the service is deprecated. */
+    public bool $isDeprecated = false;
+
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
         $this->catalog = $svc->catalog;
@@ -364,6 +369,10 @@ abstract class MethodDetails
         $this->restMethod = is_null($this->httpRule) ? null : $this->httpRule->getPattern();
         // DO NOT SORT - currently in reverse order of the first-seen variables.
         $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
+
+        if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
+            $this->isDeprecated = $desc->getOptions()->getDeprecated();
+        }
     }
 
     public function isStreaming(): bool

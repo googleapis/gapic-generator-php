@@ -16,6 +16,7 @@
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
+            "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
         }

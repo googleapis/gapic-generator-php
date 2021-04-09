@@ -99,4 +99,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('RoutingHeaders/routing-headers.proto');
     }
+
+    public function testDeprecatedService(): void
+    {
+        $this->runProtoTest('DeprecatedService/deprecated_service.proto');
+    }
 }

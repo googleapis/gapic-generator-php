@@ -34,6 +34,8 @@ use Google\Protobuf\Internal\ServiceDescriptorProto;
 
 class ServiceDetails
 {
+    public const DEPRECATED_MSG = "This class will be removed in the next major version update.";
+
     /** @var ProtoCatalog *Readonly* The proto-catalog containing all source protos. */
     public ProtoCatalog $catalog;
 
@@ -109,6 +111,9 @@ class ServiceDetails
      */
     public Vector $resourceDefs;
 
+    /** @var bool *Readonly* Whether the service is deprecated. */
+    public bool $isDeprecated = false;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -142,6 +147,11 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
+
+        if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
+            $this->isDeprecated = $desc->getOptions()->getDeprecated();
+        }
+
         $this->clientVarName = Helpers::toCamelCase("{$desc->getName()}Client");
         $this->filePath = $fileDesc->getName();
         // This is a copy of the monolithic way of generating the test group name.
