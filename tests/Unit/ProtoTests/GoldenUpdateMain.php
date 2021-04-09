@@ -54,6 +54,10 @@ const UNIT_TESTS = [
   8 => [
     'name' => 'RoutingHeaders',
     'protoPath' => 'RoutingHeaders/routing-headers.proto'
+  ],
+  9 => [
+    'name' => 'DeprecatedService',
+    'protoPath' => 'DeprecatedService/deprecated_service.proto'
   ]
 ];
 

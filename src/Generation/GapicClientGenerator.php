@@ -115,7 +115,8 @@ class GapicClientGenerator
                         'a parseName method to extract the individual identifiers contained within formatted names' .
                         'that are returned by the API.'
                      ),
-                $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())
@@ -310,7 +311,7 @@ class GapicClientGenerator
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
                     PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 ));
             $operationName = AST::var('operationName');
             $methodName = AST::var('methodName');
@@ -350,7 +351,7 @@ class GapicClientGenerator
                         PhpDoc::text('The name of the method used to start the operation')
                     ),
                     PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 ));
             return Vector::new([$getOperationsClient, $resumeOperation]);
         } else {
@@ -616,16 +617,16 @@ class GapicClientGenerator
                     !$hasRequestParams ? null : AST::assign(
                         $requestParams,
                         AST::new($this->ctx->type(
-                           Type::fromName(RequestParamsHeaderDescriptor::class)
-                       ))($requestParamHeaders)
+                            Type::fromName(RequestParamsHeaderDescriptor::class)
+                        ))($requestParamHeaders)
                     ),
                     !$hasRequestParams ? null : AST::assign(
                         $optionalArgs->var['headers'],
                         AST::ternary(
-                          AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                          AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
-                          $requestParams->getHeader()
-                      )
+                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
+                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                            $requestParams->getHeader()
+                        )
                     )
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
@@ -680,7 +681,8 @@ class GapicClientGenerator
                     $this->ctx->type(Type::fromName(ApiException::class)),
                     PhpDoc::text('if the remote call fails')
                 ),
-                $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+                !$method->isDeprecated ? null : PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
             ));
     }
 

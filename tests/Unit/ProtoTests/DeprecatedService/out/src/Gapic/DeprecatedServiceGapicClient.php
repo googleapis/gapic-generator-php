@@ -52,6 +52,8 @@ use Testing\Deprecated\FibonacciRequest;
  *     $deprecatedServiceClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class DeprecatedServiceGapicClient
 {
@@ -223,6 +225,8 @@ class DeprecatedServiceGapicClient
      * }
      *
      * @throws ApiException if the remote call fails
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function slowFibonacci(array $optionalArgs = [])
     {
