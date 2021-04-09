@@ -1643,6 +1643,8 @@ class ClusterManagerGapicClient
      * @return \Google\Cloud\Container\V1\Operation
      *
      * @throws ApiException if the remote call fails
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function setLocations($locations, array $optionalArgs = [])
     {
