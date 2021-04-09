@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/googleapis/gapic-generator-php/compare/v0.0.7...v0.1.0) (2021-04-09)
+
+
+### Features
+
+* **codegen:** Enable strict types in generated code ([8fc290e](https://www.github.com/googleapis/gapic-generator-php/commit/8fc290e314236b0b2f3fc16bc8b29ba7bbe98cd2))
+* **codegen:** propagate protobuf 'deprecated' to classes/methods ([9636748](https://www.github.com/googleapis/gapic-generator-php/commit/96367485fab50cd795e84606d5197e75851d9883))
+
+
+### Bug Fixes
+
+* **codegen:** Update autogen comment warnings with microgenerator references ([eac47d5](https://www.github.com/googleapis/gapic-generator-php/commit/eac47d54086a24ab2af8b27d5b83576d6a915983))
+
 ### [0.0.7](https://www.github.com/googleapis/gapic-generator-php/compare/v0.0.6...v0.0.7) (2021-04-06)
 
 
