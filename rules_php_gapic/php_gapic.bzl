@@ -61,6 +61,11 @@ def php_gapic_srcjar(
     if grpc_service_config:
         plugin_file_args[grpc_service_config] = "grpc_service_config"
 
+    if transport == None:
+        transport = "grpc"
+    if transport != "grpc" or transport != "grpc+rest" or transport != "rest":
+        fail("Error: Supported transports consist only of 'grpc', 'grpc+rest', or 'rest'")
+
     # Generate the gapic_metadata.json file.
     plugin_args = ["metadata"]
 
