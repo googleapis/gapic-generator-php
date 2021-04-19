@@ -13,6 +13,7 @@
             "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
             "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
             "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",
+            "Testing\\BasicDiregapic\\": "tests/Unit/ProtoTests/BasicDiregapic/out/src",
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
