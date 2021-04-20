@@ -58,16 +58,16 @@ use Google\Protobuf\Timestamp;
 use Google\Protobuf\UInt32Value;
 use Google\Protobuf\UInt64Value;
 use Google\Protobuf\Value;
-use Testing\BasicDiregapic\AddCommentsRequest;
 
+use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
+
 use Testing\BasicDiregapic\AddTagResponse;
 use Testing\BasicDiregapic\ArchiveBooksRequest;
-
 use Testing\BasicDiregapic\ArchiveBooksResponse;
-use Testing\BasicDiregapic\Book;
-use Testing\BasicDiregapic\BookFromAnywhere;
-use Testing\BasicDiregapic\BookFromArchive;
+use Testing\BasicDiregapic\BookFromAnywhereResponse;
+use Testing\BasicDiregapic\BookFromArchiveResponse;
+use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\Comment;
 use Testing\BasicDiregapic\CreateBookRequest;
 use Testing\BasicDiregapic\CreateInventoryRequest;
@@ -80,11 +80,10 @@ use Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest;
 use Testing\BasicDiregapic\GetBookFromAnywhereRequest;
 use Testing\BasicDiregapic\GetBookFromArchiveRequest;
 use Testing\BasicDiregapic\GetBookRequest;
-
 use Testing\BasicDiregapic\GetShelfRequest;
-use Testing\BasicDiregapic\Inventory;
-
+use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
+
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksRequest;
 use Testing\BasicDiregapic\ListBooksResponse;
@@ -96,30 +95,24 @@ use Testing\BasicDiregapic\MergeShelvesRequest;
 use Testing\BasicDiregapic\MoveBookRequest;
 use Testing\BasicDiregapic\MoveBooksRequest;
 use Testing\BasicDiregapic\MoveBooksResponse;
-use Testing\BasicDiregapic\PublishSeriesRequest;
-use Testing\BasicDiregapic\PublishSeriesResponse;
-use Testing\BasicDiregapic\SeriesUuid;
-use Testing\BasicDiregapic\Shelf;
+use Testing\BasicDiregapic\ShelfResponse;
 use Testing\BasicDiregapic\SomeMessage;
 use Testing\BasicDiregapic\StringBuilder;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerMessage;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsResponse;
 use Testing\BasicDiregapic\UpdateBookIndexRequest;
-
 use Testing\BasicDiregapic\UpdateBookRequest;
 use Testing\BasicDiregapic\Used;
 
 /**
  * Service Description: This API represents a simple digital library.  It lets you manage Shelf
- * resources and Book resources in the library. It defines the following
+ * resources and BookResponse resources in the library. It defines the following
  * resource model:
  *
- * - The API has a collection of [Shelf][google.example.library.v1.Shelf]
+ * - The API has a collection of
+ * [ShelfResponse][google.example.library.v1.ShelfResponse]
  * resources, named ``bookShelves/*``
  *
- * - Each Shelf has a collection of [Book][google.example.library.v1.Book]
+ * - Each ShelfResponse has a collection of
+ * [BookResponse][google.example.library.v1.BookResponse]
  * resources, named `bookShelves/&#42;/books/*`
  *
  * Check out [cloud docs!](/library/example/link).
@@ -990,16 +983,16 @@ class LibraryServiceGapicClient
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
      *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $book = new Book();
+     *     $book = new BookResponse();
      *     $response = $libraryServiceClient->createBook($formattedName, $book);
      * } finally {
      *     $libraryServiceClient->close();
      * }
      * ```
      *
-     * @param string $name         The name of the shelf in which the book is created.
-     * @param Book   $book         The book to create.
-     * @param array  $optionalArgs {
+     * @param string       $name         The name of the shelf in which the book is created.
+     * @param BookResponse $book         The book to create.
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1009,7 +1002,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Book
+     * @return \Testing\BasicDiregapic\BookResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1022,7 +1015,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateBook', Book::class, $optionalArgs, $request)->wait();
+        return $this->startCall('CreateBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1033,12 +1026,10 @@ class LibraryServiceGapicClient
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
      *     $formattedParent = $libraryServiceClient->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
-     *     $formattedAsset = $libraryServiceClient->assetName('asset-c04e34d445e31a2159c1bfeb882ba212');
+     *     $asset = 'asset';
      *     $parentAsset = 'parent_asset';
-     *     $formattedAssets = [
-     *         $libraryServiceClient->assetName('assets-32bb636196f91ed59d7a49190e26b42c'),
-     *     ];
-     *     $response = $libraryServiceClient->createInventory($formattedParent, $formattedAsset, $parentAsset, $formattedAssets);
+     *     $assets = [];
+     *     $response = $libraryServiceClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
      * } finally {
      *     $libraryServiceClient->close();
      * }
@@ -1051,7 +1042,7 @@ class LibraryServiceGapicClient
      * @param array    $optionalArgs {
      *     Optional.
      *
-     *     @type Inventory $inventory
+     *     @type InventoryResponse $inventory
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -1059,7 +1050,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Inventory
+     * @return \Testing\BasicDiregapic\InventoryResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1078,7 +1069,7 @@ class LibraryServiceGapicClient
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateInventory', Inventory::class, $optionalArgs, $request)->wait();
+        return $this->startCall('CreateInventory', InventoryResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1089,15 +1080,15 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $shelf = new Shelf();
+     *     $shelf = new ShelfResponse();
      *     $response = $libraryServiceClient->createShelf($shelf);
      * } finally {
      *     $libraryServiceClient->close();
      * }
      * ```
      *
-     * @param Shelf $shelf        The shelf to create.
-     * @param array $optionalArgs {
+     * @param ShelfResponse $shelf        The shelf to create.
+     * @param array         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1107,7 +1098,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Shelf
+     * @return \Testing\BasicDiregapic\ShelfResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1115,7 +1106,7 @@ class LibraryServiceGapicClient
     {
         $request = new CreateShelfRequest();
         $request->setShelf($shelf);
-        return $this->startCall('CreateShelf', Shelf::class, $optionalArgs, $request)->wait();
+        return $this->startCall('CreateShelf', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1418,7 +1409,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Book
+     * @return \Testing\BasicDiregapic\BookResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1430,7 +1421,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBook', Book::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1461,7 +1452,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromAnywhere
+     * @return \Testing\BasicDiregapic\BookFromAnywhereResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1478,7 +1469,7 @@ class LibraryServiceGapicClient
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromAbsolutelyAnywhere', BookFromAnywhere::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetBookFromAbsolutelyAnywhere', BookFromAnywhereResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1513,7 +1504,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromAnywhere
+     * @return \Testing\BasicDiregapic\BookFromAnywhereResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1528,7 +1519,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromAnywhere', BookFromAnywhere::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetBookFromAnywhere', BookFromAnywhereResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1558,7 +1549,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromArchive
+     * @return \Testing\BasicDiregapic\BookFromArchiveResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1571,7 +1562,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromArchive', BookFromArchive::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetBookFromArchive', BookFromArchiveResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1604,7 +1595,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Shelf
+     * @return \Testing\BasicDiregapic\ShelfResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1625,7 +1616,7 @@ class LibraryServiceGapicClient
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetShelf', Shelf::class, $optionalArgs, $request)->wait();
+        return $this->startCall('GetShelf', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1957,7 +1948,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Shelf
+     * @return \Testing\BasicDiregapic\ShelfResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -1970,7 +1961,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('MergeShelves', Shelf::class, $optionalArgs, $request)->wait();
+        return $this->startCall('MergeShelves', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2000,7 +1991,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Book
+     * @return \Testing\BasicDiregapic\BookResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -2013,7 +2004,7 @@ class LibraryServiceGapicClient
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('MoveBook', Book::class, $optionalArgs, $request)->wait();
+        return $this->startCall('MoveBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2100,7 +2091,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Book
+     * @return \Testing\BasicDiregapic\BookResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -2111,71 +2102,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startCall('PrivateListShelves', Book::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
-     * Creates a series of books.
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $shelf = new Shelf();
-     *     $books = [];
-     *     $seriesUuid = new SeriesUuid();
-     *     $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param Shelf      $shelf        The shelf in which the series is created.
-     * @param Book[]     $books        The books to publish in the series.
-     * @param SeriesUuid $seriesUuid   Uniquely identifies the series to the publishing house.
-     * @param array      $optionalArgs {
-     *     Optional.
-     *
-     *     @type int $edition
-     *           The edition of the series
-     *     @type bool $reviewCopy
-     *           If the book is in a pre-publish state
-     *     @type string $publisher
-     *           The publisher of the series.
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\PublishSeriesResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function publishSeries($shelf, $books, $seriesUuid, array $optionalArgs = [])
-    {
-        $request = new PublishSeriesRequest();
-        $requestParamHeaders = [];
-        $request->setShelf($shelf);
-        $request->setBooks($books);
-        $request->setSeriesUuid($seriesUuid);
-        $requestParamHeaders['shelf.name'] = $shelf->getName();
-        if (isset($optionalArgs['edition'])) {
-            $request->setEdition($optionalArgs['edition']);
-        }
-
-        if (isset($optionalArgs['reviewCopy'])) {
-            $request->setReviewCopy($optionalArgs['reviewCopy']);
-        }
-
-        if (isset($optionalArgs['publisher'])) {
-            $request->setPublisher($optionalArgs['publisher']);
-        }
-
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('PublishSeries', PublishSeriesResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('PrivateListShelves', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2195,7 +2122,7 @@ class LibraryServiceGapicClient
      * ```
      *
      * @param string $name         The resource name of the book.
-     *                             Book names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+     *                             BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
      *                             Message field comment may include special characters: <>&"`'&#64;.
      * @param array  $optionalArgs {
      *     Optional.
@@ -2208,7 +2135,7 @@ class LibraryServiceGapicClient
      *           Value indicating whether the book has been read.
      *     @type int $rating
      *           For testing enums.
-     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\Book\Rating}
+     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\BookResponse\Rating}
      *     @type string $reader
      *     @type Any $anyValue
      *           For testing all well-known types.
@@ -2256,7 +2183,7 @@ class LibraryServiceGapicClient
      */
     public function saveBook($name, array $optionalArgs = [])
     {
-        $request = new Book();
+        $request = new BookResponse();
         $request->setName($name);
         if (isset($optionalArgs['author'])) {
             $request->setAuthor($optionalArgs['author']);
@@ -2366,533 +2293,6 @@ class LibraryServiceGapicClient
     }
 
     /**
-     * Test optional flattening parameters of all types
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $requiredSingularInt32 = 0;
-     *     $requiredSingularInt64 = 0;
-     *     $requiredSingularFloat = 0.0;
-     *     $requiredSingularDouble = 0.0;
-     *     $requiredSingularBool = false;
-     *     $requiredSingularEnum = InnerEnum::ZERO;
-     *     $requiredSingularString = 'required_singular_string';
-     *     $requiredSingularBytes = '';
-     *     $requiredSingularMessage = new InnerMessage();
-     *     $formattedRequiredSingularResourceName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedRequiredSingularResourceNameOneof = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $requiredSingularResourceNameCommon = 'required_singular_resource_name_common';
-     *     $requiredSingularFixed32 = 0;
-     *     $requiredSingularFixed64 = 0;
-     *     $requiredRepeatedInt32 = [];
-     *     $requiredRepeatedInt64 = [];
-     *     $requiredRepeatedFloat = [];
-     *     $requiredRepeatedDouble = [];
-     *     $requiredRepeatedBool = [];
-     *     $requiredRepeatedEnum = [];
-     *     $requiredRepeatedString = [];
-     *     $requiredRepeatedBytes = [];
-     *     $requiredRepeatedMessage = [];
-     *     $formattedRequiredRepeatedResourceName = [
-     *         $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-     *     ];
-     *     $formattedRequiredRepeatedResourceNameOneof = [
-     *         $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-     *     ];
-     *     $requiredRepeatedResourceNameCommon = [];
-     *     $requiredRepeatedFixed32 = [];
-     *     $requiredRepeatedFixed64 = [];
-     *     $requiredMap = [];
-     *     $requiredAnyValue = new Any();
-     *     $requiredStructValue = new Struct();
-     *     $requiredValueValue = new Value();
-     *     $requiredListValueValue = new ListValue();
-     *     $requiredTimeValue = new Timestamp();
-     *     $requiredDurationValue = new Duration();
-     *     $requiredFieldMaskValue = new FieldMask();
-     *     $requiredInt32Value = new Int32Value();
-     *     $requiredUint32Value = new UInt32Value();
-     *     $requiredInt64Value = new Int64Value();
-     *     $requiredUint64Value = new UInt64Value();
-     *     $requiredFloatValue = new FloatValue();
-     *     $requiredDoubleValue = new DoubleValue();
-     *     $requiredStringValue = new StringValue();
-     *     $requiredBoolValue = new BoolValue();
-     *     $requiredBytesValue = new BytesValue();
-     *     $requiredRepeatedAnyValue = [];
-     *     $requiredRepeatedStructValue = [];
-     *     $requiredRepeatedValueValue = [];
-     *     $requiredRepeatedListValueValue = [];
-     *     $requiredRepeatedTimeValue = [];
-     *     $requiredRepeatedDurationValue = [];
-     *     $requiredRepeatedFieldMaskValue = [];
-     *     $requiredRepeatedInt32Value = [];
-     *     $requiredRepeatedUint32Value = [];
-     *     $requiredRepeatedInt64Value = [];
-     *     $requiredRepeatedUint64Value = [];
-     *     $requiredRepeatedFloatValue = [];
-     *     $requiredRepeatedDoubleValue = [];
-     *     $requiredRepeatedStringValue = [];
-     *     $requiredRepeatedBoolValue = [];
-     *     $requiredRepeatedBytesValue = [];
-     *     $response = $libraryServiceClient->testOptionalRequiredFlatteningParams($requiredSingularInt32, $requiredSingularInt64, $requiredSingularFloat, $requiredSingularDouble, $requiredSingularBool, $requiredSingularEnum, $requiredSingularString, $requiredSingularBytes, $requiredSingularMessage, $formattedRequiredSingularResourceName, $formattedRequiredSingularResourceNameOneof, $requiredSingularResourceNameCommon, $requiredSingularFixed32, $requiredSingularFixed64, $requiredRepeatedInt32, $requiredRepeatedInt64, $requiredRepeatedFloat, $requiredRepeatedDouble, $requiredRepeatedBool, $requiredRepeatedEnum, $requiredRepeatedString, $requiredRepeatedBytes, $requiredRepeatedMessage, $formattedRequiredRepeatedResourceName, $formattedRequiredRepeatedResourceNameOneof, $requiredRepeatedResourceNameCommon, $requiredRepeatedFixed32, $requiredRepeatedFixed64, $requiredMap, $requiredAnyValue, $requiredStructValue, $requiredValueValue, $requiredListValueValue, $requiredTimeValue, $requiredDurationValue, $requiredFieldMaskValue, $requiredInt32Value, $requiredUint32Value, $requiredInt64Value, $requiredUint64Value, $requiredFloatValue, $requiredDoubleValue, $requiredStringValue, $requiredBoolValue, $requiredBytesValue, $requiredRepeatedAnyValue, $requiredRepeatedStructValue, $requiredRepeatedValueValue, $requiredRepeatedListValueValue, $requiredRepeatedTimeValue, $requiredRepeatedDurationValue, $requiredRepeatedFieldMaskValue, $requiredRepeatedInt32Value, $requiredRepeatedUint32Value, $requiredRepeatedInt64Value, $requiredRepeatedUint64Value, $requiredRepeatedFloatValue, $requiredRepeatedDoubleValue, $requiredRepeatedStringValue, $requiredRepeatedBoolValue, $requiredRepeatedBytesValue);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param int            $requiredSingularInt32
-     * @param int            $requiredSingularInt64
-     * @param float          $requiredSingularFloat
-     * @param float          $requiredSingularDouble
-     * @param bool           $requiredSingularBool
-     * @param int            $requiredSingularEnum               For allowed values, use constants defined on {@see \Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum}
-     * @param string         $requiredSingularString
-     * @param string         $requiredSingularBytes
-     * @param InnerMessage   $requiredSingularMessage
-     * @param string         $requiredSingularResourceName
-     * @param string         $requiredSingularResourceNameOneof
-     * @param string         $requiredSingularResourceNameCommon
-     * @param int            $requiredSingularFixed32
-     * @param int            $requiredSingularFixed64
-     * @param int[]          $requiredRepeatedInt32
-     * @param int[]          $requiredRepeatedInt64
-     * @param float[]        $requiredRepeatedFloat
-     * @param float[]        $requiredRepeatedDouble
-     * @param bool[]         $requiredRepeatedBool
-     * @param int[]          $requiredRepeatedEnum               For allowed values, use constants defined on {@see \Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum}
-     * @param string[]       $requiredRepeatedString
-     * @param string[]       $requiredRepeatedBytes
-     * @param InnerMessage[] $requiredRepeatedMessage
-     * @param string[]       $requiredRepeatedResourceName
-     * @param string[]       $requiredRepeatedResourceNameOneof
-     * @param string[]       $requiredRepeatedResourceNameCommon
-     * @param int[]          $requiredRepeatedFixed32
-     * @param int[]          $requiredRepeatedFixed64
-     * @param array          $requiredMap
-     * @param Any            $requiredAnyValue
-     * @param Struct         $requiredStructValue
-     * @param Value          $requiredValueValue
-     * @param ListValue      $requiredListValueValue
-     * @param Timestamp      $requiredTimeValue
-     * @param Duration       $requiredDurationValue
-     * @param FieldMask      $requiredFieldMaskValue
-     * @param Int32Value     $requiredInt32Value
-     * @param UInt32Value    $requiredUint32Value
-     * @param Int64Value     $requiredInt64Value
-     * @param UInt64Value    $requiredUint64Value
-     * @param FloatValue     $requiredFloatValue
-     * @param DoubleValue    $requiredDoubleValue
-     * @param StringValue    $requiredStringValue
-     * @param BoolValue      $requiredBoolValue
-     * @param BytesValue     $requiredBytesValue
-     * @param Any[]          $requiredRepeatedAnyValue
-     * @param Struct[]       $requiredRepeatedStructValue
-     * @param Value[]        $requiredRepeatedValueValue
-     * @param ListValue[]    $requiredRepeatedListValueValue
-     * @param Timestamp[]    $requiredRepeatedTimeValue
-     * @param Duration[]     $requiredRepeatedDurationValue
-     * @param FieldMask[]    $requiredRepeatedFieldMaskValue
-     * @param Int32Value[]   $requiredRepeatedInt32Value
-     * @param UInt32Value[]  $requiredRepeatedUint32Value
-     * @param Int64Value[]   $requiredRepeatedInt64Value
-     * @param UInt64Value[]  $requiredRepeatedUint64Value
-     * @param FloatValue[]   $requiredRepeatedFloatValue
-     * @param DoubleValue[]  $requiredRepeatedDoubleValue
-     * @param StringValue[]  $requiredRepeatedStringValue
-     * @param BoolValue[]    $requiredRepeatedBoolValue
-     * @param BytesValue[]   $requiredRepeatedBytesValue
-     * @param array          $optionalArgs                       {
-     *     Optional.
-     *
-     *     @type int $optionalSingularInt32
-     *     @type int $optionalSingularInt64
-     *     @type float $optionalSingularFloat
-     *     @type float $optionalSingularDouble
-     *     @type bool $optionalSingularBool
-     *     @type int $optionalSingularEnum
-     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum}
-     *     @type string $optionalSingularString
-     *     @type string $optionalSingularBytes
-     *     @type InnerMessage $optionalSingularMessage
-     *     @type string $optionalSingularResourceName
-     *     @type string $optionalSingularResourceNameOneof
-     *     @type string $optionalSingularResourceNameCommon
-     *     @type int $optionalSingularFixed32
-     *     @type int $optionalSingularFixed64
-     *     @type int[] $optionalRepeatedInt32
-     *     @type int[] $optionalRepeatedInt64
-     *     @type float[] $optionalRepeatedFloat
-     *     @type float[] $optionalRepeatedDouble
-     *     @type bool[] $optionalRepeatedBool
-     *     @type int[] $optionalRepeatedEnum
-     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum}
-     *     @type string[] $optionalRepeatedString
-     *     @type string[] $optionalRepeatedBytes
-     *     @type InnerMessage[] $optionalRepeatedMessage
-     *     @type string[] $optionalRepeatedResourceName
-     *     @type string[] $optionalRepeatedResourceNameOneof
-     *     @type string[] $optionalRepeatedResourceNameCommon
-     *     @type int[] $optionalRepeatedFixed32
-     *     @type int[] $optionalRepeatedFixed64
-     *     @type array $optionalMap
-     *     @type Any $anyValue
-     *     @type Struct $structValue
-     *     @type Value $valueValue
-     *     @type ListValue $listValueValue
-     *     @type Timestamp $timeValue
-     *     @type Duration $durationValue
-     *     @type FieldMask $fieldMaskValue
-     *     @type Int32Value $int32Value
-     *     @type UInt32Value $uint32Value
-     *     @type Int64Value $int64Value
-     *     @type UInt64Value $uint64Value
-     *     @type FloatValue $floatValue
-     *     @type DoubleValue $doubleValue
-     *     @type StringValue $stringValue
-     *     @type BoolValue $boolValue
-     *     @type BytesValue $bytesValue
-     *     @type Any[] $repeatedAnyValue
-     *     @type Struct[] $repeatedStructValue
-     *     @type Value[] $repeatedValueValue
-     *     @type ListValue[] $repeatedListValueValue
-     *     @type Timestamp[] $repeatedTimeValue
-     *     @type Duration[] $repeatedDurationValue
-     *     @type FieldMask[] $repeatedFieldMaskValue
-     *     @type Int32Value[] $repeatedInt32Value
-     *     @type UInt32Value[] $repeatedUint32Value
-     *     @type Int64Value[] $repeatedInt64Value
-     *     @type UInt64Value[] $repeatedUint64Value
-     *     @type FloatValue[] $repeatedFloatValue
-     *     @type DoubleValue[] $repeatedDoubleValue
-     *     @type StringValue[] $repeatedStringValue
-     *     @type BoolValue[] $repeatedBoolValue
-     *     @type BytesValue[] $repeatedBytesValue
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a
-     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
-     *           settings parameters. See the documentation on
-     *           {@see Google\ApiCore\RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function testOptionalRequiredFlatteningParams($requiredSingularInt32, $requiredSingularInt64, $requiredSingularFloat, $requiredSingularDouble, $requiredSingularBool, $requiredSingularEnum, $requiredSingularString, $requiredSingularBytes, $requiredSingularMessage, $requiredSingularResourceName, $requiredSingularResourceNameOneof, $requiredSingularResourceNameCommon, $requiredSingularFixed32, $requiredSingularFixed64, $requiredRepeatedInt32, $requiredRepeatedInt64, $requiredRepeatedFloat, $requiredRepeatedDouble, $requiredRepeatedBool, $requiredRepeatedEnum, $requiredRepeatedString, $requiredRepeatedBytes, $requiredRepeatedMessage, $requiredRepeatedResourceName, $requiredRepeatedResourceNameOneof, $requiredRepeatedResourceNameCommon, $requiredRepeatedFixed32, $requiredRepeatedFixed64, $requiredMap, $requiredAnyValue, $requiredStructValue, $requiredValueValue, $requiredListValueValue, $requiredTimeValue, $requiredDurationValue, $requiredFieldMaskValue, $requiredInt32Value, $requiredUint32Value, $requiredInt64Value, $requiredUint64Value, $requiredFloatValue, $requiredDoubleValue, $requiredStringValue, $requiredBoolValue, $requiredBytesValue, $requiredRepeatedAnyValue, $requiredRepeatedStructValue, $requiredRepeatedValueValue, $requiredRepeatedListValueValue, $requiredRepeatedTimeValue, $requiredRepeatedDurationValue, $requiredRepeatedFieldMaskValue, $requiredRepeatedInt32Value, $requiredRepeatedUint32Value, $requiredRepeatedInt64Value, $requiredRepeatedUint64Value, $requiredRepeatedFloatValue, $requiredRepeatedDoubleValue, $requiredRepeatedStringValue, $requiredRepeatedBoolValue, $requiredRepeatedBytesValue, array $optionalArgs = [])
-    {
-        $request = new TestOptionalRequiredFlatteningParamsRequest();
-        $request->setRequiredSingularInt32($requiredSingularInt32);
-        $request->setRequiredSingularInt64($requiredSingularInt64);
-        $request->setRequiredSingularFloat($requiredSingularFloat);
-        $request->setRequiredSingularDouble($requiredSingularDouble);
-        $request->setRequiredSingularBool($requiredSingularBool);
-        $request->setRequiredSingularEnum($requiredSingularEnum);
-        $request->setRequiredSingularString($requiredSingularString);
-        $request->setRequiredSingularBytes($requiredSingularBytes);
-        $request->setRequiredSingularMessage($requiredSingularMessage);
-        $request->setRequiredSingularResourceName($requiredSingularResourceName);
-        $request->setRequiredSingularResourceNameOneof($requiredSingularResourceNameOneof);
-        $request->setRequiredSingularResourceNameCommon($requiredSingularResourceNameCommon);
-        $request->setRequiredSingularFixed32($requiredSingularFixed32);
-        $request->setRequiredSingularFixed64($requiredSingularFixed64);
-        $request->setRequiredRepeatedInt32($requiredRepeatedInt32);
-        $request->setRequiredRepeatedInt64($requiredRepeatedInt64);
-        $request->setRequiredRepeatedFloat($requiredRepeatedFloat);
-        $request->setRequiredRepeatedDouble($requiredRepeatedDouble);
-        $request->setRequiredRepeatedBool($requiredRepeatedBool);
-        $request->setRequiredRepeatedEnum($requiredRepeatedEnum);
-        $request->setRequiredRepeatedString($requiredRepeatedString);
-        $request->setRequiredRepeatedBytes($requiredRepeatedBytes);
-        $request->setRequiredRepeatedMessage($requiredRepeatedMessage);
-        $request->setRequiredRepeatedResourceName($requiredRepeatedResourceName);
-        $request->setRequiredRepeatedResourceNameOneof($requiredRepeatedResourceNameOneof);
-        $request->setRequiredRepeatedResourceNameCommon($requiredRepeatedResourceNameCommon);
-        $request->setRequiredRepeatedFixed32($requiredRepeatedFixed32);
-        $request->setRequiredRepeatedFixed64($requiredRepeatedFixed64);
-        $request->setRequiredMap($requiredMap);
-        $request->setRequiredAnyValue($requiredAnyValue);
-        $request->setRequiredStructValue($requiredStructValue);
-        $request->setRequiredValueValue($requiredValueValue);
-        $request->setRequiredListValueValue($requiredListValueValue);
-        $request->setRequiredTimeValue($requiredTimeValue);
-        $request->setRequiredDurationValue($requiredDurationValue);
-        $request->setRequiredFieldMaskValue($requiredFieldMaskValue);
-        $request->setRequiredInt32Value($requiredInt32Value);
-        $request->setRequiredUint32Value($requiredUint32Value);
-        $request->setRequiredInt64Value($requiredInt64Value);
-        $request->setRequiredUint64Value($requiredUint64Value);
-        $request->setRequiredFloatValue($requiredFloatValue);
-        $request->setRequiredDoubleValue($requiredDoubleValue);
-        $request->setRequiredStringValue($requiredStringValue);
-        $request->setRequiredBoolValue($requiredBoolValue);
-        $request->setRequiredBytesValue($requiredBytesValue);
-        $request->setRequiredRepeatedAnyValue($requiredRepeatedAnyValue);
-        $request->setRequiredRepeatedStructValue($requiredRepeatedStructValue);
-        $request->setRequiredRepeatedValueValue($requiredRepeatedValueValue);
-        $request->setRequiredRepeatedListValueValue($requiredRepeatedListValueValue);
-        $request->setRequiredRepeatedTimeValue($requiredRepeatedTimeValue);
-        $request->setRequiredRepeatedDurationValue($requiredRepeatedDurationValue);
-        $request->setRequiredRepeatedFieldMaskValue($requiredRepeatedFieldMaskValue);
-        $request->setRequiredRepeatedInt32Value($requiredRepeatedInt32Value);
-        $request->setRequiredRepeatedUint32Value($requiredRepeatedUint32Value);
-        $request->setRequiredRepeatedInt64Value($requiredRepeatedInt64Value);
-        $request->setRequiredRepeatedUint64Value($requiredRepeatedUint64Value);
-        $request->setRequiredRepeatedFloatValue($requiredRepeatedFloatValue);
-        $request->setRequiredRepeatedDoubleValue($requiredRepeatedDoubleValue);
-        $request->setRequiredRepeatedStringValue($requiredRepeatedStringValue);
-        $request->setRequiredRepeatedBoolValue($requiredRepeatedBoolValue);
-        $request->setRequiredRepeatedBytesValue($requiredRepeatedBytesValue);
-        if (isset($optionalArgs['optionalSingularInt32'])) {
-            $request->setOptionalSingularInt32($optionalArgs['optionalSingularInt32']);
-        }
-
-        if (isset($optionalArgs['optionalSingularInt64'])) {
-            $request->setOptionalSingularInt64($optionalArgs['optionalSingularInt64']);
-        }
-
-        if (isset($optionalArgs['optionalSingularFloat'])) {
-            $request->setOptionalSingularFloat($optionalArgs['optionalSingularFloat']);
-        }
-
-        if (isset($optionalArgs['optionalSingularDouble'])) {
-            $request->setOptionalSingularDouble($optionalArgs['optionalSingularDouble']);
-        }
-
-        if (isset($optionalArgs['optionalSingularBool'])) {
-            $request->setOptionalSingularBool($optionalArgs['optionalSingularBool']);
-        }
-
-        if (isset($optionalArgs['optionalSingularEnum'])) {
-            $request->setOptionalSingularEnum($optionalArgs['optionalSingularEnum']);
-        }
-
-        if (isset($optionalArgs['optionalSingularString'])) {
-            $request->setOptionalSingularString($optionalArgs['optionalSingularString']);
-        }
-
-        if (isset($optionalArgs['optionalSingularBytes'])) {
-            $request->setOptionalSingularBytes($optionalArgs['optionalSingularBytes']);
-        }
-
-        if (isset($optionalArgs['optionalSingularMessage'])) {
-            $request->setOptionalSingularMessage($optionalArgs['optionalSingularMessage']);
-        }
-
-        if (isset($optionalArgs['optionalSingularResourceName'])) {
-            $request->setOptionalSingularResourceName($optionalArgs['optionalSingularResourceName']);
-        }
-
-        if (isset($optionalArgs['optionalSingularResourceNameOneof'])) {
-            $request->setOptionalSingularResourceNameOneof($optionalArgs['optionalSingularResourceNameOneof']);
-        }
-
-        if (isset($optionalArgs['optionalSingularResourceNameCommon'])) {
-            $request->setOptionalSingularResourceNameCommon($optionalArgs['optionalSingularResourceNameCommon']);
-        }
-
-        if (isset($optionalArgs['optionalSingularFixed32'])) {
-            $request->setOptionalSingularFixed32($optionalArgs['optionalSingularFixed32']);
-        }
-
-        if (isset($optionalArgs['optionalSingularFixed64'])) {
-            $request->setOptionalSingularFixed64($optionalArgs['optionalSingularFixed64']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedInt32'])) {
-            $request->setOptionalRepeatedInt32($optionalArgs['optionalRepeatedInt32']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedInt64'])) {
-            $request->setOptionalRepeatedInt64($optionalArgs['optionalRepeatedInt64']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedFloat'])) {
-            $request->setOptionalRepeatedFloat($optionalArgs['optionalRepeatedFloat']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedDouble'])) {
-            $request->setOptionalRepeatedDouble($optionalArgs['optionalRepeatedDouble']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedBool'])) {
-            $request->setOptionalRepeatedBool($optionalArgs['optionalRepeatedBool']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedEnum'])) {
-            $request->setOptionalRepeatedEnum($optionalArgs['optionalRepeatedEnum']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedString'])) {
-            $request->setOptionalRepeatedString($optionalArgs['optionalRepeatedString']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedBytes'])) {
-            $request->setOptionalRepeatedBytes($optionalArgs['optionalRepeatedBytes']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedMessage'])) {
-            $request->setOptionalRepeatedMessage($optionalArgs['optionalRepeatedMessage']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedResourceName'])) {
-            $request->setOptionalRepeatedResourceName($optionalArgs['optionalRepeatedResourceName']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedResourceNameOneof'])) {
-            $request->setOptionalRepeatedResourceNameOneof($optionalArgs['optionalRepeatedResourceNameOneof']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedResourceNameCommon'])) {
-            $request->setOptionalRepeatedResourceNameCommon($optionalArgs['optionalRepeatedResourceNameCommon']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedFixed32'])) {
-            $request->setOptionalRepeatedFixed32($optionalArgs['optionalRepeatedFixed32']);
-        }
-
-        if (isset($optionalArgs['optionalRepeatedFixed64'])) {
-            $request->setOptionalRepeatedFixed64($optionalArgs['optionalRepeatedFixed64']);
-        }
-
-        if (isset($optionalArgs['optionalMap'])) {
-            $request->setOptionalMap($optionalArgs['optionalMap']);
-        }
-
-        if (isset($optionalArgs['anyValue'])) {
-            $request->setAnyValue($optionalArgs['anyValue']);
-        }
-
-        if (isset($optionalArgs['structValue'])) {
-            $request->setStructValue($optionalArgs['structValue']);
-        }
-
-        if (isset($optionalArgs['valueValue'])) {
-            $request->setValueValue($optionalArgs['valueValue']);
-        }
-
-        if (isset($optionalArgs['listValueValue'])) {
-            $request->setListValueValue($optionalArgs['listValueValue']);
-        }
-
-        if (isset($optionalArgs['timeValue'])) {
-            $request->setTimeValue($optionalArgs['timeValue']);
-        }
-
-        if (isset($optionalArgs['durationValue'])) {
-            $request->setDurationValue($optionalArgs['durationValue']);
-        }
-
-        if (isset($optionalArgs['fieldMaskValue'])) {
-            $request->setFieldMaskValue($optionalArgs['fieldMaskValue']);
-        }
-
-        if (isset($optionalArgs['int32Value'])) {
-            $request->setInt32Value($optionalArgs['int32Value']);
-        }
-
-        if (isset($optionalArgs['uint32Value'])) {
-            $request->setUint32Value($optionalArgs['uint32Value']);
-        }
-
-        if (isset($optionalArgs['int64Value'])) {
-            $request->setInt64Value($optionalArgs['int64Value']);
-        }
-
-        if (isset($optionalArgs['uint64Value'])) {
-            $request->setUint64Value($optionalArgs['uint64Value']);
-        }
-
-        if (isset($optionalArgs['floatValue'])) {
-            $request->setFloatValue($optionalArgs['floatValue']);
-        }
-
-        if (isset($optionalArgs['doubleValue'])) {
-            $request->setDoubleValue($optionalArgs['doubleValue']);
-        }
-
-        if (isset($optionalArgs['stringValue'])) {
-            $request->setStringValue($optionalArgs['stringValue']);
-        }
-
-        if (isset($optionalArgs['boolValue'])) {
-            $request->setBoolValue($optionalArgs['boolValue']);
-        }
-
-        if (isset($optionalArgs['bytesValue'])) {
-            $request->setBytesValue($optionalArgs['bytesValue']);
-        }
-
-        if (isset($optionalArgs['repeatedAnyValue'])) {
-            $request->setRepeatedAnyValue($optionalArgs['repeatedAnyValue']);
-        }
-
-        if (isset($optionalArgs['repeatedStructValue'])) {
-            $request->setRepeatedStructValue($optionalArgs['repeatedStructValue']);
-        }
-
-        if (isset($optionalArgs['repeatedValueValue'])) {
-            $request->setRepeatedValueValue($optionalArgs['repeatedValueValue']);
-        }
-
-        if (isset($optionalArgs['repeatedListValueValue'])) {
-            $request->setRepeatedListValueValue($optionalArgs['repeatedListValueValue']);
-        }
-
-        if (isset($optionalArgs['repeatedTimeValue'])) {
-            $request->setRepeatedTimeValue($optionalArgs['repeatedTimeValue']);
-        }
-
-        if (isset($optionalArgs['repeatedDurationValue'])) {
-            $request->setRepeatedDurationValue($optionalArgs['repeatedDurationValue']);
-        }
-
-        if (isset($optionalArgs['repeatedFieldMaskValue'])) {
-            $request->setRepeatedFieldMaskValue($optionalArgs['repeatedFieldMaskValue']);
-        }
-
-        if (isset($optionalArgs['repeatedInt32Value'])) {
-            $request->setRepeatedInt32Value($optionalArgs['repeatedInt32Value']);
-        }
-
-        if (isset($optionalArgs['repeatedUint32Value'])) {
-            $request->setRepeatedUint32Value($optionalArgs['repeatedUint32Value']);
-        }
-
-        if (isset($optionalArgs['repeatedInt64Value'])) {
-            $request->setRepeatedInt64Value($optionalArgs['repeatedInt64Value']);
-        }
-
-        if (isset($optionalArgs['repeatedUint64Value'])) {
-            $request->setRepeatedUint64Value($optionalArgs['repeatedUint64Value']);
-        }
-
-        if (isset($optionalArgs['repeatedFloatValue'])) {
-            $request->setRepeatedFloatValue($optionalArgs['repeatedFloatValue']);
-        }
-
-        if (isset($optionalArgs['repeatedDoubleValue'])) {
-            $request->setRepeatedDoubleValue($optionalArgs['repeatedDoubleValue']);
-        }
-
-        if (isset($optionalArgs['repeatedStringValue'])) {
-            $request->setRepeatedStringValue($optionalArgs['repeatedStringValue']);
-        }
-
-        if (isset($optionalArgs['repeatedBoolValue'])) {
-            $request->setRepeatedBoolValue($optionalArgs['repeatedBoolValue']);
-        }
-
-        if (isset($optionalArgs['repeatedBytesValue'])) {
-            $request->setRepeatedBytesValue($optionalArgs['repeatedBytesValue']);
-        }
-
-        return $this->startCall('TestOptionalRequiredFlatteningParams', TestOptionalRequiredFlatteningParamsResponse::class, $optionalArgs, $request)->wait();
-    }
-
-    /**
      * Updates a book.
      *
      * Sample code:
@@ -2900,16 +2300,16 @@ class LibraryServiceGapicClient
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
      *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $book = new Book();
+     *     $book = new BookResponse();
      *     $response = $libraryServiceClient->updateBook($formattedName, $book);
      * } finally {
      *     $libraryServiceClient->close();
      * }
      * ```
      *
-     * @param string $name         The name of the book to update.
-     * @param Book   $book         The book to update with.
-     * @param array  $optionalArgs {
+     * @param string       $name         The name of the book to update.
+     * @param BookResponse $book         The book to update with.
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type string $optionalFoo
@@ -2923,7 +2323,7 @@ class LibraryServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\Book
+     * @return \Testing\BasicDiregapic\BookResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -2944,7 +2344,7 @@ class LibraryServiceGapicClient
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateBook', Book::class, $optionalArgs, $request)->wait();
+        return $this->startCall('UpdateBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**

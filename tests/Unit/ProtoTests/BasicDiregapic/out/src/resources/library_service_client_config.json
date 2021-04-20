@@ -145,17 +145,7 @@
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
-                "PublishSeries": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default"
-                },
                 "SaveBook": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default"
-                },
-                "TestOptionalRequiredFlatteningParams": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
