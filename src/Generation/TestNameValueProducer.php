@@ -151,9 +151,13 @@ class TestNameValueProducer
 
         // IMPORTANT: The template name getters are always generated with the first
         // pattern in the proto, so keep that behavior here.
-        // TODO: What if it's just a wild-card pattern?
-        $patternDetails = $field->resourceDetails->patterns[0];
-        $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
+        if (count($field->resourceDetails->patterns) > 0) {
+            $patternDetails = $field->resourceDetails->patterns[0];
+            $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
+        } else {
+            // TODO: Better handling of wild-card patterns.
+            $args = $field->name . "-" . hash("md5", $field->name);
+        }
         $clientVar = $clientVar ?? AST::var('client');
         // TODO: This should be better merged with FieldDetails.
         $varValue = $clientVar->instanceCall($field->resourceDetails->formatMethod)($args);

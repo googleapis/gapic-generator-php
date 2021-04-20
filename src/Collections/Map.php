@@ -150,7 +150,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         if ($exists) {
             return $value;
         }
-        throw new \Exception('Key does not exist');
+        throw new \Exception("Key $key does not exist");
     }
 
     /** @inheritDoc */
