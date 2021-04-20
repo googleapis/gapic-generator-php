@@ -5,7 +5,7 @@ return [
         'google.example.library.v1.LibraryService' => [
             'GetBigBook' => [
                 'longRunning' => [
-                    'operationReturnType' => '\Testing\BasicDiregapic\Book',
+                    'operationReturnType' => '\Testing\BasicDiregapic\BookResponse',
                     'metadataReturnType' => '\Testing\BasicDiregapic\GetBigBookMetadata',
                     'initialPollDelayMillis' => '500',
                     'pollDelayMultiplier' => '1.5',

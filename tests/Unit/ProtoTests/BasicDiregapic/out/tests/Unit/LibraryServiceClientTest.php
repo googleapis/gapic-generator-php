@@ -36,45 +36,23 @@ use Google\LongRunning\Operation;
 
 use Google\Protobuf\Any;
 
-use Google\Protobuf\BoolValue;
-use Google\Protobuf\BytesValue;
-
-use Google\Protobuf\DoubleValue;
-use Google\Protobuf\Duration;
-use Google\Protobuf\FieldMask;
-use Google\Protobuf\FloatValue;
 use Google\Protobuf\GPBEmpty;
-use Google\Protobuf\Int32Value;
-use Google\Protobuf\Int64Value;
-use Google\Protobuf\ListValue;
-use Google\Protobuf\StringValue;
-use Google\Protobuf\Struct;
-use Google\Protobuf\Timestamp;
-use Google\Protobuf\UInt32Value;
-use Google\Protobuf\UInt64Value;
-use Google\Protobuf\Value;
 use Google\Rpc\Code;
-
 use stdClass;
 use Testing\BasicDiregapic\AddTagResponse;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
-use Testing\BasicDiregapic\Book;
-use Testing\BasicDiregapic\BookFromAnywhere;
-use Testing\BasicDiregapic\BookFromArchive;
+use Testing\BasicDiregapic\BookFromAnywhereResponse;
+use Testing\BasicDiregapic\BookFromArchiveResponse;
+use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\FindRelatedBooksResponse;
-use Testing\BasicDiregapic\Inventory;
+use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsResponse;
 use Testing\BasicDiregapic\MoveBooksResponse;
-use Testing\BasicDiregapic\PublishSeriesResponse;
-use Testing\BasicDiregapic\SeriesUuid;
-use Testing\BasicDiregapic\Shelf;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerEnum;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsRequest\InnerMessage;
-use Testing\BasicDiregapic\TestOptionalRequiredFlatteningParamsResponse;
+use Testing\BasicDiregapic\ShelfResponse;
 
 /**
  * @group basicdiregapic
@@ -315,7 +293,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -324,7 +302,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
-        $book = new Book();
+        $book = new BookResponse();
         $response = $client->createBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -361,7 +339,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
-        $book = new Book();
+        $book = new BookResponse();
         try {
             $client->createBook($formattedName, $book);
             // If the $client method call did not throw, fail the test
@@ -387,17 +365,15 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name = 'name3373707';
-        $expectedResponse = new Inventory();
+        $expectedResponse = new InventoryResponse();
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
-        $formattedAsset = $client->assetName('asset-c04e34d445e31a2159c1bfeb882ba212');
+        $asset = 'asset93121264';
         $parentAsset = 'parentAsset1389473563';
-        $formattedAssets = [
-            $client->assetName('assets-32bb636196f91ed59d7a49190e26b42c'),
-        ];
-        $response = $client->createInventory($formattedParent, $formattedAsset, $parentAsset, $formattedAssets);
+        $assets = [];
+        $response = $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -407,11 +383,11 @@ class LibraryServiceClientTest extends GeneratedTest
         $actualValue = $actualRequestObject->getParent();
         $this->assertProtobufEquals($formattedParent, $actualValue);
         $actualValue = $actualRequestObject->getAsset();
-        $this->assertProtobufEquals($formattedAsset, $actualValue);
+        $this->assertProtobufEquals($asset, $actualValue);
         $actualValue = $actualRequestObject->getParentAsset();
         $this->assertProtobufEquals($parentAsset, $actualValue);
         $actualValue = $actualRequestObject->getAssets();
-        $this->assertProtobufEquals($formattedAssets, $actualValue);
+        $this->assertProtobufEquals($assets, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -437,13 +413,11 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $formattedParent = $client->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
-        $formattedAsset = $client->assetName('asset-c04e34d445e31a2159c1bfeb882ba212');
+        $asset = 'asset93121264';
         $parentAsset = 'parentAsset1389473563';
-        $formattedAssets = [
-            $client->assetName('assets-32bb636196f91ed59d7a49190e26b42c'),
-        ];
+        $assets = [];
         try {
-            $client->createInventory($formattedParent, $formattedAsset, $parentAsset, $formattedAssets);
+            $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -469,13 +443,13 @@ class LibraryServiceClientTest extends GeneratedTest
         $name = 'name3373707';
         $theme = 'theme110327241';
         $internalTheme = 'internalTheme792518087';
-        $expectedResponse = new Shelf();
+        $expectedResponse = new ShelfResponse();
         $expectedResponse->setName($name);
         $expectedResponse->setTheme($theme);
         $expectedResponse->setInternalTheme($internalTheme);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $shelf = new Shelf();
+        $shelf = new ShelfResponse();
         $response = $client->createShelf($shelf);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -509,7 +483,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $shelf = new Shelf();
+        $shelf = new ShelfResponse();
         try {
             $client->createShelf($shelf);
             // If the $client method call did not throw, fail the test
@@ -757,7 +731,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -997,7 +971,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1068,7 +1042,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $author = 'author-1406328437';
         $title = 'title110371416';
         $read = true;
-        $expectedResponse = new BookFromAnywhere();
+        $expectedResponse = new BookFromAnywhereResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1138,7 +1112,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $author = 'author-1406328437';
         $title = 'title110371416';
         $read = true;
-        $expectedResponse = new BookFromAnywhere();
+        $expectedResponse = new BookFromAnywhereResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1220,7 +1194,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $author = 'author-1406328437';
         $title = 'title110371416';
         $read = true;
-        $expectedResponse = new BookFromArchive();
+        $expectedResponse = new BookFromArchiveResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1293,7 +1267,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $name2 = 'name2-1052831874';
         $theme = 'theme110327241';
         $internalTheme = 'internalTheme792518087';
-        $expectedResponse = new Shelf();
+        $expectedResponse = new ShelfResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setTheme($theme);
         $expectedResponse->setInternalTheme($internalTheme);
@@ -1421,7 +1395,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $nextPageToken = '';
-        $booksElement = new Book();
+        $booksElement = new BookResponse();
         $books = [
             $booksElement,
         ];
@@ -1736,7 +1710,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $name2 = 'name2-1052831874';
         $theme = 'theme110327241';
         $internalTheme = 'internalTheme792518087';
-        $expectedResponse = new Shelf();
+        $expectedResponse = new ShelfResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setTheme($theme);
         $expectedResponse->setInternalTheme($internalTheme);
@@ -1810,7 +1784,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1944,7 +1918,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -1983,76 +1957,6 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $client->privateListShelves();
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function publishSeriesTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $expectedResponse = new PublishSeriesResponse();
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $shelf = new Shelf();
-        $books = [];
-        $seriesUuid = new SeriesUuid();
-        $response = $client->publishSeries($shelf, $books, $seriesUuid);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.example.library.v1.LibraryService/PublishSeries', $actualFuncCall);
-        $actualValue = $actualRequestObject->getShelf();
-        $this->assertProtobufEquals($shelf, $actualValue);
-        $actualValue = $actualRequestObject->getBooks();
-        $this->assertProtobufEquals($books, $actualValue);
-        $actualValue = $actualRequestObject->getSeriesUuid();
-        $this->assertProtobufEquals($seriesUuid, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function publishSeriesExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $shelf = new Shelf();
-        $books = [];
-        $seriesUuid = new SeriesUuid();
-        try {
-            $client->publishSeries($shelf, $books, $seriesUuid);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -2128,316 +2032,6 @@ class LibraryServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function testOptionalRequiredFlatteningParamsTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $expectedResponse = new TestOptionalRequiredFlatteningParamsResponse();
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $requiredSingularInt32 = 72313594;
-        $requiredSingularInt64 = 72313499;
-        $requiredSingularFloat = -7514705.0;
-        $requiredSingularDouble = 1.9111005E8;
-        $requiredSingularBool = true;
-        $requiredSingularEnum = InnerEnum::ZERO;
-        $requiredSingularString = 'requiredSingularString-1949894503';
-        $requiredSingularBytes = '-29';
-        $requiredSingularMessage = new InnerMessage();
-        $formattedRequiredSingularResourceName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedRequiredSingularResourceNameOneof = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $requiredSingularResourceNameCommon = 'requiredSingularResourceNameCommon-1126805002';
-        $requiredSingularFixed32 = 720656715;
-        $requiredSingularFixed64 = 720656810;
-        $requiredRepeatedInt32 = [];
-        $requiredRepeatedInt64 = [];
-        $requiredRepeatedFloat = [];
-        $requiredRepeatedDouble = [];
-        $requiredRepeatedBool = [];
-        $requiredRepeatedEnum = [];
-        $requiredRepeatedString = [];
-        $requiredRepeatedBytes = [];
-        $requiredRepeatedMessage = [];
-        $formattedRequiredRepeatedResourceName = [
-            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-        ];
-        $formattedRequiredRepeatedResourceNameOneof = [
-            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-        ];
-        $requiredRepeatedResourceNameCommon = [];
-        $requiredRepeatedFixed32 = [];
-        $requiredRepeatedFixed64 = [];
-        $requiredMap = [];
-        $requiredAnyValue = new Any();
-        $requiredStructValue = new Struct();
-        $requiredValueValue = new Value();
-        $requiredListValueValue = new ListValue();
-        $requiredTimeValue = new Timestamp();
-        $requiredDurationValue = new Duration();
-        $requiredFieldMaskValue = new FieldMask();
-        $requiredInt32Value = new Int32Value();
-        $requiredUint32Value = new UInt32Value();
-        $requiredInt64Value = new Int64Value();
-        $requiredUint64Value = new UInt64Value();
-        $requiredFloatValue = new FloatValue();
-        $requiredDoubleValue = new DoubleValue();
-        $requiredStringValue = new StringValue();
-        $requiredBoolValue = new BoolValue();
-        $requiredBytesValue = new BytesValue();
-        $requiredRepeatedAnyValue = [];
-        $requiredRepeatedStructValue = [];
-        $requiredRepeatedValueValue = [];
-        $requiredRepeatedListValueValue = [];
-        $requiredRepeatedTimeValue = [];
-        $requiredRepeatedDurationValue = [];
-        $requiredRepeatedFieldMaskValue = [];
-        $requiredRepeatedInt32Value = [];
-        $requiredRepeatedUint32Value = [];
-        $requiredRepeatedInt64Value = [];
-        $requiredRepeatedUint64Value = [];
-        $requiredRepeatedFloatValue = [];
-        $requiredRepeatedDoubleValue = [];
-        $requiredRepeatedStringValue = [];
-        $requiredRepeatedBoolValue = [];
-        $requiredRepeatedBytesValue = [];
-        $response = $client->testOptionalRequiredFlatteningParams($requiredSingularInt32, $requiredSingularInt64, $requiredSingularFloat, $requiredSingularDouble, $requiredSingularBool, $requiredSingularEnum, $requiredSingularString, $requiredSingularBytes, $requiredSingularMessage, $formattedRequiredSingularResourceName, $formattedRequiredSingularResourceNameOneof, $requiredSingularResourceNameCommon, $requiredSingularFixed32, $requiredSingularFixed64, $requiredRepeatedInt32, $requiredRepeatedInt64, $requiredRepeatedFloat, $requiredRepeatedDouble, $requiredRepeatedBool, $requiredRepeatedEnum, $requiredRepeatedString, $requiredRepeatedBytes, $requiredRepeatedMessage, $formattedRequiredRepeatedResourceName, $formattedRequiredRepeatedResourceNameOneof, $requiredRepeatedResourceNameCommon, $requiredRepeatedFixed32, $requiredRepeatedFixed64, $requiredMap, $requiredAnyValue, $requiredStructValue, $requiredValueValue, $requiredListValueValue, $requiredTimeValue, $requiredDurationValue, $requiredFieldMaskValue, $requiredInt32Value, $requiredUint32Value, $requiredInt64Value, $requiredUint64Value, $requiredFloatValue, $requiredDoubleValue, $requiredStringValue, $requiredBoolValue, $requiredBytesValue, $requiredRepeatedAnyValue, $requiredRepeatedStructValue, $requiredRepeatedValueValue, $requiredRepeatedListValueValue, $requiredRepeatedTimeValue, $requiredRepeatedDurationValue, $requiredRepeatedFieldMaskValue, $requiredRepeatedInt32Value, $requiredRepeatedUint32Value, $requiredRepeatedInt64Value, $requiredRepeatedUint64Value, $requiredRepeatedFloatValue, $requiredRepeatedDoubleValue, $requiredRepeatedStringValue, $requiredRepeatedBoolValue, $requiredRepeatedBytesValue);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.example.library.v1.LibraryService/TestOptionalRequiredFlatteningParams', $actualFuncCall);
-        $actualValue = $actualRequestObject->getRequiredSingularInt32();
-        $this->assertProtobufEquals($requiredSingularInt32, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularInt64();
-        $this->assertProtobufEquals($requiredSingularInt64, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularFloat();
-        $this->assertProtobufEquals($requiredSingularFloat, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularDouble();
-        $this->assertProtobufEquals($requiredSingularDouble, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularBool();
-        $this->assertProtobufEquals($requiredSingularBool, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularEnum();
-        $this->assertProtobufEquals($requiredSingularEnum, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularString();
-        $this->assertProtobufEquals($requiredSingularString, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularBytes();
-        $this->assertProtobufEquals($requiredSingularBytes, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularMessage();
-        $this->assertProtobufEquals($requiredSingularMessage, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularResourceName();
-        $this->assertProtobufEquals($formattedRequiredSingularResourceName, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularResourceNameOneof();
-        $this->assertProtobufEquals($formattedRequiredSingularResourceNameOneof, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularResourceNameCommon();
-        $this->assertProtobufEquals($requiredSingularResourceNameCommon, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularFixed32();
-        $this->assertProtobufEquals($requiredSingularFixed32, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredSingularFixed64();
-        $this->assertProtobufEquals($requiredSingularFixed64, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedInt32();
-        $this->assertProtobufEquals($requiredRepeatedInt32, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedInt64();
-        $this->assertProtobufEquals($requiredRepeatedInt64, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedFloat();
-        $this->assertProtobufEquals($requiredRepeatedFloat, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedDouble();
-        $this->assertProtobufEquals($requiredRepeatedDouble, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedBool();
-        $this->assertProtobufEquals($requiredRepeatedBool, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedEnum();
-        $this->assertProtobufEquals($requiredRepeatedEnum, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedString();
-        $this->assertProtobufEquals($requiredRepeatedString, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedBytes();
-        $this->assertProtobufEquals($requiredRepeatedBytes, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedMessage();
-        $this->assertProtobufEquals($requiredRepeatedMessage, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedResourceName();
-        $this->assertProtobufEquals($formattedRequiredRepeatedResourceName, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedResourceNameOneof();
-        $this->assertProtobufEquals($formattedRequiredRepeatedResourceNameOneof, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedResourceNameCommon();
-        $this->assertProtobufEquals($requiredRepeatedResourceNameCommon, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedFixed32();
-        $this->assertProtobufEquals($requiredRepeatedFixed32, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedFixed64();
-        $this->assertProtobufEquals($requiredRepeatedFixed64, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredMap();
-        $this->assertProtobufEquals($requiredMap, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredAnyValue();
-        $this->assertProtobufEquals($requiredAnyValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredStructValue();
-        $this->assertProtobufEquals($requiredStructValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredValueValue();
-        $this->assertProtobufEquals($requiredValueValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredListValueValue();
-        $this->assertProtobufEquals($requiredListValueValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredTimeValue();
-        $this->assertProtobufEquals($requiredTimeValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredDurationValue();
-        $this->assertProtobufEquals($requiredDurationValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredFieldMaskValue();
-        $this->assertProtobufEquals($requiredFieldMaskValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredInt32Value();
-        $this->assertProtobufEquals($requiredInt32Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredUint32Value();
-        $this->assertProtobufEquals($requiredUint32Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredInt64Value();
-        $this->assertProtobufEquals($requiredInt64Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredUint64Value();
-        $this->assertProtobufEquals($requiredUint64Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredFloatValue();
-        $this->assertProtobufEquals($requiredFloatValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredDoubleValue();
-        $this->assertProtobufEquals($requiredDoubleValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredStringValue();
-        $this->assertProtobufEquals($requiredStringValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredBoolValue();
-        $this->assertProtobufEquals($requiredBoolValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredBytesValue();
-        $this->assertProtobufEquals($requiredBytesValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedAnyValue();
-        $this->assertProtobufEquals($requiredRepeatedAnyValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedStructValue();
-        $this->assertProtobufEquals($requiredRepeatedStructValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedValueValue();
-        $this->assertProtobufEquals($requiredRepeatedValueValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedListValueValue();
-        $this->assertProtobufEquals($requiredRepeatedListValueValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedTimeValue();
-        $this->assertProtobufEquals($requiredRepeatedTimeValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedDurationValue();
-        $this->assertProtobufEquals($requiredRepeatedDurationValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedFieldMaskValue();
-        $this->assertProtobufEquals($requiredRepeatedFieldMaskValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedInt32Value();
-        $this->assertProtobufEquals($requiredRepeatedInt32Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedUint32Value();
-        $this->assertProtobufEquals($requiredRepeatedUint32Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedInt64Value();
-        $this->assertProtobufEquals($requiredRepeatedInt64Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedUint64Value();
-        $this->assertProtobufEquals($requiredRepeatedUint64Value, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedFloatValue();
-        $this->assertProtobufEquals($requiredRepeatedFloatValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedDoubleValue();
-        $this->assertProtobufEquals($requiredRepeatedDoubleValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedStringValue();
-        $this->assertProtobufEquals($requiredRepeatedStringValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedBoolValue();
-        $this->assertProtobufEquals($requiredRepeatedBoolValue, $actualValue);
-        $actualValue = $actualRequestObject->getRequiredRepeatedBytesValue();
-        $this->assertProtobufEquals($requiredRepeatedBytesValue, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function testOptionalRequiredFlatteningParamsExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $requiredSingularInt32 = 72313594;
-        $requiredSingularInt64 = 72313499;
-        $requiredSingularFloat = -7514705.0;
-        $requiredSingularDouble = 1.9111005E8;
-        $requiredSingularBool = true;
-        $requiredSingularEnum = InnerEnum::ZERO;
-        $requiredSingularString = 'requiredSingularString-1949894503';
-        $requiredSingularBytes = '-29';
-        $requiredSingularMessage = new InnerMessage();
-        $formattedRequiredSingularResourceName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedRequiredSingularResourceNameOneof = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $requiredSingularResourceNameCommon = 'requiredSingularResourceNameCommon-1126805002';
-        $requiredSingularFixed32 = 720656715;
-        $requiredSingularFixed64 = 720656810;
-        $requiredRepeatedInt32 = [];
-        $requiredRepeatedInt64 = [];
-        $requiredRepeatedFloat = [];
-        $requiredRepeatedDouble = [];
-        $requiredRepeatedBool = [];
-        $requiredRepeatedEnum = [];
-        $requiredRepeatedString = [];
-        $requiredRepeatedBytes = [];
-        $requiredRepeatedMessage = [];
-        $formattedRequiredRepeatedResourceName = [
-            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-        ];
-        $formattedRequiredRepeatedResourceNameOneof = [
-            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-        ];
-        $requiredRepeatedResourceNameCommon = [];
-        $requiredRepeatedFixed32 = [];
-        $requiredRepeatedFixed64 = [];
-        $requiredMap = [];
-        $requiredAnyValue = new Any();
-        $requiredStructValue = new Struct();
-        $requiredValueValue = new Value();
-        $requiredListValueValue = new ListValue();
-        $requiredTimeValue = new Timestamp();
-        $requiredDurationValue = new Duration();
-        $requiredFieldMaskValue = new FieldMask();
-        $requiredInt32Value = new Int32Value();
-        $requiredUint32Value = new UInt32Value();
-        $requiredInt64Value = new Int64Value();
-        $requiredUint64Value = new UInt64Value();
-        $requiredFloatValue = new FloatValue();
-        $requiredDoubleValue = new DoubleValue();
-        $requiredStringValue = new StringValue();
-        $requiredBoolValue = new BoolValue();
-        $requiredBytesValue = new BytesValue();
-        $requiredRepeatedAnyValue = [];
-        $requiredRepeatedStructValue = [];
-        $requiredRepeatedValueValue = [];
-        $requiredRepeatedListValueValue = [];
-        $requiredRepeatedTimeValue = [];
-        $requiredRepeatedDurationValue = [];
-        $requiredRepeatedFieldMaskValue = [];
-        $requiredRepeatedInt32Value = [];
-        $requiredRepeatedUint32Value = [];
-        $requiredRepeatedInt64Value = [];
-        $requiredRepeatedUint64Value = [];
-        $requiredRepeatedFloatValue = [];
-        $requiredRepeatedDoubleValue = [];
-        $requiredRepeatedStringValue = [];
-        $requiredRepeatedBoolValue = [];
-        $requiredRepeatedBytesValue = [];
-        try {
-            $client->testOptionalRequiredFlatteningParams($requiredSingularInt32, $requiredSingularInt64, $requiredSingularFloat, $requiredSingularDouble, $requiredSingularBool, $requiredSingularEnum, $requiredSingularString, $requiredSingularBytes, $requiredSingularMessage, $formattedRequiredSingularResourceName, $formattedRequiredSingularResourceNameOneof, $requiredSingularResourceNameCommon, $requiredSingularFixed32, $requiredSingularFixed64, $requiredRepeatedInt32, $requiredRepeatedInt64, $requiredRepeatedFloat, $requiredRepeatedDouble, $requiredRepeatedBool, $requiredRepeatedEnum, $requiredRepeatedString, $requiredRepeatedBytes, $requiredRepeatedMessage, $formattedRequiredRepeatedResourceName, $formattedRequiredRepeatedResourceNameOneof, $requiredRepeatedResourceNameCommon, $requiredRepeatedFixed32, $requiredRepeatedFixed64, $requiredMap, $requiredAnyValue, $requiredStructValue, $requiredValueValue, $requiredListValueValue, $requiredTimeValue, $requiredDurationValue, $requiredFieldMaskValue, $requiredInt32Value, $requiredUint32Value, $requiredInt64Value, $requiredUint64Value, $requiredFloatValue, $requiredDoubleValue, $requiredStringValue, $requiredBoolValue, $requiredBytesValue, $requiredRepeatedAnyValue, $requiredRepeatedStructValue, $requiredRepeatedValueValue, $requiredRepeatedListValueValue, $requiredRepeatedTimeValue, $requiredRepeatedDurationValue, $requiredRepeatedFieldMaskValue, $requiredRepeatedInt32Value, $requiredRepeatedUint32Value, $requiredRepeatedInt64Value, $requiredRepeatedUint64Value, $requiredRepeatedFloatValue, $requiredRepeatedDoubleValue, $requiredRepeatedStringValue, $requiredRepeatedBoolValue, $requiredRepeatedBytesValue);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
     public function updateBookTest()
     {
         $transport = $this->createTransport();
@@ -2451,7 +2045,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $title = 'title110371416';
         $read = true;
         $reader = 'reader-934979389';
-        $expectedResponse = new Book();
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
         $expectedResponse->setAuthor($author);
         $expectedResponse->setTitle($title);
@@ -2460,7 +2054,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $book = new Book();
+        $book = new BookResponse();
         $response = $client->updateBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -2497,7 +2091,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $book = new Book();
+        $book = new BookResponse();
         try {
             $client->updateBook($formattedName, $book);
             // If the $client method call did not throw, fail the test
