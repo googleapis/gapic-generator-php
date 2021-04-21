@@ -134,7 +134,8 @@ class FieldDetails
             // TODO: Check for resource-definition message.
             $this->resourceDetails = null;
         }
-        $this->useResourceTestValue = !is_null($this->resourceDetails);
+        // Use fancy fooName() methods only if this isn't a wildcard pattern.
+        $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) > 0;
         $this->oneOfIndex = $field->hasOneOfIndex() ? $field->getOneofIndex() : null;
     }
 
