@@ -135,19 +135,9 @@
                                 "privateListShelves"
                             ]
                         },
-                        "PublishSeries": {
-                            "methods": [
-                                "publishSeries"
-                            ]
-                        },
                         "SaveBook": {
                             "methods": [
                                 "saveBook"
-                            ]
-                        },
-                        "TestOptionalRequiredFlatteningParams": {
-                            "methods": [
-                                "testOptionalRequiredFlatteningParams"
                             ]
                         },
                         "UpdateBook": {

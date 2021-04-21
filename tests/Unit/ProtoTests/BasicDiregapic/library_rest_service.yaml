@@ -6,13 +6,6 @@ title: Google Example Library API
 # Included protobuf APIs
 apis:
 - name: google.example.library.v1.LibraryService
-  mixins:
-  - name: google.tagger.v1.Tagger
-- name: google.example.library.v1.MyProto
-
-# Additional types used
-types:
-- name: google.example.library.v1.CustomError
 
 # Documentation section
 documentation:
