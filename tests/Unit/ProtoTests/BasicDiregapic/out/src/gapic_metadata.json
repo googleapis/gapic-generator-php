@@ -1,0 +1,158 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "google.example.library.v1",
+    "libraryPackage": "Testing\\BasicDiregapic",
+    "services": {
+        "LibraryService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "LibraryServiceGapicClient",
+                    "rpcs": {
+                        "AddComments": {
+                            "methods": [
+                                "addComments"
+                            ]
+                        },
+                        "AddTag": {
+                            "methods": [
+                                "addTag"
+                            ]
+                        },
+                        "ArchiveBooks": {
+                            "methods": [
+                                "archiveBooks"
+                            ]
+                        },
+                        "CreateBook": {
+                            "methods": [
+                                "createBook"
+                            ]
+                        },
+                        "CreateInventory": {
+                            "methods": [
+                                "createInventory"
+                            ]
+                        },
+                        "CreateShelf": {
+                            "methods": [
+                                "createShelf"
+                            ]
+                        },
+                        "DeleteBook": {
+                            "methods": [
+                                "deleteBook"
+                            ]
+                        },
+                        "DeleteShelf": {
+                            "methods": [
+                                "deleteShelf"
+                            ]
+                        },
+                        "FindRelatedBooks": {
+                            "methods": [
+                                "findRelatedBooks"
+                            ]
+                        },
+                        "GetBigBook": {
+                            "methods": [
+                                "getBigBook"
+                            ]
+                        },
+                        "GetBigNothing": {
+                            "methods": [
+                                "getBigNothing"
+                            ]
+                        },
+                        "GetBook": {
+                            "methods": [
+                                "getBook"
+                            ]
+                        },
+                        "GetBookFromAbsolutelyAnywhere": {
+                            "methods": [
+                                "getBookFromAbsolutelyAnywhere"
+                            ]
+                        },
+                        "GetBookFromAnywhere": {
+                            "methods": [
+                                "getBookFromAnywhere"
+                            ]
+                        },
+                        "GetBookFromArchive": {
+                            "methods": [
+                                "getBookFromArchive"
+                            ]
+                        },
+                        "GetShelf": {
+                            "methods": [
+                                "getShelf"
+                            ]
+                        },
+                        "ListAggregatedShelves": {
+                            "methods": [
+                                "listAggregatedShelves"
+                            ]
+                        },
+                        "ListBooks": {
+                            "methods": [
+                                "listBooks"
+                            ]
+                        },
+                        "ListShelves": {
+                            "methods": [
+                                "listShelves"
+                            ]
+                        },
+                        "ListStrings": {
+                            "methods": [
+                                "listStrings"
+                            ]
+                        },
+                        "LongRunningArchiveBooks": {
+                            "methods": [
+                                "longRunningArchiveBooks"
+                            ]
+                        },
+                        "MergeShelves": {
+                            "methods": [
+                                "mergeShelves"
+                            ]
+                        },
+                        "MoveBook": {
+                            "methods": [
+                                "moveBook"
+                            ]
+                        },
+                        "MoveBooks": {
+                            "methods": [
+                                "moveBooks"
+                            ]
+                        },
+                        "PrivateListShelves": {
+                            "methods": [
+                                "privateListShelves"
+                            ]
+                        },
+                        "SaveBook": {
+                            "methods": [
+                                "saveBook"
+                            ]
+                        },
+                        "UpdateBook": {
+                            "methods": [
+                                "updateBook"
+                            ]
+                        },
+                        "UpdateBookIndex": {
+                            "methods": [
+                                "updateBookIndex"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

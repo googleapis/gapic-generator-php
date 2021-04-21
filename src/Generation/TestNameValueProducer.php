@@ -139,6 +139,7 @@ class TestNameValueProducer
     }
 
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
+    // TODO: Handle nesting - see PublishSeries.
     public function fieldInit(MethodDetails $method, FieldDetails $field, callable $fnVarName, ?Variable $clientVar = null)
     {
         if (!$field->isRequired) {

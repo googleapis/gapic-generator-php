@@ -104,4 +104,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('DeprecatedService/deprecated_service.proto');
     }
+
+    public function testBasicDiregapic(): void
+    {
+        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1');
+    }
 }

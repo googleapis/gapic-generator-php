@@ -58,6 +58,11 @@ const UNIT_TESTS = [
   9 => [
     'name' => 'DeprecatedService',
     'protoPath' => 'DeprecatedService/deprecated_service.proto'
+  ],
+  10 => [
+    'name' => 'BasicDiregapic',
+    'protoPath' => 'BasicDiregapic/library_rest.proto',
+    'package' => 'google.example.library.v1'
   ]
 ];
 
