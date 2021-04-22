@@ -23,7 +23,7 @@ class Transport
     // Consts are used instead of booleans, because there more transport options may be
     // supported in the future (e.g. gRPC only).
     public const GRPC_REST = 1;
-    public const REST_ONLY = 2;
+    public const REST = 2;
 
     /**
      *  Returns true if the given transport string indicates that grpc+rest transports
@@ -35,11 +35,10 @@ class Transport
             return static::GRPC_REST;
         }
         if ($transport === "rest") {
-            return static::REST_ONLY;
+            return static::REST;
         }
         if ($transport === "grpc") {
-            trigger_error("Both gRPC and REST are supported together, or no gRPC at all", E_USER_WARNING);
-            return static::GRPC_REST;
+            throw new \Exception("gRPC-only PHP clients are not supported at this time");
         }
 
         throw new \Exception("Transport $transport not supported");

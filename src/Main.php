@@ -105,12 +105,13 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             $opts['metadata'] = false;
         }
 
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] =
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata] =
             readOptions($opts, $sideLoadedRootDir);
 
         $files = CodeGenerator::generate(
             $fileDescs,
             $filesToGen,
+            $transport,
             $generateGapicMetadata,
             $grpcServiceConfig,
             $gapicYaml,

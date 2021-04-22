@@ -431,8 +431,8 @@ class GapicClientGenerator
               'Configuration options that will be used to construct the transport. Options for',
               'each supported transport type should be passed in a key for that transport. For example:',
               PhpDoc::example(AST::block(
-                AST::assign(AST::var('transportConfig'), AST::array($transportConfigSampleValues))
-            ), null, true),
+                  AST::assign(AST::var('transportConfig'), AST::array($transportConfigSampleValues))
+              ), null, true),
               'See the',
               AST::call($ctx->type(Type::fromName($isGrpcRest ? GrpcTransport::class : RestTransport::class), true), AST::method('build'))(),
               $isGrpcRest ? 'and' : '',
