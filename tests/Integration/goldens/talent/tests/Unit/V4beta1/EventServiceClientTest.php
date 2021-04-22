@@ -31,6 +31,7 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
 use Google\Cloud\Talent\V4beta1\EventServiceClient;
+use Google\Protobuf\Timestamp;
 use Google\Rpc\Code;
 use stdClass;
 
@@ -90,6 +91,10 @@ class EventServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $clientEvent = new ClientEvent();
+        $clientEventEventId = 'clientEventEventId319230150';
+        $clientEvent->setEventId($clientEventEventId);
+        $clientEventCreateTime = new Timestamp();
+        $clientEvent->setCreateTime($clientEventCreateTime);
         $response = $client->createClientEvent($formattedParent, $clientEvent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -127,6 +132,10 @@ class EventServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $clientEvent = new ClientEvent();
+        $clientEventEventId = 'clientEventEventId319230150';
+        $clientEvent->setEventId($clientEventEventId);
+        $clientEventCreateTime = new Timestamp();
+        $clientEvent->setCreateTime($clientEventCreateTime);
         try {
             $client->createClientEvent($formattedParent, $clientEvent);
             // If the $client method call did not throw, fail the test

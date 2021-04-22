@@ -135,6 +135,11 @@
                                 "privateListShelves"
                             ]
                         },
+                        "PublishSeries": {
+                            "methods": [
+                                "publishSeries"
+                            ]
+                        },
                         "SaveBook": {
                             "methods": [
                                 "saveBook"
