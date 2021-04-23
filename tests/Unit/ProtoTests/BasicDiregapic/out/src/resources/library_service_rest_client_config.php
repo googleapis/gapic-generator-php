@@ -264,6 +264,26 @@ return [
                 'method' => 'get',
                 'uriTemplate' => '/v1/bookShelves',
             ],
+            'PublishSeries' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1:publish',
+                'body' => '*',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{shelf.name=shelves/*}:publish',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'shelf.name' => [
+                        'getters' => [
+                            'getShelf',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'SaveBook' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1:saveBook',

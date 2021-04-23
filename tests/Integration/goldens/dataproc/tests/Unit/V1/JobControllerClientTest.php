@@ -34,6 +34,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\Job;
 use Google\Cloud\Dataproc\V1\JobControllerClient;
 
+use Google\Cloud\Dataproc\V1\JobPlacement;
 use Google\Cloud\Dataproc\V1\ListJobsResponse;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -403,6 +404,10 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         $response = $client->submitJob($projectId, $region, $job);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -443,6 +448,10 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         try {
             $client->submitJob($projectId, $region, $job);
             // If the $client method call did not throw, fail the test
@@ -499,6 +508,10 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         $response = $client->submitJobAsOperation($projectId, $region, $job);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -571,6 +584,10 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         $response = $client->submitJobAsOperation($projectId, $region, $job);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -619,6 +636,10 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         $updateMask = new FieldMask();
         $response = $client->updateJob($projectId, $region, $jobId, $job, $updateMask);
         $this->assertEquals($expectedResponse, $response);
@@ -665,6 +686,10 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
         $job = new Job();
+        $jobPlacement = new JobPlacement();
+        $placementClusterName = 'placementClusterName1028110208';
+        $jobPlacement->setClusterName($placementClusterName);
+        $job->setPlacement($jobPlacement);
         $updateMask = new FieldMask();
         try {
             $client->updateJob($projectId, $region, $jobId, $job, $updateMask);

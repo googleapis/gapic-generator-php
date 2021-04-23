@@ -52,6 +52,8 @@ use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsResponse;
 use Testing\BasicDiregapic\MoveBooksResponse;
+use Testing\BasicDiregapic\PublishSeriesResponse;
+use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
@@ -303,6 +305,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
         $response = $client->createBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -340,6 +344,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
         try {
             $client->createBook($formattedName, $book);
             // If the $client method call did not throw, fail the test
@@ -450,6 +456,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
         $response = $client->createShelf($shelf);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -484,6 +492,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
         try {
             $client->createShelf($shelf);
             // If the $client method call did not throw, fail the test
@@ -1971,6 +1981,80 @@ class LibraryServiceClientTest extends GeneratedTest
     /**
      * @test
      */
+    public function publishSeriesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new PublishSeriesResponse();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
+        $books = [];
+        $seriesUuid = new SeriesUuidResponse();
+        $response = $client->publishSeries($shelf, $books, $seriesUuid);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/PublishSeries', $actualFuncCall);
+        $actualValue = $actualRequestObject->getShelf();
+        $this->assertProtobufEquals($shelf, $actualValue);
+        $actualValue = $actualRequestObject->getBooks();
+        $this->assertProtobufEquals($books, $actualValue);
+        $actualValue = $actualRequestObject->getSeriesUuid();
+        $this->assertProtobufEquals($seriesUuid, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function publishSeriesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
+        $books = [];
+        $seriesUuid = new SeriesUuidResponse();
+        try {
+            $client->publishSeries($shelf, $books, $seriesUuid);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function saveBookTest()
     {
         $transport = $this->createTransport();
@@ -2055,6 +2139,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
         $response = $client->updateBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -2092,6 +2178,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
         try {
             $client->updateBook($formattedName, $book);
             // If the $client method call did not throw, fail the test

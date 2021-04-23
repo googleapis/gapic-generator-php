@@ -94,9 +94,7 @@ class TestNameValueProducer
 
     public function perFieldRequest(MethodDetails $method): array
     {
-        // Handle test request value generation, including using values
-        // specified in the gapic-config if present.
-
+        // Handle test request value generation.
         $perField = static::filterFirstOneOf($method->allFields)
             ->map(fn ($f) => new class($this, $method, $f) {
                 public function __construct($prod, $method, $f)
@@ -106,12 +104,11 @@ class TestNameValueProducer
                     // Name generation is stateful.
                     // TODO: Consider refactoring this.
                     $this->field = $f;
-                    $fnVarName = function () use ($prod, $f) {
-                        $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
-                        $this->var = AST::var(Helpers::toCamelCase($this->name));
-                        return [$this->var, $this->name];
-                    };
-                    $this->initCode = $prod->fieldInit($method, $f, $fnVarName);
+                    $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
+                    $this->var = AST::var(Helpers::toCamelCase($this->name));
+                    $astAcc = Vector::new([]);
+                    $prod->fieldInit($method, $f, $this->var, $this->name, null, $astAcc);
+                    $this->initCode = $astAcc;
                 }
 
                 public FieldDetails $field;
@@ -119,10 +116,10 @@ class TestNameValueProducer
                 public Variable $var;
                 public $initCode;
             })
-            ->filter(fn ($x) => !is_null($x->initCode))
-            ->orderBy(fn ($x) => $x->field->isRequired ? 0 : 1);
+            ->filter(fn ($x) => !is_null($x->initCode) && $x->field->isRequired);
 
         $callArgs = $perField
+            ->flatten()
             ->filter(fn ($x) => $x->field->isRequired)
             ->map(fn ($x) => $x->var);
         if ($perField->any(fn ($x) => !$x->field->isRequired)) {
@@ -140,14 +137,38 @@ class TestNameValueProducer
 
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
     // TODO: Handle nesting - see PublishSeries.
-    public function fieldInit(MethodDetails $method, FieldDetails $field, callable $fnVarName, ?Variable $clientVar = null)
+    public function fieldInit(MethodDetails $method, FieldDetails $field, $fieldVar, string $fieldVarName, ?Variable $clientVar, Vector &$astAcc)
     {
         if (!$field->isRequired) {
-            return null;
+            $astAcc = $astAcc->append(null);
+            return;
         }
-        [$var, $name] = $fnVarName();
+
+        // This field is a non-primitive type. Descend into required sub-fields.
+        // Does not yet handle repeated message fields.
+        if ($field->isMessage && !$field->isEnum && !$field->isRepeated) {
+            $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
+
+            $msg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
+            $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired);
+            if (empty($requiredSubFields) && !$field->useResourceTestValue) {
+                $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
+                return;
+            }
+
+            foreach ($requiredSubFields as $subField) {
+                $subFieldVarName = Helpers::toCamelCase($field->name . "_" . $subField->name);
+                $subFieldVar = AST::var($subFieldVarName);
+                $this->fieldInit($method, $subField, $subFieldVar, $subFieldVarName, $clientVar, $astAcc);
+                $astAcc = $astAcc->append(AST::call($fieldVar, $subField->setter)($subFieldVar));
+            }
+            return;
+        }
+
         if (!$field->useResourceTestValue) {
-            return AST::assign($var, $this->value($field, $name));
+            $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
+            return;
         }
 
         // IMPORTANT: The template name getters are always generated with the first
@@ -165,7 +186,8 @@ class TestNameValueProducer
         if ($field->isRepeated) {
             $varValue = AST::array([$varValue]);
         }
-        return AST::assign($var, $varValue);
+        $astAcc = $astAcc->append(AST::assign($fieldVar, $varValue));
+        return;
     }
 
     // Reproduce exactly the Java test value generation:
