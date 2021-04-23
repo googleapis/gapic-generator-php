@@ -58,11 +58,11 @@ use Google\Protobuf\Timestamp;
 use Google\Protobuf\UInt32Value;
 use Google\Protobuf\UInt64Value;
 use Google\Protobuf\Value;
-
 use Testing\BasicDiregapic\AddCommentsRequest;
-use Testing\BasicDiregapic\AddTagRequest;
 
+use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
+
 use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
@@ -83,10 +83,10 @@ use Testing\BasicDiregapic\GetBookRequest;
 use Testing\BasicDiregapic\GetShelfRequest;
 use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
-
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksRequest;
 use Testing\BasicDiregapic\ListBooksResponse;
+
 use Testing\BasicDiregapic\ListShelvesRequest;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsRequest;
@@ -95,6 +95,9 @@ use Testing\BasicDiregapic\MergeShelvesRequest;
 use Testing\BasicDiregapic\MoveBookRequest;
 use Testing\BasicDiregapic\MoveBooksRequest;
 use Testing\BasicDiregapic\MoveBooksResponse;
+use Testing\BasicDiregapic\PublishSeriesRequest;
+use Testing\BasicDiregapic\PublishSeriesResponse;
+use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
 use Testing\BasicDiregapic\SomeMessage;
 use Testing\BasicDiregapic\StringBuilder;
@@ -2103,6 +2106,71 @@ class LibraryServiceGapicClient
         }
 
         return $this->startCall('PrivateListShelves', BookResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Creates a series of books.
+     * Tests PHP required nested fields.
+     *
+     * Sample code:
+     * ```
+     * $libraryServiceClient = new LibraryServiceClient();
+     * try {
+     *     $shelf = new ShelfResponse();
+     *     $books = [];
+     *     $seriesUuid = new SeriesUuidResponse();
+     *     $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
+     * } finally {
+     *     $libraryServiceClient->close();
+     * }
+     * ```
+     *
+     * @param ShelfResponse      $shelf        The shelf in which the series is created.
+     * @param BookResponse[]     $books        The books to publish in the series.
+     * @param SeriesUuidResponse $seriesUuid   Uniquely identifies the series to the publishing house.
+     * @param array              $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $edition
+     *           The edition of the series
+     *     @type bool $reviewCopy
+     *           If the book is in a pre-publish state
+     *     @type string $publisher
+     *           The publisher of the series.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\BasicDiregapic\PublishSeriesResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function publishSeries($shelf, $books, $seriesUuid, array $optionalArgs = [])
+    {
+        $request = new PublishSeriesRequest();
+        $requestParamHeaders = [];
+        $request->setShelf($shelf);
+        $request->setBooks($books);
+        $request->setSeriesUuid($seriesUuid);
+        $requestParamHeaders['shelf.name'] = $shelf->getName();
+        if (isset($optionalArgs['edition'])) {
+            $request->setEdition($optionalArgs['edition']);
+        }
+
+        if (isset($optionalArgs['reviewCopy'])) {
+            $request->setReviewCopy($optionalArgs['reviewCopy']);
+        }
+
+        if (isset($optionalArgs['publisher'])) {
+            $request->setPublisher($optionalArgs['publisher']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('PublishSeries', PublishSeriesResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**

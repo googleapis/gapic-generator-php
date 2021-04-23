@@ -130,20 +130,20 @@ service LibraryService {
     option (google.api.method_signature) = "name,book";
   }
 
-  //  TODO: Commented out for nesting handling.
-  // // Creates a series of books.
-  // rpc PublishSeries(PublishSeriesRequest) returns (PublishSeriesResponse) {
-  //   option (google.api.http) = {
-  //     post: "/v1:publish"
-  //     body: "*"
-  //     additional_bindings: {
-  //       post: "/v1/{shelf.name=shelves/*}:publish"
-  //       body: "*"
-  //     }
-  //   };
-  //   option (google.api.method_signature) =
-  //       "shelf,books,edition,series_uuid,publisher";
-  // }
+  // Creates a series of books.
+  // Tests PHP required nested fields.
+  rpc PublishSeries(PublishSeriesRequest) returns (PublishSeriesResponse) {
+    option (google.api.http) = {
+      post: "/v1:publish"
+      body: "*"
+      additional_bindings: {
+        post: "/v1/{shelf.name=shelves/*}:publish"
+        body: "*"
+      }
+    };
+    option (google.api.method_signature) =
+        "shelf,books,edition,series_uuid,publisher";
+  }
 
   // Creates an inventory. Tests singleton resources.
   rpc CreateInventory(CreateInventoryRequest) returns (InventoryResponse) {
