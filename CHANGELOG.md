@@ -1,5 +1,16 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.0...v0.1.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* Handle wildcard patterns for resname field init values ([f1c1a8f](https://www.github.com/googleapis/gapic-generator-php/commit/f1c1a8f27068d4d9e9ec815a07b3cd4d06e67a0e))
+* improve Map duplicate-key error message ([c040d5b](https://www.github.com/googleapis/gapic-generator-php/commit/c040d5b1fc82effabf11264837c084d48aae126a))
+* improve map missing key error msg ([61b9f07](https://www.github.com/googleapis/gapic-generator-php/commit/61b9f07481f57aa8c5011a8f6e58e436c607ae2c))
+* improve Map non-existent key error message ([0df2320](https://www.github.com/googleapis/gapic-generator-php/commit/0df23203e216b9096dd9ba2c25af02d1d8b1ba1a))
+* Prevent wildcard resnames from using fooName() for init vals ([be096aa](https://www.github.com/googleapis/gapic-generator-php/commit/be096aab6d040882676b5a0ea0acb88065d247a1))
+
 ## [0.1.0](https://www.github.com/googleapis/gapic-generator-php/compare/v0.0.7...v0.1.0) (2021-04-09)
 
 
