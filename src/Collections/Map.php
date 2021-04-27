@@ -60,7 +60,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         $data = [];
         foreach ($pairs as [$k, $v]) {
             if (static::apply($data, $k, 1, $v)[0]) {
-                throw new \Exception('Cannot add two items with the same key');
+                throw new \Exception("Cannot add two items with the same key $k");
             }
         }
         return new Map($data, count($pairs));
