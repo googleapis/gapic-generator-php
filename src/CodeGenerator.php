@@ -46,7 +46,7 @@ class CodeGenerator
      *
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
-     * @param ?string $transport The type of transport to support, gRPC+REST by default (null).
+     * @param ?string $transport The type of transport to support, gRPC and REST by default (null).
      *     Valid options include "grpc+rest", "grpc", or "rest".
      * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
