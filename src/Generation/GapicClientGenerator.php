@@ -128,6 +128,8 @@ class GapicClientGenerator
             ->withMembers($this->resourceProperties())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
+            ->withMember($this->defaultTransport())
+            ->withMember($this->getSupportedTransports())
             ->withMembers($this->resourceMethods())
             ->withMembers($this->lroMethods())
             ->withMember($this->construct())
@@ -399,6 +401,31 @@ class GapicClientGenerator
             ));
     }
 
+    private function defaultTransport()
+    {
+        if  ($this->serviceDetails->transportType !== Transport::REST) {
+            return null;
+        }
+        return AST::method('defaultTransport')
+            ->withPhpDocText('Implements GapicClientTrait::defaultTransport.')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::literal("'rest'"))
+            ));
+    }
+
+    private function getSupportedTransports()
+    {
+        if  ($this->serviceDetails->transportType !== Transport::REST) {
+            return null;
+        }
+        return AST::method('getSupportedTransports')
+            ->withPhpDocText('Implements GapicClientTrait::getSupportedTransports.')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::array(['rest']))
+            ));
+    }
     private function construct(): PhpClassMember
     {
         $ctx = $this->ctx;

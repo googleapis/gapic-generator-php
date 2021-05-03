@@ -231,6 +231,24 @@ class LibraryServiceGapicClient
         ];
     }
 
+    /**
+     * Implements GapicClientTrait::defaultTransport.
+     */
+    private static function defaultTransport()
+    {
+        return 'rest';
+    }
+
+    /**
+     * Implements GapicClientTrait::getSupportedTransports.
+     */
+    private static function getSupportedTransports()
+    {
+        return [
+            'rest',
+        ];
+    }
+
     private static function getArchiveNameTemplate()
     {
         if (self::$archiveNameTemplate == null) {
