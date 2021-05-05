@@ -376,7 +376,7 @@ class ProfileServiceClientTest extends GeneratedTest
         // Mock response
         $estimatedTotalSize = 1882144769;
         $nextPageToken = '';
-        $resultSetId = 'resultSetId-770306950';
+        $resultSetId2 = 'resultSetId2-1530601043';
         $histogramQueryResultsElement = new HistogramQueryResult();
         $histogramQueryResults = [
             $histogramQueryResultsElement,
@@ -384,7 +384,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse = new SearchProfilesResponse();
         $expectedResponse->setEstimatedTotalSize($estimatedTotalSize);
         $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setResultSetId($resultSetId);
+        $expectedResponse->setResultSetId($resultSetId2);
         $expectedResponse->setHistogramQueryResults($histogramQueryResults);
         $transport->addResponse($expectedResponse);
         // Mock request

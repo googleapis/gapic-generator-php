@@ -22,9 +22,9 @@ use Google\Generator\Tests\Tools\GeneratorUtils;
 
 class UnitGoldenUpdater
 {
-    public function update(string $protoPath, ?string $package = null): void
+    public function update(string $protoPath, ?string $package = null, ?string $transport = null): void
     {
-        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package);
+        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package, $transport);
         $outputPath = __DIR__ . '/' . dirname($protoPath) . '/out';
         // Delete everything from the directory.
         if (is_dir($outputPath)) {

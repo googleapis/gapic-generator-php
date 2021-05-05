@@ -38,6 +38,7 @@ function showUsageAndExit()
     print("  --gapic_yaml <path> [Optional] The gapic yaml.\n");
     print("  --service_yaml <path> [Optional] The service yaml.\n");
     print("  --metadata [Optional] Whether to generate gapic_metadata.json files\n");
+    print("  --transport [Optional] Which transport to support, grpc+rest by default. Options are 'grpc', 'grpc+rest', or 'rest'\n");
     print("\n");
     exit(1);
 }
@@ -104,12 +105,13 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             $opts['metadata'] = false;
         }
 
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] =
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata] =
             readOptions($opts, $sideLoadedRootDir);
 
         $files = CodeGenerator::generate(
             $fileDescs,
             $filesToGen,
+            $transport,
             $generateGapicMetadata,
             $grpcServiceConfig,
             $gapicYaml,
@@ -129,19 +131,20 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     fwrite(STDOUT, $genResponse->serializeToString());
 } else {
     // Read command-line args, being run interactively from cmd-line.
-    $opts = getopt('', ['descriptor:', 'package:', 'output:', 'grpc_service_config:', 'gapic_yaml:', 'service_yaml:', 'metadata:']);
+    $opts = getopt('', ['descriptor:', 'package:', 'output:', 'grpc_service_config:', 'gapic_yaml:', 'service_yaml:', 'transport:', 'metadata:']);
     if (!isset($opts['descriptor']) || !isset($opts['package'])) {
         showUsageAndExit();
     }
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
-    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata] = readOptions($opts);
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata] = readOptions($opts);
 
     // Generate PHP code.
     $files = CodeGenerator::generateFromDescriptor(
         $descBytes,
         $package,
+        $transport,
         $generateGapicMetadata,
         $grpcServiceConfig,
         $gapicYaml,
@@ -207,8 +210,14 @@ function readOptions($opts, $sideLoadedRootDir = null)
         $serviceYaml = null;
     }
 
+    if (isset($opts['transport'])) {
+        $transport = $opts['transport'];
+    } else {
+        $transport = null;
+    }
+
     // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.
     $generateGapicMetadata =  (isset($opts['metadata']) && !$opts['metadata']);
 
-    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $generateGapicMetadata];
+    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata];
 }

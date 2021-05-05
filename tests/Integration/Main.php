@@ -40,7 +40,8 @@ $ok = processDiff(Invoker::invoke(
     null,
     true
 )) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
+// Commented out due to test-value initialization improvements in the microgenerator.
+// $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicPaginated/basic-paginated.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicBidiStreaming/basic-bidi-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicServerStreaming/basic-server-streaming.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/BasicClientStreaming/basic-client-streaming.proto')) ? $ok : false;
@@ -49,7 +50,8 @@ $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/ProtoDocs/proto-docs.pr
 // Commented-out because the monolith did not adhere to aip.dev/4122.
 //$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/RoutingHeaders/routing-headers.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/Keywords/keywords.proto')) ? $ok : false;
-$ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
+// Commented out due to test-value initialization improvements in the microgenerator.
+// $ok = processDiff(Invoker::invoke('tests/Unit/ProtoTests/AllTypes/all-types.proto')) ? $ok : false;
 $ok = processDiff(Invoker::invoke(
     'tests/Unit/ProtoTests/GrpcServiceConfig/*.proto',
     'testing.grpcserviceconfig',
@@ -117,6 +119,8 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/billing/v1/cloudbilling.yaml',
     'googleapis/google/cloud/billing/v1/cloud_billing_grpc_service_config.json'
 )) ? $ok : false;
+// Commented out due to test-value initialization improvements in the microgenerator.
+/*
 $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/billing/budgets/v1/*.proto googleapis/google/cloud/common_resources.proto',
     'google.cloud.billing.budgets.v1',
@@ -140,6 +144,7 @@ $ok = processDiff(Invoker::invoke(
     'googleapis/google/cloud/datacatalog/v1/datacatalog_v1.yaml',
     'googleapis/google/cloud/datacatalog/v1/datacatalog_grpc_service_config.json'
 )) ? $ok : false;
+ */
 // Commented-out because the monolith did not adhere to aip.dev/4122.
 /*
 $ok = processDiff(Invoker::invoke(

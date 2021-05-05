@@ -96,7 +96,9 @@ class GapicClientExamplesGenerator
                         $initCode = AST::assign($var, $f->exampleValue($this->ctx));
                     } else {
                         $serviceClient = AST::var($this->serviceDetails->clientVarName);
-                        $initCode = $this->prod->fieldInit($method, $f, fn () => [$var, $varName], $serviceClient);
+                        $astAcc = Vector::new([]);
+                        $this->prod->fieldInit($method, $f, $var, $varName, $serviceClient, $astAcc);
+                        $initCode = $astAcc === null ? $astAcc : $astAcc->flatten();
                     }
                     return [$initCode, $var, $f->isRequired];
                 }

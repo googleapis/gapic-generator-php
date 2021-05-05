@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2021 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,44 +22,46 @@
 
 declare(strict_types=1);
 
-namespace Google\Cloud\Kms\Tests\Unit\V1;
+namespace Testing\BasicDiregapic\Tests\Unit;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Iam\V1\Policy;
-use Google\Cloud\Kms\V1\AsymmetricDecryptResponse;
-use Google\Cloud\Kms\V1\AsymmetricSignResponse;
-use Google\Cloud\Kms\V1\CryptoKey;
-use Google\Cloud\Kms\V1\CryptoKeyVersion;
-use Google\Cloud\Kms\V1\CryptoKeyVersion\CryptoKeyVersionAlgorithm;
-use Google\Cloud\Kms\V1\DecryptResponse;
-use Google\Cloud\Kms\V1\Digest;
-use Google\Cloud\Kms\V1\EncryptResponse;
-use Google\Cloud\Kms\V1\ImportJob;
-use Google\Cloud\Kms\V1\ImportJob\ImportMethod;
-use Google\Cloud\Kms\V1\KeyManagementServiceClient;
-use Google\Cloud\Kms\V1\KeyRing;
-use Google\Cloud\Kms\V1\ListCryptoKeysResponse;
-use Google\Cloud\Kms\V1\ListCryptoKeyVersionsResponse;
-use Google\Cloud\Kms\V1\ListImportJobsResponse;
-use Google\Cloud\Kms\V1\ListKeyRingsResponse;
-use Google\Cloud\Kms\V1\ProtectionLevel;
-use Google\Cloud\Kms\V1\PublicKey;
-use Google\Cloud\Location\ListLocationsResponse;
-use Google\Cloud\Location\Location;
-use Google\Protobuf\FieldMask;
+use Google\LongRunning\GetOperationRequest;
+use Google\LongRunning\Operation;
+
+use Google\Protobuf\Any;
+
+use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use stdClass;
+use Testing\BasicDiregapic\AddTagResponse;
+use Testing\BasicDiregapic\ArchiveBooksResponse;
+use Testing\BasicDiregapic\BookFromAnywhereResponse;
+use Testing\BasicDiregapic\BookFromArchiveResponse;
+use Testing\BasicDiregapic\BookResponse;
+use Testing\BasicDiregapic\FindRelatedBooksResponse;
+use Testing\BasicDiregapic\InventoryResponse;
+use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
+use Testing\BasicDiregapic\ListBooksResponse;
+use Testing\BasicDiregapic\ListShelvesResponse;
+use Testing\BasicDiregapic\ListStringsResponse;
+use Testing\BasicDiregapic\MoveBooksResponse;
+use Testing\BasicDiregapic\PublishSeriesResponse;
+use Testing\BasicDiregapic\SeriesUuidResponse;
+use Testing\BasicDiregapic\ShelfResponse;
 
 /**
- * @group kms
+ * @group basicdiregapic
  *
  * @group gapic
  */
-class KeyManagementServiceClientTest extends GeneratedTest
+class LibraryServiceClientTest extends GeneratedTest
 {
     /**
      * @return TransportInterface
@@ -78,20 +80,20 @@ class KeyManagementServiceClientTest extends GeneratedTest
     }
 
     /**
-     * @return KeyManagementServiceClient
+     * @return LibraryServiceClient
      */
     private function createClient(array $options = [])
     {
         $options += [
             'credentials' => $this->createCredentials(),
         ];
-        return new KeyManagementServiceClient($options);
+        return new LibraryServiceClient($options);
     }
 
     /**
      * @test
      */
-    public function asymmetricDecryptTest()
+    public function addCommentsTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -99,33 +101,28 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $plaintext = '-9';
-        $verifiedCiphertextCrc32c = true;
-        $expectedResponse = new AsymmetricDecryptResponse();
-        $expectedResponse->setPlaintext($plaintext);
-        $expectedResponse->setVerifiedCiphertextCrc32c($verifiedCiphertextCrc32c);
+        $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $ciphertext = '-72';
-        $response = $client->asymmetricDecrypt($formattedName, $ciphertext);
-        $this->assertEquals($expectedResponse, $response);
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $comments = [];
+        $client->addComments($formattedName, $comments);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/AsymmetricDecrypt', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/AddComments', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
         $this->assertProtobufEquals($formattedName, $actualValue);
-        $actualValue = $actualRequestObject->getCiphertext();
-        $this->assertProtobufEquals($ciphertext, $actualValue);
+        $actualValue = $actualRequestObject->getComments();
+        $this->assertProtobufEquals($comments, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function asymmetricDecryptExceptionTest()
+    public function addCommentsExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -143,10 +140,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $ciphertext = '-72';
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $comments = [];
         try {
-            $client->asymmetricDecrypt($formattedName, $ciphertext);
+            $client->addComments($formattedName, $comments);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -161,7 +158,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function asymmetricSignTest()
+    public function addTagTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -169,740 +166,29 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $signature = '-72';
-        $verifiedDigestCrc32c = true;
-        $name2 = 'name2-1052831874';
-        $expectedResponse = new AsymmetricSignResponse();
-        $expectedResponse->setSignature($signature);
-        $expectedResponse->setVerifiedDigestCrc32c($verifiedDigestCrc32c);
-        $expectedResponse->setName($name2);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $digest = new Digest();
-        $response = $client->asymmetricSign($formattedName, $digest);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/AsymmetricSign', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $actualValue = $actualRequestObject->getDigest();
-        $this->assertProtobufEquals($digest, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function asymmetricSignExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $digest = new Digest();
-        try {
-            $client->asymmetricSign($formattedName, $digest);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createCryptoKeyTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $expectedResponse = new CryptoKey();
-        $expectedResponse->setName($name);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $cryptoKeyId = 'cryptoKeyId-2123094983';
-        $cryptoKey = new CryptoKey();
-        $response = $client->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/CreateCryptoKey', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getCryptoKeyId();
-        $this->assertProtobufEquals($cryptoKeyId, $actualValue);
-        $actualValue = $actualRequestObject->getCryptoKey();
-        $this->assertProtobufEquals($cryptoKey, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createCryptoKeyExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $cryptoKeyId = 'cryptoKeyId-2123094983';
-        $cryptoKey = new CryptoKey();
-        try {
-            $client->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createCryptoKeyVersionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $importJob = 'importJob2125587491';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
-        $expectedResponse->setName($name);
-        $expectedResponse->setImportJob($importJob);
-        $expectedResponse->setImportFailureReason($importFailureReason);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $cryptoKeyVersion = new CryptoKeyVersion();
-        $response = $client->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/CreateCryptoKeyVersion', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getCryptoKeyVersion();
-        $this->assertProtobufEquals($cryptoKeyVersion, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createCryptoKeyVersionExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $cryptoKeyVersion = new CryptoKeyVersion();
-        try {
-            $client->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createImportJobTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $expectedResponse = new ImportJob();
-        $expectedResponse->setName($name);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $importJobId = 'importJobId-1620773193';
-        $importJob = new ImportJob();
-        $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
-        $importJob->setImportMethod($importJobImportMethod);
-        $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
-        $importJob->setProtectionLevel($importJobProtectionLevel);
-        $response = $client->createImportJob($formattedParent, $importJobId, $importJob);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/CreateImportJob', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getImportJobId();
-        $this->assertProtobufEquals($importJobId, $actualValue);
-        $actualValue = $actualRequestObject->getImportJob();
-        $this->assertProtobufEquals($importJob, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createImportJobExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $importJobId = 'importJobId-1620773193';
-        $importJob = new ImportJob();
-        $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
-        $importJob->setImportMethod($importJobImportMethod);
-        $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
-        $importJob->setProtectionLevel($importJobProtectionLevel);
-        try {
-            $client->createImportJob($formattedParent, $importJobId, $importJob);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createKeyRingTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name = 'name3373707';
-        $expectedResponse = new KeyRing();
-        $expectedResponse->setName($name);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        $keyRingId = 'keyRingId-2056646742';
-        $keyRing = new KeyRing();
-        $response = $client->createKeyRing($formattedParent, $keyRingId, $keyRing);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/CreateKeyRing', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getKeyRingId();
-        $this->assertProtobufEquals($keyRingId, $actualValue);
-        $actualValue = $actualRequestObject->getKeyRing();
-        $this->assertProtobufEquals($keyRing, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function createKeyRingExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        $keyRingId = 'keyRingId-2056646742';
-        $keyRing = new KeyRing();
-        try {
-            $client->createKeyRing($formattedParent, $keyRingId, $keyRing);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function decryptTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $plaintext = '-9';
-        $expectedResponse = new DecryptResponse();
-        $expectedResponse->setPlaintext($plaintext);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $ciphertext = '-72';
-        $response = $client->decrypt($formattedName, $ciphertext);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/Decrypt', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $actualValue = $actualRequestObject->getCiphertext();
-        $this->assertProtobufEquals($ciphertext, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function decryptExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $ciphertext = '-72';
-        try {
-            $client->decrypt($formattedName, $ciphertext);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function destroyCryptoKeyVersionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $importJob = 'importJob2125587491';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
-        $expectedResponse->setName($name2);
-        $expectedResponse->setImportJob($importJob);
-        $expectedResponse->setImportFailureReason($importFailureReason);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->destroyCryptoKeyVersion($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function destroyCryptoKeyVersionExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        try {
-            $client->destroyCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function encryptTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $ciphertext = '-72';
-        $verifiedPlaintextCrc32c = false;
-        $verifiedAdditionalAuthenticatedDataCrc32c = true;
-        $expectedResponse = new EncryptResponse();
-        $expectedResponse->setName($name2);
-        $expectedResponse->setCiphertext($ciphertext);
-        $expectedResponse->setVerifiedPlaintextCrc32c($verifiedPlaintextCrc32c);
-        $expectedResponse->setVerifiedAdditionalAuthenticatedDataCrc32c($verifiedAdditionalAuthenticatedDataCrc32c);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $name = 'name3373707';
-        $plaintext = '-9';
-        $response = $client->encrypt($name, $plaintext);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/Encrypt', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
-        $actualValue = $actualRequestObject->getPlaintext();
-        $this->assertProtobufEquals($plaintext, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function encryptExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $name = 'name3373707';
-        $plaintext = '-9';
-        try {
-            $client->encrypt($name, $plaintext);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getCryptoKeyTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $expectedResponse = new CryptoKey();
-        $expectedResponse->setName($name2);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $response = $client->getCryptoKey($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetCryptoKey', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getCryptoKeyExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        try {
-            $client->getCryptoKey($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getCryptoKeyVersionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $importJob = 'importJob2125587491';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
-        $expectedResponse->setName($name2);
-        $expectedResponse->setImportJob($importJob);
-        $expectedResponse->setImportFailureReason($importFailureReason);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->getCryptoKeyVersion($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetCryptoKeyVersion', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getCryptoKeyVersionExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        try {
-            $client->getCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getIamPolicyTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $version = 351608024;
-        $etag = '21';
-        $expectedResponse = new Policy();
-        $expectedResponse->setVersion($version);
-        $expectedResponse->setEtag($etag);
+        $expectedResponse = new AddTagResponse();
         $transport->addResponse($expectedResponse);
         // Mock request
         $resource = 'resource-341064690';
-        $response = $client->getIamPolicy($resource);
+        $tag = 'tag114586';
+        $response = $client->addTag($resource, $tag);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetIamPolicy', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/AddTag', $actualFuncCall);
         $actualValue = $actualRequestObject->getResource();
         $this->assertProtobufEquals($resource, $actualValue);
+        $actualValue = $actualRequestObject->getTag();
+        $this->assertProtobufEquals($tag, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function getIamPolicyExceptionTest()
+    public function addTagExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -921,8 +207,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $resource = 'resource-341064690';
+        $tag = 'tag114586';
         try {
-            $client->getIamPolicy($resource);
+            $client->addTag($resource, $tag);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -937,7 +224,65 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function getImportJobTest()
+    public function archiveBooksTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $success = false;
+        $expectedResponse = new ArchiveBooksResponse();
+        $expectedResponse->setSuccess($success);
+        $transport->addResponse($expectedResponse);
+        $response = $client->archiveBooks();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/ArchiveBooks', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function archiveBooksExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $client->archiveBooks();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function createBookTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -946,27 +291,40 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name2 = 'name2-1052831874';
-        $expectedResponse = new ImportJob();
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
         $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
-        $response = $client->getImportJob($formattedName);
+        $formattedName = $client->shelfName('[SHELF]');
+        $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
+        $response = $client->createBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetImportJob', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/CreateBook', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
         $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getBook();
+        $this->assertProtobufEquals($book, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function getImportJobExceptionTest()
+    public function createBookExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -984,9 +342,12 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
+        $formattedName = $client->shelfName('[SHELF]');
+        $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
         try {
-            $client->getImportJob($formattedName);
+            $client->createBook($formattedName, $book);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1001,137 +362,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function getKeyRingTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $expectedResponse = new KeyRing();
-        $expectedResponse->setName($name2);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->getKeyRing($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetKeyRing', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getKeyRingExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        try {
-            $client->getKeyRing($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getPublicKeyTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $pem = 'pem110872';
-        $name2 = 'name2-1052831874';
-        $expectedResponse = new PublicKey();
-        $expectedResponse->setPem($pem);
-        $expectedResponse->setName($name2);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->getPublicKey($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/GetPublicKey', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getPublicKeyExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        try {
-            $client->getPublicKey($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function importCryptoKeyVersionTest()
+    public function createInventoryTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1140,37 +371,36 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name = 'name3373707';
-        $importJob2 = 'importJob2-1714851050';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
+        $expectedResponse = new InventoryResponse();
         $expectedResponse->setName($name);
-        $expectedResponse->setImportJob($importJob2);
-        $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $algorithm = CryptoKeyVersionAlgorithm::CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED;
-        $importJob = 'importJob2125587491';
-        $response = $client->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
+        $formattedParent = $client->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+        $asset = 'asset93121264';
+        $parentAsset = 'parentAsset1389473563';
+        $assets = [];
+        $response = $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ImportCryptoKeyVersion', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/CreateInventory', $actualFuncCall);
         $actualValue = $actualRequestObject->getParent();
         $this->assertProtobufEquals($formattedParent, $actualValue);
-        $actualValue = $actualRequestObject->getAlgorithm();
-        $this->assertProtobufEquals($algorithm, $actualValue);
-        $actualValue = $actualRequestObject->getImportJob();
-        $this->assertProtobufEquals($importJob, $actualValue);
+        $actualValue = $actualRequestObject->getAsset();
+        $this->assertProtobufEquals($asset, $actualValue);
+        $actualValue = $actualRequestObject->getParentAsset();
+        $this->assertProtobufEquals($parentAsset, $actualValue);
+        $actualValue = $actualRequestObject->getAssets();
+        $this->assertProtobufEquals($assets, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function importCryptoKeyVersionExceptionTest()
+    public function createInventoryExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1188,11 +418,12 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $algorithm = CryptoKeyVersionAlgorithm::CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED;
-        $importJob = 'importJob2125587491';
+        $formattedParent = $client->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+        $asset = 'asset93121264';
+        $parentAsset = 'parentAsset1389473563';
+        $assets = [];
         try {
-            $client->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
+            $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1207,371 +438,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function listCryptoKeyVersionsTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $nextPageToken = '';
-        $totalSize = 705419236;
-        $cryptoKeyVersionsElement = new CryptoKeyVersion();
-        $cryptoKeyVersions = [
-            $cryptoKeyVersionsElement,
-        ];
-        $expectedResponse = new ListCryptoKeyVersionsResponse();
-        $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setTotalSize($totalSize);
-        $expectedResponse->setCryptoKeyVersions($cryptoKeyVersions);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $response = $client->listCryptoKeyVersions($formattedParent);
-        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
-        $resources = iterator_to_array($response->iterateAllElements());
-        $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getCryptoKeyVersions()[0], $resources[0]);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ListCryptoKeyVersions', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listCryptoKeyVersionsExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        try {
-            $client->listCryptoKeyVersions($formattedParent);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listCryptoKeysTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $nextPageToken = '';
-        $totalSize = 705419236;
-        $cryptoKeysElement = new CryptoKey();
-        $cryptoKeys = [
-            $cryptoKeysElement,
-        ];
-        $expectedResponse = new ListCryptoKeysResponse();
-        $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setTotalSize($totalSize);
-        $expectedResponse->setCryptoKeys($cryptoKeys);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->listCryptoKeys($formattedParent);
-        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
-        $resources = iterator_to_array($response->iterateAllElements());
-        $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getCryptoKeys()[0], $resources[0]);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ListCryptoKeys', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listCryptoKeysExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        try {
-            $client->listCryptoKeys($formattedParent);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listImportJobsTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $nextPageToken = '';
-        $totalSize = 705419236;
-        $importJobsElement = new ImportJob();
-        $importJobs = [
-            $importJobsElement,
-        ];
-        $expectedResponse = new ListImportJobsResponse();
-        $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setTotalSize($totalSize);
-        $expectedResponse->setImportJobs($importJobs);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->listImportJobs($formattedParent);
-        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
-        $resources = iterator_to_array($response->iterateAllElements());
-        $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getImportJobs()[0], $resources[0]);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ListImportJobs', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listImportJobsExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        try {
-            $client->listImportJobs($formattedParent);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listKeyRingsTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $nextPageToken = '';
-        $totalSize = 705419236;
-        $keyRingsElement = new KeyRing();
-        $keyRings = [
-            $keyRingsElement,
-        ];
-        $expectedResponse = new ListKeyRingsResponse();
-        $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setTotalSize($totalSize);
-        $expectedResponse->setKeyRings($keyRings);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        $response = $client->listKeyRings($formattedParent);
-        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
-        $resources = iterator_to_array($response->iterateAllElements());
-        $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getKeyRings()[0], $resources[0]);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/ListKeyRings', $actualFuncCall);
-        $actualValue = $actualRequestObject->getParent();
-        $this->assertProtobufEquals($formattedParent, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listKeyRingsExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        try {
-            $client->listKeyRings($formattedParent);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function restoreCryptoKeyVersionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $importJob = 'importJob2125587491';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
-        $expectedResponse->setName($name2);
-        $expectedResponse->setImportJob($importJob);
-        $expectedResponse->setImportFailureReason($importFailureReason);
-        $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->restoreCryptoKeyVersion($formattedName);
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function restoreCryptoKeyVersionExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        try {
-            $client->restoreCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function updateCryptoKeyTest()
+    public function createShelfTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1580,30 +447,33 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name = 'name3373707';
-        $expectedResponse = new CryptoKey();
+        $theme = 'theme110327241';
+        $internalTheme = 'internalTheme792518087';
+        $expectedResponse = new ShelfResponse();
         $expectedResponse->setName($name);
+        $expectedResponse->setTheme($theme);
+        $expectedResponse->setInternalTheme($internalTheme);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $cryptoKey = new CryptoKey();
-        $updateMask = new FieldMask();
-        $response = $client->updateCryptoKey($cryptoKey, $updateMask);
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
+        $response = $client->createShelf($shelf);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKey', $actualFuncCall);
-        $actualValue = $actualRequestObject->getCryptoKey();
-        $this->assertProtobufEquals($cryptoKey, $actualValue);
-        $actualValue = $actualRequestObject->getUpdateMask();
-        $this->assertProtobufEquals($updateMask, $actualValue);
+        $this->assertSame('/google.example.library.v1.LibraryService/CreateShelf', $actualFuncCall);
+        $actualValue = $actualRequestObject->getShelf();
+        $this->assertProtobufEquals($shelf, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function updateCryptoKeyExceptionTest()
+    public function createShelfExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1621,10 +491,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $cryptoKey = new CryptoKey();
-        $updateMask = new FieldMask();
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
         try {
-            $client->updateCryptoKey($cryptoKey, $updateMask);
+            $client->createShelf($shelf);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1639,7 +510,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function updateCryptoKeyPrimaryVersionTest()
+    public function deleteBookTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1647,31 +518,25 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name2 = 'name2-1052831874';
-        $expectedResponse = new CryptoKey();
-        $expectedResponse->setName($name2);
+        $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $cryptoKeyVersionId = 'cryptoKeyVersionId729489152';
-        $response = $client->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
-        $this->assertEquals($expectedResponse, $response);
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $client->deleteBook($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/DeleteBook', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
         $this->assertProtobufEquals($formattedName, $actualValue);
-        $actualValue = $actualRequestObject->getCryptoKeyVersionId();
-        $this->assertProtobufEquals($cryptoKeyVersionId, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function updateCryptoKeyPrimaryVersionExceptionTest()
+    public function deleteBookExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1689,10 +554,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $cryptoKeyVersionId = 'cryptoKeyVersionId729489152';
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
-            $client->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
+            $client->deleteBook($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1707,7 +571,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function updateCryptoKeyVersionTest()
+    public function deleteShelfTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1715,35 +579,25 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $importJob = 'importJob2125587491';
-        $importFailureReason = 'importFailureReason-494073229';
-        $expectedResponse = new CryptoKeyVersion();
-        $expectedResponse->setName($name);
-        $expectedResponse->setImportJob($importJob);
-        $expectedResponse->setImportFailureReason($importFailureReason);
+        $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $cryptoKeyVersion = new CryptoKeyVersion();
-        $updateMask = new FieldMask();
-        $response = $client->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
-        $this->assertEquals($expectedResponse, $response);
+        $formattedName = $client->shelfName('[SHELF]');
+        $client->deleteShelf($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyVersion', $actualFuncCall);
-        $actualValue = $actualRequestObject->getCryptoKeyVersion();
-        $this->assertProtobufEquals($cryptoKeyVersion, $actualValue);
-        $actualValue = $actualRequestObject->getUpdateMask();
-        $this->assertProtobufEquals($updateMask, $actualValue);
+        $this->assertSame('/google.example.library.v1.LibraryService/DeleteShelf', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function updateCryptoKeyVersionExceptionTest()
+    public function deleteShelfExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1761,10 +615,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $cryptoKeyVersion = new CryptoKeyVersion();
-        $updateMask = new FieldMask();
+        $formattedName = $client->shelfName('[SHELF]');
         try {
-            $client->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
+            $client->deleteShelf($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1779,69 +632,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     /**
      * @test
      */
-    public function getLocationTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        // Mock response
-        $name2 = 'name2-1052831874';
-        $locationId = 'locationId552319461';
-        $displayName = 'displayName1615086568';
-        $expectedResponse = new Location();
-        $expectedResponse->setName($name2);
-        $expectedResponse->setLocationId($locationId);
-        $expectedResponse->setDisplayName($displayName);
-        $transport->addResponse($expectedResponse);
-        $response = $client->getLocation();
-        $this->assertEquals($expectedResponse, $response);
-        $actualRequests = $transport->popReceivedCalls();
-        $this->assertSame(1, count($actualRequests));
-        $actualFuncCall = $actualRequests[0]->getFuncCall();
-        $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.location.Locations/GetLocation', $actualFuncCall);
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function getLocationExceptionTest()
-    {
-        $transport = $this->createTransport();
-        $client = $this->createClient([
-            'transport' => $transport,
-        ]);
-        $this->assertTrue($transport->isExhausted());
-        $status = new stdClass();
-        $status->code = Code::DATA_LOSS;
-        $status->details = 'internal error';
-        $expectedExceptionMessage  = json_encode([
-            'message' => 'internal error',
-            'code' => Code::DATA_LOSS,
-            'status' => 'DATA_LOSS',
-            'details' => [],
-        ], JSON_PRETTY_PRINT);
-        $transport->addResponse(null, $status);
-        try {
-            $client->getLocation();
-            // If the $client method call did not throw, fail the test
-            $this->fail('Expected an ApiException, but no exception was thrown.');
-        } catch (ApiException $ex) {
-            $this->assertEquals($status->code, $ex->getCode());
-            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
-        }
-        // Call popReceivedCalls to ensure the stub is exhausted
-        $transport->popReceivedCalls();
-        $this->assertTrue($transport->isExhausted());
-    }
-
-    /**
-     * @test
-     */
-    public function listLocationsTest()
+    public function findRelatedBooksTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1850,31 +641,729 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $nextPageToken = '';
-        $locationsElement = new Location();
-        $locations = [
-            $locationsElement,
+        $namesElement = 'namesElement-249113339';
+        $names = [
+            $namesElement,
         ];
-        $expectedResponse = new ListLocationsResponse();
+        $expectedResponse = new FindRelatedBooksResponse();
         $expectedResponse->setNextPageToken($nextPageToken);
-        $expectedResponse->setLocations($locations);
+        $expectedResponse->setNames($names);
         $transport->addResponse($expectedResponse);
-        $response = $client->listLocations();
+        // Mock request
+        $formattedNames = [
+            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+        ];
+        $formattedShelves = [
+            $client->shelfName('[SHELF]'),
+        ];
+        $response = $client->findRelatedBooks($formattedNames, $formattedShelves);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getLocations()[0], $resources[0]);
+        $this->assertEquals($expectedResponse->getNames()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/google.cloud.location.Locations/ListLocations', $actualFuncCall);
+        $this->assertSame('/google.example.library.v1.LibraryService/FindRelatedBooks', $actualFuncCall);
+        $actualValue = $actualRequestObject->getNames();
+        $this->assertProtobufEquals($formattedNames, $actualValue);
+        $actualValue = $actualRequestObject->getShelves();
+        $this->assertProtobufEquals($formattedShelves, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /**
      * @test
      */
-    public function listLocationsExceptionTest()
+    public function findRelatedBooksExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedNames = [
+            $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+        ];
+        $formattedShelves = [
+            $client->shelfName('[SHELF]'),
+        ];
+        try {
+            $client->findRelatedBooks($formattedNames, $formattedShelves);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBigBookTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/getBigBookTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
+        $anyResponse = new Any();
+        $anyResponse->setValue($expectedResponse->serializeToString());
+        $completeOperation = new Operation();
+        $completeOperation->setName('operations/getBigBookTest');
+        $completeOperation->setDone(true);
+        $completeOperation->setResponse($anyResponse);
+        $operationsTransport->addResponse($completeOperation);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBigBook($formattedName);
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $apiRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($apiRequests));
+        $operationsRequestsEmpty = $operationsTransport->popReceivedCalls();
+        $this->assertSame(0, count($operationsRequestsEmpty));
+        $actualApiFuncCall = $apiRequests[0]->getFuncCall();
+        $actualApiRequestObject = $apiRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBigBook', $actualApiFuncCall);
+        $actualValue = $actualApiRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/getBigBookTest');
+        $response->pollUntilComplete([
+            'initialPollDelayMillis' => 1,
+        ]);
+        $this->assertTrue($response->isDone());
+        $this->assertEquals($expectedResponse, $response->getResult());
+        $apiRequestsEmpty = $transport->popReceivedCalls();
+        $this->assertSame(0, count($apiRequestsEmpty));
+        $operationsRequests = $operationsTransport->popReceivedCalls();
+        $this->assertSame(1, count($operationsRequests));
+        $actualOperationsFuncCall = $operationsRequests[0]->getFuncCall();
+        $actualOperationsRequestObject = $operationsRequests[0]->getRequestObject();
+        $this->assertSame('/google.longrunning.Operations/GetOperation', $actualOperationsFuncCall);
+        $this->assertEquals($expectedOperationsRequestObject, $actualOperationsRequestObject);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBigBookExceptionTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/getBigBookTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $operationsTransport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBigBook($formattedName);
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/getBigBookTest');
+        try {
+            $response->pollUntilComplete([
+                'initialPollDelayMillis' => 1,
+            ]);
+            // If the pollUntilComplete() method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stubs are exhausted
+        $transport->popReceivedCalls();
+        $operationsTransport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBigNothingTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/getBigNothingTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $expectedResponse = new GPBEmpty();
+        $anyResponse = new Any();
+        $anyResponse->setValue($expectedResponse->serializeToString());
+        $completeOperation = new Operation();
+        $completeOperation->setName('operations/getBigNothingTest');
+        $completeOperation->setDone(true);
+        $completeOperation->setResponse($anyResponse);
+        $operationsTransport->addResponse($completeOperation);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBigNothing($formattedName);
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $apiRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($apiRequests));
+        $operationsRequestsEmpty = $operationsTransport->popReceivedCalls();
+        $this->assertSame(0, count($operationsRequestsEmpty));
+        $actualApiFuncCall = $apiRequests[0]->getFuncCall();
+        $actualApiRequestObject = $apiRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBigNothing', $actualApiFuncCall);
+        $actualValue = $actualApiRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/getBigNothingTest');
+        $response->pollUntilComplete([
+            'initialPollDelayMillis' => 1,
+        ]);
+        $this->assertTrue($response->isDone());
+        $this->assertEquals($expectedResponse, $response->getResult());
+        $apiRequestsEmpty = $transport->popReceivedCalls();
+        $this->assertSame(0, count($apiRequestsEmpty));
+        $operationsRequests = $operationsTransport->popReceivedCalls();
+        $this->assertSame(1, count($operationsRequests));
+        $actualOperationsFuncCall = $operationsRequests[0]->getFuncCall();
+        $actualOperationsRequestObject = $operationsRequests[0]->getRequestObject();
+        $this->assertSame('/google.longrunning.Operations/GetOperation', $actualOperationsFuncCall);
+        $this->assertEquals($expectedOperationsRequestObject, $actualOperationsRequestObject);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBigNothingExceptionTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/getBigNothingTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $operationsTransport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBigNothing($formattedName);
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/getBigNothingTest');
+        try {
+            $response->pollUntilComplete([
+                'initialPollDelayMillis' => 1,
+            ]);
+            // If the pollUntilComplete() method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stubs are exhausted
+        $transport->popReceivedCalls();
+        $operationsTransport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBook($formattedName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBook', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        try {
+            $client->getBook($formattedName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromAbsolutelyAnywhereTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $expectedResponse = new BookFromAnywhereResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $response = $client->getBookFromAbsolutelyAnywhere($formattedName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBookFromAbsolutelyAnywhere', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromAbsolutelyAnywhereExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        try {
+            $client->getBookFromAbsolutelyAnywhere($formattedName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromAnywhereTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $expectedResponse = new BookFromAnywhereResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedAltBookName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedPlace = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedFolder = $client->folderName('[FOLDER]');
+        $response = $client->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBookFromAnywhere', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getAltBookName();
+        $this->assertProtobufEquals($formattedAltBookName, $actualValue);
+        $actualValue = $actualRequestObject->getPlace();
+        $this->assertProtobufEquals($formattedPlace, $actualValue);
+        $actualValue = $actualRequestObject->getFolder();
+        $this->assertProtobufEquals($formattedFolder, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromAnywhereExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedAltBookName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedPlace = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedFolder = $client->folderName('[FOLDER]');
+        try {
+            $client->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromArchiveTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $expectedResponse = new BookFromArchiveResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->archivedBookName('[ARCHIVE]', '[BOOK]');
+        $formattedParent = $client->projectName('[PROJECT]');
+        $response = $client->getBookFromArchive($formattedName, $formattedParent);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetBookFromArchive', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookFromArchiveExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->archivedBookName('[ARCHIVE]', '[BOOK]');
+        $formattedParent = $client->projectName('[PROJECT]');
+        try {
+            $client->getBookFromArchive($formattedName, $formattedParent);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getShelfTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $theme = 'theme110327241';
+        $internalTheme = 'internalTheme792518087';
+        $expectedResponse = new ShelfResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setTheme($theme);
+        $expectedResponse->setInternalTheme($internalTheme);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        $options = 'options-1249474914';
+        $response = $client->getShelf($formattedName, $options);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/GetShelf', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getOptions();
+        $this->assertProtobufEquals($options, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getShelfExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        $options = 'options-1249474914';
+        try {
+            $client->getShelf($formattedName, $options);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listAggregatedShelvesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $nextPageToken = 'nextPageToken-1530815211';
+        $expectedResponse = new ListAggregatedShelvesResponse();
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $transport->addResponse($expectedResponse);
+        $response = $client->listAggregatedShelves();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/ListAggregatedShelves', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listAggregatedShelvesExceptionTest()
     {
         $transport = $this->createTransport();
         $client = $this->createClient([
@@ -1892,7 +1381,876 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listLocations();
+            $client->listAggregatedShelves();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listBooksTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $nextPageToken = '';
+        $booksElement = new BookResponse();
+        $books = [
+            $booksElement,
+        ];
+        $expectedResponse = new ListBooksResponse();
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setBooks($books);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        $response = $client->listBooks($formattedName);
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getBooks()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/ListBooks', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listBooksExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        try {
+            $client->listBooks($formattedName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listShelvesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $nextPageToken = 'nextPageToken-1530815211';
+        $expectedResponse = new ListShelvesResponse();
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $transport->addResponse($expectedResponse);
+        $response = $client->listShelves();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/ListShelves', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listShelvesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $client->listShelves();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listStringsTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $nextPageToken = '';
+        $stringsElement = 'stringsElement474465855';
+        $strings = [
+            $stringsElement,
+        ];
+        $expectedResponse = new ListStringsResponse();
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setStrings($strings);
+        $transport->addResponse($expectedResponse);
+        $response = $client->listStrings();
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getStrings()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/ListStrings', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listStringsExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $client->listStrings();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function longRunningArchiveBooksTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/longRunningArchiveBooksTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $success = false;
+        $expectedResponse = new ArchiveBooksResponse();
+        $expectedResponse->setSuccess($success);
+        $anyResponse = new Any();
+        $anyResponse->setValue($expectedResponse->serializeToString());
+        $completeOperation = new Operation();
+        $completeOperation->setName('operations/longRunningArchiveBooksTest');
+        $completeOperation->setDone(true);
+        $completeOperation->setResponse($anyResponse);
+        $operationsTransport->addResponse($completeOperation);
+        $response = $client->longRunningArchiveBooks();
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $apiRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($apiRequests));
+        $operationsRequestsEmpty = $operationsTransport->popReceivedCalls();
+        $this->assertSame(0, count($operationsRequestsEmpty));
+        $actualApiFuncCall = $apiRequests[0]->getFuncCall();
+        $actualApiRequestObject = $apiRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/LongRunningArchiveBooks', $actualApiFuncCall);
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/longRunningArchiveBooksTest');
+        $response->pollUntilComplete([
+            'initialPollDelayMillis' => 1,
+        ]);
+        $this->assertTrue($response->isDone());
+        $this->assertEquals($expectedResponse, $response->getResult());
+        $apiRequestsEmpty = $transport->popReceivedCalls();
+        $this->assertSame(0, count($apiRequestsEmpty));
+        $operationsRequests = $operationsTransport->popReceivedCalls();
+        $this->assertSame(1, count($operationsRequests));
+        $actualOperationsFuncCall = $operationsRequests[0]->getFuncCall();
+        $actualOperationsRequestObject = $operationsRequests[0]->getRequestObject();
+        $this->assertSame('/google.longrunning.Operations/GetOperation', $actualOperationsFuncCall);
+        $this->assertEquals($expectedOperationsRequestObject, $actualOperationsRequestObject);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function longRunningArchiveBooksExceptionTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'serviceAddress' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/longRunningArchiveBooksTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $operationsTransport->addResponse(null, $status);
+        $response = $client->longRunningArchiveBooks();
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/longRunningArchiveBooksTest');
+        try {
+            $response->pollUntilComplete([
+                'initialPollDelayMillis' => 1,
+            ]);
+            // If the pollUntilComplete() method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stubs are exhausted
+        $transport->popReceivedCalls();
+        $operationsTransport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function mergeShelvesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $theme = 'theme110327241';
+        $internalTheme = 'internalTheme792518087';
+        $expectedResponse = new ShelfResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setTheme($theme);
+        $expectedResponse->setInternalTheme($internalTheme);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        $formattedOtherShelfName = $client->shelfName('[SHELF]');
+        $response = $client->mergeShelves($formattedName, $formattedOtherShelfName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/MergeShelves', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getOtherShelfName();
+        $this->assertProtobufEquals($formattedOtherShelfName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function mergeShelvesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->shelfName('[SHELF]');
+        $formattedOtherShelfName = $client->shelfName('[SHELF]');
+        try {
+            $client->mergeShelves($formattedName, $formattedOtherShelfName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function moveBookTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedOtherShelfName = $client->shelfName('[SHELF]');
+        $response = $client->moveBook($formattedName, $formattedOtherShelfName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/MoveBook', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getOtherShelfName();
+        $this->assertProtobufEquals($formattedOtherShelfName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function moveBookExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedOtherShelfName = $client->shelfName('[SHELF]');
+        try {
+            $client->moveBook($formattedName, $formattedOtherShelfName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function moveBooksTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $success = false;
+        $expectedResponse = new MoveBooksResponse();
+        $expectedResponse->setSuccess($success);
+        $transport->addResponse($expectedResponse);
+        $response = $client->moveBooks();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/MoveBooks', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function moveBooksExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $client->moveBooks();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function privateListShelvesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
+        $expectedResponse->setName($name);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
+        $transport->addResponse($expectedResponse);
+        $response = $client->privateListShelves();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/PrivateListShelves', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function privateListShelvesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $client->privateListShelves();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function publishSeriesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new PublishSeriesResponse();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
+        $books = [];
+        $seriesUuid = new SeriesUuidResponse();
+        $response = $client->publishSeries($shelf, $books, $seriesUuid);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/PublishSeries', $actualFuncCall);
+        $actualValue = $actualRequestObject->getShelf();
+        $this->assertProtobufEquals($shelf, $actualValue);
+        $actualValue = $actualRequestObject->getBooks();
+        $this->assertProtobufEquals($books, $actualValue);
+        $actualValue = $actualRequestObject->getSeriesUuid();
+        $this->assertProtobufEquals($seriesUuid, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function publishSeriesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $shelf = new ShelfResponse();
+        $shelfName = 'shelfName1796941781';
+        $shelf->setName($shelfName);
+        $books = [];
+        $seriesUuid = new SeriesUuidResponse();
+        try {
+            $client->publishSeries($shelf, $books, $seriesUuid);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function saveBookTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $name = 'name3373707';
+        $client->saveBook($name);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/SaveBook', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function saveBookExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $name = 'name3373707';
+        try {
+            $client->saveBook($name);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $author = 'author-1406328437';
+        $title = 'title110371416';
+        $read = true;
+        $reader = 'reader-934979389';
+        $expectedResponse = new BookResponse();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setAuthor($author);
+        $expectedResponse->setTitle($title);
+        $expectedResponse->setRead($read);
+        $expectedResponse->setReader($reader);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
+        $response = $client->updateBook($formattedName, $book);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/UpdateBook', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getBook();
+        $this->assertProtobufEquals($book, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $book = new BookResponse();
+        $bookName = 'bookName2004454676';
+        $book->setName($bookName);
+        try {
+            $client->updateBook($formattedName, $book);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookIndexTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $indexName = 'indexName746962392';
+        $indexMap = [];
+        $client->updateBookIndex($formattedName, $indexName, $indexMap);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.LibraryService/UpdateBookIndex', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getIndexName();
+        $this->assertProtobufEquals($indexName, $actualValue);
+        $actualValue = $actualRequestObject->getIndexMap();
+        $this->assertProtobufEquals($indexMap, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookIndexExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $indexName = 'indexName746962392';
+        $indexMap = [];
+        try {
+            $client->updateBookIndex($formattedName, $indexName, $indexMap);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
