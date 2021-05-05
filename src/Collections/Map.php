@@ -60,7 +60,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         $data = [];
         foreach ($pairs as [$k, $v]) {
             if (static::apply($data, $k, 1, $v)[0]) {
-                throw new \Exception('Cannot add two items with the same key');
+                throw new \Exception("Cannot add two items with the same key $k");
             }
         }
         return new Map($data, count($pairs));
@@ -150,7 +150,9 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         if ($exists) {
             return $value;
         }
-        throw new \Exception("Key $key does not exist");
+        $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2);
+        $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
+        throw new \Exception("Key $key does not exist, called from $caller");
     }
 
     /** @inheritDoc */
