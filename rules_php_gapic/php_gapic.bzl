@@ -61,15 +61,17 @@ def php_gapic_srcjar(
     if grpc_service_config:
         plugin_file_args[grpc_service_config] = "grpc_service_config"
 
+    # Generate the gapic_metadata.json file.
+    plugin_args = ["metadata"]
+
+    # Transport.
     if transport == None:
         transport = "grpc+rest"
     if transport == "grpc":
         fail("Error: gRPC-only PHP GAPIC libraries are not yet supported")
     if transport != "grpc+rest" and transport != "rest":
         fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
-
-    # Generate the gapic_metadata.json file.
-    plugin_args = ["metadata"]
+    plugin_args.append("transport=%s" % transport)
 
     proto_custom_library(
         name = name,
