@@ -23,9 +23,9 @@ use Google\Generator\Tests\Tools\GeneratorUtils;
 
 final class ProtoTest extends TestCase
 {
-    private function runProtoTest(string $protoPath, ?string $package = null): void
+    private function runProtoTest(string $protoPath, ?string $package = null, ?string $transport = null): void
     {
-        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package);
+        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package, $transport);
         $expectedGeneratedFilenameEndings  =  array(
           'Client.php',
           'ClientTest.php',
@@ -107,6 +107,6 @@ final class ProtoTest extends TestCase
 
     public function testBasicDiregapic(): void
     {
-        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1');
+        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest');
     }
 }

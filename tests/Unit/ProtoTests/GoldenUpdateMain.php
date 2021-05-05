@@ -62,7 +62,8 @@ const UNIT_TESTS = [
   10 => [
     'name' => 'BasicDiregapic',
     'protoPath' => 'BasicDiregapic/library_rest.proto',
-    'package' => 'google.example.library.v1'
+    'package' => 'google.example.library.v1',
+    'transport' => 'rest'
   ]
 ];
 
@@ -99,7 +100,8 @@ function updateGolden(int $testIndex)
     print("Updating goldens for " . $testData['name'] . "\n");
     $goldenUpdater->update(
         $testData['protoPath'],
-        array_key_exists('package', $testData) ? $testData['package'] : null
+        array_key_exists('package', $testData) ? $testData['package'] : null,
+        array_key_exists('transport', $testData) ? $testData['transport'] : null
     );
     print("\n");
 }
