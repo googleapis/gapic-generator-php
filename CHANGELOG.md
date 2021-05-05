@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.1...v0.1.2) (2021-05-05)
+
+
+### Miscellaneous Chores
+
+* release 0.1.2 ([2420466](https://www.github.com/googleapis/gapic-generator-php/commit/242046638bc0576a348530f0d67d578baa83080b))
+
 ### [0.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.0...v0.1.1) (2021-04-27)
 
 
