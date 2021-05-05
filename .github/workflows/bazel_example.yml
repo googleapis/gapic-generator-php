@@ -70,6 +70,7 @@ jobs:
             tests/Integration:container \
             tests/Integration:dataproc \
             tests/Integration:functions \
+            tests/Integration:functions_preview \
             tests/Integration:kms \
             tests/Integration:iam \
             tests/Integration:logging \

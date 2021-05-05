@@ -49,6 +49,7 @@ class CodeGenerator
      * @param ?string $transport The type of transport to support, gRPC and REST by default (null).
      *     Valid options include "grpc+rest", "grpc", or "rest".
      * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
+     * @param bool $isPreview Whether this API is in preview.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
@@ -61,6 +62,7 @@ class CodeGenerator
         string $package,
         ?string $transport,
         bool $generateGapicMetadata,
+        bool $isPreview,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
@@ -72,7 +74,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
+        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $isPreview, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
     }
 
     /**
@@ -84,6 +86,7 @@ class CodeGenerator
      * @param ?string $transport The type of transport to support, gRPC+REST by default (null).
      *     Valid options include "grpc+rest", "grpc", or "rest".
      * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
+     * @param bool $isPreview Whether this API is in preview.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
@@ -96,6 +99,7 @@ class CodeGenerator
         Vector $filesToGenerate,
         ?string $transport,
         bool $generateGapicMetadata,
+        bool $isPreview,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
@@ -138,7 +142,7 @@ class CodeGenerator
             // $fileDescs: Vector<FileDescriptorProto>
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
-                    $serviceDetails = new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
+                    $serviceDetails = new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType, $isPreview);
                     $serviceName = $serviceDetails->serviceName;
                     if (in_array($serviceName, self::MIXIN_SERVICES)) {
                         if ($serviceYamlConfig->apiNames->contains($serviceName)) {
@@ -176,6 +180,7 @@ class CodeGenerator
             $gapicYaml,
             $serviceYamlConfig,
             $generateGapicMetadata,
+            $isPreview,
             $licenseYear
         ) as $file) {
             $result[] = $file;
@@ -190,6 +195,7 @@ class CodeGenerator
         ?string $gapicYaml,
         ?ServiceYamlConfig $serviceYamlConfig,
         bool $generateGapicMetadata,
+        bool $isPreview,
         int $licenseYear
     ) {
         $versionToNamespace = [];

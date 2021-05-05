@@ -120,18 +120,25 @@ class ServiceDetails
      */
     public int $transportType;
 
+    /**
+     * @var bool *Readonly* Whether this API is in preview.
+     */
+    public bool $isPreview;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
         FileDescriptorProto $fileDesc,
-        int $transportType = Transport::GRPC_REST
+        int $transportType = Transport::GRPC_REST,
+        bool $isPreview = False
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
         $this->namespace = $namespace;
         $this->transportType = $transportType;
+        $this->isPreview = $isPreview;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
@@ -276,6 +283,10 @@ class ServiceDetails
 
     public function isGa(): bool
     {
+        if ($this->isPreview) {
+            return False;
+        }
+
         $ns_components = explode("\\", $this->namespace);
         $version = strtolower($ns_components[array_key_last($ns_components)]);
         return strpos($version, 'alpha') === false && strpos($version, 'beta') === false;

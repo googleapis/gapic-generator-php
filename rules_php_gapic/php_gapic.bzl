@@ -52,6 +52,7 @@ def php_gapic_srcjar(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
+        preview = False,
         **kwargs):
     plugin_file_args = {}
     if gapic_yaml:
@@ -70,6 +71,8 @@ def php_gapic_srcjar(
 
     # Generate the gapic_metadata.json file.
     plugin_args = ["metadata"]
+    if preview:
+        plugin_args.append("preview")
 
     proto_custom_library(
         name = name,

@@ -52,6 +52,7 @@ class GeneratorUtils
             $package,
             $transport,
             $generateGapicMetadata,
+            /* isPreview = */ False,
             $grpcServiceConfigJson,
             $gapicYaml,
             $serviceYaml,
