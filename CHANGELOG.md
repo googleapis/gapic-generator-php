@@ -2,6 +2,11 @@
 
 ### [0.1.2](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.1...v0.1.2) (2021-05-05)
 
+### Bug Fixes
+* Improve Map missing key error messages.
+
+### Features
+* **diregapic:** Add PHP client library DIREGAPIC support
 
 ### Miscellaneous Chores
 
