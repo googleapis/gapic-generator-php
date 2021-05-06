@@ -48,6 +48,7 @@ use Testing\BasicDiregapic\FindRelatedBooksResponse;
 use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
+use Testing\BasicDiregapic\ListAggregatedShelvesResponse\ShelvesEntry;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsResponse;
@@ -1346,12 +1347,20 @@ class LibraryServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $nextPageToken = 'nextPageToken-1530815211';
+        $nextPageToken = '';
+        $shelvesElement = new ShelvesEntry();
+        $shelves = [
+            $shelvesElement,
+        ];
         $expectedResponse = new ListAggregatedShelvesResponse();
         $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setShelves($shelves);
         $transport->addResponse($expectedResponse);
         $response = $client->listAggregatedShelves();
-        $this->assertEquals($expectedResponse, $response);
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getShelves()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();

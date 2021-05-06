@@ -403,7 +403,7 @@ class GapicClientGenerator
 
     private function defaultTransport()
     {
-        if  ($this->serviceDetails->transportType !== Transport::REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             return null;
         }
         return AST::method('defaultTransport')
@@ -416,7 +416,7 @@ class GapicClientGenerator
 
     private function getSupportedTransports()
     {
-        if  ($this->serviceDetails->transportType !== Transport::REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             return null;
         }
         return AST::method('getSupportedTransports')
