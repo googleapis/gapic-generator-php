@@ -43,6 +43,16 @@ return [
                     'resourcesGetMethod' => 'getNames',
                 ],
             ],
+            'ListAggregatedShelves' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getMaxResults',
+                    'requestPageSizeSetMethod' => 'setMaxResults',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getShelves',
+                ],
+            ],
             'ListBooks' => [
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
