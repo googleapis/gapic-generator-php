@@ -121,8 +121,6 @@ php_gapic_library(
     deps = [
         ":compute_small_php_grpc",
         ":compute_small_php_proto",
-    ],
-)
 
 php_gapic_assembly_pkg(
     name = "google-cloud-compute-small-v1-php",
