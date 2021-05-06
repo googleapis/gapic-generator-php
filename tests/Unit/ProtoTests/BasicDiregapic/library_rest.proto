@@ -378,7 +378,7 @@ message ListShelvesResponse {
 // Request message for LibraryService.ListAggregatedShelves.
 message ListAggregatedShelvesRequest {
   // Requested page size.
-  int32 max_results = 1;
+  uint32 max_results = 1;
 
   // A token identifying a page of results the server should return.
   string page_token = 2;

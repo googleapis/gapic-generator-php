@@ -150,7 +150,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         if ($exists) {
             return $value;
         }
-        $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2);
+        $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
         throw new \Exception("Key $key does not exist, called from $caller");
     }
