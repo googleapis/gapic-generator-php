@@ -14,6 +14,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 ####################################################
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
+    "asset_rest",  # REGAPIC.
     "container",  # RPCs with more than one routing header.
     "dataproc",  # RPCs with additional_bindings in the HTTP annotation.
     "functions",  # RPCs with HTTP variables that fall into the edge case.
@@ -75,6 +76,27 @@ php_gapic_assembly_pkg(
         ":asset_php_gapic",
         ":asset_php_grpc",
         ":asset_php_proto",
+    ],
+)
+
+# Asset, REGAPIC version
+php_gapic_library(
+    name = "asset_rest_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/asset/v1:cloudasset_grpc_service_config.json",
+    transport = "rest",
+    deps = [
+        ":asset_rest_php_grpc",
+        ":asset_rest_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-asset-rest-v1-php",
+    deps = [
+        ":asset_php_grpc",
+        ":asset_php_proto",
+        ":asset_rest_php_gapic",
     ],
 )
 
