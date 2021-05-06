@@ -26,7 +26,7 @@ The recommended (tested) way of doing it is as follows:
     cd php-7.4.15
     ```
 6. Run the build config:
-    ```    
+    ```
     ./configure \
         --enable-static \
         --disable-all \
