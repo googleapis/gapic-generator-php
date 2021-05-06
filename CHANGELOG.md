@@ -5,17 +5,13 @@
 
 ### Features
 
-* support REGAPIC pagination, add compute_small goldens [ggp] ([#278](https://www.github.com/googleapis/gapic-generator-php/issues/278)) ([81efb9f](https://www.github.com/googleapis/gapic-generator-php/commit/81efb9f7b71047d0ec097b604226c829f3e0ea99))
+* support REGAPIC pagination, add compute_small goldens ([#278](https://www.github.com/googleapis/gapic-generator-php/issues/278)) ([81efb9f](https://www.github.com/googleapis/gapic-generator-php/commit/81efb9f7b71047d0ec097b604226c829f3e0ea99))
 
 
 ### Bug Fixes
 
-* **diregapic:** pipe transport flag through Bazel, add Bazel REGAPIC integration test [ggp] ([#276](https://www.github.com/googleapis/gapic-generator-php/issues/276)) ([832a42f](https://www.github.com/googleapis/gapic-generator-php/commit/832a42f5e9ef454852005d743c5b40fc30b0fd61))
+* **diregapic:** pipe transport flag through Bazel, add Bazel REGAPIC integration test ([#276](https://www.github.com/googleapis/gapic-generator-php/issues/276)) ([832a42f](https://www.github.com/googleapis/gapic-generator-php/commit/832a42f5e9ef454852005d743c5b40fc30b0fd61))
 
-
-### Miscellaneous Chores
-
-* release 0.1.3 ([34058d8](https://www.github.com/googleapis/gapic-generator-php/commit/34058d88fb0a3648876d301eeff16438ace81e8d))
 
 ### [0.1.2](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.1...v0.1.2) (2021-05-05)
 
