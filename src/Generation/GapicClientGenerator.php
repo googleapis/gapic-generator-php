@@ -40,6 +40,7 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
+use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
@@ -127,6 +128,8 @@ class GapicClientGenerator
             ->withMembers($this->resourceProperties())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
+            ->withMember($this->defaultTransport())
+            ->withMember($this->getSupportedTransports())
             ->withMembers($this->resourceMethods())
             ->withMembers($this->lroMethods())
             ->withMember($this->construct())
@@ -361,28 +364,68 @@ class GapicClientGenerator
 
     private function getClientDefaults(): PhpClassMember
     {
+        $clientConfigFilename = $this->serviceDetails->clientConfigFilename;
+        $descriptorConfigFilename = $this->serviceDetails->descriptorConfigFilename;
+        $clientDefaultValues = [
+            'serviceName' => AST::access(AST::SELF, $this->serviceName()),
+            // TODO: Understand if this should be named 'serviceAddress' or 'apiEndpoint'?
+            'serviceAddress' => AST::concat(
+                AST::access(AST::SELF, $this->serviceAddress()),
+                ':',
+                AST::access(AST::SELF, $this->servicePort())
+            ),
+            'clientConfig' => AST::concat(AST::__DIR__, "/../resources/$clientConfigFilename"),
+            'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/$descriptorConfigFilename"),
+        ];
+
+        // TODO: Consolidate setting all the known array values together.
+        // We do this here to maintain the existing sensible ordering.
+        if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
+            $clientDefaultValues['gcpApiConfigPath'] =
+                AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
+        }
+
+        $clientDefaultValues['credentialsConfig'] = AST::array([
+            'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
+        ]);
+        $clientDefaultValues['transportConfig'] = AST::array([
+            'rest' => AST::array([
+                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
+            ])
+        ]);
+
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
             ->withBody(AST::block(
-                AST::return(AST::array([
-                    'serviceName' => AST::access(AST::SELF, $this->serviceName()),
-                    // TODO: Understand if this should be named 'serviceAddress' or 'apiEndpoint'?
-                    'serviceAddress' => AST::concat(AST::access(AST::SELF, $this->serviceAddress()), ':', AST::access(AST::SELF, $this->servicePort())),
-                    'clientConfig' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->clientConfigFilename}"),
-                    'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->descriptorConfigFilename}"),
-                    'gcpApiConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}"),
-                    'credentialsConfig' => AST::array([
-                        'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
-                    ]),
-                    'transportConfig' => AST::array([
-                        'rest' => AST::array([
-                            'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
-                        ])
-                    ])
-                ]))
+                AST::return(AST::array($clientDefaultValues))
             ));
     }
 
+    private function defaultTransport()
+    {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
+            return null;
+        }
+        return AST::method('defaultTransport')
+            ->withPhpDocText('Implements GapicClientTrait::defaultTransport.')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::literal("'rest'"))
+            ));
+    }
+
+    private function getSupportedTransports()
+    {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
+            return null;
+        }
+        return AST::method('getSupportedTransports')
+            ->withPhpDocText('Implements GapicClientTrait::getSupportedTransports.')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::array(['rest']))
+            ));
+    }
     private function construct(): PhpClassMember
     {
         $ctx = $this->ctx;
@@ -392,18 +435,65 @@ class GapicClientGenerator
         $options = AST::var('options');
         $optionsParam = AST::param($this->ctx->type(Type::array()), $options, AST::array([]));
         $clientOptions = AST::var('clientOptions');
+
+        // Assumes there are only two transport types.
+        $isGrpcRest = $this->serviceDetails->transportType === Transport::GRPC_REST;
+
+        $restTransportDocText = 'At the moment, supports only `rest`.';
+        $grpcTransportDocText = 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
+        $transportDocText =
+            PhpDoc::text(
+                'The transport used for executing network requests. ',
+                $isGrpcRest ? $grpcTransportDocText : $restTransportDocText,
+                '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
+                // TODO(vNext): Don't use a fully-qualified type here.
+                $ctx->type(Type::fromName(TransportInterface::class), true),
+                'object. Note that when this object is provided, any settings in $transportConfig, and any $serviceAddress',
+                'setting, will be ignored.'
+            );
+
+        $transportConfigSampleValues = [];
+        if ($isGrpcRest) {
+            $transportConfigSampleValues['grpc'] = AST::arrayEllipsis();
+        }
+        // Set this value here, don't initialize it, so we can maintain alphabetical order
+        // for the resulting printed doc.
+        $transportConfigSampleValues['rest'] = AST::arrayEllipsis();
+        $transportConfigDocText =
+            PhpDoc::text(
+                'Configuration options that will be used to construct the transport. Options for',
+                'each supported transport type should be passed in a key for that transport. For example:',
+                PhpDoc::example(AST::block(
+                    AST::assign(AST::var('transportConfig'), AST::array($transportConfigSampleValues))
+                ), null, true),
+                'See the',
+                AST::call(
+                    $ctx->type(
+                        Type::fromName($isGrpcRest ? GrpcTransport::class : RestTransport::class),
+                        true
+                    ),
+                    AST::method('build')
+                )(),
+                $isGrpcRest ? 'and' : '',
+                $isGrpcRest
+                    ? AST::call($ctx->type(Type::fromName(RestTransport::class), true), AST::method('build'))()
+                    : '',
+                $isGrpcRest ? 'methods ' : 'method ',
+                'for the supported options.'
+            );
+
         return AST::method('__construct')
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
-                $this->serviceDetails->hasLro ?
-                    AST::assign(
+                $this->serviceDetails->hasLro
+                    ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
-                    ) :
-                    null
+                    )
+                    : null
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
@@ -474,38 +564,16 @@ class GapicClientGenerator
                     ),
                     PhpDoc::type(
                         Vector::new([
-                        $ctx->type(Type::string()),
-                        $ctx->type(Type::fromName(TransportInterface::class))
-                    ]),
+                            $ctx->type(Type::string()),
+                            $ctx->type(Type::fromName(TransportInterface::class))
+                        ]),
                         'transport',
-                        PhpDoc::text(
-                            'The transport used for executing network requests. May be either the string `rest`',
-                            'or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.',
-                            '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
-                            // TODO(vNext): Don't use a fully-qualified type here.
-                            $ctx->type(Type::fromName(TransportInterface::class), true),
-                            'object. Note that when this object is provided, any settings in $transportConfig, and any $serviceAddress',
-                            'setting, will be ignored.'
-                        )
+                        $transportDocText,
                     ),
                     PhpDoc::type(
                         Vector::new([$ctx->type(Type::array())]),
                         'transportConfig',
-                        PhpDoc::text(
-                            'Configuration options that will be used to construct the transport. Options for',
-                            'each supported transport type should be passed in a key for that transport. For example:',
-                            PhpDoc::example(AST::block(
-                                AST::assign(AST::var('transportConfig'), AST::array([
-                                    'grpc' => AST::arrayEllipsis(),
-                                    'rest' => AST::arrayEllipsis(),
-                                ]))
-                            ), null, true),
-                            'See the',
-                            AST::call($ctx->type(Type::fromName(GrpcTransport::class), true), AST::method('build'))(),
-                            'and',
-                            AST::call($ctx->type(Type::fromName(RestTransport::class), true), AST::method('build'))(),
-                            'methods for the supported options.'
-                        )
+                        $transportConfigDocText
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
@@ -573,6 +641,7 @@ class GapicClientGenerator
             && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
         $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
         $hasRequestParams = count($restRoutingHeaders) > 0;
+
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(

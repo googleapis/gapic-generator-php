@@ -27,10 +27,11 @@ class GeneratorUtils
      *
      *  @param string protoPath path to the proto under ProtoTests.
      *  @param ?string package
+     *  @param ?string transport
      *
      * @return string[] maps the relative file path to the string contents of the gtenerated code.
      */
-    public static function generateFromProto(string $protoPath, ?string $package = null)
+    public static function generateFromProto(string $protoPath, ?string $package = null, ?string $transport = null)
     {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
@@ -49,6 +50,7 @@ class GeneratorUtils
         $codeIterator = CodeGenerator::generateFromDescriptor(
             $descBytes,
             $package,
+            $transport,
             $generateGapicMetadata,
             $grpcServiceConfigJson,
             $gapicYaml,

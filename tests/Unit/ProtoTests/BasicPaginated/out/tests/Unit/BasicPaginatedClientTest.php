@@ -81,7 +81,7 @@ class BasicPaginatedClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $pageSize = 883849137;
+        $pageSize2 = 1024500956;
         $nextPageToken = '';
         $pageToken2 = 649316932;
         $aField2 = false;
@@ -91,7 +91,7 @@ class BasicPaginatedClientTest extends GeneratedTest
             $theResultsElement,
         ];
         $expectedResponse = new Response();
-        $expectedResponse->setPageSize($pageSize);
+        $expectedResponse->setPageSize($pageSize2);
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setPageToken($pageToken2);
         $expectedResponse->setAField($aField2);

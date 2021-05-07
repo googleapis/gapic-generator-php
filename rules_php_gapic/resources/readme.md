@@ -29,8 +29,18 @@ The recommended (tested) way of doing it is as follows:
     ```
     ./configure \
         --enable-static \
+        --disable-all \
         --without-pear \
+        --enable-phar \
+        --enable-json \
+        --enable-filter \
+        --enable-tokenizer \
+        --with-libxml \
+        --enable-xml \
+        --enable-dom \
+        --enable-xmlwriter \
         --enable-mbstring \
+        --disable-mbregex \
         --with-openssl \
         --enable-bcmath \
         --prefix=/tmp/php-7.4.15

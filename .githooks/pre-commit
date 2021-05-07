@@ -120,7 +120,7 @@ then
   echo_status "Checking Bazel integration tests..."
   # Temporary workaround for PHP's Bazel rules' implementation.
   yes | sudo rm -r bazel-out/host/bin/rules_php_gapic/*
-  for TARGET in asset container dataproc functions kms iam logging redis retail speech securitycenter talent videointelligence
+  for TARGET in asset compute_small container dataproc functions kms iam logging redis retail speech securitycenter talent videointelligence
   do
     bazel test tests/Integration:"$TARGET" --noshow_progress
   done

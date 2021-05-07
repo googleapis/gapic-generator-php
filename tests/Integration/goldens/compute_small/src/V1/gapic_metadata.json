@@ -1,0 +1,52 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "google.cloud.compute.v1",
+    "libraryPackage": "Google\\Cloud\\Compute\\V1",
+    "services": {
+        "Addresses": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "AddressesGapicClient",
+                    "rpcs": {
+                        "AggregatedList": {
+                            "methods": [
+                                "aggregatedList"
+                            ]
+                        },
+                        "Delete": {
+                            "methods": [
+                                "delete"
+                            ]
+                        },
+                        "Insert": {
+                            "methods": [
+                                "insert"
+                            ]
+                        },
+                        "List": {
+                            "methods": [
+                                "list_"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "RegionOperations": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "RegionOperationsGapicClient",
+                    "rpcs": {
+                        "Get": {
+                            "methods": [
+                                "get"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
