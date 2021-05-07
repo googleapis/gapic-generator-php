@@ -1306,7 +1306,10 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setEndTime($endTime);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $resourceLabels = [];
+        $resourceLabelsValue = 'resourceLabelsValue-1244473404';
+        $resourceLabels = [
+            'resourceLabelsKey' => $resourceLabelsValue,
+        ];
         $labelFingerprint = 'labelFingerprint714995737';
         $response = $client->setLabels($resourceLabels, $labelFingerprint);
         $this->assertEquals($expectedResponse, $response);
@@ -1343,7 +1346,10 @@ class ClusterManagerClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $resourceLabels = [];
+        $resourceLabelsValue = 'resourceLabelsValue-1244473404';
+        $resourceLabels = [
+            'resourceLabelsKey' => $resourceLabelsValue,
+        ];
         $labelFingerprint = 'labelFingerprint714995737';
         try {
             $client->setLabels($resourceLabels, $labelFingerprint);

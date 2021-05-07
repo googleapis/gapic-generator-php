@@ -144,6 +144,29 @@ class TestNameValueProducer
             return;
         }
 
+        if ($field->isMessage && $field->isMap) {
+            // A map descriptor looks something like this:
+            //     message MapFieldEntry {
+            //         option map_entry = true;
+            //         optional KeyType key = 1;
+            //         optional ValueType value = 2;
+            //     }
+            //     repeated MapFieldEntry map_field = 1;
+            $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
+            $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $keyName = Helpers::toCamelCase($field->camelName . '_key');
+
+            $valueFieldVarName = Helpers::toCamelCase($field->camelName . '_value');
+            $valueField = $kvSubfields[1];
+            // Hack to enable recursion.
+            $valueField->isRequired = True;
+            $valueFieldVar = AST::var($valueFieldVarName);
+            $this->fieldInit($method, $valueField, $valueFieldVar, $valueFieldVarName, $valueFieldVar, $astAcc);
+
+            $astAcc = $astAcc->append(AST::assign($fieldVar, AST::array([$keyName => $valueFieldVar])));
+            return;
+        }
+
         // This field is a non-primitive type. Descend into required sub-fields.
         // Does not yet handle repeated message fields.
         if ($field->isMessage && !$field->isEnum && !$field->isRepeated) {
@@ -265,6 +288,24 @@ class TestNameValueProducer
                 $prefix = Helpers::toCamelCase($name);
                 return "'" . $prefix . $javaHash . "'";
             case GPBType::MESSAGE: // 11
+                if ($field->isMap) {
+                    // A map descriptor looks something like this:
+                    //     message MapFieldEntry {
+                    //         option map_entry = true;
+                    //         optional KeyType key = 1;
+                    //         optional ValueType value = 2;
+                    //     }
+                    //     repeated MapFieldEntry map_field = 1;
+                    $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
+                    $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+                    $keyName = Helpers::toCamelCase($field->camelName . '_key');
+                    $valueField = $kvSubfields[1];
+                    // Hacks to ensure this ends up in the test value initialization setters.
+                    $valueField->isInTestResponse = True;
+                    // TODO: More recursive logic for initializing the value field?
+                    return AST::array([$keyName => $this->value($valueField)]);
+                }
+
                 return AST::new($this->ctx->type(Type::fromField($this->catalog, $field->desc->desc, false)))();
             case GPBType::BYTES: // 12
                 $v = $javaHashCode($name) & 0xff;
