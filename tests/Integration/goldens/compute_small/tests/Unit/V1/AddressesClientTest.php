@@ -398,7 +398,7 @@ class AddressesClientTest extends GeneratedTest
         $orderBy = 'orderBy1234304744';
         $project = 'project-309310695';
         $region = 'region-934795532';
-        $response = $client->list($orderBy, $project, $region);
+        $response = $client->list_($orderBy, $project, $region);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -442,7 +442,7 @@ class AddressesClientTest extends GeneratedTest
         $project = 'project-309310695';
         $region = 'region-934795532';
         try {
-            $client->list($orderBy, $project, $region);
+            $client->list_($orderBy, $project, $region);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

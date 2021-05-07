@@ -642,10 +642,7 @@ class GapicClientGenerator
         $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
         $hasRequestParams = count($restRoutingHeaders) > 0;
 
-        // PHP 7.2 compatibility.
-        // TODO(miraleung): Remove this logic when client libraries support PHP 7.2+.
-        $methodName = $method->methodName === 'list' ? 'list_' : $method->methodName;
-        return AST::method($methodName)
+        return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
                 $isStreamedRequest ? null : $required,

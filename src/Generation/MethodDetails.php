@@ -144,10 +144,10 @@ abstract class MethodDetails
             if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
                 return null;
             }
-            // A repeated, non-map field takes precedence.
-            $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+            // A map field takes precedence over a repeated (i.e. list) field.
+            $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
             if (is_null($resourceByNumber)) {
-                $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+                $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
             }
         }
         $resourceByPosition = $resourceCandidates->firstOrNull();
@@ -390,6 +390,14 @@ abstract class MethodDetails
         $this->mixinServiceFullname = null;
         $this->testSuccessMethodName = $this->methodName . 'Test';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
+
+        // PHP 7.2 compatibility.
+        // Order matters, so that we can set the test names appropriately.
+        // TODO(miraleung): Remove this logic when client libraries support PHP 7.2+.
+        if ($this->methodName === 'list') {
+            $this->methodName = 'list_';
+        }
+
         $this->requestType = Type::fromMessage($this->inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
         $this->hasEmptyResponse = $this->responseType->getFullname() === '\Google\Protobuf\GPBEmpty';

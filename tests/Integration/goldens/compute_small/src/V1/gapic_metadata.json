@@ -27,7 +27,7 @@
                         },
                         "List": {
                             "methods": [
-                                "list"
+                                "list_"
                             ]
                         }
                     }
