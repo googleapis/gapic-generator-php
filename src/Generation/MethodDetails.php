@@ -144,10 +144,10 @@ abstract class MethodDetails
             if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
                 return null;
             }
-            // A repeated, non-map field takes precedence.
-            $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+            // A map field takes precedence over a repeated (i.e. list) field.
+            $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
             if (is_null($resourceByNumber)) {
-                $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+                $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
             }
         }
         $resourceByPosition = $resourceCandidates->firstOrNull();
