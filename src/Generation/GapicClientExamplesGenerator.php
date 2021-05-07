@@ -188,7 +188,9 @@ class GapicClientExamplesGenerator
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $pagedResponse = AST::var('pagedResponse');
         $page = AST::var('page');
+        $isMap = $method->resourcesField->isMap;
         $element = AST::var('element');
+        $indexVar = $isMap ? AST::var('key') : null;
         [$varsInitCode, $callVars] = $this->initCallVars($method);
         return AST::block(
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
@@ -197,7 +199,7 @@ class GapicClientExamplesGenerator
                 '// Iterate over pages of elements',
                 AST::assign($pagedResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
                 AST::foreach($pagedResponse->iteratePages(), $page)(
-                    AST::foreach($page, $element)(
+                    AST::foreach($page, $element, $indexVar)(
                         '// doSomethingWith($element);'
                     )
                 ),
