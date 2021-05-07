@@ -471,7 +471,7 @@ class AddressesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function list($orderBy, $project, $region, array $optionalArgs = [])
+    public function list_($orderBy, $project, $region, array $optionalArgs = [])
     {
         $request = new ListAddressesRequest();
         $requestParamHeaders = [];

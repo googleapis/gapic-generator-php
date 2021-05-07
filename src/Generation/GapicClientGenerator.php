@@ -641,7 +641,11 @@ class GapicClientGenerator
             && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
         $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
         $hasRequestParams = count($restRoutingHeaders) > 0;
-        return AST::method($method->methodName)
+
+        // PHP 7.2 compatibility.
+        // TODO(miraleung): Remove this logic when client libraries support PHP 7.2+.
+        $methodName = $method->methodName === 'list' ? 'list_' : $method->methodName;
+        return AST::method($methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
                 $isStreamedRequest ? null : $required,
