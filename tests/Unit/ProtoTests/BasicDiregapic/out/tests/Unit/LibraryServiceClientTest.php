@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Testing\BasicDiregapic\Tests\Unit;
 
 use Google\ApiCore\ApiException;
