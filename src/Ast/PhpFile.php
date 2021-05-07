@@ -97,7 +97,8 @@ final class PhpFile extends AST
         $lines = [
             "<?php",
             $this->headerLines->map(fn ($x) => "{$x}\n")->join(),
-            "declare(strict_types=1);\n",
+            // TODO(miraleung): Uncomment this when the client libraries support only PHP 7+.
+            // "declare(strict_types=1);\n",
             "namespace {$this->class->type->getNamespace()};\n",
             $this->uses->toVector()->map(fn ($x) => "use {$x};\n")->join()
         ];
