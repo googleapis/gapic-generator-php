@@ -1650,7 +1650,7 @@ class LibraryServiceGapicClient
      *     // Iterate over pages of elements
      *     $pagedResponse = $libraryServiceClient->listAggregatedShelves();
      *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
+     *         foreach ($page as $key => $element) {
      *             // doSomethingWith($element);
      *         }
      *     }
