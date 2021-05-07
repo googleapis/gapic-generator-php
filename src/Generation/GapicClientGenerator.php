@@ -641,6 +641,7 @@ class GapicClientGenerator
             && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
         $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
         $hasRequestParams = count($restRoutingHeaders) > 0;
+
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
