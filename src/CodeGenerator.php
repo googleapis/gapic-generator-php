@@ -159,6 +159,10 @@ class CodeGenerator
             // not occur, so checking for non-empty is a sufficient proxy for identifying the case
             // where we generate a client for one of those services.
             $servicesToGenerate = $mixinServices;
+            $mixinServices = [];
+            foreach ($servicesToGenerate as $serviceDetails) {
+                array_merge($definedRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+            }
         }
 
         $rpcNameBlocklist = array_diff($mixinRpcNames, $definedRpcNames);
