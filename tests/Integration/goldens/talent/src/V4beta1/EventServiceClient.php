@@ -24,8 +24,6 @@
  * @experimental
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Talent\V4beta1;
 
 use Google\Cloud\Talent\V4beta1\Gapic\EventServiceGapicClient;

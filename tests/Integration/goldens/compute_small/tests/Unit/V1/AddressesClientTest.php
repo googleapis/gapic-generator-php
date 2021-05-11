@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Compute\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -31,8 +29,8 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Compute\V1\Address;
 use Google\Cloud\Compute\V1\AddressAggregatedList;
-use Google\Cloud\Compute\V1\AddressAggregatedList\ItemsEntry;
 use Google\Cloud\Compute\V1\AddressesClient;
+use Google\Cloud\Compute\V1\AddressesScopedList;
 use Google\Cloud\Compute\V1\AddressList;
 use Google\Cloud\Compute\V1\Operation;
 use Google\Rpc\Code;
@@ -87,9 +85,8 @@ class AddressesClientTest extends GeneratedTest
         $kind = 'kind3292052';
         $nextPageToken = '';
         $selfLink = 'selfLink-1691268851';
-        $itemsElement = new ItemsEntry();
         $items = [
-            $itemsElement,
+            'itemsKey' => new AddressesScopedList(),
         ];
         $expectedResponse = new AddressAggregatedList();
         $expectedResponse->setId($id);
@@ -104,7 +101,8 @@ class AddressesClientTest extends GeneratedTest
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getItems()[0], $resources[0]);
+        $this->assertArrayHasKey('itemsKey', $expectedResponse->getItems());
+        $this->assertEquals($expectedResponse->getItems()['itemsKey'], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();

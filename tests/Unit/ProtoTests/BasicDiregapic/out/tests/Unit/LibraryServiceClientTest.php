@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Testing\BasicDiregapic\Tests\Unit;
 
 use Google\ApiCore\ApiException;
@@ -48,7 +46,6 @@ use Testing\BasicDiregapic\FindRelatedBooksResponse;
 use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
-use Testing\BasicDiregapic\ListAggregatedShelvesResponse\ShelvesEntry;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsResponse;
@@ -1348,9 +1345,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $nextPageToken = '';
-        $shelvesElement = new ShelvesEntry();
         $shelves = [
-            $shelvesElement,
+            'shelvesKey' => new ShelfResponse(),
         ];
         $expectedResponse = new ListAggregatedShelvesResponse();
         $expectedResponse->setNextPageToken($nextPageToken);
@@ -1360,7 +1356,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getShelves()[0], $resources[0]);
+        $this->assertArrayHasKey('shelvesKey', $expectedResponse->getShelves());
+        $this->assertEquals($expectedResponse->getShelves()['shelvesKey'], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -2218,7 +2215,10 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $indexName = 'indexName746962392';
-        $indexMap = [];
+        $indexMapValue = 'indexMapValue980783207';
+        $indexMap = [
+            'indexMapKey' => $indexMapValue,
+        ];
         $client->updateBookIndex($formattedName, $indexName, $indexMap);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -2257,7 +2257,10 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $indexName = 'indexName746962392';
-        $indexMap = [];
+        $indexMapValue = 'indexMapValue980783207';
+        $indexMap = [
+            'indexMapKey' => $indexMapValue,
+        ];
         try {
             $client->updateBookIndex($formattedName, $indexName, $indexMap);
             // If the $client method call did not throw, fail the test

@@ -1,5 +1,16 @@
 # Changelog
 
+### [0.1.5](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.4...v0.1.5) (2021-05-07)
+
+
+### Bug Fixes
+
+* **codegen:** support proto map fields in tests ([#290](https://www.github.com/googleapis/gapic-generator-php/issues/290)) ([ee117a2](https://www.github.com/googleapis/gapic-generator-php/commit/ee117a2665971e99d80f859a625c4a8548bb5f62))
+* disable strict_types for PHP 5 compatibility ([#286](https://www.github.com/googleapis/gapic-generator-php/issues/286)) ([aa3e385](https://www.github.com/googleapis/gapic-generator-php/commit/aa3e385b036c38f11a43cb89684cdd22fc7568d3))
+* **regapic:** Prefer map over repeated fields for pagination ([#287](https://www.github.com/googleapis/gapic-generator-php/issues/287)) ([9270745](https://www.github.com/googleapis/gapic-generator-php/commit/9270745e174132a21a735bce3f6d9ef38232014b))
+* **regapic:** use key-value loop iteration for pagination map resources ([#284](https://www.github.com/googleapis/gapic-generator-php/issues/284)) ([4f0aa8f](https://www.github.com/googleapis/gapic-generator-php/commit/4f0aa8f86df39e54578b7713c2dbe1baa7062b7f))
+* **regapic:** use list_ RPC name for PHP 7.2 compatibility ([#285](https://www.github.com/googleapis/gapic-generator-php/issues/285)) ([adecff8](https://www.github.com/googleapis/gapic-generator-php/commit/adecff87386b8f9a7f1798c32ac7ee0fd8ddf0f2))
+
 ### [0.1.4](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.3...v0.1.4) (2021-05-06)
 
 
