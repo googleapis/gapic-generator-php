@@ -391,13 +391,6 @@ abstract class MethodDetails
         $this->testSuccessMethodName = $this->methodName . 'Test';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
 
-        // PHP 7.2 compatibility.
-        // Order matters, so that we can set the test names appropriately.
-        // TODO(miraleung): Remove this logic when client libraries support PHP 7.2+.
-        if ($this->methodName === 'list') {
-            $this->methodName = 'list_';
-        }
-
         $this->requestType = Type::fromMessage($this->inputMsg->desc);
         $this->responseType = Type::fromMessage($outputMsg->desc);
         $this->hasEmptyResponse = $this->responseType->getFullname() === '\Google\Protobuf\GPBEmpty';
