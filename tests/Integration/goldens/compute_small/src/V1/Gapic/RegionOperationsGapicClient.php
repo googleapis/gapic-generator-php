@@ -217,9 +217,9 @@ class RegionOperationsGapicClient
         $request->setOperation($operation);
         $request->setProject($project);
         $request->setRegion($region);
-        $requestParamHeaders['project'] = $operation;
-        $requestParamHeaders['region'] = $project;
-        $requestParamHeaders['operation'] = $region;
+        $requestParamHeaders['operation'] = $operation;
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('Get', Operation::class, $optionalArgs, $request)->wait();
