@@ -634,8 +634,14 @@ class GapicClientGenerator
         // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
         $requiredFieldNames =
             $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
-        $requiredRestRoutingKeys = $restRoutingHeaders->keys()->filter(fn ($x) =>
-          !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]))->toArray();
+        $requiredRestRoutingKeys =
+            $restRoutingHeaders->keys()
+                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]))
+                 // Extract the main field name (e.g. get foo from foo.bar, foo.car).
+                 ->map(fn ($x) => explode('.', $x)[0])
+                 // ... and remove duplicates.
+                 ->distinct()
+                 ->toArray();
         $requiredFieldNamesInRoutingHeaders =
           $requiredFieldNames->filter(fn ($x) => !empty($x)
             && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
