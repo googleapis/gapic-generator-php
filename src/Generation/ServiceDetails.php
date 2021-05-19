@@ -280,4 +280,11 @@ class ServiceDetails
         $version = strtolower($ns_components[array_key_last($ns_components)]);
         return strpos($version, 'alpha') === false && strpos($version, 'beta') === false;
     }
+
+    public function setMethods(Vector $newMethods) : void
+    {
+        // Note: This seemingly-redundant method exists to enable a future refactoring
+        // of all properties labelled as "readonly" to actually be private properties with getters.
+        $this->methods = $newMethods;
+    }
 }
