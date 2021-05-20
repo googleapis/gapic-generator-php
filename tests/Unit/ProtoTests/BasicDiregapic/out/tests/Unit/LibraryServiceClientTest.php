@@ -1345,8 +1345,9 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $nextPageToken = '';
+        $shelvesElement = new ShelfResponse();
         $shelves = [
-            'shelvesKey' => new ShelfResponse(),
+            $shelvesElement,
         ];
         $expectedResponse = new ListAggregatedShelvesResponse();
         $expectedResponse->setNextPageToken($nextPageToken);
@@ -1356,8 +1357,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertArrayHasKey('shelvesKey', $expectedResponse->getShelves());
-        $this->assertEquals($expectedResponse->getShelves()['shelvesKey'], $resources[0]);
+        $this->assertEquals($expectedResponse->getShelves()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();

@@ -634,13 +634,53 @@ class GapicClientGenerator
         // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
         $requiredFieldNames =
             $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
-        $requiredRestRoutingKeys = $restRoutingHeaders->keys()->filter(fn ($x) =>
-          !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]))->toArray();
+        // Contains full field names with parents, e.g. foo.bar.car.
+        $requiredRestRoutingKeys =
+            $restRoutingHeaders->keys()
+                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]));
         $requiredFieldNamesInRoutingHeaders =
-          $requiredFieldNames->filter(fn ($x) => !empty($x)
-            && in_array(trim($x), array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys)))->toArray();
-        $requiredFieldToHeaderName = array_combine($requiredFieldNamesInRoutingHeaders, $requiredRestRoutingKeys);
+            $requiredFieldNames->filter(
+                fn ($x) => !empty($x)
+                    && in_array(trim($x),
+                    array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())))
+                ->toArray();
+        // Maps field names to a set of the relevant field in the URL pattern.
+        // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
+        // This is needed for RPCs that may have multiple subfields under the same field in their
+        // HTTP bindings.
+        $requiredFieldToHeaderName = [];
+        foreach ($requiredFieldNamesInRoutingHeaders as $header) {
+            $requiredFieldToHeaderName[$header] =
+                $requiredRestRoutingKeys->filter(
+                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k);
+        }
+
         $hasRequestParams = count($restRoutingHeaders) > 0;
+        $requestParamAssigns = null;
+        if ($hasRequestParams) {
+            $requestParamAssigns = Vector::new([]);
+            foreach ($method->requiredFields as $field) {
+                if (!isset($requiredFieldToHeaderName[$field->name])) {
+                    continue;
+                }
+                $requiredParam = AST::param(null, AST::var($field->camelName));
+                foreach ($requiredFieldToHeaderName[$field->name] as $urlPatternHeaderName) {
+                    $assignValue = $requiredParam;
+                    if ($restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))->count() >= 2) {
+                        $assignValue =
+                            $restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))
+                                ->skip(1)
+                                // Chains getter methods together for nested names like foo.bar.car, which
+                                // becomes $foo->getBar()->getCar().
+                                ->reduce($requiredParam, fn ($acc, $g) => AST::call($acc, AST::method($g))());
+                    }
+                    $requestParamAssigns = $requestParamAssigns->append(
+                        AST::assign(
+                            AST::index($requestParamHeaders, $urlPatternHeaderName),
+                            $assignValue));
+                }
+            }
+        }
 
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
@@ -652,7 +692,12 @@ class GapicClientGenerator
                 $isStreamedRequest ? null : Vector::new([
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
-                    Vector::zip($method->requiredFields, $required, fn ($field, $param) => AST::call($request, $field->setter)($param)),
+                    Vector::zip(
+                        $method->requiredFields,
+                        $required,
+                        fn ($field, $param) => AST::call($request, $field->setter)($param)),
+                    $requestParamAssigns,
+                    /*
                     !$hasRequestParams ? null : Vector::zip(
                         $method->requiredFields,
                         $required,
@@ -668,6 +713,7 @@ class GapicClientGenerator
                                              ->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))())
                       )
                     ),
+                     */
                     $method->optionalFields->map(
                         fn ($x) =>
                         AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))

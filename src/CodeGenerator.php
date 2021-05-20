@@ -135,20 +135,48 @@ class CodeGenerator
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
 
+            // Full protobuf names, e.g. google.cloud.foo.Bar.
+            // Assumes that the selectors in the service.yaml HTTP and documentation rules
+            // will always use the fully-qualified protobuf name for RPCs.
+            $serviceYamlMixinRpcNames = $serviceYamlConfig->httpRules->map(fn ($h) => $h->getSelector());
+            $mixinRpcNamesToHttpRule = $serviceYamlConfig->httpRules->toMap(fn ($h) => $h->getSelector(), fn ($h) => $h);
+            $mixinRpcNamesToDocs = $serviceYamlConfig->documentationRules->toMap(
+                fn ($d) => $d->getSelector(), fn ($d) => Vector::new([$d->getDescription()]));
+
             // $fileDescs: Vector<FileDescriptorProto>
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
-                    $serviceDetails = new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
+                    $serviceDetails =
+                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
                     $serviceName = $serviceDetails->serviceName;
-                    if (in_array($serviceName, self::MIXIN_SERVICES)) {
-                        if ($serviceYamlConfig->apiNames->contains($serviceName)) {
-                            $mixinServices[] = $serviceDetails;
-                            array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
-                        }
-                    } else {
+                    if (!in_array($serviceName, self::MIXIN_SERVICES)) {
                         $servicesToGenerate[] = $serviceDetails;
-                        array_merge($definedRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        array_merge($definedRpcNames,
+                            $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        continue;
                     }
+
+                    if (!$serviceYamlConfig->apiNames->contains($serviceName)) {
+                        continue;
+                    }
+
+                    // Filter based on the HTTP rule.
+                    $mixinMethods = $serviceDetails->methods
+                        ->filter(fn ($m) => $serviceYamlMixinRpcNames->contains($m->fullName));
+                    // We use a for-loop since the notion of in-place mutation doesn't align with Vector.
+                    $mixinMethodsTemp = $mixinMethods->toArray();
+                    foreach ($mixinMethodsTemp as &$mixinMethod) {
+                        // Docs and HTTP rules in service.yaml take precendence.
+                        $mixinMethod->setDocLines(
+                            $mixinRpcNamesToDocs->get($mixinMethod->fullName, $mixinMethod->docLines));
+                        $mixinMethod->setHttpRule(
+                            $mixinRpcNamesToHttpRule->get($mixinMethod->fullName, $mixinMethod->httpRule));
+                    }
+                    $mixinMethods = Vector::new($mixinMethodsTemp);
+
+                    $serviceDetails->setMethods($mixinMethods);
+                    $mixinServices[] = $serviceDetails;
+                    array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
                 }
             }
         }

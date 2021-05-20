@@ -336,9 +336,9 @@ class AddressesGapicClient
         $request->setAddress($address);
         $request->setProject($project);
         $request->setRegion($region);
-        $requestParamHeaders['project'] = $address;
-        $requestParamHeaders['region'] = $project;
-        $requestParamHeaders['address'] = $region;
+        $requestParamHeaders['address'] = $address;
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }

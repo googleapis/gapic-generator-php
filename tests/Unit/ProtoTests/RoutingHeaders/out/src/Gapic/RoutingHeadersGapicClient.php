@@ -466,9 +466,9 @@ class RoutingHeadersGapicClient
         $request->setC($c);
         $request->setE($e);
         $requestParamHeaders['a'] = $a;
-        $requestParamHeaders['c'] = $b;
-        $requestParamHeaders['b'] = $d;
-        $requestParamHeaders['d'] = $c;
+        $requestParamHeaders['b'] = $b;
+        $requestParamHeaders['d'] = $d;
+        $requestParamHeaders['c'] = $c;
         $requestParamHeaders['e'] = $e;
         if (isset($optionalArgs['aId'])) {
             $request->setAId($optionalArgs['aId']);
