@@ -682,7 +682,6 @@ class GapicClientGenerator
             }
         }
 
-
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
