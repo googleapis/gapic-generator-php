@@ -326,6 +326,9 @@ abstract class MethodDetails
     /** @var string *Readonly* The name of the method, as named in the proto. */
     public string $name;
 
+    /** @var string *Readonly* The fully-qualified name of the method, with the proto package and service. */
+    public string $fullName;
+
     /** @var string *Readonly* The name of this method, as required for PHP code. */
     public string $methodName;
 
@@ -386,6 +389,7 @@ abstract class MethodDetails
         $this->inputMsg = $this->catalog->msgsByFullname[$desc->getInputType()];
         $outputMsg = $this->catalog->msgsByFullname[$desc->getOutputType()];
         $this->name = $desc->getName();
+        $this->fullName = $svc->serviceName . "." . $desc->getName();
         $this->methodName = Helpers::toCamelCase($this->name);
         $this->mixinServiceFullname = null;
         $this->testSuccessMethodName = $this->methodName . 'Test';
@@ -420,5 +424,17 @@ abstract class MethodDetails
     public function isMixin(): bool
     {
         return $this->mixinServiceFullname !== null;
+    }
+
+    // Note: Thes seemingly redundant setter methods exist to faciliate a future
+    // refactoring of the public readonly properties to private ones, with public getters.
+    public function setDocLines(Vector $newDocLines) : void
+    {
+        $this->docLines = $newDocLines;
+    }
+
+    public function setHttpRule(?HttpRule $newHttpRule) : void
+    {
+        $this->httpRule = $newHttpRule;
     }
 }

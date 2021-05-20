@@ -2072,7 +2072,7 @@ class KeyManagementServiceGapicClient
     }
 
     /**
-     * Lists information about the supported locations for this service.
+     * This is a different comment for ListLocations in the yaml file that should clobber the protobuf's documentation.
      *
      * Sample code:
      * ```
