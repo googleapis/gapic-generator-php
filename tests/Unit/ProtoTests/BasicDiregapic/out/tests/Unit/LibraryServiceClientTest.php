@@ -1357,7 +1357,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
         $this->assertArrayHasKey('shelvesKey', $expectedResponse->getShelves());
-        $this->assertEquals($expectedResponse->getShelves()['shelvesKey'], $resources[0]);
+        $this->assertEquals($expectedResponse->getShelves()['shelvesKey'], $resources['shelvesKey']);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
