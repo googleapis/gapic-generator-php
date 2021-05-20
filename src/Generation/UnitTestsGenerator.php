@@ -514,6 +514,7 @@ class UnitTestsGenerator
                 $resourcesIsMap
                     ? ($this->assertArrayHasKey)($resourcesKeyIndex, $expectedResponse->instanceCall($method->resourcesGetter)())
                     : null,
+                $resourcesIsMap ? ($this->assertArrayHasKey)($resourcesKeyIndex, $resources) : null,
                 ($this->assertEquals)($expectedResponse->instanceCall($method->resourcesGetter)()[$resourcesKeyIndex], $resources[$resourcesKeyIndex]),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),

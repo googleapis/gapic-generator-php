@@ -386,8 +386,10 @@ message ListAggregatedShelvesRequest {
 
 // Response message for LibraryService.ListAggregatedShelves.
 message ListAggregatedShelvesResponse {
-  // The map of aggregated shelves of shelves.
-  map<string, ShelfResponse> shelves = 1;
+  // The aggregated shelves of shelves.
+  // Do not use a map here, the unit test framework does not yet support good
+  // map mocks.
+  repeated ShelfResponse shelves = 1;
 
   // A token to retrieve next page of results.
   string next_page_token = 2;
