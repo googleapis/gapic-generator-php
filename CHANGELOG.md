@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.1.6](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.5...v0.1.6) (2021-05-20)
+
+
+### Bug Fixes
+
+* enable standalone mixin API client generation ([#275](https://www.github.com/googleapis/gapic-generator-php/issues/275)) ([1cf61d7](https://www.github.com/googleapis/gapic-generator-php/commit/1cf61d7dd6a96a50692ef4b2f48114ed5260f742))
+* **formatter:** Improve formatter error messages ([#296](https://www.github.com/googleapis/gapic-generator-php/issues/296)) ([98ae8ee](https://www.github.com/googleapis/gapic-generator-php/commit/98ae8eeffd93cfe634e6b1cb2310d1d53911e15f))
+* Handle dashes in camelCase string conversion ([#297](https://www.github.com/googleapis/gapic-generator-php/issues/297)) ([7ac4013](https://www.github.com/googleapis/gapic-generator-php/commit/7ac40138c69fdbf9cb1924b5ac0f827d33ef51c2))
+* **headers:** Handle subfields in routing headers ([#293](https://www.github.com/googleapis/gapic-generator-php/issues/293)) ([29e82bb](https://www.github.com/googleapis/gapic-generator-php/commit/29e82bb53d1a60ef8931340335badef94bc44e34))
+* **regapic:** Remove PHP 5 workaround for list_ method renaming ([#292](https://www.github.com/googleapis/gapic-generator-php/issues/292)) ([0b242a2](https://www.github.com/googleapis/gapic-generator-php/commit/0b242a2086e47572526258982c526e25706c345f))
+* **tests:** use string keys in tests with map fields ([#295](https://www.github.com/googleapis/gapic-generator-php/issues/295)) ([98bff65](https://www.github.com/googleapis/gapic-generator-php/commit/98bff65cf5f2d164044852b2d23e42e984723e75))
+
 ### [0.1.5](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.4...v0.1.5) (2021-05-07)
 
 
