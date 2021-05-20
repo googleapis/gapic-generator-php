@@ -285,6 +285,44 @@ return [
                 ],
             ],
         ],
+        'google.cloud.location.Locations' => [
+            'GetLocation' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=locations/*}',
+                'body' => '*',
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'ListLocations' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{filter=*/*}/locations',
+                'body' => '*',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{page_size=*}',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'filter' => [
+                        'getters' => [
+                            'getFilter',
+                        ],
+                    ],
+                    'page_size' => [
+                        'getters' => [
+                            'getPageSize',
+                        ],
+                    ],
+                ],
+            ],
+        ],
         'google.iam.v1.IAMPolicy' => [
             'GetIamPolicy' => [
                 'method' => 'get',

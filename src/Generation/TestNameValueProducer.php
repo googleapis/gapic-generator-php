@@ -159,7 +159,7 @@ class TestNameValueProducer
             $valueFieldVarName = Helpers::toCamelCase($field->camelName . '_value');
             $valueField = $kvSubfields[1];
             // Hack to enable recursion.
-            $valueField->isRequired = True;
+            $valueField->isRequired = true;
             $valueFieldVar = AST::var($valueFieldVarName);
             $this->fieldInit($method, $valueField, $valueFieldVar, $valueFieldVarName, $valueFieldVar, $astAcc);
 
@@ -301,7 +301,7 @@ class TestNameValueProducer
                     $keyName = Helpers::toCamelCase($field->camelName . '_key');
                     $valueField = $kvSubfields[1];
                     // Hacks to ensure this ends up in the test value initialization setters.
-                    $valueField->isInTestResponse = True;
+                    $valueField->isInTestResponse = true;
                     // TODO: More recursive logic for initializing the value field?
                     return AST::array([$keyName => $this->value($valueField)]);
                 }

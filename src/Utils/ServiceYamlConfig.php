@@ -55,6 +55,7 @@ class ServiceYamlConfig
     public function __construct(?string $serviceYaml)
     {
         $this->httpRules = Vector::new([]);
+        $this->documentationRules = Vector::new([]);
         $this->backendRules = Vector::new([]);
         $this->apiNames = Vector::new([]);
         if (!is_null($serviceYaml)) {
@@ -64,6 +65,10 @@ class ServiceYamlConfig
             $http = $service->getHttp();
             if (!is_null($http)) {
                 $this->httpRules = Vector::new($http->getRules());
+            }
+            $documentation = $service->getDocumentation();
+            if (!is_null($documentation)) {
+                $this->documentationRules = Vector::new($documentation->getRules());
             }
             $backend = $service->getBackend();
             if (!is_null($backend)) {
@@ -81,6 +86,9 @@ class ServiceYamlConfig
 
     /** @var Vector *Readonly* Vector of \Google\Api\HttpRule */
     public Vector $httpRules;
+
+    /** @var Vector *Readonly* Vector of \Google\Api\DocumentationRule */
+    public Vector $documentationRules;
 
     /** @var Vector *Readonly* Vector of \Google\Api\BackendRule */
     public Vector $backendRules;
