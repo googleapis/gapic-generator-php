@@ -108,7 +108,7 @@ class Formatter
             return $code;
         } catch (\Throwable $ex) {
             $codeWithLineNumbers = Vector::new(explode("\n", $code))->map(fn ($x, $i) => "{$i}: {$x}")->join("\n");
-            print("\nFailed to format code:\n{$codeWithLineNumbers}\n");
+            print("\nFailed to format code: {$ex->getMessage()}\n{$codeWithLineNumbers}\n");
             throw $ex;
         }
     }
