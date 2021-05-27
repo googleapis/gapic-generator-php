@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57b60302be0d3d2fc0b634b35942c6c5",
+    "content-hash": "b3992041f1803243fb140e43211844ca",
     "packages": [
         {
             "name": "composer/semver",
@@ -414,16 +414,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.17.1",
+            "version": "v3.15.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "d717dd20f64d418d46bfcee4b53c02998da2661f"
+                "reference": "cae7735e67acf738881c02ca12604cc4a7ad2e5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/d717dd20f64d418d46bfcee4b53c02998da2661f",
-                "reference": "d717dd20f64d418d46bfcee4b53c02998da2661f",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/cae7735e67acf738881c02ca12604cc4a7ad2e5a",
+                "reference": "cae7735e67acf738881c02ca12604cc4a7ad2e5a",
                 "shasum": ""
             },
             "require": {
@@ -453,9 +453,9 @@
             ],
             "support": {
                 "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.17.1"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.15.8"
             },
-            "time": "2021-05-24T18:19:31+00:00"
+            "time": "2021-04-08T17:17:35+00:00"
         },
         {
             "name": "php-cs-fixer/diff",
