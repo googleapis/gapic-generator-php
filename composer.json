@@ -19,6 +19,7 @@
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
+            "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
         }
     },

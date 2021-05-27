@@ -109,4 +109,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest');
     }
+
+    public function testResourceNames(): void
+    {
+        $this->runProtoTest('ResourceNames/resource-names.proto');
+    }
 }
