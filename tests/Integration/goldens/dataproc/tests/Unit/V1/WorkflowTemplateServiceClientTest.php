@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Dataproc\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -34,6 +32,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 
+use Google\Cloud\Dataproc\V1\WorkflowTemplatePlacement;
 use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -98,6 +97,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         $response = $client->createWorkflowTemplate($formattedParent, $template);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -135,6 +140,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         try {
             $client->createWorkflowTemplate($formattedParent, $template);
             // If the $client method call did not throw, fail the test
@@ -222,11 +233,11 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock response
         $id = 'id3355';
         $name2 = 'name2-1052831874';
-        $version = 351608024;
+        $version2 = 1407102325;
         $expectedResponse = new WorkflowTemplate();
         $expectedResponse->setId($id);
         $expectedResponse->setName($name2);
-        $expectedResponse->setVersion($version);
+        $expectedResponse->setVersion($version2);
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
@@ -311,6 +322,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         $response = $client->instantiateInlineWorkflowTemplate($formattedParent, $template);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -380,6 +397,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         $response = $client->instantiateInlineWorkflowTemplate($formattedParent, $template);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -616,6 +639,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         $response = $client->updateWorkflowTemplate($template);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -650,6 +679,12 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
         try {
             $client->updateWorkflowTemplate($template);
             // If the $client method call did not throw, fail the test

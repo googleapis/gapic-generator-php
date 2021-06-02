@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Logging\Tests\Unit\V2;
 
 use Google\ApiCore\ApiException;
@@ -95,6 +93,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $metric = new LogMetric();
+        $metricName = 'metricName-610759589';
+        $metric->setName($metricName);
+        $metricFilter = 'metricFilter1248897352';
+        $metric->setFilter($metricFilter);
         $response = $client->createLogMetric($formattedParent, $metric);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -132,6 +134,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $metric = new LogMetric();
+        $metricName = 'metricName-610759589';
+        $metric->setName($metricName);
+        $metricFilter = 'metricFilter1248897352';
+        $metric->setFilter($metricFilter);
         try {
             $client->createLogMetric($formattedParent, $metric);
             // If the $client method call did not throw, fail the test
@@ -372,6 +378,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
         $metric = new LogMetric();
+        $metricName = 'metricName-610759589';
+        $metric->setName($metricName);
+        $metricFilter = 'metricFilter1248897352';
+        $metric->setFilter($metricFilter);
         $response = $client->updateLogMetric($formattedMetricName, $metric);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -409,6 +419,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
         $metric = new LogMetric();
+        $metricName = 'metricName-610759589';
+        $metric->setName($metricName);
+        $metricFilter = 'metricFilter1248897352';
+        $metric->setFilter($metricFilter);
         try {
             $client->updateLogMetric($formattedMetricName, $metric);
             // If the $client method call did not throw, fail the test

@@ -1,5 +1,57 @@
 # Changelog
 
+### [0.1.6](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.5...v0.1.6) (2021-05-20)
+
+
+### Bug Fixes
+
+* enable standalone mixin API client generation ([#275](https://www.github.com/googleapis/gapic-generator-php/issues/275)) ([1cf61d7](https://www.github.com/googleapis/gapic-generator-php/commit/1cf61d7dd6a96a50692ef4b2f48114ed5260f742))
+* **formatter:** Improve formatter error messages ([#296](https://www.github.com/googleapis/gapic-generator-php/issues/296)) ([98ae8ee](https://www.github.com/googleapis/gapic-generator-php/commit/98ae8eeffd93cfe634e6b1cb2310d1d53911e15f))
+* Handle dashes in camelCase string conversion ([#297](https://www.github.com/googleapis/gapic-generator-php/issues/297)) ([7ac4013](https://www.github.com/googleapis/gapic-generator-php/commit/7ac40138c69fdbf9cb1924b5ac0f827d33ef51c2))
+* **headers:** Handle subfields in routing headers ([#293](https://www.github.com/googleapis/gapic-generator-php/issues/293)) ([29e82bb](https://www.github.com/googleapis/gapic-generator-php/commit/29e82bb53d1a60ef8931340335badef94bc44e34))
+* **regapic:** Remove PHP 5 workaround for list_ method renaming ([#292](https://www.github.com/googleapis/gapic-generator-php/issues/292)) ([0b242a2](https://www.github.com/googleapis/gapic-generator-php/commit/0b242a2086e47572526258982c526e25706c345f))
+* **tests:** use string keys in tests with map fields ([#295](https://www.github.com/googleapis/gapic-generator-php/issues/295)) ([98bff65](https://www.github.com/googleapis/gapic-generator-php/commit/98bff65cf5f2d164044852b2d23e42e984723e75))
+
+### [0.1.5](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.4...v0.1.5) (2021-05-07)
+
+
+### Bug Fixes
+
+* **codegen:** support proto map fields in tests ([#290](https://www.github.com/googleapis/gapic-generator-php/issues/290)) ([ee117a2](https://www.github.com/googleapis/gapic-generator-php/commit/ee117a2665971e99d80f859a625c4a8548bb5f62))
+* disable strict_types for PHP 5 compatibility ([#286](https://www.github.com/googleapis/gapic-generator-php/issues/286)) ([aa3e385](https://www.github.com/googleapis/gapic-generator-php/commit/aa3e385b036c38f11a43cb89684cdd22fc7568d3))
+* **regapic:** Prefer map over repeated fields for pagination ([#287](https://www.github.com/googleapis/gapic-generator-php/issues/287)) ([9270745](https://www.github.com/googleapis/gapic-generator-php/commit/9270745e174132a21a735bce3f6d9ef38232014b))
+* **regapic:** use key-value loop iteration for pagination map resources ([#284](https://www.github.com/googleapis/gapic-generator-php/issues/284)) ([4f0aa8f](https://www.github.com/googleapis/gapic-generator-php/commit/4f0aa8f86df39e54578b7713c2dbe1baa7062b7f))
+* **regapic:** use list_ RPC name for PHP 7.2 compatibility ([#285](https://www.github.com/googleapis/gapic-generator-php/issues/285)) ([adecff8](https://www.github.com/googleapis/gapic-generator-php/commit/adecff87386b8f9a7f1798c32ac7ee0fd8ddf0f2))
+
+### [0.1.4](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.3...v0.1.4) (2021-05-06)
+
+
+### Bug Fixes
+
+* Replace PHP prebuilt binary with the one working on workstations and kokoro build image ([#280](https://www.github.com/googleapis/gapic-generator-php/issues/280)) ([f42295b](https://www.github.com/googleapis/gapic-generator-php/commit/f42295b4dbc38cfc894935d3a4b3b58d82931b03))
+
+### [0.1.3](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.2...v0.1.3) (2021-05-06)
+
+
+### Features
+
+* support REGAPIC pagination, add compute_small goldens ([#278](https://www.github.com/googleapis/gapic-generator-php/issues/278)) ([81efb9f](https://www.github.com/googleapis/gapic-generator-php/commit/81efb9f7b71047d0ec097b604226c829f3e0ea99))
+
+
+### Bug Fixes
+
+* **diregapic:** pipe transport flag through Bazel, add Bazel REGAPIC integration test ([#276](https://www.github.com/googleapis/gapic-generator-php/issues/276)) ([832a42f](https://www.github.com/googleapis/gapic-generator-php/commit/832a42f5e9ef454852005d743c5b40fc30b0fd61))
+
+
+### [0.1.2](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.1...v0.1.2) (2021-05-05)
+
+### Bug Fixes
+* Improve Map missing key error messages ([61b9f07](https://github.com/googleapis/gapic-generator-php/commit/61b9f07481f57aa8c5011a8f6e58e436c607ae2c))
+
+### Features
+* **diregapic:** Add PHP client library DIREGAPIC support ([66e60cb](https://github.com/googleapis/gapic-generator-php/commit/66e60cb36e873692249e448ddbcba1ae86c9281a))
+
+
 ### [0.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.0...v0.1.1) (2021-04-27)
 
 

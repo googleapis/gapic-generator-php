@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
 use Google\ApiCore\ApiException;
@@ -435,6 +433,14 @@ class JobServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $job = new Job();
+        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $job->setCompany($jobCompany);
+        $jobRequisitionId = 'jobRequisitionId-1718160870';
+        $job->setRequisitionId($jobRequisitionId);
+        $jobTitle = 'jobTitle-1625529189';
+        $job->setTitle($jobTitle);
+        $jobDescription = 'jobDescription-549074945';
+        $job->setDescription($jobDescription);
         $response = $client->createJob($formattedParent, $job);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -472,6 +478,14 @@ class JobServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $job = new Job();
+        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $job->setCompany($jobCompany);
+        $jobRequisitionId = 'jobRequisitionId-1718160870';
+        $job->setRequisitionId($jobRequisitionId);
+        $jobTitle = 'jobTitle-1625529189';
+        $job->setTitle($jobTitle);
+        $jobDescription = 'jobDescription-549074945';
+        $job->setDescription($jobDescription);
         try {
             $client->createJob($formattedParent, $job);
             // If the $client method call did not throw, fail the test
@@ -911,6 +925,14 @@ class JobServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $job = new Job();
+        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $job->setCompany($jobCompany);
+        $jobRequisitionId = 'jobRequisitionId-1718160870';
+        $job->setRequisitionId($jobRequisitionId);
+        $jobTitle = 'jobTitle-1625529189';
+        $job->setTitle($jobTitle);
+        $jobDescription = 'jobDescription-549074945';
+        $job->setDescription($jobDescription);
         $response = $client->updateJob($job);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -945,6 +967,14 @@ class JobServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $job = new Job();
+        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $job->setCompany($jobCompany);
+        $jobRequisitionId = 'jobRequisitionId-1718160870';
+        $job->setRequisitionId($jobRequisitionId);
+        $jobTitle = 'jobTitle-1625529189';
+        $job->setTitle($jobTitle);
+        $jobDescription = 'jobDescription-549074945';
+        $job->setDescription($jobDescription);
         try {
             $client->updateJob($job);
             // If the $client method call did not throw, fail the test

@@ -1,0 +1,58 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.resourcenames",
+    "libraryPackage": "Testing\\ResourceNames",
+    "services": {
+        "ResourceNames": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ResourceNamesGapicClient",
+                    "rpcs": {
+                        "FileLevelChildTypeRefMethod": {
+                            "methods": [
+                                "fileLevelChildTypeRefMethod"
+                            ]
+                        },
+                        "FileLevelTypeRefMethod": {
+                            "methods": [
+                                "fileLevelTypeRefMethod"
+                            ]
+                        },
+                        "MultiPatternMethod": {
+                            "methods": [
+                                "multiPatternMethod"
+                            ]
+                        },
+                        "SinglePatternMethod": {
+                            "methods": [
+                                "singlePatternMethod"
+                            ]
+                        },
+                        "WildcardChildReferenceMethod": {
+                            "methods": [
+                                "wildcardChildReferenceMethod"
+                            ]
+                        },
+                        "WildcardMethod": {
+                            "methods": [
+                                "wildcardMethod"
+                            ]
+                        },
+                        "WildcardMultiMethod": {
+                            "methods": [
+                                "wildcardMultiMethod"
+                            ]
+                        },
+                        "WildcardReferenceMethod": {
+                            "methods": [
+                                "wildcardReferenceMethod"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

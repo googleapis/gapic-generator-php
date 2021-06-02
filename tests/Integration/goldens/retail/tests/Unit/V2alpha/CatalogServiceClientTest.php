@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
 use Google\ApiCore\ApiException;
@@ -32,6 +30,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Retail\V2alpha\Catalog;
 use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
+use Google\Cloud\Retail\V2alpha\ProductLevelConfig;
 use Google\Rpc\Code;
 use stdClass;
 
@@ -160,6 +159,12 @@ class CatalogServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $catalog = new Catalog();
+        $catalogName = 'catalogName-1007379900';
+        $catalog->setName($catalogName);
+        $catalogDisplayName = 'catalogDisplayName1836270740';
+        $catalog->setDisplayName($catalogDisplayName);
+        $catalogProductLevelConfig = new ProductLevelConfig();
+        $catalog->setProductLevelConfig($catalogProductLevelConfig);
         $response = $client->updateCatalog($catalog);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -194,6 +199,12 @@ class CatalogServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $catalog = new Catalog();
+        $catalogName = 'catalogName-1007379900';
+        $catalog->setName($catalogName);
+        $catalogDisplayName = 'catalogDisplayName1836270740';
+        $catalog->setDisplayName($catalogDisplayName);
+        $catalogProductLevelConfig = new ProductLevelConfig();
+        $catalog->setProductLevelConfig($catalogProductLevelConfig);
         try {
             $client->updateCatalog($catalog);
             // If the $client method call did not throw, fail the test

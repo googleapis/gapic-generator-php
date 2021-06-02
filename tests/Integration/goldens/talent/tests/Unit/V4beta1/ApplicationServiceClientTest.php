@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
 use Google\ApiCore\ApiException;
@@ -31,9 +29,11 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 
 use Google\Cloud\Talent\V4beta1\Application;
+use Google\Cloud\Talent\V4beta1\Application\ApplicationStage;
 use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\ListApplicationsResponse;
 use Google\Protobuf\GPBEmpty;
+use Google\Protobuf\Timestamp;
 use Google\Rpc\Code;
 use stdClass;
 
@@ -101,6 +101,14 @@ class ApplicationServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $application = new Application();
+        $applicationExternalId = 'applicationExternalId-266656842';
+        $application->setExternalId($applicationExternalId);
+        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $application->setJob($applicationJob);
+        $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
+        $application->setStage($applicationStage);
+        $applicationCreateTime = new Timestamp();
+        $application->setCreateTime($applicationCreateTime);
         $response = $client->createApplication($formattedParent, $application);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -138,6 +146,14 @@ class ApplicationServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $application = new Application();
+        $applicationExternalId = 'applicationExternalId-266656842';
+        $application->setExternalId($applicationExternalId);
+        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $application->setJob($applicationJob);
+        $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
+        $application->setStage($applicationStage);
+        $applicationCreateTime = new Timestamp();
+        $application->setCreateTime($applicationCreateTime);
         try {
             $client->createApplication($formattedParent, $application);
             // If the $client method call did not throw, fail the test
@@ -389,6 +405,14 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $application = new Application();
+        $applicationExternalId = 'applicationExternalId-266656842';
+        $application->setExternalId($applicationExternalId);
+        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $application->setJob($applicationJob);
+        $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
+        $application->setStage($applicationStage);
+        $applicationCreateTime = new Timestamp();
+        $application->setCreateTime($applicationCreateTime);
         $response = $client->updateApplication($application);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -423,6 +447,14 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $application = new Application();
+        $applicationExternalId = 'applicationExternalId-266656842';
+        $application->setExternalId($applicationExternalId);
+        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $application->setJob($applicationJob);
+        $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
+        $application->setStage($applicationStage);
+        $applicationCreateTime = new Timestamp();
+        $application->setCreateTime($applicationCreateTime);
         try {
             $client->updateApplication($application);
             // If the $client method call did not throw, fail the test

@@ -1,0 +1,1072 @@
+// (-- Library API for toolkit testing purposes --)
+
+syntax = "proto3";
+
+package google.example.library.v1;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/cloud/common_resources.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option php_namespace = "Testing\\BasicDiregapic";
+
+option (google.api.resource_definition) = {
+  type: "library.googleapis.com/Publisher",
+  pattern: "projects/{project}/locations/{location}/publishers/{publisher}",
+};
+
+option (google.api.resource_definition) = {
+  type: "library.googleapis.com/Archive",
+  pattern: "archives/{archive}"
+};
+
+option (google.api.resource_definition) = {
+  type: "library.googleapis.com/Asset",
+  pattern: "*"
+};
+
+// This API represents a simple digital library.  It lets you manage Shelf
+// resources and BookResponse resources in the library. It defines the following
+// resource model:
+//
+// - The API has a collection of
+// [ShelfResponse][google.example.library.v1.ShelfResponse]
+//   resources, named ``bookShelves/*``
+//
+// - Each ShelfResponse has a collection of
+// [BookResponse][google.example.library.v1.BookResponse]
+//   resources, named `bookShelves/*/books/*`
+//
+// Check out [cloud docs!](/library/example/link).
+// This is [not a cloud link](http://www.google.com).
+//
+// Service comment may include special characters: <>&"`'@.
+//
+service LibraryService {
+  option (google.api.default_host) = "library-example.googleapis.com:1234";
+  option (google.api.oauth_scopes) =
+      "https://www.googleapis.com/auth/library,"
+      "https://www.googleapis.com/auth/cloud-platform";
+
+  // Creates a shelf, and returns the new Shelf.
+  // RPC method comment may include special characters: <>&"`'@.
+  rpc CreateShelf(CreateShelfRequest) returns (ShelfResponse) {
+    option (google.api.http) = {
+      post: "/v1/bookShelves"
+      body: "shelf"
+    };
+    option (google.api.method_signature) = "shelf";
+  }
+
+  // Gets a shelf.
+  rpc GetShelf(GetShelfRequest) returns (ShelfResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=bookShelves/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.api.method_signature) = "name,message";
+    option (google.api.method_signature) = "name,message,string_builder";
+  }
+
+  // Lists shelves.
+  rpc ListShelves(ListShelvesRequest) returns (ListShelvesResponse) {
+    option (google.api.http) = {
+      get: "/v1/bookShelves"
+    };
+    option (google.api.method_signature) = "";
+  }
+
+  // ListAggregatedShelves tests paged calls that return maps of lists paged in
+  // parallel.
+
+  // Lists shelves.
+  rpc ListAggregatedShelves(ListAggregatedShelvesRequest)
+      returns (ListAggregatedShelvesResponse) {
+    option (google.api.http) = {
+      get: "/v1/bookAggregatedShelves"
+    };
+    option (google.api.method_signature) = "";
+  }
+
+  // Deletes a shelf.
+  rpc DeleteShelf(DeleteShelfRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/bookShelves/{name}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Merges two shelves by adding all books from the shelf named
+  // `other_shelf_name` to shelf `name`, and deletes
+  // `other_shelf_name`. Returns the updated shelf.
+  rpc MergeShelves(MergeShelvesRequest) returns (ShelfResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=bookShelves/*}:merge"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name,other_shelf_name";
+  }
+
+  // Creates a book.
+  rpc CreateBook(CreateBookRequest) returns (BookResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=bookShelves/*}/books"
+      body: "book"
+      additional_bindings: {
+        post: "/v1/{name=bookShelves/*}/books"
+        body: "book"
+      }
+    };
+    option (google.api.method_signature) = "name,book";
+  }
+
+  // Creates a series of books.
+  // Tests PHP required nested fields.
+  rpc PublishSeries(PublishSeriesRequest) returns (PublishSeriesResponse) {
+    option (google.api.http) = {
+      post: "/v1:publish"
+      body: "*"
+      additional_bindings: {
+        post: "/v1/{shelf.name=shelves/*}:publish"
+        body: "*"
+      }
+    };
+    option (google.api.method_signature) =
+        "shelf,books,edition,series_uuid,publisher";
+  }
+
+  // Creates an inventory. Tests singleton resources.
+  rpc CreateInventory(CreateInventoryRequest) returns (InventoryResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/publishers/*}"
+      body: "inventory"
+    };
+    option (google.api.method_signature) =
+        "parent,inventory,asset,parent_asset,assets";
+  }
+
+  // Gets a book.
+  rpc GetBook(GetBookRequest) returns (BookResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=bookShelves/*/books/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists books in a shelf.
+  rpc ListBooks(ListBooksRequest) returns (ListBooksResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=bookShelves/*}/books"
+    };
+    option (google.api.method_signature) = "name,filter";
+  }
+
+  // Deletes a book.
+  rpc DeleteBook(DeleteBookRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=bookShelves/*/books/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Updates a book.
+  rpc UpdateBook(UpdateBookRequest) returns (BookResponse) {
+    option (google.api.http) = {
+      put: "/v1/{name=bookShelves/*/books/*}"
+      body: "book"
+    };
+    option (google.api.method_signature) = "name,book";
+    option (google.api.method_signature) =
+        "name,optional_foo,book,update_mask,physical_mask";
+  }
+
+  // Moves a book to another shelf, and returns the new book.
+  rpc MoveBook(MoveBookRequest) returns (BookResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=bookShelves/*/books/*}:move"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name,other_shelf_name";
+  }
+
+  // Lists a primitive resource. To test go page streaming.
+  rpc ListStrings(ListStringsRequest) returns (ListStringsResponse) {
+    option (google.api.http) = {
+      get: "/v1/strings"
+    };
+    option (google.api.method_signature) = "";
+    option (google.api.method_signature) = "name";
+  }
+
+  // Adds comments to a book
+  rpc AddComments(AddCommentsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/{name=bookShelves/*}/comments"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name,comments";
+  }
+
+  // Gets a book from an archive.
+  rpc GetBookFromArchive(GetBookFromArchiveRequest)
+      returns (BookFromArchiveResponse) {
+    // The http binding on this field does not include the "**" path in order to
+    // test the name conflict resolution in configgen.
+    option (google.api.http) = {
+      get: "/v1/{name=archives/*/books/*}"
+    };
+    option (google.api.method_signature) = "name,parent";
+  }
+
+  // Gets a book from a shelf or archive.
+  rpc GetBookFromAnywhere(GetBookFromAnywhereRequest)
+      returns (BookFromAnywhereResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=archives/*/books/**}"
+    };
+    option (google.api.method_signature) = "name,alt_book_name,place,folder";
+  }
+
+  // Test proper OneOf-Any resource name mapping
+  rpc GetBookFromAbsolutelyAnywhere(GetBookFromAbsolutelyAnywhereRequest)
+      returns (BookFromAnywhereResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=archives/*/books/*}"
+      additional_bindings { post: "/v1/{alt_book_name=bookShelves/*/books/*}" }
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Updates the index of a book.
+  rpc UpdateBookIndex(UpdateBookIndexRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/{name=bookShelves/*/books/*}/index"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name,index_name,index_map";
+  }
+
+  rpc FindRelatedBooks(FindRelatedBooksRequest)
+      returns (FindRelatedBooksResponse) {
+    option (google.api.http) = {
+      get: "/v1/bookShelves"
+    };
+    option (google.api.method_signature) = "names,shelves";
+  }
+
+  // Adds a tag to the book. This RPC is a mixin.
+  rpc AddTag(AddTagRequest) returns (AddTagResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=bookShelves/*/books/*}:addTag"
+      body: "*"
+    };
+    option (google.api.method_signature) = "resource,tag";
+  }
+
+  // AddLabel intentionally left out to test the reroute_to_grpc_interface
+  // feature
+
+  // Test long-running operations
+  rpc GetBigBook(GetBookRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      get: "/v1/{name=bookShelves/*/books/*}:big"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.example.library.v1.BookResponse"
+      metadata_type: "google.example.library.v1.GetBigBookMetadata"
+    };
+  }
+
+  // Test long-running operations with empty return type.
+  rpc GetBigNothing(GetBookRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      get: "/v1/{name=bookShelves/*/books/*}:bignothing"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      metadata_type: "google.example.library.v1.GetBigBookMetadata"
+      response_type: "google.protobuf.Empty"
+    };
+  }
+
+  rpc MoveBooks(MoveBooksRequest) returns (MoveBooksResponse) {
+    option (google.api.http) = {
+      post: "/v1/{source=**}:move"
+      body: "*"
+    };
+    option (google.api.method_signature) =
+        "source,destination,publishers,project";
+  }
+
+  rpc ArchiveBooks(ArchiveBooksRequest) returns (ArchiveBooksResponse) {
+    option (google.api.http) = {
+      post: "/v1/{source=**}:archive"
+      body: "*"
+    };
+    option (google.api.method_signature) = "source,archive";
+  }
+
+  rpc LongRunningArchiveBooks(ArchiveBooksRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{source=**}:longrunningmove"
+      body: "*"
+    };
+    option (google.api.method_signature) = "source,archive";
+    option (google.longrunning.operation_info) = {
+      response_type: "ArchiveBooksResponse",
+      metadata_type: "ArchiveBooksMetadata"
+    };
+  }
+
+  // Test using resource messages as request objects. Only used by PubSub
+  // (CreateSubscription) for historical reasons. New APIs should always create
+  // a separate message for a request.
+  rpc SaveBook(BookResponse) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1:saveBook"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name,author,title,rating";
+  }
+
+  // This method is not exposed in the GAPIC config. It should be generated.
+  rpc PrivateListShelves(ListShelvesRequest) returns (BookResponse) {
+    option (google.api.http) = {
+      get: "/v1/bookShelves"
+    };
+    option (google.api.method_signature) = "";
+  }
+}
+
+// Request message for LibraryService.ListShelves.
+message ListShelvesRequest {
+  // A token identifying a page of results the server should return.
+  // Typically, this is the value of
+  // [ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token]
+  // returned from the previous call to `ListShelves` method.
+  string page_token = 2;
+
+  // Test not having a page_size field. The RPC using this request object should
+  // not be treated as a paged method unless there is a GAPIC config override.
+}
+
+// Response message for LibraryService.ListShelves.
+message ListShelvesResponse {
+  // The list of shelves.
+  repeated ShelfResponse shelves = 1;
+
+  // A token to retrieve next page of results.
+  // Pass this value in the
+  // [ListShelvesRequest.page_token][google.example.library.v1.ListShelvesRequest.page_token]
+  // field in the subsequent call to `ListShelves` method to retrieve the next
+  // page of results.
+  string next_page_token = 2;
+}
+
+// Request message for LibraryService.ListAggregatedShelves.
+message ListAggregatedShelvesRequest {
+  // Requested page size.
+  uint32 max_results = 1;
+
+  // A token identifying a page of results the server should return.
+  string page_token = 2;
+}
+
+// Response message for LibraryService.ListAggregatedShelves.
+message ListAggregatedShelvesResponse {
+  // The aggregated shelves of shelves.
+  // Do not use a map here, the unit test framework does not yet support good
+  // map mocks.
+  repeated ShelfResponse shelves = 1;
+
+  // A token to retrieve next page of results.
+  string next_page_token = 2;
+}
+
+// Request message for LibraryService.StreamShelves.
+message StreamShelvesRequest {
+  // The name of the shelf to stream.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+}
+
+// Response message for LibraryService.StreamShelves.
+message StreamShelvesResponse {
+  // The list of shelves.
+  repeated ShelfResponse shelves = 1;
+}
+
+// Request message for LibraryService.DeleteShelf.
+message DeleteShelfRequest {
+  // The name of the shelf to delete.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+}
+
+// Describes the shelf being removed (other_shelf_name) and updated
+// (name) in this merge.
+message MergeShelvesRequest {
+  // The name of the shelf we're adding books to.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+
+  // The name of the shelf we're removing books from and deleting.
+  string other_shelf_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+}
+
+// Request message for LibraryService.CreateBook.
+message CreateBookRequest {
+  // The name of the shelf in which the book is created.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+
+  // The book to create.
+  BookResponse book = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for LibraryService.PublishSeries.
+message PublishSeriesRequest {
+  // The shelf in which the series is created.
+  ShelfResponse shelf = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The books to publish in the series.
+  repeated BookResponse books = 2 [(google.api.field_behavior) = REQUIRED];
+
+  oneof versioning {
+    // The edition of the series
+    uint32 edition = 3;
+
+    // If the book is in a pre-publish state
+    bool review_copy = 4;
+  }
+
+  // Uniquely identifies the series to the publishing house.
+  SeriesUuidResponse series_uuid = 5 [(google.api.field_behavior) = REQUIRED];
+
+  // The publisher of the series.
+  string publisher = 6 [(google.api.resource_reference).type =
+                            "library.googleapis.com/Publisher"];
+}
+
+message SeriesUuidResponse {
+  oneof source {
+    bytes series_bytes = 1;
+    string series_string = 2;
+  }
+}
+
+// Response message for LibraryService.PublishSeries.
+message PublishSeriesResponse {
+  // The names of the books in the series that were published
+  repeated string book_names = 1 [(google.api.field_behavior) = REQUIRED];
+
+  repeated BookResponse books = 2;
+
+  // Uniquely identifies the series published
+  SeriesUuidResponse series_uuid = 3;
+}
+
+// Request message for LibraryService.GetBook.
+message GetBookRequest {
+  // The name of the book to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+}
+
+// Request message for LibraryService.ListBooks.
+message ListBooksRequest {
+  // The name of the shelf whose books we'd like to list.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+
+  // Requested page size. Server may return fewer books than requested.
+  // If unspecified, server will pick an appropriate default.
+  int32 page_size = 2;
+
+  // A token identifying a page of results the server should return.
+  // Typically, this is the value of
+  // [ListBooksResponse.next_page_token][google.example.library.v1.ListBooksResponse.next_page_token].
+  // returned from the previous call to `ListBooks` method.
+  string page_token = 3;
+
+  // To test python built-in wrapping.
+  string filter = 4;
+}
+
+// Response message for LibraryService.ListBooks.
+message ListBooksResponse {
+  // The list of books.
+  repeated BookResponse books = 1;
+
+  // A token to retrieve next page of results.
+  // Pass this value in the
+  // [ListBooksRequest.page_token][google.example.library.v1.ListBooksRequest.page_token]
+  // field in the subsequent call to `ListBooks` method to retrieve the next
+  // page of results.
+  string next_page_token = 2;
+}
+
+// Request message for LibraryService.StreamBooks.
+message StreamBooksRequest {
+  // The name of the shelf whose books we'd like to list.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for LibraryService.UpdateBook.
+message UpdateBookRequest {
+  // The name of the book to update.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // An optional foo.
+  string optional_foo = 2;
+
+  // The book to update with.
+  BookResponse book = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // A field mask to apply, rendered as an HTTP parameter.
+  google.protobuf.FieldMask update_mask = 4;
+}
+
+// Request message for LibraryService.DeleteBook.
+message DeleteBookRequest {
+  // The name of the book to delete.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+}
+
+// Describes what book to move (name) and what shelf we're moving it
+// to (other_shelf_name).
+message MoveBookRequest {
+  // The name of the book to move.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // The name of the destination shelf.
+  string other_shelf_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+}
+
+message ListStringsRequest {
+  string name = 1 [(google.api.resource_reference).type = "*"];
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListStringsResponse {
+  repeated string strings = 1 [(google.api.resource_reference).type = "*"];
+  string next_page_token = 2;
+}
+
+message CreateInventoryRequest {
+  string parent = 1 [
+    (google.api.resource_reference).child_type =
+        "library.googleapis.com/Inventory",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  InventoryResponse inventory = 2;
+
+  string asset = 3 [
+    (google.api.resource_reference).type = "library.googleapis.com/Asset",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string parent_asset = 4 [
+    (google.api.resource_reference).child_type = "library.googleapis.com/Asset",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  repeated string assets = 5 [
+    (google.api.resource_reference).type = "library.googleapis.com/Asset",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message AddCommentsRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  repeated Comment comments = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+message Comment {
+  // won't be filled in by the sample generator
+  string user_name = 1;
+
+  // should be filled in by the sample generator
+  bytes comment = 2;
+
+  enum Stage {
+    UNSET = 0;
+    DRAFT = 1;
+    PUBLISHED = 2;
+    DELETED = 3;
+  }
+
+  // should be filled in by the sample generator
+  Stage stage = 5;
+
+  // Tests Python nested enums
+  SomeMessage2.SomeMessage3.Alignment alignment = 6;
+}
+
+// Request message for LibraryService.GetBookFromArchive.
+message GetBookFromArchiveRequest {
+  // The name of the book to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/ArchivedBook"
+  ];
+
+  string parent = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "locations.googleapis.com/Location"
+  ];
+}
+
+// Request message for LibraryService.GetBookFromAnywhere.
+message GetBookFromAnywhereRequest {
+  // The name of the book to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // An alternate book name, used to test restricting flattened field to a
+  // single resource name type in a oneof.
+  string alt_book_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  string place = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "locations.googleapis.com/Location"
+  ];
+
+  string folder = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type =
+        "cloudresourcemanager.googleapis.com/Folder"
+  ];
+}
+
+// Request message for LibraryService.GetBookFromAbsolutelyAnywhere.
+message GetBookFromAbsolutelyAnywhereRequest {
+  // The name of the book to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // An alternate book name, used to test proper processing of placeholders
+  // within additional bindings.
+  string alt_book_name = 2;
+}
+
+// Request message for LibraryService.UpdateBookIndex.
+message UpdateBookIndexRequest {
+  // The name of the book to update.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // The name of the index for the book
+  string index_name = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The index to update the book with
+  map<string, string> index_map = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message DiscussBookRequest {
+  // The name of the book to be discussed. If this is in the middle
+  // of the stream and this is not specified, the name in the previous
+  // message will be reused.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+
+  // The new comment.
+  Comment comment = 2;
+
+  bytes image = 3;
+}
+
+// Test repeated field with resource name format in request
+message FindRelatedBooksRequest {
+  repeated string names = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Book"
+  ];
+  repeated string shelves = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+// Test repeated field with resource name format in page streaming response
+message FindRelatedBooksResponse {
+  repeated string names = 1
+      [(google.api.resource_reference).type = "library.googleapis.com/Book"];
+  string next_page_token = 2;
+}
+
+// Metadata for a longrunning operation.
+message GetBigBookMetadata {
+  // Approximate percentage of the book processed thus far.
+  int32 progress_percent = 1;
+}
+
+enum TopLevelEnum {
+  FOO = 0;
+  BAR = 1;
+}
+
+message MoveBooksRequest {
+  string source = 1 [(google.api.resource_reference).child_type =
+                         "library.googleapis.com/Book"];
+
+  string destination = 2 [(google.api.resource_reference).child_type =
+                              "library.googleapis.com/Book"];
+
+  repeated string publishers = 3 [(google.api.resource_reference).type =
+                                      "library.googleapis.com/Publisher"];
+
+  string project = 4 [(google.api.resource_reference).type =
+                          "cloudresourcemanager.googleapis.com/Project"];
+}
+
+message MoveBooksResponse {
+  bool success = 1;
+}
+
+message ArchiveBooksRequest {
+  string source = 1 [(google.api.resource_reference).child_type =
+                         "library.googleapis.com/Book"];
+
+  string archive = 2
+      [(google.api.resource_reference).type = "library.googleapis.com/Archive"];
+}
+
+message ArchiveBooksResponse {
+  bool success = 1;
+}
+
+message ArchiveBooksMetadata {
+  double percentage = 1;
+}
+
+// A single book in the archives or library.
+message BookFromAnywhereResponse {
+  // The resource name of the book.
+  // BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`
+  // or `archives/{archive_id}/books/{book_id}`.
+  string name = 1
+      [(google.api.resource_reference).type = "library.googleapis.com/Book"];
+
+  // The name of the book author.
+  string author = 2;
+
+  // The title of the book.
+  string title = 3;
+
+  // Value indicating whether the book has been read.
+  bool read = 4;
+}
+
+// This message is not used by the library service and should not be
+// included in the docs.
+message OtherType {}
+
+// This message is used by the library service and does not reference
+// other_shared_type.proto.
+message Used {
+  int32 times_used = 1;
+}
+
+// This message is not used by the library service but does reference
+// other_shared_type.proto.
+message Unused {
+  OtherType other = 1;
+}
+
+message AddTagRequest {
+  // REQUIRED: The resource which the tag is being added to.
+  // In the form "shelves/{shelf_id}/books/{book_id}".
+  string resource = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // REQUIRED: The tag to add.
+  string tag = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+message AddLabelRequest {
+  // REQUIRED: The resource which the label is being added to.
+  string resource = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // REQUIRED: The label to add.
+  string label = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for the `AddTag` method.
+message AddTagResponse {
+  // empty for now
+}
+
+// Response message for the `AddLabel` method.
+message AddLabelResponse {
+  // empty for now
+}
+// A single book in the library.
+// Message comment may include special characters: <>&"`'@.
+message BookResponse {
+  option (google.api.resource) = {
+    type: "library.googleapis.com/Book",
+    pattern: "shelves/{shelf}/books/{book_one}~{book_two}",
+    pattern: "archives/{archive}/books/{book}",
+    pattern: "projects/{project}/books/{book}"
+    pattern: "projects/{project}/locations/{location}/publishers/{publisher}/inventory/books/{book}"
+    history: ORIGINALLY_SINGLE_PATTERN,
+  };
+
+  // The resource name of the book.
+  // BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+  // Message field comment may include special characters: <>&"`'@.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The name of the book author.
+  string author = 2;
+
+  // The title of the book.
+  string title = 3;
+
+  // Value indicating whether the book has been read.
+  bool read = 4;
+
+  enum Rating {
+    GOOD = 0;  // GOOD enum description
+    BAD = 1;   // Enum description with special characters: <>&"`'@.
+  }
+
+  // For testing enums.
+  Rating rating = 5;
+
+  string reader = 6
+      [(google.api.resource_reference).type = "library.googleapis.com/Reader"];
+
+  // For testing all well-known types.
+  google.protobuf.Any any_value = 10;
+  google.protobuf.Struct struct_value = 11;
+  google.protobuf.Value value_value = 12;
+  google.protobuf.ListValue list_value_value = 27;
+  map<string, google.protobuf.ListValue> map_list_value_value = 28;
+  google.protobuf.Timestamp time_value = 13;
+  google.protobuf.Duration duration_value = 14;
+  google.protobuf.FieldMask field_mask_value = 15;
+  google.protobuf.Int32Value int32_value = 16;
+  google.protobuf.UInt32Value uint32_value = 17;
+  google.protobuf.Int64Value int64_value = 18;
+  google.protobuf.UInt64Value uint64_value = 19;
+  google.protobuf.FloatValue float_value = 20;
+  google.protobuf.DoubleValue double_value = 21;
+  google.protobuf.StringValue string_value = 22;
+  google.protobuf.BoolValue bool_value = 23;
+  google.protobuf.BytesValue bytes_value = 24;
+
+  // Test doc generation of lists:
+  //
+  // +   Here is a sentence about the first element of the list that continues
+  //     into a second line.
+  // +   The second element of the list.
+  // +   Another element of the list where the indentation isn't consistent
+  // after a blank space.
+  //
+  //     The second paragraph of the list
+  // that doesn't have a hanging indent.
+  map<int32, string> map_string_value = 25;
+  map<string, SomeMessage> map_message_value = 26;
+
+  // Tests Python doc generation: should generate a dummy file for shared_type
+  // resource, but *not* its import, other_shared_type
+  Used resource = 29;
+
+  // For testing accessing map fields in samplegen
+  map<bool, string> map_bool_key = 30;
+}
+
+message InventoryResponse {
+  option (google.api.resource) = {
+    type: "library.googleapis.com/Inventory",
+    pattern: "projects/{project}/locations/{location}/publishers/{publisher}/inventory"
+  };
+
+  string name = 1;
+}
+
+// A single book in the archives.
+message BookFromArchiveResponse {
+  option (google.api.resource) = {
+    type: "library.googleapis.com/ArchivedBook",
+    pattern: "archives/{archive}/books/{book}",
+  };
+  // The resource name of the book.
+  // BookResponse names have the form `archives/{archive_id}/books/{book_id}`.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The name of the book author.
+  string author = 2;
+
+  // The title of the book.
+  string title = 3;
+
+  // Value indicating whether the book has been read.
+  bool read = 4;
+}
+
+message SomeMessage {
+  int32 field = 1;
+
+  SomeMessage2 field2 = 2;
+
+  // Tests service with two enums of the same simple name
+  enum Alignment {
+    GOOD = 0;
+    NEUTRAL = 1;
+    EVIL = 2;
+  }
+
+  Alignment alignment = 3;
+}
+
+message SomeMessage2 {
+  int32 field1 = 1;
+
+  message SomeMessage3 {
+    // Tests Python nested enums
+    enum Alignment {
+      // 8-bit
+      CHAR = 0;
+      // 32-bit
+      INT = 1;
+      // 64-bit
+      DOUBLE = 2;
+    }
+  }
+
+  // Another enum with duplicated simple name
+  enum Alignment {
+    FLUSH_LEFT = 0;
+    FLUSH_RIGHT = 1;
+    CENTERED = 2;
+    JUSTIFIED = 3;
+  }
+
+  Alignment format = 2;
+}
+
+// A ShelfResponse contains a collection of books with a theme.
+message ShelfResponse {
+  option (google.api.resource) = {
+    type: "library.googleapis.com/Shelf",
+    pattern: "shelves/{shelf}",
+  };
+  // The resource name of the shelf.
+  // ShelfResponse names have the form `shelves/{shelf}`.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The theme of the shelf
+  string theme = 2;
+
+  // Internal theme that is visible to trusted testers only.
+  string internal_theme = 3;
+}
+
+message Reader {
+  option (google.api.resource) = {
+    type: "library.googleapis.com/Reader",
+    pattern: "projects/{project}/readers/{reader}",
+    pattern: "projects/{project}/shelves/{shelf}/readers/{reader_surname}.{reader_first_name}",
+    pattern: "organization/{organization}/reader"
+  };
+
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  google.protobuf.Timestamp join_time = 2;
+}
+
+// Request message for LibraryService.CreateShelf.
+message CreateShelfRequest {
+  // The shelf to create.
+  ShelfResponse shelf = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for LibraryService.GetShelf.
+message GetShelfRequest {
+  // The name of the shelf to retrieve.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    // Test that a resource name field can be referenced by its MessageType.
+    (google.api.resource_reference).type = "library.googleapis.com/Shelf"
+  ];
+
+  // Field to verify that message-type query parameter gets flattened.
+  SomeMessage message = 2;
+
+  StringBuilder string_builder = 3;
+
+  // To test 'options' parameter name conflict.
+  string options = 4 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Creates a name conflict with java.lang type
+message StringBuilder {
+  string name = 1;
+}

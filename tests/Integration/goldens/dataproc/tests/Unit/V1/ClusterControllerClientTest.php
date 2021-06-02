@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Dataproc\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -32,8 +30,9 @@ use Google\ApiCore\Testing\GeneratedTest;
 
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\Cluster;
-use Google\Cloud\Dataproc\V1\ClusterControllerClient;
+use Google\Cloud\Dataproc\V1\ClusterConfig;
 
+use Google\Cloud\Dataproc\V1\ClusterControllerClient;
 use Google\Cloud\Dataproc\V1\DiagnoseClusterResults;
 use Google\Cloud\Dataproc\V1\ListClustersResponse;
 use Google\LongRunning\GetOperationRequest;
@@ -119,6 +118,12 @@ class ClusterControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $cluster = new Cluster();
+        $clusterProjectId = 'clusterProjectId-927164102';
+        $cluster->setProjectId($clusterProjectId);
+        $clusterClusterName = 'clusterClusterName2146953547';
+        $cluster->setClusterName($clusterClusterName);
+        $clusterConfig = new ClusterConfig();
+        $cluster->setConfig($clusterConfig);
         $response = $client->createCluster($projectId, $region, $cluster);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -191,6 +196,12 @@ class ClusterControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $cluster = new Cluster();
+        $clusterProjectId = 'clusterProjectId-927164102';
+        $cluster->setProjectId($clusterProjectId);
+        $clusterClusterName = 'clusterClusterName2146953547';
+        $cluster->setClusterName($clusterClusterName);
+        $clusterConfig = new ClusterConfig();
+        $cluster->setConfig($clusterConfig);
         $response = $client->createCluster($projectId, $region, $cluster);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -667,6 +678,12 @@ class ClusterControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $clusterName = 'clusterName-1018081872';
         $cluster = new Cluster();
+        $clusterProjectId = 'clusterProjectId-927164102';
+        $cluster->setProjectId($clusterProjectId);
+        $clusterClusterName = 'clusterClusterName2146953547';
+        $cluster->setClusterName($clusterClusterName);
+        $clusterConfig = new ClusterConfig();
+        $cluster->setConfig($clusterConfig);
         $updateMask = new FieldMask();
         $response = $client->updateCluster($projectId, $region, $clusterName, $cluster, $updateMask);
         $this->assertFalse($response->isDone());
@@ -745,6 +762,12 @@ class ClusterControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $clusterName = 'clusterName-1018081872';
         $cluster = new Cluster();
+        $clusterProjectId = 'clusterProjectId-927164102';
+        $cluster->setProjectId($clusterProjectId);
+        $clusterClusterName = 'clusterClusterName2146953547';
+        $cluster->setClusterName($clusterClusterName);
+        $clusterConfig = new ClusterConfig();
+        $cluster->setConfig($clusterConfig);
         $updateMask = new FieldMask();
         $response = $client->updateCluster($projectId, $region, $clusterName, $cluster, $updateMask);
         $this->assertFalse($response->isDone());

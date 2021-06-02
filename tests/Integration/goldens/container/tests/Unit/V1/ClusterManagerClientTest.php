@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Container\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -153,8 +151,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -163,8 +161,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -228,7 +226,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name = 'name3373707';
-        $zone = 'zone3744684';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -238,7 +236,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
         $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -308,7 +306,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $name = 'name3373707';
-        $zone = 'zone3744684';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -318,7 +316,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
         $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -387,8 +385,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -397,8 +395,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -461,8 +459,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -471,8 +469,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -535,7 +533,7 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
+        $name2 = 'name2-1052831874';
         $description = 'description-1724546052';
         $initialNodeCount = 1682564205;
         $loggingService = 'loggingService-1700501035';
@@ -546,7 +544,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $enableKubernetesAlpha = false;
         $labelFingerprint = 'labelFingerprint714995737';
         $selfLink = 'selfLink-1691268851';
-        $zone = 'zone3744684';
+        $zone2 = 'zone2-696322977';
         $endpoint = 'endpoint1741102485';
         $initialClusterVersion = 'initialClusterVersion-276373352';
         $currentMasterVersion = 'currentMasterVersion-920953983';
@@ -561,7 +559,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $enableTpu = false;
         $tpuIpv4CidrBlock = 'tpuIpv4CidrBlock1137906646';
         $expectedResponse = new Cluster();
-        $expectedResponse->setName($name);
+        $expectedResponse->setName($name2);
         $expectedResponse->setDescription($description);
         $expectedResponse->setInitialNodeCount($initialNodeCount);
         $expectedResponse->setLoggingService($loggingService);
@@ -572,7 +570,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setEnableKubernetesAlpha($enableKubernetesAlpha);
         $expectedResponse->setLabelFingerprint($labelFingerprint);
         $expectedResponse->setSelfLink($selfLink);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setEndpoint($endpoint);
         $expectedResponse->setInitialClusterVersion($initialClusterVersion);
         $expectedResponse->setCurrentMasterVersion($currentMasterVersion);
@@ -697,14 +695,14 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
+        $name2 = 'name2-1052831874';
         $initialNodeCount = 1682564205;
         $selfLink = 'selfLink-1691268851';
         $version = 'version351608024';
         $statusMessage = 'statusMessage-239442758';
         $podIpv4CidrSize = 1098768716;
         $expectedResponse = new NodePool();
-        $expectedResponse->setName($name);
+        $expectedResponse->setName($name2);
         $expectedResponse->setInitialNodeCount($initialNodeCount);
         $expectedResponse->setSelfLink($selfLink);
         $expectedResponse->setVersion($version);
@@ -765,8 +763,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -775,8 +773,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1133,8 +1131,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1143,8 +1141,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1207,8 +1205,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1217,8 +1215,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1287,8 +1285,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1297,8 +1295,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1308,7 +1306,10 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setEndTime($endTime);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $resourceLabels = [];
+        $resourceLabelsValue = 'resourceLabelsValue-1244473404';
+        $resourceLabels = [
+            'resourceLabelsKey' => $resourceLabelsValue,
+        ];
         $labelFingerprint = 'labelFingerprint714995737';
         $response = $client->setLabels($resourceLabels, $labelFingerprint);
         $this->assertEquals($expectedResponse, $response);
@@ -1345,7 +1346,10 @@ class ClusterManagerClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $resourceLabels = [];
+        $resourceLabelsValue = 'resourceLabelsValue-1244473404';
+        $resourceLabels = [
+            'resourceLabelsKey' => $resourceLabelsValue,
+        ];
         $labelFingerprint = 'labelFingerprint714995737';
         try {
             $client->setLabels($resourceLabels, $labelFingerprint);
@@ -1371,8 +1375,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1381,8 +1385,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1451,8 +1455,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1461,8 +1465,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1531,8 +1535,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1541,8 +1545,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1611,7 +1615,7 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
+        $name2 = 'name2-1052831874';
         $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
@@ -1621,7 +1625,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
+        $expectedResponse->setName($name2);
         $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
@@ -1703,8 +1707,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1713,8 +1717,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1787,8 +1791,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1797,8 +1801,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1867,8 +1871,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1877,8 +1881,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -1947,8 +1951,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -1957,8 +1961,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2027,8 +2031,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2037,8 +2041,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2107,8 +2111,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2117,8 +2121,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2187,8 +2191,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2197,8 +2201,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2261,8 +2265,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2271,8 +2275,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2341,8 +2345,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2351,8 +2355,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);
@@ -2421,8 +2425,8 @@ class ClusterManagerClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
-        $zone = 'zone3744684';
+        $name2 = 'name2-1052831874';
+        $zone2 = 'zone2-696322977';
         $detail = 'detail-1335224239';
         $statusMessage = 'statusMessage-239442758';
         $selfLink = 'selfLink-1691268851';
@@ -2431,8 +2435,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $startTime = 'startTime-1573145462';
         $endTime = 'endTime1725551537';
         $expectedResponse = new Operation();
-        $expectedResponse->setName($name);
-        $expectedResponse->setZone($zone);
+        $expectedResponse->setName($name2);
+        $expectedResponse->setZone($zone2);
         $expectedResponse->setDetail($detail);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setSelfLink($selfLink);

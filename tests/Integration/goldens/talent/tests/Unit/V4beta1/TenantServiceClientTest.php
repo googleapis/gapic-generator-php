@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
 use Google\ApiCore\ApiException;
@@ -91,6 +89,8 @@ class TenantServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $tenant = new Tenant();
+        $tenantExternalId = 'tenantExternalId-300736880';
+        $tenant->setExternalId($tenantExternalId);
         $response = $client->createTenant($formattedParent, $tenant);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -128,6 +128,8 @@ class TenantServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $tenant = new Tenant();
+        $tenantExternalId = 'tenantExternalId-300736880';
+        $tenant->setExternalId($tenantExternalId);
         try {
             $client->createTenant($formattedParent, $tenant);
             // If the $client method call did not throw, fail the test
@@ -359,6 +361,8 @@ class TenantServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $tenant = new Tenant();
+        $tenantExternalId = 'tenantExternalId-300736880';
+        $tenant->setExternalId($tenantExternalId);
         $response = $client->updateTenant($tenant);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -393,6 +397,8 @@ class TenantServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $tenant = new Tenant();
+        $tenantExternalId = 'tenantExternalId-300736880';
+        $tenant->setExternalId($tenantExternalId);
         try {
             $client->updateTenant($tenant);
             // If the $client method call did not throw, fail the test

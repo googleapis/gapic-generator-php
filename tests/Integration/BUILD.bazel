@@ -14,6 +14,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 ####################################################
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
+    "compute_small",  # REGAPIC.
     "container",  # RPCs with more than one routing header.
     "dataproc",  # RPCs with additional_bindings in the HTTP annotation.
     "functions",  # RPCs with HTTP variables that fall into the edge case.
@@ -74,6 +75,61 @@ php_gapic_assembly_pkg(
         ":asset_php_gapic",
         ":asset_php_grpc",
         ":asset_php_proto",
+    ],
+)
+
+# GCE REGAPIC.
+proto_library(
+    name = "compute_small_proto",
+    srcs = [
+        "apis/compute_small/v1/compute_small.proto",
+    ],
+    deps = [
+        "@com_google_googleapis//google/api:annotations_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/longrunning:operations_proto",
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)
+
+proto_library_with_info(
+    name = "compute_small_proto_with_info",
+    deps = [
+        ":compute_small_proto",
+        "@com_google_googleapis//google/cloud:common_resources_proto",
+    ],
+)
+
+php_proto_library(
+    name = "compute_small_php_proto",
+    deps = [":compute_small_proto"],
+)
+
+php_grpc_library(
+    name = "compute_small_php_grpc",
+    srcs = [":compute_small_proto"],
+    deps = [":compute_small_php_proto"],
+)
+
+php_gapic_library(
+    name = "compute_small_php_gapic",
+    srcs = [":compute_small_proto_with_info"],
+    service_yaml = "apis/compute_small/v1/compute_small_v1.yaml",
+    transport = "rest",
+    deps = [
+        ":compute_small_php_grpc",
+        ":compute_small_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-compute-small-v1-php",
+    deps = [
+        ":compute_small_php_gapic",
+        ":compute_small_php_grpc",
+        ":compute_small_php_proto",
     ],
 )
 

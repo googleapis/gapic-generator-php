@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Logging\Tests\Unit\V2;
 
 use Google\ApiCore\ApiException;
@@ -181,6 +179,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $exclusion = new LogExclusion();
+        $exclusionName = 'exclusionName1004344697';
+        $exclusion->setName($exclusionName);
+        $exclusionFilter = 'exclusionFilter-1414044954';
+        $exclusion->setFilter($exclusionFilter);
         $response = $client->createExclusion($formattedParent, $exclusion);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -218,6 +220,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $exclusion = new LogExclusion();
+        $exclusionName = 'exclusionName1004344697';
+        $exclusion->setName($exclusionName);
+        $exclusionFilter = 'exclusionFilter-1414044954';
+        $exclusion->setFilter($exclusionFilter);
         try {
             $client->createExclusion($formattedParent, $exclusion);
             // If the $client method call did not throw, fail the test
@@ -261,6 +267,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $sink = new LogSink();
+        $sinkName = 'sinkName508775358';
+        $sink->setName($sinkName);
+        $sinkDestination = 'sinkDestination-1018870917';
+        $sink->setDestination($sinkDestination);
         $response = $client->createSink($formattedParent, $sink);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -298,6 +308,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $sink = new LogSink();
+        $sinkName = 'sinkName508775358';
+        $sink->setName($sinkName);
+        $sinkDestination = 'sinkDestination-1018870917';
+        $sink->setDestination($sinkDestination);
         try {
             $client->createSink($formattedParent, $sink);
             // If the $client method call did not throw, fail the test
@@ -1506,6 +1520,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         $exclusion = new LogExclusion();
+        $exclusionName = 'exclusionName1004344697';
+        $exclusion->setName($exclusionName);
+        $exclusionFilter = 'exclusionFilter-1414044954';
+        $exclusion->setFilter($exclusionFilter);
         $updateMask = new FieldMask();
         $response = $client->updateExclusion($formattedName, $exclusion, $updateMask);
         $this->assertEquals($expectedResponse, $response);
@@ -1546,6 +1564,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         $exclusion = new LogExclusion();
+        $exclusionName = 'exclusionName1004344697';
+        $exclusion->setName($exclusionName);
+        $exclusionFilter = 'exclusionFilter-1414044954';
+        $exclusion->setFilter($exclusionFilter);
         $updateMask = new FieldMask();
         try {
             $client->updateExclusion($formattedName, $exclusion, $updateMask);
@@ -1590,6 +1612,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         $sink = new LogSink();
+        $sinkName = 'sinkName508775358';
+        $sink->setName($sinkName);
+        $sinkDestination = 'sinkDestination-1018870917';
+        $sink->setDestination($sinkDestination);
         $response = $client->updateSink($formattedSinkName, $sink);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1627,6 +1653,10 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         $sink = new LogSink();
+        $sinkName = 'sinkName508775358';
+        $sink->setName($sinkName);
+        $sinkDestination = 'sinkDestination-1018870917';
+        $sink->setDestination($sinkDestination);
         try {
             $client->updateSink($formattedSinkName, $sink);
             // If the $client method call did not throw, fail the test

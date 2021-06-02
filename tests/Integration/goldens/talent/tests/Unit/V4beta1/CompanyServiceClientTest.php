@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
 use Google\ApiCore\ApiException;
@@ -107,6 +105,10 @@ class CompanyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $company = new Company();
+        $companyDisplayName = 'companyDisplayName-686915152';
+        $company->setDisplayName($companyDisplayName);
+        $companyExternalId = 'companyExternalId855180963';
+        $company->setExternalId($companyExternalId);
         $response = $client->createCompany($formattedParent, $company);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -144,6 +146,10 @@ class CompanyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         $company = new Company();
+        $companyDisplayName = 'companyDisplayName-686915152';
+        $company->setDisplayName($companyDisplayName);
+        $companyExternalId = 'companyExternalId855180963';
+        $company->setExternalId($companyExternalId);
         try {
             $client->createCompany($formattedParent, $company);
             // If the $client method call did not throw, fail the test
@@ -407,6 +413,10 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $company = new Company();
+        $companyDisplayName = 'companyDisplayName-686915152';
+        $company->setDisplayName($companyDisplayName);
+        $companyExternalId = 'companyExternalId855180963';
+        $company->setExternalId($companyExternalId);
         $response = $client->updateCompany($company);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -441,6 +451,10 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $company = new Company();
+        $companyDisplayName = 'companyDisplayName-686915152';
+        $company->setDisplayName($companyDisplayName);
+        $companyExternalId = 'companyExternalId855180963';
+        $company->setExternalId($companyExternalId);
         try {
             $client->updateCompany($company);
             // If the $client method call did not throw, fail the test

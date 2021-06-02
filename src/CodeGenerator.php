@@ -34,6 +34,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
+use Google\Generator\Utils\Transport;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
@@ -45,6 +46,8 @@ class CodeGenerator
      *
      * @param string $descBytes The raw bytes of the proto descriptor, as generated using `protoc -o ...`
      * @param string $package The package name to generate.
+     * @param ?string $transport The type of transport to support, gRPC and REST by default (null).
+     *     Valid options include "grpc+rest", "grpc", or "rest".
      * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
@@ -56,6 +59,7 @@ class CodeGenerator
     public static function generateFromDescriptor(
         string $descBytes,
         string $package,
+        ?string $transport,
         bool $generateGapicMetadata,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
@@ -68,7 +72,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
+        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
     }
 
     /**
@@ -77,6 +81,8 @@ class CodeGenerator
      *
      * @param Vector $fileDescs A vector of FileDescriptorProto, containing all proto source files.
      * @param Vector $filesToGenerate A vector of string, containing full names of all files to generate.
+     * @param ?string $transport The type of transport to support, gRPC+REST by default (null).
+     *     Valid options include "grpc+rest", "grpc", or "rest".
      * @param bool $generateGapicMetadata Whether to generate the gapic_metadata.json files.
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
@@ -88,6 +94,7 @@ class CodeGenerator
     public static function generate(
         Vector $fileDescs,
         Vector $filesToGenerate,
+        ?string $transport,
         bool $generateGapicMetadata,
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
@@ -119,6 +126,7 @@ class CodeGenerator
         $mixinServices = [];
         $mixinRpcNames = [];
         $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
+        $transportType = Transport::parseTransport($transport);
         foreach ($byPackage as [$_, $singlePackageFileDescs]) {
             $namespaces = $singlePackageFileDescs
               ->map(fn ($x) => ProtoHelpers::getNamespace($x))
@@ -127,20 +135,48 @@ class CodeGenerator
                 throw new \Exception('All files in the same package must have the same PHP namespace');
             }
 
+            // Full protobuf names, e.g. google.cloud.foo.Bar.
+            // Assumes that the selectors in the service.yaml HTTP and documentation rules
+            // will always use the fully-qualified protobuf name for RPCs.
+            $serviceYamlMixinRpcNames = $serviceYamlConfig->httpRules->map(fn ($h) => $h->getSelector());
+            $mixinRpcNamesToHttpRule = $serviceYamlConfig->httpRules->toMap(fn ($h) => $h->getSelector(), fn ($h) => $h);
+            $mixinRpcNamesToDocs = $serviceYamlConfig->documentationRules->toMap(
+                fn ($d) => $d->getSelector(), fn ($d) => Vector::new([$d->getDescription()]));
+
             // $fileDescs: Vector<FileDescriptorProto>
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
-                    $serviceDetails = new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc);
+                    $serviceDetails =
+                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
                     $serviceName = $serviceDetails->serviceName;
-                    if (in_array($serviceName, self::MIXIN_SERVICES)) {
-                        if ($serviceYamlConfig->apiNames->contains($serviceName)) {
-                            $mixinServices[] = $serviceDetails;
-                            array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
-                        }
-                    } else {
+                    if (!in_array($serviceName, self::MIXIN_SERVICES)) {
                         $servicesToGenerate[] = $serviceDetails;
-                        array_merge($definedRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        array_merge($definedRpcNames,
+                            $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        continue;
                     }
+
+                    if (!$serviceYamlConfig->apiNames->contains($serviceName)) {
+                        continue;
+                    }
+
+                    // Filter based on the HTTP rule.
+                    $mixinMethods = $serviceDetails->methods
+                        ->filter(fn ($m) => $serviceYamlMixinRpcNames->contains($m->fullName));
+                    // We use a for-loop since the notion of in-place mutation doesn't align with Vector.
+                    $mixinMethodsTemp = $mixinMethods->toArray();
+                    foreach ($mixinMethodsTemp as &$mixinMethod) {
+                        // Docs and HTTP rules in service.yaml take precendence.
+                        $mixinMethod->setDocLines(
+                            $mixinRpcNamesToDocs->get($mixinMethod->fullName, $mixinMethod->docLines));
+                        $mixinMethod->setHttpRule(
+                            $mixinRpcNamesToHttpRule->get($mixinMethod->fullName, $mixinMethod->httpRule));
+                    }
+                    $mixinMethods = Vector::new($mixinMethodsTemp);
+
+                    $serviceDetails->setMethods($mixinMethods);
+                    $mixinServices[] = $serviceDetails;
+                    array_merge($mixinRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
                 }
             }
         }
@@ -151,6 +187,10 @@ class CodeGenerator
             // not occur, so checking for non-empty is a sufficient proxy for identifying the case
             // where we generate a client for one of those services.
             $servicesToGenerate = $mixinServices;
+            $mixinServices = [];
+            foreach ($servicesToGenerate as $serviceDetails) {
+                array_merge($definedRpcNames, $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+            }
         }
 
         $rpcNameBlocklist = array_diff($mixinRpcNames, $definedRpcNames);

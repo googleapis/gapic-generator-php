@@ -22,8 +22,6 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Kms\V1\Gapic;
 
 use Google\ApiCore\ApiException;
@@ -2074,7 +2072,7 @@ class KeyManagementServiceGapicClient
     }
 
     /**
-     * Lists information about the supported locations for this service.
+     * This is a different comment for ListLocations in the yaml file that should clobber the protobuf's documentation.
      *
      * Sample code:
      * ```

@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
 use Google\Api\HttpBody;
@@ -33,10 +31,13 @@ use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 
+use Google\Cloud\Retail\V2alpha\BigQuerySource;
+use Google\Cloud\Retail\V2alpha\GcsSource;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\PurgeUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEvent;
+use Google\Cloud\Retail\V2alpha\UserEventInlineSource;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
 use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\LongRunning\GetOperationRequest;
@@ -183,6 +184,20 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $inputConfig = new UserEventInputConfig();
+        $inputConfigUserEventInlineSource = new UserEventInlineSource();
+        $userEventInlineSourceUserEvents = [];
+        $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
+        $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
+        $inputConfigGcsSource = new GcsSource();
+        $gcsSourceInputUris = [];
+        $inputConfigGcsSource->setInputUris($gcsSourceInputUris);
+        $inputConfig->setGcsSource($inputConfigGcsSource);
+        $inputConfigBigQuerySource = new BigQuerySource();
+        $bigQuerySourceDatasetId = 'bigQuerySourceDatasetId-567522032';
+        $inputConfigBigQuerySource->setDatasetId($bigQuerySourceDatasetId);
+        $bigQuerySourceTableId = 'bigQuerySourceTableId1074792998';
+        $inputConfigBigQuerySource->setTableId($bigQuerySourceTableId);
+        $inputConfig->setBigQuerySource($inputConfigBigQuerySource);
         $response = $client->importUserEvents($parent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -252,6 +267,20 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $inputConfig = new UserEventInputConfig();
+        $inputConfigUserEventInlineSource = new UserEventInlineSource();
+        $userEventInlineSourceUserEvents = [];
+        $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
+        $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
+        $inputConfigGcsSource = new GcsSource();
+        $gcsSourceInputUris = [];
+        $inputConfigGcsSource->setInputUris($gcsSourceInputUris);
+        $inputConfig->setGcsSource($inputConfigGcsSource);
+        $inputConfigBigQuerySource = new BigQuerySource();
+        $bigQuerySourceDatasetId = 'bigQuerySourceDatasetId-567522032';
+        $inputConfigBigQuerySource->setDatasetId($bigQuerySourceDatasetId);
+        $bigQuerySourceTableId = 'bigQuerySourceTableId1074792998';
+        $inputConfigBigQuerySource->setTableId($bigQuerySourceTableId);
+        $inputConfig->setBigQuerySource($inputConfigBigQuerySource);
         $response = $client->importUserEvents($parent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -556,6 +585,10 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $userEvent = new UserEvent();
+        $userEventEventType = 'userEventEventType341658661';
+        $userEvent->setEventType($userEventEventType);
+        $userEventVisitorId = 'userEventVisitorId-2104193702';
+        $userEvent->setVisitorId($userEventVisitorId);
         $response = $client->writeUserEvent($parent, $userEvent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -593,6 +626,10 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $userEvent = new UserEvent();
+        $userEventEventType = 'userEventEventType341658661';
+        $userEvent->setEventType($userEventEventType);
+        $userEventVisitorId = 'userEventVisitorId-2104193702';
+        $userEvent->setVisitorId($userEventVisitorId);
         try {
             $client->writeUserEvent($parent, $userEvent);
             // If the $client method call did not throw, fail the test

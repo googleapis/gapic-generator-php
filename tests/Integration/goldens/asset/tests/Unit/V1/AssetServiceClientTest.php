@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Asset\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -38,6 +36,7 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
 use Google\Cloud\Asset\V1\ExportAssetsResponse;
 use Google\Cloud\Asset\V1\Feed;
+use Google\Cloud\Asset\V1\FeedOutputConfig;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisOutputConfig;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisQuery;
 use Google\Cloud\Asset\V1\IamPolicySearchResult;
@@ -105,6 +104,8 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $analysisQuery = new IamPolicyAnalysisQuery();
+        $analysisQueryScope = 'analysisQueryScope-495018392';
+        $analysisQuery->setScope($analysisQueryScope);
         $response = $client->analyzeIamPolicy($analysisQuery);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -139,6 +140,8 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $analysisQuery = new IamPolicyAnalysisQuery();
+        $analysisQueryScope = 'analysisQueryScope-495018392';
+        $analysisQuery->setScope($analysisQueryScope);
         try {
             $client->analyzeIamPolicy($analysisQuery);
             // If the $client method call did not throw, fail the test
@@ -185,6 +188,8 @@ class AssetServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $analysisQuery = new IamPolicyAnalysisQuery();
+        $analysisQueryScope = 'analysisQueryScope-495018392';
+        $analysisQuery->setScope($analysisQueryScope);
         $outputConfig = new IamPolicyAnalysisOutputConfig();
         $response = $client->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
         $this->assertFalse($response->isDone());
@@ -254,6 +259,8 @@ class AssetServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $analysisQuery = new IamPolicyAnalysisQuery();
+        $analysisQueryScope = 'analysisQueryScope-495018392';
+        $analysisQuery->setScope($analysisQueryScope);
         $outputConfig = new IamPolicyAnalysisOutputConfig();
         $response = $client->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
         $this->assertFalse($response->isDone());
@@ -358,6 +365,10 @@ class AssetServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         $feedId = 'feedId-976011428';
         $feed = new Feed();
+        $feedName = 'feedName-192096951';
+        $feed->setName($feedName);
+        $feedFeedOutputConfig = new FeedOutputConfig();
+        $feed->setFeedOutputConfig($feedFeedOutputConfig);
         $response = $client->createFeed($parent, $feedId, $feed);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -398,6 +409,10 @@ class AssetServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         $feedId = 'feedId-976011428';
         $feed = new Feed();
+        $feedName = 'feedName-192096951';
+        $feed->setName($feedName);
+        $feedFeedOutputConfig = new FeedOutputConfig();
+        $feed->setFeedOutputConfig($feedFeedOutputConfig);
         try {
             $client->createFeed($parent, $feedId, $feed);
             // If the $client method call did not throw, fail the test
@@ -884,6 +899,10 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $feed = new Feed();
+        $feedName = 'feedName-192096951';
+        $feed->setName($feedName);
+        $feedFeedOutputConfig = new FeedOutputConfig();
+        $feed->setFeedOutputConfig($feedFeedOutputConfig);
         $updateMask = new FieldMask();
         $response = $client->updateFeed($feed, $updateMask);
         $this->assertEquals($expectedResponse, $response);
@@ -921,6 +940,10 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $feed = new Feed();
+        $feedName = 'feedName-192096951';
+        $feed->setName($feedName);
+        $feedFeedOutputConfig = new FeedOutputConfig();
+        $feed->setFeedOutputConfig($feedFeedOutputConfig);
         $updateMask = new FieldMask();
         try {
             $client->updateFeed($feed, $updateMask);

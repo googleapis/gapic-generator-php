@@ -35,6 +35,7 @@ use Google\Generator\Ast\PhpFile;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -57,6 +58,7 @@ class UnitTestsGenerator
     private $assertProtobufEquals;
     private $assertNull;
     private $assertInstanceOf;
+    private $assertArrayHasKey;
     private $fail;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
@@ -70,6 +72,7 @@ class UnitTestsGenerator
         $this->assertProtobufEquals = AST::call(AST::THIS, AST::method('assertProtobufEquals'));
         $this->assertNull = AST::call(AST::THIS, AST::method('assertNull'));
         $this->assertInstanceOf = AST::call(AST::THIS, AST::method('assertInstanceOf'));
+        $this->assertArrayHasKey = AST::call(AST::THIS, AST::method('assertArrayHasKey'));
         $this->fail = AST::call(AST::THIS, AST::method('fail'));
     }
 
@@ -472,6 +475,15 @@ class UnitTestsGenerator
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
         $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
+
+        // Should apply only to REST-only transports. This allowance of map-as-resource-field is set
+        // in MethodDetails.php.
+        $resourcesIsMap = $method->resourcesField->isMap;
+        // Type switching, ugh...
+        $resourcesKeyIndex = $resourcesIsMap
+            ? Helpers::toCamelCase($method->resourcesField->camelName . '_key')
+            : 0;
+
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -480,8 +492,12 @@ class UnitTestsGenerator
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
                 '// Mock response',
                 $responsePerField->map(fn ($x) => AST::assign($x->var, $x->value)),
-                AST::assign($mockResourceElement, $mockResourceElementValue),
-                AST::assign($mockResource, AST::array([$mockResourceElement])),
+
+                // Maps will be initialized directly.
+                $resourcesIsMap ? null : AST::assign($mockResourceElement, $mockResourceElementValue),
+                $resourcesIsMap
+                    ? AST::assign($mockResource, $prod->value($method->resourcesField, $method->resourcesField->name, false))
+                    : AST::assign($mockResource, AST::array([$mockResourceElement])),
                 AST::assign($expectedResponse, AST::new($this->ctx->type($method->responseType))()),
                 $responsePerField->map(fn ($x) => $expectedResponse->instanceCall($x->field->setter)($x->var)),
                 $expectedResponse->instanceCall($method->resourcesSetter)($mockResource),
@@ -493,7 +509,13 @@ class UnitTestsGenerator
                 ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
                 AST::assign($resources, AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($resources)),
-                ($this->assertEquals)($expectedResponse->instanceCall($method->resourcesGetter)()[0], $resources[0]),
+
+                // List and map accesses differ.
+                $resourcesIsMap
+                    ? ($this->assertArrayHasKey)($resourcesKeyIndex, $expectedResponse->instanceCall($method->resourcesGetter)())
+                    : null,
+                $resourcesIsMap ? ($this->assertArrayHasKey)($resourcesKeyIndex, $resources) : null,
+                ($this->assertEquals)($expectedResponse->instanceCall($method->resourcesGetter)()[$resourcesKeyIndex], $resources[$resourcesKeyIndex]),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($actualRequests)),
                 AST::assign($actualFuncCall, AST::index($actualRequests, 0)->instanceCall(AST::method('getFuncCall'))()),

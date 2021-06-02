@@ -20,8 +20,6 @@
  * This file was automatically generated - do not edit!
  */
 
-declare(strict_types=1);
-
 namespace Google\Cloud\Kms\Tests\Unit\V1;
 
 use Google\ApiCore\ApiException;
@@ -39,12 +37,14 @@ use Google\Cloud\Kms\V1\DecryptResponse;
 use Google\Cloud\Kms\V1\Digest;
 use Google\Cloud\Kms\V1\EncryptResponse;
 use Google\Cloud\Kms\V1\ImportJob;
+use Google\Cloud\Kms\V1\ImportJob\ImportMethod;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\KeyRing;
 use Google\Cloud\Kms\V1\ListCryptoKeysResponse;
 use Google\Cloud\Kms\V1\ListCryptoKeyVersionsResponse;
 use Google\Cloud\Kms\V1\ListImportJobsResponse;
 use Google\Cloud\Kms\V1\ListKeyRingsResponse;
+use Google\Cloud\Kms\V1\ProtectionLevel;
 use Google\Cloud\Kms\V1\PublicKey;
 use Google\Cloud\Location\ListLocationsResponse;
 use Google\Cloud\Location\Location;
@@ -391,6 +391,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $importJobId = 'importJobId-1620773193';
         $importJob = new ImportJob();
+        $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
+        $importJob->setImportMethod($importJobImportMethod);
+        $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
+        $importJob->setProtectionLevel($importJobProtectionLevel);
         $response = $client->createImportJob($formattedParent, $importJobId, $importJob);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -431,6 +435,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $importJobId = 'importJobId-1620773193';
         $importJob = new ImportJob();
+        $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
+        $importJob->setImportMethod($importJobImportMethod);
+        $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
+        $importJob->setProtectionLevel($importJobProtectionLevel);
         try {
             $client->createImportJob($formattedParent, $importJobId, $importJob);
             // If the $client method call did not throw, fail the test
@@ -1777,11 +1785,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $name = 'name3373707';
+        $name2 = 'name2-1052831874';
         $locationId = 'locationId552319461';
         $displayName = 'displayName1615086568';
         $expectedResponse = new Location();
-        $expectedResponse->setName($name);
+        $expectedResponse->setName($name2);
         $expectedResponse->setLocationId($locationId);
         $expectedResponse->setDisplayName($displayName);
         $transport->addResponse($expectedResponse);
