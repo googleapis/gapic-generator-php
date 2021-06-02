@@ -5,7 +5,7 @@
 
 ### Bug Fixes
 
-* **resnames:** Support wildcard-typed (child) resource references [ggp] ([#299](https://www.github.com/googleapis/gapic-generator-php/issues/299)) ([edbd1a1](https://www.github.com/googleapis/gapic-generator-php/commit/edbd1a15fe53e0439f6a11d5d1fc94602007ec00))
+* **resnames:** Support wildcard-typed (child) resource references ([#299](https://www.github.com/googleapis/gapic-generator-php/issues/299)) ([edbd1a1](https://www.github.com/googleapis/gapic-generator-php/commit/edbd1a15fe53e0439f6a11d5d1fc94602007ec00))
 
 ### [0.1.6](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.5...v0.1.6) (2021-05-20)
 
