@@ -99,6 +99,9 @@ class ProtoCatalog
             ->map(fn ($x) => $x->getChildType())
             ->distinct()
             ->map(function ($childType) use ($order) {
+                if ($childType === '*') {
+                    return null;
+                }
                 $childPatterns = Vector::new($this->resourcesByType[$childType]->getPattern());
                 if ($childPatterns->any(fn ($x) => $x === '*')) {
                     return null;

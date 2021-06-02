@@ -12,42 +12,61 @@ import "google/api/field_behavior.proto";
 service ResourceNames {
   option (google.api.default_host) = "resourcenames.example.com";
 
-  rpc SinglePatternMethod(SinglePattern) returns(Response) {
+  rpc SinglePatternMethod(SinglePatternRequest) returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:singlePatternMethod"
       body: "*"
     };
   }
 
-  rpc MultiPatternMethod(MultiPattern) returns(Response) {
+  rpc MultiPatternMethod(MultiPatternRequest) returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:multiPatternMethod"
       body: "*"
     };
   }
 
-  rpc WildcardMethod(WildcardPattern) returns(Response) {
+  rpc WildcardMethod(WildcardPatternRequest) returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:wildcardMethod"
       body: "*"
     };
   }
 
-  rpc WildcardMultiMethod(WildcardMultiPattern) returns(Response) {
+  rpc WildcardMultiMethod(WildcardMultiPatternRequest)
+      returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:wildcardMultiMethod"
       body: "*"
     };
   }
 
-  rpc FileLevelTypeRefMethod(FileLevelTypeRef) returns(Response) {
+  rpc WildcardReferenceMethod(WildcardReferenceRequest)
+      returns (PlaceholderResponse) {
+    option (google.api.http) = {
+      post: "/path:wildcardReference"
+      body: "*"
+    };
+  }
+
+  rpc WildcardChildReferenceMethod(WildcardChildReferenceRequest)
+      returns (PlaceholderResponse) {
+    option (google.api.http) = {
+      post: "/path:wildcardChildReference"
+      body: "*"
+    };
+  }
+
+  rpc FileLevelTypeRefMethod(FileLevelTypeRefRequest)
+      returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:fileLevelTypeRefMethod"
       body: "*"
     };
   }
 
-  rpc FileLevelChildTypeRefMethod(FileLevelChildTypeRef) returns(Response) {
+  rpc FileLevelChildTypeRefMethod(FileLevelChildTypeRefRequest)
+      returns (PlaceholderResponse) {
     option (google.api.http) = {
       post: "/path:fileLevelChildTypeRefMethod"
       body: "*"
@@ -55,7 +74,7 @@ service ResourceNames {
   }
 }
 
-message SinglePattern {
+message SinglePatternRequest {
   option (google.api.resource) = {
     type: "resourcenames.example.com/SinglePattern"
     pattern: "items1/{item1_id}/items2/{item2_id}"
@@ -65,29 +84,38 @@ message SinglePattern {
   string real_name = 1;
 }
 
-message MultiPattern {
+message MultiPatternRequest {
   option (google.api.resource) = {
     type: "resourcenames.example.com/MultiPattern"
-    pattern: "items1/{item1_id}/items2/{item2_id}" // Test duplicate pattern, also in SinglePattern
+    pattern: "items1/{item1_id}/items2/{item2_id}"  // Test duplicate pattern,
+                                                    // also in SinglePattern
     pattern: "items3/{item3_id}"
-    pattern: "items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}" // Test non-/ separators
+    pattern: "items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}"  // Test non-/ separators
   };
   string name = 1;
 }
 
-message WildcardPattern {
+message WildcardPatternRequest {
   option (google.api.resource) = {
     type: "resourcenames.example.com/WildcardPattern"
-    pattern: "*" // Test single wildcard pattern
+    pattern: "*"  // Test single wildcard pattern
   };
   string name = 1;
 }
 
-message WildcardMultiPattern {
+message WildcardReferenceRequest {
+  string name = 1 [(google.api.resource_reference).type = "*"];
+}
+
+message WildcardChildReferenceRequest {
+  string parent = 1 [(google.api.resource_reference).child_type = "*"];
+}
+
+message WildcardMultiPatternRequest {
   option (google.api.resource) = {
     type: "resourcenames.example.com/WildcardMultiPattern"
     pattern: "items1/{item1_id}"
-    pattern: "*" // Test wildcard pattern among non-wildcard patterns
+    pattern: "*"  // Test wildcard pattern among non-wildcard patterns
     pattern: "items2/{item2_id}"
   };
   string name = 1;
@@ -98,8 +126,9 @@ option (google.api.resource_definition) = {
   pattern: "items1/{item1_id}"
 };
 
-message FileLevelTypeRef {
-    string file_name = 1 [(google.api.resource_reference).type = "resourcenames.example.com/FileResDef"];
+message FileLevelTypeRefRequest {
+  string file_name = 1 [(google.api.resource_reference).type =
+                            "resourcenames.example.com/FileResDef"];
 }
 
 option (google.api.resource_definition) = {
@@ -137,8 +166,8 @@ option (google.api.resource_definition) = {
   pattern: "folders2/{folder2_id}/files/{file_id}"
 };
 
-// Test behaviour on multi-pattern child-type reference with the (obsolete) history.
-// And use opposite order to FileMulti patterns.
+// Test behaviour on multi-pattern child-type reference with the (obsolete)
+// history. And use opposite order to FileMulti patterns.
 option (google.api.resource_definition) = {
   type: "resourcenames.example.com/FileMultiHistory"
   pattern: "folders2/{folder2_id}/files/{file_id}"
@@ -154,7 +183,7 @@ option (google.api.resource_definition) = {
   pattern: "*"
 };
 
-message Order1 {
+message Order1Request {
   option (google.api.resource) = {
     type: "resourcenames.example.com/Order1"
     pattern: "orders1/{order1_id}"
@@ -167,7 +196,7 @@ option (google.api.resource_definition) = {
   pattern: "orders2/{order2_id}"
 };
 
-message Order3 {
+message Order3Request {
   option (google.api.resource) = {
     type: "resourcenames.example.com/Order3"
     pattern: "orders3/{order3_id}"
@@ -187,15 +216,39 @@ option (google.api.resource_definition) = {
   pattern: "orders3/{order3_id}/items/{item_id}"
 };
 
-message FileLevelChildTypeRef {
-    string folder_name = 1 [(google.api.resource_reference).child_type = "resourcenames.example.com/File"];
-    string folder_multi_name = 2 [(google.api.resource_reference).child_type = "resourcenames.example.com/FileMulti"];
-    string folder_multi_wildcard_name = 3 [(google.api.resource_reference).child_type = "resourcenames.example.com/FileMultiWildcard"];
-    string req_folder_name = 4 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/File"];
-    string req_folder_multi_name = 5 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/FileMulti"];
-    string req_folder_multi_name_history = 6 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/FileMultiHistory"];
-    string req_order_test1 = 7 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/OrderTest1"];
-    string req_order_test2 = 8 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference).child_type = "resourcenames.example.com/OrderTest2"];
+message FileLevelChildTypeRefRequest {
+  string folder_name = 1 [(google.api.resource_reference).child_type =
+                              "resourcenames.example.com/File"];
+  string folder_multi_name = 2 [(google.api.resource_reference).child_type =
+                                    "resourcenames.example.com/FileMulti"];
+  string folder_multi_wildcard_name = 3
+      [(google.api.resource_reference).child_type =
+           "resourcenames.example.com/FileMultiWildcard"];
+  string req_folder_name = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "resourcenames.example.com/File"
+  ];
+  string req_folder_multi_name = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "resourcenames.example.com/FileMulti"
+  ];
+  string req_folder_multi_name_history = 6 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "resourcenames.example.com/FileMultiHistory"
+  ];
+  string req_order_test1 = 7 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "resourcenames.example.com/OrderTest1"
+  ];
+  string req_order_test2 = 8 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type =
+        "resourcenames.example.com/OrderTest2"
+  ];
 }
 
 // This isn't referenced anywhere, so should be ignored.
@@ -204,6 +257,4 @@ option (google.api.resource_definition) = {
   pattern: "items_to_ignore/{item_to_ignore_id}"
 };
 
-
-message Response {
-}
+message PlaceholderResponse {}
