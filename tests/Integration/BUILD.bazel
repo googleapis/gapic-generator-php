@@ -555,3 +555,19 @@ php_gapic_assembly_pkg(
         ":talent_php_proto",
     ],
 )
+
+proto_library(
+    name = "compliance_proto",
+    srcs = [
+        ":compliance.proto",
+    ],
+    deps = [
+        "@com_google_googleapis//google/api:annotations_proto",
+        "@com_google_googleapis//google/api:client_proto",
+    ],
+)
+
+php_proto_library(
+    name = "compliance_php_proto",
+    deps = [":compliance_proto"],
+)
