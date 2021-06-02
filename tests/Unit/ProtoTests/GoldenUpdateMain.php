@@ -24,7 +24,7 @@ error_reporting(E_ALL);
 const UNIT_TESTS = [
   1 => [
     'name' => 'Basic',
-      'protoPath' => 'Basic/basic.proto'
+    'protoPath' => 'Basic/basic.proto'
   ],
   2 => [
     'name' => 'BasicLro',
@@ -64,6 +64,10 @@ const UNIT_TESTS = [
     'protoPath' => 'BasicDiregapic/library_rest.proto',
     'package' => 'google.example.library.v1',
     'transport' => 'rest'
+  ],
+  11 => [
+    'name' => 'ResourceNames',
+    'protoPath' => 'ResourceNames/resource-names.proto'
   ]
 ];
 
