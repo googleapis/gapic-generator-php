@@ -111,9 +111,9 @@ class GapicClientGenerator
                     PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
                 count($this->serviceDetails->resourceParts) === 0 ? null :
                      PhpDoc::text(
-                         'Many parameters require resource names to be formatted in a particular way. To assist' .
-                        'with these names, this class includes a format method for each type of name, and additionally' .
-                        'a parseName method to extract the individual identifiers contained within formatted names' .
+                        'Many parameters require resource names to be formatted in a particular way. To assist ' .
+                        'with these names, this class includes a format method for each type of name, and additionally ' .
+                        'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                      ),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
