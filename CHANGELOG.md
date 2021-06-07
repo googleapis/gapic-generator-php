@@ -5,7 +5,7 @@
 
 ### Miscellaneous Chores
 
-* release 1.0.0 ([20ffac7](https://www.github.com/googleapis/gapic-generator-php/commit/20ffac73a352c06d5d19970148c0fd1f0a50aef7))
+* update formatting method description ([0eb9fcb](https://github.com/googleapis/gapic-generator-php/commit/0eb9fcb0194c3c1e3588f4687d8c781ea8aee23b))
 
 ### [0.1.7](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.6...v0.1.7) (2021-06-02)
 
