@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.7...v1.0.0) (2021-06-07)
+
+
+### Miscellaneous Chores
+
+* release 1.0.0 ([20ffac7](https://www.github.com/googleapis/gapic-generator-php/commit/20ffac73a352c06d5d19970148c0fd1f0a50aef7))
+
 ### [0.1.7](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.6...v0.1.7) (2021-06-02)
 
 
