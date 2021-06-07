@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.7...v1.0.0) (2021-06-07)
+
+
+### Miscellaneous Chores
+
+* update formatting method description ([0eb9fcb](https://github.com/googleapis/gapic-generator-php/commit/0eb9fcb0194c3c1e3588f4687d8c781ea8aee23b))
+
 ### [0.1.7](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.6...v0.1.7) (2021-06-02)
 
 
