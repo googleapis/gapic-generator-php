@@ -28,26 +28,24 @@ error_reporting(E_ALL);
 $data = new ComplianceData();
 $data->setFString("fstring no presence")
      ->setPString("P_string optional")
-     ->setPBool(True);
+     ->setPBool(true);
 $dataJson = $data->serializeToJsonString();
 
 if ($dataJson === '{"fString":"fstring no presence","pString":"P_string optional","pBool":true}') {
-  print("Test passed" . PHP_EOL);
+    print("Test passed" . PHP_EOL);
 } else {
-  print("Test failed" . PHP_EOL);
+    print("Test failed" . PHP_EOL);
 }
 print("JSON 1: " . $dataJson . PHP_EOL);
 
 $data->setFString("fstring no presence")
      ->setPString("")
      ->setPInt32(0)
-     ->setPBool(False);
+     ->setPBool(false);
 $dataJson = $data->serializeToJsonString();
 if ($dataJson === '{"fString":"fstring no presence","pString":"","pInt32":0,"pBool":false}') {
-  print("Test 2 passed" . PHP_EOL);
+    print("Test 2 passed" . PHP_EOL);
 } else {
-  print("Test 2 failed" . PHP_EOL);
+    print("Test 2 failed" . PHP_EOL);
 }
 print("JSON 2: " . $dataJson . PHP_EOL);
-
-
