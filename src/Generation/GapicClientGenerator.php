@@ -394,6 +394,11 @@ class GapicClientGenerator
             ])
         ]);
 
+        // Set "useJwtAccessWithScope" for DIREGAPIC APIs
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            $clientDefaultValues['useJwtAccessWithScope'] = false;
+        }
+
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
             ->withBody(AST::block(

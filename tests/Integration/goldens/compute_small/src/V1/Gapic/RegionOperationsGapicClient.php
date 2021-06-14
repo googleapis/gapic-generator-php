@@ -102,6 +102,7 @@ class RegionOperationsGapicClient
                     'restClientConfigPath' => __DIR__ . '/../resources/region_operations_rest_client_config.php',
                 ],
             ],
+            'useJwtAccessWithScope' => false,
         ];
     }
 
