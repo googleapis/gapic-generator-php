@@ -65,7 +65,7 @@
 -   Unit tests
 
     ```
-    ./vendor/bin/phpunit --bootstrap tests/autoload.php tests
+    ./vendor/bin/phpunit --bootstrap tests/unit/autoload.php tests/Unit
     ```
 
 -   Monolith integration tests. These may take 5 minutes or so to run.
