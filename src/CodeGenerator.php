@@ -141,7 +141,9 @@ class CodeGenerator
             $serviceYamlMixinRpcNames = $serviceYamlConfig->httpRules->map(fn ($h) => $h->getSelector());
             $mixinRpcNamesToHttpRule = $serviceYamlConfig->httpRules->toMap(fn ($h) => $h->getSelector(), fn ($h) => $h);
             $mixinRpcNamesToDocs = $serviceYamlConfig->documentationRules->toMap(
-                fn ($d) => $d->getSelector(), fn ($d) => Vector::new([$d->getDescription()]));
+                fn ($d) => $d->getSelector(),
+                fn ($d) => Vector::new([$d->getDescription()])
+            );
 
             // $fileDescs: Vector<FileDescriptorProto>
             foreach ($singlePackageFileDescs as $fileDesc) {
@@ -151,8 +153,10 @@ class CodeGenerator
                     $serviceName = $serviceDetails->serviceName;
                     if (!in_array($serviceName, self::MIXIN_SERVICES)) {
                         $servicesToGenerate[] = $serviceDetails;
-                        array_merge($definedRpcNames,
-                            $serviceDetails->methods->map(fn ($m) => $m->name)->toArray());
+                        array_merge(
+                            $definedRpcNames,
+                            $serviceDetails->methods->map(fn ($m) => $m->name)->toArray()
+                        );
                         continue;
                     }
 
@@ -168,9 +172,11 @@ class CodeGenerator
                     foreach ($mixinMethodsTemp as &$mixinMethod) {
                         // Docs and HTTP rules in service.yaml take precendence.
                         $mixinMethod->setDocLines(
-                            $mixinRpcNamesToDocs->get($mixinMethod->fullName, $mixinMethod->docLines));
+                            $mixinRpcNamesToDocs->get($mixinMethod->fullName, $mixinMethod->docLines)
+                        );
                         $mixinMethod->setHttpRule(
-                            $mixinRpcNamesToHttpRule->get($mixinMethod->fullName, $mixinMethod->httpRule));
+                            $mixinRpcNamesToHttpRule->get($mixinMethod->fullName, $mixinMethod->httpRule)
+                        );
                     }
                     $mixinMethods = Vector::new($mixinMethodsTemp);
 
