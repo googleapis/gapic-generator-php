@@ -111,7 +111,7 @@ class GapicClientGenerator
                     PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
                 count($this->serviceDetails->resourceParts) === 0 ? null :
                      PhpDoc::text(
-                        'Many parameters require resource names to be formatted in a particular way. To assist ' .
+                         'Many parameters require resource names to be formatted in a particular way. To assist ' .
                         'with these names, this class includes a format method for each type of name, and additionally ' .
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
@@ -641,8 +641,11 @@ class GapicClientGenerator
         $requiredFieldNamesInRoutingHeaders =
             $requiredFieldNames->filter(
                 fn ($x) => !empty($x)
-                    && in_array(trim($x),
-                    array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())))
+                    && in_array(
+                        trim($x),
+                        array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())
+                    )
+            )
                 ->toArray();
         // Maps field names to a set of the relevant field in the URL pattern.
         // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
@@ -652,7 +655,8 @@ class GapicClientGenerator
         foreach ($requiredFieldNamesInRoutingHeaders as $header) {
             $requiredFieldToHeaderName[$header] =
                 $requiredRestRoutingKeys->filter(
-                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k);
+                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k
+                );
         }
 
         $hasRequestParams = count($restRoutingHeaders) > 0;
@@ -677,7 +681,9 @@ class GapicClientGenerator
                     $requestParamAssigns = $requestParamAssigns->append(
                         AST::assign(
                             AST::index($requestParamHeaders, $urlPatternHeaderName),
-                            $assignValue));
+                            $assignValue
+                        )
+                    );
                 }
             }
         }
@@ -695,7 +701,8 @@ class GapicClientGenerator
                     Vector::zip(
                         $method->requiredFields,
                         $required,
-                        fn ($field, $param) => AST::call($request, $field->setter)($param)),
+                        fn ($field, $param) => AST::call($request, $field->setter)($param)
+                    ),
                     $requestParamAssigns,
                     /*
                     !$hasRequestParams ? null : Vector::zip(
