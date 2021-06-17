@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@com_google_api_codegen//rules_gapic:gapic.bzl", "CustomProtoInfo")
+load("@rules_gapic//:gapic.bzl", "CustomProtoInfo")
 
 def _construct_package_dir_paths(attr_package_dir, out_pkg, label_name):
     if attr_package_dir:
@@ -36,7 +36,7 @@ def _construct_package_dir_paths(attr_package_dir, out_pkg, label_name):
         package_dir_sibling_parent = out_pkg,
         package_dir_sibling_basename = label_name,
         tar_cd_suffix = tar_cd_suffix,
-        tar_prefix = tar_prefix
+        tar_prefix = tar_prefix,
     )
 
 def _php_gapic_src_pkg_impl(ctx):
