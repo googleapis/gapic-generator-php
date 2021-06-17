@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.0...v1.0.1) (2021-06-17)
+
+
+### Bug Fixes
+
+* **bazel:** Remove monolith rule deps from the PHP µgen Bazel rules ([#307](https://www.github.com/googleapis/gapic-generator-php/issues/307)) ([2cfff41](https://www.github.com/googleapis/gapic-generator-php/commit/2cfff416161db566935822959008488c8fc392ff))
+
 ## [1.0.0](https://www.github.com/googleapis/gapic-generator-php/compare/v0.1.7...v1.0.0) (2021-06-07)
 
 
