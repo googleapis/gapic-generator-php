@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@com_google_api_codegen//rules_gapic:gapic.bzl", "GapicInfo", "proto_custom_library")
+load("@rules_gapic//:gapic.bzl", "GapicInfo", "proto_custom_library")
 
 def php_proto_library(name, deps, plugin_args = [], **kwargs):
     srcjar_target_name = name
@@ -70,7 +70,7 @@ def php_gapic_srcjar(
         fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
 
     # Set plugin arguments.
-    plugin_args = ["metadata"] # Generate the gapic_metadata.json file.
+    plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
 
     proto_custom_library(
