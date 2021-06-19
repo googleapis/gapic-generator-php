@@ -60,7 +60,7 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
  * try {
- *     $formattedParent = $workflowTemplateServiceClient->regionName('[PROJECT]', '[REGION]');
+ *     $formattedParent = $workflowTemplateServiceClient->locationName('[PROJECT]', '[LOCATION]');
  *     $template = new WorkflowTemplate();
  *     $response = $workflowTemplateServiceClient->createWorkflowTemplate($formattedParent, $template);
  * } finally {
@@ -427,7 +427,7 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $formattedParent = $workflowTemplateServiceClient->regionName('[PROJECT]', '[REGION]');
+     *     $formattedParent = $workflowTemplateServiceClient->locationName('[PROJECT]', '[LOCATION]');
      *     $template = new WorkflowTemplate();
      *     $response = $workflowTemplateServiceClient->createWorkflowTemplate($formattedParent, $template);
      * } finally {
@@ -618,7 +618,7 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $formattedParent = $workflowTemplateServiceClient->regionName('[PROJECT]', '[REGION]');
+     *     $formattedParent = $workflowTemplateServiceClient->locationName('[PROJECT]', '[LOCATION]');
      *     $template = new WorkflowTemplate();
      *     $operationResponse = $workflowTemplateServiceClient->instantiateInlineWorkflowTemplate($formattedParent, $template);
      *     $operationResponse->pollUntilComplete();
@@ -830,7 +830,7 @@ class WorkflowTemplateServiceGapicClient
      * ```
      * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
      * try {
-     *     $formattedParent = $workflowTemplateServiceClient->regionName('[PROJECT]', '[REGION]');
+     *     $formattedParent = $workflowTemplateServiceClient->locationName('[PROJECT]', '[LOCATION]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $workflowTemplateServiceClient->listWorkflowTemplates($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {

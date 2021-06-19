@@ -99,7 +99,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setLocked($locked);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $bucketId = 'bucketId1837164432';
         $bucket = new LogBucket();
         $response = $client->createBucket($formattedParent, $bucketId, $bucket);
@@ -139,7 +139,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $bucketId = 'bucketId1837164432';
         $bucket = new LogBucket();
         try {
@@ -1018,7 +1018,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setBuckets($buckets);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $response = $client->listBuckets($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -1055,7 +1055,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         try {
             $client->listBuckets($formattedParent);
             // If the $client method call did not throw, fail the test

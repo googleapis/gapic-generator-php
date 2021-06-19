@@ -78,7 +78,7 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $configServiceV2Client = new ConfigServiceV2Client();
  * try {
- *     $formattedParent = $configServiceV2Client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+ *     $formattedParent = $configServiceV2Client->locationName('[PROJECT]', '[LOCATION]');
  *     $bucketId = 'bucket_id';
  *     $bucket = new LogBucket();
  *     $response = $configServiceV2Client->createBucket($formattedParent, $bucketId, $bucket);
@@ -1264,7 +1264,7 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $formattedParent = $configServiceV2Client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+     *     $formattedParent = $configServiceV2Client->locationName('[PROJECT]', '[LOCATION]');
      *     $bucketId = 'bucket_id';
      *     $bucket = new LogBucket();
      *     $response = $configServiceV2Client->createBucket($formattedParent, $bucketId, $bucket);
@@ -1923,7 +1923,7 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $formattedParent = $configServiceV2Client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+     *     $formattedParent = $configServiceV2Client->locationName('[PROJECT]', '[LOCATION]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $configServiceV2Client->listBuckets($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {
