@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Validation;
 
-use Google\Showcase\V1beta1\ComplianceData;
+use Google\Validation\Showcase\V1beta1\ComplianceData;
 
 require __DIR__ . '/../vendor/autoload.php';
 error_reporting(E_ALL);

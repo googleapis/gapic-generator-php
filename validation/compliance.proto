@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Forked from
+// https://github.com/googleapis/gapic-showcase/blob/master/schema/google/showcase/v1beta1/compliance.proto
+// PHP sources generated with the following set of commands
+//    mkdir -p validation/google/api
+//    cp /path/to/googleapis/google/api/{annotations,client,http}.proto
+//    validation/google/api protoc --php_out=/path/to/outdir
+//    validation/intjson.proto -I validation rm -r validation/google
+
 syntax = "proto3";
 
 import "google/api/annotations.proto";
@@ -22,6 +30,7 @@ package google.showcase.v1beta1;
 option go_package = "github.com/googleapis/gapic-showcase/server/genproto";
 option java_package = "com.google.showcase.v1beta1";
 option java_multiple_files = true;
+option php_namespace = "Google\\Validation\\Showcase\\V1beta1";
 
 // This service is used to test that GAPICs can transcode proto3 requests to
 // REST format correctly for various types of HTTP annotations.
