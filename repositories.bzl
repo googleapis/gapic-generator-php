@@ -17,12 +17,22 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//rules_php_gapic:php_repo.bzl", "php", "php_composer_install")
 
 def gapic_generator_php_repositories():
+    _rules_gapic_version = "0.5.4"
+    maybe(
+        http_archive,
+        name = "rules_gapic",
+        strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
+        urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
+    )
+
+    # TODO: Remove this when the rule is gone from the monolith's switched_rules_by_language
+    # in googleapis. Until then, this import is needed due to the way Bazel pulls in and uses
+    # transitive deps.
     maybe(
         http_archive,
         name = "com_google_api_codegen",
-        strip_prefix = "gapic-generator-2.2.0",
-        urls = ["https://github.com/googleapis/gapic-generator/archive/v2.2.0.zip"],
-        sha256 = "0633651c7e7cdbea16231025de8a8e55773c224ad840507a8f3b38f96461ad30",
+        strip_prefix = "gapic-generator-2.11.1",
+        urls = ["https://github.com/googleapis/gapic-generator/archive/v2.11.1.zip"],
     )
     maybe(
         php,

@@ -91,7 +91,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $policy = new AutoscalingPolicy();
         $policyBasicAlgorithm = new BasicAutoscalingAlgorithm();
         $basicAlgorithmYarnConfig = new BasicYarnAutoscalingConfig();
@@ -142,7 +142,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $policy = new AutoscalingPolicy();
         $policyBasicAlgorithm = new BasicAutoscalingAlgorithm();
         $basicAlgorithmYarnConfig = new BasicYarnAutoscalingConfig();
@@ -319,7 +319,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse->setPolicies($policies);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         $response = $client->listAutoscalingPolicies($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -356,7 +356,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         try {
             $client->listAutoscalingPolicies($formattedParent);
             // If the $client method call did not throw, fail the test
