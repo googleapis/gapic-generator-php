@@ -25,15 +25,6 @@ def gapic_generator_php_repositories():
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
 
-    # TODO: Remove this when the rule is gone from the monolith's switched_rules_by_language
-    # in googleapis. Until then, this import is needed due to the way Bazel pulls in and uses
-    # transitive deps.
-    maybe(
-        http_archive,
-        name = "com_google_api_codegen",
-        strip_prefix = "gapic-generator-2.11.1",
-        urls = ["https://github.com/googleapis/gapic-generator/archive/v2.11.1.zip"],
-    )
     maybe(
         php,
         name = "php_micro",
