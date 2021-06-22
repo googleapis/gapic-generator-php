@@ -120,6 +120,7 @@ class AddressesGapicClient
                     'restClientConfigPath' => __DIR__ . '/../resources/addresses_rest_client_config.php',
                 ],
             ],
+            'useJwtAccessWithScope' => false,
         ];
     }
 

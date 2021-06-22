@@ -226,6 +226,7 @@ class LibraryServiceGapicClient
                     'restClientConfigPath' => __DIR__ . '/../resources/library_service_rest_client_config.php',
                 ],
             ],
+            'useJwtAccessWithScope' => false,
         ];
     }
 
