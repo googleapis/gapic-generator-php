@@ -8,9 +8,6 @@
 * implement jwt access option ([#309](https://www.github.com/googleapis/gapic-generator-php/issues/309)) ([b0a157a](https://www.github.com/googleapis/gapic-generator-php/commit/b0a157aa32e41a8c48ab23aaaa6dec186b759123))
 
 
-### Miscellaneous Chores
-
-* release 1.0.2 ([f568d47](https://www.github.com/googleapis/gapic-generator-php/commit/f568d47b65803f64bd68c45f201ac8c63c03204e))
 
 ### [1.0.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.0...v1.0.1) (2021-06-17)
 
