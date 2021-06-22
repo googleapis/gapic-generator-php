@@ -137,6 +137,16 @@ class SecurityCenterGapicClient
 
     private static $findingNameTemplate;
 
+    private static $folderNameTemplate;
+
+    private static $folderAssetSecurityMarksNameTemplate;
+
+    private static $folderSourceNameTemplate;
+
+    private static $folderSourceFindingNameTemplate;
+
+    private static $folderSourceFindingSecurityMarksNameTemplate;
+
     private static $notificationConfigNameTemplate;
 
     private static $organizationNameTemplate;
@@ -145,7 +155,21 @@ class SecurityCenterGapicClient
 
     private static $organizationSettingsNameTemplate;
 
+    private static $organizationSourceNameTemplate;
+
+    private static $organizationSourceFindingNameTemplate;
+
     private static $organizationSourceFindingSecurityMarksNameTemplate;
+
+    private static $projectNameTemplate;
+
+    private static $projectAssetSecurityMarksNameTemplate;
+
+    private static $projectSourceNameTemplate;
+
+    private static $projectSourceFindingNameTemplate;
+
+    private static $projectSourceFindingSecurityMarksNameTemplate;
 
     private static $securityMarksNameTemplate;
 
@@ -185,6 +209,51 @@ class SecurityCenterGapicClient
         return self::$findingNameTemplate;
     }
 
+    private static function getFolderNameTemplate()
+    {
+        if (self::$folderNameTemplate == null) {
+            self::$folderNameTemplate = new PathTemplate('folders/{folder}');
+        }
+
+        return self::$folderNameTemplate;
+    }
+
+    private static function getFolderAssetSecurityMarksNameTemplate()
+    {
+        if (self::$folderAssetSecurityMarksNameTemplate == null) {
+            self::$folderAssetSecurityMarksNameTemplate = new PathTemplate('folders/{folder}/assets/{asset}/securityMarks');
+        }
+
+        return self::$folderAssetSecurityMarksNameTemplate;
+    }
+
+    private static function getFolderSourceNameTemplate()
+    {
+        if (self::$folderSourceNameTemplate == null) {
+            self::$folderSourceNameTemplate = new PathTemplate('folders/{folder}/sources/{source}');
+        }
+
+        return self::$folderSourceNameTemplate;
+    }
+
+    private static function getFolderSourceFindingNameTemplate()
+    {
+        if (self::$folderSourceFindingNameTemplate == null) {
+            self::$folderSourceFindingNameTemplate = new PathTemplate('folders/{folder}/sources/{source}/findings/{finding}');
+        }
+
+        return self::$folderSourceFindingNameTemplate;
+    }
+
+    private static function getFolderSourceFindingSecurityMarksNameTemplate()
+    {
+        if (self::$folderSourceFindingSecurityMarksNameTemplate == null) {
+            self::$folderSourceFindingSecurityMarksNameTemplate = new PathTemplate('folders/{folder}/sources/{source}/findings/{finding}/securityMarks');
+        }
+
+        return self::$folderSourceFindingSecurityMarksNameTemplate;
+    }
+
     private static function getNotificationConfigNameTemplate()
     {
         if (self::$notificationConfigNameTemplate == null) {
@@ -221,6 +290,24 @@ class SecurityCenterGapicClient
         return self::$organizationSettingsNameTemplate;
     }
 
+    private static function getOrganizationSourceNameTemplate()
+    {
+        if (self::$organizationSourceNameTemplate == null) {
+            self::$organizationSourceNameTemplate = new PathTemplate('organizations/{organization}/sources/{source}');
+        }
+
+        return self::$organizationSourceNameTemplate;
+    }
+
+    private static function getOrganizationSourceFindingNameTemplate()
+    {
+        if (self::$organizationSourceFindingNameTemplate == null) {
+            self::$organizationSourceFindingNameTemplate = new PathTemplate('organizations/{organization}/sources/{source}/findings/{finding}');
+        }
+
+        return self::$organizationSourceFindingNameTemplate;
+    }
+
     private static function getOrganizationSourceFindingSecurityMarksNameTemplate()
     {
         if (self::$organizationSourceFindingSecurityMarksNameTemplate == null) {
@@ -228,6 +315,51 @@ class SecurityCenterGapicClient
         }
 
         return self::$organizationSourceFindingSecurityMarksNameTemplate;
+    }
+
+    private static function getProjectNameTemplate()
+    {
+        if (self::$projectNameTemplate == null) {
+            self::$projectNameTemplate = new PathTemplate('projects/{project}');
+        }
+
+        return self::$projectNameTemplate;
+    }
+
+    private static function getProjectAssetSecurityMarksNameTemplate()
+    {
+        if (self::$projectAssetSecurityMarksNameTemplate == null) {
+            self::$projectAssetSecurityMarksNameTemplate = new PathTemplate('projects/{project}/assets/{asset}/securityMarks');
+        }
+
+        return self::$projectAssetSecurityMarksNameTemplate;
+    }
+
+    private static function getProjectSourceNameTemplate()
+    {
+        if (self::$projectSourceNameTemplate == null) {
+            self::$projectSourceNameTemplate = new PathTemplate('projects/{project}/sources/{source}');
+        }
+
+        return self::$projectSourceNameTemplate;
+    }
+
+    private static function getProjectSourceFindingNameTemplate()
+    {
+        if (self::$projectSourceFindingNameTemplate == null) {
+            self::$projectSourceFindingNameTemplate = new PathTemplate('projects/{project}/sources/{source}/findings/{finding}');
+        }
+
+        return self::$projectSourceFindingNameTemplate;
+    }
+
+    private static function getProjectSourceFindingSecurityMarksNameTemplate()
+    {
+        if (self::$projectSourceFindingSecurityMarksNameTemplate == null) {
+            self::$projectSourceFindingSecurityMarksNameTemplate = new PathTemplate('projects/{project}/sources/{source}/findings/{finding}/securityMarks');
+        }
+
+        return self::$projectSourceFindingSecurityMarksNameTemplate;
     }
 
     private static function getSecurityMarksNameTemplate()
@@ -262,11 +394,23 @@ class SecurityCenterGapicClient
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
                 'finding' => self::getFindingNameTemplate(),
+                'folder' => self::getFolderNameTemplate(),
+                'folderAssetSecurityMarks' => self::getFolderAssetSecurityMarksNameTemplate(),
+                'folderSource' => self::getFolderSourceNameTemplate(),
+                'folderSourceFinding' => self::getFolderSourceFindingNameTemplate(),
+                'folderSourceFindingSecurityMarks' => self::getFolderSourceFindingSecurityMarksNameTemplate(),
                 'notificationConfig' => self::getNotificationConfigNameTemplate(),
                 'organization' => self::getOrganizationNameTemplate(),
                 'organizationAssetSecurityMarks' => self::getOrganizationAssetSecurityMarksNameTemplate(),
                 'organizationSettings' => self::getOrganizationSettingsNameTemplate(),
+                'organizationSource' => self::getOrganizationSourceNameTemplate(),
+                'organizationSourceFinding' => self::getOrganizationSourceFindingNameTemplate(),
                 'organizationSourceFindingSecurityMarks' => self::getOrganizationSourceFindingSecurityMarksNameTemplate(),
+                'project' => self::getProjectNameTemplate(),
+                'projectAssetSecurityMarks' => self::getProjectAssetSecurityMarksNameTemplate(),
+                'projectSource' => self::getProjectSourceNameTemplate(),
+                'projectSourceFinding' => self::getProjectSourceFindingNameTemplate(),
+                'projectSourceFindingSecurityMarks' => self::getProjectSourceFindingSecurityMarksNameTemplate(),
                 'securityMarks' => self::getSecurityMarksNameTemplate(),
                 'source' => self::getSourceNameTemplate(),
                 'topic' => self::getTopicNameTemplate(),
@@ -290,6 +434,93 @@ class SecurityCenterGapicClient
     {
         return self::getFindingNameTemplate()->render([
             'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder
+     * resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder resource.
+     */
+    public static function folderName($folder)
+    {
+        return self::getFolderNameTemplate()->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_asset_securityMarks resource.
+     *
+     * @param string $folder
+     * @param string $asset
+     *
+     * @return string The formatted folder_asset_securityMarks resource.
+     */
+    public static function folderAssetSecurityMarksName($folder, $asset)
+    {
+        return self::getFolderAssetSecurityMarksNameTemplate()->render([
+            'folder' => $folder,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source resource.
+     *
+     * @param string $folder
+     * @param string $source
+     *
+     * @return string The formatted folder_source resource.
+     */
+    public static function folderSourceName($folder, $source)
+    {
+        return self::getFolderSourceNameTemplate()->render([
+            'folder' => $folder,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted folder_source_finding resource.
+     */
+    public static function folderSourceFindingName($folder, $source, $finding)
+    {
+        return self::getFolderSourceFindingNameTemplate()->render([
+            'folder' => $folder,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding_securityMarks resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted folder_source_finding_securityMarks resource.
+     */
+    public static function folderSourceFindingSecurityMarksName($folder, $source, $finding)
+    {
+        return self::getFolderSourceFindingSecurityMarksNameTemplate()->render([
+            'folder' => $folder,
             'source' => $source,
             'finding' => $finding,
         ]);
@@ -361,6 +592,42 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * organization_source resource.
+     *
+     * @param string $organization
+     * @param string $source
+     *
+     * @return string The formatted organization_source resource.
+     */
+    public static function organizationSourceName($organization, $source)
+    {
+        return self::getOrganizationSourceNameTemplate()->render([
+            'organization' => $organization,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted organization_source_finding resource.
+     */
+    public static function organizationSourceFindingName($organization, $source, $finding)
+    {
+        return self::getOrganizationSourceFindingNameTemplate()->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * organization_source_finding_securityMarks resource.
      *
      * @param string $organization
@@ -373,6 +640,93 @@ class SecurityCenterGapicClient
     {
         return self::getOrganizationSourceFindingSecurityMarksNameTemplate()->render([
             'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project
+     * resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project resource.
+     */
+    public static function projectName($project)
+    {
+        return self::getProjectNameTemplate()->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_asset_securityMarks resource.
+     *
+     * @param string $project
+     * @param string $asset
+     *
+     * @return string The formatted project_asset_securityMarks resource.
+     */
+    public static function projectAssetSecurityMarksName($project, $asset)
+    {
+        return self::getProjectAssetSecurityMarksNameTemplate()->render([
+            'project' => $project,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source resource.
+     *
+     * @param string $project
+     * @param string $source
+     *
+     * @return string The formatted project_source resource.
+     */
+    public static function projectSourceName($project, $source)
+    {
+        return self::getProjectSourceNameTemplate()->render([
+            'project' => $project,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted project_source_finding resource.
+     */
+    public static function projectSourceFindingName($project, $source, $finding)
+    {
+        return self::getProjectSourceFindingNameTemplate()->render([
+            'project' => $project,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding_securityMarks resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted project_source_finding_securityMarks resource.
+     */
+    public static function projectSourceFindingSecurityMarksName($project, $source, $finding)
+    {
+        return self::getProjectSourceFindingSecurityMarksNameTemplate()->render([
+            'project' => $project,
             'source' => $source,
             'finding' => $finding,
         ]);
@@ -434,11 +788,23 @@ class SecurityCenterGapicClient
      * The following name formats are supported:
      * Template: Pattern
      * - finding: organizations/{organization}/sources/{source}/findings/{finding}
+     * - folder: folders/{folder}
+     * - folderAssetSecurityMarks: folders/{folder}/assets/{asset}/securityMarks
+     * - folderSource: folders/{folder}/sources/{source}
+     * - folderSourceFinding: folders/{folder}/sources/{source}/findings/{finding}
+     * - folderSourceFindingSecurityMarks: folders/{folder}/sources/{source}/findings/{finding}/securityMarks
      * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
      * - organization: organizations/{organization}
      * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - organizationSettings: organizations/{organization}/organizationSettings
+     * - organizationSource: organizations/{organization}/sources/{source}
+     * - organizationSourceFinding: organizations/{organization}/sources/{source}/findings/{finding}
      * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
+     * - project: projects/{project}
+     * - projectAssetSecurityMarks: projects/{project}/assets/{asset}/securityMarks
+     * - projectSource: projects/{project}/sources/{source}
+     * - projectSourceFinding: projects/{project}/sources/{source}/findings/{finding}
+     * - projectSourceFindingSecurityMarks: projects/{project}/sources/{source}/findings/{finding}/securityMarks
      * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - source: organizations/{organization}/sources/{source}
      * - topic: projects/{project}/topics/{topic}
@@ -587,8 +953,8 @@ class SecurityCenterGapicClient
      * @param string  $findingId    Required. Unique identifier provided by the client within the parent scope.
      *                              It must be alphanumeric and less than or equal to 32 characters and
      *                              greater than 0 characters in length.
-     * @param Finding $finding      Required. The Finding being created. The name and security_marks will be ignored as
-     *                              they are both output only fields on this resource.
+     * @param Finding $finding      Required. The Finding being created. The name and security_marks will be
+     *                              ignored as they are both output only fields on this resource.
      * @param array   $optionalArgs {
      *     Optional.
      *
@@ -632,14 +998,15 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string             $parent             Required. Resource name of the new notification config's parent. Its format is
-     *                                               "organizations/[organization_id]".
+     * @param string             $parent             Required. Resource name of the new notification config's parent. Its format
+     *                                               is "organizations/[organization_id]".
      * @param string             $configId           Required.
      *                                               Unique identifier provided by the client within the parent scope.
      *                                               It must be between 1 and 128 characters, and contains alphanumeric
      *                                               characters, underscores or hyphens only.
-     * @param NotificationConfig $notificationConfig Required. The notification config being created. The name and the service account
-     *                                               will be ignored as they are both output only fields on this resource.
+     * @param NotificationConfig $notificationConfig Required. The notification config being created. The name and the service
+     *                                               account will be ignored as they are both output only fields on this
+     *                                               resource.
      * @param array              $optionalArgs       {
      *     Optional.
      *
@@ -684,8 +1051,8 @@ class SecurityCenterGapicClient
      *
      * @param string $parent       Required. Resource name of the new source's parent. Its format should be
      *                             "organizations/[organization_id]".
-     * @param Source $source       Required. The Source being created, only the display_name and description will be
-     *                             used. All other fields will be ignored.
+     * @param Source $source       Required. The Source being created, only the display_name and description
+     *                             will be used. All other fields will be ignored.
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -854,8 +1221,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $name         Required. Name of the organization to get organization settings for. Its format is
-     *                             "organizations/[organization_id]/organizationSettings".
+     * @param string $name         Required. Name of the organization to get organization settings for. Its
+     *                             format is "organizations/[organization_id]/organizationSettings".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -930,7 +1297,7 @@ class SecurityCenterGapicClient
      * ```
      * $securityCenterClient = new SecurityCenterClient();
      * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
      *     $groupBy = 'group_by';
      *     // Iterate over pages of elements
      *     $pagedResponse = $securityCenterClient->groupAssets($formattedParent, $groupBy);
@@ -951,10 +1318,11 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $parent       Required. Name of the organization to groupBy. Its format is
-     *                             "organizations/[organization_id]".
-     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping. The string
-     *                             value should follow SQL syntax: comma separated list of fields. For
-     *                             example:
+     *                             "organizations/[organization_id], folders/[folder_id], or
+     *                             projects/[project_id]".
+     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping.
+     *                             The string value should follow SQL syntax: comma separated list of fields.
+     *                             For example:
      *                             "security_center_properties.resource_project,security_center_properties.project".
      *
      *                             The following fields are supported when compare_duration is not set:
@@ -1126,7 +1494,9 @@ class SecurityCenterGapicClient
      * specified properties.
      *
      * To group across all sources provide a `-` as the source id.
-     * Example: /v1/organizations/{organization_id}/sources/-/findings
+     * Example: /v1/organizations/{organization_id}/sources/-/findings,
+     * /v1/folders/{folder_id}/sources/-/findings,
+     * /v1/projects/{project_id}/sources/-/findings
      *
      * Sample code:
      * ```
@@ -1153,12 +1523,15 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $parent       Required. Name of the source to groupBy. Its format is
-     *                             "organizations/[organization_id]/sources/[source_id]". To groupBy across
-     *                             all sources provide a source_id of `-`. For example:
-     *                             organizations/{organization_id}/sources/-
-     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping (including
-     *                             `state_change`). The string value should follow SQL syntax: comma separated
-     *                             list of fields. For example: "parent,resource_name".
+     *                             "organizations/[organization_id]/sources/[source_id]",
+     *                             folders/[folder_id]/sources/[source_id], or
+     *                             projects/[project_id]/sources/[source_id]. To groupBy across all sources
+     *                             provide a source_id of `-`. For example:
+     *                             organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
+     *                             or projects/{project_id}/sources/-
+     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping
+     *                             (including `state_change`). The string value should follow SQL syntax:
+     *                             comma separated list of fields. For example: "parent,resource_name".
      *
      *                             The following fields are supported:
      *
@@ -1208,13 +1581,14 @@ class SecurityCenterGapicClient
      *           * category: `=`, `:`
      *           * external_uri: `=`, `:`
      *           * event_time: `=`, `>`, `<`, `>=`, `<=`
-     *           * severity: `=`, `:`
      *
      *           Usage: This should be milliseconds since epoch or an RFC3339 string.
      *           Examples:
      *           `event_time = "2019-06-10T16:07:18-07:00"`
      *           `event_time = 1560208038000`
      *
+     *           * severity: `=`, `:`
+     *           * workflow_state: `=`, `:`
      *           * security_marks.marks: `=`, `:`
      *           * source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
      *
@@ -1225,6 +1599,14 @@ class SecurityCenterGapicClient
      *
      *           Use a negated partial match on the empty string to filter based on a
      *           property not existing: `-source_properties.my_property : ""`
+     *
+     *           * resource:
+     *           * resource.name: `=`, `:`
+     *           * resource.parent_name: `=`, `:`
+     *           * resource.parent_display_name: `=`, `:`
+     *           * resource.project_name: `=`, `:`
+     *           * resource.project_display_name: `=`, `:`
+     *           * resource.type: `=`, `:`
      *     @type Timestamp $readTime
      *           Time used as a reference point when filtering findings. The filter is
      *           limited to findings existing at the supplied time and their values are
@@ -1322,7 +1704,7 @@ class SecurityCenterGapicClient
      * ```
      * $securityCenterClient = new SecurityCenterClient();
      * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $securityCenterClient->listAssets($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {
@@ -1342,7 +1724,8 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $parent       Required. Name of the organization assets should belong to. Its format is
-     *                             "organizations/[organization_id]".
+     *                             "organizations/[organization_id], folders/[folder_id], or
+     *                             projects/[project_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1554,9 +1937,12 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $parent       Required. Name of the source the findings belong to. Its format is
-     *                             "organizations/[organization_id]/sources/[source_id]". To list across all
-     *                             sources provide a source_id of `-`. For example:
-     *                             organizations/{organization_id}/sources/-
+     *                             "organizations/[organization_id]/sources/[source_id],
+     *                             folders/[folder_id]/sources/[source_id], or
+     *                             projects/[project_id]/sources/[source_id]". To list across all sources
+     *                             provide a source_id of `-`. For example:
+     *                             organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
+     *                             projects/{projects_id}/sources/-
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1594,15 +1980,16 @@ class SecurityCenterGapicClient
      *           * category: `=`, `:`
      *           * external_uri: `=`, `:`
      *           * event_time: `=`, `>`, `<`, `>=`, `<=`
-     *           * severity: `=`, `:`
      *
      *           Usage: This should be milliseconds since epoch or an RFC3339 string.
      *           Examples:
      *           `event_time = "2019-06-10T16:07:18-07:00"`
      *           `event_time = 1560208038000`
      *
-     *           security_marks.marks: `=`, `:`
-     *           source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
+     *           * severity: `=`, `:`
+     *           * workflow_state: `=`, `:`
+     *           * security_marks.marks: `=`, `:`
+     *           * source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
      *
      *           For example, `source_properties.size = 100` is a valid filter string.
      *
@@ -1611,6 +1998,15 @@ class SecurityCenterGapicClient
      *
      *           Use a negated partial match on the empty string to filter based on a
      *           property not existing: `-source_properties.my_property : ""`
+     *
+     *           * resource:
+     *           * resource.name: `=`, `:`
+     *           * resource.parent_name: `=`, `:`
+     *           * resource.parent_display_name: `=`, `:`
+     *           * resource.project_name: `=`, `:`
+     *           * resource.project_display_name: `=`, `:`
+     *           * resource.type: `=`, `:`
+     *           * resource.folders.resource_folder: `=`, `:`
      *     @type string $orderBy
      *           Expression that defines what fields and order to use for sorting. The
      *           string value should follow SQL syntax: comma separated list of fields. For
@@ -1805,7 +2201,7 @@ class SecurityCenterGapicClient
      * ```
      * $securityCenterClient = new SecurityCenterClient();
      * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $securityCenterClient->listSources($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {
@@ -1825,7 +2221,8 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $parent       Required. Resource name of the parent of sources to list. Its format should
-     *                             be "organizations/[organization_id]".
+     *                             be "organizations/[organization_id], folders/[folder_id], or
+     *                             projects/[project_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1912,8 +2309,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Name of the organization to run asset discovery for. Its format is
-     *                             "organizations/[organization_id]".
+     * @param string $parent       Required. Name of the organization to run asset discovery for. Its format
+     *                             is "organizations/[organization_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -2098,8 +2495,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param Finding $finding      Required. The finding resource to update or create if it does not already exist.
-     *                              parent, security_marks, and update_time will be ignored.
+     * @param Finding $finding      Required. The finding resource to update or create if it does not already
+     *                              exist. parent, security_marks, and update_time will be ignored.
      *
      *                              In the case of creation, the finding id portion of the name must be
      *                              alphanumeric and less than or equal to 32 characters and greater than 0
@@ -2142,6 +2539,7 @@ class SecurityCenterGapicClient
     }
 
     /**
+     *
      * Updates a notification config. The following update
      * fields are allowed: description, pubsub_topic, streaming_config.filter
      *
