@@ -53,7 +53,7 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
  * try {
- *     $formattedParent = $autoscalingPolicyServiceClient->locationName('[PROJECT]', '[LOCATION]');
+ *     $formattedParent = $autoscalingPolicyServiceClient->regionName('[PROJECT]', '[REGION]');
  *     $policy = new AutoscalingPolicy();
  *     $response = $autoscalingPolicyServiceClient->createAutoscalingPolicy($formattedParent, $policy);
  * } finally {
@@ -388,7 +388,7 @@ class AutoscalingPolicyServiceGapicClient
      * ```
      * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
      * try {
-     *     $formattedParent = $autoscalingPolicyServiceClient->locationName('[PROJECT]', '[LOCATION]');
+     *     $formattedParent = $autoscalingPolicyServiceClient->regionName('[PROJECT]', '[REGION]');
      *     $policy = new AutoscalingPolicy();
      *     $response = $autoscalingPolicyServiceClient->createAutoscalingPolicy($formattedParent, $policy);
      * } finally {
@@ -537,7 +537,7 @@ class AutoscalingPolicyServiceGapicClient
      * ```
      * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
      * try {
-     *     $formattedParent = $autoscalingPolicyServiceClient->locationName('[PROJECT]', '[LOCATION]');
+     *     $formattedParent = $autoscalingPolicyServiceClient->regionName('[PROJECT]', '[REGION]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $autoscalingPolicyServiceClient->listAutoscalingPolicies($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {
