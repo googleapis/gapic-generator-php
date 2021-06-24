@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.2...v1.0.3) (2021-06-24)
+
+
+### Bug Fixes
+
+* **bazel:** Eradicate monolith Bazel deps from PHP µgen repo ([#311](https://www.github.com/googleapis/gapic-generator-php/issues/311)) ([6c97315](https://www.github.com/googleapis/gapic-generator-php/commit/6c9731527748ca97ce07de9e5eb994b95df6bc22))
+* **metadata:** Indicate devrel dependency on package parsing logic ([#314](https://www.github.com/googleapis/gapic-generator-php/issues/314)) ([1925d1b](https://www.github.com/googleapis/gapic-generator-php/commit/1925d1b846753b8a5706e3e9470e970871541bf5))
+
 ### [1.0.2](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.1...v1.0.2) (2021-06-22)
 
 
