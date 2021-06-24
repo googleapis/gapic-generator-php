@@ -12,8 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@gapic_generator_php//rules_php_gapic:php_gapic.bzl", "php_gapic_library", "php_grpc_library", "php_proto_library")
-load("@gapic_generator_php//rules_php_gapic:php_gapic_pkg.bzl", "php_gapic_assembly_pkg")
+load(
+    "@gapic_generator_php//rules_php_gapic:php_gapic.bzl",
+    "php_gapic_library",
+    "php_grpc_library",
+    "php_proto_library",
+)
+load(
+    "@gapic_generator_php//rules_php_gapic:php_gapic_pkg.bzl",
+    "php_gapic_assembly_pkg",
+)
+load("@rules_gapic//:gapic.bzl", "proto_library_with_info")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "example_proto",

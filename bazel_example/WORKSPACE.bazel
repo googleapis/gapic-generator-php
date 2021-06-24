@@ -17,21 +17,27 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "com_google_protobuf",
     sha256 = "535fbf566d372ccf3a097c374b26896fa044bf4232aef9cab37bd1cc1ba4e850",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.15.0.zip"],
     strip_prefix = "protobuf-3.15.0",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.15.0.zip"],
 )
+
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
 protobuf_deps()
 
 http_archive(
     name = "com_github_grpc_grpc",
     sha256 = "3c432b6e3ba5eaf8c2593f4e6f61eaf363463eb533557a98a9a9adafc5e0e625",
-    urls = ["https://github.com/grpc/grpc/archive/v1.35.0.zip"],
     strip_prefix = "grpc-1.35.0",
+    urls = ["https://github.com/grpc/grpc/archive/v1.35.0.zip"],
 )
+
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
 grpc_deps()
+
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+
 grpc_extra_deps()
 
 http_archive(
@@ -43,30 +49,49 @@ http_archive(
         "https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
     ],
 )
+
+_rules_gapic_version = "0.5.4"
+
+http_archive(
+    name = "rules_gapic",
+    strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
+    urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
+)
+
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+
 rules_proto_dependencies()
+
 rules_proto_toolchains()
 
-# Latest version as of 2021-02-22
+# Latest version as of 2021-06-22
 http_archive(
     name = "com_google_googleapis",
-    strip_prefix = "googleapis-f829b1334cce86aa3738f3c0698d814b56664445",
-    urls = ["https://github.com/googleapis/googleapis/archive/f829b1334cce86aa3738f3c0698d814b56664445.zip"],
+    strip_prefix = "googleapis-dba65e3c28aa8e26c4d5b8ec9c80fbd0d0f29864",
+    urls = ["https://github.com/googleapis/googleapis/archive/dba65e3c28aa8e26c4d5b8ec9c80fbd0d0f29864.zip"],
 )
+
 load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
-switched_rules_by_language(name = "com_google_googleapis_imports", gapic = True)
+
+switched_rules_by_language(
+    name = "com_google_googleapis_imports",
+    gapic = True,
+    grpc = True,
+    php = True,
+)
 
 # Use the following to use the bazel rules defined in github.
-#http_archive(
-#    name = "gapic_generator_php",
-#    urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.0-beta03.zip"],
-#    strip_prefix = "gapic-generator-php-1.0.0-beta03",
-#)
-# Use the following to use the bazel rules defined locally, rather than fetched from github.
-local_repository(
+http_archive(
     name = "gapic_generator_php",
-    path = "../",
+    strip_prefix = "gapic-generator-php-1.0.2",
+    urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.2.zip"],
 )
+# Use the following to use the bazel rules defined locally, rather than fetched from github.
+#local_repository(
+#    name = "gapic_generator_php",
+#    path = "../",
+#)
 
 load("@gapic_generator_php//:repositories.bzl", "gapic_generator_php_repositories")
+
 gapic_generator_php_repositories()

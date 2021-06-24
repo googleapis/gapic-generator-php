@@ -69,6 +69,16 @@
                                 "listClusters"
                             ]
                         },
+                        "StartCluster": {
+                            "methods": [
+                                "startCluster"
+                            ]
+                        },
+                        "StopCluster": {
+                            "methods": [
+                                "stopCluster"
+                            ]
+                        },
                         "UpdateCluster": {
                             "methods": [
                                 "updateCluster"

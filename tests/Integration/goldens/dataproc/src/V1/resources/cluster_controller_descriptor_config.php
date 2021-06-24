@@ -33,6 +33,26 @@ return [
                     'totalPollTimeoutMillis' => '30000',
                 ],
             ],
+            'StartCluster' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
+                    'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+            ],
+            'StopCluster' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
+                    'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+            ],
             'UpdateCluster' => [
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
