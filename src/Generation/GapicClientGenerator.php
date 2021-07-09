@@ -385,19 +385,19 @@ class GapicClientGenerator
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
 
-        $clientDefaultValues['credentialsConfig'] = AST::array([
+        $credentialsConfig = [
             'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
-        ]);
+        ];
+        // Set "useJwtAccessWithScope" for DIREGAPIC APIs
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            $credentialsConfig['useJwtAccessWithScope'] = false;
+        }
+        $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
         $clientDefaultValues['transportConfig'] = AST::array([
             'rest' => AST::array([
                 'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
             ])
         ]);
-
-        // Set "useJwtAccessWithScope" for DIREGAPIC APIs
-        if ($this->serviceDetails->transportType === Transport::REST) {
-            $clientDefaultValues['useJwtAccessWithScope'] = false;
-        }
 
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
