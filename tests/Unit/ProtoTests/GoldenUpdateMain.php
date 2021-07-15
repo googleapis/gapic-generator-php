@@ -31,41 +31,45 @@ const UNIT_TESTS = [
     'protoPath' => 'BasicLro/basic-lro.proto'
   ],
   3 => [
+    'name' => 'BasicOneof',
+    'protoPath' => 'BasicOneof/basic-oneof.proto'
+  ],
+  4 => [
     'name' => 'BasicPaginated',
     'protoPath' => 'BasicPaginated/basic-paginated.proto'
   ],
-  4 => [
+  5 => [
     'name' => 'BasicBidiStreaming',
     'protoPath' => 'BasicBidiStreaming/basic-bidi-streaming.proto'
   ],
-  5 => [
+  6 => [
     'name' => 'BasicServerStreaming',
     'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto'
   ],
-  6 => [
+  7 => [
     'name' => 'BasicClientStreaming',
     'protoPath' => 'BasicClientStreaming/basic-client-streaming.proto'
   ],
-  7 => [
+  8 => [
     'name' => 'GrpcServiceConfig',
     'protoPath' => 'GrpcServiceConfig/grpc-service-config1.proto',
     'package' => 'testing.grpcserviceconfig'
   ],
-  8 => [
+  9 => [
     'name' => 'RoutingHeaders',
     'protoPath' => 'RoutingHeaders/routing-headers.proto'
   ],
-  9 => [
+  10 => [
     'name' => 'DeprecatedService',
     'protoPath' => 'DeprecatedService/deprecated_service.proto'
   ],
-  10 => [
+  11 => [
     'name' => 'BasicDiregapic',
     'protoPath' => 'BasicDiregapic/library_rest.proto',
     'package' => 'google.example.library.v1',
     'transport' => 'rest'
   ],
-  11 => [
+  12 => [
     'name' => 'ResourceNames',
     'protoPath' => 'ResourceNames/resource-names.proto'
   ]
