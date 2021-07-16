@@ -91,7 +91,7 @@ fi
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking unit tests..."
-  # TODO(miraleung: Remove the exclusion once oneofs are properly supported.
+  # TODO(miraleung): Remove the exclusion once oneofs are properly supported.
   ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit --exclude-group=basiconeof
   TEST_STATUS=$?
   if [ $TEST_STATUS != 0 ]
