@@ -151,8 +151,8 @@ class DeprecatedServiceGapicClient
      *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
      *           supported options.
      *     @type callable $clientCertSource
-     *           A callable which returns the client cert as a string. This can be used to provide
-     *           a certificate and private key to the transport layer for mTLS.
+     *           A callable which returns the client cert as a string. This can be used to
+     *           provide a certificate and private key to the transport layer for mTLS.
      * }
      *
      * @throws ValidationException
