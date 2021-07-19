@@ -1,0 +1,61 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+workspace(name = "gapic_generator_php")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# DO NOT REMOVE.
+# This is needed to clobber any transitively-pulled in versions of bazel_skylib so that packages
+# like protobuf will build.
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+    ],
+)
+
+load("//:repositories.bzl", "gapic_generator_php_repositories")
+gapic_generator_php_repositories()
+
+# Protobuf.
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+protobuf_deps()
+
+# googleapis.
+load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
+
+switched_rules_by_language(
+    name = "com_google_googleapis_imports",
+    gapic = True,
+    grpc = True,
+    php = True,
+)
+
+# gRPC.
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = "3c432b6e3ba5eaf8c2593f4e6f61eaf363463eb533557a98a9a9adafc5e0e625",
+    urls = ["https://github.com/grpc/grpc/archive/v1.35.0.zip"],
+    strip_prefix = "grpc-1.35.0",
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
+
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+grpc_extra_deps()
+

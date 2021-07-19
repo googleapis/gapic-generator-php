@@ -20,6 +20,7 @@ namespace Google\Generator\Utils;
 
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\Descriptor;
+use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
@@ -37,6 +38,12 @@ class Type implements Equality
     public static function string(): Type
     {
         return new Type(null, 'string');
+    }
+
+    /** The built-in 'float' type. */
+    public static function float(): Type
+    {
+        return new Type(null, 'float');
     }
 
     /** The built-in 'int' type. */
@@ -57,9 +64,16 @@ class Type implements Equality
         return new Type(null, 'mixed');
     }
 
+    /** The built-in 'stdClass' type. */
     public static function stdClass(): Type
     {
         return new Type(Vector::new([]), 'stdClass');
+    }
+
+    /** An array of the specified type, for PhpDoc use only. */
+    public static function arrayOf(Type $elementType): Type
+    {
+        return new Type($elementType->namespaceParts, $elementType->name . '[]');
     }
 
     /**
@@ -72,7 +86,7 @@ class Type implements Equality
     public static function fromName(string $fullname): Type
     {
         $parts = Vector::new(explode('\\', $fullname))
-            ->skipWhile(fn($x) => $x === ''); // First element will be empty if leading '\' given.
+            ->skipWhile(fn ($x) => $x === ''); // First element will be empty if leading '\' given.
         return new Type($parts->skipLast(1), $parts->last());
     }
 
@@ -89,19 +103,56 @@ class Type implements Equality
     }
 
     /**
-     * Build a type from a proto message field.
+     * Build a type from a proto enum descriptor.
      *
-     * @param FieldDescriptor $desc The proto field descriptor.
+     * @param EnumDescriptor $desc The proto enum descriptor.
      *
      * @return Type
      */
-    public static function fromField(FieldDescriptor $desc): Type
+    public static function fromEnum(EnumDescriptor $desc): Type
     {
+        return static::fromName($desc->getClass());
+    }
+
+    /**
+     * Build a type from a proto message field.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param FieldDescriptor $desc The proto field descriptor.
+     * @param ?bool $forceRepeated false to force to not-repeated; true to force to repeated.
+     *
+     * @return Type
+     */
+    public static function fromField(ProtoCatalog $catalog, FieldDescriptor $desc, ?bool $forceRepeated = null): Type
+    {
+        if ($forceRepeated === true || ($desc->isRepeated() && $forceRepeated !== false)) {
+            return static::array();
+        }
         switch ($desc->getType()) {
-            case GPBType::STRING:
+            case GPBType::DOUBLE: // 1
+            case GPBType::FLOAT: // 2
+                return static::float();
+            case GPBType::INT64: // 3
+            case GPBType::UINT64: // 4
+            case GPBType::INT32: // 5
+            case GPBType::FIXED64: // 6
+            case GPBType::FIXED32: // 7
+            case GPBType::UINT32: // 13
+            case GPBType::SFIXED32: // 15
+            case GPBType::SFIXED64: // 16
+            case GPBType::SINT32: // 17
+            case GPBType::SINT64: // 18
+            return static::int();
+            case GPBType::BOOL: // 8
+                return static::bool();
+            case GPBType::STRING: // 9
                 return static::string();
-            case GPBType::MESSAGE:
-                return static::fromMessage($desc->getMessage());
+            case GPBType::MESSAGE: // 11
+                return static::fromMessage($catalog->msgsByFullname[$desc->getMessageType()]->desc);
+            case GPBType::BYTES: // 12
+                return static::string();
+            case GPBType::ENUM: // 14
+                return static::fromEnum($catalog->enumsByFullname[$desc->getEnumType()]->desc);
             default:
                 throw new \Exception("Cannot get field type of type: {$desc->getType()}");
         }
@@ -150,27 +201,8 @@ class Type implements Equality
     public function getFullname($omitLeadingBackslash = false): string
     {
         return $this->isClass() ?
-            ($omitLeadingBackslash ? '' : '\\') . $this->namespaceParts->map(fn($x) => $x . '\\')->join() . $this->name :
+            ($omitLeadingBackslash ? '' : '\\') . $this->namespaceParts->map(fn ($x) => $x . '\\')->join() . $this->name :
             $this->name;
-    }
-
-    /**
-     * Get a suitable default value for this type.
-     *
-     * @return mixed
-     */
-    public function defaultValue()
-    {
-        // TODO: More cases required.
-        if ($this->isClass()) {
-            return null;
-        } else {
-            switch ($this->name) {
-                case 'int': return 0;
-                case 'string': return '';
-                default: throw new \Exception('No default value available');
-            }
-        }
     }
 
     // Equality methods

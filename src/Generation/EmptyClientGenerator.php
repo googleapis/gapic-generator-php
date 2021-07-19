@@ -44,7 +44,7 @@ class EmptyClientGenerator
         // Generate file content
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
-            ->withGeneratedCodeWarning();
+            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath, $this->serviceDetails->isGa());
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
@@ -55,7 +55,8 @@ class EmptyClientGenerator
             ->withPhpDoc(PhpDoc::block(PhpDoc::inherit()))
             ->withMember(AST::comment(PhpDoc::text(
                 'This class is intentionally empty, and is intended to hold manual additions to the generated',
-                $this->ctx->type($this->serviceDetails->gapicClientType), 'class.'
+                $this->ctx->type($this->serviceDetails->gapicClientType),
+                'class.'
             )));
     }
 }

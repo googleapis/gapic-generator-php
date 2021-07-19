@@ -1,0 +1,280 @@
+syntax = "proto3";
+
+package testing.alltypes;
+
+option php_namespace = "Testing\\AllTypes";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/resource.proto";
+import "google/api/field_behavior.proto";
+import "google/longrunning/operations.proto";
+
+service AllTypes {
+  option (google.api.default_host) = "alltypes.example.com";
+
+  rpc Method1(RequestAndResponse) returns(RequestAndResponse) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
+  }
+
+  rpc MethodLro(RequestAndResponse) returns(google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/path:methodLro"
+      body: "*"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "RequestAndResponse"
+      metadata_type: "RequestAndResponse"
+    };
+  }
+
+  rpc MethodPaginated(PaginatedRequest) returns(PaginatedResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+
+  // No need to test bidi or server streaming, as the request is not sent inline.
+
+  rpc MethodServerStreaming(RequestAndResponse) returns(stream RequestAndResponse);
+}
+
+enum TopLevelEnum {
+  DEFAULT_VALUE = 0;
+  ANOTHER_VALUE = 1;
+}
+
+message TopLevelMsg {
+}
+
+message RequestAndResponse {
+  message NestedMsg {
+  }
+  enum NestedEnum {
+    DEFAULT = 0;
+    A_VALUE = 1;
+  }
+
+  double a_double = 1;
+  float a_float = 2;
+  int64 a_int64 = 3;
+  uint64 a_uint64 = 4;
+  int32 a_int32 = 5;
+  fixed64 a_fixed64 = 6;
+  fixed32 a_fixed32 = 7;
+  bool a_bool = 8;
+  string a_string = 9;
+  TopLevelMsg a_message = 11;
+  bytes a_bytes = 12;
+  uint32 a_uint32 = 13;
+  TopLevelEnum a_enum = 14;
+  sfixed32 a_sfixed32 = 15;
+  sfixed64 a_sfixed64 = 16;
+  sint32 a_sint32 = 17;
+  sint64 a_sint64 = 18;
+  NestedMsg a_nested_message = 20;
+  NestedEnum a_nested_enum = 21;
+
+  double req_double = 101 [(google.api.field_behavior) = REQUIRED];
+  float req_float = 102 [(google.api.field_behavior) = REQUIRED];
+  int64 req_int64 = 103 [(google.api.field_behavior) = REQUIRED];
+  uint64 req_uint64 = 104 [(google.api.field_behavior) = REQUIRED];
+  int32 req_int32 = 105 [(google.api.field_behavior) = REQUIRED];
+  fixed64 req_fixed64 = 106 [(google.api.field_behavior) = REQUIRED];
+  fixed32 req_fixed32 = 107 [(google.api.field_behavior) = REQUIRED];
+  bool req_bool = 108 [(google.api.field_behavior) = REQUIRED];
+  string req_string = 109 [(google.api.field_behavior) = REQUIRED];
+  TopLevelMsg req_message = 111 [(google.api.field_behavior) = REQUIRED];
+  bytes req_bytes = 112 [(google.api.field_behavior) = REQUIRED];
+  uint32 req_uint32 = 113 [(google.api.field_behavior) = REQUIRED];
+  TopLevelEnum req_enum = 114 [(google.api.field_behavior) = REQUIRED];
+  sfixed32 req_sfixed32 = 115 [(google.api.field_behavior) = REQUIRED];
+  sfixed64 req_sfixed64 = 116 [(google.api.field_behavior) = REQUIRED];
+  sint32 req_sint32 = 117 [(google.api.field_behavior) = REQUIRED];
+  sint64 req_sint64 = 118 [(google.api.field_behavior) = REQUIRED];
+  NestedMsg req_nested_message = 120 [(google.api.field_behavior) = REQUIRED];
+  NestedEnum req_nested_enum = 121 [(google.api.field_behavior) = REQUIRED];
+
+  optional double opt_double = 201;
+  optional float opt_float = 202;
+  optional int64 opt_int64 = 203;
+  optional uint64 opt_uint64 = 204;
+  optional int32 opt_int32 = 205;
+  optional fixed64 opt_fixed64 = 206;
+  optional fixed32 opt_fixed32 = 207;
+  optional bool opt_bool = 208;
+  optional string opt_string = 209;
+  optional TopLevelMsg opt_message = 211;
+  optional bytes opt_bytes = 212;
+  optional uint32 opt_uint32 = 213;
+  optional TopLevelEnum opt_enum = 214;
+  optional sfixed32 opt_sfixed32 = 215;
+  optional sfixed64 opt_sfixed64 = 216;
+  optional sint32 opt_sint32 = 217;
+  optional sint64 opt_sint64 = 218;
+  optional NestedMsg opt_nested_message = 220;
+  optional NestedEnum opt_nested_enum = 221;
+
+  repeated double rep_double = 301;
+  repeated float rep_float = 302;
+  repeated int64 rep_int64 = 303;
+  repeated uint64 rep_uint64 = 304;
+  repeated int32 rep_int32 = 305;
+  repeated fixed64 rep_fixed64 = 306;
+  repeated fixed32 rep_fixed32 = 307;
+  repeated bool rep_bool = 308;
+  repeated string rep_string = 309;
+  repeated TopLevelMsg rep_message = 311;
+  repeated bytes rep_bytes = 312;
+  repeated uint32 rep_uint32 = 313;
+  repeated TopLevelEnum rep_enum = 314;
+  repeated sfixed32 rep_sfixed32 = 315;
+  repeated sfixed64 rep_sfixed64 = 316;
+  repeated sint32 rep_sint32 = 317;
+  repeated sint64 rep_sint64 = 318;
+  repeated NestedMsg rep_nested_message = 320;
+  repeated NestedEnum rep_nested_enum = 321;
+
+  repeated double rep_req_double = 401 [(google.api.field_behavior) = REQUIRED];
+  repeated float rep_req_float = 402 [(google.api.field_behavior) = REQUIRED];
+  repeated int64 rep_req_int64 = 403 [(google.api.field_behavior) = REQUIRED];
+  repeated uint64 rep_req_uint64 = 404 [(google.api.field_behavior) = REQUIRED];
+  repeated int32 rep_req_int32 = 405 [(google.api.field_behavior) = REQUIRED];
+  repeated fixed64 rep_req_fixed64 = 406 [(google.api.field_behavior) = REQUIRED];
+  repeated fixed32 rep_req_fixed32 = 407 [(google.api.field_behavior) = REQUIRED];
+  repeated bool rep_req_bool = 408 [(google.api.field_behavior) = REQUIRED];
+  repeated string rep_req_string = 409 [(google.api.field_behavior) = REQUIRED];
+  repeated TopLevelMsg rep_req_message = 411 [(google.api.field_behavior) = REQUIRED];
+  repeated bytes rep_req_bytes = 412 [(google.api.field_behavior) = REQUIRED];
+  repeated uint32 rep_req_uint32 = 413 [(google.api.field_behavior) = REQUIRED];
+  repeated TopLevelEnum rep_req_enum = 414 [(google.api.field_behavior) = REQUIRED];
+  repeated sfixed32 rep_req_sfixed32 = 415 [(google.api.field_behavior) = REQUIRED];
+  repeated sfixed64 rep_req_sfixed64 = 416 [(google.api.field_behavior) = REQUIRED];
+  repeated sint32 rep_req_sint32 = 417 [(google.api.field_behavior) = REQUIRED];
+  repeated sint64 rep_req_sint64 = 418 [(google.api.field_behavior) = REQUIRED];
+  repeated NestedMsg rep_req_nested_message = 420 [(google.api.field_behavior) = REQUIRED];
+  repeated NestedEnum rep_req_nested_enum = 421 [(google.api.field_behavior) = REQUIRED];
+}
+
+message PaginatedRequest {
+  message PaginatedNestedMsg {
+  }
+  enum PaginatedNestedEnum {
+    DEFAULT = 0;
+    A_VALUE = 1;
+  }
+
+  double a_double = 1;
+  float a_float = 2;
+  int64 a_int64 = 3;
+  uint64 a_uint64 = 4;
+  int32 a_int32 = 5;
+  fixed64 a_fixed64 = 6;
+  fixed32 a_fixed32 = 7;
+  bool a_bool = 8;
+  string a_string = 9;
+  TopLevelMsg a_message = 11;
+  bytes a_bytes = 12;
+  uint32 a_uint32 = 13;
+  TopLevelEnum a_enum = 14;
+  sfixed32 a_sfixed32 = 15;
+  sfixed64 a_sfixed64 = 16;
+  sint32 a_sint32 = 17;
+  sint64 a_sint64 = 18;
+  PaginatedNestedMsg a_nested_message = 20;
+  PaginatedNestedEnum a_nested_enum = 21;
+
+  double req_double = 101 [(google.api.field_behavior) = REQUIRED];
+  float req_float = 102 [(google.api.field_behavior) = REQUIRED];
+  int64 req_int64 = 103 [(google.api.field_behavior) = REQUIRED];
+  uint64 req_uint64 = 104 [(google.api.field_behavior) = REQUIRED];
+  int32 req_int32 = 105 [(google.api.field_behavior) = REQUIRED];
+  fixed64 req_fixed64 = 106 [(google.api.field_behavior) = REQUIRED];
+  fixed32 req_fixed32 = 107 [(google.api.field_behavior) = REQUIRED];
+  bool req_bool = 108 [(google.api.field_behavior) = REQUIRED];
+  string req_string = 109 [(google.api.field_behavior) = REQUIRED];
+  TopLevelMsg req_message = 111 [(google.api.field_behavior) = REQUIRED];
+  bytes req_bytes = 112 [(google.api.field_behavior) = REQUIRED];
+  uint32 req_uint32 = 113 [(google.api.field_behavior) = REQUIRED];
+  TopLevelEnum req_enum = 114 [(google.api.field_behavior) = REQUIRED];
+  sfixed32 req_sfixed32 = 115 [(google.api.field_behavior) = REQUIRED];
+  sfixed64 req_sfixed64 = 116 [(google.api.field_behavior) = REQUIRED];
+  sint32 req_sint32 = 117 [(google.api.field_behavior) = REQUIRED];
+  sint64 req_sint64 = 118 [(google.api.field_behavior) = REQUIRED];
+  PaginatedNestedMsg req_nested_message = 120 [(google.api.field_behavior) = REQUIRED];
+  PaginatedNestedEnum req_nested_enum = 121 [(google.api.field_behavior) = REQUIRED];
+
+  optional double opt_double = 201;
+  optional float opt_float = 202;
+  optional int64 opt_int64 = 203;
+  optional uint64 opt_uint64 = 204;
+  optional int32 opt_int32 = 205;
+  optional fixed64 opt_fixed64 = 206;
+  optional fixed32 opt_fixed32 = 207;
+  optional bool opt_bool = 208;
+  optional string opt_string = 209;
+  optional TopLevelMsg opt_message = 211;
+  optional bytes opt_bytes = 212;
+  optional uint32 opt_uint32 = 213;
+  optional TopLevelEnum opt_enum = 214;
+  optional sfixed32 opt_sfixed32 = 215;
+  optional sfixed64 opt_sfixed64 = 216;
+  optional sint32 opt_sint32 = 217;
+  optional sint64 opt_sint64 = 218;
+  optional PaginatedNestedMsg opt_nested_message = 220;
+  optional PaginatedNestedEnum opt_nested_enum = 221;
+
+  repeated double rep_double = 301;
+  repeated float rep_float = 302;
+  repeated int64 rep_int64 = 303;
+  repeated uint64 rep_uint64 = 304;
+  repeated int32 rep_int32 = 305;
+  repeated fixed64 rep_fixed64 = 306;
+  repeated fixed32 rep_fixed32 = 307;
+  repeated bool rep_bool = 308;
+  repeated string rep_string = 309;
+  repeated TopLevelMsg rep_message = 311;
+  repeated bytes rep_bytes = 312;
+  repeated uint32 rep_uint32 = 313;
+  repeated TopLevelEnum rep_enum = 314;
+  repeated sfixed32 rep_sfixed32 = 315;
+  repeated sfixed64 rep_sfixed64 = 316;
+  repeated sint32 rep_sint32 = 317;
+  repeated sint64 rep_sint64 = 318;
+  repeated PaginatedNestedMsg rep_nested_message = 320;
+  repeated PaginatedNestedEnum rep_nested_enum = 321;
+
+  repeated double rep_req_double = 401 [(google.api.field_behavior) = REQUIRED];
+  repeated float rep_req_float = 402 [(google.api.field_behavior) = REQUIRED];
+  repeated int64 rep_req_int64 = 403 [(google.api.field_behavior) = REQUIRED];
+  repeated uint64 rep_req_uint64 = 404 [(google.api.field_behavior) = REQUIRED];
+  repeated int32 rep_req_int32 = 405 [(google.api.field_behavior) = REQUIRED];
+  repeated fixed64 rep_req_fixed64 = 406 [(google.api.field_behavior) = REQUIRED];
+  repeated fixed32 rep_req_fixed32 = 407 [(google.api.field_behavior) = REQUIRED];
+  repeated bool rep_req_bool = 408 [(google.api.field_behavior) = REQUIRED];
+  repeated string rep_req_string = 409 [(google.api.field_behavior) = REQUIRED];
+  repeated TopLevelMsg rep_req_message = 411 [(google.api.field_behavior) = REQUIRED];
+  repeated bytes rep_req_bytes = 412 [(google.api.field_behavior) = REQUIRED];
+  repeated uint32 rep_req_uint32 = 413 [(google.api.field_behavior) = REQUIRED];
+  repeated TopLevelEnum rep_req_enum = 414 [(google.api.field_behavior) = REQUIRED];
+  repeated sfixed32 rep_req_sfixed32 = 415 [(google.api.field_behavior) = REQUIRED];
+  repeated sfixed64 rep_req_sfixed64 = 416 [(google.api.field_behavior) = REQUIRED];
+  repeated sint32 rep_req_sint32 = 417 [(google.api.field_behavior) = REQUIRED];
+  repeated sint64 rep_req_sint64 = 418 [(google.api.field_behavior) = REQUIRED];
+  repeated PaginatedNestedMsg rep_req_nested_message = 420 [(google.api.field_behavior) = REQUIRED];
+  repeated PaginatedNestedEnum rep_req_nested_enum = 421 [(google.api.field_behavior) = REQUIRED];
+
+  // Required fields for pagination
+  int32 page_size = 500;
+  string page_token = 501;
+}
+
+message PaginatedResponse {
+  // Required fields for pagination
+  repeated TopLevelMsg result = 1;
+  string next_page_token = 2;
+}

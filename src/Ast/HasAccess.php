@@ -38,11 +38,11 @@ trait HasAccess
      */
     public function withAccess(...$access): self
     {
-        return $this->clone(fn($clone) => $clone->access = Vector::new($access));
+        return $this->clone(fn ($clone) => $clone->access = Vector::new($access));
     }
 
     protected function accessToCode(): string
     {
-        return isset($this->access) ? $this->access->map(fn($x) => "{$x} ")->join() : '';
+        return isset($this->access) ? $this->access->map(fn ($x) => "{$x} ")->join() : '';
     }
 }

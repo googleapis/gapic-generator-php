@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package testing.basicserverstreaming;
+
+option php_namespace = "Testing\\BasicServerStreaming";
+
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+service BasicServerStreaming {
+  option (google.api.default_host) = "serverstreaming.example.com";
+
+  rpc MethodServer(Request) returns(stream Response);
+
+  rpc MethodEmpty(EmptyRequest) returns(stream Response);
+}
+
+message Request {
+    int32 a_number = 1 [(google.api.field_behavior) = REQUIRED];
+    string a_string = 2;
+}
+
+message EmptyRequest {
+}
+
+message Response {
+}

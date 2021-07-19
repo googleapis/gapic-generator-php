@@ -24,6 +24,9 @@ class CustomOptions
     public const GOOGLE_API_OAUTHSCOPES = 1050;
     public const GOOGLE_API_FIELDBEHAVIOR = 1052;
     public const GOOGLE_LONGRUNNING_OPERATIONINFO = 1049;
+    public const GOOGLE_API_HTTP = 72295728;
+    public const GOOGLE_API_RESOURCEREFERENCE = 1055;
+    public const GOOGLE_API_RESOURCEDEFINITION = 1053;
 
     public const GOOGLE_API_FIELDBEHAVIOR_REQUIRED = 2;
 }

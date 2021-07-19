@@ -1,0 +1,60 @@
+{
+  "method_config": [
+    {
+      "name": [
+        {
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry1"
+        }
+      ],
+      "timeout": "9s",
+      "retry_policy": {
+        "max_attempts": 99,
+        "initial_backoff": "0.9s",
+        "max_backoff": "9s",
+        "backoff_multiplier": 1.0,
+        "retryable_status_codes": [ "UNAVAILABLE", "DEADLINE_EXCEEDED" ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry1",
+          "method": "Method1A"
+        }
+      ],
+      "timeout": "11s",
+      "retry_policy": {
+        "max_attempts": 1,
+        "initial_backoff": "1s",
+        "max_backoff": "10s",
+        "backoff_multiplier": 1.1,
+        "retryable_status_codes": [ "UNAVAILABLE" ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry1",
+          "method": "Method1DTimeoutOnlyRetry"
+        }
+      ],
+      "timeout": "11s"
+    },
+    {
+      "name": [
+        {
+          "service": "testing.grpcserviceconfig.GrpcServiceConfigWithRetry2",
+          "method": "Method2A"
+        }
+      ],
+      "timeout": "22s",
+      "retry_policy": {
+        "max_attempts": 2,
+        "initial_backoff": "2s",
+        "max_backoff": "20s",
+        "backoff_multiplier": 1.2,
+        "retryable_status_codes": [  ]
+      }
+    }
+  ]
+}

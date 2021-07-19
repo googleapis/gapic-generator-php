@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Generator\Collections\Vector;
+
 class Formatter
 {
     /**
@@ -33,26 +35,60 @@ class Formatter
      */
     public static function format(string $code): string
     {
-        // Fixers must be in priority order; the priority is the number in the comment.
-        // More fixers can be added as required to achieve the formatting we desire.
+        $psr2SingleClassElementPerStatementFixer =
+          new \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
+        $psr2SingleClassElementPerStatementFixer->configure(['elements' => ['property']]);
+        $psr2MethodArgumentSpaceFixer =
+          new \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
+        $psr2MethodArgumentSpaceFixer->configure(['on_multiline' => 'ensure_fully_multiline']);
+        // Same rules as in PSR2.
         $fixers = [
-            new \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
-            new \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer(), // 50
-            new \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer(), // 26
-            new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1
-            new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
-            new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
-            new \PhpCsFixer\Fixer\Basic\BracesFixer(), // -25
-            new \PhpCsFixer\Fixer\Import\OrderedImportsFixer(), // -30
-            new \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer(), // -31
-            new \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50
+          new \PhpCsFixer\Fixer\Basic\EncodingFixer(), // 100, PSR2
+          new \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer(), // 98, PSR2
+
+          // No priority provided.
+          new \PhpCsFixer\Fixer\Casing\ConstantCaseFixer(),
+          new \PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer(),
+          new \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer(),
+          new \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer(),
+          new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer(),
+          new \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer(),
+
+          // Ordered.
+          $psr2SingleClassElementPerStatementFixer,  // 56, PSR2
+          new \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
+          new \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer(), // 50, PSR2
+          new \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer(), // 2, PSR2
+          new \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer(), // 2
+          new \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
+          new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1, Critical to preserving sample code.
+          new \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer(), // 1, PSR2
+          new \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer(), // 0, Multiline comment.
+          new \PhpCsFixer\Fixer\ControlStructure\ElseifFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\Whitespace\LineEndingFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer(), // 0, PSR2,
+          new \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
+          new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
+          new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer(), // 0, PSR2
+          new \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer(), // -10
+          new \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer(), // -11, PSR2
+          new \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer(), // -19
+          new \PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(), // -20, PSR2
+          new \PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer(), // -20
+          new \PhpCsFixer\Fixer\Basic\BracesFixer(), // -25, PSR2
+          $psr2MethodArgumentSpaceFixer, // -30, PSR2
+          new \PhpCsFixer\Fixer\Import\OrderedImportsFixer(), // -30
+          new \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer(), // -31
+          new \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50, PSR2 (must run last)
         ];
+
         // Fixer temporarily removed:
         // new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
         // TODO: Understand why this fixer causes too many blank line insertions in some cases.
 
-        try
-        {
+        try {
             $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);
 
             // All the fixers we'll use don't reference the file passed in, so use a dummy file.
@@ -60,12 +96,53 @@ class Formatter
             foreach ($fixers as $fixer) {
                 $fixer->fix($fakeFile, $tokens);
             }
+            // This must run last, otherwise it collapses comments immediately succeeding blocks that may have semicolons.
+            $semicolonFixer = new \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer();
+            $semicolonFixer->fix($fakeFile, $tokens);
+
 
             $code = $tokens->generateCode();
+            // TODO(vNext): Remove this call.
+            $code = static::orderUse($code);
+
             return $code;
         } catch (\Throwable $ex) {
-            print("\nFailed to format code:\n{$code}\n");
+            $codeWithLineNumbers = Vector::new(explode("\n", $code))->map(fn ($x, $i) => "{$i}: {$x}")->join("\n");
+            print("\nFailed to format code: {$ex->getMessage()}\n{$codeWithLineNumbers}\n");
             throw $ex;
         }
+    }
+
+    // TODO(vNext): Remove this method when no longer required.
+    // Monolith orders 'use' statements by ASCII order, whereas they should be ordered case-insensitively.
+    private static function orderUse(string $codeStr): string
+    {
+        $code = Vector::new(explode("\n", $codeStr));
+        $pre = $code->takeWhile(fn ($x) => strpos($x, 'use ') !== 0);
+        $usings = $code->skip(count($pre))->takeWhile(fn ($x) => strpos($x, 'use ') === 0);
+        $post = $code->skip(count($pre) + count($usings));
+
+        $usings = $usings->orderBy(fn ($x) => $x);
+
+        return $pre->concat($usings)->concat($post)->join("\n");
+    }
+
+    // TODO(vNext): Remove this method when no longer required.
+    public static function moveUseTo(string $codeStr, string $typeName, int $index): string
+    {
+        $code = Vector::new(explode("\n", $codeStr));
+        $pre = $code->takeWhile(fn ($x) => strpos($x, 'use ') !== 0);
+        $usings = $code->skip(count($pre))->takeWhile(fn ($x) => strpos($x, 'use ') === 0);
+        $post = $code->skip(count($pre) + count($usings));
+
+        $line = "use {$typeName};";
+        if (!$usings->any(fn ($x) => $x === $line)) {
+            return $codeStr;
+        }
+        $usings = $usings->filter(fn ($x) => $x !== $line);
+        $index = $index >= 0 ? $index : count($usings) + $index + 1;
+        $usings = $usings->take($index)->append($line)->concat($usings->skip($index));
+
+        return $pre->concat($usings)->concat($post)->join("\n");
     }
 }

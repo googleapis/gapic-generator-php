@@ -41,7 +41,8 @@ final class PhpMethod extends PhpClassMember
      */
     public function withParams(...$params): PhpMethod
     {
-        return $this->clone(fn($clone) => $clone->params = Vector::new($params)->flatten());
+        return $this->clone(fn ($clone) =>
+            $clone->params = Vector::new($params)->flatten()->filter(fn ($x) => !is_null($x)));
     }
 
     /**
@@ -53,7 +54,7 @@ final class PhpMethod extends PhpClassMember
      */
     public function withBody(AST $body): PhpMethod
     {
-        return $this->clone(fn($clone) => $clone->body = $body);
+        return $this->clone(fn ($clone) => $clone->body = $body);
     }
 
     public function getName(): string
@@ -66,7 +67,7 @@ final class PhpMethod extends PhpClassMember
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
-            "function {$this->name}({$this->params->map(fn($x) => static::toPhp($x))->join(', ')})" .
+            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
             "{\n" .
             static::toPhp($this->body) .
             "}\n";

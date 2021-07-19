@@ -57,7 +57,7 @@ final class PhpClass extends AST
         if (!$trait->type->isClass()) {
             throw new \Exception('Only classes (traits) may be used as a trait.');
         }
-        return $this->clone(fn($clone) => $clone->traits = $clone->traits->add($trait));
+        return $this->clone(fn ($clone) => $clone->traits = $clone->traits->add($trait));
     }
 
     /**
@@ -70,7 +70,7 @@ final class PhpClass extends AST
     public function withMember(?PhpClassMember $member): PhpClass
     {
         return is_null($member) ? $this :
-            $this->clone(fn($clone) => $clone->members = $clone->members->append($member));
+            $this->clone(fn ($clone) => $clone->members = $clone->members->append($member));
     }
 
     /**
@@ -82,9 +82,9 @@ final class PhpClass extends AST
      */
     public function withMembers(Vector $members): PhpClass
     {
-        $members = $members->filter(fn($x) => !is_null($x));
+        $members = $members->filter(fn ($x) => !is_null($x));
         return count($members) === 0 ? $this :
-            $this->clone(fn($clone) => $clone->members = $clone->members->concat($members));
+            $this->clone(fn ($clone) => $clone->members = $clone->members->concat($members));
     }
 
     public function toCode(): string
@@ -94,9 +94,9 @@ final class PhpClass extends AST
             $this->phpDocToCode() .
             "class {$this->type->name}{$extends}\n" .
             "{\n" .
-            $this->traits->toVector()->map(fn($x) => "use {$x->toCode()};\n")->join() .
+            $this->traits->toVector()->map(fn ($x) => "use {$x->toCode()};\n")->join() .
             (count($this->traits) >= 1 ? "\n" : '') .
-            $this->members->map(fn($x) => $x->toCode() . "\n")->join() .
+            $this->members->map(fn ($x) => $x->toCode() . "\n")->join() .
             "}\n";
     }
 }

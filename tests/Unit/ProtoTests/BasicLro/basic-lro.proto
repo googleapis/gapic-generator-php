@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/longrunning/operations.proto";
+
+package testing.basiclro;
+
+option php_namespace = "Testing\\BasicLro";
+
+service BasicLro {
+  option (google.api.default_host) = "lro.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  rpc MethodNonLro1(Request) returns(Request) {
+    option (google.api.http) = {
+      post: "/path:methodNonLro1"
+      body: "*"
+    };
+  }
+
+  // To test method ordering; LRO methods referenced in gapic.yaml
+  // file are always generated first; so this method will be emitted
+  // before the above MethodNonLro1.
+  rpc Method1(Request) returns(google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "LroResponse"
+      metadata_type: "LroMetadata"
+    };
+  }
+
+  rpc MethodNonLro2(Request) returns(Request) {
+    option (google.api.http) = {
+      post: "/path:methodNonLro2"
+      body: "*"
+    };
+  }
+}
+
+message Request {
+}
+
+message LroResponse {
+  string a_value = 1;
+}
+
+message LroMetadata {
+}

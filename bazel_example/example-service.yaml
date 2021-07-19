@@ -1,0 +1,7 @@
+type: google.api.Service
+config_version: 3
+
+backend:
+  rules:
+  - selector: 'example.Example.ExampleMethodRetryServiceYaml'
+    deadline: 4242.0

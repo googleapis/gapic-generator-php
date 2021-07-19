@@ -29,7 +29,7 @@ trait HasPhpDoc
      */
     public function withPhpDoc(PhpDoc $phpDoc): self
     {
-        return $this->clone(fn($clone) => $clone->phpDoc = $phpDoc);
+        return $this->clone(fn ($clone) => $clone->phpDoc = $phpDoc);
     }
 
     /**

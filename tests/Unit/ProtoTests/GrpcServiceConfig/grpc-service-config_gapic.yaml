@@ -1,0 +1,8 @@
+type: com.google.api.codegen.ConfigProto
+config_schema_version: 2.0.0
+language_settings:
+  php:
+    package_name: Testing\GrpcServiceConfig
+# List one of the two interfaces here, as this influences the generated json rest config.
+interfaces:
+- name: testing.grpcserviceconfig.GrpcServiceConfigWithRetry2

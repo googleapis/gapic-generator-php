@@ -6,6 +6,11 @@ APIs specified by
 those used inside Google. It works from an annotated Protocol Buffer description
 and generates a client library in PHP.
 
+## Developing
+
+Follow the steps in [DEVELOPMENT](DEVELOPMENT.md) for building and testing the
+generator.
+
 ## Contributing
 
 Contributions to this library are always welcome and highly encouraged.

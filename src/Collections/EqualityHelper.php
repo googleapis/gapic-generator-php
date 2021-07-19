@@ -46,4 +46,15 @@ trait EqualityHelper
         }
         return false;
     }
+
+    private static function compare($a, $b): int
+    {
+        // Returns -ve if $a < $b; +ve if $a > $b; 0 if equal.
+        if (is_string($a) && is_string($b)) {
+            return $a <=> $b;
+        } elseif (is_int($a) && is_int($b)) {
+            return $a <=> $b;
+        }
+        throw new \Exception('Cannot handle input types in compare()');
+    }
 }

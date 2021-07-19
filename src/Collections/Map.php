@@ -60,7 +60,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         $data = [];
         foreach ($pairs as [$k, $v]) {
             if (static::apply($data, $k, 1, $v)[0]) {
-                throw new \Exception('Cannot add two items with the same key');
+                throw new \Exception("Cannot add two items with the same key $k");
             }
         }
         return new Map($data, count($pairs));
@@ -117,7 +117,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     /** @inheritDoc */
     public function getIterator()
     {
-        return (function() {
+        return (function () {
             foreach ($this->data as $kvs) {
                 foreach ($kvs as $kv) {
                     // Returns [<key>, <value>] pairs.
@@ -150,7 +150,9 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         if ($exists) {
             return $value;
         }
-        throw new \Exception('Key does not exist');
+        $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
+        throw new \Exception("Key $key does not exist, called from $caller");
     }
 
     /** @inheritDoc */
@@ -192,7 +194,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Map
      */
-    public function filter(Callable $fnPredicate): Map
+    public function filter(callable $fnPredicate): Map
     {
         $resultPairs = [];
         foreach ($this as [$k, $v]) {
@@ -212,7 +214,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Map
      */
-    public function mapValues(Callable $fnMap): Map
+    public function mapValues(callable $fnMap): Map
     {
         $resultPairs = [];
         foreach ($this as [$k, $v]) {

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package testing.grpcserviceconfig;
+
+option php_namespace = "Testing\\GrpcServiceConfig";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+
+service GrpcServiceConfigWithRetry2 {
+  option (google.api.default_host) = "grpcserviceconfig.example.com";
+
+  rpc Method2A(Request2) returns (Response2) {
+    option (google.api.http) = {
+      post: "/path:method2A"
+      body: "*"
+    };
+  };
+}
+
+message Request2 {
+}
+
+message Response2 {
+}

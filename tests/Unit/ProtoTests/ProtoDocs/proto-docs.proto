@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package testing.protodocs;
+
+option php_namespace = "Testing\\ProtoDocs";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+// Doc lines
+// before service
+service ProtoDocs {
+  option (google.api.default_host) = "protodocs.example.com";
+
+  // Doc lines
+  // before method
+  rpc Method1(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
+  }
+  // and after method.
+
+}
+// and after service.
+
+message Request {
+    // Single Doc line before field.
+    string field1 = 1;
+
+    // Multiple doc lines
+    // before a field.
+    string field2 = 2;
+
+    string field3 = 3; // Doc after field on same line.
+
+    string field4 = 4;
+    // Doc single line after field.
+
+    string field5 = 5;
+    // Multiple doc lines
+    // after field.
+
+    // Doc lines
+    // before
+    string field6 = 6;
+    // and after
+    // field.
+
+    // Doc lines before,
+    string field7 = 7; // and together with,
+    // and after the field.
+}
+
+message Response {
+}

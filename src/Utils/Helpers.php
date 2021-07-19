@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Generator\Collections\Vector;
+
 class Helpers
 {
     public static function toSnakeCase(string $s)
@@ -29,7 +31,23 @@ class Helpers
     public static function toCamelCase(string $s)
     {
         // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
-        $s = implode('', array_map('ucwords', explode('_', $s)));
+        $s = implode('', array_map('ucwords', explode('_', str_replace('-', '_', $s))));
         return strtolower($s[0]) . substr($s, 1);
+    }
+
+    public static function nsVersionAndSuffixPath(string $namespace): string
+    {
+        // Extract version and suffix from the namespace by looking for a version in the namespace.
+        // E.g. ".../V6/Services" returns "V6/Services".
+        // A version is heuristically detected by [v|V] followed by at least one digit.
+        // Return empty string if no version part found.
+        return Vector::new(explode('\\', $namespace))
+            ->skipWhile(function ($s) {
+                if (strlen($s) < 2 || strtoupper(substr($s, 0, 1)) != 'V') {
+                    return true;
+                }
+                return !ctype_digit(substr($s, 1, 1));
+            })
+            ->join('/');
     }
 }

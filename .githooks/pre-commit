@@ -1,0 +1,163 @@
+#!/bin/sh
+
+# Pre-commit Git checks.
+# Set up:
+#  ln -s .githooks/pre-commit .git/hooks/pre-commit
+
+# Constants.
+BOLD="\e[1m"
+UNSET="\e[0m"
+WHITE="\e[97m"
+RED="\e[91m"
+BACK_MAGENTA="\e[45m"
+BACK_BLUE="\e[44m"
+BACK_RED="\e[41m"
+BACK_GREEN="\e[42m"
+
+# Methods.
+function echo_error {
+  ERR_MSG=$1
+  HELP_MSG=$2
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_RED Changes NOT committed. $UNSET"
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_RED $WHITE $ERR_MSG $BACK_BLUE $HELP_MSG $UNSET"
+}
+
+function echo_status {
+  STATUS_MSG=$1
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $STATUS_MSG $UNSET"
+}
+
+function echo_success {
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_GREEN $WHITE SUCCESS. $UNSET All checks passed!"
+}
+
+function header_check_preparation {
+  echo_status "Setting up license check environment"
+  export GOPATH=$(go env GOPATH)
+  if [ $? -ne 0 ];
+  then
+      echo_status "Please install Go first, instructions can be found here: https://golang.org/doc/install."
+  else
+      export ENV_PATH=$(echo $PATH)
+      if [[ $ENV_PATH != *$GOPATH* ]];
+      then
+        echo_status "GOPATH is not in the system path, adding it now."
+        export PATH=$GOPATH/bin:$PATH
+      fi
+      which addlicense
+      if [ $? -ne 0 ];
+      then
+        echo_status "addlicense tool is not yet installed, downloading it now."
+        go get -u github.com/google/addlicense
+      fi
+  fi
+}
+
+# Check only the staged files.
+NUM_TOTAL_FILES_CHANGED=$(git diff --cached --name-only | wc -l)
+NUM_PHP_FILES_CHANGED=$(git diff --cached --name-only "*.php" | wc -l)
+NUM_UNIT_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/ProtoTests/*/*.php" | wc -l)
+NUM_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "*BUILD.bazel" | wc -l)
+NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/Integration/goldens/*/*.*" | wc -l)
+
+if [ $NUM_TOTAL_FILES_CHANGED -le 0 ]
+then
+  echo_error "No new files to commit." ""
+  exit 1
+fi
+
+
+if [ -x /usr/lib/git-core/google_hook ]; then
+  /usr/lib/git-core/google_hook pre-commit "$@"
+fi
+
+# Check PHP lint format.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Running PHP-CS-Fixer..."
+  for TEMP_DIR in src validation tests
+    do ./vendor/bin/php-cs-fixer fix "$TEMP_DIR"/ --rules=@PSR2,no_unused_imports
+  done
+  ./vendor/bin/php-cs-fixer fix src/ --rules=@PSR2,no_unused_imports --dry-run
+  FORMAT_STATUS=$?
+  if [ $FORMAT_STATUS != 0 ]
+  then
+    echo_error "Linting failed." "Please try again after running for f in src validation tests; do ./vendor/bin/php-cs-fixer fix \$f/ --rules=@PSR2,no_unused_imports; done"
+    exit 1
+  fi
+fi
+
+# Check unit tests.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking unit tests..."
+  # TODO(miraleung): Remove the exclusion once oneofs are properly supported.
+  ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit --exclude-group=basiconeof
+  TEST_STATUS=$?
+  if [ $TEST_STATUS != 0 ]
+  then
+    echo_error "Tests failed." "Please fix them and try again."
+    exit 1
+  fi
+fi
+
+# Check PHP integration tests.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking PHP integration tests..."
+  php tests/Integration/Main.php
+  TEST_STATUS=$?
+
+  if [ $TEST_STATUS != 0 ]
+  then
+    echo_error "Tests failed." "Please fix them and try again."
+    exit 1
+  fi
+fi
+
+# Check Bazel integration tests.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking Bazel integration tests..."
+  # Temporary workaround for PHP's Bazel rules' implementation.
+  yes | sudo rm -r bazel-out/host/bin/rules_php_gapic/*
+  for TARGET in asset compute_small container dataproc functions kms iam logging redis retail speech securitycenter talent videointelligence
+  do
+    bazel test tests/Integration:"$TARGET" --noshow_progress
+  done
+  TEST_STATUS=$?
+
+  if [ $TEST_STATUS != 0 ]
+  then
+    echo_error "Tests failed." "Please fix them and try again."
+    exit 1
+  fi
+fi
+
+# Check and fix Bazel format.
+if [ $NUM_BAZEL_FILES_CHANGED -gt 0 ]
+then
+  for FILE in $(find ./ -name BUILD.bazel)
+  do
+    buildifier --lint=fix $FILE
+  done
+fi
+
+: << 'END'
+# Uncomment when we can identify which files need a license header.
+# Check Apache License header for source files.
+if [ $NUM_PHP_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking Apache License Header ..."
+  header_check_preparation
+  addlicense -c "Google LLC" -l apache -check $(find $PWD/src/ -type f -name '*.php')
+  CHECK_STATUS=$?
+  if [ $CHECK_STATUS != 0 ]
+  then
+    echo_error "License header check failed." "Please ensure that all source files have a license header."
+    exit 1
+  fi
+fi
+END
+
+echo_success

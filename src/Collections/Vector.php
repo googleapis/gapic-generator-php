@@ -48,26 +48,38 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Zip two Vectors, with optional mapping function. If the vectors are not the same
      * length, then the excess elements in the longer vector will be ignored.
      *
-     * @param Vector $a The first Vector to zip.
-     * @param Vector $b The second Vector to zip.
-     * @param ?Callable $fnMap The optional map function. This will be called with two
-     *     parameters, one element from each input vector. If this function is omitted, then
-     *     each element of the output vector will contain an array of length two.
+     * Can take an arbitrary number of vectors to zip together, plus an optional map
+     * function as a final argument. This map function will be called with an argument
+     * from each zipped vector, plus an index argument.
      */
-    public static function zip(Vector $a, Vector $b, ?Callable $fnMap = null): Vector
+    public static function zip(...$args): Vector
     {
-        $count = min(count($a), count($b));
+        $fnMap = is_callable($args[count($args) - 1]) ? array_pop($args) : null;
+        $count = min(array_map(fn ($x) => count($x), $args));
         $result = [];
-        if ($fnMap) {
+        if (!is_null($fnMap)) {
             for ($i = 0; $i < $count; $i++) {
-                $result[] = $fnMap($a[$i], $b[$i]);
+                $result[] = $fnMap(...(array_merge(array_map(fn ($x) => $x[$i], $args), [$i])));
             }
         } else {
             for ($i = 0; $i < $count; $i++) {
-                $result[] = [$a[$i], $b[$i]];
+                $result[] = array_map(fn ($x) => $x[$i], $args);
             }
         }
         return new Vector($result);
+    }
+
+    /**
+     * Create a vector with the specified range, inclusive of both $start and $end.
+     *
+     * @param int $start The inclusive start value of the range.
+     * @param int $end The inclusive end value of the range.
+     *
+     * @return Vector
+     */
+    public static function range(int $start, int $end)
+    {
+        return new Vector(range($start, $end));
     }
 
     private array $data;
@@ -82,7 +94,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /** @inheritDoc */
     public function getIterator()
     {
-        return (function() {
+        return (function () {
             foreach ($this->data as $k => $v) {
                 yield $k => $v;
             }
@@ -102,13 +114,13 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /** @inheritDoc */
     public function offsetExists($offset): bool
     {
-        return isset($this->data[$offset]);
+        return isset($this->data[$offset < 0 ? count($this->data) + $offset : $offset]);
     }
 
     /** @inheritDoc */
     public function offsetGet($offset)
     {
-        return $this->data[$offset];
+        return $this->data[$offset < 0 ? count($this->data) + $offset : $offset];
     }
 
     /** @inheritDoc */
@@ -203,7 +215,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function filter(Callable $fnPredicate): Vector
+    public function filter(callable $fnPredicate): Vector
     {
         $result = [];
         foreach ($this->data as $item) {
@@ -218,14 +230,15 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Transform elements of this vector.
      *
      * @param Callable $fnMap Transformation function called for each element in this vector.
+     *     Index passed as second parameter if required.
      *
      * @return Vector
      */
-    public function map(Callable $fnMap): Vector
+    public function map(callable $fnMap): Vector
     {
         $result = [];
-        foreach ($this->data as $item) {
-            $result[] = $fnMap($item);
+        foreach ($this->data as $index => $item) {
+            $result[] = $fnMap($item, $index);
         }
         return new Vector($result);
     }
@@ -234,15 +247,15 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      * Transform and flatten elements of this vector.
      *
      * @param Callable $fnFlatMap Transformation function called for each element in this vector;
-     *     must return a vector.
+     *     must return a vector. Index passed as second parameter if required.
      *
      * @return Vector
      */
-    public function flatMap(Callable $fnFlatMap): Vector
+    public function flatMap(callable $fnFlatMap): Vector
     {
         $parts = [];
-        foreach ($this->data as $item) {
-            $mapping = $fnFlatMap($item);
+        foreach ($this->data as $index => $item) {
+            $mapping = $fnFlatMap($item, $index);
             if (!($mapping instanceof Vector)) {
                 throw new \Exception("flatMap() function must return a Vector");
             }
@@ -258,7 +271,23 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      */
     public function flatten(): Vector
     {
-        return $this->flatMap(fn($x) => $x instanceof Vector ? $x->flatten() : Vector::New([$x]));
+        return $this->flatMap(fn ($x) => $x instanceof Vector ? $x->flatten() : Vector::New([$x]));
+    }
+
+    /**
+     * Reduce this vector to a value.
+     *
+     * @param mixed $value The initial value to reduce from.
+     * @param Callable $fnReducer The reducer function to call for each item in this vector.
+     *
+     * @return mixed
+     */
+    public function reduce($value, callable $fnReducer)
+    {
+        foreach ($this->data as $item) {
+            $value = $fnReducer($value, $item);
+        }
+        return $value;
     }
 
     /**
@@ -270,7 +299,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Map A map of Vectors.
      */
-    public function groupBy(Callable $fnKey, ?Callable $fnValue = null): Map
+    public function groupBy(callable $fnKey, ?callable $fnValue = null): Map
     {
         $map = Map::New();
         foreach ($this->data as $item) {
@@ -288,17 +317,30 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function distinct(): Vector
+    public function distinct(?callable $fnBy = null): Vector
     {
         $set = Set::New();
         $data = [];
         foreach ($this->data as $item) {
-            if (!$set[$item]) {
-                $set = $set->add($item);
+            $by = is_null($fnBy) ? $item : $fnBy($item);
+            if (!$set[$by]) {
+                $set = $set->add($by);
                 $data[] = $item;
             }
         }
         return new Vector($data);
+    }
+
+    public function orderBy(?callable $fnBy = null): Vector
+    {
+        $toOrder = is_null($fnBy) ?
+            $this->map(fn ($x, $index) => [$index, $x, $x])->toArray() :
+            $this->map(fn ($x, $index) => [$index, $fnBy($x), $x])->toArray();
+        usort($toOrder, function ($a, $b) {
+            $result = $this->compare($a[1], $b[1]);
+            return $result === 0 ? $a[0] <=> $b[0] : $result;
+        });
+        return (new Vector($toOrder))->map(fn ($x) => $x[2]);
     }
 
     /**
@@ -319,6 +361,23 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     public function takeLast(int $n): Vector
     {
         return $n >= count($this->data) ? $this : new Vector(array_slice($this->data, count($this->data) - $n));
+    }
+
+    /**
+     * Take elements from the beginning of this vector, whilst a predicate returns true.
+     *
+     * @param Callable $fnPredicate Elements taken whilst this function returns true.
+     *
+     * @return Vector
+     */
+    public function takeWhile(callable $fnPredicate): Vector
+    {
+        for ($i = 0; $i < count($this->data); $i++) {
+            if (!$fnPredicate($this->data[$i])) {
+                return $this->take($i);
+            }
+        }
+        return $this;
     }
 
     /**
@@ -348,7 +407,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function skipWhile(Callable $fnPredicate): Vector
+    public function skipWhile(callable $fnPredicate): Vector
     {
         for ($i = 0; $i < count($this->data); $i++) {
             if (!$fnPredicate($this->data[$i])) {
@@ -365,7 +424,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function skipLastWhile(Callable $fnPredicate): Vector
+    public function skipLastWhile(callable $fnPredicate): Vector
     {
         for ($i = count($this->data); $i > 0; $i--) {
             if (!$fnPredicate($this->data[$i - 1])) {
@@ -403,7 +462,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return bool
      */
-    public function any(?Callable $fnPredicate = null): bool
+    public function any(?callable $fnPredicate = null): bool
     {
         foreach ($this->data as $item) {
             if (!$fnPredicate || $fnPredicate($item)) {
@@ -451,7 +510,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Map
      */
-    public function toMap(Callable $fnKey, ?Callable $fnValue = null): Map
+    public function toMap(callable $fnKey, ?callable $fnValue = null): Map
     {
         $pairs = [];
         foreach ($this->data as $item) {
@@ -471,13 +530,24 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     }
 
     /**
-     * Converts this vector to a standard PHP array, with incrementing numeric keys
+     * Converts this vector to a standard PHP array, with incrementing numeric keys or custom keys.
+     *
+     * @param ?Callable $fnKey Optional. Key function to create an associative array.
+     * @param ?Callable $fnValue Optional. Value function to create an associative array.
      *
      * @return array
      */
-    public function toArray(): array
+    public function toArray(?callable $fnKey = null, ?callable $fnValue = null): array
     {
-        return $this->data;
+        if (is_null($fnKey)) {
+            return $this->data;
+        } else {
+            $result = [];
+            foreach ($this as $item) {
+                $result[$fnKey($item)] = is_null($fnValue) ? $item : $fnValue($item);
+            }
+            return $result;
+        }
     }
 
     /**

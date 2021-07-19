@@ -31,7 +31,7 @@ class ResolvedType
      */
     public static function mixed(): ResolvedType
     {
-        return new ResolvedType(Type::mixed(), fn() => 'mixed');
+        return new ResolvedType(Type::mixed(), fn () => 'mixed');
     }
 
     /**
