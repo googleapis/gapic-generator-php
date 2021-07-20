@@ -709,23 +709,6 @@ class GapicClientGenerator
                         fn ($field, $param) => AST::call($request, $field->setter)($param)
                     ),
                     $requestParamAssigns,
-                    /*
-                    !$hasRequestParams ? null : Vector::zip(
-                        $method->requiredFields,
-                        $required,
-                        fn ($field, $param) =>
-                      !isset($requiredFieldToHeaderName[$field->name]) ? null : AST::assign(
-                          AST::index($requestParamHeaders, $requiredFieldToHeaderName[$field->name]),
-                          $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))->count() < 2
-                        ? $param
-                        // This reduce chains getter methods together for nested names like foo.bar.car.
-                        // Example: $foo->getBar()->getCar().
-                        : $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))
-                                             ->skip(1)
-                                             ->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))())
-                      )
-                    ),
-                     */
                     $method->optionalFields->map(
                         fn ($x) =>
                         AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
