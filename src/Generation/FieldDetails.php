@@ -27,6 +27,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 
@@ -46,6 +47,9 @@ class FieldDetails
 
     /** @var Type *Readonly* The type of this field. */
     public Type $type;
+
+    /** @var DescriptorProto *Readonly* The containing message of this field. */
+    public DescriptorProto $containingMessage;
 
     /** @var Type *Readonly* The type of this field, treating it as not repeated. */
     public Type $typeSingular;
@@ -67,6 +71,9 @@ class FieldDetails
 
     /** @var bool *Readonly* Whether this field is a map. */
     public bool $isMap;
+
+    /** @var bool *Readonly* Whether this field is a oneof. */
+    public bool $isOneOf;
 
     /** @var bool *Readonly* The full name of the field's type if this is a message, null otherwise. */
     public ?string $fullname;
@@ -90,10 +97,11 @@ class FieldDetails
     /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
     public ?int $oneOfIndex;
 
-    public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
+    public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
         $this->desc = $field;
+        $this->containingMessage = $containingMessage;
         $desc = $field->desc;
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
@@ -136,7 +144,8 @@ class FieldDetails
         }
         // Use fancy fooName() methods only if this isn't a wildcard pattern.
         $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) > 0;
-        $this->oneOfIndex = $field->hasOneOfIndex() ? $field->getOneofIndex() : null;
+        $this->oneOfIndex = $field->hasOneofIndex() ? $field->getOneofIndex() : null;
+        $this->isOneOf = $field->hasOneofIndex();
     }
 
     public function exampleValue(SourceFileContext $ctx)

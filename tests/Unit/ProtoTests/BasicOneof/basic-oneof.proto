@@ -52,6 +52,14 @@ message Request {
     // An extra bool.
     bool extra_bool = 8 [(google.api.field_behavior) = REQUIRED];
   }
+
+  oneof optional_data {
+    // An optional payload.
+    string optional_payload = 10;
+
+    // An optional count.
+    int32 optional_count = 11;
+  }
 }
 
 message Response {}

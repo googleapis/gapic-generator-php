@@ -70,6 +70,10 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('BasicLro/basic-lro.proto');
     }
 
+    public function testBasicOneof(): void
+    {
+        $this->runProtoTest('BasicOneof/basic-oneof.proto');
+    }
     public function testBasicPaginated(): void
     {
         $this->runProtoTest('BasicPaginated/basic-paginated.proto');

@@ -153,7 +153,7 @@ class TestNameValueProducer
             //     }
             //     repeated MapFieldEntry map_field = 1;
             $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-            $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $mapMsg, $x));
             $keyName = Helpers::toCamelCase($field->camelName . '_key');
 
             $valueFieldVarName = Helpers::toCamelCase($field->camelName . '_value');
@@ -173,7 +173,7 @@ class TestNameValueProducer
             $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
 
             $msg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-            $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $msg, $x));
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired);
             if (empty($requiredSubFields) && !$field->useResourceTestValue) {
                 $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
@@ -297,7 +297,7 @@ class TestNameValueProducer
                     //     }
                     //     repeated MapFieldEntry map_field = 1;
                     $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-                    $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+                    $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $mapMsg, $x));
                     $keyName = Helpers::toCamelCase($field->camelName . '_key');
                     $valueField = $kvSubfields[1];
                     // Hacks to ensure this ends up in the test value initialization setters.

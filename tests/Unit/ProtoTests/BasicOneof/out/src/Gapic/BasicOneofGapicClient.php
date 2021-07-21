@@ -197,6 +197,10 @@ class BasicOneofGapicClient
      *     Optional.
      *
      *     @type int $anInt
+     *     @type string $optionalPayload
+     *           An optional payload.
+     *     @type int $optionalCount
+     *           An optional count.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -220,6 +224,14 @@ class BasicOneofGapicClient
         $request->setExtraBool($extraBool);
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
+        }
+
+        if (isset($optionalArgs['optionalPayload'])) {
+            $request->setOptionalPayload($optionalArgs['optionalPayload']);
+        }
+
+        if (isset($optionalArgs['optionalCount'])) {
+            $request->setOptionalCount($optionalArgs['optionalCount']);
         }
 
         return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
