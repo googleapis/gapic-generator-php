@@ -18,8 +18,10 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
+use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
@@ -158,6 +160,28 @@ class OneofWrapperGenerator
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)
                     ->prepend("Wrapper class for the oneof {$oneofDesc->getName()} defined in message {$oneofDesc->getFields()[0]->getMessageType()}"))
-            ));
+            ))
+            ->withMembers($this->fieldProperties($oneofDesc))
+            ->withMember($this->selectedFieldProperty());
+    }
+
+    private function fieldProperties(OneofDescriptor $oneofDesc): Vector
+    {
+        // TODO(v2): Associate the fields respective types to the properties (and add
+        // the corresponding imports) when we support PHP 7.4+.
+        return Vector::new($oneofDesc->getFields())
+            ->map(fn ($fieldDesc) =>
+                AST::property(Helpers::toCamelCase($fieldDesc->getName()))
+                    ->withAccess(Access::PRIVATE, Access::STATIC)
+                    ->withPhpDocText('The value for the field ' . $fieldDesc->getName() . ', if set.'));
+    }
+
+    private function selectedFieldProperty(): PhpClassMember
+    {
+        return AST::property('selectedOneofFieldName')
+            // TODO(v2): Make this a string type when we support PHP 7.4+.
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withPhpDocText('Name of the field for which the oneof is set, as it appears in the protobuf in lower_camel_case.')
+            ->withValue(AST::literal('\'\''));
     }
 }
