@@ -266,7 +266,7 @@ class CodeGenerator
                 $oneofClassName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 1];
                 $oneofCode = $oneofWrapperFile->toCode();
                 $oneofCode = Formatter::format($oneofCode);
-                yield ["src/{$version}Gapic/{$oneofClassName}.php", $oneofCode];
+                yield ["src/{$version}{$oneofClassName}.php", $oneofCode];
             }
 
             // Very thin service client wrapper, for manual code additions if required.

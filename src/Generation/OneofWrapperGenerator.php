@@ -151,7 +151,7 @@ class OneofWrapperGenerator
     {
         $oneofCamelName = Helpers::toUpperCamelCase($oneofDesc->getName());
         $namespace = $this->serviceDetails->namespace;
-        $generatedOneofWrapperType = Type::fromName("{$namespace}\\Gapic\\{$oneofCamelName}Oneof");
+        $generatedOneofWrapperType = Type::fromName("{$namespace}\\{$oneofCamelName}Oneof");
 
         // TODO(miraleung): Add PHpDoc and methods.
         return AST::class($generatedOneofWrapperType)
