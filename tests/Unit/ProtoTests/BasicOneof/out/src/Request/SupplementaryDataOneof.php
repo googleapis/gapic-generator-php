@@ -22,7 +22,7 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Testing\BasicOneof;
+namespace Testing\BasicOneof\Request;
 
 /** Wrapper class for the oneof supplementary_data defined in message  */
 class SupplementaryDataOneof

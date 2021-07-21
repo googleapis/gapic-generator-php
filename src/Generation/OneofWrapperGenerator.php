@@ -23,6 +23,7 @@ use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
@@ -57,8 +58,8 @@ class OneofWrapperGenerator
         // Get a set of required oneofs from input message fields.
         // Use a vector instead of a set, since adding contains() to Set would have a similar
         // performance cost not lower than calling Vector::contains() directly.
-        $uniqueOneofNames = Vector::new([]);
-        $oneofs = Vector::new([]);
+        $oneofs = Map::new([]);
+        $oneofContainingMessageNames = Vector::new([]);
         foreach ($this->serviceDetails->methods as $method) {
             $requiredFieldNames = $method->requiredFields->map(fn ($x) => $x->name);
             $currOneofIndex = -1;
@@ -80,7 +81,7 @@ class OneofWrapperGenerator
                 // Ideally we'd use $method->requiredFields to construct the oneof descriptor, but any
                 // discrepancy could result in a field list mismatch against the containing message's
                 // fields in the oneof, when we generate the wrapper class. Either way, there will
-                // be error-prone risks, so we choose to align the werapper class with the containing
+                // be error-prone risks, so we choose to align the wrapper class with the containing
                 // message's definition.
                 $currOneofIndex = $requiredField->oneOfIndex;
                 $currOneofFieldNames = Vector::new([]);
@@ -88,12 +89,6 @@ class OneofWrapperGenerator
                 $currOneofFieldDescs = Vector::new([]);
                 // OneofDescriptorProto.
                 $oneofDescProto = $containingMessage->getOneofDecl()[$currOneofIndex];
-
-                // Collision between oneof names.
-                if ($uniqueOneofNames->contains($oneofDescProto->getName())) {
-                    throw new \Exception('Oneof ' . $oneofDescProto->getName() . ' in message '
-                        . $containingMessage->getName() . ' already exists elsewhere in another message');
-                }
 
                 foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
                     $isOneof = $containingMessageFieldDescProto->hasOneofIndex();
@@ -118,7 +113,7 @@ class OneofWrapperGenerator
                             . ' but not in the list of required fields for method ' . $method);
                     }
                     $currOneofFieldNames = $currOneofFieldNames->append($containingMessageFieldDescProto->getName());
-                    $currOneofFieldDescs = $currOneofFieldDescs->append(FieldDescriptor::buildFromProto($containingMessageFieldDescProto));
+                    $currOneofFieldDescs = $currOneofFieldDescs->append(FieldDescriptor::getFieldDescriptor($containingMessageFieldDescProto));
                 }
 
                 $oneof = new OneofDescriptor();
@@ -126,8 +121,7 @@ class OneofWrapperGenerator
                 foreach ($currOneofFieldDescs as $fieldDesc) {
                     $oneof->addField($fieldDesc);
                 }
-                $uniqueOneofNames = $uniqueOneofNames->append($oneofDescProto->getName());
-                $oneofs = $oneofs->append($oneof);
+                $oneofs = $oneofs->set($oneof, $containingMessage->getName());
             }
         }
 
@@ -136,7 +130,7 @@ class OneofWrapperGenerator
             return Vector::new([]);
         }
 
-        $classes = $oneofs->map(fn ($x) => $this->generateClass($x));
+        $classes = $oneofs->keys()->map(fn ($x) => $this->generateClass($x, $oneofs->get($x, null)));
         $files = $classes->map(fn ($c) =>
             AST::file($c)
                 ->withApacheLicense($this->ctx->licenseYear)
@@ -149,13 +143,13 @@ class OneofWrapperGenerator
      *
      * @param $oneofDesc OneofDescriptor (https://github.com/protocolbuffers/protobuf/blob/21b0e5587c01948927ede9be789671ff116b7ad4/php/src/Google/Protobuf/Internal/OneofDescriptor.php).
      */
-    public function generateClass(OneofDescriptor $oneofDesc): PhpClass
+    public function generateClass(OneofDescriptor $oneofDesc, string $containingMessageName): PhpClass
     {
         $oneofCamelName = Helpers::toUpperCamelCase($oneofDesc->getName());
-        $namespace = $this->serviceDetails->namespace;
+        $namespace = $this->serviceDetails->namespace . "\\$containingMessageName";
         $generatedOneofWrapperType = Type::fromName("{$namespace}\\{$oneofCamelName}Oneof");
 
-        // TODO(miraleung): Add PHpDoc and methods.
+        // TODO(miraleung): Add PhpDoc and methods.
         return AST::class($generatedOneofWrapperType)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)

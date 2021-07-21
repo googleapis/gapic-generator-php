@@ -263,10 +263,11 @@ class CodeGenerator
             $oneofWrapperFiles = OneofWrapperGenerator::generate($ctx, $service);
             foreach ($oneofWrapperFiles as $oneofWrapperFile) {
                 $oneofClassNameComponents = explode('\\', $oneofWrapperFile->class->type->getFullname(/* omitLeadingBackslash = */ true));
+                $oneofContainingMessageName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 2];
                 $oneofClassName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 1];
                 $oneofCode = $oneofWrapperFile->toCode();
                 $oneofCode = Formatter::format($oneofCode);
-                yield ["src/{$version}{$oneofClassName}.php", $oneofCode];
+                yield ["src/{$version}$oneofContainingMessageName/$oneofClassName.php", $oneofCode];
             }
 
             // Very thin service client wrapper, for manual code additions if required.
