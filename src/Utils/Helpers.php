@@ -35,6 +35,12 @@ class Helpers
         return strtolower($s[0]) . substr($s, 1);
     }
 
+    public static function toUpperCamelCase(string $s)
+    {
+        // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
+        return implode('', array_map('ucwords', explode('_', str_replace('-', '_', $s))));
+    }
+
     public static function nsVersionAndSuffixPath(string $namespace): string
     {
         // Extract version and suffix from the namespace by looking for a version in the namespace.
