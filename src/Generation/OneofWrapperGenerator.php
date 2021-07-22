@@ -164,11 +164,11 @@ class OneofWrapperGenerator
 
     private function fieldProperties(OneofDescriptor $oneofDesc): Vector
     {
-        // TODO(v2): Associate the fields respective types to the properties (and add
+        // TODO(v2): Associate the fields' respective types to the properties (and add
         // the corresponding imports) when we support PHP 7.4+.
         return Vector::new($oneofDesc->getFields())
             ->map(fn ($fieldDesc) =>
-            AST::property(self::getPhpFieldName($fieldDesc))
+                AST::property(self::getPhpFieldName($fieldDesc))
                     ->withAccess(Access::PRIVATE, Access::STATIC)
                     ->withPhpDocText('The value for the field ' . $fieldDesc->getName() . ', if set.'));
     }
