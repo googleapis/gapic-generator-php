@@ -194,7 +194,7 @@ class OneofWrapperGenerator
                 AST::assign(AST::access(AST::THIS, AST::property($newValueFormattedName)), $newValueVar),
                 AST::assign(
                     AST::access(AST::THIS, AST::property('selectedOneofFieldName')),
-                    AST::literal($fieldDesc->getName())
+                    AST::literal("'" . $fieldDesc->getName() . "'")
                 ),
                 // AST::THIS gives some weird errors, so use the value directly.
                 AST::return(AST::literal('$this'))
@@ -215,9 +215,9 @@ class OneofWrapperGenerator
             ->withParams($newValueParam)
             ->withBody(AST::block(
                 AST::return(AST::binaryOp(
-                    AST::access(AST::THIS, AST::property($newValueFormattedName)),
+                    AST::access(AST::THIS, AST::property('selectedOneofFieldName')),
                     '===',
-                    AST::literal('"' . $fieldDesc->getName() . '"')
+                    AST::literal("'" . $fieldDesc->getName() . "'")
                 ))
             ))
             ->withPhpDoc(PhpDoc::block(

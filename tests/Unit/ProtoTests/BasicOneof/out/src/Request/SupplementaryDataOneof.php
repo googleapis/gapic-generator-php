@@ -76,7 +76,7 @@ class SupplementaryDataOneof
     public function setExtraDescription($extraDescription)
     {
         $this->extraDescription = $extraDescription;
-        $this->selectedOneofFieldName = extra_description;
+        $this->selectedOneofFieldName = 'extra_description';
         return $this;
     }
 
@@ -88,7 +88,7 @@ class SupplementaryDataOneof
     public function setExtraSummary($extraSummary)
     {
         $this->extraSummary = $extraSummary;
-        $this->selectedOneofFieldName = extra_summary;
+        $this->selectedOneofFieldName = 'extra_summary';
         return $this;
     }
 
@@ -100,7 +100,7 @@ class SupplementaryDataOneof
     public function setExtraRequest($extraRequest)
     {
         $this->extraRequest = $extraRequest;
-        $this->selectedOneofFieldName = extra_request;
+        $this->selectedOneofFieldName = 'extra_request';
         return $this;
     }
 
@@ -112,7 +112,7 @@ class SupplementaryDataOneof
     public function setExtraIndex($extraIndex)
     {
         $this->extraIndex = $extraIndex;
-        $this->selectedOneofFieldName = extra_index;
+        $this->selectedOneofFieldName = 'extra_index';
         return $this;
     }
 
@@ -124,7 +124,7 @@ class SupplementaryDataOneof
     public function setExtraDouble($extraDouble)
     {
         $this->extraDouble = $extraDouble;
-        $this->selectedOneofFieldName = extra_double;
+        $this->selectedOneofFieldName = 'extra_double';
         return $this;
     }
 
@@ -136,7 +136,7 @@ class SupplementaryDataOneof
     public function setExtraFloat($extraFloat)
     {
         $this->extraFloat = $extraFloat;
-        $this->selectedOneofFieldName = extra_float;
+        $this->selectedOneofFieldName = 'extra_float';
         return $this;
     }
 
@@ -148,7 +148,7 @@ class SupplementaryDataOneof
     public function setExtraBool($extraBool)
     {
         $this->extraBool = $extraBool;
-        $this->selectedOneofFieldName = extra_bool;
+        $this->selectedOneofFieldName = 'extra_bool';
         return $this;
     }
 
@@ -157,7 +157,7 @@ class SupplementaryDataOneof
      */
     public function isExtraDescription($extraDescription)
     {
-        return $this->extraDescription === "extra_description";
+        return $this->selectedOneofFieldName === 'extra_description';
     }
 
     /**
@@ -165,7 +165,7 @@ class SupplementaryDataOneof
      */
     public function isExtraSummary($extraSummary)
     {
-        return $this->extraSummary === "extra_summary";
+        return $this->selectedOneofFieldName === 'extra_summary';
     }
 
     /**
@@ -173,7 +173,7 @@ class SupplementaryDataOneof
      */
     public function isExtraRequest($extraRequest)
     {
-        return $this->extraRequest === "extra_request";
+        return $this->selectedOneofFieldName === 'extra_request';
     }
 
     /**
@@ -181,7 +181,7 @@ class SupplementaryDataOneof
      */
     public function isExtraIndex($extraIndex)
     {
-        return $this->extraIndex === "extra_index";
+        return $this->selectedOneofFieldName === 'extra_index';
     }
 
     /**
@@ -189,7 +189,7 @@ class SupplementaryDataOneof
      */
     public function isExtraDouble($extraDouble)
     {
-        return $this->extraDouble === "extra_double";
+        return $this->selectedOneofFieldName === 'extra_double';
     }
 
     /**
@@ -197,7 +197,7 @@ class SupplementaryDataOneof
      */
     public function isExtraFloat($extraFloat)
     {
-        return $this->extraFloat === "extra_float";
+        return $this->selectedOneofFieldName === 'extra_float';
     }
 
     /**
@@ -205,7 +205,7 @@ class SupplementaryDataOneof
      */
     public function isExtraBool($extraBool)
     {
-        return $this->extraBool === "extra_bool";
+        return $this->selectedOneofFieldName === 'extra_bool';
     }
 
     /**
