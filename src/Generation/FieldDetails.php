@@ -39,6 +39,9 @@ class FieldDetails
     /** @var FieldDescriptorProto The proto definition of this field. */
     public FieldDescriptorProto $desc;
 
+    /** @var int *Readonly* This field's number in its containing message. */
+    public int $number;
+
     /** @var string *Readonly* The proto name of this field. */
     public string $name;
 
@@ -103,6 +106,7 @@ class FieldDetails
         $this->desc = $field;
         $this->containingMessage = $containingMessage;
         $desc = $field->desc;
+        $this->number = $desc->getNumber();
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
         $this->type = Type::fromField($catalog, $desc);

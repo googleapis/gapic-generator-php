@@ -32,7 +32,6 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicOneof\PartOfRequestA;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Response;
 
@@ -186,14 +185,8 @@ class BasicOneofGapicClient
      * }
      * ```
      *
-     * @param string         $extraDescription Supplemental request description.
-     * @param string         $extraSummary     Supplemental request summary.
-     * @param PartOfRequestA $extraRequest     An extra request.
-     * @param int            $extraIndex       An extra index.
-     * @param float          $extraDouble      An extra double.
-     * @param float          $extraFloat       An extra float.
-     * @param bool           $extraBool        An extra bool.
-     * @param array          $optionalArgs     {
+     * @param string $supplementaryData Maps to the required proto oneof supplementary_data.
+     * @param array  $optionalArgs      {
      *     Optional.
      *
      *     @type int $anInt
@@ -212,16 +205,28 @@ class BasicOneofGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool, array $optionalArgs = [])
+    public function aMethod($supplementaryData, array $optionalArgs = [])
     {
         $request = new Request();
-        $request->setExtraDescription($extraDescription);
-        $request->setExtraSummary($extraSummary);
-        $request->setExtraRequest($extraRequest);
-        $request->setExtraIndex($extraIndex);
-        $request->setExtraDouble($extraDouble);
-        $request->setExtraFloat($extraFloat);
-        $request->setExtraBool($extraBool);
+        if ($supplementaryData->isExtraDescription()) {
+            $request->setExtraDescription($supplementaryData->getExtraDescription());
+        } elseif ($supplementaryData->isExtraSummary()) {
+            $request->setExtraSummary($supplementaryData->getExtraSummary());
+        } elseif ($supplementaryData->isExtraRequest()) {
+            $request->setExtraRequest($supplementaryData->getExtraRequest());
+        } elseif ($supplementaryData->isExtraIndex()) {
+            $request->setExtraIndex($supplementaryData->getExtraIndex());
+        } elseif ($supplementaryData->isExtraDouble()) {
+            $request->setExtraDouble($supplementaryData->getExtraDouble());
+        } elseif ($supplementaryData->isExtraFloat()) {
+            $request->setExtraFloat($supplementaryData->getExtraFloat());
+        } elseif ($supplementaryData->isExtraBool()) {
+            $request->setExtraBool($supplementaryData->getExtraBool());
+        } else {
+            throw new ValidationException("A field for the oneof supplementary_data must be set in param $supplementaryData");
+        }
+
+        
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
         }
