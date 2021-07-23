@@ -212,7 +212,6 @@ class OneofWrapperGenerator
         $newValueParam = AST::param(null, $newValueVar);
         return AST::method("is" . Helpers::toUpperCamelCase($fieldDesc->getName()))
             ->withAccess(Access::PUBLIC)
-            ->withParams($newValueParam)
             ->withBody(AST::block(
                 AST::return(AST::binaryOp(
                     AST::access(AST::THIS, AST::property('selectedOneofFieldName')),
@@ -233,7 +232,6 @@ class OneofWrapperGenerator
         $fieldNameUpperCamel = Helpers::toUpperCamelCase($fieldDesc->getName());
         return AST::method("get" . $fieldNameUpperCamel)
             ->withAccess(Access::PUBLIC)
-            ->withParams($newValueParam)
             ->withBody(AST::block(
                 AST::return(AST::ternary(
                     AST::call(
