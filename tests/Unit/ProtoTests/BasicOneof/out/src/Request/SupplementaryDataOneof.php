@@ -155,7 +155,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_description.
      */
-    public function isExtraDescription($extraDescription)
+    public function isExtraDescription()
     {
         return $this->selectedOneofFieldName === 'extra_description';
     }
@@ -163,7 +163,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_summary.
      */
-    public function isExtraSummary($extraSummary)
+    public function isExtraSummary()
     {
         return $this->selectedOneofFieldName === 'extra_summary';
     }
@@ -171,7 +171,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_request.
      */
-    public function isExtraRequest($extraRequest)
+    public function isExtraRequest()
     {
         return $this->selectedOneofFieldName === 'extra_request';
     }
@@ -179,7 +179,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_index.
      */
-    public function isExtraIndex($extraIndex)
+    public function isExtraIndex()
     {
         return $this->selectedOneofFieldName === 'extra_index';
     }
@@ -187,7 +187,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_double.
      */
-    public function isExtraDouble($extraDouble)
+    public function isExtraDouble()
     {
         return $this->selectedOneofFieldName === 'extra_double';
     }
@@ -195,7 +195,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_float.
      */
-    public function isExtraFloat($extraFloat)
+    public function isExtraFloat()
     {
         return $this->selectedOneofFieldName === 'extra_float';
     }
@@ -203,7 +203,7 @@ class SupplementaryDataOneof
     /**
      * Returns true if this oneof is set to the field extra_bool.
      */
-    public function isExtraBool($extraBool)
+    public function isExtraBool()
     {
         return $this->selectedOneofFieldName === 'extra_bool';
     }
@@ -212,7 +212,7 @@ class SupplementaryDataOneof
      * Returns $this->extraDescription if this oneof is set to the field
      * extra_description, null otherwise.
      */
-    public function getExtraDescription($extraDescription)
+    public function getExtraDescription()
     {
         return $this->isExtraDescription() ? $this->extraDescription : null;
     }
@@ -221,7 +221,7 @@ class SupplementaryDataOneof
      * Returns $this->extraSummary if this oneof is set to the field extra_summary,
      * null otherwise.
      */
-    public function getExtraSummary($extraSummary)
+    public function getExtraSummary()
     {
         return $this->isExtraSummary() ? $this->extraSummary : null;
     }
@@ -230,7 +230,7 @@ class SupplementaryDataOneof
      * Returns $this->extraRequest if this oneof is set to the field extra_request,
      * null otherwise.
      */
-    public function getExtraRequest($extraRequest)
+    public function getExtraRequest()
     {
         return $this->isExtraRequest() ? $this->extraRequest : null;
     }
@@ -239,7 +239,7 @@ class SupplementaryDataOneof
      * Returns $this->extraIndex if this oneof is set to the field extra_index, null
      * otherwise.
      */
-    public function getExtraIndex($extraIndex)
+    public function getExtraIndex()
     {
         return $this->isExtraIndex() ? $this->extraIndex : null;
     }
@@ -248,7 +248,7 @@ class SupplementaryDataOneof
      * Returns $this->extraDouble if this oneof is set to the field extra_double, null
      * otherwise.
      */
-    public function getExtraDouble($extraDouble)
+    public function getExtraDouble()
     {
         return $this->isExtraDouble() ? $this->extraDouble : null;
     }
@@ -257,7 +257,7 @@ class SupplementaryDataOneof
      * Returns $this->extraFloat if this oneof is set to the field extra_float, null
      * otherwise.
      */
-    public function getExtraFloat($extraFloat)
+    public function getExtraFloat()
     {
         return $this->isExtraFloat() ? $this->extraFloat : null;
     }
@@ -266,7 +266,7 @@ class SupplementaryDataOneof
      * Returns $this->extraBool if this oneof is set to the field extra_bool, null
      * otherwise.
      */
-    public function getExtraBool($extraBool)
+    public function getExtraBool()
     {
         return $this->isExtraBool() ? $this->extraBool : null;
     }
