@@ -890,7 +890,6 @@ class GapicClientGenerator
      *
      * The caller will be responsible for preventing duplicates by ensuring that this method
      * is called only on the first field in a oneof group.
-
      */
     private function toParam(FieldDetails $field): PhpParam
     {
@@ -984,6 +983,7 @@ class GapicClientGenerator
 
         // Check if the containing message has another field in this oneof that precedes
         // $field. If so, this oneof has already been handled.
+        // Oneof fields should appear in increasing field number order.
         $containingMessage = $field->containingMessage;
         foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
             if (!$containingMessageFieldDescProto->hasOneofIndex()

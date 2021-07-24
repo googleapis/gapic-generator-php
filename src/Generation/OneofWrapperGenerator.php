@@ -204,7 +204,11 @@ class OneofWrapperGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Sets this oneof to ' . $fieldDesc->getName() . ' and updates its value.'),
-                PhpDoc::param($newValueParam, PhpDoc::text('The new value of this oneof.'))
+                PhpDoc::param(
+                    $newValueParam,
+                    PhpDoc::text('The new value of this oneof.'),
+                    $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))
+                )
             ));
     }
 
