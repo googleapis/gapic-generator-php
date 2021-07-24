@@ -207,7 +207,8 @@ class OneofWrapperGenerator
                 PhpDoc::param(
                     $newValueParam,
                     PhpDoc::text('The new value of this oneof.'),
-                    $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc)))
+                    $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))
+                )
             ));
     }
 

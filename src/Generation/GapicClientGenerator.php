@@ -45,7 +45,6 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\Internal\OneofDescriptor;
 
 class GapicClientGenerator
 {
@@ -765,8 +764,10 @@ class GapicClientGenerator
                                     : Vector::new(['Maps to the required proto oneof '
                                         . $field->containingMessage->getOneofDecl()[$field->oneOfIndex]->getName()
                                         . '.'
-                                    ])->concat($docExtra($field))),
-                            $docType($field))),
+                                    ])->concat($docExtra($field))
+                            ),
+                            $docType($field)
+                        )),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
@@ -945,9 +946,10 @@ class GapicClientGenerator
             // Code: $request->setBar($fooOneof->getBar())
             $then = AST::call(
                 $requestVarExpr,
-                AST::method($toMethodNameFn("set", $currFieldDescProto)))(
-                    AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
-                );
+                AST::method($toMethodNameFn("set", $currFieldDescProto))
+            )(
+                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
+            );
             // First field.
             if ($ifBlock === null) {
                 $ifBlock = AST::if($condition)->then($then);
@@ -995,7 +997,7 @@ class GapicClientGenerator
 
     private static function toOneofWrapperType(FieldDetails $field): ?Type
     {
-        if  (!$field->isOneOf) {
+        if (!$field->isOneOf) {
             return null;
         }
 
