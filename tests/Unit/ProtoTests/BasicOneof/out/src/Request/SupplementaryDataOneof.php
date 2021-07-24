@@ -24,6 +24,8 @@
 
 namespace Testing\BasicOneof\Request;
 
+use Testing\BasicOneof\PartOfRequestA;
+
 /** Wrapper class for the oneof supplementary_data defined in message  */
 class SupplementaryDataOneof
 {
@@ -71,7 +73,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_description and updates its value.
      *
-     * @param mixed $extraDescription The new value of this oneof.
+     * @param string $extraDescription The new value of this oneof.
      */
     public function setExtraDescription($extraDescription)
     {
@@ -83,7 +85,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_summary and updates its value.
      *
-     * @param mixed $extraSummary The new value of this oneof.
+     * @param string $extraSummary The new value of this oneof.
      */
     public function setExtraSummary($extraSummary)
     {
@@ -95,7 +97,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_request and updates its value.
      *
-     * @param mixed $extraRequest The new value of this oneof.
+     * @param PartOfRequestA $extraRequest The new value of this oneof.
      */
     public function setExtraRequest($extraRequest)
     {
@@ -107,7 +109,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_index and updates its value.
      *
-     * @param mixed $extraIndex The new value of this oneof.
+     * @param int $extraIndex The new value of this oneof.
      */
     public function setExtraIndex($extraIndex)
     {
@@ -119,7 +121,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_double and updates its value.
      *
-     * @param mixed $extraDouble The new value of this oneof.
+     * @param float $extraDouble The new value of this oneof.
      */
     public function setExtraDouble($extraDouble)
     {
@@ -131,7 +133,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_float and updates its value.
      *
-     * @param mixed $extraFloat The new value of this oneof.
+     * @param float $extraFloat The new value of this oneof.
      */
     public function setExtraFloat($extraFloat)
     {
@@ -143,7 +145,7 @@ class SupplementaryDataOneof
     /**
      * Sets this oneof to extra_bool and updates its value.
      *
-     * @param mixed $extraBool The new value of this oneof.
+     * @param bool $extraBool The new value of this oneof.
      */
     public function setExtraBool($extraBool)
     {
