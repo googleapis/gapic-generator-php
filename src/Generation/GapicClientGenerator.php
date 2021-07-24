@@ -45,7 +45,6 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\Internal\OneofDescriptor;
 
 class GapicClientGenerator
 {
@@ -765,8 +764,10 @@ class GapicClientGenerator
                                     : Vector::new(['Maps to the required proto oneof '
                                         . $field->containingMessage->getOneofDecl()[$field->oneOfIndex]->getName()
                                         . '.'
-                                    ])->concat($docExtra($field))),
-                            $docType($field))),
+                                    ])->concat($docExtra($field))
+                            ),
+                            $docType($field)
+                        )),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
@@ -889,12 +890,10 @@ class GapicClientGenerator
      *
      * The caller will be responsible for preventing duplicates by ensuring that this method
      * is called only on the first field in a oneof group.
-
      */
     private function toParam(FieldDetails $field): PhpParam
     {
-        if (!$field->isOneOf)
-        {
+        if (!$field->isOneOf) {
             return AST::param(null, AST::var($field->camelName));
         }
 
@@ -920,30 +919,25 @@ class GapicClientGenerator
      */
     private function toRequestFieldSetter(Expression $requestVarExpr, FieldDetails $field, PhpParam $param)
     {
-        if (!$field->isOneOf)
-        {
+        if (!$field->isOneOf) {
             return AST::call($requestVarExpr, $field->setter)($param);
         }
 
-        if (!self::isFirstFieldInOneof($field))
-        {
+        if (!self::isFirstFieldInOneof($field)) {
             return null;
         }
 
         $containingMessage = $field->containingMessage;
         $oneofFieldDescProtos = $containingMessage->getField();
 
-        $toMethodNameFn = function ($prefix, $fieldDescProto)
-        {
+        $toMethodNameFn = function ($prefix, $fieldDescProto) {
             return $prefix . Helpers::toUpperCamelCase($fieldDescProto->getName());
         };
 
         $ifBlock = null;
-        foreach ($containingMessage->getField() as $currFieldDescProto)
-        {
+        foreach ($containingMessage->getField() as $currFieldDescProto) {
             if (!$currFieldDescProto->hasOneofIndex()
-                || $currFieldDescProto->getOneofIndex() !== $field->oneOfIndex)
-            {
+                || $currFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
                 continue;
             }
 
@@ -952,12 +946,12 @@ class GapicClientGenerator
             // Code: $request->setBar($fooOneof->getBar())
             $then = AST::call(
                 $requestVarExpr,
-                AST::method($toMethodNameFn("set", $currFieldDescProto)))(
-                    AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
-                );
+                AST::method($toMethodNameFn("set", $currFieldDescProto))
+            )(
+                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
+            );
             // First field.
-            if ($ifBlock === null)
-            {
+            if ($ifBlock === null) {
                 $ifBlock = AST::if($condition)->then($then);
             } else {
                 $ifBlock = $ifBlock->elseif($condition, $then);
@@ -965,8 +959,7 @@ class GapicClientGenerator
         }
 
         // Add the throw-exception block, in case a oneof field is not set.
-        if ($ifBlock !== null)
-        {
+        if ($ifBlock !== null) {
             $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
             $ifBlock = $ifBlock->else(
                 AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
@@ -984,19 +977,17 @@ class GapicClientGenerator
      */
     private static function isFirstFieldInOneof(FieldDetails $field): bool
     {
-        if (!$field->isOneOf)
-        {
+        if (!$field->isOneOf) {
             return false;
         }
 
         // Check if the containing message has another field in this oneof that precedes
         // $field. If so, this oneof has already been handled.
+        // Oneof fields should appear in increasing field number order.
         $containingMessage = $field->containingMessage;
-        foreach ($containingMessage->getField() as $containingMessageFieldDescProto)
-        {
+        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
             if (!$containingMessageFieldDescProto->hasOneofIndex()
-                || $containingMessageFieldDescProto->getOneofIndex() !== $field->oneOfIndex)
-            {
+                || $containingMessageFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
                 continue;
             }
             // This is the first field encountered in this oneof group.
@@ -1006,8 +997,7 @@ class GapicClientGenerator
 
     private static function toOneofWrapperType(FieldDetails $field): ?Type
     {
-        if  (!$field->isOneOf)
-        {
+        if (!$field->isOneOf) {
             return null;
         }
 
