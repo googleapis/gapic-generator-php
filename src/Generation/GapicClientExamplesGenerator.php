@@ -133,6 +133,7 @@ class GapicClientExamplesGenerator
         [$varsInitCode, $callVars] = $this->initCallVars($method);
         $response = AST::var('response');
         return AST::block(
+            '// Normal ' . count($callVars),
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 $varsInitCode,
@@ -168,6 +169,7 @@ class GapicClientExamplesGenerator
             );
         [$varsInitCode, $callVars] = $this->initCallVars($method);
         return AST::block(
+            '// LRO ',
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 $varsInitCode,
@@ -201,6 +203,7 @@ class GapicClientExamplesGenerator
         $indexVar = $isMap ? AST::var('key') : null;
         [$varsInitCode, $callVars] = $this->initCallVars($method);
         return AST::block(
+            '// Paginated ',
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 $varsInitCode,
@@ -232,6 +235,7 @@ class GapicClientExamplesGenerator
         $stream = AST::var('stream');
         $element = AST::var('element');
         return AST::block(
+            '//  Bidi ',
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
@@ -276,6 +280,7 @@ class GapicClientExamplesGenerator
         $element = AST::var('element');
         [$varsInitCode, $callVars] = $this->initCallVars($method);
         return AST::block(
+            '//  Server ',
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 $varsInitCode,
@@ -299,6 +304,7 @@ class GapicClientExamplesGenerator
         $stream = AST::var('stream');
         $result = AST::var('result');
         return AST::block(
+            '//  Client',
             AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
             AST::try(
                 Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($this->ctx))),
