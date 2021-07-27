@@ -33,6 +33,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicOneof\Request;
+use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
 /**
@@ -44,14 +45,8 @@ use Testing\BasicOneof\Response;
  * ```
  * $basicOneofClient = new BasicOneofClient();
  * try {
- *     $extraDescription = 'extra_description';
- *     $extraSummary = 'extra_summary';
- *     $extraRequest = new PartOfRequestA();
- *     $extraIndex = 0;
- *     $extraDouble = 0.0;
- *     $extraFloat = 0.0;
- *     $extraBool = false;
- *     $response = $basicOneofClient->aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool);
+ *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+ *     $response = $basicOneofClient->aMethod($extraDescription);
  * } finally {
  *     $basicOneofClient->close();
  * }
@@ -172,21 +167,15 @@ class BasicOneofGapicClient
      * ```
      * $basicOneofClient = new BasicOneofClient();
      * try {
-     *     $extraDescription = 'extra_description';
-     *     $extraSummary = 'extra_summary';
-     *     $extraRequest = new PartOfRequestA();
-     *     $extraIndex = 0;
-     *     $extraDouble = 0.0;
-     *     $extraFloat = 0.0;
-     *     $extraBool = false;
-     *     $response = $basicOneofClient->aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool);
+     *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+     *     $response = $basicOneofClient->aMethod($extraDescription);
      * } finally {
      *     $basicOneofClient->close();
      * }
      * ```
      *
-     * @param string $supplementaryData Maps to the required proto oneof supplementary_data.
-     * @param array  $optionalArgs      {
+     * @param SupplementaryDataOneof $supplementaryData Maps to the required proto oneof supplementary_data.
+     * @param array                  $optionalArgs      {
      *     Optional.
      *
      *     @type int $anInt

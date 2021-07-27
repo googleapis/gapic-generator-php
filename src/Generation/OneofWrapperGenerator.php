@@ -160,7 +160,7 @@ class OneofWrapperGenerator
             ))
             ->withMembers($this->fieldProperties($oneofDesc))
             ->withMember($this->selectedFieldProperty())
-            ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f)))
+            ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f, $generatedOneofWrapperType)))
             ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->isOneofTypeMethod($f)))
             ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->getterMethod($f)));
     }
@@ -185,7 +185,7 @@ class OneofWrapperGenerator
             ->withValue(AST::literal('\'\''));
     }
 
-    private function setterMethod(FieldDescriptor $fieldDesc): PhpClassMember
+    private function setterMethod(FieldDescriptor $fieldDesc, Type $oneofWrapperType): PhpClassMember
     {
         $newValueFormattedName = self::getPhpFieldName($fieldDesc);
         $newValueVar = AST::var($newValueFormattedName);
@@ -208,7 +208,8 @@ class OneofWrapperGenerator
                     $newValueParam,
                     PhpDoc::text('The new value of this oneof.'),
                     $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))
-                )
+                ),
+                PhpDoc::return($this->ctx->type($oneofWrapperType), PhpDoc::text('The modified object'))
             ));
     }
 
@@ -227,7 +228,8 @@ class OneofWrapperGenerator
                 ))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text('Returns true if this oneof is set to the field ' .$fieldDesc->getName() . '.')
+                PhpDoc::text('Returns true if this oneof is set to the field ' .$fieldDesc->getName() . '.'),
+                PhpDoc::return($this->ctx->type(Type::bool())),
             ));
     }
 
@@ -249,9 +251,11 @@ class OneofWrapperGenerator
                     AST::literal('null')
                 ))
             ))
-            ->withPhpDoc(PhpDoc::block(
+            ->withPhpDoc(
+                PhpDoc::block(
                 PhpDoc::text('Returns $this->' . $newValueFormattedName . ' if this oneof is set to the field '
-                . $fieldDesc->getName() . ', null otherwise.')
+                . $fieldDesc->getName() . ', null otherwise.'),
+                PhpDoc::return($this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))),
             ));
     }
 

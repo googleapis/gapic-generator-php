@@ -74,6 +74,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_description and updates its value.
      *
      * @param string $extraDescription The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraDescription($extraDescription)
     {
@@ -86,6 +88,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_summary and updates its value.
      *
      * @param string $extraSummary The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraSummary($extraSummary)
     {
@@ -98,6 +102,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_request and updates its value.
      *
      * @param PartOfRequestA $extraRequest The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraRequest($extraRequest)
     {
@@ -110,6 +116,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_index and updates its value.
      *
      * @param int $extraIndex The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraIndex($extraIndex)
     {
@@ -122,6 +130,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_double and updates its value.
      *
      * @param float $extraDouble The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraDouble($extraDouble)
     {
@@ -134,6 +144,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_float and updates its value.
      *
      * @param float $extraFloat The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraFloat($extraFloat)
     {
@@ -146,6 +158,8 @@ class SupplementaryDataOneof
      * Sets this oneof to extra_bool and updates its value.
      *
      * @param bool $extraBool The new value of this oneof.
+     *
+     * @return SupplementaryDataOneof The modified object
      */
     public function setExtraBool($extraBool)
     {
@@ -156,6 +170,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_description.
+     *
+     * @return bool
      */
     public function isExtraDescription()
     {
@@ -164,6 +180,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_summary.
+     *
+     * @return bool
      */
     public function isExtraSummary()
     {
@@ -172,6 +190,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_request.
+     *
+     * @return bool
      */
     public function isExtraRequest()
     {
@@ -180,6 +200,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_index.
+     *
+     * @return bool
      */
     public function isExtraIndex()
     {
@@ -188,6 +210,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_double.
+     *
+     * @return bool
      */
     public function isExtraDouble()
     {
@@ -196,6 +220,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_float.
+     *
+     * @return bool
      */
     public function isExtraFloat()
     {
@@ -204,6 +230,8 @@ class SupplementaryDataOneof
 
     /**
      * Returns true if this oneof is set to the field extra_bool.
+     *
+     * @return bool
      */
     public function isExtraBool()
     {
@@ -213,6 +241,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraDescription if this oneof is set to the field
      * extra_description, null otherwise.
+     *
+     * @return string
      */
     public function getExtraDescription()
     {
@@ -222,6 +252,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraSummary if this oneof is set to the field extra_summary,
      * null otherwise.
+     *
+     * @return string
      */
     public function getExtraSummary()
     {
@@ -231,6 +263,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraRequest if this oneof is set to the field extra_request,
      * null otherwise.
+     *
+     * @return PartOfRequestA
      */
     public function getExtraRequest()
     {
@@ -240,6 +274,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraIndex if this oneof is set to the field extra_index, null
      * otherwise.
+     *
+     * @return int
      */
     public function getExtraIndex()
     {
@@ -249,6 +285,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraDouble if this oneof is set to the field extra_double, null
      * otherwise.
+     *
+     * @return float
      */
     public function getExtraDouble()
     {
@@ -258,6 +296,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraFloat if this oneof is set to the field extra_float, null
      * otherwise.
+     *
+     * @return float
      */
     public function getExtraFloat()
     {
@@ -267,6 +307,8 @@ class SupplementaryDataOneof
     /**
      * Returns $this->extraBool if this oneof is set to the field extra_bool, null
      * otherwise.
+     *
+     * @return bool
      */
     public function getExtraBool()
     {

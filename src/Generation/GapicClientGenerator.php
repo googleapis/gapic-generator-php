@@ -599,14 +599,15 @@ class GapicClientGenerator
                     return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
                 } elseif ($field->isMap) {
                     return $this->ctx->type(Type::array());
-                } elseif ($field->isOneOf) {
-                    // Also adds a corresponding 'use' import.
-                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
                 } else {
                     return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
             } else {
-                if ($field->isEnum) {
+                // Affects type hinting for required oneofs.
+                // TODO(vNext) Handle optional oneofs here.
+                if ($field->isOneOf && $field->isRequired) {
+                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
+                } elseif ($field->isEnum) {
                     // TODO(vNext): Remove this unnecessary import.
                     $this->ctx->type($field->type);
                     return $this->ctx->type(Type::int());
@@ -626,11 +627,10 @@ class GapicClientGenerator
                 return Vector::new([]);
             }
         };
-
         $request = AST::var('request');
         $requestParamHeaders = AST::var('requestParamHeaders');
         $required = $method->requiredFields
-                           ->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f))
+                           ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
                            ->map(fn ($f) => $this->toParam($f));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
@@ -713,7 +713,7 @@ class GapicClientGenerator
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f)),
+                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
                         $required,
                         fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
                     ),
@@ -755,7 +755,10 @@ class GapicClientGenerator
                 PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
                 $isStreamedRequest
                     ? null
-                    : Vector::zip($method->requiredFields, $required, fn ($field, $param) =>
+                    : Vector::zip(
+                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
+                        $required,
+                        fn ($field, $param) =>
                         PhpDoc::param(
                             $param,
                             PhpDoc::preFormattedText(
@@ -923,7 +926,7 @@ class GapicClientGenerator
             return AST::call($requestVarExpr, $field->setter)($param);
         }
 
-        if (!self::isFirstFieldInOneof($field)) {
+        if (!$field->isFirstFieldInOneof()) {
             return null;
         }
 
@@ -970,28 +973,5 @@ class GapicClientGenerator
         }
 
         return AST::block($ifBlock);
-    }
-
-    /**
-     * Returns true if $field is the first field encountered in the containing oneof.
-     */
-    private static function isFirstFieldInOneof(FieldDetails $field): bool
-    {
-        if (!$field->isOneOf) {
-            return false;
-        }
-
-        // Check if the containing message has another field in this oneof that precedes
-        // $field. If so, this oneof has already been handled.
-        // Oneof fields should appear in increasing field number order.
-        $containingMessage = $field->containingMessage;
-        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
-            if (!$containingMessageFieldDescProto->hasOneofIndex()
-                || $containingMessageFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
-                continue;
-            }
-            // This is the first field encountered in this oneof group.
-            return $containingMessageFieldDescProto->getNumber() === $field->number;
-        }
     }
 }

@@ -162,7 +162,7 @@ class TestNameValueProducer
                 )(
                         // TODO(v2): Handle non-primitive types.
                         $this->value($field, $fieldVarName)
-                    )
+                )
             );
             return;
         }

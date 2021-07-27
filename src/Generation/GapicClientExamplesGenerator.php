@@ -83,7 +83,7 @@ class GapicClientExamplesGenerator
             }
         };
 
-        $result = $method->allFields
+        $result = $method->allFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
             ->map(function ($f) use ($fnGetValue, $method) {
                 if ($f->isRequired) {
                     $varName = $f->useResourceTestValue
@@ -93,7 +93,15 @@ class GapicClientExamplesGenerator
 
                     if (!$f->useResourceTestValue) {
                         // Use a default example value if no values are specified.
-                        $initCode = AST::assign($var, $f->exampleValue($this->ctx));
+                        if ($f->isOneOf) {
+                            $initCode = AST::assign(AST::var(Helpers::toCamelCase($f->containingMessage->getOneofDecl()[$f->oneOfIndex]->getName())),
+                                AST::call(
+                                    AST::new($this->ctx->type($f->toOneofWrapperType($method->serviceDetails->namespace)))(),
+                                    AST::method("set" . Helpers::toUpperCamelCase($f->camelName)))($f->exampleValue($this->ctx))
+                            );
+                        } else {
+                            $initCode = AST::assign($var, $f->exampleValue($this->ctx));
+                        }
                     } else {
                         $serviceClient = AST::var($this->serviceDetails->clientVarName);
                         $astAcc = Vector::new([]);
