@@ -253,9 +253,7 @@ class UnitTestsGenerator
                         : ($this->assertTrue)(
                             // Variable of type oneof wrapper, e.g. supplementaryData.
                             AST::call(
-                                AST::var(Helpers::toCamelCase(
-                                    $x->field->containingMessage->getOneofDecl()[$x->field->oneOfIndex]->getName()
-                                )),
+                                AST::var(Helpers::toCamelCase($x->field->getOneofDesc()->getName())),
                                 AST::method("is" . Helpers::toUpperCamelCase($x->field->name))
                             )()
                         )

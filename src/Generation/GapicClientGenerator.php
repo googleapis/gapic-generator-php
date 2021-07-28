@@ -899,8 +899,7 @@ class GapicClientGenerator
             return AST::param(null, AST::var($field->camelName));
         }
 
-        $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
-        return AST::param(null, AST::var(Helpers::toCamelCase($oneofDesc->getName())));
+        return AST::param(null, AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName())));
     }
 
     /**
@@ -962,10 +961,9 @@ class GapicClientGenerator
 
         // Add the throw-exception block, in case a oneof field is not set.
         if ($ifBlock !== null) {
-            $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
             $ifBlock = $ifBlock->else(
                 AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                    AST::interpolatedString('A field for the oneof ' . $oneofDesc->getName()
+                    AST::interpolatedString('A field for the oneof ' . $field->getOneofDesc()->getName()
                     . ' must be set in param ' . $param->toCode())
                 ))
             );
