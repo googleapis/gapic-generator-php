@@ -102,7 +102,7 @@ class RegionOperationsGapicClient
                 'rest' => [
                     'restClientConfigPath' => __DIR__ . '/../resources/region_operations_rest_client_config.php',
                 ],
-            ]
+            ],
         ];
     }
 
