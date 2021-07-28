@@ -765,8 +765,9 @@ class GapicClientGenerator
                                 !$field->isOneOf
                                     ? $field->docLines->concat($docExtra($field))
                                     : Vector::new([
-                                        'Maps to the required proto oneof ' . $field->getOneofDesc()->getName() . '.'
-                                    ])->concat($docExtra($field))
+                                        'An instance of the wrapper class for the required proto oneof '
+                                        . $field->getOneofDesc()->getName() . '.'
+                                      ])->concat($docExtra($field))
                             ),
                             $docType($field)
                         )),

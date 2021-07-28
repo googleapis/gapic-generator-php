@@ -174,7 +174,7 @@ class BasicOneofGapicClient
      * }
      * ```
      *
-     * @param SupplementaryDataOneof $supplementaryData Maps to the required proto oneof supplementary_data.
+     * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
      * @param array                  $optionalArgs      {
      *     Optional.
      *
