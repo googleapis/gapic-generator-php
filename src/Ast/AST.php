@@ -436,6 +436,7 @@ abstract class AST
                     return static::toPhp($this->obj) . "({$args})";
                 } else {
                     // Handle calling a function directly on a constructor.
+                    // We assume that a constructor call will always start with `new `.
                     $objCode = static::toPhp($this->obj);
                     if (substr($objCode, 0, 4) === 'new ') {
                         $objCode = '(' . $objCode . ')';
