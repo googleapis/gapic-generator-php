@@ -26,7 +26,7 @@ namespace Testing\BasicOneof\Request;
 
 use Testing\BasicOneof\PartOfRequestA;
 
-/** Wrapper class for the oneof supplementary_data defined in message  */
+/** Wrapper class for the oneof supplementary_data defined in message Request. */
 class SupplementaryDataOneof
 {
     /**

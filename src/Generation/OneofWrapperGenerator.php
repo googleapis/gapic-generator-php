@@ -156,8 +156,9 @@ class OneofWrapperGenerator
         return AST::class($generatedOneofWrapperType)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)
-                    ->prepend("Wrapper class for the oneof {$oneofDesc->getName()} defined in message {$oneofDesc->getFields()[0]->getMessageType()}"))
-            ))
+                // TODO: Figure out how to get oneof comments from FileDescdriptorProto in ProtoAugmenter.
+                // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
+                    ->prepend("Wrapper class for the oneof {$oneofDesc->getName()} defined in message {$containingMessageName}."))))
             ->withMembers($this->fieldProperties($oneofDesc))
             ->withMember($this->selectedFieldProperty())
             ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f, $generatedOneofWrapperType)))

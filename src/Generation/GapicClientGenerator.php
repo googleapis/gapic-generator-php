@@ -764,9 +764,8 @@ class GapicClientGenerator
                             PhpDoc::preFormattedText(
                                 !$field->isOneOf
                                     ? $field->docLines->concat($docExtra($field))
-                                    : Vector::new(['Maps to the required proto oneof '
-                                        . $field->containingMessage->getOneofDecl()[$field->oneOfIndex]->getName()
-                                        . '.'
+                                    : Vector::new([
+                                        'Maps to the required proto oneof ' . $field->getOneofDesc()->getName() . '.'
                                     ])->concat($docExtra($field))
                             ),
                             $docType($field)

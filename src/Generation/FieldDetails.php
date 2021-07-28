@@ -190,6 +190,17 @@ class FieldDetails
         return false;
     }
 
+    /**
+     * Returns the oneof descriptor that corresponds to this field, if it is part of a oneof.
+     * Otherwise, returns null.
+     *
+     * @return ?OneofDescriptorProto
+     */
+    public function getOneofDesc()
+    {
+        return !$this->isOneOf ? null : $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
+    }
+
     public function exampleValue(SourceFileContext $ctx)
     {
         if ($this->desc->desc->isRepeated()) {
