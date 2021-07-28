@@ -1,5 +1,15 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.2...v1.0.3) (2021-07-28)
+
+
+### Bug Fixes
+
+* **bazel:** Eradicate monolith Bazel deps from PHP µgen repo ([#311](https://www.github.com/googleapis/gapic-generator-php/issues/311)) ([6c97315](https://www.github.com/googleapis/gapic-generator-php/commit/6c9731527748ca97ce07de9e5eb994b95df6bc22))
+* **build:** Forego errors when clearing Bazel cache ([#317](https://www.github.com/googleapis/gapic-generator-php/issues/317)) ([f91679e](https://www.github.com/googleapis/gapic-generator-php/commit/f91679ee9eb335a3f9aa444a5f56bdb98f127347))
+* **metadata:** Indicate devrel dependency on package parsing logic ([#314](https://www.github.com/googleapis/gapic-generator-php/issues/314)) ([1925d1b](https://www.github.com/googleapis/gapic-generator-php/commit/1925d1b846753b8a5706e3e9470e970871541bf5))
+* put useJwtAccessWithScope in credentialsConfig ([#316](https://www.github.com/googleapis/gapic-generator-php/issues/316)) ([303bd38](https://www.github.com/googleapis/gapic-generator-php/commit/303bd38ad34a314e34e7318dc08bc81e46e874ee))
+
 ### [1.0.2](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.1...v1.0.2) (2021-06-22)
 
 
