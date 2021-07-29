@@ -579,6 +579,14 @@ class GapicClientGenerator
                         Vector::new([$ctx->type(Type::array())]),
                         'transportConfig',
                         $transportConfigDocText
+                    ),
+                    PhpDoc::type(
+                        Vector::new([$ctx->type(Type::callable())]),
+                        'clientCertSource',
+                        PhpDoc::text(
+                            'A callable which returns the client cert as a string. This can be used to provide',
+                            'a certificate and private key to the transport layer for mTLS.'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
