@@ -67,4 +67,207 @@ class SupplementaryDataOneof
      * lower_camel_case.
      */
     private static $selectedOneofFieldName = '';
+
+    /**
+     * Sets this oneof to extra_description and updates its value.
+     *
+     * @param mixed $extraDescription The new value of this oneof.
+     */
+    public function setExtraDescription($extraDescription)
+    {
+        $this->extraDescription = $extraDescription;
+        $this->selectedOneofFieldName = 'extra_description';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_summary and updates its value.
+     *
+     * @param mixed $extraSummary The new value of this oneof.
+     */
+    public function setExtraSummary($extraSummary)
+    {
+        $this->extraSummary = $extraSummary;
+        $this->selectedOneofFieldName = 'extra_summary';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_request and updates its value.
+     *
+     * @param mixed $extraRequest The new value of this oneof.
+     */
+    public function setExtraRequest($extraRequest)
+    {
+        $this->extraRequest = $extraRequest;
+        $this->selectedOneofFieldName = 'extra_request';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_index and updates its value.
+     *
+     * @param mixed $extraIndex The new value of this oneof.
+     */
+    public function setExtraIndex($extraIndex)
+    {
+        $this->extraIndex = $extraIndex;
+        $this->selectedOneofFieldName = 'extra_index';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_double and updates its value.
+     *
+     * @param mixed $extraDouble The new value of this oneof.
+     */
+    public function setExtraDouble($extraDouble)
+    {
+        $this->extraDouble = $extraDouble;
+        $this->selectedOneofFieldName = 'extra_double';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_float and updates its value.
+     *
+     * @param mixed $extraFloat The new value of this oneof.
+     */
+    public function setExtraFloat($extraFloat)
+    {
+        $this->extraFloat = $extraFloat;
+        $this->selectedOneofFieldName = 'extra_float';
+        return $this;
+    }
+
+    /**
+     * Sets this oneof to extra_bool and updates its value.
+     *
+     * @param mixed $extraBool The new value of this oneof.
+     */
+    public function setExtraBool($extraBool)
+    {
+        $this->extraBool = $extraBool;
+        $this->selectedOneofFieldName = 'extra_bool';
+        return $this;
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_description.
+     */
+    public function isExtraDescription()
+    {
+        return $this->selectedOneofFieldName === 'extra_description';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_summary.
+     */
+    public function isExtraSummary()
+    {
+        return $this->selectedOneofFieldName === 'extra_summary';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_request.
+     */
+    public function isExtraRequest()
+    {
+        return $this->selectedOneofFieldName === 'extra_request';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_index.
+     */
+    public function isExtraIndex()
+    {
+        return $this->selectedOneofFieldName === 'extra_index';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_double.
+     */
+    public function isExtraDouble()
+    {
+        return $this->selectedOneofFieldName === 'extra_double';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_float.
+     */
+    public function isExtraFloat()
+    {
+        return $this->selectedOneofFieldName === 'extra_float';
+    }
+
+    /**
+     * Returns true if this oneof is set to the field extra_bool.
+     */
+    public function isExtraBool()
+    {
+        return $this->selectedOneofFieldName === 'extra_bool';
+    }
+
+    /**
+     * Returns $this->extraDescription if this oneof is set to the field
+     * extra_description, null otherwise.
+     */
+    public function getExtraDescription()
+    {
+        return $this->isExtraDescription() ? $this->extraDescription : null;
+    }
+
+    /**
+     * Returns $this->extraSummary if this oneof is set to the field extra_summary,
+     * null otherwise.
+     */
+    public function getExtraSummary()
+    {
+        return $this->isExtraSummary() ? $this->extraSummary : null;
+    }
+
+    /**
+     * Returns $this->extraRequest if this oneof is set to the field extra_request,
+     * null otherwise.
+     */
+    public function getExtraRequest()
+    {
+        return $this->isExtraRequest() ? $this->extraRequest : null;
+    }
+
+    /**
+     * Returns $this->extraIndex if this oneof is set to the field extra_index, null
+     * otherwise.
+     */
+    public function getExtraIndex()
+    {
+        return $this->isExtraIndex() ? $this->extraIndex : null;
+    }
+
+    /**
+     * Returns $this->extraDouble if this oneof is set to the field extra_double, null
+     * otherwise.
+     */
+    public function getExtraDouble()
+    {
+        return $this->isExtraDouble() ? $this->extraDouble : null;
+    }
+
+    /**
+     * Returns $this->extraFloat if this oneof is set to the field extra_float, null
+     * otherwise.
+     */
+    public function getExtraFloat()
+    {
+        return $this->isExtraFloat() ? $this->extraFloat : null;
+    }
+
+    /**
+     * Returns $this->extraBool if this oneof is set to the field extra_bool, null
+     * otherwise.
+     */
+    public function getExtraBool()
+    {
+        return $this->isExtraBool() ? $this->extraBool : null;
+    }
 }

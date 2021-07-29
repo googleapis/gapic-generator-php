@@ -156,16 +156,19 @@ class OneofWrapperGenerator
                     ->prepend("Wrapper class for the oneof {$oneofDesc->getName()} defined in message {$oneofDesc->getFields()[0]->getMessageType()}"))
             ))
             ->withMembers($this->fieldProperties($oneofDesc))
-            ->withMember($this->selectedFieldProperty());
+            ->withMember($this->selectedFieldProperty())
+            ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f)))
+            ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->isOneofTypeMethod($f)))
+            ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->getterMethod($f)));
     }
 
     private function fieldProperties(OneofDescriptor $oneofDesc): Vector
     {
-        // TODO(v2): Associate the fields respective types to the properties (and add
+        // TODO(v2): Associate the fields' respective types to the properties (and add
         // the corresponding imports) when we support PHP 7.4+.
         return Vector::new($oneofDesc->getFields())
             ->map(fn ($fieldDesc) =>
-                AST::property(Helpers::toCamelCase($fieldDesc->getName()))
+                AST::property(self::getPhpFieldName($fieldDesc))
                     ->withAccess(Access::PRIVATE, Access::STATIC)
                     ->withPhpDocText('The value for the field ' . $fieldDesc->getName() . ', if set.'));
     }
@@ -177,5 +180,76 @@ class OneofWrapperGenerator
             ->withAccess(Access::PRIVATE, Access::STATIC)
             ->withPhpDocText('Name of the field for which the oneof is set, as it appears in the protobuf in lower_camel_case.')
             ->withValue(AST::literal('\'\''));
+    }
+
+    private function setterMethod(FieldDescriptor $fieldDesc): PhpClassMember
+    {
+        $newValueFormattedName = self::getPhpFieldName($fieldDesc);
+        $newValueVar = AST::var($newValueFormattedName);
+        $newValueParam = AST::param(null, $newValueVar);
+        return AST::method("set" . Helpers::toUpperCamelCase($fieldDesc->getName()))
+            ->withAccess(Access::PUBLIC)
+            ->withParams($newValueParam)
+            ->withBody(AST::block(
+                AST::assign(AST::access(AST::THIS, AST::property($newValueFormattedName)), $newValueVar),
+                AST::assign(
+                    AST::access(AST::THIS, AST::property('selectedOneofFieldName')),
+                    AST::literal("'" . $fieldDesc->getName() . "'")
+                ),
+                // AST::THIS gives some weird errors, so use the value directly.
+                AST::return(AST::literal('$this'))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('Sets this oneof to ' . $fieldDesc->getName() . ' and updates its value.'),
+                PhpDoc::param($newValueParam, PhpDoc::text('The new value of this oneof.'))
+            ));
+    }
+
+    private function isOneofTypeMethod(FieldDescriptor $fieldDesc): PhpClassMember
+    {
+        $newValueFormattedName = self::getPhpFieldName($fieldDesc);
+        $newValueVar = AST::var($newValueFormattedName);
+        $newValueParam = AST::param(null, $newValueVar);
+        return AST::method("is" . Helpers::toUpperCamelCase($fieldDesc->getName()))
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::return(AST::binaryOp(
+                    AST::access(AST::THIS, AST::property('selectedOneofFieldName')),
+                    '===',
+                    AST::literal("'" . $fieldDesc->getName() . "'")
+                ))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('Returns true if this oneof is set to the field ' .$fieldDesc->getName() . '.')
+            ));
+    }
+
+    private function getterMethod(FieldDescriptor $fieldDesc): PhpClassMember
+    {
+        $newValueFormattedName = self::getPhpFieldName($fieldDesc);
+        $newValueVar = AST::var($newValueFormattedName);
+        $newValueParam = AST::param(null, $newValueVar);
+        $fieldNameUpperCamel = Helpers::toUpperCamelCase($fieldDesc->getName());
+        return AST::method("get" . $fieldNameUpperCamel)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::return(AST::ternary(
+                    AST::call(
+                        AST::THIS,
+                        AST::method("is" . $fieldNameUpperCamel)->withAccess(Access::PUBLIC)
+                    )(),
+                    AST::access(AST::THIS, AST::property($newValueFormattedName)),
+                    AST::literal('null')
+                ))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('Returns $this->' . $newValueFormattedName . ' if this oneof is set to the field '
+                . $fieldDesc->getName() . ', null otherwise.')
+            ));
+    }
+
+    private static function getPhpFieldName(FieldDescriptor $fieldDesc): string
+    {
+        return Helpers::toCamelCase($fieldDesc->getName());
     }
 }
