@@ -16,10 +16,6 @@
 * put useJwtAccessWithScope in credentialsConfig ([#316](https://www.github.com/googleapis/gapic-generator-php/issues/316)) ([303bd38](https://www.github.com/googleapis/gapic-generator-php/commit/303bd38ad34a314e34e7318dc08bc81e46e874ee))
 
 
-### Miscellaneous Chores
-
-* release 1.0.3 ([9d458ff](https://www.github.com/googleapis/gapic-generator-php/commit/9d458ffc8e3e0f8827bee65362de711002abdcf1))
-
 ### [1.0.2](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.1...v1.0.2) (2021-06-22)
 
 
