@@ -27,7 +27,8 @@ error_reporting(E_ALL);
 // Proto classes generated from intjson.proto at
 // https://github.com/vchudnov-g/intjson/blob/main/proto/intjson.proto
 
-function checkSerializedMessage($message, $label, $expectedString) {
+function checkSerializedMessage($message, $label, $expectedString)
+{
     if ($message->serializeToJsonString() === $expectedString) {
         print("Got expected output for $label: $expectedString\n");
     } else {
