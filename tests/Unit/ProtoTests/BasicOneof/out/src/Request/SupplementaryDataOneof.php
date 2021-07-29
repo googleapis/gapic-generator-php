@@ -243,8 +243,8 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraDescription if this oneof is set to the field
-     * extra_description, null otherwise.
+     * Returns extraDescription if this oneof is set to the field extra_description,
+     * null otherwise.
      *
      * @return string|null
      */
@@ -254,8 +254,8 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraSummary if this oneof is set to the field extra_summary,
-     * null otherwise.
+     * Returns extraSummary if this oneof is set to the field extra_summary, null
+     * otherwise.
      *
      * @return string|null
      */
@@ -265,8 +265,8 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraRequest if this oneof is set to the field extra_request,
-     * null otherwise.
+     * Returns extraRequest if this oneof is set to the field extra_request, null
+     * otherwise.
      *
      * @return PartOfRequestA|null
      */
@@ -276,7 +276,7 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraIndex if this oneof is set to the field extra_index, null
+     * Returns extraIndex if this oneof is set to the field extra_index, null
      * otherwise.
      *
      * @return int|null
@@ -287,7 +287,7 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraDouble if this oneof is set to the field extra_double, null
+     * Returns extraDouble if this oneof is set to the field extra_double, null
      * otherwise.
      *
      * @return float|null
@@ -298,7 +298,7 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraFloat if this oneof is set to the field extra_float, null
+     * Returns extraFloat if this oneof is set to the field extra_float, null
      * otherwise.
      *
      * @return float|null
@@ -309,8 +309,7 @@ class SupplementaryDataOneof
     }
 
     /**
-     * Returns $this->extraBool if this oneof is set to the field extra_bool, null
-     * otherwise.
+     * Returns extraBool if this oneof is set to the field extra_bool, null otherwise.
      *
      * @return bool|null
      */
