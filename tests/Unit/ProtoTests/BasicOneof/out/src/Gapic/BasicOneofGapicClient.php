@@ -46,7 +46,7 @@ use Testing\BasicOneof\Response;
  * $basicOneofClient = new BasicOneofClient();
  * try {
  *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
- *     $response = $basicOneofClient->aMethod($extraDescription);
+ *     $response = $basicOneofClient->aMethod($supplementaryData);
  * } finally {
  *     $basicOneofClient->close();
  * }
@@ -168,7 +168,7 @@ class BasicOneofGapicClient
      * $basicOneofClient = new BasicOneofClient();
      * try {
      *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
-     *     $response = $basicOneofClient->aMethod($extraDescription);
+     *     $response = $basicOneofClient->aMethod($supplementaryData);
      * } finally {
      *     $basicOneofClient->close();
      * }

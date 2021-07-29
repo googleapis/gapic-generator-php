@@ -257,7 +257,7 @@ class OneofWrapperGenerator
                 PhpDoc::block(
                 PhpDoc::text('Returns $this->' . $newValueFormattedName . ' if this oneof is set to the field '
                 . $fieldDesc->getName() . ', null otherwise.'),
-                PhpDoc::return($this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))),
+                PhpDoc::return($this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc)), null, true),
             ));
     }
 

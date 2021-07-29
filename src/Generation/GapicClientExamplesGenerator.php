@@ -94,7 +94,9 @@ class GapicClientExamplesGenerator
                     if (!$f->useResourceTestValue) {
                         // Use a default example value if no values are specified.
                         if ($f->isOneOf) {
-                            $initCode = AST::assign(AST::var(Helpers::toCamelCase($f->containingMessage->getOneofDecl()[$f->oneOfIndex]->getName())),
+                            $var = AST::var(Helpers::toCamelCase($f->getOneofDesc()->getName()));
+                            $initCode = AST::assign(
+                                $var,
                                 AST::call(
                                     AST::new($this->ctx->type($f->toOneofWrapperType($method->serviceDetails->namespace)))(),
                                     AST::method("set" . Helpers::toUpperCamelCase($f->camelName)))($f->exampleValue($this->ctx))

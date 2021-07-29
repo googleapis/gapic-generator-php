@@ -281,18 +281,19 @@ abstract class PhpDoc
      *
      * @return PhpDoc
      */
-    public static function return(ResolvedType $type, ?PhpDoc $doc = null): PhpDoc
+    public static function return(ResolvedType $type, ?PhpDoc $doc = null, bool $nullable = false): PhpDoc
     {
-        return new class($type, $doc) extends PhpDoc {
-            public function __construct($type, $doc)
+        return new class($type, $doc, $nullable) extends PhpDoc {
+            public function __construct($type, $doc, $nullable)
             {
                 $this->type = $type;
                 $this->doc = $doc;
+                $this->nullable = $nullable;
             }
             protected function toLines(Map $info): Vector
             {
                 $doc = is_null($this->doc) ? '' : (' ' . $this->doc->toLines(Map::new())->join(' '));
-                return Vector::new(["@return {$this->type->toCode()}{$doc}"]);
+                return Vector::new(["@return {$this->type->toCode()}{$doc}" . ($this->nullable ? "|null" : "")]);
             }
         };
     }
