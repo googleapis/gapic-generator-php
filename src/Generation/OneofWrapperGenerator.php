@@ -155,12 +155,11 @@ class OneofWrapperGenerator
         // TODO(miraleung): Add PhpDoc and methods.
         return AST::class($generatedOneofWrapperType)
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)
                 // TODO: Figure out how to get oneof comments from FileDescdriptorProto in ProtoAugmenter.
                 // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
-                    ->prepend("Wrapper class for the oneof {$oneofDesc->getName()} defined in message "
-                        . "{$containingMessageName}.\nOnly one item should be set on an instance of this "
-                        . "class.\nIf multiple items are set on the instance, the last one is used."))))
+                PhpDoc::text("Wrapper class for the oneof {$oneofDesc->getName()} defined in message "
+                    . "{$containingMessageName}. Only one item should be set on an instance of this "
+                    . "class. If multiple items are set on the instance, the last one is used.")))
             ->withMembers($this->fieldProperties($oneofDesc))
             ->withMember($this->selectedFieldProperty())
             ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f, $generatedOneofWrapperType)))
