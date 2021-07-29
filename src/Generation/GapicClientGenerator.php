@@ -770,7 +770,8 @@ class GapicClientGenerator
                                       ])->concat($docExtra($field))
                             ),
                             $docType($field)
-                        )),
+                        )
+                    ),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),

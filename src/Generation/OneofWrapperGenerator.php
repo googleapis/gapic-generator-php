@@ -159,7 +159,8 @@ class OneofWrapperGenerator
                 // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
                 PhpDoc::text("Wrapper class for the oneof {$oneofDesc->getName()} defined in message "
                     . "{$containingMessageName}. Only one item should be set on an instance of this "
-                    . "class. If multiple items are set on the instance, the last one is used.")))
+                    . "class. If multiple items are set on the instance, the last one is used.")
+            ))
             ->withMembers($this->fieldProperties($oneofDesc))
             ->withMember($this->selectedFieldProperty())
             ->withMembers(Vector::new($oneofDesc->getFields())->map(fn ($f) => $this->setterMethod($f, $generatedOneofWrapperType)))
@@ -255,10 +256,11 @@ class OneofWrapperGenerator
             ))
             ->withPhpDoc(
                 PhpDoc::block(
-                PhpDoc::text('Returns ' . $newValueFormattedName . ' if this oneof is set to the field '
+                    PhpDoc::text('Returns ' . $newValueFormattedName . ' if this oneof is set to the field '
                 . $fieldDesc->getName() . ', null otherwise.'),
-                PhpDoc::return($this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc)), null, true),
-            ));
+                    PhpDoc::return($this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc)), null, true),
+                )
+            );
     }
 
     private static function getPhpFieldName(FieldDescriptor $fieldDesc): string

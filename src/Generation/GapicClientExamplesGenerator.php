@@ -99,7 +99,8 @@ class GapicClientExamplesGenerator
                                 $var,
                                 AST::call(
                                     AST::new($this->ctx->type($f->toOneofWrapperType($method->serviceDetails->namespace)))(),
-                                    AST::method("set" . Helpers::toUpperCamelCase($f->camelName)))($f->exampleValue($this->ctx))
+                                    AST::method("set" . Helpers::toUpperCamelCase($f->camelName))
+                                )($f->exampleValue($this->ctx))
                             );
                         } else {
                             $initCode = AST::assign($var, $f->exampleValue($this->ctx));
