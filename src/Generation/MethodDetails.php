@@ -317,6 +317,9 @@ abstract class MethodDetails
         };
     }
 
+    /** @var ServiceDetails  The service that contains this method. */
+    public ServiceDetails $serviceDetails;
+
     /** @var ProtoCatalog The proto catalog. */
     public ProtoCatalog $catalog;
 
@@ -385,6 +388,7 @@ abstract class MethodDetails
 
     protected function __construct(ServiceDetails $svc, MethodDescriptorProto $desc)
     {
+        $this->serviceDetails = $svc;
         $this->catalog = $svc->catalog;
         $this->inputMsg = $this->catalog->msgsByFullname[$desc->getInputType()];
         $outputMsg = $this->catalog->msgsByFullname[$desc->getOutputType()];

@@ -601,7 +601,7 @@ class GapicClientGenerator
                     return $this->ctx->type(Type::array());
                 } elseif ($field->isOneOf) {
                     // Also adds a corresponding 'use' import.
-                    return $this->ctx->type(self::toOneofWrapperType($field));
+                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
                 } else {
                     return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
@@ -993,19 +993,5 @@ class GapicClientGenerator
             // This is the first field encountered in this oneof group.
             return $containingMessageFieldDescProto->getNumber() === $field->number;
         }
-    }
-
-    private static function toOneofWrapperType(FieldDetails $field): ?Type
-    {
-        if (!$field->isOneOf) {
-            return null;
-        }
-
-        // Mirror of the wrapper class typing logic in OneofWrapperGenerator::generateClass.
-        $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
-        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . "Oneof";
-        $namespace = $this->serviceDetails->namespace . "\\" . $field->containingMessage->getName();
-        $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
-        return $generatedOneofWrapperType;
     }
 }

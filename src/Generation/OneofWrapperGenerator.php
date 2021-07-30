@@ -146,7 +146,7 @@ class OneofWrapperGenerator
     public function generateClass(OneofDescriptor $oneofDesc, string $containingMessageName): PhpClass
     {
         // Set the wrapper class type.
-        // Keep this in sync with the logic in GapicClientGenerator::toOneofWrapperType.
+        // Keep this in sync with the logic in FieldDetails::toOneofWrapperType.
         $oneofCamelName = Helpers::toUpperCamelCase($oneofDesc->getName());
         $oneofWrapperClassName = "{$oneofCamelName}Oneof";
         $namespace = $this->serviceDetails->namespace . "\\$containingMessageName";

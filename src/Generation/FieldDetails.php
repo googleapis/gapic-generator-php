@@ -152,6 +152,20 @@ class FieldDetails
         $this->isOneOf = $field->hasOneofIndex();
     }
 
+    public function toOneofWrapperType(string $serviceNamespace): ?Type
+    {
+        if (!$this->isOneOf) {
+            return null;
+        }
+
+        // Mirror of the wrapper class typing logic in OneofWrapperGenerator::generateClass.
+        $oneofDesc = $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
+        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . "Oneof";
+        $namespace = $serviceNamespace . "\\" . $this->containingMessage->getName();
+        $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
+        return $generatedOneofWrapperType;
+    }
+
     public function exampleValue(SourceFileContext $ctx)
     {
         if ($this->desc->desc->isRepeated()) {
