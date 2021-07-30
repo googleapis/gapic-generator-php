@@ -166,6 +166,41 @@ class FieldDetails
         return $generatedOneofWrapperType;
     }
 
+    /**
+     * Returns true if $field is the first field encountered in the containing oneof.
+     */
+    public function isFirstFieldInOneof(): bool
+    {
+        if (!$this->isOneOf) {
+            return false;
+        }
+
+        // Check if the containing message has another field in this oneof that precedes
+        // $field. If so, this oneof has already been handled.
+        // Oneof fields should appear in increasing field number order.
+        $containingMessage = $this->containingMessage;
+        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
+            if (!$containingMessageFieldDescProto->hasOneofIndex()
+                || $containingMessageFieldDescProto->getOneofIndex() !== $this->oneOfIndex) {
+                continue;
+            }
+            // This is the first field encountered in this oneof group.
+            return $containingMessageFieldDescProto->getNumber() === $this->number;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the oneof descriptor that corresponds to this field, if it is part of a oneof.
+     * Otherwise, returns null.
+     *
+     * @return ?OneofDescriptorProto
+     */
+    public function getOneofDesc()
+    {
+        return !$this->isOneOf ? null : $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
+    }
+
     public function exampleValue(SourceFileContext $ctx)
     {
         if ($this->desc->desc->isRepeated()) {

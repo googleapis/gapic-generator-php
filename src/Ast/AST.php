@@ -435,7 +435,13 @@ abstract class AST
                 if (is_null($this->callee)) {
                     return static::toPhp($this->obj) . "({$args})";
                 } else {
-                    return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+                    // Handle calling a function directly on a constructor.
+                    // We assume that a constructor call will always start with `new `.
+                    $objCode = static::toPhp($this->obj);
+                    if (substr($objCode, 0, 4) === 'new ') {
+                        $objCode = '(' . $objCode . ')';
+                    }
+                    return $objCode . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
                 }
             }
         };

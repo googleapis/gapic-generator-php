@@ -606,7 +606,11 @@ class GapicClientGenerator
                     return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
             } else {
-                if ($field->isEnum) {
+                // Affects type hinting for required oneofs.
+                // TODO(vNext) Handle optional oneofs here.
+                if ($field->isOneOf && $field->isRequired) {
+                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
+                } elseif ($field->isEnum) {
                     // TODO(vNext): Remove this unnecessary import.
                     $this->ctx->type($field->type);
                     return $this->ctx->type(Type::int());
@@ -626,11 +630,10 @@ class GapicClientGenerator
                 return Vector::new([]);
             }
         };
-
         $request = AST::var('request');
         $requestParamHeaders = AST::var('requestParamHeaders');
         $required = $method->requiredFields
-                           ->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f))
+                           ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
                            ->map(fn ($f) => $this->toParam($f));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
@@ -713,7 +716,7 @@ class GapicClientGenerator
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f)),
+                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
                         $required,
                         fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
                     ),
@@ -755,19 +758,23 @@ class GapicClientGenerator
                 PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
                 $isStreamedRequest
                     ? null
-                    : Vector::zip($method->requiredFields, $required, fn ($field, $param) =>
+                    : Vector::zip(
+                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
+                        $required,
+                        fn ($field, $param) =>
                         PhpDoc::param(
                             $param,
                             PhpDoc::preFormattedText(
                                 !$field->isOneOf
                                     ? $field->docLines->concat($docExtra($field))
-                                    : Vector::new(['Maps to the required proto oneof '
-                                        . $field->containingMessage->getOneofDecl()[$field->oneOfIndex]->getName()
-                                        . '.'
-                                    ])->concat($docExtra($field))
+                                    : Vector::new([
+                                        'An instance of the wrapper class for the required proto oneof '
+                                        . $field->getOneofDesc()->getName() . '.'
+                                      ])->concat($docExtra($field))
                             ),
                             $docType($field)
-                        )),
+                        )
+                    ),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
@@ -897,8 +904,7 @@ class GapicClientGenerator
             return AST::param(null, AST::var($field->camelName));
         }
 
-        $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
-        return AST::param(null, AST::var(Helpers::toCamelCase($oneofDesc->getName())));
+        return AST::param(null, AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName())));
     }
 
     /**
@@ -923,7 +929,7 @@ class GapicClientGenerator
             return AST::call($requestVarExpr, $field->setter)($param);
         }
 
-        if (!self::isFirstFieldInOneof($field)) {
+        if (!$field->isFirstFieldInOneof()) {
             return null;
         }
 
@@ -960,38 +966,14 @@ class GapicClientGenerator
 
         // Add the throw-exception block, in case a oneof field is not set.
         if ($ifBlock !== null) {
-            $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
             $ifBlock = $ifBlock->else(
                 AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                    AST::interpolatedString('A field for the oneof ' . $oneofDesc->getName()
+                    AST::interpolatedString('A field for the oneof ' . $field->getOneofDesc()->getName()
                     . ' must be set in param ' . $param->toCode())
                 ))
             );
         }
 
         return AST::block($ifBlock);
-    }
-
-    /**
-     * Returns true if $field is the first field encountered in the containing oneof.
-     */
-    private static function isFirstFieldInOneof(FieldDetails $field): bool
-    {
-        if (!$field->isOneOf) {
-            return false;
-        }
-
-        // Check if the containing message has another field in this oneof that precedes
-        // $field. If so, this oneof has already been handled.
-        // Oneof fields should appear in increasing field number order.
-        $containingMessage = $field->containingMessage;
-        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
-            if (!$containingMessageFieldDescProto->hasOneofIndex()
-                || $containingMessageFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
-                continue;
-            }
-            // This is the first field encountered in this oneof group.
-            return $containingMessageFieldDescProto->getNumber() === $field->number;
-        }
     }
 }

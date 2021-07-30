@@ -148,8 +148,7 @@ class TestNameValueProducer
             $oneofWrapperType = $field->toOneofWrapperType($method->serviceDetails->namespace);
             // Initialize the oneof, e.g.
             //   $supplementaryData = new SupplementaryDataOneof();
-            $oneofDescProto = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
-            $fieldVar = AST::var(Helpers::toCamelCase($oneofDescProto->getName()));
+            $fieldVar = AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName()));
             // TODO(v2): Enable recursion like the map source below. We don't do this yet
             // because nobody exercises this use case.
             $astAcc = $astAcc->append(AST::assign($fieldVar, AST::new($this->ctx->type($oneofWrapperType))()));
