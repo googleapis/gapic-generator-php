@@ -172,7 +172,7 @@ class OneofWrapperGenerator
         return Vector::new($oneofDesc->getFields())
             ->map(fn ($fieldDesc) =>
                 AST::property(self::getPhpFieldName($fieldDesc))
-                    ->withAccess(Access::PRIVATE, Access::STATIC)
+                    ->withAccess(Access::PRIVATE)
                     ->withPhpDocText('The value for the field ' . $fieldDesc->getName() . ', if set.'));
     }
 
@@ -180,7 +180,7 @@ class OneofWrapperGenerator
     {
         return AST::property('selectedOneofFieldName')
             // TODO(v2): Make this a string type when we support PHP 7.4+.
-            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withAccess(Access::PRIVATE)
             ->withPhpDocText('Name of the field for which the oneof is set, as it appears in the protobuf in lower_camel_case.')
             ->withValue(AST::literal('\'\''));
     }

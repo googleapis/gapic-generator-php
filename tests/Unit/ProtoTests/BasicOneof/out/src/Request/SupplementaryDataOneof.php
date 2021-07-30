@@ -32,43 +32,43 @@ class SupplementaryDataOneof
     /**
      * The value for the field extra_description, if set.
      */
-    private static $extraDescription;
+    private $extraDescription;
 
     /**
      * The value for the field extra_summary, if set.
      */
-    private static $extraSummary;
+    private $extraSummary;
 
     /**
      * The value for the field extra_request, if set.
      */
-    private static $extraRequest;
+    private $extraRequest;
 
     /**
      * The value for the field extra_index, if set.
      */
-    private static $extraIndex;
+    private $extraIndex;
 
     /**
      * The value for the field extra_double, if set.
      */
-    private static $extraDouble;
+    private $extraDouble;
 
     /**
      * The value for the field extra_float, if set.
      */
-    private static $extraFloat;
+    private $extraFloat;
 
     /**
      * The value for the field extra_bool, if set.
      */
-    private static $extraBool;
+    private $extraBool;
 
     /**
      * Name of the field for which the oneof is set, as it appears in the protobuf in
      * lower_camel_case.
      */
-    private static $selectedOneofFieldName = '';
+    private $selectedOneofFieldName = '';
 
     /**
      * Sets this oneof to extra_description and updates its value.
