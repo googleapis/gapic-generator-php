@@ -79,7 +79,7 @@ class SupplementaryDataOneof
      *
      * @param string $extraDescription The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraDescription($extraDescription)
     {
@@ -93,7 +93,7 @@ class SupplementaryDataOneof
      *
      * @param string $extraSummary The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraSummary($extraSummary)
     {
@@ -107,7 +107,7 @@ class SupplementaryDataOneof
      *
      * @param PartOfRequestA $extraRequest The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraRequest($extraRequest)
     {
@@ -121,7 +121,7 @@ class SupplementaryDataOneof
      *
      * @param int $extraIndex The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraIndex($extraIndex)
     {
@@ -135,7 +135,7 @@ class SupplementaryDataOneof
      *
      * @param float $extraDouble The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraDouble($extraDouble)
     {
@@ -149,7 +149,7 @@ class SupplementaryDataOneof
      *
      * @param float $extraFloat The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraFloat($extraFloat)
     {
@@ -163,7 +163,7 @@ class SupplementaryDataOneof
      *
      * @param bool $extraBool The new value of this oneof.
      *
-     * @return SupplementaryDataOneof The modified object
+     * @return SupplementaryDataOneof The modified object.
      */
     public function setExtraBool($extraBool)
     {

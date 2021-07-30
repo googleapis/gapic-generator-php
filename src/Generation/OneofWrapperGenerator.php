@@ -212,7 +212,7 @@ class OneofWrapperGenerator
                     PhpDoc::text('The new value of this oneof.'),
                     $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))
                 ),
-                PhpDoc::return($this->ctx->type($oneofWrapperType), PhpDoc::text('The modified object'))
+                PhpDoc::return($this->ctx->type($oneofWrapperType), PhpDoc::text('The modified object.'))
             ));
     }
 
