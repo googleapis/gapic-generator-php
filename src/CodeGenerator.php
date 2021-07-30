@@ -22,6 +22,7 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\OneofWrapperGenerator;
 use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
@@ -256,6 +257,19 @@ class CodeGenerator
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
+
+            // Oneof wrapper classes.
+            $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
+            $oneofWrapperFiles = OneofWrapperGenerator::generate($ctx, $service);
+            foreach ($oneofWrapperFiles as $oneofWrapperFile) {
+                $oneofClassNameComponents = explode('\\', $oneofWrapperFile->class->type->getFullname(/* omitLeadingBackslash = */ true));
+                $oneofContainingMessageName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 2];
+                $oneofClassName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 1];
+                $oneofCode = $oneofWrapperFile->toCode();
+                $oneofCode = Formatter::format($oneofCode);
+                yield ["src/{$version}$oneofContainingMessageName/$oneofClassName.php", $oneofCode];
+            }
+
             // Very thin service client wrapper, for manual code additions if required.
             $ctx = new SourceFileContext($service->emptyClientType->getNamespace(), $licenseYear);
             $file = EmptyClientGenerator::generate($ctx, $service);
