@@ -145,9 +145,12 @@ class OneofWrapperGenerator
      */
     public function generateClass(OneofDescriptor $oneofDesc, string $containingMessageName): PhpClass
     {
+        // Set the wrapper class type.
+        // Keep this in sync with the logic in GapicClientGenerator::toOneofWrapperType.
         $oneofCamelName = Helpers::toUpperCamelCase($oneofDesc->getName());
+        $oneofWrapperClassName = "{$oneofCamelName}Oneof";
         $namespace = $this->serviceDetails->namespace . "\\$containingMessageName";
-        $generatedOneofWrapperType = Type::fromName("{$namespace}\\{$oneofCamelName}Oneof");
+        $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
 
         // TODO(miraleung): Add PhpDoc and methods.
         return AST::class($generatedOneofWrapperType)
@@ -201,7 +204,11 @@ class OneofWrapperGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Sets this oneof to ' . $fieldDesc->getName() . ' and updates its value.'),
-                PhpDoc::param($newValueParam, PhpDoc::text('The new value of this oneof.'))
+                PhpDoc::param(
+                    $newValueParam,
+                    PhpDoc::text('The new value of this oneof.'),
+                    $this->ctx->type(Type::fromField($this->serviceDetails->catalog, $fieldDesc))
+                )
             ));
     }
 

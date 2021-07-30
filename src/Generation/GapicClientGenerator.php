@@ -33,12 +33,15 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\Expression;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Ast\PhpParam;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
@@ -596,6 +599,9 @@ class GapicClientGenerator
                     return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
                 } elseif ($field->isMap) {
                     return $this->ctx->type(Type::array());
+                } elseif ($field->isOneOf) {
+                    // Also adds a corresponding 'use' import.
+                    return $this->ctx->type(self::toOneofWrapperType($field));
                 } else {
                     return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
@@ -623,7 +629,9 @@ class GapicClientGenerator
 
         $request = AST::var('request');
         $requestParamHeaders = AST::var('requestParamHeaders');
-        $required = $method->requiredFields->map(fn ($x) => AST::param(null, AST::var($x->camelName)));
+        $required = $method->requiredFields
+                           ->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f))
+                           ->map(fn ($f) => $this->toParam($f));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $requestParams = AST::var('requestParams');
@@ -668,6 +676,7 @@ class GapicClientGenerator
         $requestParamAssigns = null;
         if ($hasRequestParams) {
             $requestParamAssigns = Vector::new([]);
+            // TODO(v2): Handle request params for oneofs - this currently isn't used by anyone.
             foreach ($method->requiredFields as $field) {
                 if (!isset($requiredFieldToHeaderName[$field->name])) {
                     continue;
@@ -704,9 +713,9 @@ class GapicClientGenerator
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
                     !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip(
-                        $method->requiredFields,
+                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || self::isFirstFieldInOneof($f)),
                         $required,
-                        fn ($field, $param) => AST::call($request, $field->setter)($param)
+                        fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
                     ),
                     $requestParamAssigns,
                     $method->optionalFields->map(
@@ -744,8 +753,21 @@ class GapicClientGenerator
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
                 PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
-                $isStreamedRequest ? null : Vector::zip($method->requiredFields, $required, fn ($field, $param) =>
-                    PhpDoc::param($param, PhpDoc::preFormattedText($field->docLines->concat($docExtra($field))), $docType($field))),
+                $isStreamedRequest
+                    ? null
+                    : Vector::zip($method->requiredFields, $required, fn ($field, $param) =>
+                        PhpDoc::param(
+                            $param,
+                            PhpDoc::preFormattedText(
+                                !$field->isOneOf
+                                    ? $field->docLines->concat($docExtra($field))
+                                    : Vector::new(['Maps to the required proto oneof '
+                                        . $field->containingMessage->getOneofDecl()[$field->oneOfIndex]->getName()
+                                        . '.'
+                                    ])->concat($docExtra($field))
+                            ),
+                            $docType($field)
+                        )),
                 $isStreamedRequest ?
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
@@ -861,5 +883,129 @@ class GapicClientGenerator
       default:
         throw new \Exception("Cannot handle method type: '{$method->methodType}'");
       }
+    }
+
+    /**
+     * Turns a field into a parameter for RPC methods.
+     *
+     * The caller will be responsible for preventing duplicates by ensuring that this method
+     * is called only on the first field in a oneof group.
+     */
+    private function toParam(FieldDetails $field): PhpParam
+    {
+        if (!$field->isOneOf) {
+            return AST::param(null, AST::var($field->camelName));
+        }
+
+        $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
+        return AST::param(null, AST::var(Helpers::toCamelCase($oneofDesc->getName())));
+    }
+
+    /**
+     * Returns an expression that assigns a required field to a request.
+     * If this field is not part of a oneof, returns a plain assignment expression.
+     * If the field is a oneof, this method returns an if-else block that passes the chosen
+     * oneof field to the corresponding setter in the oneof.
+     *
+     * The caller will be responsible for preventing duplicates by ensuring that this method
+     * is called only on the first field in a oneof group.
+     *
+     *  @param $requestVarExpr The AST variable that represents the request.
+     *  @param $field A required proto field.
+     *  @param $param The input parameter into the RPC method that corresponnds to $field.
+     *    If $field is part of a oneof, $param should be a wrapper class generated by
+     *    OneofWrapperGenerator (and generated by $this->toParam()).
+     *  @returns An assignment Expression or an if-else block of type AST.
+     */
+    private function toRequestFieldSetter(Expression $requestVarExpr, FieldDetails $field, PhpParam $param)
+    {
+        if (!$field->isOneOf) {
+            return AST::call($requestVarExpr, $field->setter)($param);
+        }
+
+        if (!self::isFirstFieldInOneof($field)) {
+            return null;
+        }
+
+        $containingMessage = $field->containingMessage;
+        $oneofFieldDescProtos = $containingMessage->getField();
+
+        $toMethodNameFn = function ($prefix, $fieldDescProto) {
+            return $prefix . Helpers::toUpperCamelCase($fieldDescProto->getName());
+        };
+
+        $ifBlock = null;
+        foreach ($containingMessage->getField() as $currFieldDescProto) {
+            if (!$currFieldDescProto->hasOneofIndex()
+                || $currFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
+                continue;
+            }
+
+            // Code: $fooOneof->isBar()
+            $condition = AST::call($param, AST::method($toMethodNameFn("is", $currFieldDescProto)))();
+            // Code: $request->setBar($fooOneof->getBar())
+            $then = AST::call(
+                $requestVarExpr,
+                AST::method($toMethodNameFn("set", $currFieldDescProto))
+            )(
+                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
+            );
+            // First field.
+            if ($ifBlock === null) {
+                $ifBlock = AST::if($condition)->then($then);
+            } else {
+                $ifBlock = $ifBlock->elseif($condition, $then);
+            }
+        }
+
+        // Add the throw-exception block, in case a oneof field is not set.
+        if ($ifBlock !== null) {
+            $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
+            $ifBlock = $ifBlock->else(
+                AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
+                    AST::interpolatedString('A field for the oneof ' . $oneofDesc->getName()
+                    . ' must be set in param ' . $param->toCode())
+                ))
+            );
+        }
+
+        return AST::block($ifBlock);
+    }
+
+    /**
+     * Returns true if $field is the first field encountered in the containing oneof.
+     */
+    private static function isFirstFieldInOneof(FieldDetails $field): bool
+    {
+        if (!$field->isOneOf) {
+            return false;
+        }
+
+        // Check if the containing message has another field in this oneof that precedes
+        // $field. If so, this oneof has already been handled.
+        // Oneof fields should appear in increasing field number order.
+        $containingMessage = $field->containingMessage;
+        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
+            if (!$containingMessageFieldDescProto->hasOneofIndex()
+                || $containingMessageFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
+                continue;
+            }
+            // This is the first field encountered in this oneof group.
+            return $containingMessageFieldDescProto->getNumber() === $field->number;
+        }
+    }
+
+    private static function toOneofWrapperType(FieldDetails $field): ?Type
+    {
+        if (!$field->isOneOf) {
+            return null;
+        }
+
+        // Mirror of the wrapper class typing logic in OneofWrapperGenerator::generateClass.
+        $oneofDesc = $field->containingMessage->getOneofDecl()[$field->oneOfIndex];
+        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . "Oneof";
+        $namespace = $this->serviceDetails->namespace . "\\" . $field->containingMessage->getName();
+        $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
+        return $generatedOneofWrapperType;
     }
 }
