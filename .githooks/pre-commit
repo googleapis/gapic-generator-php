@@ -101,20 +101,6 @@ then
   fi
 fi
 
-# Check PHP integration tests.
-if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
-then
-  echo_status "Checking PHP integration tests..."
-  php tests/Integration/Main.php
-  TEST_STATUS=$?
-
-  if [ $TEST_STATUS != 0 ]
-  then
-    echo_error "Tests failed." "Please fix them and try again."
-    exit 1
-  fi
-fi
-
 # Check Bazel integration tests.
 if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
 then
