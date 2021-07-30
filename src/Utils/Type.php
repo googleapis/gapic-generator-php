@@ -58,6 +58,12 @@ class Type implements Equality
         return new Type(null, 'bool');
     }
 
+    /** The built-in 'callable' type. */
+    public static function callable(): Type
+    {
+        return new Type(null, 'callable');
+    }
+
     /** The built-in 'mixed' type. */
     public static function mixed(): Type
     {
