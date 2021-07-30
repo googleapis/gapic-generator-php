@@ -202,7 +202,7 @@ class ServiceDetails
             if ($level == 0) {
                 $fieldDetails = $fields
                 ->filter(fn ($f) => !is_null($f))
-                ->map(fn ($f) => new FieldDetails($catalog, $f));
+                ->map(fn ($f) => new FieldDetails($catalog, $msg, $f));
 
                 $fullnameFn = function ($fd) {
                     return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
