@@ -160,9 +160,9 @@ class TestNameValueProducer
                     $fieldVar,
                     AST::method("set" . Helpers::toUpperCamelCase($field->camelName))
                 )(
-                        // TODO(v2): Handle non-primitive types.
-                        $this->value($field, $fieldVarName)
-                    )
+                    // TODO(v2): Handle non-primitive types.
+                    $this->value($field, $fieldVarName)
+                )
             );
             return;
         }
