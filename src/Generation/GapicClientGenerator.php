@@ -599,6 +599,9 @@ class GapicClientGenerator
                     return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
                 } elseif ($field->isMap) {
                     return $this->ctx->type(Type::array());
+                } elseif ($field->isOneOf) {
+                    // Also adds a corresponding 'use' import.
+                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
                 } else {
                     return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
                 }
