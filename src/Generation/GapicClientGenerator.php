@@ -385,19 +385,19 @@ class GapicClientGenerator
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
 
-        $clientDefaultValues['credentialsConfig'] = AST::array([
+        $credentialsConfig = [
             'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
-        ]);
+        ];
+        // Set "useJwtAccessWithScope" for DIREGAPIC APIs
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            $credentialsConfig['useJwtAccessWithScope'] = false;
+        }
+        $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
         $clientDefaultValues['transportConfig'] = AST::array([
             'rest' => AST::array([
                 'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
             ])
         ]);
-
-        // Set "useJwtAccessWithScope" for DIREGAPIC APIs
-        if ($this->serviceDetails->transportType === Transport::REST) {
-            $clientDefaultValues['useJwtAccessWithScope'] = false;
-        }
 
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
@@ -579,6 +579,14 @@ class GapicClientGenerator
                         Vector::new([$ctx->type(Type::array())]),
                         'transportConfig',
                         $transportConfigDocText
+                    ),
+                    PhpDoc::type(
+                        Vector::new([$ctx->type(Type::callable())]),
+                        'clientCertSource',
+                        PhpDoc::text(
+                            'A callable which returns the client cert as a string. This can be used to provide',
+                            'a certificate and private key to the transport layer for mTLS.'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
@@ -709,23 +717,6 @@ class GapicClientGenerator
                         fn ($field, $param) => AST::call($request, $field->setter)($param)
                     ),
                     $requestParamAssigns,
-                    /*
-                    !$hasRequestParams ? null : Vector::zip(
-                        $method->requiredFields,
-                        $required,
-                        fn ($field, $param) =>
-                      !isset($requiredFieldToHeaderName[$field->name]) ? null : AST::assign(
-                          AST::index($requestParamHeaders, $requiredFieldToHeaderName[$field->name]),
-                          $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))->count() < 2
-                        ? $param
-                        // This reduce chains getter methods together for nested names like foo.bar.car.
-                        // Example: $foo->getBar()->getCar().
-                        : $restRoutingHeaders->get($requiredFieldToHeaderName[$field->name], Vector::new([]))
-                                             ->skip(1)
-                                             ->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))())
-                      )
-                    ),
-                     */
                     $method->optionalFields->map(
                         fn ($x) =>
                         AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
