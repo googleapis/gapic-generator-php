@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.3...v1.1.0) (2021-07-30)
+
+
+### Features
+
+* **oneofs:** Add support for required oneofs in PHP ([#336](https://www.github.com/googleapis/gapic-generator-php/issues/336)) ([493c9d7](https://www.github.com/googleapis/gapic-generator-php/commit/493c9d73a3a4fbbf10148f0e9ece469960bb2502))
+
 ### [1.0.3](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.2...v1.0.3) (2021-07-29)
 
 
