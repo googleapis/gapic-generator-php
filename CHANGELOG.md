@@ -8,13 +8,6 @@
 * **oneofs:** Add support for required oneofs in PHP ([#336](https://www.github.com/googleapis/gapic-generator-php/issues/336)) ([493c9d7](https://www.github.com/googleapis/gapic-generator-php/commit/493c9d73a3a4fbbf10148f0e9ece469960bb2502))
 
 
-### Miscellaneous Chores
-
-* release 1.0.4 ([5776be2](https://www.github.com/googleapis/gapic-generator-php/commit/5776be22ec3b2da24a9dec8110687847bad74f92))
-
-### [1.0.3](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.2...v1.0.3) (2021-07-29)
-
-
 ### Features
 
 * add mtls clientCertSource client option to docs ([#321](https://www.github.com/googleapis/gapic-generator-php/issues/321)) ([0b719a7](https://www.github.com/googleapis/gapic-generator-php/commit/0b719a70b5acdc5ebd0c63d7dd121d7773564b9f))
