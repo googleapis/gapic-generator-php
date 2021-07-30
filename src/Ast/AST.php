@@ -435,7 +435,13 @@ abstract class AST
                 if (is_null($this->callee)) {
                     return static::toPhp($this->obj) . "({$args})";
                 } else {
-                    return static::toPhp($this->obj) . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+                    // Handle calling a function directly on a constructor.
+                    // We assume that a constructor call will always start with `new `.
+                    $objCode = static::toPhp($this->obj);
+                    if (substr($objCode, 0, 4) === 'new ') {
+                        $objCode = '(' . $objCode . ')';
+                    }
+                    return $objCode . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
                 }
             }
         };
@@ -570,11 +576,17 @@ abstract class AST
             {
                 $this->expr = $expr;
                 $this->then = null;
+                $this->elseif = Vector::new([]);
                 $this->else = null;
             }
             public function then(...$code)
             {
                 return $this->clone(fn ($clone) => $clone->then = AST::block(...$code));
+            }
+            public function elseif(Expression $cond, ...$code)
+            {
+                // [Condition, AST::block]
+                return $this->clone(fn ($clone) => $clone->elseif = $clone->elseif->append([$cond, AST::block(...$code)]));
             }
             public function else(...$code)
             {
@@ -582,13 +594,23 @@ abstract class AST
             }
             public function toCode(): string
             {
+                if ($this->else === null && $this->elseif->count() > 0) {
+                    throw new \Exception("If-block with condition {$this->expr} has elseifs "  .
+                        " but is missing an else block - cannot convert to PHP code.");
+                }
+                $elseif = implode("", $this->elseif->map(
+                    fn ($arrayCondBlockPair) =>
+                        " elseif (" . static::toPhp($arrayCondBlockPair[0]) . ") {\n"  .
+                        static::toPhp($arrayCondBlockPair[1]) . "\n" .
+                        "}"
+                )->toArray());
                 $else = is_null($this->else) ? '' :
                     " else {\n" .
                     static::toPhp($this->else) . "\n" .
                     "}";
                 return 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
-                    "}{$else}\n";
+                    "}{$elseif}{$else}\n";
             }
         };
     }
