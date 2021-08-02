@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Api\HttpRule;
+use Google\ApiCore\ResourceTemplate\Parser;
+use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Expression;
 use Google\Generator\Collections\Map;
@@ -109,7 +111,7 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
-    private static function restMethodDetails(ProtoCatalog $catalog, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
+    private static function restMethodDetails(ProtoCatalog $catalog, MethodDetails $method, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
     {
         $httpMethod = $httpRule->getPattern();
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpMethod}");
@@ -117,6 +119,7 @@ class ResourcesGenerator
         $body = $httpRule->getBody();
         $restBody = $body === '' ? $defaultBody : $body;
         $additionalBindings = Vector::new($httpRule->getAdditionalBindings());
+        $queryParams = self::getQueryParams($method);
         if ($topLevel) {
             // Merges plcaeholders for all bindings; ie includes additional bindings.
             $placeholders = $additionalBindings
@@ -128,12 +131,13 @@ class ResourcesGenerator
         } else {
             $placeholders = Map::new();
         }
-        return AST::array([
+
+        $methodDetails = [
             'method' => $httpMethod,
             'uriTemplate' => $uriTemplate,
             'body' => $restBody,
             'additionalBindings' => !$additionalBindings->any() ? null :
-                AST::array($additionalBindings->map(fn ($x) => static::restMethodDetails($catalog, $x, false, $restBody))->toArray()),
+                AST::array($additionalBindings->map(fn ($x) => static::restMethodDetails($catalog, $method, $x, false, $restBody))->toArray()),
             'placeholders' => count($placeholders) === 0 ? null : AST::array(
                 $placeholders
                     ->mapValues(fn ($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
@@ -141,26 +145,31 @@ class ResourcesGenerator
                     ->orderBy(fn ($x) => $x[0])
                     ->toArray(fn ($x) => $x[0], fn ($x) => $x[1])
             )
-        ]);
+        ];
+        if ($queryParams->count() > 0) {
+            $methodDetails['queryParams'] = AST::array($queryParams->toArray());
+        }
+
+        return AST::array($methodDetails);
     }
 
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
         $allInterfaces = $serviceDetails->methods
             ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming() && !$method->isMixin())
-            ->map(fn ($method) => [$serviceDetails->serviceName, $method->name, $method->httpRule])
+            ->map(fn ($method) => [$serviceDetails->serviceName, $method, $method->httpRule])
             ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
                 Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),
                 Vector::new(explode('.', $x->getSelector()))->last(),
                 $x
-            ])) // [service name, method name, httpRule]
+            ])) // [service name, method, httpRule]
             ->groupBy(fn ($x) => $x[0])
             ->mapValues(fn ($k, $v) => [$k, $v])
             ->values()
             ->orderBy(fn ($x) => $x[0]) // order by service name
             ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]->toArray(
-                fn ($y) => $y[1],
-                fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[2], true, null),
+                fn ($y) => $y[1]->name,
+                fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[1], $y[2], true, null),
             )));
         $return = AST::return(
             AST::array([
@@ -339,5 +348,36 @@ class ResourcesGenerator
                 return $line;
             })
             ->join("\n");
+    }
+
+    private static function getQueryParams(MethodDetails $method): Vector
+    {
+        $httpRule = $method->httpRule;
+        if ($method->httpRule->getBody() === '' || $method->httpRule->getBody() === '*') {
+            return Vector::new([]);
+        }
+        // Find all the query params - those that are not part of the REST path but are required
+        // fields in the message request.
+        $httpMethod = $httpRule->getPattern();
+        $uriTemplateGetter = Helpers::toCamelCase("get_{$httpMethod}");
+        $uriTemplate = $httpRule->$uriTemplateGetter();
+        // Parse the uriTemplate.
+        $segments = Vector::new(Parser::parseSegments(substr($uriTemplate, 1)));
+        $varSegments = $segments
+            ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
+            ->map(fn ($x) => $x->getKey());
+        // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
+        $tokens = explode("/", $uriTemplate);
+        $nameSegments = $varSegments;
+        if (substr(end($tokens), 0, 1) !== "{" && substr($uriTemplate, strlen($uriTemplate) - 1) !== "}") {
+            $nameSegments = $nameSegments->append(end($tokens));
+        }
+        // Match the name segments against the required fields in the method.
+        // TODO(vNext): Handle oneofs, which isn't currently exercised in query params in GCE.
+        $queryParams =
+            $method->requiredFields
+                ->filter(fn ($f) => !$nameSegments->contains($f->name))
+                ->map(fn ($f) => $f->name);
+        return $queryParams;
     }
 }
