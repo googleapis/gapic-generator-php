@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ use Google\Rpc\Code;
 use stdClass;
 use Testing\BasicOneof\BasicOneofClient;
 use Testing\BasicOneof\Request;
+use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
 /**
@@ -81,8 +82,9 @@ class BasicOneofClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $extraDescription = 'extraDescription-1352933811';
-        $response = $client->aMethod($extraDescription);
+        $supplementaryData = new SupplementaryDataOneof();
+        $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $response = $client->aMethod($supplementaryData);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -90,7 +92,7 @@ class BasicOneofClientTest extends GeneratedTest
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.basiconeof.BasicOneof/AMethod', $actualFuncCall);
         $actualValue = $actualRequestObject->getExtraDescription();
-        $this->assertProtobufEquals($extraDescription, $actualValue);
+        $this->assertTrue($supplementaryData->isExtraDescription());
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -115,9 +117,10 @@ class BasicOneofClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $extraDescription = 'extraDescription-1352933811';
+        $supplementaryData = new SupplementaryDataOneof();
+        $supplementaryData->setExtraDescription('extraDescription-1352933811');
         try {
-            $client->aMethod($extraDescription);
+            $client->aMethod($supplementaryData);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

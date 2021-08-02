@@ -137,10 +137,32 @@ class TestNameValueProducer
 
     // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
     // TODO: Handle nesting - see PublishSeries.
-    public function fieldInit(MethodDetails $method, FieldDetails $field, $fieldVar, string $fieldVarName, ?Variable $clientVar, Vector &$astAcc)
+    public function fieldInit(MethodDetails $method, FieldDetails $field, &$fieldVar, string $fieldVarName, ?Variable $clientVar, Vector &$astAcc)
     {
         if (!$field->isRequired) {
             $astAcc = $astAcc->append(null);
+            return;
+        }
+
+        if ($field->isOneOf) {
+            $oneofWrapperType = $field->toOneofWrapperType($method->serviceDetails->namespace);
+            // Initialize the oneof, e.g.
+            //   $supplementaryData = new SupplementaryDataOneof();
+            $fieldVar = AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName()));
+            // TODO(v2): Enable recursion like the map source below. We don't do this yet
+            // because nobody exercises this use case.
+            $astAcc = $astAcc->append(AST::assign($fieldVar, AST::new($this->ctx->type($oneofWrapperType))()));
+            // Set the oneof field, e.g.
+            //    $supplementaryData->setExtraDescription('extraDescription-1352933811');
+            $astAcc = $astAcc->append(
+                AST::call(
+                    $fieldVar,
+                    AST::method("set" . Helpers::toUpperCamelCase($field->camelName))
+                )(
+                    // TODO(v2): Handle non-primitive types.
+                    $this->value($field, $fieldVarName)
+                )
+            );
             return;
         }
 
@@ -153,7 +175,7 @@ class TestNameValueProducer
             //     }
             //     repeated MapFieldEntry map_field = 1;
             $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-            $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $mapMsg, $x));
             $keyName = Helpers::toCamelCase($field->camelName . '_key');
 
             $valueFieldVarName = Helpers::toCamelCase($field->camelName . '_value');
@@ -173,7 +195,7 @@ class TestNameValueProducer
             $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
 
             $msg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-            $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+            $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $msg, $x));
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired);
             if (empty($requiredSubFields) && !$field->useResourceTestValue) {
                 $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
@@ -297,7 +319,7 @@ class TestNameValueProducer
                     //     }
                     //     repeated MapFieldEntry map_field = 1;
                     $mapMsg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
-                    $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $x));
+                    $kvSubfields = Vector::new($mapMsg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $mapMsg, $x));
                     $keyName = Helpers::toCamelCase($field->camelName . '_key');
                     $valueField = $kvSubfields[1];
                     // Hacks to ensure this ends up in the test value initialization setters.

@@ -27,6 +27,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 
@@ -38,6 +39,9 @@ class FieldDetails
     /** @var FieldDescriptorProto The proto definition of this field. */
     public FieldDescriptorProto $desc;
 
+    /** @var int *Readonly* This field's number in its containing message. */
+    public int $number;
+
     /** @var string *Readonly* The proto name of this field. */
     public string $name;
 
@@ -46,6 +50,9 @@ class FieldDetails
 
     /** @var Type *Readonly* The type of this field. */
     public Type $type;
+
+    /** @var DescriptorProto *Readonly* The containing message of this field. */
+    public DescriptorProto $containingMessage;
 
     /** @var Type *Readonly* The type of this field, treating it as not repeated. */
     public Type $typeSingular;
@@ -67,6 +74,9 @@ class FieldDetails
 
     /** @var bool *Readonly* Whether this field is a map. */
     public bool $isMap;
+
+    /** @var bool *Readonly* Whether this field is a oneof. */
+    public bool $isOneOf;
 
     /** @var bool *Readonly* The full name of the field's type if this is a message, null otherwise. */
     public ?string $fullname;
@@ -90,11 +100,13 @@ class FieldDetails
     /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
     public ?int $oneOfIndex;
 
-    public function __construct(ProtoCatalog $catalog, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
+    public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
         $this->desc = $field;
+        $this->containingMessage = $containingMessage;
         $desc = $field->desc;
+        $this->number = $desc->getNumber();
         $this->name = $desc->getName();
         $this->camelName = Helpers::toCamelCase($this->name);
         $this->type = Type::fromField($catalog, $desc);
@@ -136,7 +148,57 @@ class FieldDetails
         }
         // Use fancy fooName() methods only if this isn't a wildcard pattern.
         $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) > 0;
-        $this->oneOfIndex = $field->hasOneOfIndex() ? $field->getOneofIndex() : null;
+        $this->oneOfIndex = $field->hasOneofIndex() ? $field->getOneofIndex() : null;
+        $this->isOneOf = $field->hasOneofIndex();
+    }
+
+    public function toOneofWrapperType(string $serviceNamespace): ?Type
+    {
+        if (!$this->isOneOf) {
+            return null;
+        }
+
+        // Mirror of the wrapper class typing logic in OneofWrapperGenerator::generateClass.
+        $oneofDesc = $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
+        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . "Oneof";
+        $namespace = $serviceNamespace . "\\" . $this->containingMessage->getName();
+        $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
+        return $generatedOneofWrapperType;
+    }
+
+    /**
+     * Returns true if $field is the first field encountered in the containing oneof.
+     */
+    public function isFirstFieldInOneof(): bool
+    {
+        if (!$this->isOneOf) {
+            return false;
+        }
+
+        // Check if the containing message has another field in this oneof that precedes
+        // $field. If so, this oneof has already been handled.
+        // Oneof fields should appear in increasing field number order.
+        $containingMessage = $this->containingMessage;
+        foreach ($containingMessage->getField() as $containingMessageFieldDescProto) {
+            if (!$containingMessageFieldDescProto->hasOneofIndex()
+                || $containingMessageFieldDescProto->getOneofIndex() !== $this->oneOfIndex) {
+                continue;
+            }
+            // This is the first field encountered in this oneof group.
+            return $containingMessageFieldDescProto->getNumber() === $this->number;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the oneof descriptor that corresponds to this field, if it is part of a oneof.
+     * Otherwise, returns null.
+     *
+     * @return ?OneofDescriptorProto
+     */
+    public function getOneofDesc()
+    {
+        return !$this->isOneOf ? null : $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
     }
 
     public function exampleValue(SourceFileContext $ctx)

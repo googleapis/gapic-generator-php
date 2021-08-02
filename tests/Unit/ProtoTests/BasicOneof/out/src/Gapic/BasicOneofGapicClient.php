@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\BasicOneof\PartOfRequestA;
 use Testing\BasicOneof\Request;
+use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
 /**
@@ -45,14 +45,8 @@ use Testing\BasicOneof\Response;
  * ```
  * $basicOneofClient = new BasicOneofClient();
  * try {
- *     $extraDescription = 'extra_description';
- *     $extraSummary = 'extra_summary';
- *     $extraRequest = new PartOfRequestA();
- *     $extraIndex = 0;
- *     $extraDouble = 0.0;
- *     $extraFloat = 0.0;
- *     $extraBool = false;
- *     $response = $basicOneofClient->aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool);
+ *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+ *     $response = $basicOneofClient->aMethod($supplementaryData);
  * } finally {
  *     $basicOneofClient->close();
  * }
@@ -176,30 +170,22 @@ class BasicOneofGapicClient
      * ```
      * $basicOneofClient = new BasicOneofClient();
      * try {
-     *     $extraDescription = 'extra_description';
-     *     $extraSummary = 'extra_summary';
-     *     $extraRequest = new PartOfRequestA();
-     *     $extraIndex = 0;
-     *     $extraDouble = 0.0;
-     *     $extraFloat = 0.0;
-     *     $extraBool = false;
-     *     $response = $basicOneofClient->aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool);
+     *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+     *     $response = $basicOneofClient->aMethod($supplementaryData);
      * } finally {
      *     $basicOneofClient->close();
      * }
      * ```
      *
-     * @param string         $extraDescription Supplemental request description.
-     * @param string         $extraSummary     Supplemental request summary.
-     * @param PartOfRequestA $extraRequest     An extra request.
-     * @param int            $extraIndex       An extra index.
-     * @param float          $extraDouble      An extra double.
-     * @param float          $extraFloat       An extra float.
-     * @param bool           $extraBool        An extra bool.
-     * @param array          $optionalArgs     {
+     * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
+     * @param array                  $optionalArgs      {
      *     Optional.
      *
      *     @type int $anInt
+     *     @type string $optionalPayload
+     *           An optional payload.
+     *     @type int $optionalCount
+     *           An optional count.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -211,18 +197,38 @@ class BasicOneofGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod($extraDescription, $extraSummary, $extraRequest, $extraIndex, $extraDouble, $extraFloat, $extraBool, array $optionalArgs = [])
+    public function aMethod($supplementaryData, array $optionalArgs = [])
     {
         $request = new Request();
-        $request->setExtraDescription($extraDescription);
-        $request->setExtraSummary($extraSummary);
-        $request->setExtraRequest($extraRequest);
-        $request->setExtraIndex($extraIndex);
-        $request->setExtraDouble($extraDouble);
-        $request->setExtraFloat($extraFloat);
-        $request->setExtraBool($extraBool);
+        if ($supplementaryData->isExtraDescription()) {
+            $request->setExtraDescription($supplementaryData->getExtraDescription());
+        } elseif ($supplementaryData->isExtraSummary()) {
+            $request->setExtraSummary($supplementaryData->getExtraSummary());
+        } elseif ($supplementaryData->isExtraRequest()) {
+            $request->setExtraRequest($supplementaryData->getExtraRequest());
+        } elseif ($supplementaryData->isExtraIndex()) {
+            $request->setExtraIndex($supplementaryData->getExtraIndex());
+        } elseif ($supplementaryData->isExtraDouble()) {
+            $request->setExtraDouble($supplementaryData->getExtraDouble());
+        } elseif ($supplementaryData->isExtraFloat()) {
+            $request->setExtraFloat($supplementaryData->getExtraFloat());
+        } elseif ($supplementaryData->isExtraBool()) {
+            $request->setExtraBool($supplementaryData->getExtraBool());
+        } else {
+            throw new ValidationException("A field for the oneof supplementary_data must be set in param $supplementaryData");
+        }
+
+        
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
+        }
+
+        if (isset($optionalArgs['optionalPayload'])) {
+            $request->setOptionalPayload($optionalArgs['optionalPayload']);
+        }
+
+        if (isset($optionalArgs['optionalCount'])) {
+            $request->setOptionalCount($optionalArgs['optionalCount']);
         }
 
         return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();

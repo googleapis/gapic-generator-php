@@ -92,22 +92,8 @@ if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking unit tests..."
   # TODO(miraleung): Remove the exclusion once oneofs are properly supported.
-  ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit --exclude-group=basiconeof
+  ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
   TEST_STATUS=$?
-  if [ $TEST_STATUS != 0 ]
-  then
-    echo_error "Tests failed." "Please fix them and try again."
-    exit 1
-  fi
-fi
-
-# Check PHP integration tests.
-if [ $NUM_PHP_FILES_CHANGED -gt 0 ] || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ]
-then
-  echo_status "Checking PHP integration tests..."
-  php tests/Integration/Main.php
-  TEST_STATUS=$?
-
   if [ $TEST_STATUS != 0 ]
   then
     echo_error "Tests failed." "Please fix them and try again."
