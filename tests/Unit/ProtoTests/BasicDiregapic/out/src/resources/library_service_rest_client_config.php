@@ -114,6 +114,10 @@ return [
             'FindRelatedBooks' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/bookShelves',
+                'queryParams' => [
+                    'names',
+                    'shelves',
+                ],
             ],
             'GetBigBook' => [
                 'method' => 'get',
@@ -180,6 +184,11 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'alt_book_name',
+                    'place',
+                    'folder',
+                ],
             ],
             'GetBookFromArchive' => [
                 'method' => 'get',
@@ -191,6 +200,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'parent',
+                ],
             ],
             'GetShelf' => [
                 'method' => 'get',
@@ -201,6 +213,9 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'options',
                 ],
             ],
             'ListAggregatedShelves' => [

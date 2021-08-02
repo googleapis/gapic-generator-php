@@ -353,16 +353,24 @@ class ResourcesGenerator
     private static function getQueryParams(MethodDetails $method): Vector
     {
         $httpRule = $method->httpRule;
-        if ($method->httpRule->getBody() === '' || $method->httpRule->getBody() === '*') {
-            return Vector::new([]);
+        $segments = Vector::new([]);
+        if ($method->httpRule->getBody() === '*') {
+            return $segments;
         }
         // Find all the query params - those that are not part of the REST path but are required
         // fields in the message request.
         $httpMethod = $httpRule->getPattern();
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpMethod}");
         $uriTemplate = $httpRule->$uriTemplateGetter();
-        // Parse the uriTemplate.
-        $segments = Vector::new(Parser::parseSegments(substr($uriTemplate, 1)));
+        // Parse the uriTemplate. Just do a best-effort pass at this, since it doesn't hit
+        // GCE / DIREGAPIC and OnePlatform GAPICs are fine without this.
+        try {
+            $rawSegments = Parser::parseSegments(substr($uriTemplate, 1));;
+        } catch (\Google\ApiCore\ValidationException $e) {
+            // Ignore.
+            return $segments;
+        }
+        $segments = Vector::new($rawSegments);
         $varSegments = $segments
             ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->map(fn ($x) => $x->getKey());
