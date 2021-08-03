@@ -111,7 +111,7 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
-    private static function restMethodDetails(ProtoCatalog $catalog, MethodDetails $method, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
+    private static function restMethodDetails(ProtoCatalog $catalog, $methodOrMethodName, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
     {
         $httpMethod = $httpRule->getPattern();
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpMethod}");
@@ -119,7 +119,7 @@ class ResourcesGenerator
         $body = $httpRule->getBody();
         $restBody = $body === '' ? $defaultBody : $body;
         $additionalBindings = Vector::new($httpRule->getAdditionalBindings());
-        $queryParams = self::getQueryParams($method);
+        $queryParams = $methodOrMethodName instanceof MethodDetails ? self::getQueryParams($methodOrMethodName) : Vector::new([]);
         if ($topLevel) {
             // Merges plcaeholders for all bindings; ie includes additional bindings.
             $placeholders = $additionalBindings
@@ -137,7 +137,7 @@ class ResourcesGenerator
             'uriTemplate' => $uriTemplate,
             'body' => $restBody,
             'additionalBindings' => !$additionalBindings->any() ? null :
-                AST::array($additionalBindings->map(fn ($x) => static::restMethodDetails($catalog, $method, $x, false, $restBody))->toArray()),
+                AST::array($additionalBindings->map(fn ($x) => static::restMethodDetails($catalog, $methodOrMethodName, $x, false, $restBody))->toArray()),
             'placeholders' => count($placeholders) === 0 ? null : AST::array(
                 $placeholders
                     ->mapValues(fn ($k, $v) => [$k, AST::array(['getters' => AST::array($v->toArray())])])
@@ -168,7 +168,8 @@ class ResourcesGenerator
             ->values()
             ->orderBy(fn ($x) => $x[0]) // order by service name
             ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]->toArray(
-                fn ($y) => $y[1]->name,
+                // Weird edge case that sometimes occurs for LROs, e.g. on Retail.
+                fn ($y) => $y[1] instanceof MethodDetails ? $y[1]->name : $y[1],
                 fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[1], $y[2], true, null),
             )));
         $return = AST::return(
@@ -365,7 +366,8 @@ class ResourcesGenerator
         // Parse the uriTemplate. Just do a best-effort pass at this, since it doesn't hit
         // GCE / DIREGAPIC and OnePlatform GAPICs are fine without this.
         try {
-            $rawSegments = Parser::parseSegments(substr($uriTemplate, 1));;
+            $rawSegments = Parser::parseSegments(substr($uriTemplate, 1));
+            ;
         } catch (\Google\ApiCore\ValidationException $e) {
             // Ignore.
             return $segments;
