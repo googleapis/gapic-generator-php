@@ -12,21 +12,33 @@ return [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=projects/*/locations/*}/buckets',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'bucket_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=organizations/*/locations/*}/buckets',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'bucket_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=folders/*/locations/*}/buckets',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'bucket_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=billingAccounts/*/locations/*}/buckets',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'bucket_id',
+                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -35,6 +47,9 @@ return [
                             'getParent',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'bucket_id',
                 ],
             ],
             'CreateExclusion' => [
@@ -114,21 +129,33 @@ return [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=projects/*/locations/*/buckets/*}/views',
                         'body' => 'view',
+                        'queryParams' => [
+                            'view_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=organizations/*/locations/*/buckets/*}/views',
                         'body' => 'view',
+                        'queryParams' => [
+                            'view_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=folders/*/locations/*/buckets/*}/views',
                         'body' => 'view',
+                        'queryParams' => [
+                            'view_id',
+                        ],
                     ],
                     [
                         'method' => 'post',
                         'uriTemplate' => '/v2/{parent=billingAccounts/*/locations/*/buckets/*}/views',
                         'body' => 'view',
+                        'queryParams' => [
+                            'view_id',
+                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -137,6 +164,9 @@ return [
                             'getParent',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'view_id',
                 ],
             ],
             'DeleteBucket' => [
@@ -547,21 +577,33 @@ return [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=projects/*/locations/*/buckets/*}',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=organizations/*/locations/*/buckets/*}',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=folders/*/locations/*/buckets/*}',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*}',
                         'body' => 'bucket',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -570,6 +612,9 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'update_mask',
                 ],
             ],
             'UpdateCmekSettings' => [
@@ -600,21 +645,33 @@ return [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=projects/*/exclusions/*}',
                         'body' => 'exclusion',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=organizations/*/exclusions/*}',
                         'body' => 'exclusion',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=folders/*/exclusions/*}',
                         'body' => 'exclusion',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                     [
                         'method' => 'patch',
                         'uriTemplate' => '/v2/{name=billingAccounts/*/exclusions/*}',
                         'body' => 'exclusion',
+                        'queryParams' => [
+                            'update_mask',
+                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -623,6 +680,9 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'update_mask',
                 ],
             ],
             'UpdateSink' => [

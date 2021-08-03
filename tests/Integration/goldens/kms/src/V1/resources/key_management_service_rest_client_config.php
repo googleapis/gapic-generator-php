@@ -38,6 +38,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'crypto_key_id',
+                ],
             ],
             'CreateCryptoKeyVersion' => [
                 'method' => 'post',
@@ -62,6 +65,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'import_job_id',
+                ],
             ],
             'CreateKeyRing' => [
                 'method' => 'post',
@@ -73,6 +79,9 @@ return [
                             'getParent',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'key_ring_id',
                 ],
             ],
             'Decrypt' => [
@@ -258,6 +267,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'update_mask',
+                ],
             ],
             'UpdateCryptoKeyPrimaryVersion' => [
                 'method' => 'post',
@@ -282,6 +294,9 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'update_mask',
                 ],
             ],
         ],
