@@ -45,7 +45,7 @@ class GeneratorUtils
         $gapicYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
         $serviceYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_service.yaml");
 
-        $licenseYear = 2020; // Avoid updating tests all the time.
+        $licenseYear = 2022; // Avoid updating tests all the time.
         $generateGapicMetadata = true;
         $codeIterator = CodeGenerator::generateFromDescriptor(
             $descBytes,
