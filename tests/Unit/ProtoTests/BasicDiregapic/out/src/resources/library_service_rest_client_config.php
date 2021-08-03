@@ -48,9 +48,6 @@ return [
                         'method' => 'post',
                         'uriTemplate' => '/v1/{name=bookShelves/*}/books',
                         'body' => 'book',
-                        'queryParams' => [
-                            'book',
-                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -59,9 +56,6 @@ return [
                             'getName',
                         ],
                     ],
-                ],
-                'queryParams' => [
-                    'book',
                 ],
             ],
             'CreateInventory' => [
@@ -85,9 +79,6 @@ return [
                 'method' => 'post',
                 'uriTemplate' => '/v1/bookShelves',
                 'body' => 'shelf',
-                'queryParams' => [
-                    'shelf',
-                ],
             ],
             'DeleteBook' => [
                 'method' => 'delete',
@@ -328,9 +319,6 @@ return [
                             'getName',
                         ],
                     ],
-                ],
-                'queryParams' => [
-                    'book',
                 ],
             ],
             'UpdateBookIndex' => [

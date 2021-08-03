@@ -384,7 +384,7 @@ class ResourcesGenerator
         // TODO(vNext): Handle oneofs, which isn't currently exercised in query params in GCE.
         $queryParams =
             $method->requiredFields
-                ->filter(fn ($f) => !$nameSegments->contains($f->name))
+                ->filter(fn ($f) => $f->name !== $httpRule->getBody() && !$nameSegments->contains($f->name))
                 ->map(fn ($f) => $f->name);
         return $queryParams;
     }
