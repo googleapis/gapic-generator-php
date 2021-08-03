@@ -66,6 +66,7 @@ jobs:
       run: |
         # Clear the cached files. Remove this workaround when the Bazel build is fixed.
         rm -rf ~/.cache/bazel/*/*/*/gapic_generator_php/bazel-out/host/bin/rules_php_gapic/*
+        bazel clean --expunge --async
         bazel --batch test tests/Integration:asset \
             tests/Integration:compute_small \
             tests/Integration:container \
