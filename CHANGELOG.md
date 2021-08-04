@@ -5,7 +5,7 @@
 
 ### Features
 
-* **diregapic:** serialize required query params for gax-php [ggp] ([#351](https://www.github.com/googleapis/gapic-generator-php/issues/351)) ([2d5ef58](https://www.github.com/googleapis/gapic-generator-php/commit/2d5ef5853544d58de2b6fdd5cb8335c38174af23))
+* **diregapic:** serialize required query params for gax-php ([#351](https://www.github.com/googleapis/gapic-generator-php/issues/351)) ([2d5ef58](https://www.github.com/googleapis/gapic-generator-php/commit/2d5ef5853544d58de2b6fdd5cb8335c38174af23))
 
 
 ### Miscellaneous Chores
