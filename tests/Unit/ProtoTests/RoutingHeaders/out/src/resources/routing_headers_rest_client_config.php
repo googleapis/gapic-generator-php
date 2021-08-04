@@ -52,6 +52,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'another_name',
+                ],
             ],
             'NestedMultiMethod' => [
                 'method' => 'get',

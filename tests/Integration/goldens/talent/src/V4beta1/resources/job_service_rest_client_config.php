@@ -120,6 +120,9 @@ return [
                     [
                         'method' => 'get',
                         'uriTemplate' => '/v4beta1/{parent=projects/*}/jobs',
+                        'queryParams' => [
+                            'filter',
+                        ],
                     ],
                 ],
                 'placeholders' => [
@@ -128,6 +131,9 @@ return [
                             'getParent',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'filter',
                 ],
             ],
             'SearchJobs' => [

@@ -67,6 +67,9 @@ return [
                         ],
                     ],
                 ],
+                'queryParams' => [
+                    'order_by',
+                ],
             ],
         ],
     ],
