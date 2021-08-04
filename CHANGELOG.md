@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.5](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.4...v1.0.5) (2021-08-04)
+
+
+### Features
+
+* **diregapic:** serialize required query params for gax-php ([#351](https://www.github.com/googleapis/gapic-generator-php/issues/351)) ([2d5ef58](https://www.github.com/googleapis/gapic-generator-php/commit/2d5ef5853544d58de2b6fdd5cb8335c38174af23))
+
+
+### Miscellaneous Chores
+
+* release 1.0.5 ([5a34bd1](https://www.github.com/googleapis/gapic-generator-php/commit/5a34bd19452ad583e7334807291f0358c084ab3c))
+
 ### [1.0.4](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.3...v1.0.4) (2021-07-30)
 
 
