@@ -68,6 +68,14 @@
     ./vendor/bin/phpunit --bootstrap tests/unit/autoload.php tests/Unit
     ```
 
+    If you do not have `protoc` installed, run with `USE_TOOLS_PROTOC=true`.
+
+    ```
+    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --bootstrap tests/unit/autoload.php tests/Unit
+    ```
+
+    This uses the Linux-only `protoc` binary checked into the repository.
+
 -   Monolith integration tests. These may take 5 minutes or so to run.
 
     ```
