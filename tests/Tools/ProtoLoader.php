@@ -37,7 +37,11 @@ class ProtoLoader
         // Set up required file locations and create tmp output file for protoc invocation.
         // Assumes test are executed from within the repo root directory.
         $cwd = getcwd();
-        $protoc = "{$cwd}/tools/protoc";
+        $protoc = "protoc";
+        $useToolsProtoc = getenv("USE_TOOLS_PROTOC");
+        if (filter_var($useToolsProtoc, FILTER_VALIDATE_BOOLEAN)) {
+            $protoc = "{$cwd}/tools/protoc";
+        }
         $descRes = tmpfile();
         $descFilename = stream_get_meta_data($descRes)['uri'];
         $input = "{$cwd}/tests/Unit/{$protoPath}";
@@ -67,7 +71,7 @@ class ProtoLoader
      *
      * @return FileDescriptorProto
      */
-    public function loadDescriptor(string $protoPath): FileDescriptorProto
+    public static function loadDescriptor(string $protoPath): FileDescriptorProto
     {
         // Load descriptor bytes into a DescriptorSet.
         $descBytes = static::loadDescriptorBytes($protoPath);

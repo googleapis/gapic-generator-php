@@ -27,4 +27,4 @@ jobs:
         composer dump-autoload;
 
     - name: Run tests
-      run: ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
+      run: USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
