@@ -38,7 +38,8 @@ class ProtoLoader
         // Assumes test are executed from within the repo root directory.
         $cwd = getcwd();
         $protoc = "protoc";
-        if (getenv("USE_TOOLS_PROTOC")) {
+        $useToolsProtoc = getenv("USE_TOOLS_PROTOC");
+        if ($useToolsProtoc && $useToolsProtoc == "true") {
             $protoc = "{$cwd}/tools/protoc";
         }
         $descRes = tmpfile();
