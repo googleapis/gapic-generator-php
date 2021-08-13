@@ -39,7 +39,7 @@ class ProtoLoader
         $cwd = getcwd();
         $protoc = "protoc";
         $useToolsProtoc = getenv("USE_TOOLS_PROTOC");
-        if ($useToolsProtoc && $useToolsProtoc == "true") {
+        if (filter_var($useToolsProtoc, FILTER_VALIDATE_BOOLEAN)) {
             $protoc = "{$cwd}/tools/protoc";
         }
         $descRes = tmpfile();
