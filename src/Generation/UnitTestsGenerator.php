@@ -254,8 +254,11 @@ class UnitTestsGenerator
                             // Variable of type oneof wrapper, e.g. supplementaryData.
                             AST::call(
                                 AST::var(Helpers::toCamelCase(
-                                    $x->field->containingMessage->getOneofDecl()[$x->field->oneOfIndex]->getName())),
-                                AST::method("is" . Helpers::toUpperCamelCase($x->field->name)))())
+                                    $x->field->containingMessage->getOneofDecl()[$x->field->oneOfIndex]->getName()
+                                )),
+                                AST::method("is" . Helpers::toUpperCamelCase($x->field->name))
+                            )()
+                        )
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
             ))

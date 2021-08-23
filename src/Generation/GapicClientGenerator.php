@@ -949,8 +949,8 @@ class GapicClientGenerator
                 $requestVarExpr,
                 AST::method($toMethodNameFn("set", $currFieldDescProto))
             )(
-                    AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
-                );
+                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
+            );
             // First field.
             if ($ifBlock === null) {
                 $ifBlock = AST::if($condition)->then($then);
