@@ -27,7 +27,7 @@
     "require": {
         "php": "^7.4",
         "google/protobuf": "3.15.8",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "symfony/yaml": "^5.2"
     },
     "require-dev": {
