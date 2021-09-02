@@ -112,7 +112,7 @@ def _php_composer_install_impl(ctx):
     # The entire workspace is required, as the php entry-point may reference
     # arbitrary other files and directories within the workspace.
     # This copy is used during the execution of the PHP, as it has all files available.
-    _execute_and_check_result(ctx, ["cp", "-rHs",  "--preserve=links", str(ws_path), "."])
+    _execute_and_check_result(ctx, ["cp", "-RH", str(ws_path), "."])
     _execute_and_check_result(ctx, ["mv", "./" + ws_path.basename, "./install"])
     ctx.execute(["rm", "-rf", "./install/vendor"]) # This will fail if dir doesn't exist, so don't check
     php_path = ctx.path(ctx.attr.php)
