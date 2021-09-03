@@ -83,8 +83,6 @@ $optionString = implode("\n", array_map(
     array_keys(UNIT_TESTS)
 ));
 
-$fp = fopen('php:://stdin', 'r');
-$lastLine = false;
 $selection = -1;
 while ($selection < 0 || $selection > sizeof(array_keys(UNIT_TESTS))) {
     print("============ Unit tests ==========\n$optionString\n\nSelect golden to update (0 for all): ");
