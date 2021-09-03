@@ -76,6 +76,16 @@
 
     This uses the Linux-only `protoc` binary checked into the repository.
 
+    Updating unit test goldens:
+
+    ```
+    php tests/Unit/ProtoTests/GoldenUpdateMain.php
+    ```
+
+    Then follow the prompts for which tests to update.
+
+    If a new unit test case is added, make sure to add it to the `UNIT_TESTS` list in [GoldenUpdateMain.php](tests/Unit/ProtoTests/GoldenUpdateMain.php).
+
 -   Monolith integration tests. These may take 5 minutes or so to run.
 
     ```

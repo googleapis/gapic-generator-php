@@ -41,10 +41,20 @@ class UnitGoldenUpdater
                 }
             }
             reset($fileSysObjects);
+        } else {
+            // Create the output directory if it does not exist yet.
+            mkdir($outputPath, 0777, true);
         }
         foreach ($codeIterator as [$relativeFilename, $code]) {
-            $filename = "$outputPath/$relativeFilename";
             print("\twriting $relativeFilename\n");
+            $filename = "$outputPath/$relativeFilename";
+            
+            // Create the directory structure if it does not exist yet.
+            $d = dirname($filename);
+            if (!is_dir($d)) {
+                mkdir($d, 0777, true);
+            }
+
             file_put_contents($filename, $code);
         }
     }
