@@ -73,7 +73,7 @@ class ProtoCatalog
         // Convert pairs into map of fully-qualified proto element name and ServiceDescriptorProto.
         $this->servicesByFullname = $allServices->toMap(
             // Key: fully-qualified service name.
-            fn ($x) => '.' . $x[0] . '.' . $x[1]->getName(),
+            fn ($x) => ".{$x[0]}.{$x[1]->getName()}",
             // Value: ServiceDescriptorProto.
             fn($x) => $x[1]);
 
