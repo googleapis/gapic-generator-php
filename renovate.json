@@ -3,5 +3,6 @@
     "config:base",
     ":disableDependencyDashboard",
     ":preserveSemverRanges"
-  ]
+  ],
+  "labels": ["automerge"]
 }
