@@ -30,6 +30,7 @@ class CustomOptions
 
     public const GOOGLE_API_FIELDBEHAVIOR_REQUIRED = 2;
 
+    // Protobuf extension numbers from https://github.com/googleapis/googleapis/blob/master/google/cloud/extended_operations.proto.
     public const GOOGLE_CLOUD_OPERATION_FIELD = 1149;
     public const GOOGLE_CLOUD_OPERATION_REQUEST_FIELD = 1150;
     public const GOOGLE_CLOUD_OPERATION_RESPONSE_FIELD = 1151;
