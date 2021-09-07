@@ -23,6 +23,7 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\Tools\ProtoLoader;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
+use Google\Generator\Utils\ProtoCatalog;
 
 final class ProtoHelpersTest extends TestCase
 {
@@ -55,5 +56,25 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals(['Inner 1', 'Inner 2'], $inner->leadingComments->toArray());
         $innerField = $inner->getField()[0];
         $this->assertEquals(['Inner field 1', 'Inner field 2'], $innerField->leadingComments->toArray());
+    }
+
+    public function testProtoCatalog(): void
+    {
+        $file = ProtoLoader::loadDescriptor('Utils/catalog.proto');
+        $files = Vector::new([$file]);
+        // ProtoCatalog depends on the FileDescriptorProtos already being augmented.
+        ProtoAugmenter::Augment($files);
+        $catalog = new ProtoCatalog($files);
+
+        $msg = $catalog->msgsByFullname['.foo.Msg'];
+        $this->assertEquals('Msg', $msg->GetName());
+        $msg = $catalog->msgsByFullname['.foo.Msg.InnerMsg'];
+        $this->assertEquals('InnerMsg', $msg->GetName());
+        $enm = $catalog->enumsByFullname['.foo.Enm'];
+        $this->assertEquals('Enm', $enm->getName());
+        $enm = $catalog->enumsByFullname['.foo.Msg.InnerEnm'];
+        $this->assertEquals('InnerEnm', $enm->getName());
+        $svc = $catalog->servicesByFullname['.foo.Svc'];
+        $this->assertEquals('Svc', $svc->GetName());
     }
 }
