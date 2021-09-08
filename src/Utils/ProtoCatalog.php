@@ -65,17 +65,18 @@ class ProtoCatalog
     public function __construct(Vector $fileDescs)
     {
         // Flatten into pairs of [proto package, ServiceDescriptorProto], because each
-        // FileDescriptorProto can contain multiple services, so each must be paired
-        // with the parent file proto package.
+        // FileDescriptorProto can contain multiple services, so each service must be
+        // paired with the parent file proto package.
         $allServices = $fileDescs
-            ->flatMap(fn ($x) => Vector::new($x->getService())
-                ->map(fn ($s) => [$x->getPackage(), $s]));
+            ->flatMap(fn ($x) =>
+                Vector::new($x->getService())->map(fn ($s) => [$x->getPackage(), $s]));
+
         // Convert pairs into map of fully-qualified proto element name and ServiceDescriptorProto.
         $this->servicesByFullname = $allServices->toMap(
             // Key: fully-qualified service name.
             fn ($x) => ".{$x[0]}.{$x[1]->getName()}",
             // Value: ServiceDescriptorProto.
-            fn($x) => $x[1]);
+            fn ($x) => $x[1]);
 
         $allMsgs = $fileDescs
             ->flatMap(fn ($x) => Vector::new($x->getMessageType()))
