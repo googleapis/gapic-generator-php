@@ -24,9 +24,11 @@ use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ServerStream;
+use Google\Cloud\OperationResponseMapping;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
+use Google\Protobuf\Internal\ServiceDescriptorProto;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
@@ -38,6 +40,7 @@ use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\OperationInfo;
+use Google\Protobuf\Internal\FieldDescriptorProto;
 
 abstract class MethodDetails
 {
@@ -47,6 +50,7 @@ abstract class MethodDetails
     public const BIDI_STREAMING = 'bidi_streaming';
     public const SERVER_STREAMING = 'server_streaming';
     public const CLIENT_STREAMING = 'client_streaming';
+    public const CUSTOM_OP = 'custom_op';
 
     public const DEPRECATED_MSG = "This method will be removed in the next major version update.";
 
@@ -55,6 +59,7 @@ abstract class MethodDetails
         // TODO: Handle further method types; e.g. streaming, paginated, ...
         return
             static::maybeCreatePaginated($svc, $desc) ??
+            static::maybeCreateCustomOperation($svc, $desc) ??
             static::maybeCreateLro($svc, $desc) ??
             static::maybeCreateBidiStreaming($svc, $desc) ??
             static::maybeCreateServerStreaming($svc, $desc) ??
@@ -306,6 +311,63 @@ abstract class MethodDetails
         }
     }
 
+    private static function maybeCreateCustomOperation(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
+    {
+        // This is a DIREGAPIC only feature, and the RPC must be annotated as such.
+        if ($svc->transportType !== Transport::REST || !MethodDetails::isCustomOperation($desc)) {
+            return null;
+        } else {
+            return new class($svc, $desc) extends MethodDetails {
+                public function __construct($svc, $desc)
+                {
+                    parent::__construct($svc, $desc);
+                    $catalog = $svc->catalog;
+                    $this->methodType = MethodDetails::CUSTOM_OP;
+                    $this->operationService = MethodDetails::lookupOperationService($catalog, $desc, $svc->package);
+                    $polling = Vector::new($this->operationService->getMethod())->filter(fn ($x) => !is_null(ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_POLLING_METHOD)));
+                    if ($polling->count() == 0) {
+                        throw new \Exception("Custom operation service {$this->operationService->getName()} does not provide a polling method marked with `google.cloud.operation_polling_method = true` option.");
+                    }
+                    $pollingMethod = $polling->firstOrNull();
+                    $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
+                    
+                    // Collect operation_request_field mapping from input message fields.
+                    $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+                    $this->operationRequestFields = Vector::new($inputMsg->getField())
+                        ->filter(fn($x) => MethodDetails::isOperationRequestField($x))
+                        ->toMap(
+                            fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD),
+                            fn($x) => new FieldDetails($catalog, $inputMsg, $x));
+
+                    // Find the operation status field.
+                    $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
+                    foreach($outputMsg->getField() as $field) {
+                        $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
+                        if (is_null($opField)) {
+                            continue;
+                        }
+                        // TODO: Expand to include the other OperationResponseMapping values if necessary.
+                        switch ($opField) {
+                            case OperationResponseMapping::STATUS:
+                                $this->operationStatusField = new FieldDetails($catalog, $outputMsg, $field);
+                        }
+                    }
+                }
+
+                /** @var ServiceDescriptorProto *Readonly* The custom operation service that manages this method's operations. */
+                public ServiceDescriptorProto $operationService;
+
+                public MethodDetails $operationPollingMethod;
+
+                /** @var Map *Readonly* Map of FieldDetails; all fields from the request message that map to operation fields. */
+                public Map $operationRequestFields;
+
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation status. */
+                public FieldDetails $operationStatusField;
+            };
+        }
+    }
+
     private static function createNormal(ServiceDetails $svc, MethodDescriptorProto $desc): MethodDetails
     {
         return new class($svc, $desc) extends MethodDetails {
@@ -315,6 +377,34 @@ abstract class MethodDetails
                 $this->methodType = MethodDetails::NORMAL;
             }
         };
+    }
+
+    private static function isCustomOperation(MethodDescriptorProto $desc): bool
+    {
+        $opServ = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);
+        return $opServ !== null && $opServ !== '';
+    }
+
+    protected static function isOperationRequestField(FieldDescriptorProto $field): bool
+    {
+        $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD);
+        return $opField !== null && $opField !== '';
+    }
+
+    protected static function lookupOperationService(ProtoCatalog $catalog, MethodDescriptorProto $desc, string $package): ServiceDescriptorProto
+    {
+        $opServ = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);
+        // Prepare fully-qualified proto element name using containing proto package.
+        // Values that exist in another package will contain the '.' separator.
+        if (!str_contains($opServ, '.')) {
+            $opServ = "{$package}.{$opServ}";
+        }
+        // Prepend '.' to indicate the name is fully-qualified.
+        if (!str_starts_with($opServ, '.')) {
+            $opServ = '.' . $opServ;
+        }
+
+        return $catalog->servicesByFullname[$opServ];
     }
 
     /** @var ServiceDetails  The service that contains this method. */

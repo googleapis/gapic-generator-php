@@ -78,6 +78,7 @@ class GapicClientGenerator
                 }
             }
         }
+        // TODO(noahdietz): Handle inclusion of custom operation types in here.
         foreach ($this->serviceDetails->methods as $method) {
             $this->ctx->type($method->requestType);
             foreach ($method->allFields as $field) {
@@ -298,7 +299,7 @@ class GapicClientGenerator
 
     private function operationsClient(): ?PhpClassMember
     {
-        if ($this->serviceDetails->hasLro) {
+        if ($this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp) {
             return AST::property('operationsClient')
                 ->withAccess(Access::PRIVATE);
         } else {
@@ -401,6 +402,12 @@ class GapicClientGenerator
                 'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
             ])
         ]);
+        if ($this->serviceDetails->hasCustomOp) {
+            $cname = $this->serviceDetails->customOperationService->getName() . 'Client';
+            // Assuming the custom operations service client is in the same namespace as the client to generate.
+            $ctype = Type::fromName("{$this->serviceDetails->namespace}\\{$cname}");
+            $clientDefaultValues['operationsClientClass'] = AST::access($this->ctx->type($ctype), AST::CLS);
+        }
 
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
@@ -841,6 +848,7 @@ class GapicClientGenerator
         $optionalArgs->var
       ];
         switch ($method->methodType) {
+      case MethodDetails::CUSTOM_OP:
       case MethodDetails::NORMAL:
         $startCallArgs[] = $request;
         if ($method->isMixin()) {

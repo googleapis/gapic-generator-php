@@ -176,6 +176,7 @@ class UnitTestsGenerator
     private function testCases(MethodDetails $method)
     {
         switch ($method->methodType) {
+            case MethodDetails::CUSTOM_OP:
             case MethodDetails::NORMAL:
                 yield $this->testSuccessCaseNormal($method);
                 yield $this->testExceptionalCaseNormal($method);

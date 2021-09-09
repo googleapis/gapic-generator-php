@@ -41,6 +41,7 @@ class GapicClientExamplesGenerator
         // Each GapicClientExamplesGenerator instance can only generate a single example.
         // TODO: Handle special arg types; e.g. resources.
         switch ($method->methodType) {
+            case MethodDetails::CUSTOM_OP:
             case MethodDetails::NORMAL:
                 $code = $this->rpcMethodExampleNormal($method);
                 break;

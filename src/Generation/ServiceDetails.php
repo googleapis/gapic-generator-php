@@ -103,6 +103,12 @@ class ServiceDetails
     /** @var bool *Readonly* This service contains at least one LRO method. */
     public bool $hasLro;
 
+    /** @var bool *Readonly* This service contains at least one custom operation method. */
+    public bool $hasCustomOp;
+
+    /** @var ServiceDescriptorProto *Readonly* The service named as the custom operation service to use. */
+    public ServiceDescriptorProto $customOperationService;
+
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
@@ -155,7 +161,13 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
-
+        $customOperations = $this->methods->filter(fn($x) => $x->methodType === MethodDetails::CUSTOM_OP);
+        $this->hasCustomOp = $customOperations->count() > 0;
+        if ($this->hasCustomOp) {
+            // Technically there could be multiple different named operation services,
+            // but for simplicity we will assume they are all the same and use the first.
+            $this->customOperationService = $customOperations[0]->operationService;
+        }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
         }
