@@ -109,6 +109,9 @@ class ServiceDetails
     /** @var ServiceDescriptorProto *Readonly* The service named as the custom operation service to use. */
     public ServiceDescriptorProto $customOperationService;
 
+    /** @var Type *Readonly* The Type of the service's operations_service client. */
+    public Type $customOperationServiceClientType;
+
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
@@ -167,6 +170,10 @@ class ServiceDetails
             // Technically there could be multiple different named operation services,
             // but for simplicity we will assume they are all the same and use the first.
             $this->customOperationService = $customOperations[0]->operationService;
+            
+            // Assuming the custom operations service client is in the same namespace as the client to generate.
+            $cname = $this->customOperationService->getName() . 'Client';
+            $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\{$cname}");
         }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();

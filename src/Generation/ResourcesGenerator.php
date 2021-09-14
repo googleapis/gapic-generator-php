@@ -47,7 +47,8 @@ class ResourcesGenerator
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
                     $status = $method->operationStatusField;
-                    $doneValue = $status->isEnum ? $status->type->name . '::DONE' : true;
+                    $name = $method->operationNameField;
+                    $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
                     return Map::new(['longRunning' => AST::array([
                         'additionalArgumentMethods' => AST::array($method->operationRequestFields->values()
                             ->map(fn ($x) => $x->getter->getName())->toArray()),
@@ -56,6 +57,7 @@ class ResourcesGenerator
                         // Remove them if the annotations are not forthcoming.
                         'cancelOperationMethod' => AST::NULL,
                         'deleteOperationMethod' => AST::NULL,
+                        'operationNameMethod' => $name->getter->getName(),
                         'operationStatusMethod' => $status->getter->getName(),
                         'operationStatusDoneValue' => $doneValue,
                     ])]);

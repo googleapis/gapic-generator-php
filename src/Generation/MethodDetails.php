@@ -346,10 +346,19 @@ abstract class MethodDetails
                         if (is_null($opField)) {
                             continue;
                         }
-                        // TODO: Expand to include the other OperationResponseMapping values if necessary.
                         switch ($opField) {
                             case OperationResponseMapping::STATUS:
                                 $this->operationStatusField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::ERROR_MESSAGE:
+                                $this->operationErrorMessageField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::ERROR_CODE:
+                                $this->operationErrorCodeField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::NAME:
+                                $this->operationNameField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
                         }
                     }
                 }
@@ -364,6 +373,12 @@ abstract class MethodDetails
 
                 /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation status. */
                 public FieldDetails $operationStatusField;
+
+                public FieldDetails $operationErrorCodeField;
+
+                public FieldDetails $operationErrorMessageField;
+
+                public FieldDetails $operationNameField;
             };
         }
     }

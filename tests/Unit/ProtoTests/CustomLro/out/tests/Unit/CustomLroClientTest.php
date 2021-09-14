@@ -30,7 +30,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
 use stdClass;
 use Testing\CustomLro\CustomLroClient;
-use Testing\CustomLro\OperationResponse;
+use Testing\CustomLro\CustomOperationResponse;
 
 /**
  * @group customlro
@@ -80,7 +80,7 @@ class CustomLroClientTest extends GeneratedTest
         $name = 'name3373707';
         $httpErrorMessage = 'httpErrorMessage1276263769';
         $httpErrorStatusCode = 1386087020;
-        $expectedResponse = new OperationResponse();
+        $expectedResponse = new CustomOperationResponse();
         $expectedResponse->setName($name);
         $expectedResponse->setHttpErrorMessage($httpErrorMessage);
         $expectedResponse->setHttpErrorStatusCode($httpErrorStatusCode);

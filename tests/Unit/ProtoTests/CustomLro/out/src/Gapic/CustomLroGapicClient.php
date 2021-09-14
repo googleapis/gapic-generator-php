@@ -28,13 +28,14 @@ use Google\ApiCore\ApiException;
 
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\OperationResponse;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\CustomLro\CreateFooRequest;
 use Testing\CustomLro\CustomLroOperationsClient;
-use Testing\CustomLro\OperationResponse;
+use Testing\CustomLro\CustomOperationResponse;
 
 /**
  * Service Description:
@@ -45,7 +46,30 @@ use Testing\CustomLro\OperationResponse;
  * ```
  * $customLroClient = new CustomLroClient();
  * try {
- *     $response = $customLroClient->createFoo();
+ *     $operationResponse = $customLroClient->createFoo();
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         // if creating/modifying, retrieve the target resource
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ *     // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $customLroClient->createFoo();
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         // if creating/modifying, retrieve the target resource
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $customLroClient->close();
  * }
@@ -124,6 +148,35 @@ class CustomLroGapicClient
     }
 
     /**
+     * Return an CustomLroOperationsClient object with the same endpoint as $this.
+     *
+     * @return CustomLroOperationsClient
+     */
+    public function getOperationsClient()
+    {
+        return $this->operationsClient;
+    }
+
+    /**
+     * Resume an existing long running operation that was previously started by a long
+     * running API method. If $methodName is not provided, or does not match a long
+     * running API method, then the operation can still be resumed, but the
+     * OperationResponse object will not deserialize the final response.
+     *
+     * @param string $operationName The name of the long running operation
+     * @param string $methodName    The name of the method used to start the operation
+     *
+     * @return OperationResponse
+     */
+    public function resumeOperation($operationName, $methodName = null)
+    {
+        $options = isset($this->descriptors[$methodName]['longRunning']) ? $this->descriptors[$methodName]['longRunning'] : [];
+        $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
+        $operation->reload();
+        return $operation;
+    }
+
+    /**
      * Constructor.
      *
      * @param array $options {
@@ -178,6 +231,7 @@ class CustomLroGapicClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+        $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
     /**
@@ -186,7 +240,30 @@ class CustomLroGapicClient
      * ```
      * $customLroClient = new CustomLroClient();
      * try {
-     *     $response = $customLroClient->createFoo();
+     *     $operationResponse = $customLroClient->createFoo();
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         // if creating/modifying, retrieve the target resource
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $customLroClient->createFoo();
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         // if creating/modifying, retrieve the target resource
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
      * } finally {
      *     $customLroClient->close();
      * }
@@ -205,7 +282,7 @@ class CustomLroGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\CustomLro\OperationResponse
+     * @return \Testing\CustomLro\CustomOperationResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -224,6 +301,6 @@ class CustomLroGapicClient
             $request->setRegion($optionalArgs['region']);
         }
 
-        return $this->startCall('CreateFoo', OperationResponse::class, $optionalArgs, $request)->wait();
+        return $this->startOperationsCall('CreateFoo', $optionalArgs, $request, $this->getOperationsClient(), null, CustomOperationResponse::class)->wait();
     }
 }

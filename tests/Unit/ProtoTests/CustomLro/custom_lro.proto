@@ -11,7 +11,7 @@ option php_namespace = "Testing\\CustomLro";
 service CustomLro {
     option (google.api.default_host) = "customlro.example.com";
     option (google.api.oauth_scopes) = "scope1,scope2";
-    rpc CreateFoo(CreateFooRequest) returns (OperationResponse) {
+    rpc CreateFoo(CreateFooRequest) returns (CustomOperationResponse) {
         option (google.api.http) = {
             post: "/foo"
             body: "*"
@@ -23,7 +23,7 @@ service CustomLro {
 service CustomLroOperations {
     option (google.api.default_host) = "customlro.example.com";
     option (google.api.oauth_scopes) = "scope1,scope2";
-    rpc Get(GetOperationRequest) returns (OperationResponse) {
+    rpc Get(GetOperationRequest) returns (CustomOperationResponse) {
         option (google.api.http) = {
             get: "/operation"
         };
@@ -31,7 +31,7 @@ service CustomLroOperations {
     }
 }
 
-message OperationResponse {
+message CustomOperationResponse {
     optional string name = 1 [(google.cloud.operation_field) = NAME];
 
     optional string http_error_message = 2 [(google.cloud.operation_field) = ERROR_MESSAGE];

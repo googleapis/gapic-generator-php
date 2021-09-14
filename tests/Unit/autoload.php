@@ -19,6 +19,9 @@ declare(strict_types=1);
 /** class that can fake any proto message sufficiently well for testing. */
 class FakeMessage extends \Google\Protobuf\Internal\Message
 {
+    // DONE is a fake constant for the custom operation status enum.
+    const DONE = 0;
+
     private static function defaultFieldValue($name)
     {
         switch ($name) {

@@ -38,6 +38,7 @@ use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpParam;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
@@ -307,17 +308,21 @@ class GapicClientGenerator
         }
     }
 
+    // lroMethods supports both standard google.longrunning and custom operations.
     private function lroMethods(): Vector
     {
-        if ($this->serviceDetails->hasLro) {
+        if ($this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp) {
+            $ctype = $this->serviceDetails->hasCustomOp ? 
+                $this->serviceDetails->customOperationServiceClientType :
+                Type::fromName(OperationsClient::class);
             $getOperationsClient = AST::method('getOperationsClient')
                 ->withAccess(Access::PUBLIC)
                 ->withBody(AST::block(
                     AST::return(AST::access(AST::THIS, $this->operationsClient()))
                 ))
                 ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
+                    PhpDoc::text("Return an {$ctype->name} object with the same endpoint as \$this."),
+                    PhpDoc::return($this->ctx->type($ctype)),
                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 ));
             $operationName = AST::var('operationName');
@@ -403,10 +408,9 @@ class GapicClientGenerator
             ])
         ]);
         if ($this->serviceDetails->hasCustomOp) {
-            $cname = $this->serviceDetails->customOperationService->getName() . 'Client';
-            // Assuming the custom operations service client is in the same namespace as the client to generate.
-            $ctype = Type::fromName("{$this->serviceDetails->namespace}\\{$cname}");
-            $clientDefaultValues['operationsClientClass'] = AST::access($this->ctx->type($ctype), AST::CLS);
+            $clientDefaultValues['operationsClientClass'] = AST::access(
+                $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
+                AST::CLS);
         }
 
         return AST::method('getClientDefaults')
@@ -503,7 +507,7 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
-                $this->serviceDetails->hasLro
+                $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
@@ -849,6 +853,15 @@ class GapicClientGenerator
       ];
         switch ($method->methodType) {
       case MethodDetails::CUSTOM_OP:
+        $startCallArgs = [
+            $method->name,
+            $optionalArgs->var,
+            $request,
+            AST::call(AST::THIS, AST::method('getOperationsClient'))(),
+            AST::NULL,
+            AST::access($this->ctx->type($method->responseType), AST::CLS),
+        ];
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();  
       case MethodDetails::NORMAL:
         $startCallArgs[] = $request;
         if ($method->isMixin()) {

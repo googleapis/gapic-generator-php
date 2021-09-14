@@ -32,8 +32,8 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\GetOperationRequest;
-use Testing\CustomLro\OperationResponse;
 
 /**
  * Service Description:
@@ -204,7 +204,7 @@ class CustomLroOperationsGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\CustomLro\OperationResponse
+     * @return \Testing\CustomLro\CustomOperationResponse
      *
      * @throws ApiException if the remote call fails
      */
@@ -223,6 +223,6 @@ class CustomLroOperationsGapicClient
             $request->setRegion($optionalArgs['region']);
         }
 
-        return $this->startCall('Get', OperationResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
     }
 }
