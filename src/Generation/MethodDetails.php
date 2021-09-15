@@ -332,9 +332,6 @@ abstract class MethodDetails
                     $pollingMethod = $polling->firstOrNull();
                     $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
                     $pollingMsg = $catalog->msgsByFullname[$pollingMethod->getInputType()];
-                    $pollingFields = Vector::new($pollingMsg->getField())->toMap(
-                        fn($x) => $x->getName(),
-                        fn($x) => new FieldDetails($catalog, $pollingMsg, $x));
                     
                     // Collect the operation_response_field mapping from the polling request message.
                     $customOperation = $catalog->msgsByFullname[$desc->getOutputType()];
@@ -349,6 +346,9 @@ abstract class MethodDetails
                     
                     // Collect operation_request_field mapping from input message fields.
                     $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+                    $pollingFields = Vector::new($pollingMsg->getField())->toMap(
+                        fn($x) => $x->getName(),
+                        fn($x) => new FieldDetails($catalog, $pollingMsg, $x));
                     $this->operationRequestFields = Vector::new($inputMsg->getField())
                         ->filter(fn($x) => MethodDetails::isOperationRequestField($x))
                         ->toMap(
@@ -363,17 +363,17 @@ abstract class MethodDetails
                             continue;
                         }
                         switch ($opField) {
-                            case OperationResponseMapping::STATUS:
-                                $this->operationStatusField = new FieldDetails($catalog, $outputMsg, $field);
+                            case OperationResponseMapping::ERROR_CODE:
+                                $this->operationErrorCodeField = new FieldDetails($catalog, $outputMsg, $field);
                                 break;
                             case OperationResponseMapping::ERROR_MESSAGE:
                                 $this->operationErrorMessageField = new FieldDetails($catalog, $outputMsg, $field);
                                 break;
-                            case OperationResponseMapping::ERROR_CODE:
-                                $this->operationErrorCodeField = new FieldDetails($catalog, $outputMsg, $field);
-                                break;
                             case OperationResponseMapping::NAME:
                                 $this->operationNameField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::STATUS:
+                                $this->operationStatusField = new FieldDetails($catalog, $outputMsg, $field);
                                 break;
                         }
                     }
@@ -423,21 +423,22 @@ abstract class MethodDetails
     private static function isCustomOperation(MethodDescriptorProto $desc): bool
     {
         $opServ = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);
-        return $opServ !== null && $opServ !== '';
+        return !is_null($opServ) && $opServ !== '';
     }
 
     protected static function isOperationRequestField(FieldDescriptorProto $field): bool
     {
         $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD);
-        return $opField !== null && $opField !== '';
+        return !is_null($opField) && $opField !== '';
     }
 
     protected static function isOperationResponseField(FieldDescriptorProto $field): bool
     {
         $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_RESPONSE_FIELD);
-        return $opField !== null && $opField !== '';
+        return !is_null($opField) && $opField !== '';
     }
 
+    // Use of lookupOperationService assumes that isCustomOperation has already been called and returned true.
     protected static function lookupOperationService(ProtoCatalog $catalog, MethodDescriptorProto $desc, string $package): ServiceDescriptorProto
     {
         $opServ = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);

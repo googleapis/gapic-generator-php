@@ -79,7 +79,6 @@ class GapicClientGenerator
                 }
             }
         }
-        // TODO(noahdietz): Handle inclusion of custom operation types in here.
         foreach ($this->serviceDetails->methods as $method) {
             $this->ctx->type($method->requestType);
             foreach ($method->allFields as $field) {

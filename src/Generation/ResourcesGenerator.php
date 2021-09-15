@@ -56,7 +56,8 @@ class ResourcesGenerator
                                 ->map(fn ($x) => $x->getter->getName())->toArray()),
                         'getOperationMethod' => $method->operationPollingMethod->methodName,
                         // TODO(noahdietz): The cancel & delete methods are not supported by annotations yet.
-                        // Remove them if the annotations are not forthcoming.
+                        // If annotations are not forthcoming, inspect the operation service for 'Delete' and
+                        // 'Cancel' RPCs.
                         'cancelOperationMethod' => AST::NULL,
                         'deleteOperationMethod' => AST::NULL,
                         'operationNameMethod' => $name->getter->getName(),

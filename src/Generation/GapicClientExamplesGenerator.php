@@ -192,7 +192,7 @@ class GapicClientExamplesGenerator
                 '// Alternatively:',
                 '// start the operation, keep the operation name, and resume later',
                 AST::assign($operationResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
-                AST::assign($operationName, AST::call($operationResponse, $nameGetter)()),
+                AST::assign($operationName, $operationResponse->instanceCall($nameGetter)()),
                 '// ... do other work',
                 AST::assign($newOperationResponse, $serviceClient->resumeOperation($operationName, $method->methodName)),
                 AST::while(AST::not($newOperationResponse->isDone()))(
