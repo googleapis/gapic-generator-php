@@ -177,6 +177,9 @@ class UnitTestsGenerator
     {
         switch ($method->methodType) {
             case MethodDetails::CUSTOM_OP:
+                yield $this->testSuccessCaseCustomOp($method);
+                yield $this->testExceptionalCaseCustomOp($method);
+                break;
             case MethodDetails::NORMAL:
                 yield $this->testSuccessCaseNormal($method);
                 yield $this->testExceptionalCaseNormal($method);
@@ -760,5 +763,168 @@ class UnitTestsGenerator
                 ($this->assertTrue)($transport->isExhausted()),
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testSuccessCaseCustomOp(MethodDetails $method): PhpMethod
+    {
+        $testMethodName = $method->testSuccessMethodName;
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $completeOperation = AST::var('completeOperation');
+        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        $response = AST::var('response');
+        $apiRequests = AST::var('apiRequests');
+        $operationsRequestsEmpty = AST::var('operationsRequestsEmpty');
+        $actualApiFuncCall = AST::var('actualApiFuncCall');
+        $actualApiRequestObject = AST::var('actualApiRequestObject');
+        $actualValue = AST::var('actualValue');
+        $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
+        $apiRequestsEmpty = AST::var('apiRequestsEmpty');
+        $operationsRequests = AST::var('operationsRequests');
+        $actualOperationsFuncCall = AST::var('actualOperationsFuncCall');
+        $actualOperationsRequestObject = AST::var('actualOperationsRequestObject');
+        $opNameSetter = $method->operationNameField->setter;
+        $status = $method->operationStatusField;
+        $statusSetter = $status->setter;
+        $doneValue = $status->isEnum ? AST::literal($status->type->name . '::DONE') : true;
+        $pollingMethod = $method->operationPollingMethod;
+        $pollingMethodRPCPath = "/{$method->serviceDetails->package}.{$method->serviceDetails->customOperationService->getName()}/{$pollingMethod->name}";
+        [$initCode, $operationsTransport, $client, $transport] = $this->customOpTestInit($method, $testMethodName);
+        return AST::method($testMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                $initCode,
+                AST::assign($completeOperation, AST::new($this->ctx->type($method->responseType))()),
+                AST::call($completeOperation, $opNameSetter)("customOperations/{$testMethodName}"),
+                AST::call($completeOperation, $statusSetter)($doneValue),
+                $operationsTransport->addResponse($completeOperation),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                $requestPerField->map(fn ($x) => $x->initCode),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                ($this->assertFalse)($response->isDone()),
+                AST::assign($apiRequests, $transport->popReceivedCalls()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($apiRequests)),
+                AST::assign($operationsRequestsEmpty, $operationsTransport->popReceivedCalls()),
+                ($this->assertSame)(0, AST::call(AST::COUNT)($operationsRequestsEmpty)),
+                AST::assign($actualApiFuncCall, $apiRequests[0]->getFuncCall()),
+                AST::assign($actualApiRequestObject, $apiRequests[0]->getRequestObject()),
+                ($this->assertSame)("/{$this->serviceDetails->serviceName}/{$method->name}", $actualApiFuncCall),
+                $requestPerField->map(fn ($x) => Vector::new([
+                    AST::assign($actualValue, $actualApiRequestObject->instanceCall($x->field->getter)()),
+                    ($this->assertProtobufEquals)($x->var, $actualValue),
+                ])),
+                AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type($pollingMethod->requestType))()),
+                $method->operationPollingFields->mapValues(
+                    fn($reqField, $resField) => $expectedOperationsRequestObject->instanceCall($reqField->setter)($completeOperation->instanceCall($resField->getter)()))
+                    ->values(),
+                $method->operationRequestFields->mapValues(
+                    fn($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name)))
+                    ->values(),
+                $response->pollUntilComplete(AST::array([
+                    'initialPollDelayMillis' => 1,
+                ])),
+                ($this->assertTrue)($response->isDone()),
+                AST::assign($apiRequestsEmpty, $transport->popReceivedCalls()),
+                ($this->assertSame)(0, AST::call(AST::COUNT)($apiRequestsEmpty)),
+                AST::assign($operationsRequests, $operationsTransport->popReceivedCalls()),
+                ($this->assertSame)(1, AST::call(AST::COUNT)($operationsRequests)),
+                AST::assign($actualOperationsFuncCall, $operationsRequests[0]->getFuncCall()),
+                AST::assign($actualOperationsRequestObject, $operationsRequests[0]->getRequestObject()),
+                ($this->assertSame)($pollingMethodRPCPath, $actualOperationsFuncCall),
+                ($this->assertEquals)($expectedOperationsRequestObject, $actualOperationsRequestObject),
+                ($this->assertTrue)($transport->isExhausted()),
+                ($this->assertTrue)($operationsTransport->isExhausted()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testExceptionalCaseCustomOp(MethodDetails $method): PhpMethod
+    {
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $status = AST::var('status');
+        $expectedExceptionMessage = AST::var('expectedExceptionMessage');
+        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        $response = AST::var('response');
+        $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
+        $ex = AST::var('ex');
+        $pollingMethod = $method->operationPollingMethod;
+        [$initCode, $operationsTransport, $client, $transport] = $this->customOpTestInit($method, $method->testExceptionMethodName);
+        return AST::method($method->testExceptionMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                $initCode,
+                AST::assign($status, AST::new($this->ctx->type(Type::stdClass()))()),
+                AST::assign(AST::access($status, AST::property('code')), AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS'))),
+                AST::assign(AST::access($status, AST::property('details')), 'internal error'),
+                AST::assign($expectedExceptionMessage, AST::call(AST::method('json_encode'))(AST::array([
+                    'message' => 'internal error',
+                    'code' => AST::access($this->ctx->type(Type::fromName(Code::class)), AST::constant('DATA_LOSS')),
+                    'status' => 'DATA_LOSS',
+                    'details' => AST::array([]),
+                ]), AST::constant('JSON_PRETTY_PRINT'))),
+                $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
+                // TODO(vNext): Always add this comment.
+                $method->requiredFields->any() ? '// Mock request' : null,
+                $requestPerField->map(fn ($x) => $x->initCode),
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                ($this->assertFalse)($response->isDone()),
+                ($this->assertNull)($response->getResult()),
+                AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type($pollingMethod->requestType))()),
+                $expectedOperationsRequestObject->setName("customOperations/{$method->testExceptionMethodName}"),
+                $method->operationRequestFields->mapValues(
+                    fn($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name)))
+                    ->values(),
+                AST::try(
+                    $response->pollUntilComplete(AST::array([
+                        'initialPollDelayMillis' => 1,
+                    ])),
+                    '// If the pollUntilComplete() method call did not throw, fail the test',
+                    ($this->fail)('Expected an ApiException, but no exception was thrown.'),
+                )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
+                    ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
+                    ($this->assertEquals)($expectedExceptionMessage, $ex->instanceCall(AST::method('getMessage'))()),
+                ),
+                '// Call popReceivedCalls to ensure the stubs are exhausted',
+                $transport->popReceivedCalls(),
+                $operationsTransport->popReceivedCalls(),
+                ($this->assertTrue)($transport->isExhausted()),
+                ($this->assertTrue)($operationsTransport->isExhausted()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function customOpTestInit($method, $methodName)
+    {
+        $operationsTransport = AST::var('operationsTransport');
+        $operationsClient = AST::var('operationsClient');
+        $transport = AST::var('transport');
+        $client = AST::var('client');
+        $incompleteOperation = AST::var('incompleteOperation');
+        $opNameSetter = $method->operationNameField->setter;
+        $status = $method->operationStatusField;
+        $statusSetter = $status->setter;
+        $this->ctx->type($status->type);
+        $notDoneValue = $status->isEnum ? AST::literal($status->type->name . '::RUNNING') : false;
+        $initCode = Vector::new([
+            AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
+            AST::assign($operationsClient, AST::new($this->ctx->type($method->serviceDetails->customOperationServiceClientType))(AST::array([
+                'serviceAddress' => '',
+                'transport' => $operationsTransport,
+                'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
+            ]))),
+            AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+            AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array([
+                'transport' => $transport,
+                'operationsClient' => $operationsClient,
+            ]))),
+            ($this->assertTrue)($transport->isExhausted()),
+            ($this->assertTrue)($operationsTransport->isExhausted()),
+            '// Mock response',
+            AST::assign($incompleteOperation, AST::new($this->ctx->type($method->responseType))()),
+            AST::call($incompleteOperation, $opNameSetter)("customOperations/{$methodName}"),
+            AST::call($incompleteOperation, $statusSetter)($notDoneValue),
+            $transport->addResponse($incompleteOperation),
+        ]);
+        return [$initCode, $operationsTransport, $client, $transport];
     }
 }

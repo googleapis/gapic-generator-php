@@ -323,6 +323,7 @@ abstract class MethodDetails
                     parent::__construct($svc, $desc);
                     $catalog = $svc->catalog;
                     $this->methodType = MethodDetails::CUSTOM_OP;
+                    $this->methodReturnType = Type::fromName(OperationResponse::class);
                     $this->operationService = MethodDetails::lookupOperationService($catalog, $desc, $svc->package);
                     $polling = Vector::new($this->operationService->getMethod())->filter(fn ($x) => !is_null(ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_POLLING_METHOD)));
                     if ($polling->count() == 0) {
@@ -330,16 +331,31 @@ abstract class MethodDetails
                     }
                     $pollingMethod = $polling->firstOrNull();
                     $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
+                    $pollingMsg = $catalog->msgsByFullname[$pollingMethod->getInputType()];
+                    $pollingFields = Vector::new($pollingMsg->getField())->toMap(
+                        fn($x) => $x->getName(),
+                        fn($x) => new FieldDetails($catalog, $pollingMsg, $x));
+                    
+                    // Collect the operation_response_field mapping from the polling request message.
+                    $customOperation = $catalog->msgsByFullname[$desc->getOutputType()];
+                    $copFields = Vector::new($customOperation->getField())->toMap(
+                        fn($x) => $x->getName(),
+                        fn($x) => new FieldDetails($catalog, $customOperation, $x));
+                    $this->operationPollingFields = Vector::new($pollingMsg->getField())
+                        ->filter(fn($x) => MethodDetails::isOperationResponseField($x))
+                        ->toMap(
+                            fn($x) => new FieldDetails($catalog, $pollingMsg, $x),
+                            fn($x) => $copFields[ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_RESPONSE_FIELD)]);
                     
                     // Collect operation_request_field mapping from input message fields.
                     $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
                     $this->operationRequestFields = Vector::new($inputMsg->getField())
                         ->filter(fn($x) => MethodDetails::isOperationRequestField($x))
                         ->toMap(
-                            fn($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD),
+                            fn($x) => $pollingFields[ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD)],
                             fn($x) => new FieldDetails($catalog, $inputMsg, $x));
 
-                    // Find the operation status field.
+                    // Collect the operation field mappings.
                     $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
                     foreach($outputMsg->getField() as $field) {
                         $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
@@ -366,18 +382,28 @@ abstract class MethodDetails
                 /** @var ServiceDescriptorProto *Readonly* The custom operation service that manages this method's operations. */
                 public ServiceDescriptorProto $operationService;
 
+                /** @var MethodDetails *Readonly* The method marked as the polling method on the custom operaiton service. */
                 public MethodDetails $operationPollingMethod;
 
-                /** @var Map *Readonly* Map of FieldDetails; all fields from the request message that map to operation fields. */
+                /** 
+                 * @var Map *Readonly* Map<FieldDetails, FieldDetails> mapping of polling request message fields to the 
+                 * corresponding request message field to source from.
+                 */
+                public Map $operationPollingFields;
+
+                /** @var Map *Readonly* Map<FieldDetails, FieldDetails> all fields from the request message that map to operation fields. */
                 public Map $operationRequestFields;
 
                 /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation status. */
                 public FieldDetails $operationStatusField;
 
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation error code. */
                 public FieldDetails $operationErrorCodeField;
 
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation error message. */
                 public FieldDetails $operationErrorMessageField;
 
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation name. */
                 public FieldDetails $operationNameField;
             };
         }
@@ -403,6 +429,12 @@ abstract class MethodDetails
     protected static function isOperationRequestField(FieldDescriptorProto $field): bool
     {
         $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD);
+        return $opField !== null && $opField !== '';
+    }
+
+    protected static function isOperationResponseField(FieldDescriptorProto $field): bool
+    {
+        $opField = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_RESPONSE_FIELD);
         return $opField !== null && $opField !== '';
     }
 

@@ -46,12 +46,14 @@ class ResourcesGenerator
         $perMethod = function ($method) use ($gapicYamlConfig) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
-                    $status = $method->operationStatusField;
                     $name = $method->operationNameField;
+                    $status = $method->operationStatusField;
                     $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
                     return Map::new(['longRunning' => AST::array([
-                        'additionalArgumentMethods' => AST::array($method->operationRequestFields->values()
-                            ->map(fn ($x) => $x->getter->getName())->toArray()),
+                        'additionalArgumentMethods' => AST::array(
+                            $method->operationRequestFields
+                                ->values()
+                                ->map(fn ($x) => $x->getter->getName())->toArray()),
                         'getOperationMethod' => $method->operationPollingMethod->methodName,
                         // TODO(noahdietz): The cancel & delete methods are not supported by annotations yet.
                         // Remove them if the annotations are not forthcoming.

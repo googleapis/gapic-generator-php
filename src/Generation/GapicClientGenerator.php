@@ -136,7 +136,7 @@ class GapicClientGenerator
             ->withMember($this->defaultTransport())
             ->withMember($this->getSupportedTransports())
             ->withMembers($this->resourceMethods())
-            ->withMembers($this->lroMethods())
+            ->withMembers($this->operationMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
     }
@@ -308,8 +308,8 @@ class GapicClientGenerator
         }
     }
 
-    // lroMethods supports both standard google.longrunning and custom operations.
-    private function lroMethods(): Vector
+    // operationMethods handles both standard google.longrunning and custom operations.
+    private function operationMethods(): Vector
     {
         if ($this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp) {
             $ctype = $this->serviceDetails->hasCustomOp ? 

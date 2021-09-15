@@ -85,13 +85,23 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $expectedResponse->setHttpErrorMessage($httpErrorMessage);
         $expectedResponse->setHttpErrorStatusCode($httpErrorStatusCode);
         $transport->addResponse($expectedResponse);
-        $response = $client->get();
+        // Mock request
+        $operation = 'operation1662702951';
+        $project = 'project-309310695';
+        $region = 'region-934795532';
+        $response = $client->get($operation, $project, $region);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.customlro.CustomLroOperations/Get', $actualFuncCall);
+        $actualValue = $actualRequestObject->getOperation();
+        $this->assertProtobufEquals($operation, $actualValue);
+        $actualValue = $actualRequestObject->getProject();
+        $this->assertProtobufEquals($project, $actualValue);
+        $actualValue = $actualRequestObject->getRegion();
+        $this->assertProtobufEquals($region, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -115,8 +125,12 @@ class CustomLroOperationsClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
+        // Mock request
+        $operation = 'operation1662702951';
+        $project = 'project-309310695';
+        $region = 'region-934795532';
         try {
-            $client->get();
+            $client->get($operation, $project, $region);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

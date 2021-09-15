@@ -46,9 +46,9 @@ class GapicClientExamplesGenerator
                 $code = $this->rpcMethodExampleNormal($method);
                 break;
             case MethodDetails::CUSTOM_OP:
-                // Fallthrough - rpcMethodExampleLro handles custom operations as well.
+                // Fallthrough - rpcMethodExampleOperation handles custom operations as well.
             case MethodDetails::LRO:
-                $code = $this->rpcMethodExampleLro($method);
+                $code = $this->rpcMethodExampleOperation($method);
                 break;
             case MethodDetails::PAGINATED:
                 $code = $this->rpcMethodExamplePaginated($method);
@@ -151,8 +151,8 @@ class GapicClientExamplesGenerator
         );
     }
 
-    // rpcMethodExampleLro handles both google.longrunning and custom operations.
-    private function rpcMethodExampleLro(MethodDetails $method): AST
+    // rpcMethodExampleOperation handles both google.longrunning and custom operations.
+    private function rpcMethodExampleOperation(MethodDetails $method): AST
     {
         $isCustomOp = $method->methodType === MethodDetails::CUSTOM_OP;
         $serviceClient = AST::var($this->serviceDetails->clientVarName);

@@ -6,6 +6,10 @@ return [
             'Get' => [
                 'method' => 'get',
                 'uriTemplate' => '/operation',
+                'queryParams' => [
+                    'project',
+                    'region',
+                ],
             ],
         ],
     ],

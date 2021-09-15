@@ -46,7 +46,9 @@ use Testing\CustomLro\CustomOperationResponse;
  * ```
  * $customLroClient = new CustomLroClient();
  * try {
- *     $operationResponse = $customLroClient->createFoo();
+ *     $project = 'project';
+ *     $region = 'region';
+ *     $operationResponse = $customLroClient->createFoo($project, $region);
  *     $operationResponse->pollUntilComplete();
  *     if ($operationResponse->operationSucceeded()) {
  *         // if creating/modifying, retrieve the target resource
@@ -56,7 +58,7 @@ use Testing\CustomLro\CustomOperationResponse;
  *     }
  *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
- *     $operationResponse = $customLroClient->createFoo();
+ *     $operationResponse = $customLroClient->createFoo($project, $region);
  *     $operationName = $operationResponse->getName();
  *     // ... do other work
  *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
@@ -240,7 +242,9 @@ class CustomLroGapicClient
      * ```
      * $customLroClient = new CustomLroClient();
      * try {
-     *     $operationResponse = $customLroClient->createFoo();
+     *     $project = 'project';
+     *     $region = 'region';
+     *     $operationResponse = $customLroClient->createFoo($project, $region);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
      *         // if creating/modifying, retrieve the target resource
@@ -250,7 +254,7 @@ class CustomLroGapicClient
      *     }
      *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $customLroClient->createFoo();
+     *     $operationResponse = $customLroClient->createFoo($project, $region);
      *     $operationName = $operationResponse->getName();
      *     // ... do other work
      *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
@@ -269,12 +273,12 @@ class CustomLroGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param string $project
+     * @param string $region
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $foo
-     *     @type string $project
-     *     @type string $region
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -282,23 +286,17 @@ class CustomLroGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\CustomLro\CustomOperationResponse
+     * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
      */
-    public function createFoo(array $optionalArgs = [])
+    public function createFoo($project, $region, array $optionalArgs = [])
     {
         $request = new CreateFooRequest();
+        $request->setProject($project);
+        $request->setRegion($region);
         if (isset($optionalArgs['foo'])) {
             $request->setFoo($optionalArgs['foo']);
-        }
-
-        if (isset($optionalArgs['project'])) {
-            $request->setProject($optionalArgs['project']);
-        }
-
-        if (isset($optionalArgs['region'])) {
-            $request->setRegion($optionalArgs['region']);
         }
 
         return $this->startOperationsCall('CreateFoo', $optionalArgs, $request, $this->getOperationsClient(), null, CustomOperationResponse::class)->wait();

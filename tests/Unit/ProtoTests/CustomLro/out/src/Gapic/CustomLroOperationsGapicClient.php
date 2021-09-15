@@ -44,7 +44,10 @@ use Testing\CustomLro\GetOperationRequest;
  * ```
  * $customLroOperationsClient = new CustomLroOperationsClient();
  * try {
- *     $response = $customLroOperationsClient->get();
+ *     $operation = 'operation';
+ *     $project = 'project';
+ *     $region = 'region';
+ *     $response = $customLroOperationsClient->get($operation, $project, $region);
  * } finally {
  *     $customLroOperationsClient->close();
  * }
@@ -182,21 +185,21 @@ class CustomLroOperationsGapicClient
      * ```
      * $customLroOperationsClient = new CustomLroOperationsClient();
      * try {
-     *     $response = $customLroOperationsClient->get();
+     *     $operation = 'operation';
+     *     $project = 'project';
+     *     $region = 'region';
+     *     $response = $customLroOperationsClient->get($operation, $project, $region);
      * } finally {
      *     $customLroOperationsClient->close();
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param string $operation    Name of the Operations resource to return.
+     * @param string $project      Project ID for this request.
+     * @param string $region       Name of the region for this request.
+     * @param array  $optionalArgs {
      *     Optional.
      *
-     *     @type string $operation
-     *           Name of the Operations resource to return.
-     *     @type string $project
-     *           Project ID for this request.
-     *     @type string $region
-     *           Name of the region for this request.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -208,21 +211,12 @@ class CustomLroOperationsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function get(array $optionalArgs = [])
+    public function get($operation, $project, $region, array $optionalArgs = [])
     {
         $request = new GetOperationRequest();
-        if (isset($optionalArgs['operation'])) {
-            $request->setOperation($optionalArgs['operation']);
-        }
-
-        if (isset($optionalArgs['project'])) {
-            $request->setProject($optionalArgs['project']);
-        }
-
-        if (isset($optionalArgs['region'])) {
-            $request->setRegion($optionalArgs['region']);
-        }
-
+        $request->setOperation($operation);
+        $request->setProject($project);
+        $request->setRegion($region);
         return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
     }
 }
