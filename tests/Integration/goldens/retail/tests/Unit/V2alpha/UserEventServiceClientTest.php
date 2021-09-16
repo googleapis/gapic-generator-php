@@ -183,7 +183,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $parent = 'parent-995424086';
+        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
         $source = new SourceOneof();
         $source->setUserEventInlineSource(new UserEventInlineSource());
@@ -194,7 +194,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $source = new SourceOneof();
         $source->setBigQuerySource(new BigQuerySource());
         $inputConfig->setBigQuerySource($source);
-        $response = $client->importUserEvents($parent, $inputConfig);
+        $response = $client->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -205,7 +205,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $actualApiRequestObject = $apiRequests[0]->getRequestObject();
         $this->assertSame('/google.cloud.retail.v2alpha.UserEventService/ImportUserEvents', $actualApiFuncCall);
         $actualValue = $actualApiRequestObject->getParent();
-        $this->assertProtobufEquals($parent, $actualValue);
+        $this->assertProtobufEquals($formattedParent, $actualValue);
         $actualValue = $actualApiRequestObject->getInputConfig();
         $this->assertProtobufEquals($inputConfig, $actualValue);
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -261,7 +261,7 @@ class UserEventServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $parent = 'parent-995424086';
+        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
         $source = new SourceOneof();
         $source->setUserEventInlineSource(new UserEventInlineSource());
@@ -272,7 +272,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $source = new SourceOneof();
         $source->setBigQuerySource(new BigQuerySource());
         $inputConfig->setBigQuerySource($source);
-        $response = $client->importUserEvents($parent, $inputConfig);
+        $response = $client->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -557,18 +557,26 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock response
         $eventType = 'eventType984376767';
         $visitorId = 'visitorId-1832599924';
+        $sessionId = 'sessionId1661853540';
         $attributionToken = 'attributionToken-729411015';
         $cartId = 'cartId554410650';
         $searchQuery = 'searchQuery461177713';
+        $filter = 'filter-1274492040';
+        $orderBy = 'orderBy1234304744';
+        $offset = 1019779949;
         $uri = 'uri116076';
         $referrerUri = 'referrerUri-2093856436';
         $pageViewId = 'pageViewId948896581';
         $expectedResponse = new UserEvent();
         $expectedResponse->setEventType($eventType);
         $expectedResponse->setVisitorId($visitorId);
+        $expectedResponse->setSessionId($sessionId);
         $expectedResponse->setAttributionToken($attributionToken);
         $expectedResponse->setCartId($cartId);
         $expectedResponse->setSearchQuery($searchQuery);
+        $expectedResponse->setFilter($filter);
+        $expectedResponse->setOrderBy($orderBy);
+        $expectedResponse->setOffset($offset);
         $expectedResponse->setUri($uri);
         $expectedResponse->setReferrerUri($referrerUri);
         $expectedResponse->setPageViewId($pageViewId);

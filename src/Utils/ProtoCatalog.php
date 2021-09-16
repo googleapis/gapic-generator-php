@@ -29,7 +29,7 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, DescriptorProto> of all proto msgs by full name. */
     public Map $msgsByFullname;
 
-    /** @var Map *Readonly* Map<string, EnumDescriptorProto> of all enums by faull name. */
+    /** @var Map *Readonly* Map<string, EnumDescriptorProto> of all enums by full name. */
     public Map $enumsByFullname;
 
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
@@ -47,6 +47,9 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, Vector<ResourceDescriptor>> of all child/parent resources. */
     public Map $parentResourceByChildType;
 
+    /** @var Map *Readonly* Map<string, ServiceDescriptorProto> of all services by full name. */
+    public Map $servicesByFullname;
+
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
         return Vector::new($desc->getNestedType())
@@ -61,6 +64,20 @@ class ProtoCatalog
      */
     public function __construct(Vector $fileDescs)
     {
+        // Flatten into pairs of [proto package, ServiceDescriptorProto], because each
+        // FileDescriptorProto can contain multiple services, so each service must be
+        // paired with the parent file proto package.
+        $allServices = $fileDescs
+            ->flatMap(fn ($x) =>
+                Vector::new($x->getService())->map(fn ($s) => [$x->getPackage(), $s]));
+
+        // Convert pairs into map of fully-qualified proto element name and ServiceDescriptorProto.
+        $this->servicesByFullname = $allServices->toMap(
+            // Key: fully-qualified service name.
+            fn ($x) => ".{$x[0]}.{$x[1]->getName()}",
+            // Value: ServiceDescriptorProto.
+            fn ($x) => $x[1]);
+
         $allMsgs = $fileDescs
             ->flatMap(fn ($x) => Vector::new($x->getMessageType()))
             ->flatMap(fn ($x) => static::msgPlusNested($x));

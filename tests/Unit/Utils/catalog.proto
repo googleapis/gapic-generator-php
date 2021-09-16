@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+// Test proto for reading source comments
+package foo;
+
+// Svc 1
+// Svc 2
+service Svc {
+    // Method 1
+    // Method 2
+    rpc AMethod(Msg) returns(Msg);
+}
+
+// Msg 1
+// Msg 2
+message Msg {
+    // Inner 1
+    // Inner 2
+    message InnerMsg {
+        // Inner field 1
+        // Inner field 2
+        int32 a_number = 1;
+    }
+
+    // Field 1
+    // Field 2
+    string a_string = 1;
+
+    // Inner enum
+    enum InnerEnm {
+        INNER_ENM1 = 0;
+        INNER_ENM2 = 1;
+    }
+}
+
+// Enum
+enum Enm {
+    ENM_1 = 0;
+    ENM_2 = 1;
+}

@@ -33,23 +33,32 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 
 use Google\ApiCore\OperationResponse;
+
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\CreateProductRequest;
 use Google\Cloud\Retail\V2alpha\DeleteProductRequest;
 use Google\Cloud\Retail\V2alpha\GetProductRequest;
 use Google\Cloud\Retail\V2alpha\ImportErrorsConfig;
+use Google\Cloud\Retail\V2alpha\ImportMetadata;
 use Google\Cloud\Retail\V2alpha\ImportProductsRequest;
+use Google\Cloud\Retail\V2alpha\ImportProductsRequest\ReconciliationMode;
+use Google\Cloud\Retail\V2alpha\ListProductsRequest;
+use Google\Cloud\Retail\V2alpha\ListProductsResponse;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
+use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
+use Google\Cloud\Retail\V2alpha\SetInventoryRequest;
 use Google\Cloud\Retail\V2alpha\UpdateProductRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\GPBEmpty;
+use Google\Protobuf\Timestamp;
 
 /**
  * Service Description: Service for ingesting [Product][google.cloud.retail.v2alpha.Product]
@@ -61,10 +70,35 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $productServiceClient = new ProductServiceClient();
  * try {
- *     $formattedParent = $productServiceClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
- *     $product = new Product();
- *     $productId = 'product_id';
- *     $response = $productServiceClient->createProduct($formattedParent, $product, $productId);
+ *     $formattedProduct = $productServiceClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+ *     $type = 'type';
+ *     $placeIds = [];
+ *     $operationResponse = $productServiceClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         $result = $operationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ *     // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $productServiceClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'addFulfillmentPlaces');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         $result = $newOperationResponse->getResult();
+ *     // doSomethingWith($result)
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $productServiceClient->close();
  * }
@@ -354,6 +388,150 @@ class ProductServiceGapicClient
     }
 
     /**
+     * Incrementally adds place IDs to
+     * [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
+     *
+     * This process is asynchronous and does not require the
+     * [Product][google.cloud.retail.v2alpha.Product] to exist before updating
+     * fulfillment information. If the request is valid, the update will be
+     * enqueued and processed downstream. As a consequence, when a response is
+     * returned, the added place IDs are not immediately manifested in the
+     * [Product][google.cloud.retail.v2alpha.Product] queried by
+     * [GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct] or
+     * [ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts].
+     *
+     * This feature is only available for users who have Retail Search enabled.
+     * Please submit a form [here](https://cloud.google.com/contact) to contact
+     * cloud sales if you are interested in using Retail Search.
+     *
+     * Sample code:
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * try {
+     *     $formattedProduct = $productServiceClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+     *     $type = 'type';
+     *     $placeIds = [];
+     *     $operationResponse = $productServiceClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $productServiceClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'addFulfillmentPlaces');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string   $product      Required. Full resource name of
+     *                               [Product][google.cloud.retail.v2alpha.Product], such as
+     *                               `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
+     *
+     *                               If the caller does not have permission to access the
+     *                               [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
+     *                               not it exists, a PERMISSION_DENIED error is returned.
+     * @param string   $type         Required. The fulfillment type, including commonly used types (such as
+     *                               pickup in store and same day delivery), and custom types.
+     *
+     *                               Supported values:
+     *
+     *                               * "pickup-in-store"
+     *                               * "ship-to-store"
+     *                               * "same-day-delivery"
+     *                               * "next-day-delivery"
+     *                               * "custom-type-1"
+     *                               * "custom-type-2"
+     *                               * "custom-type-3"
+     *                               * "custom-type-4"
+     *                               * "custom-type-5"
+     *
+     *                               If this field is set to an invalid value other than these, an
+     *                               INVALID_ARGUMENT error is returned.
+     *
+     *                               This field directly corresponds to [Product.fulfillment_info.type][].
+     * @param string[] $placeIds     Required. The IDs for this
+     *                               [type][google.cloud.retail.v2alpha.AddFulfillmentPlacesRequest.type], such
+     *                               as the store IDs for "pickup-in-store" or the region IDs for
+     *                               "same-day-delivery" to be added for this
+     *                               [type][google.cloud.retail.v2alpha.AddFulfillmentPlacesRequest.type].
+     *                               Duplicate IDs will be automatically ignored.
+     *
+     *                               At least 1 value is required, and a maximum of 2000 values are allowed.
+     *                               Each value must be a string with a length limit of 10 characters, matching
+     *                               the pattern [a-zA-Z0-9_-]+, such as "store1" or "REGION-2". Otherwise, an
+     *                               INVALID_ARGUMENT error is returned.
+     *
+     *                               If the total number of place IDs exceeds 2000 for this
+     *                               [type][google.cloud.retail.v2alpha.AddFulfillmentPlacesRequest.type] after
+     *                               adding, then the update will be rejected.
+     * @param array    $optionalArgs {
+     *     Optional.
+     *
+     *     @type Timestamp $addTime
+     *           The time when the fulfillment updates are issued, used to prevent
+     *           out-of-order updates on fulfillment information. If not provided, the
+     *           internal system time will be used.
+     *     @type bool $allowMissing
+     *           If set to true, and the [Product][google.cloud.retail.v2alpha.Product] is
+     *           not found, the fulfillment information will still be processed and retained
+     *           for at most 1 day and processed once the
+     *           [Product][google.cloud.retail.v2alpha.Product] is created. If set to false,
+     *           an INVALID_ARGUMENT error is returned if the
+     *           [Product][google.cloud.retail.v2alpha.Product] is not found.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function addFulfillmentPlaces($product, $type, $placeIds, array $optionalArgs = [])
+    {
+        $request = new AddFulfillmentPlacesRequest();
+        $requestParamHeaders = [];
+        $request->setProduct($product);
+        $request->setType($type);
+        $request->setPlaceIds($placeIds);
+        $requestParamHeaders['product'] = $product;
+        if (isset($optionalArgs['addTime'])) {
+            $request->setAddTime($optionalArgs['addTime']);
+        }
+
+        if (isset($optionalArgs['allowMissing'])) {
+            $request->setAllowMissing($optionalArgs['allowMissing']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('AddFulfillmentPlaces', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
      * Creates a [Product][google.cloud.retail.v2alpha.Product].
      *
      * Sample code:
@@ -370,7 +548,7 @@ class ProductServiceGapicClient
      * ```
      *
      * @param string  $parent       Required. The parent catalog resource name, such as
-     *                              "projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch".
+     *                              `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`.
      * @param Product $product      Required. The [Product][google.cloud.retail.v2alpha.Product] to create.
      * @param string  $productId    Required. The ID to use for the
      *                              [Product][google.cloud.retail.v2alpha.Product], which will become the final
@@ -432,7 +610,7 @@ class ProductServiceGapicClient
      *
      * @param string $name         Required. Full resource name of
      *                             [Product][google.cloud.retail.v2alpha.Product], such as
-     *                             "projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id".
+     *                             `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
      *
      *                             If the caller does not have permission to delete the
      *                             [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
@@ -440,6 +618,18 @@ class ProductServiceGapicClient
      *
      *                             If the [Product][google.cloud.retail.v2alpha.Product] to delete does not
      *                             exist, a NOT_FOUND error is returned.
+     *
+     *                             The [Product][google.cloud.retail.v2alpha.Product] to delete can neither be
+     *                             a
+     *                             [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
+     *                             [Product][google.cloud.retail.v2alpha.Product] member nor a
+     *                             [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+     *                             [Product][google.cloud.retail.v2alpha.Product] with more than one
+     *                             [variants][google.cloud.retail.v2alpha.Product.Type.VARIANT]. Otherwise, an
+     *                             INVALID_ARGUMENT error is returned.
+     *
+     *                             All inventory information for the named
+     *                             [Product][google.cloud.retail.v2alpha.Product] will be deleted.
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -481,7 +671,7 @@ class ProductServiceGapicClient
      *
      * @param string $name         Required. Full resource name of
      *                             [Product][google.cloud.retail.v2alpha.Product], such as
-     *                             "projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id".
+     *                             `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
      *
      *                             If the caller does not have permission to access the
      *                             [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
@@ -529,9 +719,9 @@ class ProductServiceGapicClient
      * ```
      * $productServiceClient = new ProductServiceClient();
      * try {
-     *     $parent = 'parent';
+     *     $formattedParent = $productServiceClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
      *     $inputConfig = new ProductInputConfig();
-     *     $operationResponse = $productServiceClient->importProducts($parent, $inputConfig);
+     *     $operationResponse = $productServiceClient->importProducts($formattedParent, $inputConfig);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
      *         $result = $operationResponse->getResult();
@@ -542,7 +732,7 @@ class ProductServiceGapicClient
      *     }
      *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $productServiceClient->importProducts($parent, $inputConfig);
+     *     $operationResponse = $productServiceClient->importProducts($formattedParent, $inputConfig);
      *     $operationName = $operationResponse->getName();
      *     // ... do other work
      *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'importProducts');
@@ -563,7 +753,7 @@ class ProductServiceGapicClient
      * ```
      *
      * @param string             $parent       Required.
-     *                                         "projects/1234/locations/global/catalogs/default_catalog/branches/default_branch"
+     *                                         `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
      *
      *                                         If no updateMask is specified, requires products.create permission.
      *                                         If updateMask is specified, requires products.update permission.
@@ -571,11 +761,36 @@ class ProductServiceGapicClient
      * @param array              $optionalArgs {
      *     Optional.
      *
+     *     @type string $requestId
+     *           Unique identifier provided by client, within the ancestor
+     *           dataset scope. Ensures idempotency and used for request deduplication.
+     *           Server-generated if unspecified. Up to 128 characters long and must match
+     *           the pattern: "[a-zA-Z0-9_]+". This is returned as [Operation.name][] in
+     *           [ImportMetadata][google.cloud.retail.v2alpha.ImportMetadata].
+     *
+     *           Only supported when
+     *           [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
+     *           is set to `FULL`.
      *     @type ImportErrorsConfig $errorsConfig
      *           The desired location of errors incurred during the Import.
      *     @type FieldMask $updateMask
      *           Indicates which fields in the provided imported 'products' to update. If
      *           not set, will by default update all fields.
+     *     @type int $reconciliationMode
+     *           The mode of reconciliation between existing products and the products to be
+     *           imported. Defaults to
+     *           [ReconciliationMode.INCREMENTAL][google.cloud.retail.v2alpha.ImportProductsRequest.ReconciliationMode.INCREMENTAL].
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Retail\V2alpha\ImportProductsRequest\ReconciliationMode}
+     *     @type string $notificationPubsubTopic
+     *           Pub/Sub topic for receiving notification. If this field is set,
+     *           when the import is finished, a notification will be sent to
+     *           specified Pub/Sub topic. The message data will be JSON string of a
+     *           [Operation][google.longrunning.Operation].
+     *           Format of the Pub/Sub topic is `projects/{project}/topics/{topic}`.
+     *
+     *           Only supported when
+     *           [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
+     *           is set to `FULL`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -596,6 +811,10 @@ class ProductServiceGapicClient
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
         $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['requestId'])) {
+            $request->setRequestId($optionalArgs['requestId']);
+        }
+
         if (isset($optionalArgs['errorsConfig'])) {
             $request->setErrorsConfig($optionalArgs['errorsConfig']);
         }
@@ -604,9 +823,475 @@ class ProductServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
+        if (isset($optionalArgs['reconciliationMode'])) {
+            $request->setReconciliationMode($optionalArgs['reconciliationMode']);
+        }
+
+        if (isset($optionalArgs['notificationPubsubTopic'])) {
+            $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
+        }
+
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('ImportProducts', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Gets a list of [Product][google.cloud.retail.v2alpha.Product]s.
+     *
+     * Sample code:
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * try {
+     *     $formattedParent = $productServiceClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $productServiceClient->listProducts($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $productServiceClient->listProducts($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The parent branch resource name, such as
+     *                             `projects/&#42;/locations/global/catalogs/default_catalog/branches/0`. Use
+     *                             `default_branch` as the branch ID, to list products under the default
+     *                             branch.
+     *
+     *                             If the caller does not have permission to list
+     *                             [Product][google.cloud.retail.v2alpha.Product]s under this branch,
+     *                             regardless of whether or not this branch exists, a PERMISSION_DENIED error
+     *                             is returned.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type string $filter
+     *           A filter to apply on the list results. Supported features:
+     *
+     *           * List all the products under the parent branch if
+     *           [filter][google.cloud.retail.v2alpha.ListProductsRequest.filter] is unset.
+     *           * List
+     *           [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+     *           [Product][google.cloud.retail.v2alpha.Product]s sharing the same
+     *           [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+     *           [Product][google.cloud.retail.v2alpha.Product]. For example:
+     *           `primary_product_id = "some_product_id"`
+     *           * List [Product][google.cloud.retail.v2alpha.Product]s bundled in a
+     *           [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
+     *           [Product][google.cloud.retail.v2alpha.Product].
+     *           For example:
+     *           `collection_product_id = "some_product_id"`
+     *           * List [Product][google.cloud.retail.v2alpha.Product]s with a partibular
+     *           type. For example:
+     *           `type = "PRIMARY"`
+     *           `type = "VARIANT"`
+     *           `type = "COLLECTION"`
+     *
+     *           If the field is unrecognizable, an INVALID_ARGUMENT error is returned.
+     *
+     *           If the specified
+     *           [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+     *           [Product][google.cloud.retail.v2alpha.Product] or
+     *           [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
+     *           [Product][google.cloud.retail.v2alpha.Product] does not exist, a NOT_FOUND
+     *           error is returned.
+     *     @type FieldMask $readMask
+     *           The fields of [Product][google.cloud.retail.v2alpha.Product] to return in
+     *           the responses. If not set or empty, the following fields are returned:
+     *
+     *           * [Product.name][google.cloud.retail.v2alpha.Product.name]
+     *           * [Product.id][google.cloud.retail.v2alpha.Product.id]
+     *           * [Product.title][google.cloud.retail.v2alpha.Product.title]
+     *           * [Product.uri][google.cloud.retail.v2alpha.Product.uri]
+     *           * [Product.images][google.cloud.retail.v2alpha.Product.images]
+     *           * [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+     *           * [Product.brands][google.cloud.retail.v2alpha.Product.brands]
+     *
+     *           If "*" is provided, all fields are returned.
+     *           [Product.name][google.cloud.retail.v2alpha.Product.name] is always returned
+     *           no matter what mask is set.
+     *
+     *           If an unsupported or unknown field is provided, an INVALID_ARGUMENT error
+     *           is returned.
+     *     @type bool $requireTotalSize
+     *           If true and
+     *           [page_token][google.cloud.retail.v2alpha.ListProductsRequest.page_token] is
+     *           empty,
+     *           [ListProductsResponse.total_size][google.cloud.retail.v2alpha.ListProductsResponse.total_size]
+     *           is set to the total count of matched items irrespective of pagination.
+     *
+     *           Notice that setting this field to true affects the performance.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function listProducts($parent, array $optionalArgs = [])
+    {
+        $request = new ListProductsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
+        }
+
+        if (isset($optionalArgs['readMask'])) {
+            $request->setReadMask($optionalArgs['readMask']);
+        }
+
+        if (isset($optionalArgs['requireTotalSize'])) {
+            $request->setRequireTotalSize($optionalArgs['requireTotalSize']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListProducts', $optionalArgs, ListProductsResponse::class, $request);
+    }
+
+    /**
+     * Incrementally removes place IDs from a
+     * [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
+     *
+     * This process is asynchronous and does not require the
+     * [Product][google.cloud.retail.v2alpha.Product] to exist before updating
+     * fulfillment information. If the request is valid, the update will be
+     * enqueued and processed downstream. As a consequence, when a response is
+     * returned, the removed place IDs are not immediately manifested in the
+     * [Product][google.cloud.retail.v2alpha.Product] queried by
+     * [GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct] or
+     * [ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts].
+     *
+     * This feature is only available for users who have Retail Search enabled.
+     * Please submit a form [here](https://cloud.google.com/contact) to contact
+     * cloud sales if you are interested in using Retail Search.
+     *
+     * Sample code:
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * try {
+     *     $formattedProduct = $productServiceClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+     *     $type = 'type';
+     *     $placeIds = [];
+     *     $operationResponse = $productServiceClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $productServiceClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'removeFulfillmentPlaces');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string   $product      Required. Full resource name of
+     *                               [Product][google.cloud.retail.v2alpha.Product], such as
+     *                               `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
+     *
+     *                               If the caller does not have permission to access the
+     *                               [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
+     *                               not it exists, a PERMISSION_DENIED error is returned.
+     * @param string   $type         Required. The fulfillment type, including commonly used types (such as
+     *                               pickup in store and same day delivery), and custom types.
+     *
+     *                               Supported values:
+     *
+     *                               * "pickup-in-store"
+     *                               * "ship-to-store"
+     *                               * "same-day-delivery"
+     *                               * "next-day-delivery"
+     *                               * "custom-type-1"
+     *                               * "custom-type-2"
+     *                               * "custom-type-3"
+     *                               * "custom-type-4"
+     *                               * "custom-type-5"
+     *
+     *                               If this field is set to an invalid value other than these, an
+     *                               INVALID_ARGUMENT error is returned.
+     *
+     *                               This field directly corresponds to [Product.fulfillment_info.type][].
+     * @param string[] $placeIds     Required. The IDs for this
+     *                               [type][google.cloud.retail.v2alpha.RemoveFulfillmentPlacesRequest.type],
+     *                               such as the store IDs for "pickup-in-store" or the region IDs for
+     *                               "same-day-delivery", to be removed for this
+     *                               [type][google.cloud.retail.v2alpha.RemoveFulfillmentPlacesRequest.type].
+     *
+     *                               At least 1 value is required, and a maximum of 2000 values are allowed.
+     *                               Each value must be a string with a length limit of 10 characters, matching
+     *                               the pattern [a-zA-Z0-9_-]+, such as "store1" or "REGION-2". Otherwise, an
+     *                               INVALID_ARGUMENT error is returned.
+     * @param array    $optionalArgs {
+     *     Optional.
+     *
+     *     @type Timestamp $removeTime
+     *           The time when the fulfillment updates are issued, used to prevent
+     *           out-of-order updates on fulfillment information. If not provided, the
+     *           internal system time will be used.
+     *     @type bool $allowMissing
+     *           If set to true, and the [Product][google.cloud.retail.v2alpha.Product] is
+     *           not found, the fulfillment information will still be processed and retained
+     *           for at most 1 day and processed once the
+     *           [Product][google.cloud.retail.v2alpha.Product] is created. If set to false,
+     *           an INVALID_ARGUMENT error is returned if the
+     *           [Product][google.cloud.retail.v2alpha.Product] is not found.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function removeFulfillmentPlaces($product, $type, $placeIds, array $optionalArgs = [])
+    {
+        $request = new RemoveFulfillmentPlacesRequest();
+        $requestParamHeaders = [];
+        $request->setProduct($product);
+        $request->setType($type);
+        $request->setPlaceIds($placeIds);
+        $requestParamHeaders['product'] = $product;
+        if (isset($optionalArgs['removeTime'])) {
+            $request->setRemoveTime($optionalArgs['removeTime']);
+        }
+
+        if (isset($optionalArgs['allowMissing'])) {
+            $request->setAllowMissing($optionalArgs['allowMissing']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('RemoveFulfillmentPlaces', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Updates inventory information for a
+     * [Product][google.cloud.retail.v2alpha.Product] while respecting the last
+     * update timestamps of each inventory field.
+     *
+     * This process is asynchronous and does not require the
+     * [Product][google.cloud.retail.v2alpha.Product] to exist before updating
+     * fulfillment information. If the request is valid, the update will be
+     * enqueued and processed downstream. As a consequence, when a response is
+     * returned, updates are not immediately manifested in the
+     * [Product][google.cloud.retail.v2alpha.Product] queried by
+     * [GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct] or
+     * [ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts].
+     *
+     * When inventory is updated with
+     * [CreateProduct][google.cloud.retail.v2alpha.ProductService.CreateProduct]
+     * and
+     * [UpdateProduct][google.cloud.retail.v2alpha.ProductService.UpdateProduct],
+     * the specified inventory field value(s) will overwrite any existing value(s)
+     * while ignoring the last update time for this field. Furthermore, the last
+     * update time for the specified inventory fields will be overwritten to the
+     * time of the
+     * [CreateProduct][google.cloud.retail.v2alpha.ProductService.CreateProduct]
+     * or
+     * [UpdateProduct][google.cloud.retail.v2alpha.ProductService.UpdateProduct]
+     * request.
+     *
+     * If no inventory fields are set in
+     * [CreateProductRequest.product][google.cloud.retail.v2alpha.CreateProductRequest.product],
+     * then any pre-existing inventory information for this product will be used.
+     *
+     * If no inventory fields are set in [UpdateProductRequest.set_mask][],
+     * then any existing inventory information will be preserved.
+     *
+     * Pre-existing inventory information can only be updated with
+     * [SetInventory][google.cloud.retail.v2alpha.ProductService.SetInventory],
+     * [AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces],
+     * and
+     * [RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces].
+     *
+     * This feature is only available for users who have Retail Search enabled.
+     * Please submit a form [here](https://cloud.google.com/contact) to contact
+     * cloud sales if you are interested in using Retail Search.
+     *
+     * Sample code:
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * try {
+     *     $inventory = new Product();
+     *     $operationResponse = $productServiceClient->setInventory($inventory);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $productServiceClient->setInventory($inventory);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'setInventory');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *     // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param Product $inventory    Required. The inventory information to update. The allowable fields to
+     *                              update are:
+     *                              * [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+     *                              * [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+     *                              * [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+     *                              * [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+     *                              The updated inventory fields must be specified in
+     *                              [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
+     *
+     *                              If [SetInventoryRequest.inventory.name][] is empty or invalid, an
+     *                              INVALID_ARGUMENT error is returned.
+     *
+     *                              If the caller does not have permission to update the
+     *                              [Product][google.cloud.retail.v2alpha.Product] named in
+     *                              [Product.name][google.cloud.retail.v2alpha.Product.name], regardless of
+     *                              whether or not it exists, a PERMISSION_DENIED error is returned.
+     *
+     *                              If the [Product][google.cloud.retail.v2alpha.Product] to update does not
+     *                              have existing inventory information, the provided inventory information
+     *                              will be inserted.
+     *
+     *                              If the [Product][google.cloud.retail.v2alpha.Product] to update has
+     *                              existing inventory information, the provided inventory information will be
+     *                              merged while respecting the last update time for each inventory field,
+     *                              using the provided or default value for
+     *                              [SetInventoryRequest.set_time][google.cloud.retail.v2alpha.SetInventoryRequest.set_time].
+     *
+     *                              The last update time is recorded for the following inventory fields:
+     *                              * [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+     *                              * [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+     *                              * [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+     *                              * [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+     *
+     *                              If a full overwrite of inventory information while ignoring timestamps is
+     *                              needed, [UpdateProduct][] should be invoked instead.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $setMask
+     *           Indicates which inventory fields in the provided
+     *           [Product][google.cloud.retail.v2alpha.Product] to update. If not set or set
+     *           with empty paths, all inventory fields will be updated.
+     *
+     *           If an unsupported or unknown field is provided, an INVALID_ARGUMENT error
+     *           is returned and the entire update will be ignored.
+     *     @type Timestamp $setTime
+     *           The time when the request is issued, used to prevent
+     *           out-of-order updates on inventory fields with the last update time
+     *           recorded. If not provided, the internal system time will be used.
+     *     @type bool $allowMissing
+     *           If set to true, and the [Product][google.cloud.retail.v2alpha.Product] with
+     *           name [Product.name][google.cloud.retail.v2alpha.Product.name] is not found,
+     *           the inventory update will still be processed and retained for at most 1 day
+     *           until the [Product][google.cloud.retail.v2alpha.Product] is created. If set
+     *           to false, an INVALID_ARGUMENT error is returned if the
+     *           [Product][google.cloud.retail.v2alpha.Product] is not found.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function setInventory($inventory, array $optionalArgs = [])
+    {
+        $request = new SetInventoryRequest();
+        $requestParamHeaders = [];
+        $request->setInventory($inventory);
+        $requestParamHeaders['inventory.name'] = $inventory->getName();
+        if (isset($optionalArgs['setMask'])) {
+            $request->setSetMask($optionalArgs['setMask']);
+        }
+
+        if (isset($optionalArgs['setTime'])) {
+            $request->setSetTime($optionalArgs['setTime']);
+        }
+
+        if (isset($optionalArgs['allowMissing'])) {
+            $request->setAllowMissing($optionalArgs['allowMissing']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('SetInventory', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -630,7 +1315,9 @@ class ProductServiceGapicClient
      *                              not it exists, a PERMISSION_DENIED error is returned.
      *
      *                              If the [Product][google.cloud.retail.v2alpha.Product] to update does not
-     *                              exist, a NOT_FOUND error is returned.
+     *                              exist and
+     *                              [allow_missing][google.cloud.retail.v2alpha.UpdateProductRequest.allow_missing]
+     *                              is not set, a NOT_FOUND error is returned.
      * @param array   $optionalArgs {
      *     Optional.
      *
@@ -642,6 +1329,10 @@ class ProductServiceGapicClient
      *
      *           If an unsupported or unknown field is provided, an INVALID_ARGUMENT error
      *           is returned.
+     *     @type bool $allowMissing
+     *           If set to true, and the [Product][google.cloud.retail.v2alpha.Product] is
+     *           not found, a new [Product][google.cloud.retail.v2alpha.Product] will be
+     *           created. In this situation, `update_mask` is ignored.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -663,6 +1354,10 @@ class ProductServiceGapicClient
         $requestParamHeaders['product.name'] = $product->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        if (isset($optionalArgs['allowMissing'])) {
+            $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
