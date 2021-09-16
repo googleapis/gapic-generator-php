@@ -2,50 +2,15 @@
 
 return [
     'interfaces' => [
-        'google.cloud.retail.v2alpha.CatalogService' => [
-            'GetDefaultBranch' => [
-                'method' => 'get',
-                'uriTemplate' => '/v2alpha/{catalog=projects/*/locations/*/catalogs/*}:getDefaultBranch',
-                'placeholders' => [
-                    'catalog' => [
-                        'getters' => [
-                            'getCatalog',
-                        ],
-                    ],
-                ],
-            ],
-            'ListCatalogs' => [
-                'method' => 'get',
-                'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*}/catalogs',
-                'placeholders' => [
-                    'parent' => [
-                        'getters' => [
-                            'getParent',
-                        ],
-                    ],
-                ],
-            ],
-            'SetDefaultBranch' => [
+        'google.cloud.retail.v2alpha.SearchService' => [
+            'Search' => [
                 'method' => 'post',
-                'uriTemplate' => '/v2alpha/{catalog=projects/*/locations/*/catalogs/*}:setDefaultBranch',
+                'uriTemplate' => '/v2alpha/{placement=projects/*/locations/*/catalogs/*/placements/*}:search',
                 'body' => '*',
                 'placeholders' => [
-                    'catalog' => [
+                    'placement' => [
                         'getters' => [
-                            'getCatalog',
-                        ],
-                    ],
-                ],
-            ],
-            'UpdateCatalog' => [
-                'method' => 'patch',
-                'uriTemplate' => '/v2alpha/{catalog.name=projects/*/locations/*/catalogs/*}',
-                'body' => 'catalog',
-                'placeholders' => [
-                    'catalog.name' => [
-                        'getters' => [
-                            'getCatalog',
-                            'getName',
+                            'getPlacement',
                         ],
                     ],
                 ],
