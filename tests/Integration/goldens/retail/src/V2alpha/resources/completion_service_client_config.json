@@ -1,6 +1,6 @@
 {
     "interfaces": {
-        "google.cloud.retail.v2alpha.PredictionService": {
+        "google.cloud.retail.v2alpha.CompletionService": {
             "retry_codes": {
                 "no_retry_codes": [],
                 "retry_policy_1_codes": [
@@ -29,7 +29,12 @@
                 }
             },
             "methods": {
-                "Predict": {
+                "CompleteQuery": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "retry_policy_1_codes",
+                    "retry_params_name": "retry_policy_1_params"
+                },
+                "ImportCompletionData": {
                     "timeout_millis": 5000,
                     "retry_codes_name": "retry_policy_1_codes",
                     "retry_params_name": "retry_policy_1_params"
