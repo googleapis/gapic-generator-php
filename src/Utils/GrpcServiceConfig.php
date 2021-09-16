@@ -31,7 +31,7 @@ class GrpcServiceConfig
         } else {
             $this->isPresent = true;
             $config = new ServiceConfig();
-            $config->mergeFromJsonString($json);
+            $config->mergeFromJsonString($json, /* ignore_unknown */true);
             $this->methods = Vector::new($config->getMethodConfig());
         }
     }
