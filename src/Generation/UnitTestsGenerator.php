@@ -921,8 +921,8 @@ class UnitTestsGenerator
             ($this->assertTrue)($operationsTransport->isExhausted()),
             '// Mock response',
             AST::assign($incompleteOperation, AST::new($this->ctx->type($method->responseType))()),
-            AST::call($incompleteOperation, $opNameSetter)("customOperations/{$methodName}"),
-            AST::call($incompleteOperation, $statusSetter)($notDoneValue),
+            $incompleteOperation->instanceCall($opNameSetter)("customOperations/{$methodName}"),
+            $incompleteOperation->instanceCall($statusSetter)($notDoneValue),
             $transport->addResponse($incompleteOperation),
         ]);
         return [$initCode, $operationsTransport, $client, $transport];
