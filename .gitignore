@@ -3,6 +3,7 @@ bazel-*
 
 # PHP
 .php_cs.cache
+composer.lock
 
 # Vim
 *.sw*
