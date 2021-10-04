@@ -106,3 +106,37 @@
     ```
     bazel run tests/Integration:asset_update
     ```
+
+## Updating the `googleapis` submodule
+
+To update the `googleapis` submodule, change into the directory and pull:
+
+```
+pushd googleapis
+git pull origin master
+popd
+```
+
+Then update the commit hash of `googleapis` in [repositories.bzl](./repositories.bzl)
+to match.
+
+Finally, the test golden files need to be udpated with the latest
+version of the protos from `googleapis`. See the instructions in [Running tests](#running-tests)
+for the exact commands.
+
+Submit all of this in standalone pull request.
+
+## Adding new Protobuf annotations/types
+
+Ensure that the `googleapis` submodule is pinned to a commit recent enough to
+include the annotation(s)/type(s) targeted for generation. If the `googleapis`
+submodule needs to be updated, see [Updating the `googleapis` submodule](#updating-the-googleapis-submodule).
+
+From the `googleapis` submodule, generate the PHP Protobuf bindings with
+`protoc`:
+
+    protoc -I. --php_out=../generated relative/path/to/my.proto
+
+Note: If the newly generated file belongs to a new package, ensure that it is
+in scope of the existing autoload rules in the [composer.json](./composer.json),
+adding it if it's not.
