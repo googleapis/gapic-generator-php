@@ -48,6 +48,7 @@ class ResourcesGenerator
                 case MethodDetails::CUSTOM_OP:
                     $name = $method->operationNameField;
                     $status = $method->operationStatusField;
+                    $errorCode = $method->operationErrorCodeField;
                     $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
                     return Map::new(['longRunning' => AST::array([
                         'additionalArgumentMethods' => AST::array(
@@ -60,6 +61,7 @@ class ResourcesGenerator
                         // 'Cancel' RPCs.
                         'cancelOperationMethod' => AST::NULL,
                         'deleteOperationMethod' => AST::NULL,
+                        'operationErrorCodeMethod' => $errorCode->getter->getName(),
                         'operationNameMethod' => $name->getter->getName(),
                         'operationStatusMethod' => $status->getter->getName(),
                         'operationStatusDoneValue' => $doneValue,

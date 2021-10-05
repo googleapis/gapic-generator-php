@@ -12,6 +12,7 @@ return [
                     'getOperationMethod' => 'get',
                     'cancelOperationMethod' => null,
                     'deleteOperationMethod' => null,
+                    'operationErrorCodeMethod' => 'getHttpErrorStatusCode',
                     'operationNameMethod' => 'getName',
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
