@@ -176,7 +176,33 @@ class ResourcesGenerator
 
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
-        $allInterfaces = $serviceDetails->methods
+        $allInterfaces = static::compileRestConfigInterfaces($serviceDetails, $serviceYamlConfig);
+        if ($serviceDetails->hasCustomOp) {
+            $opService = $serviceDetails->customOperationService;
+            $opFile = $serviceDetails->catalog->filesByService[$opService];
+            $customOpDetails = new ServiceDetails(
+                $serviceDetails->catalog,
+                $serviceDetails->namespace,
+                $opFile->getPackage(),
+                $opService,
+                $opFile,
+                $serviceDetails->transportType
+            );
+            $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
+            $allInterfaces = array_merge($allInterfaces, $opInter);
+        }
+        
+        $return = AST::return(
+            AST::array([
+                'interfaces' => AST::array($allInterfaces)
+            ])
+        );
+        return "<?php\n\n{$return->toCode()};";
+    }
+
+    private static function compileRestConfigInterfaces(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig)
+    {
+        return $serviceDetails->methods
             ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming() && !$method->isMixin())
             ->map(fn ($method) => [$serviceDetails->serviceName, $method, $method->httpRule])
             ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
@@ -193,12 +219,6 @@ class ResourcesGenerator
                 fn ($y) => $y[1] instanceof MethodDetails ? $y[1]->name : $y[1],
                 fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[1], $y[2], true, null),
             )));
-        $return = AST::return(
-            AST::array([
-                'interfaces' => AST::array($allInterfaces)
-            ])
-        );
-        return "<?php\n\n{$return->toCode()};";
     }
 
     public static function generateClientConfig(

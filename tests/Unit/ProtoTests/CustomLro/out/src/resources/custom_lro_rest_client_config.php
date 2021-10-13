@@ -9,5 +9,15 @@ return [
                 'body' => '*',
             ],
         ],
+        'testing.customlro.CustomLroOperations' => [
+            'Get' => [
+                'method' => 'get',
+                'uriTemplate' => '/operation',
+                'queryParams' => [
+                    'project',
+                    'region',
+                ],
+            ],
+        ],
     ],
 ];
