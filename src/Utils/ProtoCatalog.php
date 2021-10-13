@@ -50,6 +50,9 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, ServiceDescriptorProto> of all services by full name. */
     public Map $servicesByFullname;
 
+    /** @var Map *Readonly* Map<ServiceDescriptorProto, FileDescriptorProto> of all file descriptors by service descriptor. */
+    public Map $filesByService;
+
     private static function msgPlusNested(DescriptorProto $desc): Vector
     {
         return Vector::new($desc->getNestedType())
@@ -64,6 +67,16 @@ class ProtoCatalog
      */
     public function __construct(Vector $fileDescs)
     {
+        $this->filesByService = $fileDescs
+            ->flatMap(fn ($f) =>
+                // Pair up each service with its file.
+                Vector::new($f->getService())->map(fn ($s) => [$s, $f]))
+            ->toMap(
+                // Key: ServiceDescriptorProto
+                fn($x) => $x[0],
+                // Value: FileDescriptorProto
+                fn($x) => $x[1]);
+        
         // Flatten into pairs of [proto package, ServiceDescriptorProto], because each
         // FileDescriptorProto can contain multiple services, so each service must be
         // paired with the parent file proto package.
