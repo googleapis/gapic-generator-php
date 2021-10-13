@@ -76,5 +76,7 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals('InnerEnm', $enm->getName());
         $svc = $catalog->servicesByFullname['.foo.Svc'];
         $this->assertEquals('Svc', $svc->GetName());
+        $f = $catalog->filesByService[$svc];
+        $this->assertStringContainsString('catalog.proto', $f->GetName());
     }
 }
