@@ -37,4 +37,6 @@ class CustomOptions
     public const GOOGLE_CLOUD_OPERATION_SERVICE = 1249;
     public const GOOGLE_CLOUD_OPERATION_POLLING_METHOD = 1250;
 
+    // Protobuf extension number for https://github.com/googleapis/googleapis/blob/master/google/api/routing.proto.
+    public const GOOGLE_API_ROUTING = 72295729;
 }
