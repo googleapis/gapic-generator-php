@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Api\HttpRule;
+use Google\Api\RoutingRule;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
@@ -383,6 +384,9 @@ abstract class MethodDetails
     /** @var ?Map *Readonly* Map of string to Vector of strings; placeholder name -> list of property getters. */
     public ?Map $restRoutingHeaders;
 
+    /** @var Map *Readonly* Vector of RoutingParameters; parsed from the google.api.routing annotation. */
+    public ?Map $routingParameters = null;
+
     /** @var bool *Readonly* Whether the service is deprecated. */
     public bool $isDeprecated = false;
 
@@ -415,6 +419,11 @@ abstract class MethodDetails
 
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
+        }
+
+        $routingRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_ROUTING, RoutingRule::class);
+        if (!is_null($routingRule)) {
+            $this->routingParameters = ProtoHelpers::routingParameters($this->catalog, $this->inputMsg, $routingRule);
         }
     }
 

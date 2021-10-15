@@ -56,6 +56,9 @@ abstract class AST
     /** @var string Constant to reference `array_merge`. */
     public const ARRAY_MERGE = "\0array_merge";
 
+    /** @var string Constant to reference `preg_match`. */
+    public const PREG_MATCH = "\0preg_match";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';

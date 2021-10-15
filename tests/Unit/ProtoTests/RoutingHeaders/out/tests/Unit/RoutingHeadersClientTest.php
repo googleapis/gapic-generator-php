@@ -29,6 +29,8 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
 use stdClass;
+use Testing\RoutingHeaders\NestedRequest\Inner1;
+use Testing\RoutingHeaders\NestedRequest\Inner1\Inner2;
 use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\RoutingHeadersClient;
 
@@ -304,14 +306,21 @@ class RoutingHeadersClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->nestedMethod($anotherName);
+        $response = $client->nestedMethod($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.routingheaders.RoutingHeaders/NestedMethod', $actualFuncCall);
+        $actualValue = $actualRequestObject->getNest1();
+        $this->assertProtobufEquals($nest1, $actualValue);
         $actualValue = $actualRequestObject->getAnotherName();
         $this->assertProtobufEquals($anotherName, $actualValue);
         $this->assertTrue($transport->isExhausted());
@@ -338,9 +347,14 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->nestedMethod($anotherName);
+            $client->nestedMethod($nest1, $anotherName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -366,14 +380,21 @@ class RoutingHeadersClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->nestedMultiMethod($anotherName);
+        $response = $client->nestedMultiMethod($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/testing.routingheaders.RoutingHeaders/NestedMultiMethod', $actualFuncCall);
+        $actualValue = $actualRequestObject->getNest1();
+        $this->assertProtobufEquals($nest1, $actualValue);
         $actualValue = $actualRequestObject->getAnotherName();
         $this->assertProtobufEquals($anotherName, $actualValue);
         $this->assertTrue($transport->isExhausted());
@@ -400,9 +421,14 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->nestedMultiMethod($anotherName);
+            $client->nestedMultiMethod($nest1, $anotherName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -649,6 +675,154 @@ class RoutingHeadersClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $client->putMethod();
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function routingRuleWithOutParametersTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
+        $anotherName = 'anotherName-642443705';
+        $response = $client->routingRuleWithOutParameters($nest1, $anotherName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.routingheaders.RoutingHeaders/RoutingRuleWithOutParameters', $actualFuncCall);
+        $actualValue = $actualRequestObject->getNest1();
+        $this->assertProtobufEquals($nest1, $actualValue);
+        $actualValue = $actualRequestObject->getAnotherName();
+        $this->assertProtobufEquals($anotherName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function routingRuleWithOutParametersExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
+        $anotherName = 'anotherName-642443705';
+        try {
+            $client->routingRuleWithOutParameters($nest1, $anotherName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function routingRuleWithParametersTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
+        $anotherName = 'anotherName-642443705';
+        $response = $client->routingRuleWithParameters($nest1, $anotherName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.routingheaders.RoutingHeaders/RoutingRuleWithParameters', $actualFuncCall);
+        $actualValue = $actualRequestObject->getNest1();
+        $this->assertProtobufEquals($nest1, $actualValue);
+        $actualValue = $actualRequestObject->getAnotherName();
+        $this->assertProtobufEquals($anotherName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function routingRuleWithParametersExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $nest1 = new Inner1();
+        $nest1Nest2 = new Inner2();
+        $nest2Name = 'nest2Name1031975557';
+        $nest1Nest2->setName($nest2Name);
+        $nest1->setNest2($nest1Nest2);
+        $anotherName = 'anotherName-642443705';
+        try {
+            $client->routingRuleWithParameters($nest1, $anotherName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

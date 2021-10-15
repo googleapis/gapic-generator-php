@@ -53,6 +53,7 @@ return [
                     ],
                 ],
                 'queryParams' => [
+                    'nest1',
                     'another_name',
                 ],
             ],
@@ -77,6 +78,9 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+                'queryParams' => [
+                    'nest1',
                 ],
             ],
             'OrderingMethod' => [
@@ -156,6 +160,21 @@ return [
                             'getName',
                         ],
                     ],
+                ],
+            ],
+            'RoutingRuleWithOutParameters' => [
+                'method' => 'get',
+                'uriTemplate' => '/{name=items/*}/child',
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+                'queryParams' => [
+                    'nest1',
+                    'another_name',
                 ],
             ],
         ],

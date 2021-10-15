@@ -7,6 +7,7 @@ option php_namespace = "Testing\\RoutingHeaders";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/client.proto";
+import "google/api/routing.proto";
 
 service RoutingHeaders {
   option (google.api.default_host) = "routingheaders.example.com";
@@ -51,6 +52,40 @@ service RoutingHeaders {
     option (google.api.http).get =
         "/{a=a}/{c=c}/{aa=aa}/{b=b}/{d=d}/{a_id=a_id}/{b_id=b_id}/{e=e}";
   };
+
+  rpc RoutingRuleWithParameters(NestedRequest) returns (Response) {
+    option (google.api.routing) = {
+      routing_parameters {
+        field: "name"
+      }
+      routing_parameters {
+        field: "name"
+        path_template: "{name=projects/*}/foos"
+      }
+      routing_parameters {
+        field: "another_name"
+        path_template: "{foo_name=projects/*}/bars/*/**"
+      }
+      routing_parameters {
+        field: "another_name"
+        path_template: "{foo_name=projects/*/foos/*}/bars/*/**"
+      }
+      routing_parameters {
+        field: "nest1.nest2.name"
+        path_template: "{nested_name}"
+      }
+      routing_parameters {
+        field: "nest1.nest2.name"
+        path_template: "{part_of_nested=projects/*}/bars"
+      }
+    };
+  }
+
+  rpc RoutingRuleWithOutParameters(NestedRequest) returns (Response) {
+    // The implicit header `name` should be excluded because there is an empty google.api.routing annotation.
+    option (google.api.http).get = "/{name=items/*}/child";
+    option (google.api.routing) = {};
+  }
 }
 
 message SimpleRequest {
@@ -60,11 +95,11 @@ message SimpleRequest {
 message NestedRequest {
   message Inner1 {
     message Inner2 {
-      string name = 1;
+      string name = 1 [(google.api.field_behavior) = REQUIRED];
     }
-    Inner2 nest2 = 1;
+    Inner2 nest2 = 1 [(google.api.field_behavior) = REQUIRED];
   }
-  Inner1 nest1 = 1;
+  Inner1 nest1 = 1 [(google.api.field_behavior) = REQUIRED];
   string name = 2;
   string another_name = 3 [(google.api.field_behavior) = REQUIRED];
 }

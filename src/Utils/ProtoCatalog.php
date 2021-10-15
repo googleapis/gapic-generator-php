@@ -73,9 +73,10 @@ class ProtoCatalog
                 Vector::new($f->getService())->map(fn ($s) => [$s, $f]))
             ->toMap(
                 // Key: ServiceDescriptorProto
-                fn($x) => $x[0],
+                fn ($x) => $x[0],
                 // Value: FileDescriptorProto
-                fn($x) => $x[1]);
+                fn ($x) => $x[1]
+            );
         
         // Flatten into pairs of [proto package, ServiceDescriptorProto], because each
         // FileDescriptorProto can contain multiple services, so each service must be
@@ -89,7 +90,8 @@ class ProtoCatalog
             // Key: fully-qualified service name.
             fn ($x) => ".{$x[0]}.{$x[1]->getName()}",
             // Value: ServiceDescriptorProto.
-            fn ($x) => $x[1]);
+            fn ($x) => $x[1]
+        );
 
         $allMsgs = $fileDescs
             ->flatMap(fn ($x) => Vector::new($x->getMessageType()))
