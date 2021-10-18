@@ -49,6 +49,7 @@ class ResourcesGenerator
                     $name = $method->operationNameField;
                     $status = $method->operationStatusField;
                     $errorCode = $method->operationErrorCodeField;
+                    $errorMessage = $method->operationErrorMessageField;
                     $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
                     return Map::new(['longRunning' => AST::array([
                         'additionalArgumentMethods' => AST::array(
@@ -62,6 +63,7 @@ class ResourcesGenerator
                         'cancelOperationMethod' => AST::NULL,
                         'deleteOperationMethod' => AST::NULL,
                         'operationErrorCodeMethod' => $errorCode->getter->getName(),
+                        'operationErrorMessageMethod' => $errorMessage->getter->getName(),
                         'operationNameMethod' => $name->getter->getName(),
                         'operationStatusMethod' => $status->getter->getName(),
                         'operationStatusDoneValue' => $doneValue,
