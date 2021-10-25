@@ -703,6 +703,11 @@ class RoutingHeadersGapicClient
             $requestParamHeaders['foo_name'] = $fooNameMatches[1];
         }
 
+        $barNameMatches = [];
+        if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
+            $requestParamHeaders['bar_name'] = $barNameMatches[1];
+        }
+
         $requestParamHeaders['nested_name'] = $nest1->getNest2()->getName();
         $partOfNestedMatches = [];
         if (preg_match('/^(projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {

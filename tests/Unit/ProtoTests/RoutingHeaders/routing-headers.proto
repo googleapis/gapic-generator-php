@@ -71,8 +71,12 @@ service RoutingHeaders {
         path_template: "{foo_name=projects/*/foos/*}/bars/*/**"
       }
       routing_parameters {
+        field: "another_name"
+        path_template: "projects/*/foos/*/{bar_name=bars/*}/**"
+      }
+      routing_parameters {
         field: "nest1.nest2.name"
-        path_template: "{nested_name}"
+        path_template: "{nested_name=**}"
       }
       routing_parameters {
         field: "nest1.nest2.name"
