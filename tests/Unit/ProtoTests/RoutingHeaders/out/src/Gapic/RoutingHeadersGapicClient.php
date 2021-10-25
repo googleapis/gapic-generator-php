@@ -695,31 +695,31 @@ class RoutingHeadersGapicClient
         $request->setNest1($nest1);
         $request->setAnotherName($anotherName);
         $fooNameMatches = [];
-        if (preg_match('/^(projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
-            $requestParamHeaders['foo_name'] = $fooNameMatches[1];
+        if (preg_match('/^(?<foo_name>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
+            $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
         }
 
-        if (preg_match('/^(projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
-            $requestParamHeaders['foo_name'] = $fooNameMatches[1];
+        if (preg_match('/^(?<foo_name>projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
+            $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
         }
 
         $barNameMatches = [];
-        if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
-            $requestParamHeaders['bar_name'] = $barNameMatches[1];
+        if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(?<bar_name>bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
+            $requestParamHeaders['bar_name'] = $barNameMatches['bar_name'];
         }
 
         $requestParamHeaders['nested_name'] = $nest1->getNest2()->getName();
         $partOfNestedMatches = [];
-        if (preg_match('/^(projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {
-            $requestParamHeaders['part_of_nested'] = $partOfNestedMatches[1];
+        if (preg_match('/^(?<part_of_nested>projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {
+            $requestParamHeaders['part_of_nested'] = $partOfNestedMatches['part_of_nested'];
         }
 
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
             $requestParamHeaders['name'] = $optionalArgs['name'];
             $nameMatches = [];
-            if (preg_match('/^(projects\/[^\/]+)\/foos$/', $optionalArgs['name'], $nameMatches)) {
-                $requestParamHeaders['name'] = $nameMatches[1];
+            if (preg_match('/^(?<name>projects\/[^\/]+)\/foos$/', $optionalArgs['name'], $nameMatches)) {
+                $requestParamHeaders['name'] = $nameMatches['name'];
             }
 
         }

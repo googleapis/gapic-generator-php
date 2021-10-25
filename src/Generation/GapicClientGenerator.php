@@ -1016,7 +1016,7 @@ class GapicClientGenerator
                     $statements = $statements->append(AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
                         AST::assign(
                             AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, /* index of first capture group */ 1)
+                            AST::index($matches, $routing['key'])
                         )
                     ));
                     $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->concat($statements));

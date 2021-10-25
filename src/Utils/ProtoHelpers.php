@@ -135,11 +135,13 @@ class ProtoHelpers
         if ($match === '*' || $match === '**') {
             return null;
         }
+
+        $key = static::fieldOrTemplateVariable($routingParam);
         
         $original = $matches[0];
         // Replace the entire template variable with just the segment matcher,
         // wrapped in a capture group.
-        $pattern = str_replace($original, "(".$match.")", $template);
+        $pattern = str_replace($original, "(?<".$key.">".$match.")", $template);
         // Replace double wild cards with nameless capture groups.
         $pattern = str_replace('/**', '(?:/.*)?', $pattern);
         // Replace single wild cards with single word matchers.
