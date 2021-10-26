@@ -33,6 +33,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "dev-compute-lro as 1.10"
+        "google/gax": "dev-master as 1.10"
     }
 }
