@@ -51,23 +51,28 @@ class ResourcesGenerator
                     $errorCode = $method->operationErrorCodeField;
                     $errorMessage = $method->operationErrorMessageField;
                     $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
-                    return Map::new(['longRunning' => AST::array([
-                        'additionalArgumentMethods' => AST::array(
-                            $method->operationRequestFields
-                                ->values()
-                                ->map(fn ($x) => $x->getter->getName())->toArray()),
-                        'getOperationMethod' => $method->operationPollingMethod->methodName,
-                        // TODO(noahdietz): The cancel & delete methods are not supported by annotations yet.
-                        // If annotations are not forthcoming, inspect the operation service for 'Delete' and
-                        // 'Cancel' RPCs.
-                        'cancelOperationMethod' => AST::NULL,
-                        'deleteOperationMethod' => AST::NULL,
-                        'operationErrorCodeMethod' => $errorCode->getter->getName(),
-                        'operationErrorMessageMethod' => $errorMessage->getter->getName(),
-                        'operationNameMethod' => $name->getter->getName(),
-                        'operationStatusMethod' => $status->getter->getName(),
-                        'operationStatusDoneValue' => $doneValue,
-                    ])]);
+                    return Map::new(
+                        [
+                            'longRunning' => AST::array([
+                                'additionalArgumentMethods' => AST::array(
+                                    $method->operationRequestFields
+                                        ->values()
+                                        ->map(fn ($x) => $x->getter->getName())->toArray()
+                                ),
+                                'getOperationMethod' => $method->operationPollingMethod->methodName,
+                                // TODO(noahdietz): The cancel & delete methods are not supported by annotations yet.
+                                // If annotations are not forthcoming, inspect the operation service for 'Delete' and
+                                // 'Cancel' RPCs.
+                                'cancelOperationMethod' => AST::NULL,
+                                'deleteOperationMethod' => AST::NULL,
+                                'operationErrorCodeMethod' => $errorCode->getter->getName(),
+                                'operationErrorMessageMethod' => $errorMessage->getter->getName(),
+                                'operationNameMethod' => $name->getter->getName(),
+                                'operationStatusMethod' => $status->getter->getName(),
+                                'operationStatusDoneValue' => $doneValue,
+                            ])
+                        ]
+                    );
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
                     if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
