@@ -24,6 +24,16 @@
                 "grpc": {
                     "libraryClient": "CustomLroOperationsGapicClient",
                     "rpcs": {
+                        "Cancel": {
+                            "methods": [
+                                "cancel"
+                            ]
+                        },
+                        "Delete": {
+                            "methods": [
+                                "delete"
+                            ]
+                        },
                         "Get": {
                             "methods": [
                                 "get"

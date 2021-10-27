@@ -4,6 +4,7 @@ import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/cloud/extended_operations.proto";
+import "google/protobuf/empty.proto";
 
 package testing.customlro;
 
@@ -30,6 +31,18 @@ service CustomLroOperations {
         };
         option (google.cloud.operation_polling_method) = true;
         option (google.api.method_signature) = 'operation,project,region';
+    }
+
+    rpc Cancel(CancelOperationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/operation"
+        };
+    }
+
+    rpc Delete(DeleteOperationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/operation"
+        };
     }
 }
 
@@ -77,4 +90,14 @@ message GetOperationRequest {
 
   // Name of the region for this request.
   string region = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message CancelOperationRequest {
+    // Name of th Operations resource to cancel.
+    string operation = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message DeleteOperationRequest {
+    // Name of th Operations resource to delete.
+    string operation = 1 [(google.api.field_behavior) = REQUIRED];
 }

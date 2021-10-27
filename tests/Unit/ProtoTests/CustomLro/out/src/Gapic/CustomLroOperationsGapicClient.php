@@ -32,7 +32,10 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\GPBEmpty;
+use Testing\CustomLro\CancelOperationRequest;
 use Testing\CustomLro\CustomOperationResponse;
+use Testing\CustomLro\DeleteOperationRequest;
 use Testing\CustomLro\GetOperationRequest;
 
 /**
@@ -45,9 +48,7 @@ use Testing\CustomLro\GetOperationRequest;
  * $customLroOperationsClient = new CustomLroOperationsClient();
  * try {
  *     $operation = 'operation';
- *     $project = 'project';
- *     $region = 'region';
- *     $response = $customLroOperationsClient->get($operation, $project, $region);
+ *     $customLroOperationsClient->cancel($operation);
  * } finally {
  *     $customLroOperationsClient->close();
  * }
@@ -177,6 +178,72 @@ class CustomLroOperationsGapicClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $customLroOperationsClient = new CustomLroOperationsClient();
+     * try {
+     *     $operation = 'operation';
+     *     $customLroOperationsClient->cancel($operation);
+     * } finally {
+     *     $customLroOperationsClient->close();
+     * }
+     * ```
+     *
+     * @param string $operation    Name of th Operations resource to cancel.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function cancel($operation, array $optionalArgs = [])
+    {
+        $request = new CancelOperationRequest();
+        $request->setOperation($operation);
+        return $this->startCall('Cancel', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $customLroOperationsClient = new CustomLroOperationsClient();
+     * try {
+     *     $operation = 'operation';
+     *     $customLroOperationsClient->delete($operation);
+     * } finally {
+     *     $customLroOperationsClient->close();
+     * }
+     * ```
+     *
+     * @param string $operation    Name of th Operations resource to delete.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function delete($operation, array $optionalArgs = [])
+    {
+        $request = new DeleteOperationRequest();
+        $request->setOperation($operation);
+        return $this->startCall('Delete', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**

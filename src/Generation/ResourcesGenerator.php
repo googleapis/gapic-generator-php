@@ -43,7 +43,7 @@ class ResourcesGenerator
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $perMethod = function ($method) use ($gapicYamlConfig) {
+        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
                     $name = $method->operationNameField;
@@ -60,11 +60,8 @@ class ResourcesGenerator
                                         ->map(fn ($x) => $x->getter->getName())->toArray()
                                 ),
                                 'getOperationMethod' => $method->operationPollingMethod->methodName,
-                                // TODO(noahdietz): The cancel & delete methods are not supported by annotations yet.
-                                // If annotations are not forthcoming, inspect the operation service for 'Delete' and
-                                // 'Cancel' RPCs.
-                                'cancelOperationMethod' => AST::NULL,
-                                'deleteOperationMethod' => AST::NULL,
+                                'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
+                                'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
                                 'operationErrorCodeMethod' => $errorCode->getter->getName(),
                                 'operationErrorMessageMethod' => $errorMessage->getter->getName(),
                                 'operationNameMethod' => $name->getter->getName(),
