@@ -65,7 +65,7 @@
 -   Unit tests
 
     ```
-    ./vendor/bin/phpunit --bootstrap tests/unit/autoload.php tests/Unit
+    ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
     ```
 
     If you do not have `protoc` installed, run with `USE_TOOLS_PROTOC=true`.
@@ -76,6 +76,8 @@
 
     This uses the Linux-only `protoc` binary checked into the repository.
 
+    If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
+    
     Updating unit test goldens:
 
     ```
