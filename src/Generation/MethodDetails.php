@@ -40,7 +40,6 @@ use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\OperationInfo;
-use Google\Protobuf\Internal\FieldDescriptorProto;
 
 abstract class MethodDetails
 {
@@ -328,7 +327,7 @@ abstract class MethodDetails
                     
                     // Find the RPC annotated as the polling method on the operation_service.
                     $polling = Vector::new($this->operationService->getMethod())
-                        ->filter(fn ($x) => 
+                        ->filter(fn ($x) =>
                             !is_null(ProtoHelpers::operationPollingMethod($x)));
                     if ($polling->count() == 0) {
                         throw new \Exception("Custom operation service {$this->operationService->getName()} does not provide a polling method marked with `google.cloud.operation_polling_method = true` option.");
@@ -336,32 +335,36 @@ abstract class MethodDetails
                     $pollingMethod = $polling->firstOrNull();
                     $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
                     
-                    // Collect the operation_response_field mapping from the polling request message. 
+                    // Collect the operation_response_field mapping from the polling request message.
                     $customOperation = $catalog->msgsByFullname[$desc->getOutputType()];
                     $copFields = Vector::new($customOperation->getField())->toMap(
-                        fn($x) => $x->getName(),
-                        fn($x) => new FieldDetails($catalog, $customOperation, $x));
+                        fn ($x) => $x->getName(),
+                        fn ($x) => new FieldDetails($catalog, $customOperation, $x)
+                    );
                     $pollingMsg = $catalog->msgsByFullname[$pollingMethod->getInputType()];
                     $this->operationPollingFields = Vector::new($pollingMsg->getField())
-                        ->filter(fn($x) => ProtoHelpers::isOperationResponseField($x))
+                        ->filter(fn ($x) => ProtoHelpers::isOperationResponseField($x))
                         ->toMap(
-                            fn($x) => new FieldDetails($catalog, $pollingMsg, $x),
-                            fn($x) => $copFields[ProtoHelpers::operationResponseField($x)]);
+                            fn ($x) => new FieldDetails($catalog, $pollingMsg, $x),
+                            fn ($x) => $copFields[ProtoHelpers::operationResponseField($x)]
+                        );
                     
                     // Collect operation_request_field mapping from input message fields.
                     $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
                     $pollingFields = Vector::new($pollingMsg->getField())->toMap(
-                        fn($x) => $x->getName(),
-                        fn($x) => new FieldDetails($catalog, $pollingMsg, $x));
+                        fn ($x) => $x->getName(),
+                        fn ($x) => new FieldDetails($catalog, $pollingMsg, $x)
+                    );
                     $this->operationRequestFields = Vector::new($inputMsg->getField())
-                        ->filter(fn($x) => ProtoHelpers::isOperationRequestField($x))
+                        ->filter(fn ($x) => ProtoHelpers::isOperationRequestField($x))
                         ->toMap(
-                            fn($x) => $pollingFields[ProtoHelpers::operationRequestField($x)],
-                            fn($x) => new FieldDetails($catalog, $inputMsg, $x));
+                            fn ($x) => $pollingFields[ProtoHelpers::operationRequestField($x)],
+                            fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
+                        );
 
                     // Collect the operation field mappings.
                     $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
-                    foreach($outputMsg->getField() as $field) {
+                    foreach ($outputMsg->getField() as $field) {
                         $opField = ProtoHelpers::operationField($field);
                         if (is_null($opField)) {
                             continue;
@@ -389,8 +392,8 @@ abstract class MethodDetails
                 /** @var MethodDetails *Readonly* The method marked as the polling method on the custom operaiton service. */
                 public MethodDetails $operationPollingMethod;
 
-                /** 
-                 * @var Map *Readonly* Map<FieldDetails, FieldDetails> mapping of polling request message fields to the 
+                /**
+                 * @var Map *Readonly* Map<FieldDetails, FieldDetails> mapping of polling request message fields to the
                  * corresponding request message field to source from.
                  */
                 public Map $operationPollingFields;

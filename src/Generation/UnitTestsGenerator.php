@@ -815,10 +815,12 @@ class UnitTestsGenerator
                 ])),
                 AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type($pollingMethod->requestType))()),
                 $method->operationPollingFields->mapValues(
-                    fn($reqField, $resField) => $expectedOperationsRequestObject->instanceCall($reqField->setter)($completeOperation->instanceCall($resField->getter)()))
+                    fn ($reqField, $resField) => $expectedOperationsRequestObject->instanceCall($reqField->setter)($completeOperation->instanceCall($resField->getter)())
+                )
                     ->values(),
                 $method->operationRequestFields->mapValues(
-                    fn($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name)))
+                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name))
+                )
                     ->values(),
                 $response->pollUntilComplete(AST::array([
                     'initialPollDelayMillis' => 1,
@@ -872,7 +874,8 @@ class UnitTestsGenerator
                 AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type($pollingMethod->requestType))()),
                 $expectedOperationsRequestObject->setName("customOperations/{$method->testExceptionMethodName}"),
                 $method->operationRequestFields->mapValues(
-                    fn($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name)))
+                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name))
+                )
                     ->values(),
                 AST::try(
                     $response->pollUntilComplete(AST::array([

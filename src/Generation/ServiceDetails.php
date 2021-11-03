@@ -168,7 +168,7 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
-        $customOperations = $this->methods->filter(fn($x) => $x->methodType === MethodDetails::CUSTOM_OP);
+        $customOperations = $this->methods->filter(fn ($x) => $x->methodType === MethodDetails::CUSTOM_OP);
         $this->hasCustomOp = $customOperations->count() > 0;
         if ($this->hasCustomOp) {
             // Technically there could be multiple different named operation services,
@@ -176,8 +176,8 @@ class ServiceDetails
             $this->customOperationService = $customOperations[0]->operationService;
             
             // Determine if the operation service implements the Cancel and/or the Delete RPCs.
-            $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn($x) => $x->getName() === 'Cancel');
-            $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn($x) => $x->getName() === 'Delete');
+            $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Cancel');
+            $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Delete');
             
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';

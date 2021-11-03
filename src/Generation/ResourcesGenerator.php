@@ -46,30 +46,9 @@ class ResourcesGenerator
         $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
-                    $name = $method->operationNameField;
-                    $status = $method->operationStatusField;
-                    $errorCode = $method->operationErrorCodeField;
-                    $errorMessage = $method->operationErrorMessageField;
-                    $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
-                    return Map::new(
-                        [
-                            'longRunning' => AST::array([
-                                'additionalArgumentMethods' => AST::array(
-                                    $method->operationRequestFields
-                                        ->values()
-                                        ->map(fn ($x) => $x->getter->getName())->toArray()
-                                ),
-                                'getOperationMethod' => $method->operationPollingMethod->methodName,
-                                'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
-                                'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
-                                'operationErrorCodeMethod' => $errorCode->getter->getName(),
-                                'operationErrorMessageMethod' => $errorMessage->getter->getName(),
-                                'operationNameMethod' => $name->getter->getName(),
-                                'operationStatusMethod' => $status->getter->getName(),
-                                'operationStatusDoneValue' => $doneValue,
-                            ])
-                        ]
-                    );
+                    return Map::new([
+                        'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
+                    ]);
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
                     if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
@@ -134,6 +113,30 @@ class ResourcesGenerator
         );
 
         return "<?php\n\n{$return->toCode()};";
+    }
+
+    public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
+    {
+        $name = $method->operationNameField;
+        $status = $method->operationStatusField;
+        $errorCode = $method->operationErrorCodeField;
+        $errorMessage = $method->operationErrorMessageField;
+        $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
+        return AST::array([
+            'additionalArgumentMethods' => AST::array(
+                $method->operationRequestFields
+                    ->values()
+                    ->map(fn ($x) => $x->getter->getName())->toArray()
+            ),
+            'getOperationMethod' => $method->operationPollingMethod->methodName,
+            'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
+            'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
+            'operationErrorCodeMethod' => $errorCode->getter->getName(),
+            'operationErrorMessageMethod' => $errorMessage->getter->getName(),
+            'operationNameMethod' => $name->getter->getName(),
+            'operationStatusMethod' => $status->getter->getName(),
+            'operationStatusDoneValue' => $doneValue,
+        ]);
     }
 
     private static function restMethodDetails(ProtoCatalog $catalog, $methodOrMethodName, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
