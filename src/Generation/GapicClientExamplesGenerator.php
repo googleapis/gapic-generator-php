@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
+use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 
@@ -44,8 +45,10 @@ class GapicClientExamplesGenerator
             case MethodDetails::NORMAL:
                 $code = $this->rpcMethodExampleNormal($method);
                 break;
+            case MethodDetails::CUSTOM_OP:
+                // Fallthrough - rpcMethodExampleOperation handles custom operations as well.
             case MethodDetails::LRO:
-                $code = $this->rpcMethodExampleLro($method);
+                $code = $this->rpcMethodExampleOperation($method);
                 break;
             case MethodDetails::PAGINATED:
                 $code = $this->rpcMethodExamplePaginated($method);
@@ -148,18 +151,27 @@ class GapicClientExamplesGenerator
         );
     }
 
-    private function rpcMethodExampleLro(MethodDetails $method): AST
+    // rpcMethodExampleOperation handles both google.longrunning and custom operations.
+    private function rpcMethodExampleOperation(MethodDetails $method): AST
     {
+        $isCustomOp = $method->methodType === MethodDetails::CUSTOM_OP;
         $serviceClient = AST::var($this->serviceDetails->clientVarName);
         $operationResponse = AST::var('operationResponse');
         $result = AST::var('result');
         $error = AST::var('error');
         $operationName = AST::var('operationName');
+        $nameGetter = $isCustomOp ?
+            $method->operationNameField->getter :
+            new PhpMethod('getName');
+        $noResult = $isCustomOp ?
+            '// if creating/modifying, retrieve the target resource':
+            '// operation succeeded and returns no value';
         $newOperationResponse = AST::var('newOperationResponse');
         $useResponseFn = fn ($var) => AST::if($var->operationSucceeded())
             ->then(
-                $method->hasEmptyLroResponse ?
-                    '// operation succeeded and returns no value' :
+                // Custom operations and google.protobuf.Empty responses have no result.
+                $isCustomOp || $method->hasEmptyLroResponse ?
+                    $noResult :
                     Vector::new([
                         AST::assign($result, $var->getResult()),
                         '// doSomethingWith($result)'
@@ -180,7 +192,7 @@ class GapicClientExamplesGenerator
                 '// Alternatively:',
                 '// start the operation, keep the operation name, and resume later',
                 AST::assign($operationResponse, AST::call($serviceClient, AST::method($method->methodName))($callVars)),
-                AST::assign($operationName, $operationResponse->getName()),
+                AST::assign($operationName, $operationResponse->instanceCall($nameGetter)()),
                 '// ... do other work',
                 AST::assign($newOperationResponse, $serviceClient->resumeOperation($operationName, $method->methodName)),
                 AST::while(AST::not($newOperationResponse->isDone()))(

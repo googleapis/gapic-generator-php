@@ -43,8 +43,12 @@ class ResourcesGenerator
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $perMethod = function ($method) use ($gapicYamlConfig) {
+        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
             switch ($method->methodType) {
+                case MethodDetails::CUSTOM_OP:
+                    return Map::new([
+                        'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
+                    ]);
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
                     if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
@@ -111,6 +115,30 @@ class ResourcesGenerator
         return "<?php\n\n{$return->toCode()};";
     }
 
+    public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
+    {
+        $name = $method->operationNameField;
+        $status = $method->operationStatusField;
+        $errorCode = $method->operationErrorCodeField;
+        $errorMessage = $method->operationErrorMessageField;
+        $doneValue = $status->isEnum ? AST::literal($status->type->getFullName() . '::DONE') : true;
+        return AST::array([
+            'additionalArgumentMethods' => AST::array(
+                $method->operationRequestFields
+                    ->values()
+                    ->map(fn ($x) => $x->getter->getName())->toArray()
+            ),
+            'getOperationMethod' => $method->operationPollingMethod->methodName,
+            'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
+            'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
+            'operationErrorCodeMethod' => $errorCode->getter->getName(),
+            'operationErrorMessageMethod' => $errorMessage->getter->getName(),
+            'operationNameMethod' => $name->getter->getName(),
+            'operationStatusMethod' => $status->getter->getName(),
+            'operationStatusDoneValue' => $doneValue,
+        ]);
+    }
+
     private static function restMethodDetails(ProtoCatalog $catalog, $methodOrMethodName, HttpRule $httpRule, bool $topLevel, ?string $defaultBody): Expression
     {
         $httpMethod = $httpRule->getPattern();
@@ -155,7 +183,33 @@ class ResourcesGenerator
 
     public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
     {
-        $allInterfaces = $serviceDetails->methods
+        $allInterfaces = static::compileRestConfigInterfaces($serviceDetails, $serviceYamlConfig);
+        if ($serviceDetails->hasCustomOp) {
+            $opService = $serviceDetails->customOperationService;
+            $opFile = $serviceDetails->catalog->filesByService[$opService];
+            $customOpDetails = new ServiceDetails(
+                $serviceDetails->catalog,
+                $serviceDetails->namespace,
+                $opFile->getPackage(),
+                $opService,
+                $opFile,
+                $serviceDetails->transportType
+            );
+            $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
+            $allInterfaces = array_merge($allInterfaces, $opInter);
+        }
+        
+        $return = AST::return(
+            AST::array([
+                'interfaces' => AST::array($allInterfaces)
+            ])
+        );
+        return "<?php\n\n{$return->toCode()};";
+    }
+
+    private static function compileRestConfigInterfaces(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig)
+    {
+        return $serviceDetails->methods
             ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming() && !$method->isMixin())
             ->map(fn ($method) => [$serviceDetails->serviceName, $method, $method->httpRule])
             ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
@@ -172,12 +226,6 @@ class ResourcesGenerator
                 fn ($y) => $y[1] instanceof MethodDetails ? $y[1]->name : $y[1],
                 fn ($y) => static::restMethodDetails($serviceDetails->catalog, $y[1], $y[2], true, null),
             )));
-        $return = AST::return(
-            AST::array([
-                'interfaces' => AST::array($allInterfaces)
-            ])
-        );
-        return "<?php\n\n{$return->toCode()};";
     }
 
     public static function generateClientConfig(

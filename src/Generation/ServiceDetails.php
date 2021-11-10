@@ -103,6 +103,19 @@ class ServiceDetails
     /** @var bool *Readonly* This service contains at least one LRO method. */
     public bool $hasLro;
 
+    /** @var bool *Readonly* This service contains at least one custom operation method. */
+    public bool $hasCustomOp;
+
+    /** @var ServiceDescriptorProto *Readonly* The service named as the custom operation service to use. */
+    public ServiceDescriptorProto $customOperationService;
+
+    /** @var Type *Readonly* The Type of the service's operations_service client. */
+    public Type $customOperationServiceClientType;
+
+    public bool $hasCustomOpDelete;
+
+    public bool $hasCustomOpCancel;
+
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
@@ -155,7 +168,21 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
-
+        $customOperations = $this->methods->filter(fn ($x) => $x->methodType === MethodDetails::CUSTOM_OP);
+        $this->hasCustomOp = $customOperations->count() > 0;
+        if ($this->hasCustomOp) {
+            // Technically there could be multiple different named operation services,
+            // but for simplicity we will assume they are all the same and use the first.
+            $this->customOperationService = $customOperations[0]->operationService;
+            
+            // Determine if the operation service implements the Cancel and/or the Delete RPCs.
+            $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Cancel');
+            $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Delete');
+            
+            // Assuming the custom operations service client is in the same namespace as the client to generate.
+            $cname = $this->customOperationService->getName() . 'Client';
+            $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\{$cname}");
+        }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
         }

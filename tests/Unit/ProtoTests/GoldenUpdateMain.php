@@ -72,6 +72,12 @@ const UNIT_TESTS = [
   12 => [
     'name' => 'ResourceNames',
     'protoPath' => 'ResourceNames/resource-names.proto'
+  ],
+  13 => [
+    'name' => 'CustomLro',
+    'protoPath' => 'CustomLro/custom_lro.proto',
+    'package' => 'testing.customlro',
+    'transport' => 'rest'
   ]
 ];
 

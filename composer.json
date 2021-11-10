@@ -18,6 +18,7 @@
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
+            "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",

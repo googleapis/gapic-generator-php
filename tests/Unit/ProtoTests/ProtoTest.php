@@ -118,4 +118,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('ResourceNames/resource-names.proto');
     }
+
+    public function testCustomLro(): void
+    {
+        $this->runProtoTest('CustomLro/custom_lro.proto', 'testing.customlro', 'rest');
+    }
 }
