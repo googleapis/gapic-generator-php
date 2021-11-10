@@ -331,23 +331,25 @@ class GapicClientGenerator
             ));
         $methods = $methods->append($getOperationsClient);
 
-        // getDefaultOperationDescriptor method for services with Custom Operations.
-        $firstCustomOp = $this->serviceDetails->methods
-            ->filter(fn ($m) => $m->methodType === MethodDetails::CUSTOM_OP)
-            ->firstOrNull();
-        $defaultOperationDescriptor = !is_null($firstCustomOp)
-            ? ResourcesGenerator::customOperationDescriptor($this->serviceDetails, $firstCustomOp)
-            : AST::array([]);
-        $getDefaultOperationDescriptor = AST::method('getDefaultOperationDescriptor')
-            ->withAccess(Access::PRIVATE)
-            ->withBody(AST::block(
-                AST::return($defaultOperationDescriptor)
-            ))
-            ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("Return the default longrunning operation descriptor config.")
-            ));
+        $default = AST::array([]);
         if ($this->serviceDetails->hasCustomOp) {
+            // getDefaultOperationDescriptor method for services with Custom Operations.
+            $firstCustomOp = $this->serviceDetails->methods
+                ->filter(fn ($m) => $m->methodType === MethodDetails::CUSTOM_OP)
+                ->firstOrNull();
+            $defaultOperationDescriptor = !is_null($firstCustomOp)
+                ? ResourcesGenerator::customOperationDescriptor($this->serviceDetails, $firstCustomOp)
+                : AST::array([]);
+            $getDefaultOperationDescriptor = AST::method('getDefaultOperationDescriptor')
+                ->withAccess(Access::PRIVATE)
+                ->withBody(AST::block(
+                    AST::return($defaultOperationDescriptor)
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text("Return the default longrunning operation descriptor config.")
+                ));
             $methods = $methods->append($getDefaultOperationDescriptor);
+            $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)())
         }
 
         // resumeOperation for resuming an operation by name and method.
