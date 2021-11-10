@@ -349,7 +349,7 @@ class GapicClientGenerator
                     PhpDoc::text("Return the default longrunning operation descriptor config.")
                 ));
             $methods = $methods->append($getDefaultOperationDescriptor);
-            $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)())
+            $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)());
         }
 
         // resumeOperation for resuming an operation by name and method.
@@ -357,9 +357,6 @@ class GapicClientGenerator
         $methodName = AST::var('methodName');
         $options = AST::var('options');
         $operation = AST::var('operation');
-        $default = $this->serviceDetails->hasCustomOp
-            ? AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)())
-            : AST::array([]);
         $resumeOperation = AST::method('resumeOperation')
             ->withAccess(Access::PUBLIC)
             ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
