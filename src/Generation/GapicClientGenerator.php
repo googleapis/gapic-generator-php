@@ -134,7 +134,7 @@ class GapicClientGenerator
             ->withMember($this->defaultTransport())
             ->withMember($this->getSupportedTransports())
             ->withMembers($this->resourceMethods())
-            ->withMembers($this->lroMethods())
+            ->withMembers($this->operationMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
     }
@@ -298,7 +298,7 @@ class GapicClientGenerator
 
     private function operationsClient(): ?PhpClassMember
     {
-        if ($this->serviceDetails->hasLro) {
+        if ($this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp) {
             return AST::property('operationsClient')
                 ->withAccess(Access::PRIVATE);
         } else {
@@ -306,63 +306,96 @@ class GapicClientGenerator
         }
     }
 
-    private function lroMethods(): Vector
+    // operationMethods handles both standard google.longrunning and custom operations.
+    private function operationMethods(): Vector
     {
-        if ($this->serviceDetails->hasLro) {
-            $getOperationsClient = AST::method('getOperationsClient')
-                ->withAccess(Access::PUBLIC)
-                ->withBody(AST::block(
-                    AST::return(AST::access(AST::THIS, $this->operationsClient()))
-                ))
-                ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::text('Return an OperationsClient object with the same endpoint as $this.'),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationsClient::class))),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                ));
-            $operationName = AST::var('operationName');
-            $methodName = AST::var('methodName');
-            $options = AST::var('options');
-            $operation = AST::var('operation');
-            $resumeOperation = AST::method('resumeOperation')
-                ->withAccess(Access::PUBLIC)
-                ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
-                ->withBody(AST::block(
-                    AST::assign($options, AST::ternary(
-                        AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
-                        AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
-                        AST::array([])
-                    )),
-                    AST::assign($operation, AST::new($this->ctx->type(Type::fromName(OperationResponse::class)))(
-                        $operationName,
-                        AST::call(AST::THIS, $getOperationsClient)(),
-                        $options
-                    )),
-                    $operation->instanceCall(AST::method('reload'))(),
-                    AST::return($operation)
-                ))
-                ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::text(
-                        'Resume an existing long running operation that was previously started',
-                        'by a long running API method. If $methodName is not provided, or does',
-                        'not match a long running API method, then the operation can still be',
-                        'resumed, but the OperationResponse object will not deserialize the',
-                        'final response.'
-                    ),
-                    PhpDoc::param(
-                        AST::param($this->ctx->type(Type::string()), $operationName),
-                        PhpDoc::text('The name of the long running operation')
-                    ),
-                    PhpDoc::param(
-                        AST::param($this->ctx->type(Type::string()), $methodName),
-                        PhpDoc::text('The name of the method used to start the operation')
-                    ),
-                    PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                ));
-            return Vector::new([$getOperationsClient, $resumeOperation]);
-        } else {
+        if (!$this->serviceDetails->hasLro && !$this->serviceDetails->hasCustomOp) {
             return Vector::new([]);
         }
+        
+        $ctype = $this->serviceDetails->hasCustomOp ?
+            $this->serviceDetails->customOperationServiceClientType :
+            Type::fromName(OperationsClient::class);
+        $methods = Vector::new([]);
+
+        // getOperationsClient returns the operation client instance.
+        $getOperationsClient = AST::method('getOperationsClient')
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::return(AST::access(AST::THIS, $this->operationsClient()))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text("Return an {$ctype->name} object with the same endpoint as \$this."),
+                PhpDoc::return($this->ctx->type($ctype)),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+            ));
+        $methods = $methods->append($getOperationsClient);
+
+        $default = AST::array([]);
+        if ($this->serviceDetails->hasCustomOp) {
+            // getDefaultOperationDescriptor method for services with Custom Operations.
+            $firstCustomOp = $this->serviceDetails->methods
+                ->filter(fn ($m) => $m->methodType === MethodDetails::CUSTOM_OP)
+                ->firstOrNull();
+            $defaultOperationDescriptor = !is_null($firstCustomOp)
+                ? ResourcesGenerator::customOperationDescriptor($this->serviceDetails, $firstCustomOp)
+                : AST::array([]);
+            $getDefaultOperationDescriptor = AST::method('getDefaultOperationDescriptor')
+                ->withAccess(Access::PRIVATE)
+                ->withBody(AST::block(
+                    AST::return($defaultOperationDescriptor)
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text("Return the default longrunning operation descriptor config.")
+                ));
+            $methods = $methods->append($getDefaultOperationDescriptor);
+            $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)());
+        }
+
+        // resumeOperation for resuming an operation by name and method.
+        $operationName = AST::var('operationName');
+        $methodName = AST::var('methodName');
+        $options = AST::var('options');
+        $operation = AST::var('operation');
+        $resumeOperation = AST::method('resumeOperation')
+            ->withAccess(Access::PUBLIC)
+            ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
+            ->withBody(AST::block(
+                AST::assign($options, AST::ternary(
+                    AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
+                    AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
+                    $default
+                )),
+                AST::assign($operation, AST::new($this->ctx->type(Type::fromName(OperationResponse::class)))(
+                    $operationName,
+                    AST::call(AST::THIS, $getOperationsClient)(),
+                    $options
+                )),
+                $operation->instanceCall(AST::method('reload'))(),
+                AST::return($operation)
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text(
+                    'Resume an existing long running operation that was previously started',
+                    'by a long running API method. If $methodName is not provided, or does',
+                    'not match a long running API method, then the operation can still be',
+                    'resumed, but the OperationResponse object will not deserialize the',
+                    'final response.'
+                ),
+                PhpDoc::param(
+                    AST::param($this->ctx->type(Type::string()), $operationName),
+                    PhpDoc::text('The name of the long running operation')
+                ),
+                PhpDoc::param(
+                    AST::param($this->ctx->type(Type::string()), $methodName),
+                    PhpDoc::text('The name of the method used to start the operation')
+                ),
+                PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+            ));
+        $methods = $methods->append($resumeOperation);
+        
+        return $methods;
     }
 
     private function getClientDefaults(): PhpClassMember
@@ -401,6 +434,12 @@ class GapicClientGenerator
                 'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
             ])
         ]);
+        if ($this->serviceDetails->hasCustomOp) {
+            $clientDefaultValues['operationsClientClass'] = AST::access(
+                $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
+                AST::CLS
+            );
+        }
 
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
@@ -496,7 +535,7 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
-                $this->serviceDetails->hasLro
+                $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
@@ -792,6 +831,16 @@ class GapicClientGenerator
         $optionalArgs->var
       ];
         switch ($method->methodType) {
+      case MethodDetails::CUSTOM_OP:
+        $startCallArgs = [
+            $method->name,
+            $optionalArgs->var,
+            $request,
+            AST::call(AST::THIS, AST::method('getOperationsClient'))(),
+            AST::NULL,
+            AST::access($this->ctx->type($method->responseType), AST::CLS),
+        ];
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
       case MethodDetails::NORMAL:
         $startCallArgs[] = $request;
         if ($method->isMixin()) {

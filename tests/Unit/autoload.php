@@ -19,10 +19,21 @@ declare(strict_types=1);
 /** class that can fake any proto message sufficiently well for testing. */
 class FakeMessage extends \Google\Protobuf\Internal\Message
 {
+    // DONE is a fake constant for the custom operation status enum.
+    const DONE = 0;
+    // RUNNING is a fake constant for the custom operation status enum.
+    const RUNNING = 1;
+
     private static function defaultFieldValue($name)
     {
         switch ($name) {
             case 'PageToken':
+                return '';
+            case 'Project':
+                return '';
+            case 'Region':
+                return '';
+            case 'HttpErrorStatusCode':
                 return '';
             default:
                 throw new \Exception("No default value available for field: '{$name}'");

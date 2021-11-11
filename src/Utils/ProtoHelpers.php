@@ -28,10 +28,13 @@ use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\CodedInputStream;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptor;
+use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\GPBWire;
 use Google\Protobuf\Internal\Message;
+use Google\Protobuf\Internal\MethodDescriptorProto;
+use Google\Protobuf\Internal\ServiceDescriptorProto;
 
 class ProtoHelpers
 {
@@ -350,5 +353,65 @@ class ProtoHelpers
             });
         }
         return $result;
+    }
+
+    public static function operationService(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);
+    }
+
+    public static function isOperationService(MethodDescriptorProto $method): bool
+    {
+        $opServ = static::operationService($method);
+        return !is_null($opServ) && $opServ !== '';
+    }
+
+    public static function operationResponseField(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_RESPONSE_FIELD);
+    }
+
+    public static function isOperationResponseField(FieldDescriptorProto $field): bool
+    {
+        $opField = static::operationResponseField($field);
+        return !is_null($opField) && $opField !== '';
+    }
+
+    public static function operationRequestField(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_REQUEST_FIELD);
+    }
+
+    public static function isOperationRequestField(FieldDescriptorProto $field): bool
+    {
+        $opField = static::operationRequestField($field);
+        return !is_null($opField) && $opField !== '';
+    }
+
+    public static function operationPollingMethod(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_CLOUD_OPERATION_POLLING_METHOD);
+    }
+
+    public static function operationField(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
+    }
+
+    // Use of lookupOperationService assumes that isOperationService has already been called and returned true.
+    public static function lookupOperationService(ProtoCatalog $catalog, MethodDescriptorProto $desc, string $package): ServiceDescriptorProto
+    {
+        $opServ = ProtoHelpers::operationService($desc);
+        // Prepare fully-qualified proto element name using containing proto package.
+        // Values that exist in another package will contain the '.' separator.
+        if (!str_contains($opServ, '.')) {
+            $opServ = "{$package}.{$opServ}";
+        }
+        // Prepend '.' to indicate the name is fully-qualified.
+        if (!str_starts_with($opServ, '.')) {
+            $opServ = '.' . $opServ;
+        }
+
+        return $catalog->servicesByFullname[$opServ];
     }
 }

@@ -25,9 +25,11 @@ use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ServerStream;
+use Google\Cloud\OperationResponseMapping;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\MethodDescriptorProto;
+use Google\Protobuf\Internal\ServiceDescriptorProto;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
@@ -48,6 +50,7 @@ abstract class MethodDetails
     public const BIDI_STREAMING = 'bidi_streaming';
     public const SERVER_STREAMING = 'server_streaming';
     public const CLIENT_STREAMING = 'client_streaming';
+    public const CUSTOM_OP = 'custom_op';
 
     public const DEPRECATED_MSG = "This method will be removed in the next major version update.";
 
@@ -56,6 +59,7 @@ abstract class MethodDetails
         // TODO: Handle further method types; e.g. streaming, paginated, ...
         return
             static::maybeCreatePaginated($svc, $desc) ??
+            static::maybeCreateCustomOperation($svc, $desc) ??
             static::maybeCreateLro($svc, $desc) ??
             static::maybeCreateBidiStreaming($svc, $desc) ??
             static::maybeCreateServerStreaming($svc, $desc) ??
@@ -303,6 +307,112 @@ abstract class MethodDetails
 
                 /** @var Vector *Readonly* Vector of FieldDetails; all fields of lroResponse type. */
                 public Vector $lroResponseFields;
+            };
+        }
+    }
+
+    private static function maybeCreateCustomOperation(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
+    {
+        // This is a DIREGAPIC only feature, and the RPC must be annotated as such.
+        if ($svc->transportType !== Transport::REST || !ProtoHelpers::isOperationService($desc)) {
+            return null;
+        } else {
+            return new class($svc, $desc) extends MethodDetails {
+                public function __construct($svc, $desc)
+                {
+                    parent::__construct($svc, $desc);
+                    $catalog = $svc->catalog;
+                    $this->methodType = MethodDetails::CUSTOM_OP;
+                    $this->methodReturnType = Type::fromName(OperationResponse::class);
+                    $this->operationService = ProtoHelpers::lookupOperationService($catalog, $desc, $svc->package);
+                    
+                    // Find the RPC annotated as the polling method on the operation_service.
+                    $polling = Vector::new($this->operationService->getMethod())
+                        ->filter(fn ($x) =>
+                            !is_null(ProtoHelpers::operationPollingMethod($x)));
+                    if ($polling->count() == 0) {
+                        throw new \Exception("Custom operation service {$this->operationService->getName()} does not provide a polling method marked with `google.cloud.operation_polling_method = true` option.");
+                    }
+                    $pollingMethod = $polling->firstOrNull();
+                    $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
+                    
+                    // Collect the operation_response_field mapping from the polling request message.
+                    $customOperation = $catalog->msgsByFullname[$desc->getOutputType()];
+                    $copFields = Vector::new($customOperation->getField())->toMap(
+                        fn ($x) => $x->getName(),
+                        fn ($x) => new FieldDetails($catalog, $customOperation, $x)
+                    );
+                    $pollingMsg = $catalog->msgsByFullname[$pollingMethod->getInputType()];
+                    $this->operationPollingFields = Vector::new($pollingMsg->getField())
+                        ->filter(fn ($x) => ProtoHelpers::isOperationResponseField($x))
+                        ->toMap(
+                            fn ($x) => new FieldDetails($catalog, $pollingMsg, $x),
+                            fn ($x) => $copFields[ProtoHelpers::operationResponseField($x)]
+                        );
+                    
+                    // Collect operation_request_field mapping from input message fields.
+                    $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+                    $pollingFields = Vector::new($pollingMsg->getField())->toMap(
+                        fn ($x) => $x->getName(),
+                        fn ($x) => new FieldDetails($catalog, $pollingMsg, $x)
+                    );
+                    $this->operationRequestFields = Vector::new($inputMsg->getField())
+                        ->filter(fn ($x) => ProtoHelpers::isOperationRequestField($x))
+                        ->toMap(
+                            fn ($x) => $pollingFields[ProtoHelpers::operationRequestField($x)],
+                            fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
+                        );
+
+                    // Collect the operation field mappings.
+                    $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
+                    foreach ($outputMsg->getField() as $field) {
+                        $opField = ProtoHelpers::operationField($field);
+                        if (is_null($opField)) {
+                            continue;
+                        }
+                        switch ($opField) {
+                            case OperationResponseMapping::ERROR_CODE:
+                                $this->operationErrorCodeField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::ERROR_MESSAGE:
+                                $this->operationErrorMessageField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::NAME:
+                                $this->operationNameField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                            case OperationResponseMapping::STATUS:
+                                $this->operationStatusField = new FieldDetails($catalog, $outputMsg, $field);
+                                break;
+                        }
+                    }
+                }
+
+                /** @var ServiceDescriptorProto *Readonly* The custom operation service that manages this method's operations. */
+                public ServiceDescriptorProto $operationService;
+
+                /** @var MethodDetails *Readonly* The method marked as the polling method on the custom operaiton service. */
+                public MethodDetails $operationPollingMethod;
+
+                /**
+                 * @var Map *Readonly* Map<FieldDetails, FieldDetails> mapping of polling request message fields to the
+                 * corresponding request message field to source from.
+                 */
+                public Map $operationPollingFields;
+
+                /** @var Map *Readonly* Map<FieldDetails, FieldDetails> all fields from the request message that map to operation fields. */
+                public Map $operationRequestFields;
+
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation status. */
+                public FieldDetails $operationStatusField;
+
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation error code. */
+                public FieldDetails $operationErrorCodeField;
+
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation error message. */
+                public FieldDetails $operationErrorMessageField;
+
+                /** @var FieldDetails *Readonly* FieldDetails of the field that represents the operation name. */
+                public FieldDetails $operationNameField;
             };
         }
     }
