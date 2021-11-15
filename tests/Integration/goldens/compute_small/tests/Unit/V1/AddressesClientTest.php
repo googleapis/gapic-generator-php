@@ -258,10 +258,6 @@ class AddressesClientTest extends GeneratedTest
         $response = $client->delete($address, $project, $region);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
-        $expectedOperationsRequestObject = new GetRegionOperationRequest();
-        $expectedOperationsRequestObject->setName('customOperations/deleteExceptionTest');
-        $expectedOperationsRequestObject->setProject($project);
-        $expectedOperationsRequestObject->setRegion($region);
         try {
             $response->pollUntilComplete([
                 'initialPollDelayMillis' => 1,
@@ -385,10 +381,6 @@ class AddressesClientTest extends GeneratedTest
         $response = $client->insert($addressResource, $project, $region);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
-        $expectedOperationsRequestObject = new GetRegionOperationRequest();
-        $expectedOperationsRequestObject->setName('customOperations/insertExceptionTest');
-        $expectedOperationsRequestObject->setProject($project);
-        $expectedOperationsRequestObject->setRegion($region);
         try {
             $response->pollUntilComplete([
                 'initialPollDelayMillis' => 1,
