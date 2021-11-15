@@ -847,9 +847,7 @@ class UnitTestsGenerator
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
-        $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
         $ex = AST::var('ex');
-        $pollingMethod = $method->operationPollingMethod;
         [$initCode, $operationsTransport, $client, $transport] = $this->customOpTestInit($method, $method->testExceptionMethodName);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
@@ -871,12 +869,6 @@ class UnitTestsGenerator
                 AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
-                AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type($pollingMethod->requestType))()),
-                $expectedOperationsRequestObject->setName("customOperations/{$method->testExceptionMethodName}"),
-                $method->operationRequestFields->mapValues(
-                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name))
-                )
-                    ->values(),
                 AST::try(
                     $response->pollUntilComplete(AST::array([
                         'initialPollDelayMillis' => 1,
