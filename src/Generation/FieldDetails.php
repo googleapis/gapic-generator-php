@@ -113,8 +113,7 @@ class FieldDetails
         $this->typeSingular = Type::fromField($catalog, $desc, false);
         $this->getter = new PhpMethod($desc->getGetter());
         $this->setter = new PhpMethod($desc->getSetter());
-        $this->isRequired = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
-            ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+        $this->isRequired = ProtoHelpers::isRequired($field);
         $this->isMessage = $field->getType() == GPBType::MESSAGE;
         $this->fullname = $this->isMessage ? $field->getTypeName() : null;
         $this->isEnum = $field->getType() === GPBType::ENUM;

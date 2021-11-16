@@ -818,7 +818,7 @@ class UnitTestsGenerator
                     fn ($reqField, $resField) => $expectedOperationsRequestObject->instanceCall($reqField->setter)($completeOperation->instanceCall($resField->getter)())
                 )
                     ->values(),
-                $method->operationRequestFields->filter(fn($pollField, $reqField) => $reqField->isRequired)->mapValues(
+                $method->operationRequestFields->mapValues(
                     fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name))
                 )
                     ->values(),
