@@ -4,13 +4,19 @@ package testing.basicserverstreaming;
 
 option php_namespace = "Testing\\BasicServerStreaming";
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 
 service BasicServerStreaming {
   option (google.api.default_host) = "serverstreaming.example.com";
 
-  rpc MethodServer(Request) returns(stream Response);
+  rpc MethodServer(Request) returns(stream Response) {
+    option (google.api.http) = {
+      post: "/path:serverStreaming"
+      body: "*"
+    };
+  };
 
   rpc MethodEmpty(EmptyRequest) returns(stream Response);
 }

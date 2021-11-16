@@ -1,5 +1,13 @@
 <?php
 
 return [
-    'interfaces' => [],
+    'interfaces' => [
+        'testing.basicserverstreaming.BasicServerStreaming' => [
+            'MethodServer' => [
+                'method' => 'post',
+                'uriTemplate' => '/path:serverStreaming',
+                'body' => '*',
+            ],
+        ],
+    ],
 ];

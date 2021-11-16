@@ -535,6 +535,11 @@ abstract class MethodDetails
             $this->methodType === static::CLIENT_STREAMING;
     }
 
+    public function isServerStreaming(): bool
+    {
+        return $this->methodType === static::SERVER_STREAMING;
+    }
+
     public function isMixin(): bool
     {
         return $this->mixinServiceFullname !== null;
