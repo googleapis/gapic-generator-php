@@ -35,6 +35,8 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
                 return '';
             case 'HttpErrorStatusCode':
                 return '';
+            case 'Foo':
+                return '';
             default:
                 throw new \Exception("No default value available for field: '{$name}'");
         }
