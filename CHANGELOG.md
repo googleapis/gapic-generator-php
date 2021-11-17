@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.1.0...v1.1.1) (2021-11-17)
+
+
+### Bug Fixes
+
+* only expect required request fields on op ([#413](https://www.github.com/googleapis/gapic-generator-php/issues/413)) ([55dce26](https://www.github.com/googleapis/gapic-generator-php/commit/55dce261b34b110e9e497d9d01ecc0e619683715))
+* remove extraneous message in custom lro tests ([#410](https://www.github.com/googleapis/gapic-generator-php/issues/410)) ([77346d4](https://www.github.com/googleapis/gapic-generator-php/commit/77346d49b0ca64e288f62316b0aa99b411a6dd17))
+
 ## [1.1.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.5...v1.1.0) (2021-11-10)
 
 
