@@ -170,10 +170,6 @@ class CustomLroClientTest extends GeneratedTest
         $response = $client->createFoo($project, $region);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
-        $expectedOperationsRequestObject = new \Testing\CustomLro\GetOperationRequest();
-        $expectedOperationsRequestObject->setName('customOperations/createFooExceptionTest');
-        $expectedOperationsRequestObject->setProject($project);
-        $expectedOperationsRequestObject->setRegion($region);
         try {
             $response->pollUntilComplete([
                 'initialPollDelayMillis' => 1,

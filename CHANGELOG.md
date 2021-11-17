@@ -1,5 +1,29 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.1.0...v1.1.1) (2021-11-17)
+
+
+### Bug Fixes
+
+* only expect required request fields on op ([#413](https://www.github.com/googleapis/gapic-generator-php/issues/413)) ([55dce26](https://www.github.com/googleapis/gapic-generator-php/commit/55dce261b34b110e9e497d9d01ecc0e619683715))
+* remove extraneous message in custom lro tests ([#410](https://www.github.com/googleapis/gapic-generator-php/issues/410)) ([77346d4](https://www.github.com/googleapis/gapic-generator-php/commit/77346d49b0ca64e288f62316b0aa99b411a6dd17))
+
+## [1.1.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.5...v1.1.0) (2021-11-10)
+
+
+### Features
+
+* add Custom Operation support for DIREGAPIC ([#386](https://www.github.com/googleapis/gapic-generator-php/issues/386)) ([f0e87da](https://www.github.com/googleapis/gapic-generator-php/commit/f0e87da337095f91ce82a082eef154712512f460))
+
+
+### Bug Fixes
+
+* **bazel:** fix macos support for bazel build ([#377](https://www.github.com/googleapis/gapic-generator-php/issues/377)) ([ed0badb](https://www.github.com/googleapis/gapic-generator-php/commit/ed0badb9672fb902798d20d7210cfa34bd2b8274))
+* catalog proto service to proto file ([#399](https://www.github.com/googleapis/gapic-generator-php/issues/399)) ([e2361e8](https://www.github.com/googleapis/gapic-generator-php/commit/e2361e8c3f7171e63effcefbaa50c455d5fb512d))
+* catalog services in ProtoCatalog ([#383](https://www.github.com/googleapis/gapic-generator-php/issues/383)) ([54cb96a](https://www.github.com/googleapis/gapic-generator-php/commit/54cb96af367aa74f192fd54f02918e5cb10126d1))
+* **deps:** update dependency google/protobuf to v3.18.0 ([#385](https://www.github.com/googleapis/gapic-generator-php/issues/385)) ([cc1458d](https://www.github.com/googleapis/gapic-generator-php/commit/cc1458d25cf0579f1205bd9ef75e97dc4b70843e))
+* enable ignore_unknown in config file parsers ([#390](https://www.github.com/googleapis/gapic-generator-php/issues/390)) ([30f7a35](https://www.github.com/googleapis/gapic-generator-php/commit/30f7a35ffc33b8ac9e08ae99220481234476984a))
+
 ### [1.0.5](https://www.github.com/googleapis/gapic-generator-php/compare/v1.0.4...v1.0.5) (2021-08-04)
 
 

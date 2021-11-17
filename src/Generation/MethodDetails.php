@@ -358,6 +358,7 @@ abstract class MethodDetails
                     );
                     $this->operationRequestFields = Vector::new($inputMsg->getField())
                         ->filter(fn ($x) => ProtoHelpers::isOperationRequestField($x))
+                        ->filter(fn ($x) => ProtoHelpers::isRequired($x))
                         ->toMap(
                             fn ($x) => $pollingFields[ProtoHelpers::operationRequestField($x)],
                             fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
