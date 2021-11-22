@@ -235,6 +235,12 @@ class ProtoHelpers
         return $result;
     }
 
+    public static function isRequired(FieldDescriptorProto $field)
+    {
+        return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
+            ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+    }
+
     public static function operationService(MethodDescriptorProto $method)
     {
         return static::getCustomOption($method, CustomOptions::GOOGLE_CLOUD_OPERATION_SERVICE);

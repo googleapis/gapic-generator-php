@@ -300,6 +300,9 @@ class CustomLroGapicClient
      *     Optional.
      *
      *     @type string $foo
+     *           Since this is not REQUIRED, it will be ignored. Otherwise, runtime errors
+     *           will occur when the field is not set, and because it appears before the
+     *           REQUIRED fields.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry

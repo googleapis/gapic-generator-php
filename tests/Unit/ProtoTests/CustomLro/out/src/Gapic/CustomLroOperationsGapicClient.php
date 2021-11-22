@@ -267,6 +267,8 @@ class CustomLroOperationsGapicClient
      * @param array  $optionalArgs {
      *     Optional.
      *
+     *     @type string $foo
+     *           The foo from the initial request.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -284,6 +286,10 @@ class CustomLroOperationsGapicClient
         $request->setOperation($operation);
         $request->setProject($project);
         $request->setRegion($region);
+        if (isset($optionalArgs['foo'])) {
+            $request->setFoo($optionalArgs['foo']);
+        }
+
         return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
     }
 }
