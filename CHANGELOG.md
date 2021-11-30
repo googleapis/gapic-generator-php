@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.1.1...v1.2.0) (2021-11-30)
+
+
+### Features
+
+* include server streaming in rest descriptor ([#414](https://www.github.com/googleapis/gapic-generator-php/issues/414)) ([f5f6060](https://www.github.com/googleapis/gapic-generator-php/commit/f5f6060a7c8ce8f24b6174b71a9145d96e1aefc1))
+
 ### [1.1.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.1.0...v1.1.1) (2021-11-17)
 
 
