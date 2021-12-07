@@ -125,7 +125,10 @@ class ResourcesGenerator
         return AST::array([
             'additionalArgumentMethods' => AST::array(
                 $method->operationRequestFields
-                    ->values()
+                    ->keys()
+                    // Ensure that the getters are organized in field number order in the operation message.
+                    ->orderBy(fn($f) => $f->number)
+                    ->map(fn($f) => $method->operationRequestFields[$f])
                     ->map(fn ($x) => $x->getter->getName())->toArray()
             ),
             'getOperationMethod' => $method->operationPollingMethod->methodName,

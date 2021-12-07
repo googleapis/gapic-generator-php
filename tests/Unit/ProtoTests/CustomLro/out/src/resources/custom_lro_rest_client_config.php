@@ -24,6 +24,7 @@ return [
                 'queryParams' => [
                     'project',
                     'region',
+                    'foo',
                 ],
             ],
         ],
