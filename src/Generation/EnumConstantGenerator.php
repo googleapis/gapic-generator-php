@@ -20,7 +20,6 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
-use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Vector;
@@ -28,7 +27,8 @@ use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\EnumDescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
 
-class EnumConstantGenerator {
+class EnumConstantGenerator
+{
     public static function generate(SourceFileContext $ctx, EnumDescriptorProto $enumDesc, string $namespace, FileDescriptorProto $file): PhpFile
     {
         return (new EnumConstantGenerator($ctx, $enumDesc, $namespace, $file))->generateImpl();
@@ -76,7 +76,7 @@ class EnumConstantGenerator {
     private function nameConstants(): Vector
     {
         return Vector::new($this->enumDesc->getValue())
-            ->map(fn($e) => 
+            ->map(fn ($e) =>
                 AST::constant($e->getName())
                 ->withValue($e->getName()));
     }

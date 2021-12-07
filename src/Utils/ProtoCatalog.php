@@ -123,7 +123,7 @@ class ProtoCatalog
         // Map each enum to its parent file.
         $this->enumsToFile = Map::new([]);
         foreach ($fileDescs as $file) {
-            foreach ($file->getEnumType() as $enum) {                
+            foreach ($file->getEnumType() as $enum) {
                 $this->enumsToFile = $this->enumsToFile->set('.'.$enum->desc->getFullName(), $file);
             }
         }

@@ -322,13 +322,13 @@ class CodeGenerator
     private static function generateEnumConstants(Map $filesByPackage, ProtoCatalog $catalog, int $licenseYear)
     {
         $enumsToGenerate = $catalog->enumsToFile
-            ->filter(fn($e, $f) =>
+            ->filter(fn ($e, $f) =>
                 /* Ignore this specific annotation enum. */ !str_ends_with($e, '.OperationResponseMapping') &&
                 /* Only include proto packages in input. */ !is_null($filesByPackage->get($f->getPackage(), null)))
-            ->keys()->map(fn($e) => $catalog->enumsByFullname[$e]);
+            ->keys()->map(fn ($e) => $catalog->enumsByFullname[$e]);
 
-        foreach($enumsToGenerate as $enum) {
-            // Use the PHP namespace of the file that the enum belongs to and convert it 
+        foreach ($enumsToGenerate as $enum) {
+            // Use the PHP namespace of the file that the enum belongs to and convert it
             // to the "in code" form using only single backslashes.
             $parent = $catalog->enumsToFile['.' . $enum->desc->getFullName()];
             $pkgNamespace = ProtoHelpers::getNamespace($parent);
