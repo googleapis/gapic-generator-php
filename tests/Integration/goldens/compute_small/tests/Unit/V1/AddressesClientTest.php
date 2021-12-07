@@ -200,8 +200,8 @@ class AddressesClientTest extends GeneratedTest
         $this->assertProtobufEquals($region, $actualValue);
         $expectedOperationsRequestObject = new GetRegionOperationRequest();
         $expectedOperationsRequestObject->setOperation($completeOperation->getName());
-        $expectedOperationsRequestObject->setProject($actualApiRequestObject->getProject());
-        $expectedOperationsRequestObject->setRegion($actualApiRequestObject->getRegion());
+        $expectedOperationsRequestObject->setProject($project);
+        $expectedOperationsRequestObject->setRegion($region);
         $response->pollUntilComplete([
             'initialPollDelayMillis' => 1,
         ]);
@@ -323,8 +323,8 @@ class AddressesClientTest extends GeneratedTest
         $this->assertProtobufEquals($region, $actualValue);
         $expectedOperationsRequestObject = new GetRegionOperationRequest();
         $expectedOperationsRequestObject->setOperation($completeOperation->getName());
-        $expectedOperationsRequestObject->setProject($actualApiRequestObject->getProject());
-        $expectedOperationsRequestObject->setRegion($actualApiRequestObject->getRegion());
+        $expectedOperationsRequestObject->setProject($project);
+        $expectedOperationsRequestObject->setRegion($region);
         $response->pollUntilComplete([
             'initialPollDelayMillis' => 1,
         ]);
