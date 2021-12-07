@@ -22,17 +22,15 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Testing\BasicDiregapic\Gapic\SomeMessage2\SomeMessage3;
+namespace Testing\BasicDiregapic\Enums;
 
 /**
- * Alignment contains string constants that represent the names of each value in
- * the google.example.library.v1.SomeMessage2.SomeMessage3.Alignment descriptor.
+ * TopLevelEnum contains string constants that represent the names of each value in
+ * the google.example.library.v1.TopLevelEnum descriptor.
  */
-class Alignment
+class TopLevelEnum
 {
-    const CHAR = 'CHAR';
+    const FOO = 'FOO';
 
-    const INT = 'INT';
-
-    const DOUBLE = 'DOUBLE';
+    const BAR = 'BAR';
 }

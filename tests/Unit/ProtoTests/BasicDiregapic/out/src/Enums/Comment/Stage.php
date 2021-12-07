@@ -22,19 +22,19 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Testing\BasicDiregapic\Gapic\SomeMessage2;
+namespace Testing\BasicDiregapic\Enums\Comment;
 
 /**
- * Alignment contains string constants that represent the names of each value in
- * the google.example.library.v1.SomeMessage2.Alignment descriptor.
+ * Stage contains string constants that represent the names of each value in the
+ * google.example.library.v1.Comment.Stage descriptor.
  */
-class Alignment
+class Stage
 {
-    const FLUSH_LEFT = 'FLUSH_LEFT';
+    const UNSET = 'UNSET';
 
-    const FLUSH_RIGHT = 'FLUSH_RIGHT';
+    const DRAFT = 'DRAFT';
 
-    const CENTERED = 'CENTERED';
+    const PUBLISHED = 'PUBLISHED';
 
-    const JUSTIFIED = 'JUSTIFIED';
+    const DELETED = 'DELETED';
 }

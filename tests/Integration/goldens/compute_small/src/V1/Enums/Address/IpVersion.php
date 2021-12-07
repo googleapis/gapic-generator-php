@@ -22,19 +22,19 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Google\Cloud\Compute\V1\Gapic\Operation;
+namespace Google\Cloud\Compute\V1\Enums\Address;
 
 /**
- * Status contains string constants that represent the names of each value in the
- * google.cloud.compute.v1.Operation.Status descriptor.
+ * IpVersion contains string constants that represent the names of each value in
+ * the google.cloud.compute.v1.Address.IpVersion descriptor.
  */
-class Status
+class IpVersion
 {
-    const UNDEFINED_STATUS = 'UNDEFINED_STATUS';
+    const UNDEFINED_IP_VERSION = 'UNDEFINED_IP_VERSION';
 
-    const DONE = 'DONE';
+    const IPV4 = 'IPV4';
 
-    const PENDING = 'PENDING';
+    const IPV6 = 'IPV6';
 
-    const RUNNING = 'RUNNING';
+    const UNSPECIFIED_VERSION = 'UNSPECIFIED_VERSION';
 }

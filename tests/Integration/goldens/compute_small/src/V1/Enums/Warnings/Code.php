@@ -22,11 +22,11 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Google\Cloud\Compute\V1\Gapic\Warning;
+namespace Google\Cloud\Compute\V1\Enums\Warnings;
 
 /**
  * Code contains string constants that represent the names of each value in the
- * google.cloud.compute.v1.Warning.Code descriptor.
+ * google.cloud.compute.v1.Warnings.Code descriptor.
  */
 class Code
 {

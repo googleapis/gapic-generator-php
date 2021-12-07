@@ -339,7 +339,7 @@ class CodeGenerator
             $enumFullname = Type::fromEnum($enum->desc)->getFullname(/* omitLeadingBackslash */ true);
             $relativeNamespace = str_replace($pkgNamespace . "\\", '', $enumFullname);
             $filename = str_replace('\\', '/', $relativeNamespace);
-            $namespace = $pkgNamespace . '\\Gapic\\' . $relativeNamespace;
+            $namespace = $pkgNamespace . '\\Enums\\' . $relativeNamespace;
             
             // Extract the version, if present, from the enum namespace.
             $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
@@ -350,7 +350,7 @@ class CodeGenerator
             $file = EnumConstantGenerator::generate($ctx, $enum, $namespace, $parent);
             $code = $file->toCode();
             $code = Formatter::format($code);
-            yield ["src/{$version}Gapic/{$filename}.php", $code];
+            yield ["src/{$version}Enums/{$filename}.php", $code];
         }
     }
 }
