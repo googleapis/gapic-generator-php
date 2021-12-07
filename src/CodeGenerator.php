@@ -18,8 +18,10 @@ declare(strict_types=1);
 
 namespace Google\Generator;
 
+use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\EmptyClientGenerator;
+use Google\Generator\Generation\EnumConstantGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\OneofWrapperGenerator;
@@ -36,6 +38,7 @@ use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\Transport;
+use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
@@ -220,6 +223,16 @@ class CodeGenerator
             $result[] = $file;
         }
 
+        if ($transportType === Transport::REST) {
+            foreach (static::generateEnumConstants(
+                $byPackage,
+                $catalog,
+                $licenseYear
+            ) as $file) {
+                $result[] = $file;
+            }
+        }
+
         return $result;
     }
 
@@ -303,6 +316,41 @@ class CodeGenerator
                 $gapicMetadataJson = GapicMetadataGenerator::generate($servicesToGenerate, $ns);
                 yield ["src/{$ver}gapic_metadata.json", $gapicMetadataJson];
             }
+        }
+    }
+
+    private static function generateEnumConstants(Map $filesByPackage, ProtoCatalog $catalog, int $licenseYear)
+    {
+        $enumsToGenerate = $catalog->enumsToFile
+            ->filter(fn($e, $f) =>
+                /* Ignore this specific annotation enum. */ !str_ends_with($e, '.OperationResponseMapping') &&
+                /* Only include proto packages in input. */ !is_null($filesByPackage->get($f->getPackage(), null)))
+            ->keys()->map(fn($e) => $catalog->enumsByFullname[$e]);
+
+        foreach($enumsToGenerate as $enum) {
+            // Use the PHP namespace of the file that the enum belongs to and convert it 
+            // to the "in code" form using only single backslashes.
+            $parent = $catalog->enumsToFile['.' . $enum->desc->getFullName()];
+            $pkgNamespace = ProtoHelpers::getNamespace($parent);
+            $pkgNamespace = str_replace('\\\\', '\\', $pkgNamespace);
+            
+            // Trim the package namespace from the enum's fullname to get the
+            // relative path of the enum.
+            $enumFullname = Type::fromEnum($enum->desc)->getFullname(/* omitLeadingBackslash */ true);
+            $relativeNamespace = str_replace($pkgNamespace . "\\", '', $enumFullname);
+            $filename = str_replace('\\', '/', $relativeNamespace);
+            $namespace = $pkgNamespace . '\\Gapic\\' . $relativeNamespace;
+            
+            // Extract the version, if present, from the enum namespace.
+            $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
+            if ($version !== '') {
+                $version = explode('/', $version, /* limit */1)[0].'/';
+            }
+            $ctx = new SourceFileContext($namespace, $licenseYear);
+            $file = EnumConstantGenerator::generate($ctx, $enum, $namespace, $parent);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["src/{$version}Gapic/{$filename}.php", $code];
         }
     }
 }
