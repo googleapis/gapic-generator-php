@@ -113,8 +113,8 @@ class CustomLroClientTest extends GeneratedTest
         $this->assertProtobufEquals($region, $actualValue);
         $expectedOperationsRequestObject = new \Testing\CustomLro\GetOperationRequest();
         $expectedOperationsRequestObject->setOperation($completeOperation->getName());
-        $expectedOperationsRequestObject->setProject($project);
-        $expectedOperationsRequestObject->setRegion($region);
+        $expectedOperationsRequestObject->setProject($actualApiRequestObject->getProject());
+        $expectedOperationsRequestObject->setRegion($actualApiRequestObject->getRegion());
         $response->pollUntilComplete([
             'initialPollDelayMillis' => 1,
         ]);

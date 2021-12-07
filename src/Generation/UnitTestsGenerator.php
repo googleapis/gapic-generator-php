@@ -819,7 +819,7 @@ class UnitTestsGenerator
                 )
                     ->values(),
                 $method->operationRequestFields->mapValues(
-                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->camelName))
+                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)($actualApiRequestObject->instanceCall($reqField->getter)())
                 )
                     ->values(),
                 $response->pollUntilComplete(AST::array([
