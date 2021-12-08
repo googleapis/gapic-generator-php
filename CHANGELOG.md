@@ -1,5 +1,15 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.2.0...v1.2.1) (2021-12-08)
+
+
+### Bug Fixes
+
+* **diregapic:** ensure operation field descriptor ordering ([#426](https://www.github.com/googleapis/gapic-generator-php/issues/426)) ([dcd1c83](https://www.github.com/googleapis/gapic-generator-php/commit/dcd1c8351f15968d73eee72519a65e2f397f368c))
+* **diregapic:** include additional args if op field is required ([#425](https://www.github.com/googleapis/gapic-generator-php/issues/425)) ([f0e8f60](https://www.github.com/googleapis/gapic-generator-php/commit/f0e8f60ea48e9f074c6d60c3d1357393268ad79d))
+* **diregapic:** use camelCase field name in custom op test ([#424](https://www.github.com/googleapis/gapic-generator-php/issues/424)) ([b89c28b](https://www.github.com/googleapis/gapic-generator-php/commit/b89c28bfe2fd9cccae2e64c9034610cd7cc7f8cd))
+* link in php docs ([#418](https://www.github.com/googleapis/gapic-generator-php/issues/418)) ([a0bf471](https://www.github.com/googleapis/gapic-generator-php/commit/a0bf471bdc6542e9a3cbde1374ade4357fabae3b))
+
 ## [1.2.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.1.1...v1.2.0) (2021-11-30)
 
 
