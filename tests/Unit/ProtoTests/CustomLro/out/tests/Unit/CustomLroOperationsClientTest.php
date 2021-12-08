@@ -213,7 +213,8 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $operation = 'operation1662702951';
         $project = 'project-309310695';
         $region = 'region-934795532';
-        $response = $client->get($operation, $project, $region);
+        $foo = 'foo101574';
+        $response = $client->get($operation, $project, $region, $foo);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -226,6 +227,8 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertProtobufEquals($project, $actualValue);
         $actualValue = $actualRequestObject->getRegion();
         $this->assertProtobufEquals($region, $actualValue);
+        $actualValue = $actualRequestObject->getFoo();
+        $this->assertProtobufEquals($foo, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -253,8 +256,9 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $operation = 'operation1662702951';
         $project = 'project-309310695';
         $region = 'region-934795532';
+        $foo = 'foo101574';
         try {
-            $client->get($operation, $project, $region);
+            $client->get($operation, $project, $region, $foo);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
