@@ -65,7 +65,7 @@ class EnumConstantGenerator
         return AST::class($this->enumType)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text(
-                    $this->enumDesc->getName() . ' contains string constants that'.
+                    $this->enumDesc->getName() . ' contains string constants that' .
                     ' represent the names of each value in the ' .
                     $this->enumDesc->desc->getFullName() . ' descriptor.'
                 )
