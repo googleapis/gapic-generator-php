@@ -130,7 +130,7 @@ class ProtoCatalog
         foreach ($allMsgs as $msg) {
             $file = $this->msgsToFile['.' . $msg->desc->getFullName()];
             foreach ($msg->getenumType() as $enum) {
-                $this->enumsToFile = $this->enumsToFile->set('.'.$enum->desc->getFullName(), $file);
+                $this->enumsToFile = $this->enumsToFile->set('.' . $enum->desc->getFullName(), $file);
             }
         }
 
