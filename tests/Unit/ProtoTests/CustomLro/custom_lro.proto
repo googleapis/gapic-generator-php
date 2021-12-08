@@ -68,9 +68,6 @@ message CustomOperationResponse {
 }
 
 message CreateFooRequest {
-    // Since this is not REQUIRED, it will be ignored. Otherwise, runtime errors
-    // will occur when the field is not set, and because it appears before the
-    // REQUIRED fields.
     string foo = 1 [(google.cloud.operation_request_field) = "foo"];
 
     string project = 2 [
@@ -95,7 +92,7 @@ message GetOperationRequest {
   string region = 3 [(google.api.field_behavior) = REQUIRED];
 
   // The foo from the initial request.
-  string foo = 4;
+  string foo = 4 [(google.api.field_behavior) = REQUIRED];
 }
 
 message CancelOperationRequest {

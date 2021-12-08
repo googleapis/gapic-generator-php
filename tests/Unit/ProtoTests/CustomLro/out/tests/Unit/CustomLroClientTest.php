@@ -115,6 +115,7 @@ class CustomLroClientTest extends GeneratedTest
         $expectedOperationsRequestObject->setOperation($completeOperation->getName());
         $expectedOperationsRequestObject->setProject($project);
         $expectedOperationsRequestObject->setRegion($region);
+        $expectedOperationsRequestObject->setFoo($actualApiRequestObject->getFoo());
         $response->pollUntilComplete([
             'initialPollDelayMillis' => 1,
         ]);
