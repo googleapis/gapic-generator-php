@@ -319,12 +319,12 @@ class CodeGenerator
         }
     }
 
-    private static function generateEnumConstants(Map $filesByPackage, ProtoCatalog $catalog, int $licenseYear)
+    private static function generateEnumConstants(Map $inputFilesByPackage, ProtoCatalog $catalog, int $licenseYear)
     {
         $enumsToGenerate = $catalog->enumsToFile
             ->filter(fn ($e, $f) =>
                 /* Ignore this specific annotation enum. */ !str_ends_with($e, '.OperationResponseMapping') &&
-                /* Only include proto packages in input. */ !is_null($filesByPackage->get($f->getPackage(), null)))
+                /* Only include proto packages in input. */ !is_null($inputFilesByPackage->get($f->getPackage(), null)))
             ->keys()->map(fn ($e) => $catalog->enumsByFullname[$e]);
 
         foreach ($enumsToGenerate as $enum) {
