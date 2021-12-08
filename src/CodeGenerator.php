@@ -344,7 +344,7 @@ class CodeGenerator
             // Extract the version, if present, from the enum namespace.
             $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
             if ($version !== '') {
-                $version = explode('/', $version, /* limit */1)[0].'/';
+                $version = explode('/', $version, /* limit */ 1)[0].'/';
             }
             $ctx = new SourceFileContext($namespace, $licenseYear);
             $file = EnumConstantGenerator::generate($ctx, $enum, $namespace, $parent);
