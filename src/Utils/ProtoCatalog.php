@@ -116,7 +116,7 @@ class ProtoCatalog
                 foreach (static::msgPlusNested($msg) as $nested) {
                     $this->msgsToFile = $this->msgsToFile->set('.' . $nested->desc->getFullName(), $file);
                 }
-                $this->msgsToFile = $this->msgsToFile->set('.'.$msg->desc->getFullName(), $file);
+                $this->msgsToFile = $this->msgsToFile->set('.' . $msg->desc->getFullName(), $file);
             }
         }
 
