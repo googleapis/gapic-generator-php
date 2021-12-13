@@ -67,10 +67,6 @@ The recommended (tested) way of doing it is as follows:
 
 ## Updating composer
 
-When generating client libraries, this generator is bundled together with a version of composer. Occasionally composer needs to be updated in order for bazel to build successfully. You may see a somewhat misleading error when trying to build with bazel with an out-of-date version of composer:
-
-```
-STDERR: Composer is operating significantly slower than normal because you do not have the PHP curl extension enabled. No composer.lock file present. Updating dependencies to latest instead of installing from lock file. See https://getcomposer.org/install for more information.
-```
+When generating client libraries, this generator is bundled together with a version of composer. Occasionally composer needs to be updated in order for bazel to build successfully.
 
 To update, please run `rules_php_gapic/resources/composer.phar self-update --stable` (or you can install a specific version from https://getcomposer.org/download/) in the generator. This will generate a new binary for the newest version of composer this generator is bundled with. Once you merge this change, the generator should use the latest version of composer.
