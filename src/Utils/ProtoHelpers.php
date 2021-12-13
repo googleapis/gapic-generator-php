@@ -144,7 +144,7 @@ class ProtoHelpers
         $original = $matches[0];
         // Replace the entire template variable with just the segment matcher,
         // wrapped in a capture group.
-        $pattern = str_replace($original, "(?<".$key.">".$match.")", $template);
+        $pattern = str_replace($original, "(?<" . $key . ">" . $match . ")", $template);
         // Replace double wild cards with nameless capture groups.
         $pattern = str_replace('/**', '(?:/.*)?', $pattern);
         // Replace single wild cards with single word matchers.
@@ -152,7 +152,7 @@ class ProtoHelpers
         // Escape all forward slashes.
         $pattern = str_replace('/', '\/', $pattern);
 
-        return "/^".$pattern."$/";
+        return "/^" . $pattern . "$/";
     }
 
     /**
@@ -173,12 +173,12 @@ class ProtoHelpers
             // Start from openings "{" and read until the "=".
             // Example: {foo=bar/*/baze/*} -> foo.
             $start = strpos($template, '{') + 1;
-            $key = substr($template, $start, $keySep-$start);
+            $key = substr($template, $start, $keySep - $start);
         } elseif (!empty($template)) {
             // Start from just beyond the opening "{" and reduce the length
             // by 2 to exclude the "{" and "}".
             // Example: {foo} -> foo.
-            $key = substr($template, 1, strlen($template)-2);
+            $key = substr($template, 1, strlen($template) - 2);
         }
 
         return $key;

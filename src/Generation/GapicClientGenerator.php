@@ -694,16 +694,16 @@ class GapicClientGenerator
             ? Map::new([])
             : $method->restRoutingHeaders;
         // The presence of google.api.routing explicit headers overrides google.api.http-based implicit headers.
-        $usesRoutingParams = !is_null($method->routingParameters);
-        if ($usesRoutingParams) {
+        $hasRoutingParams = !is_null($method->routingParameters);
+        if ($hasRoutingParams) {
             $restRoutingHeaders = $method->routingParameters;
         }
 
         // An associative array containing 'required' and 'optional' keys for statements that inject required
         // and optional fields in request headers.
-        $requestHeaderAssignments = $usesRoutingParams
-        ? static::explicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders)
-        : static::implicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders);
+        $requestHeaderAssignments = $hasRoutingParams
+            ? static::explicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders)
+            : static::implicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders);
 
         $hasRequestParams = count($restRoutingHeaders) > 0;
         return AST::method($method->methodName)
@@ -730,8 +730,8 @@ class GapicClientGenerator
                                 AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
                                 // Request header assignment/parsing for optional fields.
                                 !is_null($requestHeaderAssignments['optional'])
-                                ? $requestHeaderAssignments['optional']->get($x->name, null)
-                                : null
+                                    ? $requestHeaderAssignments['optional']->get($x->name, null)
+                                    : null
                             ),
                     ),
                     !$hasRequestParams ? null : AST::assign(
@@ -1005,18 +1005,39 @@ class GapicClientGenerator
         }
 
         // Map those root fields that are required by name to the routing header config.
-        $requiredRoutingHeadersByRoot = $routingHeaders->filter(fn ($k, $v) => $method->requiredFields->any(fn ($f) => $f->name === $v[0]['root']))->values()->toMap(fn ($v) => $v[0]['root']);
+        $requiredRoutingHeadersByRoot = $routingHeaders
+            ->filter(fn ($k, $v) => $method->requiredFields->any(fn ($f) => $f->name === $v[0]['root']))
+            ->values()
+            ->toMap(fn ($v) => $v[0]['root']);
         // Map those required fields that appear as routing headers by name to their own FieldDetails.
-        $requiredFieldsInHeaders = $method->requiredFields->filter(fn ($f) => isset($requiredRoutingHeadersByRoot[$f->name]))->toMap(fn ($f) => $f->name);
-        $requiredAssignments = static::explicitRequestParamsForFields($requiredRoutingHeadersByRoot, $requiredFieldsInHeaders, $paramsVar);
+        $requiredFieldsInHeaders = $method->requiredFields
+            ->filter(fn ($f) => isset($requiredRoutingHeadersByRoot[$f->name]))
+            ->toMap(fn ($f) => $f->name);
+        $requiredAssignments = static::explicitRequestParamsForFields(
+            $requiredRoutingHeadersByRoot,
+            $requiredFieldsInHeaders,
+            $paramsVar
+        );
 
         // Map those root fields that are optional by name to the routing header config.
-        $optionalRoutingHeadersByRoot = $routingHeaders->filter(fn ($k, $v) => $method->optionalFields->any(fn ($f) => $f->name === $v[0]['root']))->values()->toMap(fn ($v) => $v[0]['root']);
+        $optionalRoutingHeadersByRoot = $routingHeaders
+            ->filter(fn ($k, $v) => $method->optionalFields->any(fn ($f) => $f->name === $v[0]['root']))
+            ->values()
+            ->toMap(fn ($v) => $v[0]['root']);
         // Map those optional fields that appear as routing headers by name to their own FieldDetails.
-        $optionalFieldsInHeaders = $method->optionalFields->filter(fn ($f) => isset($optionalRoutingHeadersByRoot[$f->name]))->toMap(fn ($f) => $f->name);
-        $optionalAssignments = static::explicitRequestParamsForFields($optionalRoutingHeadersByRoot, $optionalFieldsInHeaders, $paramsVar);
+        $optionalFieldsInHeaders = $method->optionalFields
+            ->filter(fn ($f) => isset($optionalRoutingHeadersByRoot[$f->name]))
+            ->toMap(fn ($f) => $f->name);
+        $optionalAssignments = static::explicitRequestParamsForFields(
+            $optionalRoutingHeadersByRoot,
+            $optionalFieldsInHeaders,
+            $paramsVar
+        );
 
-        return ['required' => $requiredAssignments->values(), 'optional' => $optionalAssignments];
+        return [
+            'required' => $requiredAssignments->values(),
+            'optional' => $optionalAssignments
+        ];
     }
 
     /**
@@ -1062,12 +1083,14 @@ class GapicClientGenerator
                     }
                     // Construct the conditional that initializes the header key-value pair using the capture group if the
                     // preg_match finds a match.
-                    $statements = $statements->append(AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
-                        AST::assign(
-                            AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, $routing['key'])
+                    $statements = $statements->append(
+                        AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
+                            AST::assign(
+                                AST::index($paramsVar, $routing['key']),
+                                AST::index($matches, $routing['key'])
+                            )
                         )
-                    ));
+                    );
                     $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->concat($statements));
                     continue;
                 }
