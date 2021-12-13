@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.2.1...v1.3.0) (2021-12-13)
+
+
+### Features
+
+* **diregapic:** generate string constants for enum names ([#423](https://www.github.com/googleapis/gapic-generator-php/issues/423)) ([3eb196d](https://www.github.com/googleapis/gapic-generator-php/commit/3eb196d4da38a8ea15a4055b65542c4d7f076f3a))
+
+
+### Bug Fixes
+
+* **bazel:** update composer to version 2.1.14 from 2.1.5 ([#428](https://www.github.com/googleapis/gapic-generator-php/issues/428)) ([eca03d4](https://www.github.com/googleapis/gapic-generator-php/commit/eca03d4d95ef95b973fbd6185feab9e9a0cc6673))
+
 ### [1.2.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.2.0...v1.2.1) (2021-12-08)
 
 
