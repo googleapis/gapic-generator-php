@@ -8,6 +8,7 @@ return [
                     'additionalArgumentMethods' => [
                         'getProject',
                         'getRegion',
+                        'getFoo',
                     ],
                     'getOperationMethod' => 'get',
                     'cancelOperationMethod' => 'cancel',

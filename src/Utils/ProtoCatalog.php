@@ -29,8 +29,14 @@ class ProtoCatalog
     /** @var Map *Readonly* Map<string, DescriptorProto> of all proto msgs by full name. */
     public Map $msgsByFullname;
 
+    /** @var Map *Readonly* Map<string, FileDescriptorProto> of all proto files by fully-qualified message name. */
+    public Map $msgsToFile;
+
     /** @var Map *Readonly* Map<string, EnumDescriptorProto> of all enums by full name. */
     public Map $enumsByFullname;
+
+    /** @var Map *Readonly* Map<string, FileDescriptorProto> of all proto files by fully-qualified enum name. */
+    public map $enumsToFile;
 
     /** @var Map *Readonly* Map<string, ResourceDescriptor> of all resources by type name (urn). */
     public Map $resourcesByType;
@@ -102,6 +108,31 @@ class ProtoCatalog
             ->flatMap(fn ($x) => Vector::new($x->getEnumType()))
             ->concat($allMsgs->flatMap(fn ($x) => Vector::new($x->getEnumType())));
         $this->enumsByFullname = $allEnums->toMap(fn ($x) => '.' . $x->desc->getFullName());
+
+        // Map each message to its parent file.
+        $this->msgsToFile = Map::new([]);
+        foreach ($fileDescs as $file) {
+            foreach ($file->getMessageType() as $msg) {
+                foreach (static::msgPlusNested($msg) as $nested) {
+                    $this->msgsToFile = $this->msgsToFile->set('.' . $nested->desc->getFullName(), $file);
+                }
+                $this->msgsToFile = $this->msgsToFile->set('.' . $msg->desc->getFullName(), $file);
+            }
+        }
+
+        // Map each enum to its parent file.
+        $this->enumsToFile = Map::new([]);
+        foreach ($fileDescs as $file) {
+            foreach ($file->getEnumType() as $enum) {
+                $this->enumsToFile = $this->enumsToFile->set('.' . $enum->desc->getFullName(), $file);
+            }
+        }
+        foreach ($allMsgs as $msg) {
+            $file = $this->msgsToFile['.' . $msg->desc->getFullName()];
+            foreach ($msg->getenumType() as $enum) {
+                $this->enumsToFile = $this->enumsToFile->set('.' . $enum->desc->getFullName(), $file);
+            }
+        }
 
         $messagesResourceDefs = $allMsgs
             ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))

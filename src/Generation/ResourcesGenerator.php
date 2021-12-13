@@ -210,7 +210,7 @@ class ResourcesGenerator
     private static function compileRestConfigInterfaces(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig)
     {
         return $serviceDetails->methods
-            ->filter(fn ($method) => !is_null($method->httpRule) && !$method->isStreaming() && !$method->isMixin())
+            ->filter(fn ($method) => !is_null($method->httpRule) && ($method->isServerStreaming() || !$method->isStreaming()) && !$method->isMixin())
             ->map(fn ($method) => [$serviceDetails->serviceName, $method, $method->httpRule])
             ->concat($serviceYamlConfig->httpRules->map(fn ($x) => [
                 Vector::new(explode('.', $x->getSelector()))->skipLast(1)->join('.'),

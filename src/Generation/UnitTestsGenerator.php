@@ -36,6 +36,7 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -819,7 +820,9 @@ class UnitTestsGenerator
                 )
                     ->values(),
                 $method->operationRequestFields->mapValues(
-                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(AST::var($reqField->name))
+                    fn ($pollField, $reqField) => $expectedOperationsRequestObject->instanceCall($pollField->setter)(
+                        ProtoHelpers::isRequired($reqField->desc) ? AST::var($reqField->camelName) : $actualApiRequestObject->instanceCall($reqField->getter)()
+                    )
                 )
                     ->values(),
                 $response->pollUntilComplete(AST::array([

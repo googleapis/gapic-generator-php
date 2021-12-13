@@ -356,13 +356,16 @@ abstract class MethodDetails
                         fn ($x) => $x->getName(),
                         fn ($x) => new FieldDetails($catalog, $pollingMsg, $x)
                     );
-                    $this->operationRequestFields = Vector::new($inputMsg->getField())
+                    $opRequestFields = Vector::new($inputMsg->getField())
                         ->filter(fn ($x) => ProtoHelpers::isOperationRequestField($x))
-                        ->filter(fn ($x) => ProtoHelpers::isRequired($x))
+                        ->filter(fn ($x) => ProtoHelpers::isRequired($pollingFields[ProtoHelpers::operationRequestField($x)]->desc))
                         ->toMap(
                             fn ($x) => $pollingFields[ProtoHelpers::operationRequestField($x)],
                             fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
                         );
+                    $this->operationRequestFields = $pollingFields->values()
+                        ->filter(fn($f) => !is_null($opRequestFields->get($f, null)))
+                        ->toMap(fn($f) => $f, fn($f) => $opRequestFields[$f]);
 
                     // Collect the operation field mappings.
                     $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
@@ -543,6 +546,11 @@ abstract class MethodDetails
         return $this->methodType === static::BIDI_STREAMING ||
             $this->methodType === static::SERVER_STREAMING ||
             $this->methodType === static::CLIENT_STREAMING;
+    }
+
+    public function isServerStreaming(): bool
+    {
+        return $this->methodType === static::SERVER_STREAMING;
     }
 
     public function isMixin(): bool

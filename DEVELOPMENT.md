@@ -77,7 +77,7 @@
     This uses the Linux-only `protoc` binary checked into the repository.
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
-    
+
     Updating unit test goldens:
 
     ```
@@ -115,7 +115,7 @@ To update the `googleapis` submodule, change into the directory and pull:
 
 ```
 pushd googleapis
-git pull origin master
+git pull origin main
 popd
 ```
 
@@ -142,3 +142,7 @@ From the `googleapis` submodule, generate the PHP Protobuf bindings with
 Note: If the newly generated file belongs to a new package, ensure that it is
 in scope of the existing autoload rules in the [composer.json](./composer.json),
 adding it if it's not.
+
+## How to update composer for use in bazel
+
+See steps under [Updating composer](rules_php_gapic/resources/readme.md).
