@@ -142,3 +142,7 @@ From the `googleapis` submodule, generate the PHP Protobuf bindings with
 Note: If the newly generated file belongs to a new package, ensure that it is
 in scope of the existing autoload rules in the [composer.json](./composer.json),
 adding it if it's not.
+
+## How to update composer
+
+See steps under [Updating composer](rules_php_gapic/resources/readme.md).
