@@ -64,3 +64,9 @@ The recommended (tested) way of doing it is as follows:
     tar -zchpf php-7.4.15_linux_x86_64.tar.gz php-7.4.15/bin php-7.4.15/lib
     ```
 11. Copy the created archive to the `rules_gapic/php/resources` folder in this repository and post a PR.
+
+## Updating composer
+
+When generating client libraries, this generator is bundled together with a version of composer. Occasionally composer needs to be updated in order for bazel to build successfully.
+
+To update, please run `rules_php_gapic/resources/composer.phar self-update --stable` (or you can install a specific version from https://getcomposer.org/download/) in the generator. This will generate a new binary for the newest version of composer this generator is bundled with. Once you merge this change, the generator should use the latest version of composer.
