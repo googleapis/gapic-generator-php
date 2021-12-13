@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Api\HttpRule;
-use Google\Api\RoutingRule;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
@@ -364,8 +363,8 @@ abstract class MethodDetails
                             fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
                         );
                     $this->operationRequestFields = $pollingFields->values()
-                        ->filter(fn($f) => !is_null($opRequestFields->get($f, null)))
-                        ->toMap(fn($f) => $f, fn($f) => $opRequestFields[$f]);
+                        ->filter(fn ($f) => !is_null($opRequestFields->get($f, null)))
+                        ->toMap(fn ($f) => $f, fn ($f) => $opRequestFields[$f]);
 
                     // Collect the operation field mappings.
                     $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
@@ -535,7 +534,7 @@ abstract class MethodDetails
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
         }
 
-        $routingRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_ROUTING, RoutingRule::class);
+        $routingRule = ProtoHelpers::routingRule($desc);
         if (!is_null($routingRule)) {
             $this->routingParameters = ProtoHelpers::routingParameters($this->catalog, $this->inputMsg, $routingRule);
         }

@@ -355,6 +355,11 @@ class ProtoHelpers
         return $result;
     }
 
+    public static function routingRule(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_API_ROUTING, RoutingRule::class);
+    }
+
     public static function isRequired(FieldDescriptorProto $field)
     {
         return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
