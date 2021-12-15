@@ -597,10 +597,6 @@ abstract class AST
             }
             public function toCode(): string
             {
-                if ($this->else === null && $this->elseif->count() > 0) {
-                    throw new \Exception("If-block with condition {$this->expr} has elseifs "  .
-                        " but is missing an else block - cannot convert to PHP code.");
-                }
                 $elseif = implode("", $this->elseif->map(
                     fn ($arrayCondBlockPair) =>
                         " elseif (" . static::toPhp($arrayCondBlockPair[0]) . ") {\n"  .

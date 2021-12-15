@@ -697,23 +697,24 @@ class RoutingHeadersGapicClient
         $fooNameMatches = [];
         if (preg_match('/^(?<foo_name>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
             $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
-        }
-
-        if (preg_match('/^(?<foo_name>projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
+        } elseif (preg_match('/^(?<foo_name>projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
             $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
         }
 
+        
         $barNameMatches = [];
         if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(?<bar_name>bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
             $requestParamHeaders['bar_name'] = $barNameMatches['bar_name'];
         }
 
+        
         $requestParamHeaders['nested_name'] = $nest1->getNest2()->getName();
         $partOfNestedMatches = [];
         if (preg_match('/^(?<part_of_nested>projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {
             $requestParamHeaders['part_of_nested'] = $partOfNestedMatches['part_of_nested'];
         }
 
+        
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
             $requestParamHeaders['name'] = $optionalArgs['name'];
@@ -722,6 +723,7 @@ class RoutingHeadersGapicClient
                 $requestParamHeaders['name'] = $nameMatches['name'];
             }
 
+            
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);

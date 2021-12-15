@@ -1053,10 +1053,9 @@ class GapicClientGenerator
     {
         // $assignments maps a Vector of AST statements to the root field name.
         $assignments = Map::new([]);
-        // $matchesCreated tracks which of the preg_match capture arrays have been created
-        // so as to not repeat their initialization.
-        $matchesCreated = Map::new([]);
         foreach ($headersByRootField as [$root, $routingConfigs]) {
+            // $keyToMatcher maps the field key strings to the matching chain that might set it.
+            $keyToMatcher = Map::new([]);
             // Collect all of the statements for a $root field, including
             // any regex matcher conditionals.
             foreach ($routingConfigs as $routing) {
@@ -1071,35 +1070,61 @@ class GapicClientGenerator
                 if (count($chain) > 1) {
                     $assignValue = $chain->skip(1)->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))());
                 }
-                // Construct the preg_match expression using the routing header config's capture group regular expression.
-                if (!is_null($routing['regex'])) {
-                    $statements = Vector::new([]);
-                    $matchesName = Helpers::toCamelCase($routing['key'])."Matches";
-                    $matches = AST::var($matchesName);
-                    // Initialize the a matching results array for the (root) field named in the routing header config.
-                    if (!isset($matchesCreated[$matchesName])) {
-                        $statements = $statements->append(AST::assign($matches, AST::array([])));
-                        $matchesCreated = $matchesCreated->set($matchesName, true);
-                    }
-                    // Construct the conditional that initializes the header key-value pair using the capture group if the
-                    // preg_match finds a match.
-                    $statements = $statements->append(
-                        AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
-                            AST::assign(
-                                AST::index($paramsVar, $routing['key']),
-                                AST::index($matches, $routing['key'])
-                            )
-                        )
-                    );
-                    $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->concat($statements));
+                // Basic case, no regex matcher, just assign the required param to the header key.
+                if (is_null($routing['regex'])) {
+                    $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->append(AST::assign(
+                        AST::index($paramsVar, $routing['key']),
+                        $assignValue
+                    )));
                     continue;
                 }
-                // Basic case, no regex matcher, just assign the required param to the header key.
-                $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->append(AST::assign(
-                    AST::index($paramsVar, $routing['key']),
-                    $assignValue
-                )));
+
+                // Construct the preg_match expression using the routing header config's capture group regular expression.
+                $key = $routing['key'];
+                $matchesName = Helpers::toCamelCase($key) . "Matches";
+                $matches = AST::var($matchesName);
+                $matcher = null;
+
+                // Extend the if-elseif chain.
+                if (isset($keyToMatcher[$key])) {
+                    $if = $keyToMatcher[$key];
+                    $if = $if->elseif(
+                        /* condition */ 
+                        AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches),
+                        /* then */ 
+                        AST::assign(
+                            AST::index($paramsVar, $routing['key']),
+                            AST::index($matches, $routing['key'])
+                        )
+                    );
+                    $matcher = $if;
+                } else {
+                    // Create the conditional chain that sets the header key-value pair using the capture group if
+                    // the preg_match finds a match.
+                    $matcher = AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
+                        AST::assign(
+                            AST::index($paramsVar, $routing['key']),
+                            AST::index($matches, $routing['key'])
+                        )
+                    );
+                }
+                // Upsert the matcher chain for a header key.
+                $keyToMatcher = $keyToMatcher->set($key, $matcher);
             }
+            $assignments = $assignments
+                ->set($root, $assignments
+                    ->get($root, Vector::new([]))
+                    ->concat($keyToMatcher
+                        // Initialize the a matching results array for the (root) field named in the routing header config.
+                        ->mapValues(
+                            fn ($key, $matcher) =>
+                            AST::block(
+                                // $fooMatches = []
+                                AST::assign(AST::var(Helpers::toCamelCase($key) . "Matches"), AST::array([])),
+                                // if (preg_match(..., $fooMatches))
+                                $matcher
+                            )
+                        )->values()));
         }
 
         return $assignments;
