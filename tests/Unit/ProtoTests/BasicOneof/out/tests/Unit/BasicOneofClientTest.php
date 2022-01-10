@@ -31,6 +31,7 @@ use Google\Rpc\Code;
 use stdClass;
 use Testing\BasicOneof\BasicOneofClient;
 use Testing\BasicOneof\Request;
+use Testing\BasicOneof\Request\Other;
 use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
@@ -84,7 +85,10 @@ class BasicOneofClientTest extends GeneratedTest
         // Mock request
         $supplementaryData = new SupplementaryDataOneof();
         $supplementaryData->setExtraDescription('extraDescription-1352933811');
-        $response = $client->aMethod($supplementaryData);
+        $other = new Other();
+        $otherFirst = 'otherFirst-205632128';
+        $other->setFirst($otherFirst);
+        $response = $client->aMethod($supplementaryData, $other);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -93,6 +97,8 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertSame('/testing.basiconeof.BasicOneof/AMethod', $actualFuncCall);
         $actualValue = $actualRequestObject->getExtraDescription();
         $this->assertTrue($supplementaryData->isExtraDescription());
+        $actualValue = $actualRequestObject->getOther();
+        $this->assertProtobufEquals($other, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -119,8 +125,11 @@ class BasicOneofClientTest extends GeneratedTest
         // Mock request
         $supplementaryData = new SupplementaryDataOneof();
         $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $other = new Other();
+        $otherFirst = 'otherFirst-205632128';
+        $other->setFirst($otherFirst);
         try {
-            $client->aMethod($supplementaryData);
+            $client->aMethod($supplementaryData, $other);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

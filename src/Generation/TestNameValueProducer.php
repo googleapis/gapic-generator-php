@@ -74,7 +74,6 @@ class TestNameValueProducer
 
     public function perField(Vector $fields, ?Map $forceValues = null): Vector
     {
-        $oneOfs = Set::new();
         return static::filterFirstOneOf($fields)
             ->map(fn ($f) => new class($this, $f, $forceValues ?? Map::new()) {
                 public function __construct($prod, $f, $forceValues)
@@ -144,7 +143,9 @@ class TestNameValueProducer
             return;
         }
 
-        if ($field->isOneOf) {
+        // This should only use oneof wrapper types if the oneof is on the top level request message.
+        $inTopLevel = $method->inputMsg === $field->containingMessage;
+        if ($field->isOneOf && $inTopLevel) {
             $oneofWrapperType = $field->toOneofWrapperType($method->serviceDetails->namespace);
             // Initialize the oneof, e.g.
             //   $supplementaryData = new SupplementaryDataOneof();
@@ -196,7 +197,10 @@ class TestNameValueProducer
 
             $msg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
             $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $msg, $x));
-            $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired);
+            
+            // Only init required subfields that are either not in a oneof or they are the first field in a oneof.
+            $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired && !$x->isOneOf)
+                ->concat($allSubFields->filter(fn ($f) => $f->isRequired && $f->isFirstFieldInOneof()));
             if (empty($requiredSubFields) && !$field->useResourceTestValue) {
                 $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
                 return;
