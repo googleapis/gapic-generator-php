@@ -31,15 +31,12 @@ use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 
-use Google\Cloud\Retail\V2alpha\BigQuerySource;
-use Google\Cloud\Retail\V2alpha\GcsSource;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\PurgeUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInlineSource;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
-use Google\Cloud\Retail\V2alpha\UserEventInputConfig\SourceOneof;
 use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
@@ -185,15 +182,10 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
-        $source = new SourceOneof();
-        $source->setUserEventInlineSource(new UserEventInlineSource());
-        $inputConfig->setUserEventInlineSource($source);
-        $source = new SourceOneof();
-        $source->setGcsSource(new GcsSource());
-        $inputConfig->setGcsSource($source);
-        $source = new SourceOneof();
-        $source->setBigQuerySource(new BigQuerySource());
-        $inputConfig->setBigQuerySource($source);
+        $inputConfigUserEventInlineSource = new UserEventInlineSource();
+        $userEventInlineSourceUserEvents = [];
+        $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
+        $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
         $response = $client->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -263,15 +255,10 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
-        $source = new SourceOneof();
-        $source->setUserEventInlineSource(new UserEventInlineSource());
-        $inputConfig->setUserEventInlineSource($source);
-        $source = new SourceOneof();
-        $source->setGcsSource(new GcsSource());
-        $inputConfig->setGcsSource($source);
-        $source = new SourceOneof();
-        $source->setBigQuerySource(new BigQuerySource());
-        $inputConfig->setBigQuerySource($source);
+        $inputConfigUserEventInlineSource = new UserEventInlineSource();
+        $userEventInlineSourceUserEvents = [];
+        $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
+        $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
         $response = $client->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
