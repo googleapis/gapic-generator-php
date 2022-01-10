@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.3.0...v1.3.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* **gapic:** only wrap top-level required oneof in tests ([#436](https://www.github.com/googleapis/gapic-generator-php/issues/436)) ([2f7ef71](https://www.github.com/googleapis/gapic-generator-php/commit/2f7ef7113e36785179b64989f7bff7a9ef9c04e1))
+
 ## [1.3.0](https://www.github.com/googleapis/gapic-generator-php/compare/v1.2.1...v1.3.0) (2021-12-13)
 
 
