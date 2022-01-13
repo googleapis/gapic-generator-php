@@ -60,6 +60,16 @@ message Request {
     // An optional count.
     int32 optional_count = 11;
   }
+
+  message Other {
+    oneof other_of {
+      string first = 1 [(google.api.field_behavior) = REQUIRED];
+
+      string second = 2 [(google.api.field_behavior) = REQUIRED];
+    }
+  }
+
+  Other other = 12 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Response {}

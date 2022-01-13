@@ -33,6 +33,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicOneof\Request;
+use Testing\BasicOneof\Request\Other;
 use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
@@ -46,7 +47,8 @@ use Testing\BasicOneof\Response;
  * $basicOneofClient = new BasicOneofClient();
  * try {
  *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
- *     $response = $basicOneofClient->aMethod($supplementaryData);
+ *     $other = new Other();
+ *     $response = $basicOneofClient->aMethod($supplementaryData, $other);
  * } finally {
  *     $basicOneofClient->close();
  * }
@@ -171,13 +173,15 @@ class BasicOneofGapicClient
      * $basicOneofClient = new BasicOneofClient();
      * try {
      *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
-     *     $response = $basicOneofClient->aMethod($supplementaryData);
+     *     $other = new Other();
+     *     $response = $basicOneofClient->aMethod($supplementaryData, $other);
      * } finally {
      *     $basicOneofClient->close();
      * }
      * ```
      *
      * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
+     * @param Other                  $other
      * @param array                  $optionalArgs      {
      *     Optional.
      *
@@ -197,7 +201,7 @@ class BasicOneofGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod($supplementaryData, array $optionalArgs = [])
+    public function aMethod($supplementaryData, $other, array $optionalArgs = [])
     {
         $request = new Request();
         if ($supplementaryData->isExtraDescription()) {
@@ -219,6 +223,7 @@ class BasicOneofGapicClient
         }
 
         
+        $request->setOther($other);
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
         }
