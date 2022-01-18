@@ -84,7 +84,7 @@ class ProtoHelpers
      *
      * @param ProtoCatalog $catalog The proto catalog.
      * @param DescriptorProto $msg The request message.
-     * @param RoutingRule $routingRule The RoutinRule annotation to process.
+     * @param RoutingRule $routingRule The RoutingRule annotation to process.
      *
      * @return Map A Map of `RoutingParameter.field` to all processed RoutingParameter configs related
      *             to each field.
