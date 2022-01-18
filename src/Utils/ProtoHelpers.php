@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\HttpRule;
+use Google\Api\RoutingParameter;
+use Google\Api\RoutingRule;
 use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Collections\Map;
@@ -77,6 +79,150 @@ class ProtoHelpers
     }
 
     /**
+     * Processes the RoutingParameters for generation and groups these processed configs by the `field`
+     * declared.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param DescriptorProto $msg The request message.
+     * @param RoutingRule $routingRule The RoutingRule annotation to process.
+     *
+     * @return Map A Map of `RoutingParameter.field` to all processed RoutingParameter configs related
+     *             to each field.
+     */
+    public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
+    {
+        return Vector::new($routingRule->getRoutingParameters())
+            ->groupBy(
+                // Key: The field (or field chain) referenced by the RoutingParamter.
+                fn ($x) => $x->getField(),
+                // Value: The routing header config the RoutingParameter defines.
+                fn ($x) => [
+                    'getter' => static::buildGetterChain($catalog, $msg, $x->getField()),
+                    'key' => static::fieldOrTemplateVariable($x),
+                    'regex' => static::compileRoutingRegex($x),
+                    'root' => explode('.', $x->getField())[0],
+                ],
+            );
+    }
+
+    /**
+     * Processes the `RoutingParameter.path_template` segment matcher into a PHP regular expression,
+     * if defined.
+     *
+     * @param RoutingParameter $routingParam Contains the path_template to process.
+     *
+     * @return string The complete regular expression derived from the path_template.
+     */
+    private static function compileRoutingRegex(RoutingParameter $routingParam)
+    {
+        // No path_template in RoutingParameter.
+        if (empty($routingParam->getPathTemplate())) {
+            return null;
+        }
+        // The path_template only overrides the header key, doesn't define
+        // segment matcher.
+        if (!str_contains($routingParam->getPathTemplate(), '=')) {
+            return null;
+        }
+        $template = $routingParam->getPathTemplate();
+
+        // Capture the segment matcher from the path_template.
+        // Example: /v1/{key_override=projects/*}/foos -> projects/*
+        $matches = [];
+        if (!preg_match('/\{.+=([^\}]*)\}/', $template, $matches)) {
+            return null;
+        }
+        $match = $matches[1];
+        // These mean "accept anything and everything", essentially the same as
+        // not including a pattern following the '=' separator.
+        if ($match === '*' || $match === '**') {
+            return null;
+        }
+
+        $key = static::fieldOrTemplateVariable($routingParam);
+        
+        $original = $matches[0];
+        // Replace the entire template variable with just the segment matcher,
+        // wrapped in a capture group.
+        $pattern = str_replace($original, "(?<" . $key . ">" . $match . ")", $template);
+        // Replace double wild cards with nameless capture groups.
+        $pattern = str_replace('/**', '(?:/.*)?', $pattern);
+        // Replace single wild cards with single word matchers.
+        $pattern = str_replace('/*', '/[^/]+', $pattern);
+        // Escape all forward slashes.
+        $pattern = str_replace('/', '\/', $pattern);
+
+        return "/^" . $pattern . "$/";
+    }
+
+    /**
+     * Determines the routing header key name for the given RoutingParameter. If the `path_template`
+     * declares a key name override, that is returned instead of the `field`.
+     *
+     * @param RoutingParameter $routingParam The routing parameter to get a header key for.
+     *
+     * @return string The routing header key.
+     */
+    private static function fieldOrTemplateVariable(RoutingParameter $routingParam)
+    {
+        $key = $routingParam->getField();
+
+        $template = $routingParam->getPathTemplate();
+        $keySep = strpos($template, '=');
+        if ($keySep) {
+            // Start from openings "{" and read until the "=".
+            // Example: {foo=bar/*/baze/*} -> foo.
+            $start = strpos($template, '{') + 1;
+            $key = substr($template, $start, $keySep - $start);
+        } elseif (!empty($template)) {
+            // Start from just beyond the opening "{" and reduce the length
+            // by 2 to exclude the "{" and "}".
+            // Example: {foo} -> foo.
+            $key = substr($template, 1, strlen($template) - 2);
+        }
+
+        return $key;
+    }
+
+    /**
+     * Builds a chain of getter methods for the header key/field accessor using dot-notation.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param DescriptorProto $msg The request message.
+     * @param string The header key/field accessor using dot-notation.
+     *
+     * @return Vector Vector of strings that are getter names in call order.
+     */
+    public static function buildGetterChain(ProtoCatalog $catalog, ?DescriptorProto $msg, string $key)
+    {
+        $fieldList = Vector::new(explode('.', $key));
+        $result = [];
+        foreach ($fieldList as $index => $fieldName) {
+            if (is_null($msg)) {
+                // Cannot verify field name; this occurs when processing service_config.yaml
+                $result[] = Helpers::toCamelCase("get_{$fieldName}");
+            } else {
+                // Verify field names.
+                $field = $msg->desc->getFieldByName($fieldName);
+                if (is_null($field)) {
+                    throw new \Exception("Field '{$fieldName}' does not exist.");
+                }
+                if ($index !== count($fieldList) - 1) {
+                    if ($field->isRepeated()) {
+                        throw new \Exception("Field '{$fieldName}' must not be repeated.");
+                    }
+                    if ($field->getType() !== GPBType::MESSAGE) {
+                        throw new \Exception("Field '{$fieldName}' must be of message type.");
+                    }
+                    $msg = $catalog->msgsByFullname[$field->getMessageType()];
+                }
+                $result[] = $field->getGetter();
+            }
+        }
+        return Vector::new($result);
+    }
+
+    /**
      * Generate REST placeholder getter call information from proto 'httpRule' annotation.
      *
      * @param ProtoCatalog $catalog The proto catalog.
@@ -99,33 +245,7 @@ class ProtoHelpers
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
         $placeholders = Vector::new($segments)
             ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
-            ->toMap(fn ($x) => $x->getKey(), function ($x) use ($catalog, $msg) {
-                $fieldList = Vector::new(explode('.', $x->getKey()));
-                $result = [];
-                foreach ($fieldList as $index => $fieldName) {
-                    if (is_null($msg)) {
-                        // Cannot verify field name; this occurs when processing service_config.yaml
-                        $result[] = Helpers::toCamelCase("get_{$fieldName}");
-                    } else {
-                        // Verify field names.
-                        $field = $msg->desc->getFieldByName($fieldName);
-                        if (is_null($field)) {
-                            throw new \Exception("Field '{$fieldName}' does not exist.");
-                        }
-                        if ($index !== count($fieldList) - 1) {
-                            if ($field->isRepeated()) {
-                                throw new \Exception("Field '{$fieldName}' must not be repeated.");
-                            }
-                            if ($field->getType() !== GPBType::MESSAGE) {
-                                throw new \Exception("Field '{$fieldName}' must be of message type.");
-                            }
-                            $msg = $catalog->msgsByFullname[$field->getMessageType()];
-                        }
-                        $result[] = $field->getGetter();
-                    }
-                }
-                return Vector::new($result);
-            });
+            ->toMap(fn ($x) => $x->getKey(), fn ($x) => static::buildGetterChain($catalog, $msg, $x->getKey()));
         $nestedPlaceholders = Vector::new($httpRule->getAdditionalBindings())->map(fn ($x) => static::restPlaceholders($catalog, $x, $msg));
         return $nestedPlaceholders->append($placeholders)
             ->flatMap(fn ($x) => $x->mapValues(fn ($k, $v) => [$k, $v])->values())
@@ -233,6 +353,11 @@ class ProtoHelpers
             });
         }
         return $result;
+    }
+
+    public static function routingRule(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_API_ROUTING, RoutingRule::class);
     }
 
     public static function isRequired(FieldDescriptorProto $field)

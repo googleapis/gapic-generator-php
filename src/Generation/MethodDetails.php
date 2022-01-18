@@ -363,8 +363,8 @@ abstract class MethodDetails
                             fn ($x) => new FieldDetails($catalog, $inputMsg, $x)
                         );
                     $this->operationRequestFields = $pollingFields->values()
-                        ->filter(fn($f) => !is_null($opRequestFields->get($f, null)))
-                        ->toMap(fn($f) => $f, fn($f) => $opRequestFields[$f]);
+                        ->filter(fn ($f) => !is_null($opRequestFields->get($f, null)))
+                        ->toMap(fn ($f) => $f, fn ($f) => $opRequestFields[$f]);
 
                     // Collect the operation field mappings.
                     $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
@@ -497,6 +497,9 @@ abstract class MethodDetails
     /** @var ?Map *Readonly* Map of string to Vector of strings; placeholder name -> list of property getters. */
     public ?Map $restRoutingHeaders;
 
+    /** @var Map *Readonly* Vector of RoutingParameters; parsed from the google.api.routing annotation. */
+    public ?Map $routingParameters = null;
+
     /** @var bool *Readonly* Whether the service is deprecated. */
     public bool $isDeprecated = false;
 
@@ -529,6 +532,11 @@ abstract class MethodDetails
 
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
+        }
+
+        $routingRule = ProtoHelpers::routingRule($desc);
+        if (!is_null($routingRule)) {
+            $this->routingParameters = ProtoHelpers::routingParameters($this->catalog, $this->inputMsg, $routingRule);
         }
     }
 

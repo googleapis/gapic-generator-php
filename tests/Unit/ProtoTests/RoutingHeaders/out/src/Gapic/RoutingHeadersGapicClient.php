@@ -328,18 +328,19 @@ class RoutingHeadersGapicClient
      * ```
      * $routingHeadersClient = new RoutingHeadersClient();
      * try {
+     *     $nest1 = new Inner1();
      *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->nestedMethod($anotherName);
+     *     $response = $routingHeadersClient->nestedMethod($nest1, $anotherName);
      * } finally {
      *     $routingHeadersClient->close();
      * }
      * ```
      *
+     * @param Inner1 $nest1
      * @param string $anotherName
      * @param array  $optionalArgs {
      *     Optional.
      *
-     *     @type Inner1 $nest1
      *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
@@ -352,15 +353,13 @@ class RoutingHeadersGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function nestedMethod($anotherName, array $optionalArgs = [])
+    public function nestedMethod($nest1, $anotherName, array $optionalArgs = [])
     {
         $request = new NestedRequest();
         $requestParamHeaders = [];
+        $request->setNest1($nest1);
         $request->setAnotherName($anotherName);
-        if (isset($optionalArgs['nest1'])) {
-            $request->setNest1($optionalArgs['nest1']);
-        }
-
+        $requestParamHeaders['nest1.nest2.name'] = $nest1->getNest2()->getName();
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
         }
@@ -376,18 +375,19 @@ class RoutingHeadersGapicClient
      * ```
      * $routingHeadersClient = new RoutingHeadersClient();
      * try {
+     *     $nest1 = new Inner1();
      *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->nestedMultiMethod($anotherName);
+     *     $response = $routingHeadersClient->nestedMultiMethod($nest1, $anotherName);
      * } finally {
      *     $routingHeadersClient->close();
      * }
      * ```
      *
+     * @param Inner1 $nest1
      * @param string $anotherName
      * @param array  $optionalArgs {
      *     Optional.
      *
-     *     @type Inner1 $nest1
      *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
@@ -400,16 +400,14 @@ class RoutingHeadersGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function nestedMultiMethod($anotherName, array $optionalArgs = [])
+    public function nestedMultiMethod($nest1, $anotherName, array $optionalArgs = [])
     {
         $request = new NestedRequest();
         $requestParamHeaders = [];
+        $request->setNest1($nest1);
         $request->setAnotherName($anotherName);
+        $requestParamHeaders['nest1.nest2.name'] = $nest1->getNest2()->getName();
         $requestParamHeaders['another_name'] = $anotherName;
-        if (isset($optionalArgs['nest1'])) {
-            $request->setNest1($optionalArgs['nest1']);
-        }
-
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
             $requestParamHeaders['name'] = $optionalArgs['name'];
@@ -614,5 +612,122 @@ class RoutingHeadersGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('PutMethod', Response::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $routingHeadersClient = new RoutingHeadersClient();
+     * try {
+     *     $nest1 = new Inner1();
+     *     $anotherName = 'another_name';
+     *     $response = $routingHeadersClient->routingRuleWithOutParameters($nest1, $anotherName);
+     * } finally {
+     *     $routingHeadersClient->close();
+     * }
+     * ```
+     *
+     * @param Inner1 $nest1
+     * @param string $anotherName
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\RoutingHeaders\Response
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function routingRuleWithOutParameters($nest1, $anotherName, array $optionalArgs = [])
+    {
+        $request = new NestedRequest();
+        $request->setNest1($nest1);
+        $request->setAnotherName($anotherName);
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+        }
+
+        return $this->startCall('RoutingRuleWithOutParameters', Response::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $routingHeadersClient = new RoutingHeadersClient();
+     * try {
+     *     $nest1 = new Inner1();
+     *     $anotherName = 'another_name';
+     *     $response = $routingHeadersClient->routingRuleWithParameters($nest1, $anotherName);
+     * } finally {
+     *     $routingHeadersClient->close();
+     * }
+     * ```
+     *
+     * @param Inner1 $nest1
+     * @param string $anotherName
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a
+     *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
+     *           settings parameters. See the documentation on
+     *           {@see Google\ApiCore\RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\RoutingHeaders\Response
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function routingRuleWithParameters($nest1, $anotherName, array $optionalArgs = [])
+    {
+        $request = new NestedRequest();
+        $requestParamHeaders = [];
+        $request->setNest1($nest1);
+        $request->setAnotherName($anotherName);
+        $fooNameMatches = [];
+        if (preg_match('/^(?<foo_name>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
+            $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
+        } elseif (preg_match('/^(?<foo_name>projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', $anotherName, $fooNameMatches)) {
+            $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
+        }
+
+        
+        $barNameMatches = [];
+        if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(?<bar_name>bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
+            $requestParamHeaders['bar_name'] = $barNameMatches['bar_name'];
+        }
+
+        
+        $requestParamHeaders['nested_name'] = $nest1->getNest2()->getName();
+        $partOfNestedMatches = [];
+        if (preg_match('/^(?<part_of_nested>projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {
+            $requestParamHeaders['part_of_nested'] = $partOfNestedMatches['part_of_nested'];
+        }
+
+        
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+            $nameMatches = [];
+            if (preg_match('/^(?<name>projects\/[^\/]+)\/foos$/', $optionalArgs['name'], $nameMatches)) {
+                $requestParamHeaders['name'] = $nameMatches['name'];
+            }
+
+            
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('RoutingRuleWithParameters', Response::class, $optionalArgs, $request)->wait();
     }
 }

@@ -59,6 +59,16 @@
                             "methods": [
                                 "putMethod"
                             ]
+                        },
+                        "RoutingRuleWithOutParameters": {
+                            "methods": [
+                                "routingRuleWithOutParameters"
+                            ]
+                        },
+                        "RoutingRuleWithParameters": {
+                            "methods": [
+                                "routingRuleWithParameters"
+                            ]
                         }
                     }
                 }
