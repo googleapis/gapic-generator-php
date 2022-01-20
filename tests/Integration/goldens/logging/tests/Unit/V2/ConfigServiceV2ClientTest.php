@@ -734,17 +734,13 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setKmsKeyName($kmsKeyName);
         $expectedResponse->setServiceAccountId($serviceAccountId);
         $transport->addResponse($expectedResponse);
-        // Mock request
-        $formattedName = $client->cmekSettingsName('[PROJECT]');
-        $response = $client->getCmekSettings($formattedName);
+        $response = $client->getCmekSettings();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/GetCmekSettings', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -768,10 +764,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
-        // Mock request
-        $formattedName = $client->cmekSettingsName('[PROJECT]');
         try {
-            $client->getCmekSettings($formattedName);
+            $client->getCmekSettings();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1443,20 +1437,13 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setKmsKeyName($kmsKeyName);
         $expectedResponse->setServiceAccountId($serviceAccountId);
         $transport->addResponse($expectedResponse);
-        // Mock request
-        $name = 'name3373707';
-        $cmekSettings = new CmekSettings();
-        $response = $client->updateCmekSettings($name, $cmekSettings);
+        $response = $client->updateCmekSettings();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.logging.v2.ConfigServiceV2/UpdateCmekSettings', $actualFuncCall);
-        $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
-        $actualValue = $actualRequestObject->getCmekSettings();
-        $this->assertProtobufEquals($cmekSettings, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -1480,11 +1467,8 @@ class ConfigServiceV2ClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
-        // Mock request
-        $name = 'name3373707';
-        $cmekSettings = new CmekSettings();
         try {
-            $client->updateCmekSettings($name, $cmekSettings);
+            $client->updateCmekSettings();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

@@ -1736,28 +1736,28 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $formattedName = $configServiceV2Client->cmekSettingsName('[PROJECT]');
-     *     $response = $configServiceV2Client->getCmekSettings($formattedName);
+     *     $response = $configServiceV2Client->getCmekSettings();
      * } finally {
      *     $configServiceV2Client->close();
      * }
      * ```
      *
-     * @param string $name         Required. The resource for which to retrieve CMEK settings.
-     *
-     *                             "projects/[PROJECT_ID]/cmekSettings"
-     *                             "organizations/[ORGANIZATION_ID]/cmekSettings"
-     *                             "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
-     *                             "folders/[FOLDER_ID]/cmekSettings"
-     *
-     *                             Example: `"organizations/12345/cmekSettings"`.
-     *
-     *                             Note: CMEK for the Logs Router can currently only be configured for GCP
-     *                             organizations. Once configured, it applies to all projects and folders in
-     *                             the GCP organization.
-     * @param array  $optionalArgs {
+     * @param array $optionalArgs {
      *     Optional.
      *
+     *     @type string $name
+     *           Required. The resource for which to retrieve CMEK settings.
+     *
+     *           "projects/[PROJECT_ID]/cmekSettings"
+     *           "organizations/[ORGANIZATION_ID]/cmekSettings"
+     *           "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
+     *           "folders/[FOLDER_ID]/cmekSettings"
+     *
+     *           Example: `"organizations/12345/cmekSettings"`.
+     *
+     *           Note: CMEK for the Logs Router can currently only be configured for GCP
+     *           organizations. Once configured, it applies to all projects and folders in
+     *           the GCP organization.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a
      *           {@see Google\ApiCore\RetrySettings} object, or an associative array of retry
@@ -1769,12 +1769,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCmekSettings($name, array $optionalArgs = [])
+    public function getCmekSettings(array $optionalArgs = [])
     {
         $request = new GetCmekSettingsRequest();
         $requestParamHeaders = [];
-        $request->setName($name);
-        $requestParamHeaders['name'] = $name;
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetCmekSettings', CmekSettings::class, $optionalArgs, $request)->wait();
@@ -2356,34 +2359,34 @@ class ConfigServiceV2GapicClient
      * ```
      * $configServiceV2Client = new ConfigServiceV2Client();
      * try {
-     *     $name = 'name';
-     *     $cmekSettings = new CmekSettings();
-     *     $response = $configServiceV2Client->updateCmekSettings($name, $cmekSettings);
+     *     $response = $configServiceV2Client->updateCmekSettings();
      * } finally {
      *     $configServiceV2Client->close();
      * }
      * ```
      *
-     * @param string       $name         Required. The resource name for the CMEK settings to update.
-     *
-     *                                   "projects/[PROJECT_ID]/cmekSettings"
-     *                                   "organizations/[ORGANIZATION_ID]/cmekSettings"
-     *                                   "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
-     *                                   "folders/[FOLDER_ID]/cmekSettings"
-     *
-     *                                   Example: `"organizations/12345/cmekSettings"`.
-     *
-     *                                   Note: CMEK for the Logs Router can currently only be configured for GCP
-     *                                   organizations. Once configured, it applies to all projects and folders in
-     *                                   the GCP organization.
-     * @param CmekSettings $cmekSettings Required. The CMEK settings to update.
-     *
-     *                                   See [Enabling CMEK for Logs
-     *                                   Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-     *                                   for more information.
-     * @param array        $optionalArgs {
+     * @param array $optionalArgs {
      *     Optional.
      *
+     *     @type string $name
+     *           Required. The resource name for the CMEK settings to update.
+     *
+     *           "projects/[PROJECT_ID]/cmekSettings"
+     *           "organizations/[ORGANIZATION_ID]/cmekSettings"
+     *           "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
+     *           "folders/[FOLDER_ID]/cmekSettings"
+     *
+     *           Example: `"organizations/12345/cmekSettings"`.
+     *
+     *           Note: CMEK for the Logs Router can currently only be configured for GCP
+     *           organizations. Once configured, it applies to all projects and folders in
+     *           the GCP organization.
+     *     @type CmekSettings $cmekSettings
+     *           Required. The CMEK settings to update.
+     *
+     *           See [Enabling CMEK for Logs
+     *           Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+     *           for more information.
      *     @type FieldMask $updateMask
      *           Optional. Field mask identifying which fields from `cmek_settings` should
      *           be updated. A field will be overwritten if and only if it is in the update
@@ -2403,13 +2406,19 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCmekSettings($name, $cmekSettings, array $optionalArgs = [])
+    public function updateCmekSettings(array $optionalArgs = [])
     {
         $request = new UpdateCmekSettingsRequest();
         $requestParamHeaders = [];
-        $request->setName($name);
-        $request->setCmekSettings($cmekSettings);
-        $requestParamHeaders['name'] = $name;
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
+        if (isset($optionalArgs['cmekSettings'])) {
+            $request->setCmekSettings($optionalArgs['cmekSettings']);
+        }
+
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
