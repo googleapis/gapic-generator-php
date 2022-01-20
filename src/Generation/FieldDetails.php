@@ -100,6 +100,21 @@ class FieldDetails
     /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
     public ?int $oneOfIndex;
 
+    private static $requiredToOptionalFixes = [
+        'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['contentType', 'readTypeWindow'],
+        'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
+        'google.datastore.v1.CommitRequest' => ['mode', 'mutations'],
+        'google.datastore.v1.RunQueryRequest' => ['partitionId'],
+        'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
+        'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation']
+    ];
+
+    private static $optionalToRequiredFixes = [
+        'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmekSettings'],
+        'google.logging.v2.GetCmekSettingsRequest' => ['name'],
+        'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['feature']
+    ];
+
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
     {
         $this->catalog = $catalog;
@@ -113,7 +128,7 @@ class FieldDetails
         $this->typeSingular = Type::fromField($catalog, $desc, false);
         $this->getter = new PhpMethod($desc->getGetter());
         $this->setter = new PhpMethod($desc->getSetter());
-        $this->isRequired = ProtoHelpers::isRequired($field);
+        $this->isRequired = $this->determineIsRequired($containingMessage, $field);
         $this->isMessage = $field->getType() == GPBType::MESSAGE;
         $this->fullname = $this->isMessage ? $field->getTypeName() : null;
         $this->isEnum = $field->getType() === GPBType::ENUM;
@@ -149,6 +164,29 @@ class FieldDetails
         $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) > 0;
         $this->oneOfIndex = $field->hasOneofIndex() ? $field->getOneofIndex() : null;
         $this->isOneOf = $field->hasOneofIndex();
+    }
+
+    private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
+    {
+        $isRequired = ProtoHelpers::isRequired($field);
+        $fullName = $containingMessage->desc->getFullName();
+        $methodName = $field->getName();
+        if ($isRequired) {
+            if (isset(self::$requiredToOptionalFixes[$fullName])) {
+                if (in_array($methodName, self::$requiredToOptionalFixes[$fullName])) {
+                    // Force field to be required (even though it's optional) to preserve BC
+                    return true;
+                }
+            }
+        } else {
+            if (isset(self::$optionalToRequiredFixes[$fullName])) {
+                if (in_array($methodName, self::$optionalToRequiredFixes[$fullName])) {
+                    // Force field to be optional (even though it's required) to preserve BC
+                    return false;
+                }
+            }
+        }
+        return $isRequired;
     }
 
     public function toOneofWrapperType(string $serviceNamespace): ?Type
