@@ -66,7 +66,7 @@ message BatchGetAssetsHistoryRequest {
   repeated string asset_names = 2;
 
   // Optional. The content type.
-  ContentType content_type = 3 [(google.api.field_behavior) = OPTIONAL];
+  string content_type = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. The time window for the asset history. Both start_time and
   // end_time are optional and if set, it must be after the current time minus
@@ -74,7 +74,7 @@ message BatchGetAssetsHistoryRequest {
   // If start_time is not set, the snapshot of the assets at end_time will be
   // returned. The returned results contain all temporal assets whose time
   // window overlap with read_time_window.
-  TimeWindow read_time_window = 4 [(google.api.field_behavior) = OPTIONAL];
+  string read_time_window = 4 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. A list of relationship types to output, for example:
   // `INSTANCE_TO_INSTANCEGROUP`. This field should only be specified if
@@ -99,40 +99,6 @@ message BatchGetAssetsHistoryRequest {
 message BatchGetAssetsHistoryResponse {
   // A list of assets with valid time windows.
   repeated string assets = 1;
-}
-
-// A time window specified by its `start_time` and `end_time`.
-message TimeWindow {
-  // Start time of the time window (exclusive).
-  google.protobuf.Timestamp start_time = 1;
-
-  // End time of the time window (inclusive). If not specified, the current
-  // timestamp is used instead.
-  google.protobuf.Timestamp end_time = 2;
-}
-
-// Asset content type.
-enum ContentType {
-  // Unspecified content type.
-  CONTENT_TYPE_UNSPECIFIED = 0;
-
-  // Resource metadata.
-  RESOURCE = 1;
-
-  // The actual IAM policy set on a resource.
-  IAM_POLICY = 2;
-
-  // The Cloud Organization Policy set on an asset.
-  ORG_POLICY = 4;
-
-  // The Cloud Access context manager Policy set on an asset.
-  ACCESS_POLICY = 5;
-
-  // The runtime OS Inventory information.
-  OS_INVENTORY = 6;
-
-  // The related resources.
-  RELATIONSHIP = 7;
 }
 
 // An asset in Google Cloud. An asset can be any resource in the Google Cloud

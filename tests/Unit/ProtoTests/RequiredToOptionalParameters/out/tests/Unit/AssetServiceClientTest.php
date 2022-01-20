@@ -31,8 +31,6 @@ use Google\Rpc\Code;
 use stdClass;
 use Testing\RequiredToOptionalParameters\AssetServiceClient;
 use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryResponse;
-use Testing\RequiredToOptionalParameters\ContentType;
-use Testing\RequiredToOptionalParameters\TimeWindow;
 
 /**
  * @group requiredtooptionalparameters
@@ -83,8 +81,8 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $parent = 'parent-995424086';
-        $contentType = ContentType::CONTENT_TYPE_UNSPECIFIED;
-        $readTimeWindow = new TimeWindow();
+        $contentType = 'contentType831846208';
+        $readTimeWindow = 'readTimeWindow-1159709575';
         $response = $client->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -123,8 +121,8 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $parent = 'parent-995424086';
-        $contentType = ContentType::CONTENT_TYPE_UNSPECIFIED;
-        $readTimeWindow = new TimeWindow();
+        $contentType = 'contentType831846208';
+        $readTimeWindow = 'readTimeWindow-1159709575';
         try {
             $client->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
             // If the $client method call did not throw, fail the test

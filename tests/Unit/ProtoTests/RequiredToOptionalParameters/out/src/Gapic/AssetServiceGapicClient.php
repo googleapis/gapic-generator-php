@@ -35,8 +35,6 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryRequest;
 use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryResponse;
-use Testing\RequiredToOptionalParameters\ContentType;
-use Testing\RequiredToOptionalParameters\TimeWindow;
 
 /**
  * Service Description: Asset service definition.
@@ -48,8 +46,8 @@ use Testing\RequiredToOptionalParameters\TimeWindow;
  * $assetServiceClient = new AssetServiceClient();
  * try {
  *     $parent = 'parent';
- *     $contentType = ContentType::CONTENT_TYPE_UNSPECIFIED;
- *     $readTimeWindow = new TimeWindow();
+ *     $contentType = 'content_type';
+ *     $readTimeWindow = 'read_time_window';
  *     $response = $assetServiceClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
  * } finally {
  *     $assetServiceClient->close();
@@ -180,26 +178,25 @@ class AssetServiceGapicClient
      * $assetServiceClient = new AssetServiceClient();
      * try {
      *     $parent = 'parent';
-     *     $contentType = ContentType::CONTENT_TYPE_UNSPECIFIED;
-     *     $readTimeWindow = new TimeWindow();
+     *     $contentType = 'content_type';
+     *     $readTimeWindow = 'read_time_window';
      *     $response = $assetServiceClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
      * } finally {
      *     $assetServiceClient->close();
      * }
      * ```
      *
-     * @param string     $parent         Required. The relative name of the root asset. It can only be an
-     *                                   organization number (such as "organizations/123"), a project ID (such as
-     *                                   "projects/my-project-id")", or a project number (such as "projects/12345").
-     * @param int        $contentType    Optional. The content type.
-     *                                   For allowed values, use constants defined on {@see \Testing\RequiredToOptionalParameters\ContentType}
-     * @param TimeWindow $readTimeWindow Optional. The time window for the asset history. Both start_time and
-     *                                   end_time are optional and if set, it must be after the current time minus
-     *                                   35 days. If end_time is not set, it is default to current timestamp.
-     *                                   If start_time is not set, the snapshot of the assets at end_time will be
-     *                                   returned. The returned results contain all temporal assets whose time
-     *                                   window overlap with read_time_window.
-     * @param array      $optionalArgs   {
+     * @param string $parent         Required. The relative name of the root asset. It can only be an
+     *                               organization number (such as "organizations/123"), a project ID (such as
+     *                               "projects/my-project-id")", or a project number (such as "projects/12345").
+     * @param string $contentType    Optional. The content type.
+     * @param string $readTimeWindow Optional. The time window for the asset history. Both start_time and
+     *                               end_time are optional and if set, it must be after the current time minus
+     *                               35 days. If end_time is not set, it is default to current timestamp.
+     *                               If start_time is not set, the snapshot of the assets at end_time will be
+     *                               returned. The returned results contain all temporal assets whose time
+     *                               window overlap with read_time_window.
+     * @param array  $optionalArgs   {
      *     Optional.
      *
      *     @type string[] $assetNames
