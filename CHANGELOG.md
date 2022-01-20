@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/gapic-generator-php/compare/v1.3.1...v1.4.0) (2022-01-20)
+
+
+### Features
+
+* add manual fix for bc-breaking changes ([#439](https://github.com/googleapis/gapic-generator-php/issues/439)) ([e62b210](https://github.com/googleapis/gapic-generator-php/commit/e62b2103f9b3ff47e2c2fecb792d49c291b92c02))
+* add RoutingRule explicit header injection support ([#403](https://github.com/googleapis/gapic-generator-php/issues/403)) ([bdc6987](https://github.com/googleapis/gapic-generator-php/commit/bdc6987128e88b368139fd006b9c30caef79ad14))
+
 ### [1.3.1](https://www.github.com/googleapis/gapic-generator-php/compare/v1.3.0...v1.3.1) (2022-01-10)
 
 
