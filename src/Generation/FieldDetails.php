@@ -170,17 +170,16 @@ class FieldDetails
     {
         $isRequired = ProtoHelpers::isRequired($field);
         $fullName = $containingMessage->desc->getFullName();
-        $methodName = $field->getName();
         if ($isRequired) {
             if (isset(self::$optionalToRequiredFixes[$fullName])) {
-                if (in_array($methodName, self::$optionalToRequiredFixes[$fullName])) {
+                if (in_array($field->getName(), self::$optionalToRequiredFixes[$fullName])) {
                     // Force field to be optional (even though it's required) to preserve BC
                     return false;
                 }
             }
         } else {
             if (isset(self::$requiredToOptionalFixes[$fullName])) {
-                if (in_array($methodName, self::$requiredToOptionalFixes[$fullName])) {
+                if (in_array($field->getName(), self::$requiredToOptionalFixes[$fullName])) {
                     // Force field to be required (even though it's optional) to preserve BC
                     return true;
                 }
