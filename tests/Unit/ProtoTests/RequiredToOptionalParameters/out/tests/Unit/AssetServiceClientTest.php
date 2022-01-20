@@ -20,22 +20,22 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Google\Cloud\Asset\Tests\Unit\V1;
+namespace Testing\RequiredToOptionalParameters\Tests\Unit;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\Asset\V1\AssetServiceClient;
-use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
-use Google\Cloud\Asset\V1\ContentType;
-use Google\Cloud\Asset\V1\TimeWindow;
 use Google\Rpc\Code;
 use stdClass;
+use Testing\RequiredToOptionalParameters\AssetServiceClient;
+use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryResponse;
+use Testing\RequiredToOptionalParameters\ContentType;
+use Testing\RequiredToOptionalParameters\TimeWindow;
 
 /**
- * @group asset
+ * @group requiredtooptionalparameters
  *
  * @group gapic
  */

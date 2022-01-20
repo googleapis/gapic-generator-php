@@ -22,7 +22,7 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Google\Cloud\VideoIntelligence\V1\Gapic;
+namespace Testing\OptionalToRequiredParameters\Gapic;
 
 use Google\ApiCore\ApiException;
 
@@ -35,10 +35,10 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoProgress;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
 use Google\LongRunning\Operation;
+use Testing\OptionalToRequiredParameters\AnnotateVideoProgress;
+use Testing\OptionalToRequiredParameters\AnnotateVideoRequest;
+use Testing\OptionalToRequiredParameters\AnnotateVideoResponse;
 
 /**
  * Service Description: Service that implements the Video Intelligence API.
@@ -284,7 +284,7 @@ class VideoIntelligenceServiceGapicClient
      *           If set, `input_uri` must be unset.
      *     @type int[] $features
      *           Required. Requested video annotation features.
-     *           For allowed values, use constants defined on {@see \Google\Cloud\VideoIntelligence\V1\Feature}
+     *           For allowed values, use constants defined on {@see \Testing\OptionalToRequiredParameters\Feature}
      *     @type string $outputUri
      *           Optional. Location where the output (in JSON format) should be stored.
      *           Currently, only [Cloud Storage](https://cloud.google.com/storage/)

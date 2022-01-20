@@ -22,7 +22,7 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Google\Cloud\Asset\V1\Gapic;
+namespace Testing\RequiredToOptionalParameters\Gapic;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
@@ -33,10 +33,10 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest;
-use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
-use Google\Cloud\Asset\V1\ContentType;
-use Google\Cloud\Asset\V1\TimeWindow;
+use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryRequest;
+use Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryResponse;
+use Testing\RequiredToOptionalParameters\ContentType;
+use Testing\RequiredToOptionalParameters\TimeWindow;
 
 /**
  * Service Description: Asset service definition.
@@ -192,7 +192,7 @@ class AssetServiceGapicClient
      *                                   organization number (such as "organizations/123"), a project ID (such as
      *                                   "projects/my-project-id")", or a project number (such as "projects/12345").
      * @param int        $contentType    Optional. The content type.
-     *                                   For allowed values, use constants defined on {@see \Google\Cloud\Asset\V1\ContentType}
+     *                                   For allowed values, use constants defined on {@see \Testing\RequiredToOptionalParameters\ContentType}
      * @param TimeWindow $readTimeWindow Optional. The time window for the asset history. Both start_time and
      *                                   end_time are optional and if set, it must be after the current time minus
      *                                   35 days. If end_time is not set, it is default to current timestamp.
@@ -235,7 +235,7 @@ class AssetServiceGapicClient
      *           {@see Google\ApiCore\RetrySettings} for example usage.
      * }
      *
-     * @return \Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse
+     * @return \Testing\RequiredToOptionalParameters\BatchGetAssetsHistoryResponse
      *
      * @throws ApiException if the remote call fails
      */

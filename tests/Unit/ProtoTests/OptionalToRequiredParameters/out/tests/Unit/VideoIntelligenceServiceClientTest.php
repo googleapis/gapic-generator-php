@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Google\Cloud\VideoIntelligence\Tests\Unit\V1;
+namespace Testing\OptionalToRequiredParameters\Tests\Unit;
 
 use Google\ApiCore\ApiException;
 
@@ -29,17 +29,17 @@ use Google\ApiCore\LongRunning\OperationsClient;
 
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
-
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\LongRunning\GetOperationRequest;
+
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
 use stdClass;
+use Testing\OptionalToRequiredParameters\AnnotateVideoResponse;
+use Testing\OptionalToRequiredParameters\VideoIntelligenceServiceClient;
 
 /**
- * @group videointelligence
+ * @group optionaltorequiredparameters
  *
  * @group gapic
  */

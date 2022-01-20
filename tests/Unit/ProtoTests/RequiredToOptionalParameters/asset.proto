@@ -22,7 +22,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
-option php_namespace = "Google\\Cloud\\Asset\\V1";
+option php_namespace = "Testing\\RequiredToOptionalParameters";
 
 // Asset service definition.
 service AssetService {

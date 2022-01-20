@@ -2,17 +2,17 @@
     "schema": "1.0",
     "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
     "language": "php",
-    "protoPackage": "google.cloud.videointelligence.v1",
-    "libraryPackage": "Google\\Cloud\\VideoIntelligence\\V1",
+    "protoPackage": "google.cloud.asset.v1",
+    "libraryPackage": "Testing\\RequiredToOptionalParameters",
     "services": {
-        "VideoIntelligenceService": {
+        "AssetService": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "VideoIntelligenceServiceGapicClient",
+                    "libraryClient": "AssetServiceGapicClient",
                     "rpcs": {
-                        "AnnotateVideo": {
+                        "BatchGetAssetsHistory": {
                             "methods": [
-                                "annotateVideo"
+                                "batchGetAssetsHistory"
                             ]
                         }
                     }
