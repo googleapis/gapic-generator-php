@@ -79,16 +79,6 @@ const UNIT_TESTS = [
     'package' => 'testing.customlro',
     'transport' => 'rest'
   ],
-  14 => [
-    'name' => 'RequiredToOptionalParameters',
-    'protoPath' => 'RequiredToOptionalParameters/asset.proto',
-    'package' => 'google.cloud.asset.v1',
-  ],
-  15 => [
-    'name' => 'OptionalToRequiredParameters',
-    'protoPath' => 'OptionalToRequiredParameters/video_intelligence.proto',
-    'package' => 'google.cloud.videointelligence.v1',
-  ]
 ];
 
 $optionString = implode("\n", array_map(
