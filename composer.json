@@ -21,6 +21,8 @@
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
+            "Testing\\OptionalToRequiredParameters\\": "tests/Unit/ProtoTests/OptionalToRequiredParameters/out/src",
+            "Testing\\RequiredToOptionalParameters\\": "tests/Unit/ProtoTests/RequiredToOptionalParameters/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
         }
