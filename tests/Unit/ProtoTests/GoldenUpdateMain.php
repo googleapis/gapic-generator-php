@@ -78,7 +78,7 @@ const UNIT_TESTS = [
     'protoPath' => 'CustomLro/custom_lro.proto',
     'package' => 'testing.customlro',
     'transport' => 'rest'
-  ]
+  ],
 ];
 
 $optionString = implode("\n", array_map(

@@ -50,8 +50,7 @@ use Google\LongRunning\Operation;
  * ```
  * $videoIntelligenceServiceClient = new VideoIntelligenceServiceClient();
  * try {
- *     $features = [];
- *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
+ *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo();
  *     $operationResponse->pollUntilComplete();
  *     if ($operationResponse->operationSucceeded()) {
  *         $result = $operationResponse->getResult();
@@ -62,7 +61,7 @@ use Google\LongRunning\Operation;
  *     }
  *     // Alternatively:
  *     // start the operation, keep the operation name, and resume later
- *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
+ *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo();
  *     $operationName = $operationResponse->getName();
  *     // ... do other work
  *     $newOperationResponse = $videoIntelligenceServiceClient->resumeOperation($operationName, 'annotateVideo');
@@ -234,8 +233,7 @@ class VideoIntelligenceServiceGapicClient
      * ```
      * $videoIntelligenceServiceClient = new VideoIntelligenceServiceClient();
      * try {
-     *     $features = [];
-     *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
+     *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo();
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
      *         $result = $operationResponse->getResult();
@@ -246,7 +244,7 @@ class VideoIntelligenceServiceGapicClient
      *     }
      *     // Alternatively:
      *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo($features);
+     *     $operationResponse = $videoIntelligenceServiceClient->annotateVideo();
      *     $operationName = $operationResponse->getName();
      *     // ... do other work
      *     $newOperationResponse = $videoIntelligenceServiceClient->resumeOperation($operationName, 'annotateVideo');
@@ -266,8 +264,6 @@ class VideoIntelligenceServiceGapicClient
      * }
      * ```
      *
-     * @param int[] $features     Required. Requested video annotation features.
-     *                            For allowed values, use constants defined on {@see \Google\Cloud\VideoIntelligence\V1\Feature}
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -287,6 +283,9 @@ class VideoIntelligenceServiceGapicClient
      *           The video data bytes.
      *           If unset, the input video(s) should be specified via the `input_uri`.
      *           If set, `input_uri` must be unset.
+     *     @type int[] $features
+     *           Required. Requested video annotation features.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\VideoIntelligence\V1\Feature}
      *     @type VideoContext $videoContext
      *           Additional video context and/or feature-specific parameters.
      *     @type string $outputUri
@@ -313,16 +312,19 @@ class VideoIntelligenceServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function annotateVideo($features, array $optionalArgs = [])
+    public function annotateVideo(array $optionalArgs = [])
     {
         $request = new AnnotateVideoRequest();
-        $request->setFeatures($features);
         if (isset($optionalArgs['inputUri'])) {
             $request->setInputUri($optionalArgs['inputUri']);
         }
 
         if (isset($optionalArgs['inputContent'])) {
             $request->setInputContent($optionalArgs['inputContent']);
+        }
+
+        if (isset($optionalArgs['features'])) {
+            $request->setFeatures($optionalArgs['features']);
         }
 
         if (isset($optionalArgs['videoContext'])) {
