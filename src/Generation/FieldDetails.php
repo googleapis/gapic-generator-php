@@ -105,14 +105,19 @@ class FieldDetails
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
         'google.datastore.v1.CommitRequest' => ['mode', 'mutations'],
         'google.datastore.v1.RunQueryRequest' => ['partition_id'],
+        'google.firestore.v1.CreateDocumentRequest' => ['document_id'],
+        'google.firestore.v1.UpdateDocumentRequest' => ['update_mask'],
         'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
-        'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation']
+        'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation'],
     ];
 
     private static $optionalToRequiredFixes = [
         'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
         'google.logging.v2.GetCmekSettingsRequest' => ['name'],
-        'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features']
+        'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
+        'google.firestore.v1.BatchWriteRequest' => ['database'],
+        'google.firestore.v1.CommitRequest' => ['database'],
+        'google.firestore.v1.PartitionQueryRequest' => ['parent'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
