@@ -101,7 +101,7 @@ class FieldDetails
     public ?int $oneOfIndex;
 
     private static $requiredToOptionalFixes = [
-        'google.bigtable.admin.v2.Cluster' => ['name', 'server_nodes'],
+        'google.bigtable.admin.v2.Cluster' => ['name', 'serve_nodes'],
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
         'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['content_type', 'read_time_window'],
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
