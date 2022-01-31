@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/gapic-generator-php/compare/v1.4.0...v1.4.1) (2022-01-31)
+
+
+### Bug Fixes
+
+* optional-to-required-parameters for Bigtable ([#446](https://github.com/googleapis/gapic-generator-php/issues/446)) ([a15d1f6](https://github.com/googleapis/gapic-generator-php/commit/a15d1f6dc3f13f4f76e0bf22c1bec9cfd435e4f1))
+* required-to-optional and optional-to-required parameters for Firestore ([#447](https://github.com/googleapis/gapic-generator-php/issues/447)) ([b8246a3](https://github.com/googleapis/gapic-generator-php/commit/b8246a3db390ba4b047e285cd1625ffc1325f2ba))
+
 ## [1.4.0](https://github.com/googleapis/gapic-generator-php/compare/v1.3.1...v1.4.0) (2022-01-20)
 
 
