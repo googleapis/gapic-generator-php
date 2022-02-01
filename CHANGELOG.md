@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://github.com/googleapis/gapic-generator-php/compare/v1.4.1...v1.4.2) (2022-01-31)
+
+
+### Bug Fixes
+
+* typo in required-to-optional parameter ([#449](https://github.com/googleapis/gapic-generator-php/issues/449)) ([a9578a9](https://github.com/googleapis/gapic-generator-php/commit/a9578a9ddd3780e95ed10c1fd48cd1995ff39459))
+
 ### [1.4.1](https://github.com/googleapis/gapic-generator-php/compare/v1.4.0...v1.4.1) (2022-01-31)
 
 
