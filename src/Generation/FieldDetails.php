@@ -107,6 +107,8 @@ class FieldDetails
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
         'google.datastore.v1.CommitRequest' => ['mode', 'mutations'],
         'google.datastore.v1.RunQueryRequest' => ['partition_id'],
+        'google.firestore.v1.CommitRequest' => ['writes'],
+        'google.firestore.v1.BatchGetDocumentsRequest' => ['documents'],
         'google.firestore.v1.CreateDocumentRequest' => ['document_id'],
         'google.firestore.v1.UpdateDocumentRequest' => ['update_mask'],
         'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
@@ -118,7 +120,6 @@ class FieldDetails
         'google.logging.v2.GetCmekSettingsRequest' => ['name'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
         'google.firestore.v1.BatchWriteRequest' => ['database'],
-        'google.firestore.v1.CommitRequest' => ['database'],
         'google.firestore.v1.PartitionQueryRequest' => ['parent'],
     ];
 
