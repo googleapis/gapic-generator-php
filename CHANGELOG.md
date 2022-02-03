@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.3](https://github.com/googleapis/gapic-generator-php/compare/v1.4.2...v1.4.3) (2022-02-02)
+
+
+### Bug Fixes
+
+* more firestore required-to-optional patches ([#451](https://github.com/googleapis/gapic-generator-php/issues/451)) ([e7fe5c7](https://github.com/googleapis/gapic-generator-php/commit/e7fe5c787eb23fb049e2bc27805b930319043468))
+
 ### [1.4.2](https://github.com/googleapis/gapic-generator-php/compare/v1.4.1...v1.4.2) (2022-01-31)
 
 
