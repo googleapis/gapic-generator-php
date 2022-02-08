@@ -34,6 +34,8 @@ class EnumConstantGenerator
         return (new EnumConstantGenerator($ctx, $enumDesc, $namespace, $file))->generateImpl();
     }
 
+    const RESERVED_NAMES = ['class'];
+
     private SourceFileContext $ctx;
     private EnumDescriptorProto $enumDesc;
     private FileDescriptorProto $fileDesc;
@@ -77,7 +79,12 @@ class EnumConstantGenerator
     {
         return Vector::new($this->enumDesc->getValue())
             ->map(fn ($e) =>
-                AST::constant($e->getName())
+                AST::constant(self::constName($e->getName()))
                 ->withValue($e->getName()));
+    }
+
+    private static function constName($name): string
+    {
+        return in_array(strtolower($name), self::RESERVED_NAMES) ? $name . "_ENUM" : $name;
     }
 }

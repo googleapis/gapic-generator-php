@@ -763,6 +763,7 @@ message GetBigBookMetadata {
 enum TopLevelEnum {
   FOO = 0;
   BAR = 1;
+  CLASS = 2;
 }
 
 message MoveBooksRequest {

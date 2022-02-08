@@ -33,4 +33,6 @@ class TopLevelEnum
     const FOO = 'FOO';
 
     const BAR = 'BAR';
+
+    const CLASS_ENUM = 'CLASS';
 }
