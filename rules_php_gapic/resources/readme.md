@@ -35,6 +35,7 @@ The recommended (tested) way of doing it is as follows:
         --enable-json \
         --enable-filter \
         --enable-tokenizer \
+        --with-curl \
         --with-libxml \
         --enable-xml \
         --enable-dom \
