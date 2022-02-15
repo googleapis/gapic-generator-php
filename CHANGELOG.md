@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.4](https://github.com/googleapis/gapic-generator-php/compare/v1.4.3...v1.4.4) (2022-02-15)
+
+
+### Bug Fixes
+
+* protect against diregapic enum using reserved words ([#454](https://github.com/googleapis/gapic-generator-php/issues/454)) ([942623d](https://github.com/googleapis/gapic-generator-php/commit/942623d7e5af4927b4b6d0f1c32a6cf889e85212))
+* update packaged version of composer and php for bazel ([#456](https://github.com/googleapis/gapic-generator-php/issues/456)) ([c1d4b6d](https://github.com/googleapis/gapic-generator-php/commit/c1d4b6da2c1d55b4be34fc44869156d5c3184307))
+
 ### [1.4.3](https://github.com/googleapis/gapic-generator-php/compare/v1.4.2...v1.4.3) (2022-02-02)
 
 
