@@ -100,6 +100,11 @@ class FieldDetails
     /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
     public ?int $oneOfIndex;
 
+
+    /**
+     * Reverts fields which were previously required, but were made optional
+     * AFTER a package's 1.0 release, back to being required.
+     */
     private static $requiredToOptionalFixes = [
         'google.bigtable.admin.v2.Cluster' => ['name', 'serve_nodes'],
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
@@ -115,12 +120,17 @@ class FieldDetails
         'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation'],
     ];
 
+    /**
+     * Reverts fields which were previously optional, but were made required
+     * AFTER a package's 1.0 release, back to being optional.
+     */
     private static $optionalToRequiredFixes = [
         'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
         'google.logging.v2.GetCmekSettingsRequest' => ['name'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
         'google.firestore.v1.BatchWriteRequest' => ['database'],
         'google.firestore.v1.PartitionQueryRequest' => ['parent'],
+        'google.spanner.v1.CreateSessionRequest' => ['session'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
