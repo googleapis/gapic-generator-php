@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.5](https://github.com/googleapis/gapic-generator-php/compare/v1.4.4...v1.4.5) (2022-02-18)
+
+
+### Bug Fixes
+
+* spanner optional-to-required message ([#459](https://github.com/googleapis/gapic-generator-php/issues/459)) ([e64bab7](https://github.com/googleapis/gapic-generator-php/commit/e64bab7b2e671a5fbbfda8e9b96b9e99a00d3d0a))
+
 ### [1.4.4](https://github.com/googleapis/gapic-generator-php/compare/v1.4.3...v1.4.4) (2022-02-15)
 
 
