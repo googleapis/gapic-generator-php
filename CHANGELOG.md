@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.6](https://github.com/googleapis/gapic-generator-php/compare/v1.4.5...v1.4.6) (2022-02-23)
+
+
+### Bug Fixes
+
+* **bazel:** configure php with curl if rebuilding ([#463](https://github.com/googleapis/gapic-generator-php/issues/463)) ([d4a3745](https://github.com/googleapis/gapic-generator-php/commit/d4a37455bbf41e4679a6e1ea4822175ef9ccc85f))
+* update PHP prebuilt binary, version 7.4.15 ([#465](https://github.com/googleapis/gapic-generator-php/issues/465)) ([387481a](https://github.com/googleapis/gapic-generator-php/commit/387481aa417c9a455629d331283d9e07df33de06))
+
 ### [1.4.5](https://github.com/googleapis/gapic-generator-php/compare/v1.4.4...v1.4.5) (2022-02-18)
 
 
