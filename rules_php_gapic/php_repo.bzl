@@ -71,6 +71,7 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
             "--enable-json",
             "--enable-filter",
             "--enable-tokenizer",
+            "--with-curl",
             "--with-libxml",
             "--enable-xml",
             "--enable-dom",
