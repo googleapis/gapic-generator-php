@@ -48,7 +48,8 @@ use Testing\BasicOneof\Response;
  * try {
  *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
  *     $other = new Other();
- *     $response = $basicOneofClient->aMethod($supplementaryData, $other);
+ *     $requiredOptional = 'required_optional';
+ *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
  * } finally {
  *     $basicOneofClient->close();
  * }
@@ -174,7 +175,8 @@ class BasicOneofGapicClient
      * try {
      *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
      *     $other = new Other();
-     *     $response = $basicOneofClient->aMethod($supplementaryData, $other);
+     *     $requiredOptional = 'required_optional';
+     *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
      * } finally {
      *     $basicOneofClient->close();
      * }
@@ -182,6 +184,7 @@ class BasicOneofGapicClient
      *
      * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
      * @param Other                  $other
+     * @param string                 $requiredOptional
      * @param array                  $optionalArgs      {
      *     Optional.
      *
@@ -201,7 +204,7 @@ class BasicOneofGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod($supplementaryData, $other, array $optionalArgs = [])
+    public function aMethod($supplementaryData, $other, $requiredOptional, array $optionalArgs = [])
     {
         $request = new Request();
         if ($supplementaryData->isExtraDescription()) {
@@ -224,6 +227,7 @@ class BasicOneofGapicClient
 
         
         $request->setOther($other);
+        $request->setRequiredOptional($requiredOptional);
         if (isset($optionalArgs['anInt'])) {
             $request->setAnInt($optionalArgs['anInt']);
         }

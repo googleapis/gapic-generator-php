@@ -65,7 +65,6 @@ class OneofWrapperGenerator
             $currOneofFieldNames = Vector::new([]) ;
             foreach ($method->requiredFields as $requiredField) {
                 if (!$requiredField->isOneOf
-                    || $requiredField->desc->getProto3Optional()
                     || ($requiredField->oneOfIndex === $currOneofIndex && $currOneofFieldNames->contains($requiredField->name))) {
                     continue;
                 }
