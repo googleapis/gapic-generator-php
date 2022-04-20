@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.7](https://github.com/googleapis/gapic-generator-php/compare/v1.4.6...v1.4.7) (2022-04-20)
+
+
+### Bug Fixes
+
+* better fix for ignoring required synthetic oneofs ([#478](https://github.com/googleapis/gapic-generator-php/issues/478)) ([b337162](https://github.com/googleapis/gapic-generator-php/commit/b3371621819908e786078ade6eba0dafc2ef8d7a))
+* ignore synthetic oneof from proto3_optional ([#476](https://github.com/googleapis/gapic-generator-php/issues/476)) ([bac6748](https://github.com/googleapis/gapic-generator-php/commit/bac6748e63c9aea0256f3ddd710ce87e6d71dd1e))
+
 ### [1.4.6](https://github.com/googleapis/gapic-generator-php/compare/v1.4.5...v1.4.6) (2022-02-23)
 
 
