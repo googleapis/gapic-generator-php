@@ -13,13 +13,13 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: 'recursive'
 
     - name: Bazel File Cache Setup
       id: cache-bazel
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.cache/bazel
         key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
@@ -81,7 +81,7 @@ jobs:
             tests/Integration:talent \
             tests/Integration:videointelligence --noshow_progress --cache_test_results=no
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: ${{ failure() }}
       with:
         name: test-artifacts
