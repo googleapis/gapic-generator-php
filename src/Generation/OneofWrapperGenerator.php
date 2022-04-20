@@ -59,7 +59,6 @@ class OneofWrapperGenerator
         // Use a vector instead of a set, since adding contains() to Set would have a similar
         // performance cost not lower than calling Vector::contains() directly.
         $oneofs = Map::new([]);
-        $oneofContainingMessageNames = Vector::new([]);
         foreach ($this->serviceDetails->methods as $method) {
             $requiredFieldNames = $method->requiredFields->map(fn ($x) => $x->name);
             $currOneofIndex = -1;

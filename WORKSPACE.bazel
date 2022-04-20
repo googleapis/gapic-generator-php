@@ -48,9 +48,9 @@ switched_rules_by_language(
 # gRPC.
 http_archive(
     name = "com_github_grpc_grpc",
-    sha256 = "b47345c06716cec93605edb4480ecf8b9e08587b9418a144192b1d1b5b387150",
-    urls = ["https://github.com/grpc/grpc/archive/v1.45.0.zip"],
-    strip_prefix = "grpc-1.45.0",
+    sha256 = "db2f2624b9ec7c752b7f6c2df44871af2bd1a8ad27aa30913894f67e509737d6",
+    urls = ["https://github.com/grpc/grpc/archive/v1.45.2.zip"],
+    strip_prefix = "grpc-1.45.2",
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
