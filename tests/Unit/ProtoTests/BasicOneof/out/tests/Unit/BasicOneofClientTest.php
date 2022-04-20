@@ -88,7 +88,8 @@ class BasicOneofClientTest extends GeneratedTest
         $other = new Other();
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
-        $response = $client->aMethod($supplementaryData, $other);
+        $requiredOptional = 'requiredOptional987493376';
+        $response = $client->aMethod($supplementaryData, $other, $requiredOptional);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -99,6 +100,8 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertTrue($supplementaryData->isExtraDescription());
         $actualValue = $actualRequestObject->getOther();
         $this->assertProtobufEquals($other, $actualValue);
+        $actualValue = $actualRequestObject->getRequiredOptional();
+        $this->assertProtobufEquals($requiredOptional, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -128,8 +131,9 @@ class BasicOneofClientTest extends GeneratedTest
         $other = new Other();
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
+        $requiredOptional = 'requiredOptional987493376';
         try {
-            $client->aMethod($supplementaryData, $other);
+            $client->aMethod($supplementaryData, $other, $requiredOptional);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
