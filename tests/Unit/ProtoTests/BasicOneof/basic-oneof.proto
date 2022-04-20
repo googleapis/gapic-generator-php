@@ -70,6 +70,8 @@ message Request {
   }
 
   Other other = 12 [(google.api.field_behavior) = REQUIRED];
+
+  optional string required_optional = 13 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Response {}

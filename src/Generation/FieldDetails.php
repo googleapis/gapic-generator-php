@@ -180,8 +180,9 @@ class FieldDetails
         }
         // Use fancy fooName() methods only if this isn't a wildcard pattern.
         $this->useResourceTestValue = !is_null($this->resourceDetails) && count($this->resourceDetails->patterns) > 0;
-        $this->oneOfIndex = $field->hasOneofIndex() ? $field->getOneofIndex() : null;
-        $this->isOneOf = $field->hasOneofIndex();
+        // Ignore synthetic oneofs created by proto3_optional fields.
+        $this->isOneOf = $field->hasOneofIndex() && !$field->getProto3Optional();
+        $this->oneOfIndex = $this->isOneOf ? $field->getOneofIndex() : null;
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
