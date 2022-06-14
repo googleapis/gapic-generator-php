@@ -129,7 +129,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->cancelOperation();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -203,7 +203,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->completeIPRotation();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -283,7 +283,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $cluster = new Cluster();
         try {
             $gapicClient->createCluster($cluster);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -363,7 +363,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $nodePool = new NodePool();
         try {
             $gapicClient->createNodePool($nodePool);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -437,7 +437,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->deleteCluster();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -511,7 +511,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->deleteNodePool();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -617,7 +617,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->getCluster();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -673,7 +673,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->getJSONWebKeys();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -741,7 +741,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->getNodePool();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -815,7 +815,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->getOperation();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -875,7 +875,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->getServerConfig();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -931,7 +931,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->listClusters();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -987,7 +987,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->listNodePools();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1043,7 +1043,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->listOperations();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1109,7 +1109,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->listUsableSubnetworks();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1183,7 +1183,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->rollbackNodePoolUpgrade();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1263,7 +1263,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $addonsConfig = new AddonsConfig();
         try {
             $gapicClient->setAddonsConfig($addonsConfig);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1353,7 +1353,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $labelFingerprint = 'labelFingerprint714995737';
         try {
             $gapicClient->setLabels($resourceLabels, $labelFingerprint);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1433,7 +1433,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $enabled = false;
         try {
             $gapicClient->setLegacyAbac($enabled);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1513,7 +1513,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $locations = [];
         try {
             $gapicClient->setLocations($locations);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1593,7 +1593,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $loggingService = 'loggingService-1700501035';
         try {
             $gapicClient->setLoggingService($loggingService);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1685,7 +1685,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $maintenancePolicy = new MaintenancePolicy();
         try {
             $gapicClient->setMaintenancePolicy($projectId, $zone, $clusterId, $maintenancePolicy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1769,7 +1769,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $update = new MasterAuth();
         try {
             $gapicClient->setMasterAuth($action, $update);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1849,7 +1849,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $monitoringService = 'monitoringService1469270462';
         try {
             $gapicClient->setMonitoringService($monitoringService);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1929,7 +1929,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $networkPolicy = new NetworkPolicy();
         try {
             $gapicClient->setNetworkPolicy($networkPolicy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2009,7 +2009,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $autoscaling = new NodePoolAutoscaling();
         try {
             $gapicClient->setNodePoolAutoscaling($autoscaling);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2089,7 +2089,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $management = new NodeManagement();
         try {
             $gapicClient->setNodePoolManagement($management);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2169,7 +2169,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $nodeCount = 1539922066;
         try {
             $gapicClient->setNodePoolSize($nodeCount);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2243,7 +2243,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->startIPRotation();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2323,7 +2323,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $update = new ClusterUpdate();
         try {
             $gapicClient->updateCluster($update);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2403,7 +2403,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $masterVersion = 'masterVersion-2139460613';
         try {
             $gapicClient->updateMaster($masterVersion);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2487,7 +2487,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $imageType = 'imageType-1442758754';
         try {
             $gapicClient->updateNodePool($nodeVersion, $imageType);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

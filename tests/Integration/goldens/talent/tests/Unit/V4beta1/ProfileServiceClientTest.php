@@ -100,7 +100,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setKeywordSnippet($keywordSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $profile = new Profile();
         $response = $gapicClient->createProfile($formattedParent, $profile);
         $this->assertEquals($expectedResponse, $response);
@@ -137,11 +137,11 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $profile = new Profile();
         try {
             $gapicClient->createProfile($formattedParent, $profile);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -166,7 +166,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $gapicClient->deleteProfile($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -199,10 +199,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
             $gapicClient->deleteProfile($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -241,7 +241,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setKeywordSnippet($keywordSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $response = $gapicClient->getProfile($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -275,10 +275,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
             $gapicClient->getProfile($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -310,7 +310,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setProfiles($profiles);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $response = $gapicClient->listProfiles($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -347,10 +347,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         try {
             $gapicClient->listProfiles($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -386,7 +386,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setHistogramQueryResults($histogramQueryResults);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $requestMetadata = new RequestMetadata();
         $response = $gapicClient->searchProfiles($formattedParent, $requestMetadata);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
@@ -426,11 +426,11 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $requestMetadata = new RequestMetadata();
         try {
             $gapicClient->searchProfiles($formattedParent, $requestMetadata);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -506,7 +506,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $profile = new Profile();
         try {
             $gapicClient->updateProfile($profile);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

@@ -91,7 +91,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $metric = new LogMetric();
         $metricName = 'metricName-610759589';
         $metric->setName($metricName);
@@ -132,7 +132,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $metric = new LogMetric();
         $metricName = 'metricName-610759589';
         $metric->setName($metricName);
@@ -140,7 +140,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metric->setFilter($metricFilter);
         try {
             $gapicClient->createLogMetric($formattedParent, $metric);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -165,7 +165,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         $gapicClient->deleteLogMetric($formattedMetricName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -198,10 +198,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         try {
             $gapicClient->deleteLogMetric($formattedMetricName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -234,7 +234,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         $response = $gapicClient->getLogMetric($formattedMetricName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -268,10 +268,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         try {
             $gapicClient->getLogMetric($formattedMetricName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -303,7 +303,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setMetrics($metrics);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $response = $gapicClient->listLogMetrics($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -340,10 +340,10 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         try {
             $gapicClient->listLogMetrics($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -376,7 +376,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         $metric = new LogMetric();
         $metricName = 'metricName-610759589';
         $metric->setName($metricName);
@@ -417,7 +417,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
+        $formattedMetricName = $gapicClient->logMetricName('[PROJECT]', '[METRIC]');
         $metric = new LogMetric();
         $metricName = 'metricName-610759589';
         $metric->setName($metricName);
@@ -425,7 +425,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metric->setFilter($metricFilter);
         try {
             $gapicClient->updateLogMetric($formattedMetricName, $metric);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

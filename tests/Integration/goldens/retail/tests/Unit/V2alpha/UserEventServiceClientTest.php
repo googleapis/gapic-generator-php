@@ -137,7 +137,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEvent = 'userEvent1921940774';
         try {
             $gapicClient->collectUserEvent($parent, $userEvent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -180,7 +180,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
         $inputConfigUserEventInlineSource = new UserEventInlineSource();
         $userEventInlineSourceUserEvents = [];
@@ -253,7 +253,7 @@ class UserEventServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new UserEventInputConfig();
         $inputConfigUserEventInlineSource = new UserEventInlineSource();
         $userEventInlineSourceUserEvents = [];
@@ -618,7 +618,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEvent->setVisitorId($userEventVisitorId);
         try {
             $gapicClient->writeUserEvent($parent, $userEvent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

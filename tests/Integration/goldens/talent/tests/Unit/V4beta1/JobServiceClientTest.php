@@ -110,7 +110,7 @@ class JobServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $jobs = [];
         $response = $gapicClient->batchCreateJobs($formattedParent, $jobs);
         $this->assertFalse($response->isDone());
@@ -179,7 +179,7 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $jobs = [];
         $response = $gapicClient->batchCreateJobs($formattedParent, $jobs);
         $this->assertFalse($response->isDone());
@@ -217,7 +217,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $filter = 'filter-1274492040';
         $gapicClient->batchDeleteJobs($formattedParent, $filter);
         $actualRequests = $transport->popReceivedCalls();
@@ -253,11 +253,11 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $filter = 'filter-1274492040';
         try {
             $gapicClient->batchDeleteJobs($formattedParent, $filter);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -300,7 +300,7 @@ class JobServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $jobs = [];
         $response = $gapicClient->batchUpdateJobs($formattedParent, $jobs);
         $this->assertFalse($response->isDone());
@@ -369,7 +369,7 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $jobs = [];
         $response = $gapicClient->batchUpdateJobs($formattedParent, $jobs);
         $this->assertFalse($response->isDone());
@@ -431,9 +431,9 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse->setCompanyDisplayName($companyDisplayName);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $job = new Job();
-        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $jobCompany = $gapicClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         $job->setCompany($jobCompany);
         $jobRequisitionId = 'jobRequisitionId-1718160870';
         $job->setRequisitionId($jobRequisitionId);
@@ -476,9 +476,9 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $job = new Job();
-        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $jobCompany = $gapicClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         $job->setCompany($jobCompany);
         $jobRequisitionId = 'jobRequisitionId-1718160870';
         $job->setRequisitionId($jobRequisitionId);
@@ -488,7 +488,7 @@ class JobServiceClientTest extends GeneratedTest
         $job->setDescription($jobDescription);
         try {
             $gapicClient->createJob($formattedParent, $job);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -513,7 +513,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $formattedName = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $gapicClient->deleteJob($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -546,10 +546,10 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $formattedName = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         try {
             $gapicClient->deleteJob($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -598,7 +598,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse->setCompanyDisplayName($companyDisplayName);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $formattedName = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $response = $gapicClient->getJob($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -632,10 +632,10 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $formattedName = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         try {
             $gapicClient->getJob($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -667,7 +667,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse->setJobs($jobs);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $filter = 'filter-1274492040';
         $response = $gapicClient->listJobs($formattedParent, $filter);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
@@ -707,11 +707,11 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $filter = 'filter-1274492040';
         try {
             $gapicClient->listJobs($formattedParent, $filter);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -749,7 +749,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse->setMatchingJobs($matchingJobs);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $requestMetadata = new RequestMetadata();
         $response = $gapicClient->searchJobs($formattedParent, $requestMetadata);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
@@ -789,11 +789,11 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $requestMetadata = new RequestMetadata();
         try {
             $gapicClient->searchJobs($formattedParent, $requestMetadata);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -831,7 +831,7 @@ class JobServiceClientTest extends GeneratedTest
         $expectedResponse->setMatchingJobs($matchingJobs);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $requestMetadata = new RequestMetadata();
         $response = $gapicClient->searchJobsForAlert($formattedParent, $requestMetadata);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
@@ -871,11 +871,11 @@ class JobServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $requestMetadata = new RequestMetadata();
         try {
             $gapicClient->searchJobsForAlert($formattedParent, $requestMetadata);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -925,7 +925,7 @@ class JobServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $job = new Job();
-        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $jobCompany = $gapicClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         $job->setCompany($jobCompany);
         $jobRequisitionId = 'jobRequisitionId-1718160870';
         $job->setRequisitionId($jobRequisitionId);
@@ -967,7 +967,7 @@ class JobServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $job = new Job();
-        $jobCompany = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
+        $jobCompany = $gapicClient->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         $job->setCompany($jobCompany);
         $jobRequisitionId = 'jobRequisitionId-1718160870';
         $job->setRequisitionId($jobRequisitionId);
@@ -977,7 +977,7 @@ class JobServiceClientTest extends GeneratedTest
         $job->setDescription($jobDescription);
         try {
             $gapicClient->updateJob($job);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

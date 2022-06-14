@@ -91,7 +91,7 @@ class CompletionServiceClientTest extends GeneratedTest
         $expectedResponse->setAttributionToken($attributionToken);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedCatalog = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedCatalog = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $query = 'query107944136';
         $response = $gapicClient->completeQuery($formattedCatalog, $query);
         $this->assertEquals($expectedResponse, $response);
@@ -128,11 +128,11 @@ class CompletionServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedCatalog = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedCatalog = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $query = 'query107944136';
         try {
             $gapicClient->completeQuery($formattedCatalog, $query);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -175,7 +175,7 @@ class CompletionServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new CompletionDataInputConfig();
         $inputConfigBigQuerySource = new BigQuerySource();
         $bigQuerySourceDatasetId = 'bigQuerySourceDatasetId-567522032';
@@ -250,7 +250,7 @@ class CompletionServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $inputConfig = new CompletionDataInputConfig();
         $inputConfigBigQuerySource = new BigQuerySource();
         $bigQuerySourceDatasetId = 'bigQuerySourceDatasetId-567522032';

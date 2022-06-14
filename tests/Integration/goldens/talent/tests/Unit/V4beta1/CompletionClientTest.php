@@ -80,7 +80,7 @@ class CompletionClientTest extends GeneratedTest
         $expectedResponse = new CompleteQueryResponse();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $query = 'query107944136';
         $pageSize = 883849137;
         $response = $gapicClient->completeQuery($formattedParent, $query, $pageSize);
@@ -120,12 +120,12 @@ class CompletionClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $query = 'query107944136';
         $pageSize = 883849137;
         try {
             $gapicClient->completeQuery($formattedParent, $query, $pageSize);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

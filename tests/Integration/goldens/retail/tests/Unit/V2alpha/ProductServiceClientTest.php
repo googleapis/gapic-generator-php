@@ -111,7 +111,7 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
         $response = $gapicClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
@@ -183,7 +183,7 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
         $response = $gapicClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
@@ -238,7 +238,7 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setUri($uri);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $product = new Product();
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
@@ -280,14 +280,14 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $product = new Product();
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
         $productId = 'productId1753008747';
         try {
             $gapicClient->createProduct($formattedParent, $product, $productId);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -312,7 +312,7 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $gapicClient->deleteProduct($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -345,10 +345,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         try {
             $gapicClient->deleteProduct($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -389,7 +389,7 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setUri($uri);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $response = $gapicClient->getProduct($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -423,10 +423,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         try {
             $gapicClient->getProduct($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -469,7 +469,7 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $inputConfig = new ProductInputConfig();
         $response = $gapicClient->importProducts($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
@@ -538,7 +538,7 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $inputConfig = new ProductInputConfig();
         $response = $gapicClient->importProducts($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
@@ -585,7 +585,7 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setProducts($products);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $response = $gapicClient->listProducts($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -622,10 +622,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         try {
             $gapicClient->listProducts($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -668,7 +668,7 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
         $response = $gapicClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
@@ -740,7 +740,7 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
         $response = $gapicClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
@@ -961,7 +961,7 @@ class ProductServiceClientTest extends GeneratedTest
         $product->setTitle($productTitle);
         try {
             $gapicClient->updateProduct($product);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

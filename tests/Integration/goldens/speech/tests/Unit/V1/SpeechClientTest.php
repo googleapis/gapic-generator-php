@@ -266,7 +266,7 @@ class SpeechClientTest extends GeneratedTest
         $audio = new RecognitionAudio();
         try {
             $gapicClient->recognize($config, $audio);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

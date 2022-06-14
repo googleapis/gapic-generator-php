@@ -91,7 +91,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $policy = new AutoscalingPolicy();
         $policyWorkerConfig = new InstanceGroupAutoscalingPolicyConfig();
         $workerConfigMaxInstances = 339756550;
@@ -142,7 +142,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $policy = new AutoscalingPolicy();
         $policyWorkerConfig = new InstanceGroupAutoscalingPolicyConfig();
         $workerConfigMaxInstances = 339756550;
@@ -160,7 +160,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
         try {
             $gapicClient->createAutoscalingPolicy($formattedParent, $policy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -185,7 +185,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+        $formattedName = $gapicClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         $gapicClient->deleteAutoscalingPolicy($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -218,10 +218,10 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+        $formattedName = $gapicClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         try {
             $gapicClient->deleteAutoscalingPolicy($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -250,7 +250,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+        $formattedName = $gapicClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         $response = $gapicClient->getAutoscalingPolicy($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -284,10 +284,10 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
+        $formattedName = $gapicClient->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         try {
             $gapicClient->getAutoscalingPolicy($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -319,7 +319,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $expectedResponse->setPolicies($policies);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $response = $gapicClient->listAutoscalingPolicies($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -356,10 +356,10 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         try {
             $gapicClient->listAutoscalingPolicies($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -453,7 +453,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
         try {
             $gapicClient->updateAutoscalingPolicy($policy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

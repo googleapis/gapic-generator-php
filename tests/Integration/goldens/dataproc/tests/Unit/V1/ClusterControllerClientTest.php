@@ -549,7 +549,7 @@ class ClusterControllerClientTest extends GeneratedTest
         $clusterName = 'clusterName-1018081872';
         try {
             $gapicClient->getCluster($projectId, $region, $clusterName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -625,7 +625,7 @@ class ClusterControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         try {
             $gapicClient->listClusters($projectId, $region);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

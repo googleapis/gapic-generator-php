@@ -141,7 +141,7 @@ class AddressesClientTest extends GeneratedTest
         $project = 'project-309310695';
         try {
             $gapicClient->aggregatedList($project);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -473,7 +473,7 @@ class AddressesClientTest extends GeneratedTest
         $region = 'region-934795532';
         try {
             $gapicClient->list($orderBy, $project, $region);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

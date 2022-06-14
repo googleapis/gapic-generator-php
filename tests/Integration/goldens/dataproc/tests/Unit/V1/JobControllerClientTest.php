@@ -143,7 +143,7 @@ class JobControllerClientTest extends GeneratedTest
         $jobId = 'jobId-1154752291';
         try {
             $gapicClient->cancelJob($projectId, $region, $jobId);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -212,7 +212,7 @@ class JobControllerClientTest extends GeneratedTest
         $jobId = 'jobId-1154752291';
         try {
             $gapicClient->deleteJob($projectId, $region, $jobId);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -290,7 +290,7 @@ class JobControllerClientTest extends GeneratedTest
         $jobId = 'jobId-1154752291';
         try {
             $gapicClient->getJob($projectId, $region, $jobId);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -366,7 +366,7 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         try {
             $gapicClient->listJobs($projectId, $region);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -452,7 +452,7 @@ class JobControllerClientTest extends GeneratedTest
         $job->setPlacement($jobPlacement);
         try {
             $gapicClient->submitJob($projectId, $region, $job);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -691,7 +691,7 @@ class JobControllerClientTest extends GeneratedTest
         $updateMask = new FieldMask();
         try {
             $gapicClient->updateJob($projectId, $region, $jobId, $job, $updateMask);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

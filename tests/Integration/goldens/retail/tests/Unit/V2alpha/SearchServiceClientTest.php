@@ -140,7 +140,7 @@ class SearchServiceClientTest extends GeneratedTest
         $visitorId = 'visitorId-1832599924';
         try {
             $gapicClient->search($placement, $visitorId);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

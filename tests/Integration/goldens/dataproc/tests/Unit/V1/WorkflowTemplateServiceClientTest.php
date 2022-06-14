@@ -95,7 +95,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $expectedResponse->setVersion($version);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
         $templateId = 'templateId1304010549';
         $template->setId($templateId);
@@ -138,7 +138,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
         $templateId = 'templateId1304010549';
         $template->setId($templateId);
@@ -148,7 +148,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setJobs($templateJobs);
         try {
             $gapicClient->createWorkflowTemplate($formattedParent, $template);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -173,7 +173,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         $gapicClient->deleteWorkflowTemplate($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -206,10 +206,10 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         try {
             $gapicClient->deleteWorkflowTemplate($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -240,7 +240,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $expectedResponse->setVersion($version2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         $response = $gapicClient->getWorkflowTemplate($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -274,10 +274,10 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         try {
             $gapicClient->getWorkflowTemplate($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -320,7 +320,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
         $templateId = 'templateId1304010549';
         $template->setId($templateId);
@@ -395,7 +395,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $template = new WorkflowTemplate();
         $templateId = 'templateId1304010549';
         $template->setId($templateId);
@@ -457,7 +457,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         $response = $gapicClient->instantiateWorkflowTemplate($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -523,7 +523,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
+        $formattedName = $gapicClient->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         $response = $gapicClient->instantiateWorkflowTemplate($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -567,7 +567,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $expectedResponse->setTemplates($templates);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         $response = $gapicClient->listWorkflowTemplates($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -604,10 +604,10 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
         try {
             $gapicClient->listWorkflowTemplates($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -687,7 +687,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setJobs($templateJobs);
         try {
             $gapicClient->updateWorkflowTemplate($template);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

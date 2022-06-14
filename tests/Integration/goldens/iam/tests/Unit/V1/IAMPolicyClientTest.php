@@ -122,7 +122,7 @@ class IAMPolicyClientTest extends GeneratedTest
         $resource = 'resource-341064690';
         try {
             $gapicClient->getIamPolicy($resource);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -192,7 +192,7 @@ class IAMPolicyClientTest extends GeneratedTest
         $policy = new Policy();
         try {
             $gapicClient->setIamPolicy($resource, $policy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -258,7 +258,7 @@ class IAMPolicyClientTest extends GeneratedTest
         $permissions = [];
         try {
             $gapicClient->testIamPermissions($resource, $permissions);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

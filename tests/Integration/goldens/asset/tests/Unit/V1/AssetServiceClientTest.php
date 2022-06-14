@@ -149,7 +149,7 @@ class AssetServiceClientTest extends GeneratedTest
         $analysisQuery->setScope($analysisQueryScope);
         try {
             $gapicClient->analyzeIamPolicy($analysisQuery);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -344,7 +344,7 @@ class AssetServiceClientTest extends GeneratedTest
         $destinationParent = 'destinationParent-1362053637';
         try {
             $gapicClient->analyzeMove($resource, $destinationParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -414,7 +414,7 @@ class AssetServiceClientTest extends GeneratedTest
         $readTimeWindow = new TimeWindow();
         try {
             $gapicClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -494,7 +494,7 @@ class AssetServiceClientTest extends GeneratedTest
         $feed->setFeedOutputConfig($feedFeedOutputConfig);
         try {
             $gapicClient->createFeed($parent, $feedId, $feed);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -519,7 +519,7 @@ class AssetServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->feedName('[PROJECT]', '[FEED]');
+        $formattedName = $gapicClient->feedName('[PROJECT]', '[FEED]');
         $gapicClient->deleteFeed($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -552,10 +552,10 @@ class AssetServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->feedName('[PROJECT]', '[FEED]');
+        $formattedName = $gapicClient->feedName('[PROJECT]', '[FEED]');
         try {
             $gapicClient->deleteFeed($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -707,7 +707,7 @@ class AssetServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->feedName('[PROJECT]', '[FEED]');
+        $formattedName = $gapicClient->feedName('[PROJECT]', '[FEED]');
         $response = $gapicClient->getFeed($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -741,10 +741,10 @@ class AssetServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->feedName('[PROJECT]', '[FEED]');
+        $formattedName = $gapicClient->feedName('[PROJECT]', '[FEED]');
         try {
             $gapicClient->getFeed($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -816,7 +816,7 @@ class AssetServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         try {
             $gapicClient->listAssets($parent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -878,7 +878,7 @@ class AssetServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         try {
             $gapicClient->listFeeds($parent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -950,7 +950,7 @@ class AssetServiceClientTest extends GeneratedTest
         $scope = 'scope109264468';
         try {
             $gapicClient->searchAllIamPolicies($scope);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1022,7 +1022,7 @@ class AssetServiceClientTest extends GeneratedTest
         $scope = 'scope109264468';
         try {
             $gapicClient->searchAllResources($scope);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1098,7 +1098,7 @@ class AssetServiceClientTest extends GeneratedTest
         $updateMask = new FieldMask();
         try {
             $gapicClient->updateFeed($feed, $updateMask);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

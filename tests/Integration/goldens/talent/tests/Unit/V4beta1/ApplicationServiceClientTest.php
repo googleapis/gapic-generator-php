@@ -99,11 +99,11 @@ class ApplicationServiceClientTest extends GeneratedTest
         $expectedResponse->setJobTitleSnippet($jobTitleSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedParent = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $application = new Application();
         $applicationExternalId = 'applicationExternalId-266656842';
         $application->setExternalId($applicationExternalId);
-        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $applicationJob = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $application->setJob($applicationJob);
         $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
         $application->setStage($applicationStage);
@@ -144,11 +144,11 @@ class ApplicationServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedParent = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $application = new Application();
         $applicationExternalId = 'applicationExternalId-266656842';
         $application->setExternalId($applicationExternalId);
-        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $applicationJob = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $application->setJob($applicationJob);
         $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
         $application->setStage($applicationStage);
@@ -156,7 +156,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application->setCreateTime($applicationCreateTime);
         try {
             $gapicClient->createApplication($formattedParent, $application);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -181,7 +181,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
+        $formattedName = $gapicClient->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         $gapicClient->deleteApplication($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -214,10 +214,10 @@ class ApplicationServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
+        $formattedName = $gapicClient->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         try {
             $gapicClient->deleteApplication($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -256,7 +256,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $expectedResponse->setJobTitleSnippet($jobTitleSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
+        $formattedName = $gapicClient->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         $response = $gapicClient->getApplication($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -290,10 +290,10 @@ class ApplicationServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
+        $formattedName = $gapicClient->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         try {
             $gapicClient->getApplication($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -325,7 +325,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $expectedResponse->setApplications($applications);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedParent = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         $response = $gapicClient->listApplications($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -362,10 +362,10 @@ class ApplicationServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedParent = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
             $gapicClient->listApplications($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -407,7 +407,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application = new Application();
         $applicationExternalId = 'applicationExternalId-266656842';
         $application->setExternalId($applicationExternalId);
-        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $applicationJob = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $application->setJob($applicationJob);
         $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
         $application->setStage($applicationStage);
@@ -449,7 +449,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application = new Application();
         $applicationExternalId = 'applicationExternalId-266656842';
         $application->setExternalId($applicationExternalId);
-        $applicationJob = $client->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $applicationJob = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
         $application->setJob($applicationJob);
         $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
         $application->setStage($applicationStage);
@@ -457,7 +457,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application->setCreateTime($applicationCreateTime);
         try {
             $gapicClient->updateApplication($application);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

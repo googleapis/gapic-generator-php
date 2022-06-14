@@ -87,7 +87,7 @@ class TenantServiceClientTest extends GeneratedTest
         $expectedResponse->setExternalId($externalId);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $tenant = new Tenant();
         $tenantExternalId = 'tenantExternalId-300736880';
         $tenant->setExternalId($tenantExternalId);
@@ -126,13 +126,13 @@ class TenantServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $tenant = new Tenant();
         $tenantExternalId = 'tenantExternalId-300736880';
         $tenant->setExternalId($tenantExternalId);
         try {
             $gapicClient->createTenant($formattedParent, $tenant);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -157,7 +157,7 @@ class TenantServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedName = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $gapicClient->deleteTenant($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -190,10 +190,10 @@ class TenantServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedName = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         try {
             $gapicClient->deleteTenant($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -222,7 +222,7 @@ class TenantServiceClientTest extends GeneratedTest
         $expectedResponse->setExternalId($externalId);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedName = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $response = $gapicClient->getTenant($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -256,10 +256,10 @@ class TenantServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedName = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         try {
             $gapicClient->getTenant($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -291,7 +291,7 @@ class TenantServiceClientTest extends GeneratedTest
         $expectedResponse->setTenants($tenants);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         $response = $gapicClient->listTenants($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -328,10 +328,10 @@ class TenantServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->projectName('[PROJECT]');
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
         try {
             $gapicClient->listTenants($formattedParent);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -401,7 +401,7 @@ class TenantServiceClientTest extends GeneratedTest
         $tenant->setExternalId($tenantExternalId);
         try {
             $gapicClient->updateTenant($tenant);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

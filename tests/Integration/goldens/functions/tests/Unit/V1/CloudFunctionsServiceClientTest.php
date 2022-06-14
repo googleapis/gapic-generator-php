@@ -99,7 +99,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setError($error);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $data = 'data3076010';
         $response = $gapicClient->callFunction($formattedName, $data);
         $this->assertEquals($expectedResponse, $response);
@@ -136,11 +136,11 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $data = 'data3076010';
         try {
             $gapicClient->callFunction($formattedName, $data);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -207,7 +207,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedLocation = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedLocation = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
         $function = new CloudFunction();
         $response = $gapicClient->createFunction($formattedLocation, $function);
         $this->assertFalse($response->isDone());
@@ -276,7 +276,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedLocation = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedLocation = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
         $function = new CloudFunction();
         $response = $gapicClient->createFunction($formattedLocation, $function);
         $this->assertFalse($response->isDone());
@@ -332,7 +332,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $response = $gapicClient->deleteFunction($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -398,7 +398,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $response = $gapicClient->deleteFunction($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -468,7 +468,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->generateDownloadUrl();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -526,7 +526,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->generateUploadUrl();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -575,7 +575,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setBuildId($buildId);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $response = $gapicClient->getFunction($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -609,10 +609,10 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         try {
             $gapicClient->getFunction($formattedName);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -678,7 +678,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $resource = 'resource-341064690';
         try {
             $gapicClient->getIamPolicy($resource);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -744,7 +744,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->listFunctions();
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -814,7 +814,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $policy = new Policy();
         try {
             $gapicClient->setIamPolicy($resource, $policy);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -880,7 +880,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $permissions = [];
         try {
             $gapicClient->testIamPermissions($resource, $permissions);
-            // If the $client method call did not throw, fail the test
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
