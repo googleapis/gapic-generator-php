@@ -229,7 +229,7 @@ class TestNameValueProducer
             // TODO: Better handling of wild-card patterns.
             $args = $field->name . "-" . hash("md5", $field->name);
         }
-        $clientVar = $clientVar ?? AST::var('gapicClient');
+        $clientVar = $clientVar ?? AST::var(UnitTestsGenerator::CLIENT_VARIABLE);
         // TODO: This should be better merged with FieldDetails.
         $varValue = $clientVar->instanceCall($field->resourceDetails->formatMethod)($args);
         if ($field->isRepeated) {
