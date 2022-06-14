@@ -92,7 +92,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function asymmetricDecryptTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -104,9 +104,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setVerifiedCiphertextCrc32c($verifiedCiphertextCrc32c);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         $ciphertext = '-72';
-        $response = $client->asymmetricDecrypt($formattedName, $ciphertext);
+        $response = $gapicClient->asymmetricDecrypt($formattedName, $ciphertext);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -126,7 +126,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function asymmetricDecryptExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -141,11 +141,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         $ciphertext = '-72';
         try {
-            $client->asymmetricDecrypt($formattedName, $ciphertext);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->asymmetricDecrypt($formattedName, $ciphertext);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -162,7 +162,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function asymmetricSignTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -176,9 +176,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         $digest = new Digest();
-        $response = $client->asymmetricSign($formattedName, $digest);
+        $response = $gapicClient->asymmetricSign($formattedName, $digest);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -198,7 +198,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function asymmetricSignExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -213,11 +213,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         $digest = new Digest();
         try {
-            $client->asymmetricSign($formattedName, $digest);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->asymmetricSign($formattedName, $digest);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -234,7 +234,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createCryptoKeyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -244,10 +244,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $cryptoKeyId = 'cryptoKeyId-2123094983';
         $cryptoKey = new CryptoKey();
-        $response = $client->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
+        $response = $gapicClient->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -269,7 +269,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -284,12 +284,12 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $cryptoKeyId = 'cryptoKeyId-2123094983';
         $cryptoKey = new CryptoKey();
         try {
-            $client->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -306,7 +306,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -320,9 +320,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $cryptoKeyVersion = new CryptoKeyVersion();
-        $response = $client->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
+        $response = $gapicClient->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -342,7 +342,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -357,11 +357,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $cryptoKeyVersion = new CryptoKeyVersion();
         try {
-            $client->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -378,7 +378,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createImportJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -388,14 +388,14 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $importJobId = 'importJobId-1620773193';
         $importJob = new ImportJob();
         $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
         $importJob->setImportMethod($importJobImportMethod);
         $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
         $importJob->setProtectionLevel($importJobProtectionLevel);
-        $response = $client->createImportJob($formattedParent, $importJobId, $importJob);
+        $response = $gapicClient->createImportJob($formattedParent, $importJobId, $importJob);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -417,7 +417,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createImportJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -432,7 +432,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         $importJobId = 'importJobId-1620773193';
         $importJob = new ImportJob();
         $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
@@ -440,8 +440,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
         $importJob->setProtectionLevel($importJobProtectionLevel);
         try {
-            $client->createImportJob($formattedParent, $importJobId, $importJob);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createImportJob($formattedParent, $importJobId, $importJob);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -458,7 +458,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createKeyRingTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -468,10 +468,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedParent = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
         $keyRingId = 'keyRingId-2056646742';
         $keyRing = new KeyRing();
-        $response = $client->createKeyRing($formattedParent, $keyRingId, $keyRing);
+        $response = $gapicClient->createKeyRing($formattedParent, $keyRingId, $keyRing);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -493,7 +493,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function createKeyRingExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -508,12 +508,12 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedParent = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
         $keyRingId = 'keyRingId-2056646742';
         $keyRing = new KeyRing();
         try {
-            $client->createKeyRing($formattedParent, $keyRingId, $keyRing);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createKeyRing($formattedParent, $keyRingId, $keyRing);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -530,7 +530,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function decryptTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -540,9 +540,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setPlaintext($plaintext);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $ciphertext = '-72';
-        $response = $client->decrypt($formattedName, $ciphertext);
+        $response = $gapicClient->decrypt($formattedName, $ciphertext);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -562,7 +562,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function decryptExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -577,11 +577,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $ciphertext = '-72';
         try {
-            $client->decrypt($formattedName, $ciphertext);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->decrypt($formattedName, $ciphertext);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -598,7 +598,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function destroyCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -612,8 +612,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->destroyCryptoKeyVersion($formattedName);
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $response = $gapicClient->destroyCryptoKeyVersion($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -631,7 +631,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function destroyCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -646,10 +646,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         try {
-            $client->destroyCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->destroyCryptoKeyVersion($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -666,7 +666,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function encryptTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -684,7 +684,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $plaintext = '-9';
-        $response = $client->encrypt($name, $plaintext);
+        $response = $gapicClient->encrypt($name, $plaintext);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -704,7 +704,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function encryptExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -722,8 +722,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $name = 'name3373707';
         $plaintext = '-9';
         try {
-            $client->encrypt($name, $plaintext);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->encrypt($name, $plaintext);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -740,7 +740,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getCryptoKeyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -750,8 +750,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $response = $client->getCryptoKey($formattedName);
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $response = $gapicClient->getCryptoKey($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -769,7 +769,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -784,10 +784,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         try {
-            $client->getCryptoKey($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getCryptoKey($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -804,7 +804,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -818,8 +818,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->getCryptoKeyVersion($formattedName);
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $response = $gapicClient->getCryptoKeyVersion($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -837,7 +837,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -852,10 +852,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         try {
-            $client->getCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getCryptoKeyVersion($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -872,7 +872,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -885,7 +885,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $resource = 'resource-341064690';
-        $response = $client->getIamPolicy($resource);
+        $response = $gapicClient->getIamPolicy($resource);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -903,7 +903,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -920,8 +920,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         // Mock request
         $resource = 'resource-341064690';
         try {
-            $client->getIamPolicy($resource);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getIamPolicy($resource);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -938,7 +938,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getImportJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -948,8 +948,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
-        $response = $client->getImportJob($formattedName);
+        $formattedName = $gapicClient->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
+        $response = $gapicClient->getImportJob($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -967,7 +967,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getImportJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -982,10 +982,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
+        $formattedName = $gapicClient->importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
         try {
-            $client->getImportJob($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getImportJob($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1002,7 +1002,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getKeyRingTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1012,8 +1012,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->getKeyRing($formattedName);
+        $formattedName = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $response = $gapicClient->getKeyRing($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1031,7 +1031,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getKeyRingExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1046,10 +1046,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedName = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         try {
-            $client->getKeyRing($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getKeyRing($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1066,7 +1066,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getPublicKeyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1078,8 +1078,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->getPublicKey($formattedName);
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $response = $gapicClient->getPublicKey($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1097,7 +1097,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getPublicKeyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1112,10 +1112,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         try {
-            $client->getPublicKey($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getPublicKey($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1132,7 +1132,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function importCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1146,10 +1146,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $algorithm = CryptoKeyVersionAlgorithm::CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED;
         $importJob = 'importJob2125587491';
-        $response = $client->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
+        $response = $gapicClient->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1171,7 +1171,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function importCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1186,12 +1186,12 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $algorithm = CryptoKeyVersionAlgorithm::CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED;
         $importJob = 'importJob2125587491';
         try {
-            $client->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->importCryptoKeyVersion($formattedParent, $algorithm, $importJob);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1208,7 +1208,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listCryptoKeyVersionsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1225,8 +1225,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setCryptoKeyVersions($cryptoKeyVersions);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-        $response = $client->listCryptoKeyVersions($formattedParent);
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $response = $gapicClient->listCryptoKeyVersions($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1247,7 +1247,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listCryptoKeyVersionsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1262,10 +1262,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedParent = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         try {
-            $client->listCryptoKeyVersions($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listCryptoKeyVersions($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1282,7 +1282,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listCryptoKeysTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1299,8 +1299,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setCryptoKeys($cryptoKeys);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->listCryptoKeys($formattedParent);
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $response = $gapicClient->listCryptoKeys($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1321,7 +1321,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listCryptoKeysExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1336,10 +1336,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         try {
-            $client->listCryptoKeys($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listCryptoKeys($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1356,7 +1356,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listImportJobsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1373,8 +1373,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportJobs($importJobs);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-        $response = $client->listImportJobs($formattedParent);
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $response = $gapicClient->listImportJobs($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1395,7 +1395,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listImportJobsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1410,10 +1410,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
+        $formattedParent = $gapicClient->keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
         try {
-            $client->listImportJobs($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listImportJobs($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1430,7 +1430,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listKeyRingsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1447,8 +1447,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setKeyRings($keyRings);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        $response = $client->listKeyRings($formattedParent);
+        $formattedParent = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
+        $response = $gapicClient->listKeyRings($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1469,7 +1469,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listKeyRingsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1484,10 +1484,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
+        $formattedParent = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
         try {
-            $client->listKeyRings($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listKeyRings($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1504,7 +1504,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function restoreCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1518,8 +1518,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setImportFailureReason($importFailureReason);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-        $response = $client->restoreCryptoKeyVersion($formattedName);
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $response = $gapicClient->restoreCryptoKeyVersion($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1537,7 +1537,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function restoreCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1552,10 +1552,10 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
         try {
-            $client->restoreCryptoKeyVersion($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->restoreCryptoKeyVersion($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1572,7 +1572,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1584,7 +1584,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         // Mock request
         $cryptoKey = new CryptoKey();
         $updateMask = new FieldMask();
-        $response = $client->updateCryptoKey($cryptoKey, $updateMask);
+        $response = $gapicClient->updateCryptoKey($cryptoKey, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1604,7 +1604,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1622,8 +1622,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $cryptoKey = new CryptoKey();
         $updateMask = new FieldMask();
         try {
-            $client->updateCryptoKey($cryptoKey, $updateMask);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateCryptoKey($cryptoKey, $updateMask);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1640,7 +1640,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyPrimaryVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1650,9 +1650,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name2);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $cryptoKeyVersionId = 'cryptoKeyVersionId729489152';
-        $response = $client->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
+        $response = $gapicClient->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1672,7 +1672,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyPrimaryVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1687,11 +1687,11 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
+        $formattedName = $gapicClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
         $cryptoKeyVersionId = 'cryptoKeyVersionId729489152';
         try {
-            $client->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1708,7 +1708,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1724,7 +1724,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         // Mock request
         $cryptoKeyVersion = new CryptoKeyVersion();
         $updateMask = new FieldMask();
-        $response = $client->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
+        $response = $gapicClient->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1744,7 +1744,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function updateCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1762,8 +1762,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $cryptoKeyVersion = new CryptoKeyVersion();
         $updateMask = new FieldMask();
         try {
-            $client->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1780,7 +1780,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getLocationTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1793,7 +1793,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setLocationId($locationId);
         $expectedResponse->setDisplayName($displayName);
         $transport->addResponse($expectedResponse);
-        $response = $client->getLocation();
+        $response = $gapicClient->getLocation();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1809,7 +1809,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function getLocationExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1824,8 +1824,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->getLocation();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getLocation();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1842,7 +1842,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listLocationsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1856,7 +1856,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setLocations($locations);
         $transport->addResponse($expectedResponse);
-        $response = $client->listLocations();
+        $response = $gapicClient->listLocations();
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1875,7 +1875,7 @@ class KeyManagementServiceClientTest extends GeneratedTest
     public function listLocationsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1890,8 +1890,8 @@ class KeyManagementServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listLocations();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listLocations();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

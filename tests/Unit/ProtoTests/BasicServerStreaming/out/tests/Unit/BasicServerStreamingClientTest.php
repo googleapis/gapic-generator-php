@@ -75,7 +75,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
     public function methodEmptyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -87,7 +87,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $expectedResponse3 = new Response();
         $transport->addResponse($expectedResponse3);
         // Mock request
-        $serverStream = $client->methodEmpty();
+        $serverStream = $gapicClient->methodEmpty();
         $this->assertInstanceOf(ServerStream::class, $serverStream);
         $responses = iterator_to_array($serverStream->readAll());
         $expectedResponses = [];
@@ -109,7 +109,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
     public function methodEmptyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -124,7 +124,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
         // Mock request
-        $serverStream = $client->methodEmpty();
+        $serverStream = $gapicClient->methodEmpty();
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);
@@ -145,7 +145,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
     public function methodServerTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -158,7 +158,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse3);
         // Mock request
         $aNumber = 1071982361;
-        $serverStream = $client->methodServer($aNumber);
+        $serverStream = $gapicClient->methodServer($aNumber);
         $this->assertInstanceOf(ServerStream::class, $serverStream);
         $responses = iterator_to_array($serverStream->readAll());
         $expectedResponses = [];
@@ -182,7 +182,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
     public function methodServerExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -198,7 +198,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock request
         $aNumber = 1071982361;
-        $serverStream = $client->methodServer($aNumber);
+        $serverStream = $gapicClient->methodServer($aNumber);
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);

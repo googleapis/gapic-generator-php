@@ -91,7 +91,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -111,10 +111,10 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
-        $response = $client->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+        $response = $gapicClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -161,7 +161,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -183,10 +183,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
-        $response = $client->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
+        $response = $gapicClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -214,7 +214,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function createProductTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -238,12 +238,12 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setUri($uri);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $product = new Product();
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
         $productId = 'productId1753008747';
-        $response = $client->createProduct($formattedParent, $product, $productId);
+        $response = $gapicClient->createProduct($formattedParent, $product, $productId);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -265,7 +265,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function createProductExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -280,14 +280,14 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $product = new Product();
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
         $productId = 'productId1753008747';
         try {
-            $client->createProduct($formattedParent, $product, $productId);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createProduct($formattedParent, $product, $productId);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -304,7 +304,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function deleteProductTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -312,8 +312,8 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
-        $client->deleteProduct($formattedName);
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $gapicClient->deleteProduct($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -330,7 +330,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function deleteProductExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -345,10 +345,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         try {
-            $client->deleteProduct($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->deleteProduct($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -365,7 +365,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function getProductTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -389,8 +389,8 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setUri($uri);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
-        $response = $client->getProduct($formattedName);
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $response = $gapicClient->getProduct($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -408,7 +408,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function getProductExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -423,10 +423,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedName = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         try {
-            $client->getProduct($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getProduct($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -449,7 +449,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -469,9 +469,9 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $inputConfig = new ProductInputConfig();
-        $response = $client->importProducts($formattedParent, $inputConfig);
+        $response = $gapicClient->importProducts($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -516,7 +516,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -538,9 +538,9 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         $inputConfig = new ProductInputConfig();
-        $response = $client->importProducts($formattedParent, $inputConfig);
+        $response = $gapicClient->importProducts($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -568,7 +568,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function listProductsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -585,8 +585,8 @@ class ProductServiceClientTest extends GeneratedTest
         $expectedResponse->setProducts($products);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
-        $response = $client->listProducts($formattedParent);
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $response = $gapicClient->listProducts($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -607,7 +607,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function listProductsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -622,10 +622,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $formattedParent = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         try {
-            $client->listProducts($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listProducts($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -648,7 +648,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -668,10 +668,10 @@ class ProductServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
-        $response = $client->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
+        $response = $gapicClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -718,7 +718,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -740,10 +740,10 @@ class ProductServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedProduct = $client->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
+        $formattedProduct = $gapicClient->productName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]', '[PRODUCT]');
         $type = 'type3575610';
         $placeIds = [];
-        $response = $client->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
+        $response = $gapicClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -777,7 +777,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -800,7 +800,7 @@ class ProductServiceClientTest extends GeneratedTest
         $inventory = new Product();
         $inventoryTitle = 'inventoryTitle-43609508';
         $inventory->setTitle($inventoryTitle);
-        $response = $client->setInventory($inventory);
+        $response = $gapicClient->setInventory($inventory);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -843,7 +843,7 @@ class ProductServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -868,7 +868,7 @@ class ProductServiceClientTest extends GeneratedTest
         $inventory = new Product();
         $inventoryTitle = 'inventoryTitle-43609508';
         $inventory->setTitle($inventoryTitle);
-        $response = $client->setInventory($inventory);
+        $response = $gapicClient->setInventory($inventory);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -896,7 +896,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function updateProductTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -923,7 +923,7 @@ class ProductServiceClientTest extends GeneratedTest
         $product = new Product();
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
-        $response = $client->updateProduct($product);
+        $response = $gapicClient->updateProduct($product);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -941,7 +941,7 @@ class ProductServiceClientTest extends GeneratedTest
     public function updateProductExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -960,8 +960,8 @@ class ProductServiceClientTest extends GeneratedTest
         $productTitle = 'productTitle1004085929';
         $product->setTitle($productTitle);
         try {
-            $client->updateProduct($product);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateProduct($product);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

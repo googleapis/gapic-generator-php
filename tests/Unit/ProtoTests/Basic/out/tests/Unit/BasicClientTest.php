@@ -74,14 +74,14 @@ class BasicClientTest extends GeneratedTest
     public function aMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->aMethod();
+        $response = $gapicClient->aMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -97,7 +97,7 @@ class BasicClientTest extends GeneratedTest
     public function aMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -112,8 +112,8 @@ class BasicClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->aMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->aMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -130,7 +130,7 @@ class BasicClientTest extends GeneratedTest
     public function methodWithArgsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -140,7 +140,7 @@ class BasicClientTest extends GeneratedTest
         // Mock request
         $aString = 'aString-929604177';
         $partOfRequestA = [];
-        $response = $client->methodWithArgs($aString, $partOfRequestA);
+        $response = $gapicClient->methodWithArgs($aString, $partOfRequestA);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -160,7 +160,7 @@ class BasicClientTest extends GeneratedTest
     public function methodWithArgsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -178,8 +178,8 @@ class BasicClientTest extends GeneratedTest
         $aString = 'aString-929604177';
         $partOfRequestA = [];
         try {
-            $client->methodWithArgs($aString, $partOfRequestA);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->methodWithArgs($aString, $partOfRequestA);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

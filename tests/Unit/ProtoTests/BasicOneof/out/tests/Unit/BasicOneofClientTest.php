@@ -75,7 +75,7 @@ class BasicOneofClientTest extends GeneratedTest
     public function aMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -89,7 +89,7 @@ class BasicOneofClientTest extends GeneratedTest
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
         $requiredOptional = 'requiredOptional987493376';
-        $response = $client->aMethod($supplementaryData, $other, $requiredOptional);
+        $response = $gapicClient->aMethod($supplementaryData, $other, $requiredOptional);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -111,7 +111,7 @@ class BasicOneofClientTest extends GeneratedTest
     public function aMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -133,8 +133,8 @@ class BasicOneofClientTest extends GeneratedTest
         $other->setFirst($otherFirst);
         $requiredOptional = 'requiredOptional987493376';
         try {
-            $client->aMethod($supplementaryData, $other, $requiredOptional);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->aMethod($supplementaryData, $other, $requiredOptional);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

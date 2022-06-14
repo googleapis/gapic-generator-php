@@ -81,14 +81,14 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1ATest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response1();
         $transport->addResponse($expectedResponse);
-        $response = $client->method1A();
+        $response = $gapicClient->method1A();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -104,7 +104,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1AExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -119,8 +119,8 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->method1A();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->method1A();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -143,7 +143,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -162,7 +162,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $completeOperation->setDone(true);
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
-        $response = $client->method1BLro();
+        $response = $gapicClient->method1BLro();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -203,7 +203,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -224,7 +224,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
-        $response = $client->method1BLro();
+        $response = $gapicClient->method1BLro();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -252,7 +252,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1BidiStreamingTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -267,7 +267,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $request = new Request1();
         $request2 = new Request1();
         $request3 = new Request1();
-        $bidi = $client->method1BidiStreaming();
+        $bidi = $gapicClient->method1BidiStreaming();
         $this->assertInstanceOf(BidiStream::class, $bidi);
         $bidi->write($request);
         $responses = [];
@@ -309,7 +309,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1BidiStreamingExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -323,7 +323,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
-        $bidi = $client->method1BidiStreaming();
+        $bidi = $gapicClient->method1BidiStreaming();
         $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);
@@ -344,14 +344,14 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1CServiceLevelRetryTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response1();
         $transport->addResponse($expectedResponse);
-        $response = $client->method1CServiceLevelRetry();
+        $response = $gapicClient->method1CServiceLevelRetry();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -367,7 +367,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1CServiceLevelRetryExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -382,8 +382,8 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->method1CServiceLevelRetry();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->method1CServiceLevelRetry();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -400,14 +400,14 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1DTimeoutOnlyRetryTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response1();
         $transport->addResponse($expectedResponse);
-        $response = $client->method1DTimeoutOnlyRetry();
+        $response = $gapicClient->method1DTimeoutOnlyRetry();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -423,7 +423,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1DTimeoutOnlyRetryExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -438,8 +438,8 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->method1DTimeoutOnlyRetry();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->method1DTimeoutOnlyRetry();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -456,7 +456,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1ServerStreamingTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -468,7 +468,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $expectedResponse3 = new Response1();
         $transport->addResponse($expectedResponse3);
         // Mock request
-        $serverStream = $client->method1ServerStreaming();
+        $serverStream = $gapicClient->method1ServerStreaming();
         $this->assertInstanceOf(ServerStream::class, $serverStream);
         $responses = iterator_to_array($serverStream->readAll());
         $expectedResponses = [];
@@ -490,7 +490,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     public function method1ServerStreamingExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -505,7 +505,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
         // Mock request
-        $serverStream = $client->method1ServerStreaming();
+        $serverStream = $gapicClient->method1ServerStreaming();
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);

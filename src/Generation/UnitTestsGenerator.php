@@ -45,6 +45,8 @@ use Google\Rpc\Code;
 
 class UnitTestsGenerator
 {
+    const CLIENT_VARIABLE = 'gapicClient';
+
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
         return (new UnitTestsGenerator($ctx, $serviceDetails))->generateImpl();
@@ -215,7 +217,7 @@ class UnitTestsGenerator
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
@@ -272,7 +274,7 @@ class UnitTestsGenerator
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
         $expectedExceptionMessage  = AST::var('expectedExceptionMessage ');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
@@ -298,7 +300,7 @@ class UnitTestsGenerator
                 $requestPerField->map(fn ($x) => $x->initCode),
                 AST::try(
                     $client->instanceCall(AST::method($method->methodName))($requestCallArgs),
-                    '// If the $client method call did not throw, fail the test',
+                    sprintf('// If the $%s method call did not throw, fail the test', self::CLIENT_VARIABLE),
                     ($this->fail)('Expected an ApiException, but no exception was thrown.')
                 )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
                     ($this->assertEquals)(AST::access($status, AST::property('code')), $ex->instanceCall(AST::method('getCode'))()),
@@ -440,7 +442,7 @@ class UnitTestsGenerator
         $operationsTransport = AST::var('operationsTransport');
         $operationsClient = AST::var('operationsClient');
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $incompleteOperation = AST::var('incompleteOperation');
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
@@ -469,7 +471,7 @@ class UnitTestsGenerator
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
         $mockResourceElement = AST::var("{$method->resourcesFieldName}Element");
         $mockResource = AST::var($method->resourcesFieldName);
@@ -547,7 +549,7 @@ class UnitTestsGenerator
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
         $expectedResponsesVarList = Vector::range(1, 3)->map(fn ($i) => $prod->perField(
             $method->responseFields->filter(fn ($x) => $x->isInTestResponse)
@@ -619,7 +621,7 @@ class UnitTestsGenerator
     {
         // TODO: Support resource-names in request args.
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         $bidi = AST::var('bidi');
@@ -663,7 +665,7 @@ class UnitTestsGenerator
         // TODO: Support resource-names in request args.
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $serverStream = AST::var('serverStream');
@@ -724,7 +726,7 @@ class UnitTestsGenerator
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
@@ -896,7 +898,7 @@ class UnitTestsGenerator
         $operationsTransport = AST::var('operationsTransport');
         $operationsClient = AST::var('operationsClient');
         $transport = AST::var('transport');
-        $client = AST::var('client');
+        $client = AST::var(self::CLIENT_VARIABLE);
         $incompleteOperation = AST::var('incompleteOperation');
         $opNameSetter = $method->operationNameField->setter;
         $status = $method->operationStatusField;

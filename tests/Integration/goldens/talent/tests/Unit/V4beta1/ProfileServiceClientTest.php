@@ -78,7 +78,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function createProfileTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -100,9 +100,9 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setKeywordSnippet($keywordSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $profile = new Profile();
-        $response = $client->createProfile($formattedParent, $profile);
+        $response = $gapicClient->createProfile($formattedParent, $profile);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -122,7 +122,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function createProfileExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -137,11 +137,11 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $profile = new Profile();
         try {
-            $client->createProfile($formattedParent, $profile);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createProfile($formattedParent, $profile);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -158,7 +158,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function deleteProfileTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -166,8 +166,8 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
-        $client->deleteProfile($formattedName);
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $gapicClient->deleteProfile($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -184,7 +184,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function deleteProfileExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -199,10 +199,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
-            $client->deleteProfile($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->deleteProfile($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -219,7 +219,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function getProfileTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -241,8 +241,8 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setKeywordSnippet($keywordSnippet);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
-        $response = $client->getProfile($formattedName);
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $response = $gapicClient->getProfile($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -260,7 +260,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function getProfileExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -275,10 +275,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $formattedName = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
-            $client->getProfile($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getProfile($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -295,7 +295,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function listProfilesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -310,8 +310,8 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setProfiles($profiles);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
-        $response = $client->listProfiles($formattedParent);
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
+        $response = $gapicClient->listProfiles($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -332,7 +332,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function listProfilesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -347,10 +347,10 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         try {
-            $client->listProfiles($formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listProfiles($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -367,7 +367,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function searchProfilesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -386,9 +386,9 @@ class ProfileServiceClientTest extends GeneratedTest
         $expectedResponse->setHistogramQueryResults($histogramQueryResults);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $requestMetadata = new RequestMetadata();
-        $response = $client->searchProfiles($formattedParent, $requestMetadata);
+        $response = $gapicClient->searchProfiles($formattedParent, $requestMetadata);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -411,7 +411,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function searchProfilesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -426,11 +426,11 @@ class ProfileServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $client->tenantName('[PROJECT]', '[TENANT]');
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
         $requestMetadata = new RequestMetadata();
         try {
-            $client->searchProfiles($formattedParent, $requestMetadata);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->searchProfiles($formattedParent, $requestMetadata);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -447,7 +447,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function updateProfileTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -470,7 +470,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $profile = new Profile();
-        $response = $client->updateProfile($profile);
+        $response = $gapicClient->updateProfile($profile);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -488,7 +488,7 @@ class ProfileServiceClientTest extends GeneratedTest
     public function updateProfileExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -505,8 +505,8 @@ class ProfileServiceClientTest extends GeneratedTest
         // Mock request
         $profile = new Profile();
         try {
-            $client->updateProfile($profile);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateProfile($profile);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

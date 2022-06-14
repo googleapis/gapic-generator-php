@@ -74,7 +74,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function cancelTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -83,7 +83,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $operation = 'operation1662702951';
-        $client->cancel($operation);
+        $gapicClient->cancel($operation);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -100,7 +100,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function cancelExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -117,8 +117,8 @@ class CustomLroOperationsClientTest extends GeneratedTest
         // Mock request
         $operation = 'operation1662702951';
         try {
-            $client->cancel($operation);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->cancel($operation);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -135,7 +135,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function deleteTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -144,7 +144,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $operation = 'operation1662702951';
-        $client->delete($operation);
+        $gapicClient->delete($operation);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -161,7 +161,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function deleteExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -178,8 +178,8 @@ class CustomLroOperationsClientTest extends GeneratedTest
         // Mock request
         $operation = 'operation1662702951';
         try {
-            $client->delete($operation);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->delete($operation);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -196,7 +196,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function getTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -214,7 +214,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $project = 'project-309310695';
         $region = 'region-934795532';
         $foo = 'foo101574';
-        $response = $client->get($operation, $project, $region, $foo);
+        $response = $gapicClient->get($operation, $project, $region, $foo);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -238,7 +238,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
     public function getExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -258,8 +258,8 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $region = 'region-934795532';
         $foo = 'foo101574';
         try {
-            $client->get($operation, $project, $region, $foo);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->get($operation, $project, $region, $foo);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

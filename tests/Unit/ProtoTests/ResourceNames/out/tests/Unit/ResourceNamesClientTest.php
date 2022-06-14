@@ -72,7 +72,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function fileLevelChildTypeRefMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -80,12 +80,12 @@ class ResourceNamesClientTest extends GeneratedTest
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedReqFolderName = $client->folderName('[FOLDER_ID]');
-        $formattedReqFolderMultiName = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqFolderMultiNameHistory = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqOrderTest1 = $client->order2Name('[ORDER2_ID]');
-        $formattedReqOrderTest2 = $client->order2Name('[ORDER2_ID]');
-        $response = $client->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
+        $formattedReqFolderName = $gapicClient->folderName('[FOLDER_ID]');
+        $formattedReqFolderMultiName = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqFolderMultiNameHistory = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqOrderTest1 = $gapicClient->order2Name('[ORDER2_ID]');
+        $formattedReqOrderTest2 = $gapicClient->order2Name('[ORDER2_ID]');
+        $response = $gapicClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -111,7 +111,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function fileLevelChildTypeRefMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -126,14 +126,14 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedReqFolderName = $client->folderName('[FOLDER_ID]');
-        $formattedReqFolderMultiName = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqFolderMultiNameHistory = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqOrderTest1 = $client->order2Name('[ORDER2_ID]');
-        $formattedReqOrderTest2 = $client->order2Name('[ORDER2_ID]');
+        $formattedReqFolderName = $gapicClient->folderName('[FOLDER_ID]');
+        $formattedReqFolderMultiName = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqFolderMultiNameHistory = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqOrderTest1 = $gapicClient->order2Name('[ORDER2_ID]');
+        $formattedReqOrderTest2 = $gapicClient->order2Name('[ORDER2_ID]');
         try {
-            $client->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -150,14 +150,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function fileLevelTypeRefMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->fileLevelTypeRefMethod();
+        $response = $gapicClient->fileLevelTypeRefMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -173,7 +173,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function fileLevelTypeRefMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -188,8 +188,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->fileLevelTypeRefMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->fileLevelTypeRefMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -206,14 +206,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function multiPatternMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->multiPatternMethod();
+        $response = $gapicClient->multiPatternMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -229,7 +229,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function multiPatternMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -244,8 +244,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->multiPatternMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->multiPatternMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -262,14 +262,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function singlePatternMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->singlePatternMethod();
+        $response = $gapicClient->singlePatternMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -285,7 +285,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function singlePatternMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -300,8 +300,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->singlePatternMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->singlePatternMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -318,14 +318,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardChildReferenceMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->wildcardChildReferenceMethod();
+        $response = $gapicClient->wildcardChildReferenceMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -341,7 +341,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardChildReferenceMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -356,8 +356,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->wildcardChildReferenceMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->wildcardChildReferenceMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -374,14 +374,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->wildcardMethod();
+        $response = $gapicClient->wildcardMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -397,7 +397,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -412,8 +412,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->wildcardMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->wildcardMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -430,14 +430,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardMultiMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->wildcardMultiMethod();
+        $response = $gapicClient->wildcardMultiMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -453,7 +453,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardMultiMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -468,8 +468,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->wildcardMultiMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->wildcardMultiMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -486,14 +486,14 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardReferenceMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
-        $response = $client->wildcardReferenceMethod();
+        $response = $gapicClient->wildcardReferenceMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -509,7 +509,7 @@ class ResourceNamesClientTest extends GeneratedTest
     public function wildcardReferenceMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -524,8 +524,8 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->wildcardReferenceMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->wildcardReferenceMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
