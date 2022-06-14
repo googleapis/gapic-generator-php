@@ -77,7 +77,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function createApplicationTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -109,7 +109,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application->setStage($applicationStage);
         $applicationCreateTime = new Timestamp();
         $application->setCreateTime($applicationCreateTime);
-        $response = $client->createApplication($formattedParent, $application);
+        $response = $gapicClient->createApplication($formattedParent, $application);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -129,7 +129,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function createApplicationExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -155,7 +155,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $applicationCreateTime = new Timestamp();
         $application->setCreateTime($applicationCreateTime);
         try {
-            $client->createApplication($formattedParent, $application);
+            $gapicClient->createApplication($formattedParent, $application);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -173,7 +173,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function deleteApplicationTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -182,7 +182,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
-        $client->deleteApplication($formattedName);
+        $gapicClient->deleteApplication($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -199,7 +199,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function deleteApplicationExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -216,7 +216,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         try {
-            $client->deleteApplication($formattedName);
+            $gapicClient->deleteApplication($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -234,7 +234,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function getApplicationTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -257,7 +257,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
-        $response = $client->getApplication($formattedName);
+        $response = $gapicClient->getApplication($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -275,7 +275,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function getApplicationExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -292,7 +292,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->applicationName('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]');
         try {
-            $client->getApplication($formattedName);
+            $gapicClient->getApplication($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -310,7 +310,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function listApplicationsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -326,7 +326,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
-        $response = $client->listApplications($formattedParent);
+        $response = $gapicClient->listApplications($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -347,7 +347,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function listApplicationsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -364,7 +364,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
         try {
-            $client->listApplications($formattedParent);
+            $gapicClient->listApplications($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -382,7 +382,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function updateApplicationTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -413,7 +413,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $application->setStage($applicationStage);
         $applicationCreateTime = new Timestamp();
         $application->setCreateTime($applicationCreateTime);
-        $response = $client->updateApplication($application);
+        $response = $gapicClient->updateApplication($application);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -431,7 +431,7 @@ class ApplicationServiceClientTest extends GeneratedTest
     public function updateApplicationExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -456,7 +456,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $applicationCreateTime = new Timestamp();
         $application->setCreateTime($applicationCreateTime);
         try {
-            $client->updateApplication($application);
+            $gapicClient->updateApplication($application);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

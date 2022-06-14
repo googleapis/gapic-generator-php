@@ -74,7 +74,7 @@ class BasicPaginatedClientTest extends GeneratedTest
     public function methodPaginatedTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -100,7 +100,7 @@ class BasicPaginatedClientTest extends GeneratedTest
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
         $partOfRequestA = [];
-        $response = $client->methodPaginated($aField, $pageToken, $partOfRequestA);
+        $response = $gapicClient->methodPaginated($aField, $pageToken, $partOfRequestA);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -125,7 +125,7 @@ class BasicPaginatedClientTest extends GeneratedTest
     public function methodPaginatedExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -144,8 +144,8 @@ class BasicPaginatedClientTest extends GeneratedTest
         $pageToken = 'pageToken1630607433';
         $partOfRequestA = [];
         try {
-            $client->methodPaginated($aField, $pageToken, $partOfRequestA);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->methodPaginated($aField, $pageToken, $partOfRequestA);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

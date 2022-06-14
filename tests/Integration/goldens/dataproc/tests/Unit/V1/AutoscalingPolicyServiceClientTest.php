@@ -79,7 +79,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function createAutoscalingPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -107,7 +107,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $basicAlgorithmYarnConfig->setScaleDownFactor($yarnConfigScaleDownFactor);
         $policyBasicAlgorithm->setYarnConfig($basicAlgorithmYarnConfig);
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
-        $response = $client->createAutoscalingPolicy($formattedParent, $policy);
+        $response = $gapicClient->createAutoscalingPolicy($formattedParent, $policy);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -127,7 +127,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function createAutoscalingPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -159,7 +159,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $policyBasicAlgorithm->setYarnConfig($basicAlgorithmYarnConfig);
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
         try {
-            $client->createAutoscalingPolicy($formattedParent, $policy);
+            $gapicClient->createAutoscalingPolicy($formattedParent, $policy);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -177,7 +177,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function deleteAutoscalingPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -186,7 +186,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
-        $client->deleteAutoscalingPolicy($formattedName);
+        $gapicClient->deleteAutoscalingPolicy($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -203,7 +203,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function deleteAutoscalingPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -220,7 +220,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         try {
-            $client->deleteAutoscalingPolicy($formattedName);
+            $gapicClient->deleteAutoscalingPolicy($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -238,7 +238,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function getAutoscalingPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -251,7 +251,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
-        $response = $client->getAutoscalingPolicy($formattedName);
+        $response = $gapicClient->getAutoscalingPolicy($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -269,7 +269,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function getAutoscalingPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -286,7 +286,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->autoscalingPolicyName('[PROJECT]', '[LOCATION]', '[AUTOSCALING_POLICY]');
         try {
-            $client->getAutoscalingPolicy($formattedName);
+            $gapicClient->getAutoscalingPolicy($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -304,7 +304,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function listAutoscalingPoliciesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -320,7 +320,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
-        $response = $client->listAutoscalingPolicies($formattedParent);
+        $response = $gapicClient->listAutoscalingPolicies($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -341,7 +341,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function listAutoscalingPoliciesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -358,7 +358,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         try {
-            $client->listAutoscalingPolicies($formattedParent);
+            $gapicClient->listAutoscalingPolicies($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -376,7 +376,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function updateAutoscalingPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -403,7 +403,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $basicAlgorithmYarnConfig->setScaleDownFactor($yarnConfigScaleDownFactor);
         $policyBasicAlgorithm->setYarnConfig($basicAlgorithmYarnConfig);
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
-        $response = $client->updateAutoscalingPolicy($policy);
+        $response = $gapicClient->updateAutoscalingPolicy($policy);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -421,7 +421,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
     public function updateAutoscalingPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -452,7 +452,7 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $policyBasicAlgorithm->setYarnConfig($basicAlgorithmYarnConfig);
         $policy->setBasicAlgorithm($policyBasicAlgorithm);
         try {
-            $client->updateAutoscalingPolicy($policy);
+            $gapicClient->updateAutoscalingPolicy($policy);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

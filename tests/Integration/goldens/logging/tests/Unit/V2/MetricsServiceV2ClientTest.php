@@ -75,7 +75,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function createLogMetricTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -97,7 +97,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metric->setName($metricName);
         $metricFilter = 'metricFilter1248897352';
         $metric->setFilter($metricFilter);
-        $response = $client->createLogMetric($formattedParent, $metric);
+        $response = $gapicClient->createLogMetric($formattedParent, $metric);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -117,7 +117,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function createLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -139,7 +139,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metricFilter = 'metricFilter1248897352';
         $metric->setFilter($metricFilter);
         try {
-            $client->createLogMetric($formattedParent, $metric);
+            $gapicClient->createLogMetric($formattedParent, $metric);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -157,7 +157,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function deleteLogMetricTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -166,7 +166,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
-        $client->deleteLogMetric($formattedMetricName);
+        $gapicClient->deleteLogMetric($formattedMetricName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -183,7 +183,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function deleteLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -200,7 +200,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
         try {
-            $client->deleteLogMetric($formattedMetricName);
+            $gapicClient->deleteLogMetric($formattedMetricName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -218,7 +218,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function getLogMetricTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -235,7 +235,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
-        $response = $client->getLogMetric($formattedMetricName);
+        $response = $gapicClient->getLogMetric($formattedMetricName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -253,7 +253,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function getLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -270,7 +270,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedMetricName = $client->logMetricName('[PROJECT]', '[METRIC]');
         try {
-            $client->getLogMetric($formattedMetricName);
+            $gapicClient->getLogMetric($formattedMetricName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -288,7 +288,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function listLogMetricsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -304,7 +304,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->listLogMetrics($formattedParent);
+        $response = $gapicClient->listLogMetrics($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -325,7 +325,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function listLogMetricsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -342,7 +342,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->listLogMetrics($formattedParent);
+            $gapicClient->listLogMetrics($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -360,7 +360,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function updateLogMetricTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -382,7 +382,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metric->setName($metricName);
         $metricFilter = 'metricFilter1248897352';
         $metric->setFilter($metricFilter);
-        $response = $client->updateLogMetric($formattedMetricName, $metric);
+        $response = $gapicClient->updateLogMetric($formattedMetricName, $metric);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -402,7 +402,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
     public function updateLogMetricExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -424,7 +424,7 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $metricFilter = 'metricFilter1248897352';
         $metric->setFilter($metricFilter);
         try {
-            $client->updateLogMetric($formattedMetricName, $metric);
+            $gapicClient->updateLogMetric($formattedMetricName, $metric);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

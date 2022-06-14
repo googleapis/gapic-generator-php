@@ -76,7 +76,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
     public function methodBidiTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -97,7 +97,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $aNumber3 = 617105115;
         $request3 = new Request();
         $request3->setANumber($aNumber3);
-        $bidi = $client->methodBidi();
+        $bidi = $gapicClient->methodBidi();
         $this->assertInstanceOf(BidiStream::class, $bidi);
         $bidi->write($request);
         $responses = [];
@@ -139,7 +139,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
     public function methodBidiExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -153,7 +153,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
-        $bidi = $client->methodBidi();
+        $bidi = $gapicClient->methodBidi();
         $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);
@@ -174,7 +174,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
     public function methodEmptyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -189,7 +189,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         $request = new EmptyRequest();
         $request2 = new EmptyRequest();
         $request3 = new EmptyRequest();
-        $bidi = $client->methodEmpty();
+        $bidi = $gapicClient->methodEmpty();
         $this->assertInstanceOf(BidiStream::class, $bidi);
         $bidi->write($request);
         $responses = [];
@@ -231,7 +231,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
     public function methodEmptyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -245,7 +245,7 @@ class BasicBidiStreamingClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
-        $bidi = $client->methodEmpty();
+        $bidi = $gapicClient->methodEmpty();
         $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);

@@ -84,7 +84,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function deleteLogTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -93,7 +93,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedLogName = $client->logName('[PROJECT]', '[LOG]');
-        $client->deleteLog($formattedLogName);
+        $gapicClient->deleteLog($formattedLogName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -110,7 +110,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function deleteLogExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -127,7 +127,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedLogName = $client->logName('[PROJECT]', '[LOG]');
         try {
-            $client->deleteLog($formattedLogName);
+            $gapicClient->deleteLog($formattedLogName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -145,7 +145,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listLogEntriesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -163,7 +163,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $formattedResourceNames = [
             $client->projectName('[PROJECT]'),
         ];
-        $response = $client->listLogEntries($formattedResourceNames);
+        $response = $gapicClient->listLogEntries($formattedResourceNames);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -184,7 +184,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -203,7 +203,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
             $client->projectName('[PROJECT]'),
         ];
         try {
-            $client->listLogEntries($formattedResourceNames);
+            $gapicClient->listLogEntries($formattedResourceNames);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -221,7 +221,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listLogsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -237,7 +237,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->listLogs($formattedParent);
+        $response = $gapicClient->listLogs($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -258,7 +258,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listLogsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -275,7 +275,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->listLogs($formattedParent);
+            $gapicClient->listLogs($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -293,7 +293,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listMonitoredResourceDescriptorsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -307,7 +307,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setResourceDescriptors($resourceDescriptors);
         $transport->addResponse($expectedResponse);
-        $response = $client->listMonitoredResourceDescriptors();
+        $response = $gapicClient->listMonitoredResourceDescriptors();
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -326,7 +326,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function listMonitoredResourceDescriptorsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -341,7 +341,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listMonitoredResourceDescriptors();
+            $gapicClient->listMonitoredResourceDescriptors();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -359,7 +359,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function tailLogEntriesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -380,7 +380,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $resourceNames3 = [];
         $request3 = new TailLogEntriesRequest();
         $request3->setResourceNames($resourceNames3);
-        $bidi = $client->tailLogEntries();
+        $bidi = $gapicClient->tailLogEntries();
         $this->assertInstanceOf(BidiStream::class, $bidi);
         $bidi->write($request);
         $responses = [];
@@ -422,7 +422,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function tailLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $status = new stdClass();
@@ -436,7 +436,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
-        $bidi = $client->tailLogEntries();
+        $bidi = $gapicClient->tailLogEntries();
         $results = $bidi->closeWriteAndReadAll();
         try {
             iterator_to_array($results);
@@ -457,7 +457,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function writeLogEntriesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -466,7 +466,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $entries = [];
-        $response = $client->writeLogEntries($entries);
+        $response = $gapicClient->writeLogEntries($entries);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -484,7 +484,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
     public function writeLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -501,7 +501,7 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         // Mock request
         $entries = [];
         try {
-            $client->writeLogEntries($entries);
+            $gapicClient->writeLogEntries($entries);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

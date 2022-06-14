@@ -84,7 +84,7 @@ class UserEventServiceClientTest extends GeneratedTest
     public function collectUserEventTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -98,7 +98,7 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $userEvent = 'userEvent1921940774';
-        $response = $client->collectUserEvent($parent, $userEvent);
+        $response = $gapicClient->collectUserEvent($parent, $userEvent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -118,7 +118,7 @@ class UserEventServiceClientTest extends GeneratedTest
     public function collectUserEventExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -136,7 +136,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         $userEvent = 'userEvent1921940774';
         try {
-            $client->collectUserEvent($parent, $userEvent);
+            $gapicClient->collectUserEvent($parent, $userEvent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -160,7 +160,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -186,7 +186,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEventInlineSourceUserEvents = [];
         $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
         $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
-        $response = $client->importUserEvents($formattedParent, $inputConfig);
+        $response = $gapicClient->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -231,7 +231,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -259,7 +259,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEventInlineSourceUserEvents = [];
         $inputConfigUserEventInlineSource->setUserEvents($userEventInlineSourceUserEvents);
         $inputConfig->setUserEventInlineSource($inputConfigUserEventInlineSource);
-        $response = $client->importUserEvents($formattedParent, $inputConfig);
+        $response = $gapicClient->importUserEvents($formattedParent, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -293,7 +293,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -317,7 +317,7 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $filter = 'filter-1274492040';
-        $response = $client->purgeUserEvents($parent, $filter);
+        $response = $gapicClient->purgeUserEvents($parent, $filter);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -362,7 +362,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -386,7 +386,7 @@ class UserEventServiceClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         $filter = 'filter-1274492040';
-        $response = $client->purgeUserEvents($parent, $filter);
+        $response = $gapicClient->purgeUserEvents($parent, $filter);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -420,7 +420,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -443,7 +443,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $parent = 'parent-995424086';
-        $response = $client->rejoinUserEvents($parent);
+        $response = $gapicClient->rejoinUserEvents($parent);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -486,7 +486,7 @@ class UserEventServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -509,7 +509,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $parent = 'parent-995424086';
-        $response = $client->rejoinUserEvents($parent);
+        $response = $gapicClient->rejoinUserEvents($parent);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -537,7 +537,7 @@ class UserEventServiceClientTest extends GeneratedTest
     public function writeUserEventTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -575,7 +575,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEvent->setEventType($userEventEventType);
         $userEventVisitorId = 'userEventVisitorId-2104193702';
         $userEvent->setVisitorId($userEventVisitorId);
-        $response = $client->writeUserEvent($parent, $userEvent);
+        $response = $gapicClient->writeUserEvent($parent, $userEvent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -595,7 +595,7 @@ class UserEventServiceClientTest extends GeneratedTest
     public function writeUserEventExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -617,7 +617,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $userEventVisitorId = 'userEventVisitorId-2104193702';
         $userEvent->setVisitorId($userEventVisitorId);
         try {
-            $client->writeUserEvent($parent, $userEvent);
+            $gapicClient->writeUserEvent($parent, $userEvent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

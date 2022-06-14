@@ -83,7 +83,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createBucketTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -102,7 +102,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
         $bucketId = 'bucketId1837164432';
         $bucket = new LogBucket();
-        $response = $client->createBucket($formattedParent, $bucketId, $bucket);
+        $response = $gapicClient->createBucket($formattedParent, $bucketId, $bucket);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -124,7 +124,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createBucketExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -143,7 +143,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $bucketId = 'bucketId1837164432';
         $bucket = new LogBucket();
         try {
-            $client->createBucket($formattedParent, $bucketId, $bucket);
+            $gapicClient->createBucket($formattedParent, $bucketId, $bucket);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -161,7 +161,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createExclusionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -183,7 +183,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $exclusion->setName($exclusionName);
         $exclusionFilter = 'exclusionFilter-1414044954';
         $exclusion->setFilter($exclusionFilter);
-        $response = $client->createExclusion($formattedParent, $exclusion);
+        $response = $gapicClient->createExclusion($formattedParent, $exclusion);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -203,7 +203,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createExclusionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -225,7 +225,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $exclusionFilter = 'exclusionFilter-1414044954';
         $exclusion->setFilter($exclusionFilter);
         try {
-            $client->createExclusion($formattedParent, $exclusion);
+            $gapicClient->createExclusion($formattedParent, $exclusion);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -243,7 +243,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createSinkTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -271,7 +271,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $sink->setName($sinkName);
         $sinkDestination = 'sinkDestination-1018870917';
         $sink->setDestination($sinkDestination);
-        $response = $client->createSink($formattedParent, $sink);
+        $response = $gapicClient->createSink($formattedParent, $sink);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -291,7 +291,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createSinkExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -313,7 +313,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $sinkDestination = 'sinkDestination-1018870917';
         $sink->setDestination($sinkDestination);
         try {
-            $client->createSink($formattedParent, $sink);
+            $gapicClient->createSink($formattedParent, $sink);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -331,7 +331,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createViewTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -348,7 +348,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         $viewId = 'viewId454228213';
         $view = new LogView();
-        $response = $client->createView($parent, $viewId, $view);
+        $response = $gapicClient->createView($parent, $viewId, $view);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -370,7 +370,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function createViewExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -389,7 +389,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $viewId = 'viewId454228213';
         $view = new LogView();
         try {
-            $client->createView($parent, $viewId, $view);
+            $gapicClient->createView($parent, $viewId, $view);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -407,7 +407,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteBucketTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -416,7 +416,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
-        $client->deleteBucket($formattedName);
+        $gapicClient->deleteBucket($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -433,7 +433,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteBucketExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -450,7 +450,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->deleteBucket($formattedName);
+            $gapicClient->deleteBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -468,7 +468,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteExclusionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -477,7 +477,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
-        $client->deleteExclusion($formattedName);
+        $gapicClient->deleteExclusion($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -494,7 +494,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteExclusionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -511,7 +511,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         try {
-            $client->deleteExclusion($formattedName);
+            $gapicClient->deleteExclusion($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -529,7 +529,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteSinkTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -538,7 +538,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
-        $client->deleteSink($formattedSinkName);
+        $gapicClient->deleteSink($formattedSinkName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -555,7 +555,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteSinkExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -572,7 +572,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         try {
-            $client->deleteSink($formattedSinkName);
+            $gapicClient->deleteSink($formattedSinkName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -590,7 +590,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteViewTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -599,7 +599,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
-        $client->deleteView($formattedName);
+        $gapicClient->deleteView($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -616,7 +616,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function deleteViewExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -633,7 +633,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
         try {
-            $client->deleteView($formattedName);
+            $gapicClient->deleteView($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -651,7 +651,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getBucketTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -668,7 +668,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
-        $response = $client->getBucket($formattedName);
+        $response = $gapicClient->getBucket($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -686,7 +686,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getBucketExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -703,7 +703,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->getBucket($formattedName);
+            $gapicClient->getBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -721,7 +721,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getCmekSettingsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -734,7 +734,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setKmsKeyName($kmsKeyName);
         $expectedResponse->setServiceAccountId($serviceAccountId);
         $transport->addResponse($expectedResponse);
-        $response = $client->getCmekSettings();
+        $response = $gapicClient->getCmekSettings();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -750,7 +750,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getCmekSettingsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -765,7 +765,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->getCmekSettings();
+            $gapicClient->getCmekSettings();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -783,7 +783,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getExclusionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -800,7 +800,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
-        $response = $client->getExclusion($formattedName);
+        $response = $gapicClient->getExclusion($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -818,7 +818,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getExclusionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -835,7 +835,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logExclusionName('[PROJECT]', '[EXCLUSION]');
         try {
-            $client->getExclusion($formattedName);
+            $gapicClient->getExclusion($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -853,7 +853,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getSinkTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -876,7 +876,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
-        $response = $client->getSink($formattedSinkName);
+        $response = $gapicClient->getSink($formattedSinkName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -894,7 +894,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getSinkExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -911,7 +911,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedSinkName = $client->logSinkName('[PROJECT]', '[SINK]');
         try {
-            $client->getSink($formattedSinkName);
+            $gapicClient->getSink($formattedSinkName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -929,7 +929,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getViewTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -944,7 +944,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
-        $response = $client->getView($formattedName);
+        $response = $gapicClient->getView($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -962,7 +962,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function getViewExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -979,7 +979,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logViewName('[PROJECT]', '[LOCATION]', '[BUCKET]', '[VIEW]');
         try {
-            $client->getView($formattedName);
+            $gapicClient->getView($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -997,7 +997,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listBucketsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1013,7 +1013,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
-        $response = $client->listBuckets($formattedParent);
+        $response = $gapicClient->listBuckets($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1034,7 +1034,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listBucketsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1051,7 +1051,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
         try {
-            $client->listBuckets($formattedParent);
+            $gapicClient->listBuckets($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1069,7 +1069,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listExclusionsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1085,7 +1085,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->listExclusions($formattedParent);
+        $response = $gapicClient->listExclusions($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1106,7 +1106,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listExclusionsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1123,7 +1123,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->listExclusions($formattedParent);
+            $gapicClient->listExclusions($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1141,7 +1141,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listSinksTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1157,7 +1157,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->listSinks($formattedParent);
+        $response = $gapicClient->listSinks($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1178,7 +1178,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listSinksExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1195,7 +1195,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->listSinks($formattedParent);
+            $gapicClient->listSinks($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1213,7 +1213,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listViewsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1229,7 +1229,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $parent = 'parent-995424086';
-        $response = $client->listViews($parent);
+        $response = $gapicClient->listViews($parent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1250,7 +1250,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function listViewsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1267,7 +1267,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $parent = 'parent-995424086';
         try {
-            $client->listViews($parent);
+            $gapicClient->listViews($parent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1285,7 +1285,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function undeleteBucketTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1294,7 +1294,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
-        $client->undeleteBucket($formattedName);
+        $gapicClient->undeleteBucket($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -1311,7 +1311,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function undeleteBucketExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1328,7 +1328,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         try {
-            $client->undeleteBucket($formattedName);
+            $gapicClient->undeleteBucket($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1346,7 +1346,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateBucketTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1365,7 +1365,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $formattedName = $client->logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
         $bucket = new LogBucket();
         $updateMask = new FieldMask();
-        $response = $client->updateBucket($formattedName, $bucket, $updateMask);
+        $response = $gapicClient->updateBucket($formattedName, $bucket, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1387,7 +1387,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateBucketExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1406,7 +1406,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $bucket = new LogBucket();
         $updateMask = new FieldMask();
         try {
-            $client->updateBucket($formattedName, $bucket, $updateMask);
+            $gapicClient->updateBucket($formattedName, $bucket, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1424,7 +1424,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateCmekSettingsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1437,7 +1437,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $expectedResponse->setKmsKeyName($kmsKeyName);
         $expectedResponse->setServiceAccountId($serviceAccountId);
         $transport->addResponse($expectedResponse);
-        $response = $client->updateCmekSettings();
+        $response = $gapicClient->updateCmekSettings();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1453,7 +1453,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateCmekSettingsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1468,7 +1468,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->updateCmekSettings();
+            $gapicClient->updateCmekSettings();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1486,7 +1486,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateExclusionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1509,7 +1509,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $exclusionFilter = 'exclusionFilter-1414044954';
         $exclusion->setFilter($exclusionFilter);
         $updateMask = new FieldMask();
-        $response = $client->updateExclusion($formattedName, $exclusion, $updateMask);
+        $response = $gapicClient->updateExclusion($formattedName, $exclusion, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1531,7 +1531,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateExclusionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1554,7 +1554,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $exclusion->setFilter($exclusionFilter);
         $updateMask = new FieldMask();
         try {
-            $client->updateExclusion($formattedName, $exclusion, $updateMask);
+            $gapicClient->updateExclusion($formattedName, $exclusion, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1572,7 +1572,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateSinkTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1600,7 +1600,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $sink->setName($sinkName);
         $sinkDestination = 'sinkDestination-1018870917';
         $sink->setDestination($sinkDestination);
-        $response = $client->updateSink($formattedSinkName, $sink);
+        $response = $gapicClient->updateSink($formattedSinkName, $sink);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1620,7 +1620,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateSinkExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1642,7 +1642,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $sinkDestination = 'sinkDestination-1018870917';
         $sink->setDestination($sinkDestination);
         try {
-            $client->updateSink($formattedSinkName, $sink);
+            $gapicClient->updateSink($formattedSinkName, $sink);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1660,7 +1660,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateViewTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1676,7 +1676,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $view = new LogView();
-        $response = $client->updateView($name, $view);
+        $response = $gapicClient->updateView($name, $view);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1696,7 +1696,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
     public function updateViewExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1714,7 +1714,7 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $view = new LogView();
         try {
-            $client->updateView($name, $view);
+            $gapicClient->updateView($name, $view);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

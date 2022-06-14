@@ -80,7 +80,7 @@ class CustomLroClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -98,7 +98,7 @@ class CustomLroClientTest extends GeneratedTest
         // Mock request
         $project = 'project-309310695';
         $region = 'region-934795532';
-        $response = $client->createFoo($project, $region);
+        $response = $gapicClient->createFoo($project, $region);
         $this->assertFalse($response->isDone());
         $apiRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($apiRequests));
@@ -144,7 +144,7 @@ class CustomLroClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -168,7 +168,7 @@ class CustomLroClientTest extends GeneratedTest
         // Mock request
         $project = 'project-309310695';
         $region = 'region-934795532';
-        $response = $client->createFoo($project, $region);
+        $response = $gapicClient->createFoo($project, $region);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         try {

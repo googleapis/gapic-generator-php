@@ -72,7 +72,7 @@ class CompletionClientTest extends GeneratedTest
     public function completeQueryTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -83,7 +83,7 @@ class CompletionClientTest extends GeneratedTest
         $formattedParent = $client->projectName('[PROJECT]');
         $query = 'query107944136';
         $pageSize = 883849137;
-        $response = $client->completeQuery($formattedParent, $query, $pageSize);
+        $response = $gapicClient->completeQuery($formattedParent, $query, $pageSize);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -105,7 +105,7 @@ class CompletionClientTest extends GeneratedTest
     public function completeQueryExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -124,7 +124,7 @@ class CompletionClientTest extends GeneratedTest
         $query = 'query107944136';
         $pageSize = 883849137;
         try {
-            $client->completeQuery($formattedParent, $query, $pageSize);
+            $gapicClient->completeQuery($formattedParent, $query, $pageSize);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

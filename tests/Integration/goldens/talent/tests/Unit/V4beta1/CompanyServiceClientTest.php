@@ -75,7 +75,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function createCompanyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -109,7 +109,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $company->setDisplayName($companyDisplayName);
         $companyExternalId = 'companyExternalId855180963';
         $company->setExternalId($companyExternalId);
-        $response = $client->createCompany($formattedParent, $company);
+        $response = $gapicClient->createCompany($formattedParent, $company);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -129,7 +129,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function createCompanyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -151,7 +151,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $companyExternalId = 'companyExternalId855180963';
         $company->setExternalId($companyExternalId);
         try {
-            $client->createCompany($formattedParent, $company);
+            $gapicClient->createCompany($formattedParent, $company);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -169,7 +169,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function deleteCompanyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -178,7 +178,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
-        $client->deleteCompany($formattedName);
+        $gapicClient->deleteCompany($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -195,7 +195,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function deleteCompanyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -212,7 +212,7 @@ class CompanyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         try {
-            $client->deleteCompany($formattedName);
+            $gapicClient->deleteCompany($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -230,7 +230,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function getCompanyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -259,7 +259,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
-        $response = $client->getCompany($formattedName);
+        $response = $gapicClient->getCompany($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -277,7 +277,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function getCompanyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -294,7 +294,7 @@ class CompanyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
         try {
-            $client->getCompany($formattedName);
+            $gapicClient->getCompany($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -312,7 +312,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function listCompaniesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -328,7 +328,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->listCompanies($formattedParent);
+        $response = $gapicClient->listCompanies($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -349,7 +349,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function listCompaniesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -366,7 +366,7 @@ class CompanyServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->listCompanies($formattedParent);
+            $gapicClient->listCompanies($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -384,7 +384,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function updateCompanyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -417,7 +417,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $company->setDisplayName($companyDisplayName);
         $companyExternalId = 'companyExternalId855180963';
         $company->setExternalId($companyExternalId);
-        $response = $client->updateCompany($company);
+        $response = $gapicClient->updateCompany($company);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -435,7 +435,7 @@ class CompanyServiceClientTest extends GeneratedTest
     public function updateCompanyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -456,7 +456,7 @@ class CompanyServiceClientTest extends GeneratedTest
         $companyExternalId = 'companyExternalId855180963';
         $company->setExternalId($companyExternalId);
         try {
-            $client->updateCompany($company);
+            $gapicClient->updateCompany($company);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

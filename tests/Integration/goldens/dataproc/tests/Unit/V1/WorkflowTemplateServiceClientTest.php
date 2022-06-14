@@ -81,7 +81,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function createWorkflowTemplateTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -103,7 +103,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setPlacement($templatePlacement);
         $templateJobs = [];
         $template->setJobs($templateJobs);
-        $response = $client->createWorkflowTemplate($formattedParent, $template);
+        $response = $gapicClient->createWorkflowTemplate($formattedParent, $template);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -123,7 +123,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function createWorkflowTemplateExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -147,7 +147,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $templateJobs = [];
         $template->setJobs($templateJobs);
         try {
-            $client->createWorkflowTemplate($formattedParent, $template);
+            $gapicClient->createWorkflowTemplate($formattedParent, $template);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -165,7 +165,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function deleteWorkflowTemplateTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -174,7 +174,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
-        $client->deleteWorkflowTemplate($formattedName);
+        $gapicClient->deleteWorkflowTemplate($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -191,7 +191,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function deleteWorkflowTemplateExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -208,7 +208,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         try {
-            $client->deleteWorkflowTemplate($formattedName);
+            $gapicClient->deleteWorkflowTemplate($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -226,7 +226,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function getWorkflowTemplateTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -241,7 +241,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
-        $response = $client->getWorkflowTemplate($formattedName);
+        $response = $gapicClient->getWorkflowTemplate($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -259,7 +259,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function getWorkflowTemplateExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -276,7 +276,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
         try {
-            $client->getWorkflowTemplate($formattedName);
+            $gapicClient->getWorkflowTemplate($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -300,7 +300,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -328,7 +328,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setPlacement($templatePlacement);
         $templateJobs = [];
         $template->setJobs($templateJobs);
-        $response = $client->instantiateInlineWorkflowTemplate($formattedParent, $template);
+        $response = $gapicClient->instantiateInlineWorkflowTemplate($formattedParent, $template);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -373,7 +373,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -403,7 +403,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setPlacement($templatePlacement);
         $templateJobs = [];
         $template->setJobs($templateJobs);
-        $response = $client->instantiateInlineWorkflowTemplate($formattedParent, $template);
+        $response = $gapicClient->instantiateInlineWorkflowTemplate($formattedParent, $template);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -437,7 +437,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -458,7 +458,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
-        $response = $client->instantiateWorkflowTemplate($formattedName);
+        $response = $gapicClient->instantiateWorkflowTemplate($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -501,7 +501,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -524,7 +524,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->workflowTemplateName('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]');
-        $response = $client->instantiateWorkflowTemplate($formattedName);
+        $response = $gapicClient->instantiateWorkflowTemplate($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -552,7 +552,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function listWorkflowTemplatesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -568,7 +568,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
-        $response = $client->listWorkflowTemplates($formattedParent);
+        $response = $gapicClient->listWorkflowTemplates($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -589,7 +589,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function listWorkflowTemplatesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -606,7 +606,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->regionName('[PROJECT]', '[REGION]');
         try {
-            $client->listWorkflowTemplates($formattedParent);
+            $gapicClient->listWorkflowTemplates($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -624,7 +624,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function updateWorkflowTemplateTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -645,7 +645,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $template->setPlacement($templatePlacement);
         $templateJobs = [];
         $template->setJobs($templateJobs);
-        $response = $client->updateWorkflowTemplate($template);
+        $response = $gapicClient->updateWorkflowTemplate($template);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -663,7 +663,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
     public function updateWorkflowTemplateExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -686,7 +686,7 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $templateJobs = [];
         $template->setJobs($templateJobs);
         try {
-            $client->updateWorkflowTemplate($template);
+            $gapicClient->updateWorkflowTemplate($template);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

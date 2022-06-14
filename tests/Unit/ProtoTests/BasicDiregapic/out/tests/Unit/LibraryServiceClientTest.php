@@ -94,7 +94,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function addCommentsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -104,7 +104,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $comments = [];
-        $client->addComments($formattedName, $comments);
+        $gapicClient->addComments($formattedName, $comments);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -123,7 +123,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function addCommentsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -141,8 +141,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $comments = [];
         try {
-            $client->addComments($formattedName, $comments);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->addComments($formattedName, $comments);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -159,7 +159,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function addTagTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -169,7 +169,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $resource = 'resource-341064690';
         $tag = 'tag114586';
-        $response = $client->addTag($resource, $tag);
+        $response = $gapicClient->addTag($resource, $tag);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -189,7 +189,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function addTagExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -207,8 +207,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $resource = 'resource-341064690';
         $tag = 'tag114586';
         try {
-            $client->addTag($resource, $tag);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->addTag($resource, $tag);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -225,7 +225,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function archiveBooksTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -234,7 +234,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new ArchiveBooksResponse();
         $expectedResponse->setSuccess($success);
         $transport->addResponse($expectedResponse);
-        $response = $client->archiveBooks();
+        $response = $gapicClient->archiveBooks();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -250,7 +250,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function archiveBooksExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -265,8 +265,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->archiveBooks();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->archiveBooks();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -283,7 +283,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -305,7 +305,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
-        $response = $client->createBook($formattedName, $book);
+        $response = $gapicClient->createBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -325,7 +325,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -345,8 +345,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
         try {
-            $client->createBook($formattedName, $book);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createBook($formattedName, $book);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -363,7 +363,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createInventoryTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -377,7 +377,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $asset = 'asset93121264';
         $parentAsset = 'parentAsset1389473563';
         $assets = [];
-        $response = $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
+        $response = $gapicClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -401,7 +401,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createInventoryExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -421,8 +421,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $parentAsset = 'parentAsset1389473563';
         $assets = [];
         try {
-            $client->createInventory($formattedParent, $asset, $parentAsset, $assets);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -439,7 +439,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createShelfTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -456,7 +456,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $shelf = new ShelfResponse();
         $shelfName = 'shelfName1796941781';
         $shelf->setName($shelfName);
-        $response = $client->createShelf($shelf);
+        $response = $gapicClient->createShelf($shelf);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -474,7 +474,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function createShelfExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -493,8 +493,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $shelfName = 'shelfName1796941781';
         $shelf->setName($shelfName);
         try {
-            $client->createShelf($shelf);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->createShelf($shelf);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -511,7 +511,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function deleteBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -520,7 +520,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $client->deleteBook($formattedName);
+        $gapicClient->deleteBook($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -537,7 +537,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function deleteBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -554,8 +554,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
-            $client->deleteBook($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->deleteBook($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -572,7 +572,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function deleteShelfTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -581,7 +581,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
-        $client->deleteShelf($formattedName);
+        $gapicClient->deleteShelf($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -598,7 +598,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function deleteShelfExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -615,8 +615,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         try {
-            $client->deleteShelf($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->deleteShelf($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -633,7 +633,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function findRelatedBooksTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -654,7 +654,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedShelves = [
             $client->shelfName('[SHELF]'),
         ];
-        $response = $client->findRelatedBooks($formattedNames, $formattedShelves);
+        $response = $gapicClient->findRelatedBooks($formattedNames, $formattedShelves);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -677,7 +677,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function findRelatedBooksExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -699,8 +699,8 @@ class LibraryServiceClientTest extends GeneratedTest
             $client->shelfName('[SHELF]'),
         ];
         try {
-            $client->findRelatedBooks($formattedNames, $formattedShelves);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->findRelatedBooks($formattedNames, $formattedShelves);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -723,7 +723,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -754,7 +754,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBigBook($formattedName);
+        $response = $gapicClient->getBigBook($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -797,7 +797,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -820,7 +820,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBigBook($formattedName);
+        $response = $gapicClient->getBigBook($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -854,7 +854,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -875,7 +875,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBigNothing($formattedName);
+        $response = $gapicClient->getBigNothing($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -918,7 +918,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -941,7 +941,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBigNothing($formattedName);
+        $response = $gapicClient->getBigNothing($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -969,7 +969,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -988,7 +988,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBook($formattedName);
+        $response = $gapicClient->getBook($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1006,7 +1006,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1023,8 +1023,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
-            $client->getBook($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getBook($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1041,7 +1041,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromAbsolutelyAnywhereTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1058,7 +1058,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $response = $client->getBookFromAbsolutelyAnywhere($formattedName);
+        $response = $gapicClient->getBookFromAbsolutelyAnywhere($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1076,7 +1076,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromAbsolutelyAnywhereExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1093,8 +1093,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
-            $client->getBookFromAbsolutelyAnywhere($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getBookFromAbsolutelyAnywhere($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1111,7 +1111,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromAnywhereTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1131,7 +1131,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedAltBookName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $formattedPlace = $client->locationName('[PROJECT]', '[LOCATION]');
         $formattedFolder = $client->folderName('[FOLDER]');
-        $response = $client->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+        $response = $gapicClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1155,7 +1155,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromAnywhereExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1175,8 +1175,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedPlace = $client->locationName('[PROJECT]', '[LOCATION]');
         $formattedFolder = $client->folderName('[FOLDER]');
         try {
-            $client->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1193,7 +1193,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromArchiveTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1211,7 +1211,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->archivedBookName('[ARCHIVE]', '[BOOK]');
         $formattedParent = $client->projectName('[PROJECT]');
-        $response = $client->getBookFromArchive($formattedName, $formattedParent);
+        $response = $gapicClient->getBookFromArchive($formattedName, $formattedParent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1231,7 +1231,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getBookFromArchiveExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1249,8 +1249,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedName = $client->archivedBookName('[ARCHIVE]', '[BOOK]');
         $formattedParent = $client->projectName('[PROJECT]');
         try {
-            $client->getBookFromArchive($formattedName, $formattedParent);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getBookFromArchive($formattedName, $formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1267,7 +1267,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getShelfTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1283,7 +1283,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         $options = 'options-1249474914';
-        $response = $client->getShelf($formattedName, $options);
+        $response = $gapicClient->getShelf($formattedName, $options);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1303,7 +1303,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function getShelfExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1321,8 +1321,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedName = $client->shelfName('[SHELF]');
         $options = 'options-1249474914';
         try {
-            $client->getShelf($formattedName, $options);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getShelf($formattedName, $options);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1339,7 +1339,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listAggregatedShelvesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1353,7 +1353,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setShelves($shelves);
         $transport->addResponse($expectedResponse);
-        $response = $client->listAggregatedShelves();
+        $response = $gapicClient->listAggregatedShelves();
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1372,7 +1372,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listAggregatedShelvesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1387,8 +1387,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listAggregatedShelves();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listAggregatedShelves();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1405,7 +1405,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listBooksTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1421,7 +1421,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
-        $response = $client->listBooks($formattedName);
+        $response = $gapicClient->listBooks($formattedName);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1442,7 +1442,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listBooksExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1459,8 +1459,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         try {
-            $client->listBooks($formattedName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listBooks($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1477,7 +1477,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listShelvesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1486,7 +1486,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new ListShelvesResponse();
         $expectedResponse->setNextPageToken($nextPageToken);
         $transport->addResponse($expectedResponse);
-        $response = $client->listShelves();
+        $response = $gapicClient->listShelves();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1502,7 +1502,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listShelvesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1517,8 +1517,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listShelves();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listShelves();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1535,7 +1535,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listStringsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1549,7 +1549,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setStrings($strings);
         $transport->addResponse($expectedResponse);
-        $response = $client->listStrings();
+        $response = $gapicClient->listStrings();
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -1568,7 +1568,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function listStringsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1583,8 +1583,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listStrings();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->listStrings();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1607,7 +1607,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1628,7 +1628,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $completeOperation->setDone(true);
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
-        $response = $client->longRunningArchiveBooks();
+        $response = $gapicClient->longRunningArchiveBooks();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -1669,7 +1669,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1690,7 +1690,7 @@ class LibraryServiceClientTest extends GeneratedTest
             'details' => [],
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
-        $response = $client->longRunningArchiveBooks();
+        $response = $gapicClient->longRunningArchiveBooks();
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -1718,7 +1718,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function mergeShelvesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1734,7 +1734,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->shelfName('[SHELF]');
         $formattedOtherShelfName = $client->shelfName('[SHELF]');
-        $response = $client->mergeShelves($formattedName, $formattedOtherShelfName);
+        $response = $gapicClient->mergeShelves($formattedName, $formattedOtherShelfName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1754,7 +1754,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function mergeShelvesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1772,8 +1772,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedName = $client->shelfName('[SHELF]');
         $formattedOtherShelfName = $client->shelfName('[SHELF]');
         try {
-            $client->mergeShelves($formattedName, $formattedOtherShelfName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->mergeShelves($formattedName, $formattedOtherShelfName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1790,7 +1790,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function moveBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1810,7 +1810,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $formattedOtherShelfName = $client->shelfName('[SHELF]');
-        $response = $client->moveBook($formattedName, $formattedOtherShelfName);
+        $response = $gapicClient->moveBook($formattedName, $formattedOtherShelfName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1830,7 +1830,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function moveBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1848,8 +1848,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $formattedName = $client->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $formattedOtherShelfName = $client->shelfName('[SHELF]');
         try {
-            $client->moveBook($formattedName, $formattedOtherShelfName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->moveBook($formattedName, $formattedOtherShelfName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1866,7 +1866,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function moveBooksTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1875,7 +1875,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new MoveBooksResponse();
         $expectedResponse->setSuccess($success);
         $transport->addResponse($expectedResponse);
-        $response = $client->moveBooks();
+        $response = $gapicClient->moveBooks();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1891,7 +1891,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function moveBooksExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1906,8 +1906,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->moveBooks();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->moveBooks();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1924,7 +1924,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function privateListShelvesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1941,7 +1941,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setRead($read);
         $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
-        $response = $client->privateListShelves();
+        $response = $gapicClient->privateListShelves();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1957,7 +1957,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function privateListShelvesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -1972,8 +1972,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->privateListShelves();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->privateListShelves();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -1990,7 +1990,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function publishSeriesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2003,7 +2003,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $shelf->setName($shelfName);
         $books = [];
         $seriesUuid = new SeriesUuidResponse();
-        $response = $client->publishSeries($shelf, $books, $seriesUuid);
+        $response = $gapicClient->publishSeries($shelf, $books, $seriesUuid);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -2025,7 +2025,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function publishSeriesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2046,8 +2046,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $books = [];
         $seriesUuid = new SeriesUuidResponse();
         try {
-            $client->publishSeries($shelf, $books, $seriesUuid);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->publishSeries($shelf, $books, $seriesUuid);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2064,7 +2064,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function saveBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2073,7 +2073,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $name = 'name3373707';
-        $client->saveBook($name);
+        $gapicClient->saveBook($name);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -2090,7 +2090,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function saveBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2107,8 +2107,8 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         try {
-            $client->saveBook($name);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->saveBook($name);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2125,7 +2125,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function updateBookTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2147,7 +2147,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
-        $response = $client->updateBook($formattedName, $book);
+        $response = $gapicClient->updateBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -2167,7 +2167,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function updateBookExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2187,8 +2187,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
         try {
-            $client->updateBook($formattedName, $book);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateBook($formattedName, $book);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -2205,7 +2205,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function updateBookIndexTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2219,7 +2219,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $indexMap = [
             'indexMapKey' => $indexMapValue,
         ];
-        $client->updateBookIndex($formattedName, $indexName, $indexMap);
+        $gapicClient->updateBookIndex($formattedName, $indexName, $indexMap);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -2240,7 +2240,7 @@ class LibraryServiceClientTest extends GeneratedTest
     public function updateBookIndexExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -2262,8 +2262,8 @@ class LibraryServiceClientTest extends GeneratedTest
             'indexMapKey' => $indexMapValue,
         ];
         try {
-            $client->updateBookIndex($formattedName, $indexName, $indexMap);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->updateBookIndex($formattedName, $indexName, $indexMap);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

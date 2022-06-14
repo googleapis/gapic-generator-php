@@ -85,7 +85,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function callFunctionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -101,7 +101,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $data = 'data3076010';
-        $response = $client->callFunction($formattedName, $data);
+        $response = $gapicClient->callFunction($formattedName, $data);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -121,7 +121,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function callFunctionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -139,7 +139,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         $data = 'data3076010';
         try {
-            $client->callFunction($formattedName, $data);
+            $gapicClient->callFunction($formattedName, $data);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -163,7 +163,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -209,7 +209,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $formattedLocation = $client->locationName('[PROJECT]', '[LOCATION]');
         $function = new CloudFunction();
-        $response = $client->createFunction($formattedLocation, $function);
+        $response = $gapicClient->createFunction($formattedLocation, $function);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -254,7 +254,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -278,7 +278,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $formattedLocation = $client->locationName('[PROJECT]', '[LOCATION]');
         $function = new CloudFunction();
-        $response = $client->createFunction($formattedLocation, $function);
+        $response = $gapicClient->createFunction($formattedLocation, $function);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -312,7 +312,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -333,7 +333,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
-        $response = $client->deleteFunction($formattedName);
+        $response = $gapicClient->deleteFunction($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -376,7 +376,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -399,7 +399,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
-        $response = $client->deleteFunction($formattedName);
+        $response = $gapicClient->deleteFunction($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -427,7 +427,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function generateDownloadUrlTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -436,7 +436,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse = new GenerateDownloadUrlResponse();
         $expectedResponse->setDownloadUrl($downloadUrl);
         $transport->addResponse($expectedResponse);
-        $response = $client->generateDownloadUrl();
+        $response = $gapicClient->generateDownloadUrl();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -452,7 +452,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function generateDownloadUrlExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -467,7 +467,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->generateDownloadUrl();
+            $gapicClient->generateDownloadUrl();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -485,7 +485,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function generateUploadUrlTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -494,7 +494,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse = new GenerateUploadUrlResponse();
         $expectedResponse->setUploadUrl($uploadUrl);
         $transport->addResponse($expectedResponse);
-        $response = $client->generateUploadUrl();
+        $response = $gapicClient->generateUploadUrl();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -510,7 +510,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function generateUploadUrlExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -525,7 +525,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->generateUploadUrl();
+            $gapicClient->generateUploadUrl();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -543,7 +543,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function getFunctionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -576,7 +576,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
-        $response = $client->getFunction($formattedName);
+        $response = $gapicClient->getFunction($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -594,7 +594,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function getFunctionExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -611,7 +611,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
         try {
-            $client->getFunction($formattedName);
+            $gapicClient->getFunction($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -629,7 +629,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -642,7 +642,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $resource = 'resource-341064690';
-        $response = $client->getIamPolicy($resource);
+        $response = $gapicClient->getIamPolicy($resource);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -660,7 +660,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -677,7 +677,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $resource = 'resource-341064690';
         try {
-            $client->getIamPolicy($resource);
+            $gapicClient->getIamPolicy($resource);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -695,7 +695,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function listFunctionsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -709,7 +709,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setFunctions($functions);
         $transport->addResponse($expectedResponse);
-        $response = $client->listFunctions();
+        $response = $gapicClient->listFunctions();
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -728,7 +728,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function listFunctionsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -743,7 +743,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->listFunctions();
+            $gapicClient->listFunctions();
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -761,7 +761,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -775,7 +775,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $resource = 'resource-341064690';
         $policy = new Policy();
-        $response = $client->setIamPolicy($resource, $policy);
+        $response = $gapicClient->setIamPolicy($resource, $policy);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -795,7 +795,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -813,7 +813,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $resource = 'resource-341064690';
         $policy = new Policy();
         try {
-            $client->setIamPolicy($resource, $policy);
+            $gapicClient->setIamPolicy($resource, $policy);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -831,7 +831,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -841,7 +841,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         // Mock request
         $resource = 'resource-341064690';
         $permissions = [];
-        $response = $client->testIamPermissions($resource, $permissions);
+        $response = $gapicClient->testIamPermissions($resource, $permissions);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -861,7 +861,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -879,7 +879,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $resource = 'resource-341064690';
         $permissions = [];
         try {
-            $client->testIamPermissions($resource, $permissions);
+            $gapicClient->testIamPermissions($resource, $permissions);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -903,7 +903,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -948,7 +948,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $function = new CloudFunction();
-        $response = $client->updateFunction($function);
+        $response = $gapicClient->updateFunction($function);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -991,7 +991,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1014,7 +1014,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $function = new CloudFunction();
-        $response = $client->updateFunction($function);
+        $response = $gapicClient->updateFunction($function);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();

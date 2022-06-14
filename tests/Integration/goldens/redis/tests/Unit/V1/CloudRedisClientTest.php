@@ -90,7 +90,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -145,7 +145,7 @@ class CloudRedisClientTest extends GeneratedTest
         $instance->setTier($instanceTier);
         $instanceMemorySizeGb = 193936814;
         $instance->setMemorySizeGb($instanceMemorySizeGb);
-        $response = $client->createInstance($formattedParent, $instanceId, $instance);
+        $response = $gapicClient->createInstance($formattedParent, $instanceId, $instance);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -192,7 +192,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -223,7 +223,7 @@ class CloudRedisClientTest extends GeneratedTest
         $instance->setTier($instanceTier);
         $instanceMemorySizeGb = 193936814;
         $instance->setMemorySizeGb($instanceMemorySizeGb);
-        $response = $client->createInstance($formattedParent, $instanceId, $instance);
+        $response = $gapicClient->createInstance($formattedParent, $instanceId, $instance);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -257,7 +257,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -278,7 +278,7 @@ class CloudRedisClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-        $response = $client->deleteInstance($formattedName);
+        $response = $gapicClient->deleteInstance($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -321,7 +321,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -344,7 +344,7 @@ class CloudRedisClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-        $response = $client->deleteInstance($formattedName);
+        $response = $gapicClient->deleteInstance($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -378,7 +378,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -426,7 +426,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $outputConfig = new OutputConfig();
-        $response = $client->exportInstance($name, $outputConfig);
+        $response = $gapicClient->exportInstance($name, $outputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -471,7 +471,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -495,7 +495,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $outputConfig = new OutputConfig();
-        $response = $client->exportInstance($name, $outputConfig);
+        $response = $gapicClient->exportInstance($name, $outputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -529,7 +529,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -576,7 +576,7 @@ class CloudRedisClientTest extends GeneratedTest
         $operationsTransport->addResponse($completeOperation);
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-        $response = $client->failoverInstance($formattedName);
+        $response = $gapicClient->failoverInstance($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -619,7 +619,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -642,7 +642,7 @@ class CloudRedisClientTest extends GeneratedTest
         $operationsTransport->addResponse(null, $status);
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-        $response = $client->failoverInstance($formattedName);
+        $response = $gapicClient->failoverInstance($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -670,7 +670,7 @@ class CloudRedisClientTest extends GeneratedTest
     public function getInstanceTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -705,7 +705,7 @@ class CloudRedisClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
-        $response = $client->getInstance($formattedName);
+        $response = $gapicClient->getInstance($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -723,7 +723,7 @@ class CloudRedisClientTest extends GeneratedTest
     public function getInstanceExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -740,7 +740,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
         try {
-            $client->getInstance($formattedName);
+            $gapicClient->getInstance($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -764,7 +764,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -812,7 +812,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $inputConfig = new InputConfig();
-        $response = $client->importInstance($name, $inputConfig);
+        $response = $gapicClient->importInstance($name, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -857,7 +857,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -881,7 +881,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $name = 'name3373707';
         $inputConfig = new InputConfig();
-        $response = $client->importInstance($name, $inputConfig);
+        $response = $gapicClient->importInstance($name, $inputConfig);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -909,7 +909,7 @@ class CloudRedisClientTest extends GeneratedTest
     public function listInstancesTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -925,7 +925,7 @@ class CloudRedisClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
-        $response = $client->listInstances($formattedParent);
+        $response = $gapicClient->listInstances($formattedParent);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -946,7 +946,7 @@ class CloudRedisClientTest extends GeneratedTest
     public function listInstancesExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -963,7 +963,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $formattedParent = $client->locationName('[PROJECT]', '[LOCATION]');
         try {
-            $client->listInstances($formattedParent);
+            $gapicClient->listInstances($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -987,7 +987,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1041,7 +1041,7 @@ class CloudRedisClientTest extends GeneratedTest
         $instance->setTier($instanceTier);
         $instanceMemorySizeGb = 193936814;
         $instance->setMemorySizeGb($instanceMemorySizeGb);
-        $response = $client->updateInstance($updateMask, $instance);
+        $response = $gapicClient->updateInstance($updateMask, $instance);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -1086,7 +1086,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1116,7 +1116,7 @@ class CloudRedisClientTest extends GeneratedTest
         $instance->setTier($instanceTier);
         $instanceMemorySizeGb = 193936814;
         $instance->setMemorySizeGb($instanceMemorySizeGb);
-        $response = $client->updateInstance($updateMask, $instance);
+        $response = $gapicClient->updateInstance($updateMask, $instance);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -1150,7 +1150,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1198,7 +1198,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
         $redisVersion = 'redisVersion-685310444';
-        $response = $client->upgradeInstance($formattedName, $redisVersion);
+        $response = $gapicClient->upgradeInstance($formattedName, $redisVersion);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -1243,7 +1243,7 @@ class CloudRedisClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -1267,7 +1267,7 @@ class CloudRedisClientTest extends GeneratedTest
         // Mock request
         $formattedName = $client->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
         $redisVersion = 'redisVersion-685310444';
-        $response = $client->upgradeInstance($formattedName, $redisVersion);
+        $response = $gapicClient->upgradeInstance($formattedName, $redisVersion);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();

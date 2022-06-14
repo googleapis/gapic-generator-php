@@ -73,7 +73,7 @@ class EventServiceClientTest extends GeneratedTest
     public function createClientEventTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -93,7 +93,7 @@ class EventServiceClientTest extends GeneratedTest
         $clientEvent->setEventId($clientEventEventId);
         $clientEventCreateTime = new Timestamp();
         $clientEvent->setCreateTime($clientEventCreateTime);
-        $response = $client->createClientEvent($formattedParent, $clientEvent);
+        $response = $gapicClient->createClientEvent($formattedParent, $clientEvent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -113,7 +113,7 @@ class EventServiceClientTest extends GeneratedTest
     public function createClientEventExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -135,7 +135,7 @@ class EventServiceClientTest extends GeneratedTest
         $clientEventCreateTime = new Timestamp();
         $clientEvent->setCreateTime($clientEventCreateTime);
         try {
-            $client->createClientEvent($formattedParent, $clientEvent);
+            $gapicClient->createClientEvent($formattedParent, $clientEvent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

@@ -74,14 +74,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function deleteMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->deleteMethod();
+        $response = $gapicClient->deleteMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -97,7 +97,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function deleteMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -112,8 +112,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->deleteMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->deleteMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -130,14 +130,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->getMethod();
+        $response = $gapicClient->getMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -153,7 +153,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -168,8 +168,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->getMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -186,14 +186,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getNoPlaceholdersMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->getNoPlaceholdersMethod();
+        $response = $gapicClient->getNoPlaceholdersMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -209,7 +209,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getNoPlaceholdersMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -224,8 +224,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->getNoPlaceholdersMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getNoPlaceholdersMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -242,14 +242,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getNoTemplateMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->getNoTemplateMethod();
+        $response = $gapicClient->getNoTemplateMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -265,7 +265,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function getNoTemplateMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -280,8 +280,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->getNoTemplateMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->getNoTemplateMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -298,7 +298,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function nestedMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -312,7 +312,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1Nest2->setName($nest2Name);
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->nestedMethod($nest1, $anotherName);
+        $response = $gapicClient->nestedMethod($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -332,7 +332,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function nestedMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -354,8 +354,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->nestedMethod($nest1, $anotherName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->nestedMethod($nest1, $anotherName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -372,7 +372,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function nestedMultiMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -386,7 +386,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1Nest2->setName($nest2Name);
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->nestedMultiMethod($nest1, $anotherName);
+        $response = $gapicClient->nestedMultiMethod($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -406,7 +406,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function nestedMultiMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -428,8 +428,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->nestedMultiMethod($nest1, $anotherName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->nestedMultiMethod($nest1, $anotherName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -446,7 +446,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function orderingMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -459,7 +459,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $d = 'd100';
         $c = 'c99';
         $e = 'e101';
-        $response = $client->orderingMethod($a, $b, $d, $c, $e);
+        $response = $gapicClient->orderingMethod($a, $b, $d, $c, $e);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -485,7 +485,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function orderingMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -506,8 +506,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         $c = 'c99';
         $e = 'e101';
         try {
-            $client->orderingMethod($a, $b, $d, $c, $e);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->orderingMethod($a, $b, $d, $c, $e);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -524,14 +524,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function patchMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->patchMethod();
+        $response = $gapicClient->patchMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -547,7 +547,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function patchMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -562,8 +562,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->patchMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->patchMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -580,14 +580,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function postMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->postMethod();
+        $response = $gapicClient->postMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -603,7 +603,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function postMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -618,8 +618,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->postMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->postMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -636,14 +636,14 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function putMethodTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
-        $response = $client->putMethod();
+        $response = $gapicClient->putMethod();
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -659,7 +659,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function putMethodExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -674,8 +674,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         try {
-            $client->putMethod();
-            // If the $client method call did not throw, fail the test
+            $gapicClient->putMethod();
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -692,7 +692,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function routingRuleWithOutParametersTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -706,7 +706,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1Nest2->setName($nest2Name);
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->routingRuleWithOutParameters($nest1, $anotherName);
+        $response = $gapicClient->routingRuleWithOutParameters($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -726,7 +726,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function routingRuleWithOutParametersExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -748,8 +748,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->routingRuleWithOutParameters($nest1, $anotherName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->routingRuleWithOutParameters($nest1, $anotherName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -766,7 +766,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function routingRuleWithParametersTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -780,7 +780,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1Nest2->setName($nest2Name);
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
-        $response = $client->routingRuleWithParameters($nest1, $anotherName);
+        $response = $gapicClient->routingRuleWithParameters($nest1, $anotherName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -800,7 +800,7 @@ class RoutingHeadersClientTest extends GeneratedTest
     public function routingRuleWithParametersExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -822,8 +822,8 @@ class RoutingHeadersClientTest extends GeneratedTest
         $nest1->setNest2($nest1Nest2);
         $anotherName = 'anotherName-642443705';
         try {
-            $client->routingRuleWithParameters($nest1, $anotherName);
-            // If the $client method call did not throw, fail the test
+            $gapicClient->routingRuleWithParameters($nest1, $anotherName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

@@ -82,7 +82,7 @@ class JobControllerClientTest extends GeneratedTest
     public function cancelJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -101,7 +101,7 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
-        $response = $client->cancelJob($projectId, $region, $jobId);
+        $response = $gapicClient->cancelJob($projectId, $region, $jobId);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -123,7 +123,7 @@ class JobControllerClientTest extends GeneratedTest
     public function cancelJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -142,7 +142,7 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
         try {
-            $client->cancelJob($projectId, $region, $jobId);
+            $gapicClient->cancelJob($projectId, $region, $jobId);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -160,7 +160,7 @@ class JobControllerClientTest extends GeneratedTest
     public function deleteJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -171,7 +171,7 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
-        $client->deleteJob($projectId, $region, $jobId);
+        $gapicClient->deleteJob($projectId, $region, $jobId);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -192,7 +192,7 @@ class JobControllerClientTest extends GeneratedTest
     public function deleteJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -211,7 +211,7 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
         try {
-            $client->deleteJob($projectId, $region, $jobId);
+            $gapicClient->deleteJob($projectId, $region, $jobId);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -229,7 +229,7 @@ class JobControllerClientTest extends GeneratedTest
     public function getJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -248,7 +248,7 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
-        $response = $client->getJob($projectId, $region, $jobId);
+        $response = $gapicClient->getJob($projectId, $region, $jobId);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -270,7 +270,7 @@ class JobControllerClientTest extends GeneratedTest
     public function getJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -289,7 +289,7 @@ class JobControllerClientTest extends GeneratedTest
         $region = 'region-934795532';
         $jobId = 'jobId-1154752291';
         try {
-            $client->getJob($projectId, $region, $jobId);
+            $gapicClient->getJob($projectId, $region, $jobId);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -307,7 +307,7 @@ class JobControllerClientTest extends GeneratedTest
     public function listJobsTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -324,7 +324,7 @@ class JobControllerClientTest extends GeneratedTest
         // Mock request
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
-        $response = $client->listJobs($projectId, $region);
+        $response = $gapicClient->listJobs($projectId, $region);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -347,7 +347,7 @@ class JobControllerClientTest extends GeneratedTest
     public function listJobsExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -365,7 +365,7 @@ class JobControllerClientTest extends GeneratedTest
         $projectId = 'projectId-1969970175';
         $region = 'region-934795532';
         try {
-            $client->listJobs($projectId, $region);
+            $gapicClient->listJobs($projectId, $region);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -383,7 +383,7 @@ class JobControllerClientTest extends GeneratedTest
     public function submitJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -406,7 +406,7 @@ class JobControllerClientTest extends GeneratedTest
         $placementClusterName = 'placementClusterName1028110208';
         $jobPlacement->setClusterName($placementClusterName);
         $job->setPlacement($jobPlacement);
-        $response = $client->submitJob($projectId, $region, $job);
+        $response = $gapicClient->submitJob($projectId, $region, $job);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -428,7 +428,7 @@ class JobControllerClientTest extends GeneratedTest
     public function submitJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -451,7 +451,7 @@ class JobControllerClientTest extends GeneratedTest
         $jobPlacement->setClusterName($placementClusterName);
         $job->setPlacement($jobPlacement);
         try {
-            $client->submitJob($projectId, $region, $job);
+            $gapicClient->submitJob($projectId, $region, $job);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -475,7 +475,7 @@ class JobControllerClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -510,7 +510,7 @@ class JobControllerClientTest extends GeneratedTest
         $placementClusterName = 'placementClusterName1028110208';
         $jobPlacement->setClusterName($placementClusterName);
         $job->setPlacement($jobPlacement);
-        $response = $client->submitJobAsOperation($projectId, $region, $job);
+        $response = $gapicClient->submitJobAsOperation($projectId, $region, $job);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -557,7 +557,7 @@ class JobControllerClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ]);
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
             'operationsClient' => $operationsClient,
         ]);
@@ -586,7 +586,7 @@ class JobControllerClientTest extends GeneratedTest
         $placementClusterName = 'placementClusterName1028110208';
         $jobPlacement->setClusterName($placementClusterName);
         $job->setPlacement($jobPlacement);
-        $response = $client->submitJobAsOperation($projectId, $region, $job);
+        $response = $gapicClient->submitJobAsOperation($projectId, $region, $job);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -614,7 +614,7 @@ class JobControllerClientTest extends GeneratedTest
     public function updateJobTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -639,7 +639,7 @@ class JobControllerClientTest extends GeneratedTest
         $jobPlacement->setClusterName($placementClusterName);
         $job->setPlacement($jobPlacement);
         $updateMask = new FieldMask();
-        $response = $client->updateJob($projectId, $region, $jobId, $job, $updateMask);
+        $response = $gapicClient->updateJob($projectId, $region, $jobId, $job, $updateMask);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -665,7 +665,7 @@ class JobControllerClientTest extends GeneratedTest
     public function updateJobExceptionTest()
     {
         $transport = $this->createTransport();
-        $client = $this->createClient([
+        $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
         $this->assertTrue($transport->isExhausted());
@@ -690,7 +690,7 @@ class JobControllerClientTest extends GeneratedTest
         $job->setPlacement($jobPlacement);
         $updateMask = new FieldMask();
         try {
-            $client->updateJob($projectId, $region, $jobId, $job, $updateMask);
+            $gapicClient->updateJob($projectId, $region, $jobId, $job, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
