@@ -80,11 +80,11 @@ class ResourceNamesClientTest extends GeneratedTest
         $expectedResponse = new PlaceholderResponse();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedReqFolderName = $client->folderName('[FOLDER_ID]');
-        $formattedReqFolderMultiName = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqFolderMultiNameHistory = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqOrderTest1 = $client->order2Name('[ORDER2_ID]');
-        $formattedReqOrderTest2 = $client->order2Name('[ORDER2_ID]');
+        $formattedReqFolderName = $gapicClient->folderName('[FOLDER_ID]');
+        $formattedReqFolderMultiName = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqFolderMultiNameHistory = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqOrderTest1 = $gapicClient->order2Name('[ORDER2_ID]');
+        $formattedReqOrderTest2 = $gapicClient->order2Name('[ORDER2_ID]');
         $response = $gapicClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -126,11 +126,11 @@ class ResourceNamesClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedReqFolderName = $client->folderName('[FOLDER_ID]');
-        $formattedReqFolderMultiName = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqFolderMultiNameHistory = $client->folder1Name('[FOLDER1_ID]');
-        $formattedReqOrderTest1 = $client->order2Name('[ORDER2_ID]');
-        $formattedReqOrderTest2 = $client->order2Name('[ORDER2_ID]');
+        $formattedReqFolderName = $gapicClient->folderName('[FOLDER_ID]');
+        $formattedReqFolderMultiName = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqFolderMultiNameHistory = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqOrderTest1 = $gapicClient->order2Name('[ORDER2_ID]');
+        $formattedReqOrderTest2 = $gapicClient->order2Name('[ORDER2_ID]');
         try {
             $gapicClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
             // If the $gapicClient method call did not throw, fail the test
