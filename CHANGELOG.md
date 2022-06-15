@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.8](https://github.com/googleapis/gapic-generator-php/compare/v1.4.7...v1.4.8) (2022-06-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency com_google_protobuf to v3.20.1 ([#479](https://github.com/googleapis/gapic-generator-php/issues/479)) ([0d7ddf8](https://github.com/googleapis/gapic-generator-php/commit/0d7ddf80a09907b5e670ac820f36d7e5bb38eb64))
+* **deps:** update dependency com_google_protobuf to v3.21.0 ([#481](https://github.com/googleapis/gapic-generator-php/issues/481)) ([926b3f5](https://github.com/googleapis/gapic-generator-php/commit/926b3f51d8552f6420cc78f56187fed4abb8ee40))
+* **deps:** update dependency com_google_protobuf to v3.21.1 ([#482](https://github.com/googleapis/gapic-generator-php/issues/482)) ([541a023](https://github.com/googleapis/gapic-generator-php/commit/541a02349941ef5b9cc2943dbaf7b89b73b0a6c4))
+* **deps:** update rules_proto digest to dcf9e47 ([#484](https://github.com/googleapis/gapic-generator-php/issues/484)) ([1bd677d](https://github.com/googleapis/gapic-generator-php/commit/1bd677d0008b3c24cfbd9ecce3092175176e1331))
+* rename client to gapicClient in generated tests ([#486](https://github.com/googleapis/gapic-generator-php/issues/486)) ([86d1d7b](https://github.com/googleapis/gapic-generator-php/commit/86d1d7b06f1170b0e0a4c00f41dcc85c6dcf0480))
+
 ### [1.4.7](https://github.com/googleapis/gapic-generator-php/compare/v1.4.6...v1.4.7) (2022-04-20)
 
 
