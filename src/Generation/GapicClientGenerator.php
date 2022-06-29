@@ -312,7 +312,7 @@ class GapicClientGenerator
         if (!$this->serviceDetails->hasLro && !$this->serviceDetails->hasCustomOp) {
             return Vector::new([]);
         }
-        
+
         $ctype = $this->serviceDetails->hasCustomOp ?
             $this->serviceDetails->customOperationServiceClientType :
             Type::fromName(OperationsClient::class);
@@ -394,7 +394,7 @@ class GapicClientGenerator
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
             ));
         $methods = $methods->append($resumeOperation);
-        
+
         return $methods;
     }
 
@@ -804,10 +804,10 @@ class GapicClientGenerator
                                 PhpDoc::text(
                                     // TODO(vNext): Don't use a fully-qualified type here.
                                     'Retry settings to use for this call. Can be a ',
-                                    $this->ctx->Type($retrySettingsType, 1),
+                                    $this->ctx->Type($retrySettingsType),
                                     ' object, or an associative array of retry settings parameters. See the documentation on ',
                                     // TODO(vNext): Don't use a fully-qualified type here.
-                                    $this->ctx->Type($retrySettingsType, 1),
+                                    $this->ctx->Type($retrySettingsType),
                                     ' for example usage.'
                                 )
                             )
@@ -1064,7 +1064,7 @@ class GapicClientGenerator
                     ? AST::param(null, AST::var($field->camelName))
                     : AST::index(AST::var('optionalArgs'), $root);
                 $assignValue = $param;
-                
+
                 // Construct the getter chain if the routing header uses a nested field.
                 $chain = $routing['getter'];
                 if (count($chain) > 1) {
@@ -1089,9 +1089,9 @@ class GapicClientGenerator
                 if (isset($keyToMatcher[$key])) {
                     $if = $keyToMatcher[$key];
                     $if = $if->elseif(
-                        /* condition */ 
+                        /* condition */
                         AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches),
-                        /* then */ 
+                        /* then */
                         AST::assign(
                             AST::index($paramsVar, $routing['key']),
                             AST::index($matches, $routing['key'])
