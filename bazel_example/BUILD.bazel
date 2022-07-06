@@ -62,11 +62,11 @@ php_gapic_library(
     gapic_yaml = ":example-gapic.yaml",
     grpc_service_config = ":example-grpc-service-config.json",
     service_yaml = ":example-service.yaml",
+    rest_numeric_enums = True,
     deps = [
         ":example_php_grpc",
         ":example_php_proto",
     ],
-    rest_numeric_enums = True,
 )
 
 php_gapic_assembly_pkg(
