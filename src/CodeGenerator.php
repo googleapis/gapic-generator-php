@@ -157,7 +157,7 @@ class CodeGenerator
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
                     $serviceDetails =
-                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType, $numericEnums);
+                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
                     $serviceName = $serviceDetails->serviceName;
                     if (!in_array($serviceName, self::MIXIN_SERVICES)) {
                         $servicesToGenerate[] = $serviceDetails;
@@ -309,7 +309,7 @@ class CodeGenerator
             $code = Formatter::format($code);
             yield ["src/{$version}resources/{$service->descriptorConfigFilename}", $code];
             // Resource: rest_client_config.php
-            $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig);
+            $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
             $code = Formatter::format($code);
             yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
             // Resource: client_config.json
