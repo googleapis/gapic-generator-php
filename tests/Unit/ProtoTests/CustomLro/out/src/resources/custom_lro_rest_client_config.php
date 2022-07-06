@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.customlro.CustomLro' => [
             'CreateFoo' => [
@@ -30,4 +29,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

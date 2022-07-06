@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'google.example.library.v1.LibraryService' => [
             'AddComments' => [
@@ -336,4 +335,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

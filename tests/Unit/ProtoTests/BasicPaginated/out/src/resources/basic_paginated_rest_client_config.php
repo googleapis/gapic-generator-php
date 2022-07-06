@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.basicpaginated.BasicPaginated' => [
             'MethodPaginated' => [
@@ -11,4 +10,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

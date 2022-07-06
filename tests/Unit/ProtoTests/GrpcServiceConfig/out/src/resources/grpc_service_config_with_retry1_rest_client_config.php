@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.grpcserviceconfig.GrpcServiceConfigWithRetry1' => [
             'Method1A' => [
@@ -26,4 +25,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

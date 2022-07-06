@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.basiclro.BasicLro' => [
             'Method1' => [
@@ -21,4 +20,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

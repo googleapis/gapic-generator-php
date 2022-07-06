@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.routingheaders.RoutingHeaders' => [
             'DeleteMethod' => [
@@ -180,4 +179,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

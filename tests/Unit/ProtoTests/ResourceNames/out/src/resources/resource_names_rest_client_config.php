@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.resourcenames.ResourceNames' => [
             'FileLevelChildTypeRefMethod' => [
@@ -46,4 +45,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

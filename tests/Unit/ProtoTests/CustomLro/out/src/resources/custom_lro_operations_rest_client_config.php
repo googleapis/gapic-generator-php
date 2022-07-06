@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'numericEnums' => true,
     'interfaces' => [
         'testing.customlro.CustomLroOperations' => [
             'Cancel' => [
@@ -23,4 +22,5 @@ return [
             ],
         ],
     ],
+    'numericEnums' => true,
 ];
