@@ -121,6 +121,7 @@ def php_gapic_library(
         service_yaml = service_yaml,
         grpc_service_config = grpc_service_config,
         transport = transport,
+        rest_numeric_enums = rest_numeric_enums,
         **kwargs
     )
 
