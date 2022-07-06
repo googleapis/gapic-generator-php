@@ -44,6 +44,7 @@ class GeneratorUtils
         $grpcServiceConfigJson = ConfigLoader::loadConfig("{$protoDirName}/grpc-service-config.json");
         $gapicYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
         $serviceYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_service.yaml");
+        $numericEnums = true;
 
         $licenseYear = 2022; // Avoid updating tests all the time.
         $generateGapicMetadata = true;
@@ -55,6 +56,7 @@ class GeneratorUtils
             $grpcServiceConfigJson,
             $gapicYaml,
             $serviceYaml,
+            $numericEnums,
             $licenseYear
         );
         return $codeIterator;

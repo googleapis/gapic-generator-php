@@ -52,6 +52,7 @@ def php_gapic_srcjar(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
+        rest_numeric_enums = False,
         **kwargs):
     plugin_file_args = {}
     if gapic_yaml:
@@ -69,9 +70,13 @@ def php_gapic_srcjar(
     if transport != "grpc+rest" and transport != "rest":
         fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
 
+
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
+    
+    if rest_numeric_enums: # Generate REGAPIC param for enum response encoding.
+        plugin_args.append("rest-numeric-enums")
 
     proto_custom_library(
         name = name,
@@ -105,6 +110,7 @@ def php_gapic_library(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
+        rest_numeric_enums = False,
         **kwargs):
     srcjar_name = "%s_srcjar" % name
 

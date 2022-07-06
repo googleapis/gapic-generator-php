@@ -66,6 +66,7 @@ php_gapic_library(
         ":example_php_grpc",
         ":example_php_proto",
     ],
+    rest_numeric_enums = True,
 )
 
 php_gapic_assembly_pkg(

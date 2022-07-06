@@ -138,7 +138,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
-    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata] = readOptions($opts);
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums] = readOptions($opts);
 
     // Generate PHP code.
     $files = CodeGenerator::generateFromDescriptor(
@@ -148,7 +148,8 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $generateGapicMetadata,
         $grpcServiceConfig,
         $gapicYaml,
-        $serviceYaml
+        $serviceYaml,
+        $numericEnums
     );
 
     if (is_null($outputDir)) {
@@ -218,6 +219,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
 
     // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.
     $generateGapicMetadata =  (isset($opts['metadata']) && !$opts['metadata']);
+    $numericEnums =  (isset($opts['rest-numeric-enums']) && !$opts['rest-numeric-enums']);
 
-    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata];
+    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums];
 }

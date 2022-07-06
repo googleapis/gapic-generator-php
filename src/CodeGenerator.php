@@ -56,6 +56,7 @@ class CodeGenerator
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
+     * @param bool $numericEnums Whether to generate the numeric-enums JSON encoding system parameter.
      * @param int $licenseYear The year to use in license headers.
      *
      * @return string[]
@@ -68,6 +69,7 @@ class CodeGenerator
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
+        bool $numericEnums = false,
         int $licenseYear = -1
     ) {
         $descSet = new FileDescriptorSet();
@@ -76,7 +78,7 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $licenseYear);
+        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $numericEnums, $licenseYear);
     }
 
     /**
@@ -91,6 +93,7 @@ class CodeGenerator
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
+     * @param bool $numericEnums Optional whether to generate the numeric-enums JSON encoding system parameter.
      * @param int $licenseYear The year to use in license headers.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
@@ -103,6 +106,7 @@ class CodeGenerator
         ?string $grpcServiceConfigJson,
         ?string $gapicYaml,
         ?string $serviceYaml,
+        bool $numericEnums = false,
         int $licenseYear = -1
     ) {
         if ($licenseYear < 0) {
@@ -153,7 +157,7 @@ class CodeGenerator
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
                     $serviceDetails =
-                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
+                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType, $numericEnums);
                     $serviceName = $serviceDetails->serviceName;
                     if (!in_array($serviceName, self::MIXIN_SERVICES)) {
                         $servicesToGenerate[] = $serviceDetails;
@@ -218,7 +222,8 @@ class CodeGenerator
             $gapicYaml,
             $serviceYamlConfig,
             $generateGapicMetadata,
-            $licenseYear
+            $licenseYear,
+            $numericEnums
         ) as $file) {
             $result[] = $file;
         }
@@ -242,7 +247,8 @@ class CodeGenerator
         ?string $gapicYaml,
         ?ServiceYamlConfig $serviceYamlConfig,
         bool $generateGapicMetadata,
-        int $licenseYear
+        int $licenseYear,
+        bool $numericEnums = false
     ) {
         $versionToNamespace = [];
         foreach ($servicesToGenerate as $service) {

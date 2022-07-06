@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'numericEnums' => true,
     'interfaces' => [
         'testing.basiconeof.BasicOneof' => [
             'AMethod' => [

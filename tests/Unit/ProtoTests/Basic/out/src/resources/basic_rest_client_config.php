@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'numericEnums' => true,
     'interfaces' => [
         'testing.basic.Basic' => [
             'AMethod' => [
