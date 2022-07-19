@@ -155,7 +155,12 @@ class CodeGenerator
                     $serviceDetails =
                         new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType);
                     $serviceName = $serviceDetails->serviceName;
-                    if (!in_array($serviceName, self::MIXIN_SERVICES)) {
+                    $generateNormalGapic = !in_array($serviceName, self::MIXIN_SERVICES);
+                    if (!$generateNormalGapic) {
+                        $generateNormalGapic = $serviceYamlConfig->apiNames->contains($serviceName)
+                            && 1 === $serviceYamlConfig->apiNames->count();
+                    }
+                    if ($generateNormalGapic) {
                         $servicesToGenerate[] = $serviceDetails;
                         array_merge(
                             $definedRpcNames,
