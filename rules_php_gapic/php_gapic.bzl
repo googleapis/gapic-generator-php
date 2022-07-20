@@ -52,6 +52,7 @@ def php_gapic_srcjar(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
+        generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     plugin_file_args = {}
     if gapic_yaml:
@@ -76,7 +77,7 @@ def php_gapic_srcjar(
     proto_custom_library(
         name = name,
         deps = srcs,
-        plugin = Label("//rules_php_gapic:php_gapic_generator_binary"),
+        plugin = generator_binary,
         plugin_args = plugin_args,
         plugin_file_args = plugin_file_args,
         output_type = "gapic",
@@ -105,6 +106,7 @@ def php_gapic_library(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
+        generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     srcjar_name = "%s_srcjar" % name
 
@@ -115,6 +117,7 @@ def php_gapic_library(
         service_yaml = service_yaml,
         grpc_service_config = grpc_service_config,
         transport = transport,
+        generator_binary = generator_binary,
         **kwargs
     )
 
