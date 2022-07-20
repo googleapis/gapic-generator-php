@@ -271,7 +271,7 @@ abstract class MethodDetails
 
     private static function maybeCreateLro(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
     {
-        if ($desc->getOutputType() !== '.google.longrunning.Operation') {
+        if ($desc->getOutputType() !== '.google.longrunning.Operation' || $svc->serviceName === 'google.longrunning.Operations') {
             return null;
         } else {
             return new class($svc, $desc) extends MethodDetails {
