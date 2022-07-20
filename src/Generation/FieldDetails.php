@@ -118,6 +118,10 @@ class FieldDetails
         'google.firestore.v1.UpdateDocumentRequest' => ['update_mask'],
         'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
         'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation'],
+        'google.longrunning.CancelOperationRequest' => ['name'],
+        'google.longrunning.DeleteOperationRequest' => ['name'],
+        'google.longrunning.GetOperationRequest'    => ['name'],
+        'google.longrunning.ListOperationsRequest'  => ['name'],
     ];
 
     /**
