@@ -121,7 +121,7 @@ class FieldDetails
         'google.longrunning.CancelOperationRequest' => ['name'],
         'google.longrunning.DeleteOperationRequest' => ['name'],
         'google.longrunning.GetOperationRequest'    => ['name'],
-        'google.longrunning.ListOperationsRequest'  => ['name'],
+        'google.longrunning.ListOperationsRequest'  => ['name', 'filter'],
     ];
 
     /**
