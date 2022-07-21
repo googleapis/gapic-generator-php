@@ -28,6 +28,7 @@ def gapic_generator_php_repositories():
     maybe(
         php,
         name = "php_micro",
+        prebuilt_phps = ["@gapic_generator_php//:rules_php_gapic/resources/php-8.1.8_linux_x86_64.tar.gz"],
         urls = ["https://www.php.net/distributions/php-8.1.8.tar.gz"],
         strip_prefix = "php-8.1.8",
     )
