@@ -181,7 +181,7 @@ class ResourcesGenerator
         return AST::array($methodDetails);
     }
 
-    public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig): string
+    public static function generateRestConfig(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig, $numericEnums = false): string
     {
         $allInterfaces = static::compileRestConfigInterfaces($serviceDetails, $serviceYamlConfig);
         if ($serviceDetails->hasCustomOp) {
@@ -198,11 +198,17 @@ class ResourcesGenerator
             $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
             $allInterfaces = array_merge($allInterfaces, $opInter);
         }
+
+        $config = [
+            'interfaces' => AST::array($allInterfaces)
+        ];
+
+        if ($numericEnums) {
+            $config['numericEnums'] = true;
+        }
         
         $return = AST::return(
-            AST::array([
-                'interfaces' => AST::array($allInterfaces)
-            ])
+            AST::array($config)
         );
         return "<?php\n\n{$return->toCode()};";
     }
