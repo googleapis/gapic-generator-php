@@ -76,7 +76,8 @@ def php_gapic_srcjar(
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
     
-    if rest_numeric_enums: # Generate REGAPIC param for enum response encoding.
+    # Generate REGAPIC param for requesting response enums be JSON-encoded as numbers, not strings.
+    if rest_numeric_enums:
         plugin_args.append("rest-numeric-enums")
 
     proto_custom_library(

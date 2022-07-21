@@ -93,7 +93,8 @@ class CodeGenerator
      * @param ?string $grpcServiceConfigJson Optional grpc-serv-config json string.
      * @param ?string $gapicYaml Optional gapic configuration yaml string.
      * @param ?string $serviceYaml Optional service configuration yaml string.
-     * @param bool $numericEnums Optional whether to generate the numeric-enums JSON encoding system parameter.
+     * @param bool $numericEnums Optional whether to include in requests the system parameter enabling JSON-encoded
+     *     responses to encode enum values as numbers.
      * @param int $licenseYear The year to use in license headers.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
