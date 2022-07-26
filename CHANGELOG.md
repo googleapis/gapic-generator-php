@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/gapic-generator-php/compare/v1.4.8...v1.5.0) (2022-07-22)
+
+
+### Features
+
+* enable generation of LRO client ([#493](https://github.com/googleapis/gapic-generator-php/issues/493)) ([1246424](https://github.com/googleapis/gapic-generator-php/commit/1246424df7af96d7e81533c8e2c623527f2e7acb))
+* numeric enum option generation ([#497](https://github.com/googleapis/gapic-generator-php/issues/497)) ([b123f42](https://github.com/googleapis/gapic-generator-php/commit/b123f42e623fb6728d4be227e9468280faa71ffc))
+
+
+### Bug Fixes
+
+* **bazel:** support changing the generator ([#494](https://github.com/googleapis/gapic-generator-php/issues/494)) ([ea6fe97](https://github.com/googleapis/gapic-generator-php/commit/ea6fe97bedb9d7347877c790a9d8710d80be5774))
+* RetrySettings reference ([#489](https://github.com/googleapis/gapic-generator-php/issues/489)) ([db8a2f3](https://github.com/googleapis/gapic-generator-php/commit/db8a2f3185e15886698cf0d5c07d6ae94719287c))
+* update PHP prebuilt binary, version 7.4.15 ([#492](https://github.com/googleapis/gapic-generator-php/issues/492)) ([b85cc04](https://github.com/googleapis/gapic-generator-php/commit/b85cc0444a7bfe9b0553527fc9837d16d7c8f9aa))
+
 ## [1.4.8](https://github.com/googleapis/gapic-generator-php/compare/v1.4.7...v1.4.8) (2022-06-15)
 
 
