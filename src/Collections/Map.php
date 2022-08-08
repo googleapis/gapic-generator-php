@@ -146,7 +146,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     }
 
     /** @inheritDoc */
-    public function offsetGet(mixed $key): mixed
+    public function offsetGet($key): mixed
     {
         [$exists, $value] = static::Apply($this->data, $key, 0, null);
         if ($exists) {
