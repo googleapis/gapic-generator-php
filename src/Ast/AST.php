@@ -73,6 +73,7 @@ abstract class AST
                 // \0 prefix means the string that follows is used verbatim.
                 return substr($x, 1);
             } elseif (substr($x, 0, 2) === '//') {
+            //} elseif (substr($x, 0, 2) === '//' || $x === PHP_EOL || $x === '') {
                 // '//' prefix means a comment.
                 $omitSemicolon = true;
                 return $x;
@@ -173,6 +174,18 @@ abstract class AST
     }
 
     /**
+     * Create a function.
+     *
+     * @param string $name The name of the function.
+     *
+     * @return PhpFunction
+     */
+    public static function fn(string $name): PhpFunction
+    {
+        return new PhpFunction($name);
+    }
+
+    /**
      * Create a parameter.
      *
      * @param ?ResolvedType $type The type of the parameter.
@@ -220,11 +233,9 @@ abstract class AST
             public function toCode(): string
             {
                 $omitSemicolon = false;
-                $x = $this->code
+                return $this->code
                     ->map(fn ($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
-                //var_dump($x);
-                return $x;
             }
         };
     }
@@ -460,6 +471,24 @@ abstract class AST
         };
     }
 
+    public static function staticCall(ResolvedType $type, $fnName): callable
+    {
+        return fn (...$args) => new class($type, $fnName, $args) extends Expression {
+            public function __construct($type, $fnName, $args)
+            {
+                $this->type = $type;
+                $this->fnName = $fnName;
+                $this->args = Vector::new($args)->flatten();
+            }
+
+            public function toCode(): string
+            {
+                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
+                return static::toPhp($this->type) . '::' . static::toPhp($this->fnName) . "({$args})";
+            }
+        };
+    }
+
     /**
      * Create an object instantiation expression. This method returns a Callable into which the args are passed.
      *
@@ -475,6 +504,7 @@ abstract class AST
                 $this->type = $type;
                 $this->args = $args;
             }
+
             public function toCode(): string
             {
                 $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
@@ -738,7 +768,7 @@ abstract class AST
                     (is_null($this->catch) ? '' : 'catch (' .
                         static::toPhp($this->catch[0]) . ' ' . static::toPhp($this->catch[1]) . ") {\n" .
                         static::toPhp($this->catch[2]) . "\n}") .
-                    (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}");
+                    (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}" . PHP_EOL);
             }
         };
     }

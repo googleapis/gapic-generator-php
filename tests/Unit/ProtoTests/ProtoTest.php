@@ -123,4 +123,9 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('CustomLro/custom_lro.proto', 'testing.customlro', 'rest');
     }
+
+    public function testKms(): void
+    {
+        $this->runProtoTest('Kms/service.proto', 'google.cloud.kms.v1');
+    }
 }
