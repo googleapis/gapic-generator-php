@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\Utils;
 
+use Google\Generator\Collections\Map;
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\Tools\ProtoLoader;
@@ -78,5 +79,64 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals('Svc', $svc->GetName());
         $f = $catalog->filesByService[$svc];
         $this->assertStringContainsString('catalog.proto', $f->GetName());
+    }
+
+    public function testHeaderParamsDescriptor(): void
+    {
+        $routingParams = [
+            'foo' => Vector::new([
+                [
+                    'getter' => ['getFoo'],
+                    'key' => 'foo',
+                ],
+                [
+                    'getter' => ['getFoo'],
+                    'key' => 'foo_name',
+                ],
+                [
+                    'getter' => ['getFoo'],
+                    'key' => 'foo',
+                    'regex' => '/^(?<foo>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/'
+                ]
+            ]),
+            'bar.baz' => Vector::new([
+                [
+                    'getter' => ['getBar', 'getBaz'],
+                    'key' => 'baz',
+                    'regex' => '/^(?<baz>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/'
+                ],
+                [
+                    'getter' => ['getBar', 'getBaz'],
+                    'key' => 'bar_baz',
+                ],
+                [
+                    'getter' => ['getBar', 'getBaz'],
+                    'key' => 'baz',
+                    'regex' => '/^(?<bar>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/'
+                ]
+            ])
+        ];
+        $expected = [
+            [
+                'fieldAccessors' => ['getFoo'],
+                'keyName' => 'foo',
+                'matchers' => ['/^(?<foo>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/']
+            ],
+            [
+                'fieldAccessors' => ['getFoo'],
+                'keyName' => 'foo_name'
+            ],
+            [
+                'fieldAccessors' => ['getBar', 'getBaz'],
+                'keyName' => 'baz',
+                'matchers' => ['/^(?<baz>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/', '/^(?<bar>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/']
+            ],
+            [
+                'fieldAccessors' => ['getBar', 'getBaz'],
+                'keyName' => 'bar_baz'
+            ]
+        ];
+        $actual = ProtoHelpers::headerParamsDescriptor(Map::new($routingParams));
+        $this->assertEquals($expected, $actual);
     }
 }

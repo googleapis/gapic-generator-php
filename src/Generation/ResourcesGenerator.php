@@ -46,9 +46,11 @@ class ResourcesGenerator
         $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
-                    return Map::new([
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL'),
                         'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
-                    ]);
+                    ];
+                    break;
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
                     if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
@@ -64,38 +66,74 @@ class ResourcesGenerator
                         $maxPollDelayMillis = '5000';
                         $totalPollTimeoutMillis = '300000';
                     }
-                    return Map::new(['longRunning' => AST::array([
-                        'operationReturnType' => $method->lroResponseType->getFullname(),
-                        'metadataReturnType' => $method->lroMetadataType->getFullname(),
-                        'initialPollDelayMillis' => $initialPollDelayMillis,
-                        'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
-                        'maxPollDelayMillis' => $maxPollDelayMillis,
-                        'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
-                    ])]);
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL'),
+                        'longRunning' => AST::array([
+                            'operationReturnType' => $method->lroResponseType->getFullname(),
+                            'metadataReturnType' => $method->lroMetadataType->getFullname(),
+                            'initialPollDelayMillis' => $initialPollDelayMillis,
+                            'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
+                            'maxPollDelayMillis' => $maxPollDelayMillis,
+                            'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
+                        ])
+                    ];
+                    break;
                 case MethodDetails::PAGINATED:
-                    return Map::new(['pageStreaming' => AST::array([
-                        'requestPageTokenGetMethod' => $method->requestPageTokenGetter->name,
-                        'requestPageTokenSetMethod' => $method->requestPageTokenSetter->name,
-                        'requestPageSizeGetMethod' => $method->requestPageSizeGetter->name,
-                        'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
-                        'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
-                        'resourcesGetMethod' => $method->resourcesGetter->name,
-                    ])]);
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::PAGINATED_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
+                        'pageStreaming' => AST::array([
+                            'requestPageTokenGetMethod' => $method->requestPageTokenGetter->name,
+                            'requestPageTokenSetMethod' => $method->requestPageTokenSetter->name,
+                            'requestPageSizeGetMethod' => $method->requestPageSizeGetter->name,
+                            'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
+                            'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
+                            'resourcesGetMethod' => $method->resourcesGetter->name,
+                        ])
+                    ];
+                    break;
                 case MethodDetails::BIDI_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'BidiStreaming',
-                    ])]);
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::BIDI_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'BidiStreaming',
+                        ])
+                    ];
+                    break;
                 case MethodDetails::SERVER_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'ServerStreaming',
-                    ])]);
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::SERVER_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'ServerStreaming',
+                        ])
+                    ];
+                    break;
                 case MethodDetails::CLIENT_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'ClientStreaming',
-                    ])]);
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::CLIENT_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'ClientStreaming',
+                        ])
+                    ];
+                    break;
                 default:
-                    return Map::new();
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::UNARY_CALL'),
+                        'responseType' => $method->responseType->getFullName(true)
+                    ];
+                    break;
             }
+            if ($method->routingParameters) {
+                $headerParams = ProtoHelpers::headerParamsDescriptor($method->routingParameters);
+                if ($headerParams) {
+                    $descriptor['headerParams'] = $headerParams;
+                }
+            }
+
+            return Map::new($descriptor);
         };
 
         $return = AST::return(

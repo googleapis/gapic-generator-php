@@ -91,6 +91,9 @@ class ProtoHelpers
      */
     public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
     {
+        // TODO(v2): Merge this implementation with headerParamsDescriptor for v2.
+        // No longer need to generate this intermediate form as the generator will
+        // no longer generate the header param injection code.
         return Vector::new($routingRule->getRoutingParameters())
             ->groupBy(
                 // Key: The field (or field chain) referenced by the RoutingParamter.
@@ -103,6 +106,51 @@ class ProtoHelpers
                     'root' => explode('.', $x->getField())[0],
                 ],
             );
+    }
+
+    /**
+     * Processes the RoutingParameters (pre-processed by ProtoHelpers::routingParameters) into a descriptor
+     * config-friendly array for generation.
+     *
+     * @param Map $routingParameters output of ProtoHelpers::routingParamters.
+     *
+     * @return array all header param configurations for the method.
+     */
+    public static function headerParamsDescriptor(Map $routingParameters): array
+    {
+        $headerParams = [];
+
+        foreach($routingParameters->values() as $fieldRoutingParams) {
+            // Group by header key so that GAX the relevant matchers can be grouped in order.
+            $paramsByKey = $fieldRoutingParams->groupBy(fn($f) => $f['key']);
+            
+            // Group the matchers by header key in order.
+            $matchersByKey = $paramsByKey->mapValues(
+                fn($key, $fieldRoutingParams) =>
+                    $fieldRoutingParams
+                        ->filter(fn($f) => isset($f['regex']))
+                        ->map(fn($f) => $f['regex']))
+                ->filter(fn($key, $matchers) => $matchers)
+                ->mapValues(fn($key, $val) => $val->toArray());
+            
+            // Flatten the entire set of key-oriented configs, taking the first "getter" chain (should all be the same),
+            // and injecting the matchers for that header key if configured.
+            $flattened = $paramsByKey->mapValues(fn($key, $params) =>
+                // Only set the `matchers` if it is set and not empty.
+                isset($matchersByKey[$key]) && $matchersByKey[$key] ? [
+                    'fieldAccessors' => $params[0]['getter'],
+                    'keyName' => $key,
+                    'matchers' => $matchersByKey[$key]
+                ] : [
+                    'fieldAccessors' => $params[0]['getter'],
+                    'keyName' => $key
+                ]
+            )->values()->toArray();
+
+            $headerParams = array_merge($headerParams, $flattened);
+        }
+
+        return $headerParams;
     }
 
     /**
