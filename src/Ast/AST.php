@@ -92,8 +92,15 @@ abstract class AST
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
             return $x->toCode();
+        }  elseif (is_array($x)) {
+            return AST::array($x)->toCode();
+        } else if ($x instanceof Vector) {
+            return AST::array($x->toArray())->toCode();
+        } else if ($x instanceof Map) {
+            throw new \Exception("Cannot convert Map to PHP code.");
         } else {
-            throw new \Exception('Cannot convert to PHP code.');
+            $t = gettype($x);
+            throw new \Exception("Cannot convert $t to PHP code.");
         }
     }
 
