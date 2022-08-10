@@ -9,6 +9,3 @@ composer.lock
 # Vim
 *.sw*
 *.vim
-
-# VS Code
-.vscode
