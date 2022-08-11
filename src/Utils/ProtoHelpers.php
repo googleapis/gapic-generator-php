@@ -119,7 +119,7 @@ class ProtoHelpers
     public static function headerParamsDescriptor(MethodDetails $method): array
     {
         if ($method->restRoutingHeaders && !$method->routingParameters) {
-            return static::implicitHeaderParamsDescriptor($method->restRoutingHeaders ?? Map::new());
+            return static::implicitParamsDescriptor($method->restRoutingHeaders ?? Map::new());
         }
 
         return static::routingParamsDescriptor($method->routingParameters ?? Map::new());
@@ -132,7 +132,7 @@ class ProtoHelpers
      * 
      * @return array
      */
-    public static function implicitHeaderParamsDescriptor(Map $implicitParams): array
+    public static function implicitParamsDescriptor(Map $implicitParams): array
     {
         return $implicitParams->keys()
             ->map(fn($key) => [

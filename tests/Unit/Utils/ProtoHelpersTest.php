@@ -140,9 +140,9 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testImplicitHeaderParamsDescriptor(): void
+    public function testImplicitParamsDescriptor(): void
     {
-        $implicitHeaderParams = [
+        $implicitParams = [
             'foo' => Vector::new(['getFoo']),
             'bar.baz' => Vector::new(['getBar', 'getBaz'])
         ];
@@ -156,7 +156,7 @@ final class ProtoHelpersTest extends TestCase
                 'keyName' => 'bar.baz',
             ]
         ];
-        $actual = ProtoHelpers::implicitHeaderParamsDescriptor(Map::new($implicitHeaderParams));
+        $actual = ProtoHelpers::implicitParamsDescriptor(Map::new($implicitParams));
         $this->assertEquals($expected, $actual);
     }
 }
