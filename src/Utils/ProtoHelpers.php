@@ -316,6 +316,8 @@ class ProtoHelpers
      */
     public static function restPlaceholders(ProtoCatalog $catalog, HttpRule $httpRule, ?DescriptorProto $msg): Map
     {
+        // TODO(v2): merge this with implicitParamsDescriptor as we won't need to generate an intermediate
+        // representation, because GAPIC will no longer do the header injection.
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpRule->getPattern()}");
         $restUriTemplate = $httpRule->$uriTemplateGetter();
         if ($restUriTemplate === '') {

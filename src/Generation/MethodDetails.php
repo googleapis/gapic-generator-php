@@ -528,6 +528,7 @@ abstract class MethodDetails
         $this->httpRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
         $this->restMethod = is_null($this->httpRule) ? null : $this->httpRule->getPattern();
         // DO NOT SORT - currently in reverse order of the first-seen variables.
+        // TODO(v2): Use ProtoHelpers::implicitParamsDescriptor here instead.
         $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
 
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
