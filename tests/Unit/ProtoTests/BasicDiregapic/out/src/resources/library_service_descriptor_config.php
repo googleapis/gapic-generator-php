@@ -13,6 +13,14 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetBigNothing' => [
                 'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
@@ -23,6 +31,14 @@ return [
                     'pollDelayMultiplier' => '1.5',
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
+                ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
                 ],
             ],
             'LongRunningArchiveBooks' => [
@@ -35,26 +51,74 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getSource',
+                        ],
+                        'keyName' => 'source',
+                    ],
+                ],
             ],
             'AddComments' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'AddTag' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\AddTagResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getResource',
+                        ],
+                        'keyName' => 'resource',
+                    ],
+                ],
             ],
             'ArchiveBooks' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\ArchiveBooksResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getSource',
+                        ],
+                        'keyName' => 'source',
+                    ],
+                ],
             ],
             'CreateBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'CreateInventory' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\InventoryResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                        'keyName' => 'parent',
+                    ],
+                ],
             ],
             'CreateShelf' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
@@ -63,10 +127,26 @@ return [
             'DeleteBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'DeleteShelf' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'FindRelatedBooks' => [
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
@@ -83,22 +163,68 @@ return [
             'GetBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetBookFromAbsolutelyAnywhere' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookFromAnywhereResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getAltBookName',
+                        ],
+                        'keyName' => 'alt_book_name',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetBookFromAnywhere' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookFromAnywhereResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetBookFromArchive' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookFromArchiveResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetShelf' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\ShelfResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'ListAggregatedShelves' => [
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
@@ -123,6 +249,14 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getBooks',
                 ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'ListShelves' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
@@ -143,14 +277,38 @@ return [
             'MergeShelves' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\ShelfResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'MoveBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'MoveBooks' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\MoveBooksResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getSource',
+                        ],
+                        'keyName' => 'source',
+                    ],
+                ],
             ],
             'PrivateListShelves' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
@@ -159,6 +317,15 @@ return [
             'PublishSeries' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\PublishSeriesResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getShelf',
+                            'getName',
+                        ],
+                        'keyName' => 'shelf.name',
+                    ],
+                ],
             ],
             'SaveBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
@@ -167,10 +334,26 @@ return [
             'UpdateBook' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'UpdateBookIndex' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
         ],
     ],

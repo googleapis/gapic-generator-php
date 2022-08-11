@@ -25,6 +25,7 @@ use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Generation\MethodDetails;
 use Google\Protobuf\Internal\CodedInputStream;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptor;
@@ -91,7 +92,7 @@ class ProtoHelpers
      */
     public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
     {
-        // TODO(v2): Merge this implementation with headerParamsDescriptor for v2.
+        // TODO(v2): Merge this implementation with routingParamsDescriptor for v2.
         // No longer need to generate this intermediate form as the generator will
         // no longer generate the header param injection code.
         return Vector::new($routingRule->getRoutingParameters())
@@ -109,14 +110,47 @@ class ProtoHelpers
     }
 
     /**
+     * Given the details of a method, produce the headerParams descriptor for the header request parameters.
+     * 
+     * @param MethodDetails $method the method to process headers for.
+     * 
+     * @return array
+     */
+    public static function headerParamsDescriptor(MethodDetails $method): array
+    {
+        if ($method->restRoutingHeaders && !$method->routingParameters) {
+            return static::implicitHeaderParamsDescriptor($method->restRoutingHeaders ?? Map::new());
+        }
+
+        return static::routingParamsDescriptor($method->routingParameters ?? Map::new());
+    }
+
+    /**
+     * Processes the google.api.http based implicit header request parameters of a method.
+     * 
+     * @param Map $implicitParams mapping of key -> Vector of strings, that being the field accessors.
+     * 
+     * @return array
+     */
+    public static function implicitHeaderParamsDescriptor(Map $implicitParams): array
+    {
+        return $implicitParams->keys()
+            ->map(fn($key) => [
+                'fieldAccessors' => $implicitParams->get($key, Vector::new())->toArray(),
+                'keyName' => $key
+            ])
+            ->toArray();
+    }
+
+    /**
      * Processes the RoutingParameters (pre-processed by ProtoHelpers::routingParameters) into a descriptor
      * config-friendly array for generation.
      *
-     * @param Map $routingParameters output of ProtoHelpers::routingParamters.
+     * @param Map $routingParameters output of ProtoHelpers::routingParameters.
      *
      * @return array all header param configurations for the method.
      */
-    public static function headerParamsDescriptor(Map $routingParameters): array
+    public static function routingParamsDescriptor(Map $routingParameters): array
     {
         $headerParams = [];
 

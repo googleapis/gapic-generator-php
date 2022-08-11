@@ -126,11 +126,10 @@ class ResourcesGenerator
                     ];
                     break;
             }
-            if ($method->routingParameters) {
-                $headerParams = ProtoHelpers::headerParamsDescriptor($method->routingParameters);
-                if ($headerParams) {
-                    $descriptor['headerParams'] = $headerParams;
-                }
+            
+            $headerParams = ProtoHelpers::headerParamsDescriptor($method);
+            if ($headerParams) {
+                $descriptor['headerParams'] = $headerParams;
             }
 
             return Map::new($descriptor);

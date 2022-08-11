@@ -6,10 +6,26 @@ return [
             'DeleteMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'GetNoPlaceholdersMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
@@ -18,30 +34,144 @@ return [
             'GetNoTemplateMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'NestedMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getNest1',
+                            'getNest2',
+                            'getName',
+                        ],
+                        'keyName' => 'nest1.nest2.name',
+                    ],
+                ],
             ],
             'NestedMultiMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getNest1',
+                            'getNest2',
+                            'getName',
+                        ],
+                        'keyName' => 'nest1.nest2.name',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getAnotherName',
+                        ],
+                        'keyName' => 'another_name',
+                    ],
+                ],
             ],
             'OrderingMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getA',
+                        ],
+                        'keyName' => 'a',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getC',
+                        ],
+                        'keyName' => 'c',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getAa',
+                        ],
+                        'keyName' => 'aa',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getB',
+                        ],
+                        'keyName' => 'b',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getD',
+                        ],
+                        'keyName' => 'd',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getAId',
+                        ],
+                        'keyName' => 'a_id',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getBId',
+                        ],
+                        'keyName' => 'b_id',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getE',
+                        ],
+                        'keyName' => 'e',
+                    ],
+                ],
             ],
             'PatchMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'PostMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'PutMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\RoutingHeaders\Response',
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                        'keyName' => 'name',
+                    ],
+                ],
             ],
             'RoutingRuleWithOutParameters' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,

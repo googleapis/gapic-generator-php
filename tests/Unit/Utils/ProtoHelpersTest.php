@@ -81,7 +81,7 @@ final class ProtoHelpersTest extends TestCase
         $this->assertStringContainsString('catalog.proto', $f->GetName());
     }
 
-    public function testHeaderParamsDescriptor(): void
+    public function testRoutingParamsDescriptor(): void
     {
         $routingParams = [
             'foo' => Vector::new([
@@ -136,7 +136,27 @@ final class ProtoHelpersTest extends TestCase
                 'keyName' => 'bar_baz'
             ]
         ];
-        $actual = ProtoHelpers::headerParamsDescriptor(Map::new($routingParams));
+        $actual = ProtoHelpers::routingParamsDescriptor(Map::new($routingParams));
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testImplicitHeaderParamsDescriptor(): void
+    {
+        $implicitHeaderParams = [
+            'foo' => Vector::new(['getFoo']),
+            'bar.baz' => Vector::new(['getBar', 'getBaz'])
+        ];
+        $expected = [
+            [
+                'fieldAccessors' => ['getFoo'],
+                'keyName' => 'foo',
+            ],
+            [
+                'fieldAccessors' => ['getBar', 'getBaz'],
+                'keyName' => 'bar.baz',
+            ]
+        ];
+        $actual = ProtoHelpers::implicitHeaderParamsDescriptor(Map::new($implicitHeaderParams));
         $this->assertEquals($expected, $actual);
     }
 }
