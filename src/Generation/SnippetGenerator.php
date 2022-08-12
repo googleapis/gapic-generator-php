@@ -64,7 +64,7 @@ class SnippetGenerator
             // the existing formatters aren't equipped to catch
             $files = $files->set(
                 $method->name,
-                AST::file()
+                AST::file(null)
                     ->withApacheLicense($this->licenseYear)
                     ->withGeneratedCodeWarning()
                     ->withBlock(

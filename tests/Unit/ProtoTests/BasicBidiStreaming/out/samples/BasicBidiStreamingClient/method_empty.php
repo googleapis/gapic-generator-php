@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START bidi_generated_BasicBidiStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;

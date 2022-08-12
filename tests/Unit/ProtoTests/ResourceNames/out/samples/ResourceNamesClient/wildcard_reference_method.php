@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_WildcardReferenceMethod_sync]
 use Google\ApiCore\ApiException;

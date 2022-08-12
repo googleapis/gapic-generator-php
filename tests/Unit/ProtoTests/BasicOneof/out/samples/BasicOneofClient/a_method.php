@@ -20,13 +20,12 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START basic_generated_BasicOneof_AMethod_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicOneof\BasicOneofClient;
 use Testing\BasicOneof\Request\Other;
-
 use Testing\BasicOneof\Response;
 
 /**
