@@ -95,6 +95,11 @@ class GapicClientGenerator
         return $this->ctx->finalize($file);
     }
 
+    private function examples(): GapicClientExamplesGenerator
+    {
+        return new GapicClientExamplesGenerator($this->serviceDetails);
+    }
+
     private function generateClass(): PhpClass
     {
         return AST::class($this->serviceDetails->gapicClientType)
@@ -106,7 +111,7 @@ class GapicClientGenerator
                     'calls that map to API methods. Sample code to get started:'
                 ])),
                 count($this->serviceDetails->methods) === 0 ? null :
-                    PhpDoc::example(ExamplesGenerator::build($this->serviceDetails)->rpcMethodExample($this->serviceDetails->methods[0])),
+                    PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
                 count($this->serviceDetails->resourceParts) === 0 ? null :
                      PhpDoc::text(
                          'Many parameters require resource names to be formatted in a particular way. To assist ' .
@@ -748,7 +753,7 @@ class GapicClientGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
-                PhpDoc::example(ExamplesGenerator::build($this->serviceDetails)->rpcMethodExample($method), PhpDoc::text('Sample code:')),
+                PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
                 $isStreamedRequest
                     ? null
                     : Vector::zip(

@@ -23,18 +23,13 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 
-class ExamplesGenerator
+class GapicClientExamplesGenerator
 {
-    public static function build(ServiceDetails $serviceDetails, $ctx = null): ExamplesGenerator
-    {
-        return new self($serviceDetails, $ctx);
-    }
-
-    public function __construct(ServiceDetails $serviceDetails, SourceFileContext $ctx = null)
+    public function __construct(ServiceDetails $serviceDetails)
     {
         $this->serviceDetails = $serviceDetails;
         // Create a separate context, as this code isn't part of the generated client.
-        $this->ctx = $ctx ?: new SourceFileContext('');
+        $this->ctx = new SourceFileContext('');
         $this->prod = new TestNameValueProducer($serviceDetails->catalog, $this->ctx);
     }
 
@@ -44,7 +39,7 @@ class ExamplesGenerator
 
     public function rpcMethodExample(MethodDetails $method): AST
     {
-        // Each ExamplesGenerator instance can only generate a single example.
+        // Each GapicClientExamplesGenerator instance can only generate a single example.
         // TODO: Handle special arg types; e.g. resources.
         switch ($method->methodType) {
             case MethodDetails::NORMAL:
