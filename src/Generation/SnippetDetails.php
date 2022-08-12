@@ -205,39 +205,42 @@ class SnippetDetails
         foreach ($messageDescriptor->getField() as $protoField) {
             $subField = new FieldDetails($this->serviceDetails->catalog, $messageDescriptor, $protoField);
 
-            if ($subField->isRequired) {
-                $nestedVar = AST::var(
-                    Helpers::toCamelCase($field->typeSingular->name . '_' . $subField->camelName)
-                );
-                // TODO: refactor to have example value for strings match format of [VALUE]
-                $exampleValue = $subField->exampleValue($this->context);
-
-                // if type is neither message or enum
-                if (!in_array($subField->desc->getType(), [GPBType::MESSAGE, GPBType::ENUM])) {
-                    $param = AST::param(
-                        $this->context->type(
-                            Type::fromField(
-                                $this->serviceDetails->catalog,
-                                $protoField->desc
-                            )
-                        ),
-                        $nestedVar
-                    );
-                    $this->sampleArguments = $this->sampleArguments->append($nestedVar);
-                    $this->callSampleAssignments = $this->callSampleAssignments->append(
-                        AST::assign($nestedVar, $exampleValue)
-                    );
-                    $this->sampleParams = $this->sampleParams->append($param);
-                    $this->phpDocParams = $this->phpDocParams->append(
-                        PhpDoc::param(
-                            $param,
-                            PhpDoc::preFormattedText($field->docLines)
-                        )
-                    );
-                }
-
-                $requiredFields[$subField->setter->getName()] = $nestedVar;
+            if (!$subField->isRequired) {
+                continue;
             }
+
+            $nestedVar = AST::var(
+                Helpers::toCamelCase($field->typeSingular->name . '_' . $subField->camelName)
+            );
+            $requiredFields[$subField->setter->getName()] = $nestedVar;
+            // TODO: refactor to have example value for strings match format of [VALUE]
+            $exampleValue = $subField->exampleValue($this->context);
+
+            // if type a message or enum, nothing more to do
+            if (in_array($subField->desc->getType(), [GPBType::MESSAGE, GPBType::ENUM])) {
+                continue;
+            }
+
+            $param = AST::param(
+                $this->context->type(
+                    Type::fromField(
+                        $this->serviceDetails->catalog,
+                        $protoField->desc
+                    )
+                ),
+                $nestedVar
+            );
+            $this->sampleArguments = $this->sampleArguments->append($nestedVar);
+            $this->callSampleAssignments = $this->callSampleAssignments->append(
+                AST::assign($nestedVar, $exampleValue)
+            );
+            $this->sampleParams = $this->sampleParams->append($param);
+            $this->phpDocParams = $this->phpDocParams->append(
+                PhpDoc::param(
+                    $param,
+                    PhpDoc::preFormattedText($field->docLines)
+                )
+            );
         }
 
         return $requiredFields;
