@@ -30,8 +30,9 @@ use Testing\BasicClientStreaming\Response;
 /**  */
 function method_empty_sample()
 {
+    $basicClientStreamingClient = new BasicClientStreamingClient();
+    
     try {
-        $basicClientStreamingClient = new BasicClientStreamingClient();
         $request = new EmptyRequest();
         // Write data to server and wait for a response
         $requests = [
@@ -40,7 +41,6 @@ function method_empty_sample()
         $stream = $basicClientStreamingClient->methodEmpty();
         $result = $stream->writeAllAndReadResponse($requests);
         printf('Response data: %s' . PHP_EOL, $result->serializeToJsonString());
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

@@ -30,9 +30,9 @@ use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 /**  */
 function method1_bidi_streaming_sample()
 {
+    $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+    
     try {
-        $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-        
         $request = new Request1();
         // Write all requests to the server, then read all responses until the
         // stream is complete
@@ -44,8 +44,6 @@ function method1_bidi_streaming_sample()
         foreach ($stream->closeWriteAndReadAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
-
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

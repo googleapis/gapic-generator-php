@@ -36,9 +36,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  */
 function list_crypto_key_versions_sample(string $formattedParent)
 {
+    $keyManagementServiceClient = new KeyManagementServiceClient();
+    
     try {
-        $keyManagementServiceClient = new KeyManagementServiceClient();
-        
         // Iterate over pages of elements
         $response = $keyManagementServiceClient->listCryptoKeyVersions($formattedParent);
         foreach ($response->iteratePages() as $page) {
@@ -46,9 +46,7 @@ function list_crypto_key_versions_sample(string $formattedParent)
             foreach ($page as $element) {
                 printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
             }
-
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

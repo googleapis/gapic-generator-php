@@ -30,9 +30,9 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**  */
 function long_running_archive_books_sample()
 {
+    $libraryServiceClient = new LibraryServiceClient();
+    
     try {
-        $libraryServiceClient = new LibraryServiceClient();
-        
         /** @var OperationResponse $response */
         $response = $libraryServiceClient->longRunningArchiveBooks();
         $response->pollUntilComplete();

@@ -34,9 +34,9 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  */
 function find_related_books_sample(string $formattedNames, string $formattedShelves)
 {
+    $libraryServiceClient = new LibraryServiceClient();
+    
     try {
-        $libraryServiceClient = new LibraryServiceClient();
-        
         // Iterate over pages of elements
         $response = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
         foreach ($response->iteratePages() as $page) {
@@ -44,9 +44,7 @@ function find_related_books_sample(string $formattedNames, string $formattedShel
             foreach ($page as $element) {
                 printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
             }
-
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -59,8 +57,12 @@ function find_related_books_sample(string $formattedNames, string $formattedShel
  */
 function callSample()
 {
-    $formattedNames = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedShelves = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedNames = [
+        LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+    ];
+    $formattedShelves = [
+        LibraryServiceClient::shelfName('[SHELF]'),
+    ];
     
     find_related_books_sample($formattedNames, $formattedShelves);
 }

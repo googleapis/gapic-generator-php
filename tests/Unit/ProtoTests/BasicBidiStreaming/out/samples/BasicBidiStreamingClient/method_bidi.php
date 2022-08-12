@@ -33,9 +33,9 @@ use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
  */
 function method_bidi_sample(int $aNumber)
 {
+    $basicBidiStreamingClient = new BasicBidiStreamingClient();
+    
     try {
-        $basicBidiStreamingClient = new BasicBidiStreamingClient();
-        
         $request = new Request();
         $request->setANumber($aNumber);
         // Write all requests to the server, then read all responses until the
@@ -48,8 +48,6 @@ function method_bidi_sample(int $aNumber)
         foreach ($stream->closeWriteAndReadAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
-
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

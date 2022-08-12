@@ -34,9 +34,9 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  */
 function get_big_nothing_sample(string $formattedName)
 {
+    $libraryServiceClient = new LibraryServiceClient();
+    
     try {
-        $libraryServiceClient = new LibraryServiceClient();
-        
         /** @var OperationResponse $response */
         $response = $libraryServiceClient->getBigNothing($formattedName);
         $response->pollUntilComplete();

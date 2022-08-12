@@ -30,9 +30,9 @@ use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 /**  */
 function method1_b_lro_sample()
 {
+    $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+    
     try {
-        $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-        
         /** @var OperationResponse $response */
         $response = $grpcServiceConfigWithRetry1Client->method1BLro();
         $response->pollUntilComplete();

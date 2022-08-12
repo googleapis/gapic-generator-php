@@ -30,9 +30,9 @@ use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 /**  */
 function method_empty_sample()
 {
+    $basicBidiStreamingClient = new BasicBidiStreamingClient();
+    
     try {
-        $basicBidiStreamingClient = new BasicBidiStreamingClient();
-        
         $request = new EmptyRequest();
         // Write all requests to the server, then read all responses until the
         // stream is complete
@@ -44,8 +44,6 @@ function method_empty_sample()
         foreach ($stream->closeWriteAndReadAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
-
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

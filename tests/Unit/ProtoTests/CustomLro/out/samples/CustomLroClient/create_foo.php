@@ -34,9 +34,9 @@ use Testing\CustomLro\CustomLroClient;
  */
 function create_foo_sample(string $project, string $region)
 {
+    $customLroClient = new CustomLroClient();
+    
     try {
-        $customLroClient = new CustomLroClient();
-        
         /** @var OperationResponse $response */
         $response = $customLroClient->createFoo($project, $region);
         $response->pollUntilComplete();

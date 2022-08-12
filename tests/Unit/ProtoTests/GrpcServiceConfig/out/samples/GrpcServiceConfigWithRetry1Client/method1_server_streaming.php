@@ -30,16 +30,14 @@ use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 /**  */
 function method1_server_streaming_sample()
 {
+    $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+    
     try {
-        $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-        
         // Read all responses until the stream is complete
         $stream = $grpcServiceConfigWithRetry1Client->method1ServerStreaming();
         foreach ($stream->readAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
-
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

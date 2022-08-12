@@ -34,9 +34,9 @@ use Testing\BasicLro\BasicLroClient;
  */
 function method1_sample()
 {
+    $basicLroClient = new BasicLroClient();
+    
     try {
-        $basicLroClient = new BasicLroClient();
-        
         /** @var OperationResponse $response */
         $response = $basicLroClient->method1();
         $response->pollUntilComplete();

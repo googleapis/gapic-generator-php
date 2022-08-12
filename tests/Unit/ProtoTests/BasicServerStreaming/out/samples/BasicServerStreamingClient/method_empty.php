@@ -30,16 +30,14 @@ use Testing\BasicServerStreaming\BasicServerStreamingClient;
 /**  */
 function method_empty_sample()
 {
+    $basicServerStreamingClient = new BasicServerStreamingClient();
+    
     try {
-        $basicServerStreamingClient = new BasicServerStreamingClient();
-        
         // Read all responses until the stream is complete
         $stream = $basicServerStreamingClient->methodEmpty();
         foreach ($stream->readAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
-
-        
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

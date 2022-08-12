@@ -34,9 +34,9 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  */
 function list_books_sample(string $formattedName)
 {
+    $libraryServiceClient = new LibraryServiceClient();
+    
     try {
-        $libraryServiceClient = new LibraryServiceClient();
-        
         // Iterate over pages of elements
         $response = $libraryServiceClient->listBooks($formattedName);
         foreach ($response->iteratePages() as $page) {
@@ -44,9 +44,7 @@ function list_books_sample(string $formattedName)
             foreach ($page as $element) {
                 printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
             }
-
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
