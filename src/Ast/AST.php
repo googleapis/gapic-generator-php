@@ -66,14 +66,15 @@ abstract class AST
 
     protected static function toPhp($x, &$omitSemicolon = false): string
     {
-        $omitSemicolon = false;
+        if ($x instanceof ShouldNotApplySemicolonInterface) {
+            $omitSemicolon = true;
+        }
 
         if (is_string($x)) {
             if (strncmp($x, "\0", 1) === 0) {
                 // \0 prefix means the string that follows is used verbatim.
                 return substr($x, 1);
             } elseif (substr($x, 0, 2) === '//') {
-            //} elseif (substr($x, 0, 2) === '//' || $x === PHP_EOL || $x === '') {
                 // '//' prefix means a comment.
                 $omitSemicolon = true;
                 return $x;
@@ -233,6 +234,7 @@ abstract class AST
             public function toCode(): string
             {
                 $omitSemicolon = false;
+
                 return $this->code
                     ->map(fn ($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
@@ -690,7 +692,7 @@ abstract class AST
      */
     public static function while(Expression $condition): callable
     {
-        return fn (...$code) => new class($condition, $code) extends AST {
+        return fn (...$code) => new class($condition, $code) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($condition, $code)
             {
                 $this->condition = $condition;
@@ -700,7 +702,7 @@ abstract class AST
             {
                 return 'while (' . static::toPhp($this->condition) . ") {\n" .
                     static::toPhp($this->code) .
-                    "}\n";
+                    "\n}\n";
             }
         };
     }
@@ -716,7 +718,7 @@ abstract class AST
      */
     public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): callable
     {
-        return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST {
+        return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($expr, $var, $indexVar, $code)
             {
                 $this->expr = $expr;
@@ -729,7 +731,7 @@ abstract class AST
                 $index = is_null($this->indexVar) ? '' : (static::toPhp($this->indexVar) . ' => ');
                 return 'foreach (' . static::toPhp($this->expr) . ' as ' . $index . static::toPhp($this->var) . ") {\n" .
                     static::toPhp($this->code) .
-                    "}\n";
+                    "\n}\n";
             }
         };
     }
@@ -743,7 +745,7 @@ abstract class AST
      */
     public static function try(...$tryCode): AST
     {
-        return new class($tryCode) extends AST {
+        return new class($tryCode) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($tryCode)
             {
                 $this->tryCode = AST::block(...$tryCode);

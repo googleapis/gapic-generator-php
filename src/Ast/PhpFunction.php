@@ -21,18 +21,21 @@ namespace Google\Generator\Ast;
 use Google\Generator\Collections\Vector;
 
 /** A function that can be placed in any block of code. */
-final class PhpFunction extends AST
+final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
 {
     use HasPhpDoc;
+
+    /** @var string The name of this function. */
+    private string $name;
+
+    /** @var Vector The function's parameters. */
+    private Vector $params;
 
     public function __construct(string $name)
     {
         $this->name = $name;
         $this->params = Vector::new();
     }
-
-    /** @var string *Readonly* The name of this function. */
-    public string $name;
 
     /**
      * Create a function with the specified parameters.
@@ -71,6 +74,6 @@ final class PhpFunction extends AST
             "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
             "{\n" .
             static::toPhp($this->body) .
-            "}\n";
+            PHP_EOL . "}" . PHP_EOL;
     }
 }
