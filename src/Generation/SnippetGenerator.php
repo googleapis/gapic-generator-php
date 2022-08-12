@@ -58,24 +58,7 @@ class SnippetGenerator
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
-            $responseFullName = $method->responseType->getFullName(true);
-            // TODO: parse use statements in the main loop of SnippetDetails::initialize instead
-            $uses = Set::new();
-            $uses = $uses->add($this->serviceDetails->emptyClientType->getFullname(true));
-            $uses = $uses->add(ApiException::class);
-
-            // TODO: handle cases where the OperationResponse wrapper is not used
-            if ($responseFullName === Operation::class) {
-                $uses = $uses->add(OperationResponse::class);
-            } else if ($responseFullName !== GPBEmpty::class) {
-                $uses = $uses->add($responseFullName);
-            }
-            
-            foreach ($method->allFields as $field) {
-                if ($field->isMessage && !$field->isRepeated && $field->isRequired) {
-                    $uses = $uses->add($field->typeSingular->getFullname(true));
-                }
-            }
+            $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
 
             // TODO: run prettier-php on the resulting files. it'll help clean up any outstanding formatting issues
             // the existing formatters aren't equipped to catch
@@ -86,11 +69,14 @@ class SnippetGenerator
                     ->withGeneratedCodeWarning()
                     ->withBlock(
                         AST::block(
-                            AST::literal("require_once __DIR__ . '../../../vendor/autoload.php'"),
+                            AST::literal("require_once __DIR__ . '/../../../vendor/autoload.php'"),
                             PHP_EOL,
                             "// [START $regionTag]",
-                            $uses->toVector()->map(fn ($use) => AST::literal("use {$use}")),
-                            $this->rpcMethodExample($method),
+                            $snippetDetails
+                                ->useStatements
+                                ->toVector()
+                                ->map(fn ($use) => AST::literal("use {$use}")),
+                            $this->rpcMethodExample($method, $snippetDetails),
                             "// [END $regionTag]"
                         )
                     )
@@ -100,10 +86,8 @@ class SnippetGenerator
         return $files;
     }
 
-    private function rpcMethodExample(MethodDetails $method): AST
+    private function rpcMethodExample(MethodDetails $method, SnippetDetails $snippetDetails): AST
     {
-        $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
-
         // this approach is based heavily on the existing code in ExamplesGenerator
         // TODO: investigate replacing ExamplesGenerator with this codebase, and instead
         // of generating examples directly in client code, link out to these seperate snippets
@@ -132,32 +116,28 @@ class SnippetGenerator
             default:
                 throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
         }
-        $snippetDetails->getContext()->finalize(null);
+        $snippetDetails->context->finalize(null);
         return $code;
     }
 
     private function rpcMethodExampleNormal(MethodDetails $method, SnippetDetails $snippetDetails): AST
     {
         $responseVar = AST::var('response');
+        $call = AST::call(
+            $snippetDetails->serviceClientVar,
+            AST::method($method->methodName)
+        )($snippetDetails->rpcArguments);
 
         return $this->buildSnippetStructure(
             $method,
             $snippetDetails,
             $method->hasEmptyResponse
-                ? [
-                    AST::call(
-                        $snippetDetails->getServiceClientVar(),
-                        AST::method($method->methodName))($snippetDetails->getRpcArguments()
-                    )
-                ]
+                ? [$call]
                 : [
                     AST::literal("/** @var {$method->responseType->name} {$responseVar->toCode()} */"),
                     AST::assign(
                         $responseVar,
-                        AST::call(
-                            $snippetDetails->getServiceClientVar(),
-                            AST::method($method->methodName))($snippetDetails->getRpcArguments()
-                        )
+                        $call
                     ),
                     AST::call("\0printf")(
                         AST::literal(
@@ -214,9 +194,10 @@ class SnippetGenerator
                 AST::assign(
                     $responseVar,
                     AST::call(
-                        $snippetDetails->getServiceClientVar(),
-                        AST::method($method->methodName))($snippetDetails->getRpcArguments())
-                    ),
+                        $snippetDetails->serviceClientVar,
+                        AST::method($method->methodName)
+                    )($snippetDetails->rpcArguments)
+                ),
                 $responseVar->pollUntilComplete(),
                 PHP_EOL,
                 $useResponseFn($responseVar)
@@ -239,8 +220,10 @@ class SnippetGenerator
                 '// Iterate over pages of elements',
                 AST::assign(
                     $responseVar,
-                    AST::call($snippetDetails->getServiceClientVar(),
-                    AST::method($method->methodName))($snippetDetails->getRpcArguments())
+                    AST::call(
+                        $snippetDetails->serviceClientVar,
+                        AST::method($method->methodName)
+                    )($snippetDetails->rpcArguments)
                 ),
                 AST::foreach($responseVar->iteratePages(), $page)(
                     // TODO: figure out how to get the type of the element being iterated over
@@ -270,18 +253,18 @@ class SnippetGenerator
             $snippetDetails,
             [
                 Vector::zip(
-                    $snippetDetails->getSampleAssignments(),
+                    $snippetDetails->sampleAssignments,
                     $method->requiredFields,
                     fn ($var, $f) => AST::assign(
                         $var,
-                        $f->exampleValue($snippetDetails->getContext())
+                        $f->exampleValue($snippetDetails->context)
                     )
                 ),
                 AST::assign(
                     $request,
                     AST::new(
                         $snippetDetails
-                            ->getContext()
+                            ->context
                             ->type($method->requestType)
                     )()
                 ),
@@ -299,7 +282,7 @@ class SnippetGenerator
                 AST::assign(
                     $stream,
                     $snippetDetails
-                        ->getServiceClientVar()
+                        ->serviceClientVar
                         ->instanceCall(
                             AST::method($method->methodName)
                         )()
@@ -329,9 +312,9 @@ class SnippetGenerator
                 AST::assign(
                     $stream,
                     AST::call(
-                        $snippetDetails->getServiceClientVar(),
+                        $snippetDetails->serviceClientVar,
                         AST::method($method->methodName)
-                    )($snippetDetails->getRpcArguments())
+                    )($snippetDetails->rpcArguments)
                 ),
                 AST::foreach($stream->readAll(), $element)(
                     AST::call("\0printf")(
@@ -356,12 +339,12 @@ class SnippetGenerator
             $method,
             $snippetDetails,
             [
-                Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($snippetDetails->getContext()))),
-                AST::assign($request, AST::new($snippetDetails->getContext()->type($method->requestType))()),
+                Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($snippetDetails->context))),
+                AST::assign($request, AST::new($snippetDetails->context->type($method->requestType))()),
                 Vector::zip($method->requiredFields, $requestVars, fn ($field, $param) => AST::call($request, $field->setter)($param)),
                 '// Write data to server and wait for a response',
                 AST::assign($requests, AST::array([$request])),
-                AST::assign($stream, $snippetDetails->getServiceClientVar()->instanceCall(AST::method($method->methodName))()),
+                AST::assign($stream, $snippetDetails->serviceClientVar->instanceCall(AST::method($method->methodName))()),
                 AST::assign($result, $stream->writeAllAndReadResponse($requests)),
                 AST::call("\0printf")(AST::literal("'Response data: %s' . PHP_EOL, {$result->toCode()}->serializeToJsonString()"))
             ]
@@ -375,7 +358,7 @@ class SnippetGenerator
         return AST::try(...$tryStatements)
             ->catch(
                 $snippetDetails
-                    ->getContext()
+                    ->context
                     ->type(Type::fromName(ApiException::class)),
                 $exceptionVar
             )(
@@ -397,21 +380,21 @@ class SnippetGenerator
                 ->withPhpDoc(
                     PhpDoc::block(
                         PhpDoc::preFormattedText($method->docLines),
-                        $snippetDetails->getPhpDocParams()
+                        $snippetDetails->phpDocParams
                     )
                 )
-                ->withParams($snippetDetails->getSampleParams())
+                ->withParams($snippetDetails->sampleParams)
                 ->withBody(
                     AST::block(
                         AST::assign(
-                            $snippetDetails->getServiceClientVar(),
+                            $snippetDetails->serviceClientVar,
                             AST::new(
-                                $snippetDetails->getContext()->type(
+                                $snippetDetails->context->type(
                                     $this->serviceDetails->emptyClientType
                                 )
                             )()
                         ),
-                        $snippetDetails->getSampleAssignments(),
+                        $snippetDetails->sampleAssignments,
                         PHP_EOL,
                         $this->buildTryCatchStatement($tryStatements, $snippetDetails)
                     )
@@ -422,7 +405,7 @@ class SnippetGenerator
 
     private function getCallSampleFn(SnippetDetails $snippetDetails, string $sampleName)
     {
-        if (count($snippetDetails->getSampleParams()) === 0) {
+        if (count($snippetDetails->sampleParams) === 0) {
             return null;
         }
 
@@ -435,9 +418,9 @@ class SnippetGenerator
             )
             ->withBody(
                 AST::block(
-                    $snippetDetails->getCallSampleAssignments(),
+                    $snippetDetails->callSampleAssignments,
                     PHP_EOL,
-                    AST::call("\0$sampleName")($snippetDetails->getSampleArguments())
+                    AST::call("\0$sampleName")($snippetDetails->sampleArguments)
                 )
             );
     }

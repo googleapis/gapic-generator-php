@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\ApiException;
+use Google\ApiCore\OperationResponse;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\Variable;
@@ -25,6 +27,8 @@ use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Operation;
+use Google\Protobuf\GPBEmpty;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\GPBType;
 
@@ -32,37 +36,37 @@ use Google\Protobuf\Internal\GPBType;
 class SnippetDetails
 {
     /** @var Vector The main sample's parameters. */
-    private Vector $sampleParams;
+    public Vector $sampleParams;
 
     /** @var Vector The main sample's php doc parameters. */
-    private Vector $phpDocParams;
+    public Vector $phpDocParams;
 
     /** @var Vector The main sample's assignments. */
-    private Vector $sampleAssignments;
+    public Vector $sampleAssignments;
 
     /** @var Vector The arguments for the RPC call within the main sample. */
-    private Vector $rpcArguments;
+    public Vector $rpcArguments;
 
     /** @var Vector The assignments within the call sample, used to invoke the main sample. */
-    private Vector $callSampleAssignments;
+    public Vector $callSampleAssignments;
 
     /** @var Vector The arguments for the main sample, used within the call sample. */
-    private Vector $sampleArguments;
+    public Vector $sampleArguments;
 
     /** @var MethodDetails The method details associated with the given snippet. */
-    private MethodDetails $methodDetails;
+    public MethodDetails $methodDetails;
 
     /** @var ServiceDetails The service details. */
-    private ServiceDetails $serviceDetails;
+    public ServiceDetails $serviceDetails;
 
     /** @var SourceFileContext A context assigned to the file associated with the snippet. */
-    private SourceFileContext $context;
+    public SourceFileContext $context;
 
     /** @var Set The use statements associated with the given snippet. */
-    private Set $useStatements;
+    public Set $useStatements;
 
     /** @var Variable An AST node representing the service client associated with this method. */
-    private Variable $serviceClientVar;
+    public Variable $serviceClientVar;
 
     public function __construct(MethodDetails $methodDetails, ServiceDetails $serviceDetails)
     {
@@ -75,53 +79,26 @@ class SnippetDetails
         $this->rpcArguments = Vector::new();
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
+        $this->useStatements = Set::new();
         $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
 
         $this->initialize();
     }
 
-    public function getPhpDocParams(): Vector
-    {
-        return $this->phpDocParams;
-    }
-
-    public function getSampleParams(): Vector
-    {
-        return $this->sampleParams;
-    }
-
-    public function getSampleAssignments(): Vector
-    {
-        return $this->sampleAssignments;
-    }
-
-    public function getRpcArguments(): Vector
-    {
-        return $this->rpcArguments;
-    }
-
-    public function getCallSampleAssignments(): Vector
-    {
-        return $this->callSampleAssignments;
-    }
-
-    public function getSampleArguments(): Vector
-    {
-        return $this->sampleArguments;
-    }
-
-    public function getContext(): SourceFileContext
-    {
-        return $this->context;
-    }
-
-    public function getServiceClientVar(): Variable
-    {
-        return $this->serviceClientVar;
-    }
-
     private function initialize(): void
     {
+        $responseFullName = $this->methodDetails->responseType->getFullName(true);
+        $this->useStatements = $this->useStatements->add(ApiException::class);
+        $this->useStatements = $this->useStatements
+            ->add($this->serviceDetails->emptyClientType->getFullname(true));
+
+        // TODO: handle cases where the OperationResponse wrapper is not used
+        if ($responseFullName === Operation::class) {
+            $this->useStatements = $this->useStatements->add(OperationResponse::class);
+        } else if ($responseFullName !== GPBEmpty::class) {
+            $this->useStatements = $this->useStatements->add($responseFullName);
+        }
+
         foreach ($this->methodDetails->requiredFields as $field) {
             if ($field->isOneOf || $field->isFirstFieldInOneof()) {
                 continue;
@@ -171,6 +148,9 @@ class SnippetDetails
 
     private function handleMessage(FieldDetails $field): void
     {
+        if (!$field->isRepeated) {
+            $this->useStatements = $this->useStatements->add($field->typeSingular->getFullname(true));
+        }
         $messageDescriptor = $this->serviceDetails
             ->catalog
             ->msgsByFullname[$field->fullname];
