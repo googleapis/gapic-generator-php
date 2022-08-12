@@ -20,6 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
+use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
@@ -57,8 +58,11 @@ class SnippetDetails
     /** @var SourceFileContext A context assigned to the file associated with the snippet. */
     private SourceFileContext $context;
 
-    /** @var MethodDetails The use statements associated with the given snippet. */
+    /** @var Set The use statements associated with the given snippet. */
     private Set $useStatements;
+
+    /** @var Variable An AST node representing the service client associated with this method. */
+    private Variable $serviceClientVar;
 
     public function __construct(MethodDetails $methodDetails, ServiceDetails $serviceDetails)
     {
@@ -71,6 +75,7 @@ class SnippetDetails
         $this->rpcArguments = Vector::new();
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
+        $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
 
         $this->initialize();
     }
@@ -110,13 +115,19 @@ class SnippetDetails
         return $this->context;
     }
 
+    public function getServiceClientVar(): Variable
+    {
+        return $this->serviceClientVar;
+    }
+
     private function initialize(): void
     {
-        foreach ($this->methodDetails->allFields as $field) {
-            if ($field->isOneOf || $field->isFirstFieldInOneof() || !$field->isRequired) {
+        foreach ($this->methodDetails->requiredFields as $field) {
+            if ($field->isOneOf || $field->isFirstFieldInOneof()) {
                 continue;
             }
 
+            // Handle resource based format fields
             if ($field->useResourceTestValue) {
                 $this->handleFormattedResource($field);
                 continue;
@@ -263,6 +274,12 @@ class SnippetDetails
             $this->context->type($this->serviceDetails->emptyClientType),
             $field->resourceDetails->formatMethod
         )($formatMethodArgs);
+
+        // TODO: ensure params are updated 
+        if ($field->isRepeated) {
+            $value = AST::array([$value]);
+        }
+
         $var = AST::var(Helpers::toCamelCase("formatted_{$field->name}"));
         $param = AST::param(
             $this->context->type(Type::string()),
