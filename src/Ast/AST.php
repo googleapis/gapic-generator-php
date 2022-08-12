@@ -121,7 +121,7 @@ abstract class AST
      *
      * @return PhpFile
      */
-    public static function file(PhpClass $class = null): PhpFile
+    public static function file(?PhpClass $class): PhpFile
     {
         return new PhpFile($class);
     }
