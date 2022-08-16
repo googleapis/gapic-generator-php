@@ -48,6 +48,8 @@ class ResourcesGenerator
                 case MethodDetails::CUSTOM_OP:
                     $descriptor = [
                         'callType' => AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL'),
+                        // Include the responseType for Custom Operations because they define their own operation class.
+                        'responseType' => $method->responseType->getFullName(true),
                         'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
                     ];
                     break;

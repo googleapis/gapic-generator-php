@@ -5,6 +5,7 @@ return [
         'google.cloud.compute.v1.Addresses' => [
             'Delete' => [
                 'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\Operation',
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -42,6 +43,7 @@ return [
             ],
             'Insert' => [
                 'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\Operation',
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
