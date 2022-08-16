@@ -4,6 +4,7 @@ return [
     'interfaces' => [
         'google.cloud.speech.v1.Speech' => [
             'LongRunningRecognize' => [
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Speech\V1\LongRunningRecognizeResponse',
                     'metadataReturnType' => '\Google\Cloud\Speech\V1\LongRunningRecognizeMetadata',
@@ -13,7 +14,13 @@ return [
                     'totalPollTimeoutMillis' => '300000',
                 ],
             ],
+            'Recognize' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Speech\V1\RecognizeResponse',
+            ],
             'StreamingRecognize' => [
+                'callType' => \Google\ApiCore\Call::BIDI_STREAMING_CALL,
+                'responseType' => 'Google\Cloud\Speech\V1\StreamingRecognizeResponse',
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'BidiStreaming',
                 ],

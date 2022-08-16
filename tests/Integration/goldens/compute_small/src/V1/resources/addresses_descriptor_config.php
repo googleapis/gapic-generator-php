@@ -4,6 +4,7 @@ return [
     'interfaces' => [
         'google.cloud.compute.v1.Addresses' => [
             'Delete' => [
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -17,9 +18,30 @@ return [
                     'operationNameMethod' => 'getName',
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Google\Cloud\Compute\V1\Operation\Status::DONE,
+                ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                        'keyName' => 'project',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getRegion',
+                        ],
+                        'keyName' => 'region',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getAddress',
+                        ],
+                        'keyName' => 'address',
+                    ],
                 ],
             ],
             'Insert' => [
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -34,8 +56,24 @@ return [
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Google\Cloud\Compute\V1\Operation\Status::DONE,
                 ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                        'keyName' => 'project',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getRegion',
+                        ],
+                        'keyName' => 'region',
+                    ],
+                ],
             ],
             'AggregatedList' => [
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\AddressAggregatedList',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -44,8 +82,18 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getItems',
                 ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                        'keyName' => 'project',
+                    ],
+                ],
             ],
             'List' => [
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\AddressList',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -53,6 +101,20 @@ return [
                     'requestPageSizeSetMethod' => 'setMaxResults',
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getItems',
+                ],
+                'headerParams' => [
+                    [
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                        'keyName' => 'project',
+                    ],
+                    [
+                        'fieldAccessors' => [
+                            'getRegion',
+                        ],
+                        'keyName' => 'region',
+                    ],
                 ],
             ],
         ],
