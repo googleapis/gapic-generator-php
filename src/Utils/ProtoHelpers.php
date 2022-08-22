@@ -79,112 +79,81 @@ class ProtoHelpers
         }
     }
 
-    /**
-     * Processes the RoutingParameters for generation and groups these processed configs by the `field`
-     * declared.
-     *
-     * @param ProtoCatalog $catalog The proto catalog.
-     * @param DescriptorProto $msg The request message.
-     * @param RoutingRule $routingRule The RoutingRule annotation to process.
-     *
-     * @return Map A Map of `RoutingParameter.field` to all processed RoutingParameter configs related
-     *             to each field.
-     */
-    public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
+    public static function headerParams(ProtoCatalog $catalog, MethodDescriptorProto $desc): array
     {
-        // TODO(v2): Merge this implementation with routingParamsDescriptor for v2.
-        // No longer need to generate this intermediate form as the generator will
-        // no longer generate the header param injection code.
-        return Vector::new($routingRule->getRoutingParameters())
-            ->groupBy(
-                // Key: The field (or field chain) referenced by the RoutingParamter.
-                fn ($x) => $x->getField(),
-                // Value: The routing header config the RoutingParameter defines.
-                fn ($x) => [
-                    'getter' => static::buildGetterChain($catalog, $msg, $x->getField()),
-                    'key' => static::fieldOrTemplateVariable($x),
-                    'regex' => static::compileRoutingRegex($x),
-                    'root' => explode('.', $x->getField())[0],
-                ],
-            );
-    }
+        $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+        $httpRule = static::httpRule($desc);
+        $routingRule = static::routingRule($desc);
 
-    /**
-     * Given the details of a method, produce the headerParams descriptor for the header request parameters.
-     * 
-     * @param MethodDetails $method the method to process headers for.
-     * 
-     * @return array
-     */
-    public static function headerParamsDescriptor(MethodDetails $method): array
-    {
-        if ($method->restRoutingHeaders && !$method->routingParameters) {
-            return static::implicitParamsDescriptor($method->restRoutingHeaders ?? Map::new());
+        if ($httpRule && !$routingRule) {
+            return static::httpBasedHeaderParams($catalog, $httpRule, $inputMsg);
         }
 
-        return static::routingParamsDescriptor($method->routingParameters ?? Map::new());
+        if ($routingRule) {
+            return static::routingBasedHeaderParams($catalog, $routingRule, $inputMsg);
+        }
+
+        return [];
     }
 
-    /**
-     * Processes the google.api.http based implicit header request parameters of a method.
-     * 
-     * @param Map $implicitParams mapping of key -> Vector of strings, that being the field accessors.
-     * 
-     * @return array
-     */
-    public static function implicitParamsDescriptor(Map $implicitParams): array
+    public static function httpBasedHeaderParams(ProtoCatalog $catalog, HttpRule $httpRule, DescriptorProto $msg): array
     {
-        return $implicitParams->keys()
+        $placeholders = static::restPlaceholders($catalog, $httpRule, $msg);
+
+        return $placeholders
+            ->keys()
             ->map(fn($key) => [
-                'fieldAccessors' => $implicitParams->get($key, Vector::new())->toArray(),
-                'keyName' => $key
+                'keyName' => $key,
+                'fieldAccessors' => $placeholders->get($key, Vector::new())->toArray()
             ])
             ->toArray();
     }
 
-    /**
-     * Processes the RoutingParameters (pre-processed by ProtoHelpers::routingParameters) into a descriptor
-     * config-friendly array for generation.
-     *
-     * @param Map $routingParameters output of ProtoHelpers::routingParameters.
-     *
-     * @return array all header param configurations for the method.
-     */
-    public static function routingParamsDescriptor(Map $routingParameters): array
+    public static function routingBasedHeaderParams(ProtoCatalog $catalog, RoutingRule $routingRule, DescriptorProto $msg): array
     {
-        $headerParams = [];
 
-        foreach($routingParameters->values() as $fieldRoutingParams) {
-            // Group by header key so that GAX the relevant matchers can be grouped in order.
-            $paramsByKey = $fieldRoutingParams->groupBy(fn($f) => $f['key']);
-            
-            // Group the matchers by header key in order.
-            $matchersByKey = $paramsByKey->mapValues(
-                fn($key, $fieldRoutingParams) =>
-                    $fieldRoutingParams
-                        ->filter(fn($f) => isset($f['regex']))
-                        ->map(fn($f) => $f['regex']))
-                ->filter(fn($key, $matchers) => $matchers)
-                ->mapValues(fn($key, $val) => $val->toArray());
-            
-            // Flatten the entire set of key-oriented configs, taking the first "getter" chain (should all be the same),
-            // and injecting the matchers for that header key if configured.
-            $flattened = $paramsByKey->mapValues(fn($key, $params) =>
-                // Only set the `matchers` if it is set and not empty.
-                isset($matchersByKey[$key]) && $matchersByKey[$key] ? [
-                    'fieldAccessors' => $params[0]['getter'],
-                    'keyName' => $key,
-                    'matchers' => $matchersByKey[$key]
-                ] : [
-                    'fieldAccessors' => $params[0]['getter'],
-                    'keyName' => $key
-                ]
-            )->values()->toArray();
+        // Organzie rules by resulting key name.
+        $rulesByKey = Vector::new($routingRule->getRoutingParameters())
+            ->groupBy(fn($x) => static::fieldOrTemplateVariable($x));
 
-            $headerParams = array_merge($headerParams, $flattened);
-        }
+        // Organize "compiled" segment matchers by resulting key name.
+        $matchersByKey = $rulesByKey->mapValues(
+            fn($key, $routingRules) =>
+                $routingRules
+                    ->filter(fn($rule) => static::hasMatcher($rule))
+                    ->map(fn($rule) => static::compileRoutingRegex($rule)))
+            ->filter(fn($key, $matchers) => $matchers->count() > 0)
+            ->mapValues(fn($key, $val) => $val->toArray());
 
-        return $headerParams;
+        // Reduce the rules for each key into one rule, taking the first it's
+        // keyName and fieldAccessors. Note: If multiple fields can be configured
+        // to supply a value for the same keyName, this will not work. To date,
+        // we only support referring to one field with multiple parsing rules
+        // per header key.
+        $paramDescs = $rulesByKey->keys()
+            ->map(fn($key) => $rulesByKey->get($key, Vector::new())
+                ->reduce([], fn($val, $rule) => [
+                        'keyName' => $val['keyName'] ?? $key,
+                        'fieldAccessors' => $val['fieldAccessors'] ?? static::buildGetterChain($catalog, $msg, $rule->getField()),
+                ])
+            );
+
+        // Include the list of segment matchers for a parsing rule.
+        $paramDescs = $paramDescs->map(fn($p) =>
+            isset($matchersByKey[$p['keyName']]) ? 
+                array_merge($p, ['matchers' => $matchersByKey[$p['keyName']]]) :
+                $p);
+        
+        return $paramDescs->toArray();
+    }
+
+    private static function hasMatcher(RoutingParameter $routingParam): bool
+    {
+        // Has a path_template in RoutingParameter and the path_template defines
+        // a segment matcher other than '**' ("match anything"), with the header
+        // key override.
+        $temp = $routingParam->getPathTemplate();
+        return !empty($temp) && str_contains($temp, '=') && !str_ends_with($temp, "=**}");
     }
 
     /**
@@ -197,14 +166,8 @@ class ProtoHelpers
      */
     private static function compileRoutingRegex(RoutingParameter $routingParam)
     {
-        // No path_template in RoutingParameter.
-        if (empty($routingParam->getPathTemplate())) {
-            return null;
-        }
-        // The path_template only overrides the header key, doesn't define
-        // segment matcher.
-        if (!str_contains($routingParam->getPathTemplate(), '=')) {
-            return null;
+        if (!static::hasMatcher($routingParam)) {
+            return '';
         }
         $template = $routingParam->getPathTemplate();
 
@@ -212,13 +175,13 @@ class ProtoHelpers
         // Example: /v1/{key_override=projects/*}/foos -> projects/*
         $matches = [];
         if (!preg_match('/\{.+=([^\}]*)\}/', $template, $matches)) {
-            return null;
+            return '';
         }
         $match = $matches[1];
         // These mean "accept anything and everything", essentially the same as
         // not including a pattern following the '=' separator.
         if ($match === '*' || $match === '**') {
-            return null;
+            return '';
         }
 
         $key = static::fieldOrTemplateVariable($routingParam);
@@ -316,8 +279,6 @@ class ProtoHelpers
      */
     public static function restPlaceholders(ProtoCatalog $catalog, HttpRule $httpRule, ?DescriptorProto $msg): Map
     {
-        // TODO(v2): merge this with implicitParamsDescriptor as we won't need to generate an intermediate
-        // representation, because GAPIC will no longer do the header injection.
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpRule->getPattern()}");
         $restUriTemplate = $httpRule->$uriTemplateGetter();
         if ($restUriTemplate === '') {
@@ -437,6 +398,11 @@ class ProtoHelpers
             });
         }
         return $result;
+    }
+
+    public static function httpRule(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
     }
 
     public static function routingRule(MethodDescriptorProto $method)

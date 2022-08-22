@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -36,10 +36,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -48,12 +48,12 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'nest1.nest2.name',
                         'fieldAccessors' => [
                             'getNest1',
                             'getNest2',
                             'getName',
                         ],
-                        'keyName' => 'nest1.nest2.name',
                     ],
                 ],
             ],
@@ -62,24 +62,24 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'nest1.nest2.name',
                         'fieldAccessors' => [
                             'getNest1',
                             'getNest2',
                             'getName',
                         ],
-                        'keyName' => 'nest1.nest2.name',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                     [
+                        'keyName' => 'another_name',
                         'fieldAccessors' => [
                             'getAnotherName',
                         ],
-                        'keyName' => 'another_name',
                     ],
                 ],
             ],
@@ -88,52 +88,52 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'a',
                         'fieldAccessors' => [
                             'getA',
                         ],
-                        'keyName' => 'a',
                     ],
                     [
+                        'keyName' => 'c',
                         'fieldAccessors' => [
                             'getC',
                         ],
-                        'keyName' => 'c',
                     ],
                     [
+                        'keyName' => 'aa',
                         'fieldAccessors' => [
                             'getAa',
                         ],
-                        'keyName' => 'aa',
                     ],
                     [
+                        'keyName' => 'b',
                         'fieldAccessors' => [
                             'getB',
                         ],
-                        'keyName' => 'b',
                     ],
                     [
+                        'keyName' => 'd',
                         'fieldAccessors' => [
                             'getD',
                         ],
-                        'keyName' => 'd',
                     ],
                     [
+                        'keyName' => 'a_id',
                         'fieldAccessors' => [
                             'getAId',
                         ],
-                        'keyName' => 'a_id',
                     ],
                     [
+                        'keyName' => 'b_id',
                         'fieldAccessors' => [
                             'getBId',
                         ],
-                        'keyName' => 'b_id',
                     ],
                     [
+                        'keyName' => 'e',
                         'fieldAccessors' => [
                             'getE',
                         ],
-                        'keyName' => 'e',
                     ],
                 ],
             ],
@@ -142,10 +142,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -154,10 +154,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -166,10 +166,10 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -182,48 +182,48 @@ return [
                 'responseType' => 'Testing\RoutingHeaders\Response',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                         'matchers' => [
                             '/^(?<name>projects\/[^\/]+)\/foos$/',
                         ],
                     ],
                     [
+                        'keyName' => 'foo_name',
                         'fieldAccessors' => [
                             'getAnotherName',
                         ],
-                        'keyName' => 'foo_name',
                         'matchers' => [
                             '/^(?<foo_name>projects\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/',
                             '/^(?<foo_name>projects\/[^\/]+\/foos\/[^\/]+)\/bars\/[^\/]+(?:\/.*)?$/',
                         ],
                     ],
                     [
+                        'keyName' => 'bar_name',
                         'fieldAccessors' => [
                             'getAnotherName',
                         ],
-                        'keyName' => 'bar_name',
                         'matchers' => [
                             '/^projects\/[^\/]+\/foos\/[^\/]+\/(?<bar_name>bars\/[^\/]+)(?:\/.*)?$/',
                         ],
                     ],
                     [
+                        'keyName' => 'nested_name',
                         'fieldAccessors' => [
                             'getNest1',
                             'getNest2',
                             'getName',
                         ],
-                        'keyName' => 'nested_name',
                     ],
                     [
+                        'keyName' => 'part_of_nested',
                         'fieldAccessors' => [
                             'getNest1',
                             'getNest2',
                             'getName',
                         ],
-                        'keyName' => 'part_of_nested',
                         'matchers' => [
                             '/^(?<part_of_nested>projects\/[^\/]+)\/bars$/',
                         ],

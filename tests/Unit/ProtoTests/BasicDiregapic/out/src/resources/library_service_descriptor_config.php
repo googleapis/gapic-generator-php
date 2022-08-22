@@ -15,10 +15,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -34,10 +34,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -53,10 +53,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'source',
                         'fieldAccessors' => [
                             'getSource',
                         ],
-                        'keyName' => 'source',
                     ],
                 ],
             ],
@@ -65,10 +65,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -77,10 +77,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\AddTagResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -89,10 +89,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\ArchiveBooksResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'source',
                         'fieldAccessors' => [
                             'getSource',
                         ],
-                        'keyName' => 'source',
                     ],
                 ],
             ],
@@ -101,10 +101,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -113,10 +113,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\InventoryResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -129,10 +129,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -141,10 +141,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -165,10 +165,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -177,16 +177,16 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookFromAnywhereResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'alt_book_name',
                         'fieldAccessors' => [
                             'getAltBookName',
                         ],
-                        'keyName' => 'alt_book_name',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -195,10 +195,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookFromAnywhereResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -207,10 +207,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookFromArchiveResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -219,10 +219,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\ShelfResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -251,10 +251,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -279,10 +279,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\ShelfResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -291,10 +291,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -303,10 +303,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\MoveBooksResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'source',
                         'fieldAccessors' => [
                             'getSource',
                         ],
-                        'keyName' => 'source',
                     ],
                 ],
             ],
@@ -319,11 +319,11 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\PublishSeriesResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'shelf.name',
                         'fieldAccessors' => [
                             'getShelf',
                             'getName',
                         ],
-                        'keyName' => 'shelf.name',
                     ],
                 ],
             ],
@@ -336,10 +336,10 @@ return [
                 'responseType' => 'Testing\BasicDiregapic\BookResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -348,10 +348,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],

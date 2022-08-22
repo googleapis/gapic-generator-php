@@ -32,9 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Protobuf\GPBEmpty;
 use Testing\CustomLro\CancelOperationRequest;
-use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\DeleteOperationRequest;
 use Testing\CustomLro\GetOperationRequest;
 
@@ -209,7 +207,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new CancelOperationRequest();
         $request->setOperation($operation);
-        return $this->startCall('Cancel', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('Cancel', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -241,7 +239,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new DeleteOperationRequest();
         $request->setOperation($operation);
-        return $this->startCall('Delete', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('Delete', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -284,6 +282,6 @@ class CustomLroOperationsGapicClient
         $request->setProject($project);
         $request->setRegion($region);
         $request->setFoo($foo);
-        return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('Get', null, $request, $optionalArgs)->wait();
     }
 }

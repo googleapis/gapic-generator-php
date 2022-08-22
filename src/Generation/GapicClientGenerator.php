@@ -678,34 +678,15 @@ class GapicClientGenerator
             }
         };
         $request = AST::var('request');
-        $requestParamHeaders = AST::var('requestParamHeaders');
         $required = $method->requiredFields
                            ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
                            ->map(fn ($f) => $this->toParam($f));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
-        $requestParams = AST::var('requestParams');
         $isStreamedRequest =
             $method->methodType === MethodDetails::BIDI_STREAMING
             || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        // Request parameter handling.
-        $restRoutingHeaders =
-            is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
-            ? Map::new([])
-            : $method->restRoutingHeaders;
-        // The presence of google.api.routing explicit headers overrides google.api.http-based implicit headers.
-        $hasRoutingParams = !is_null($method->routingParameters);
-        if ($hasRoutingParams) {
-            $restRoutingHeaders = $method->routingParameters;
-        }
-
-        // An associative array containing 'required' and 'optional' keys for statements that inject required
-        // and optional fields in request headers.
-        $requestHeaderAssignments = $hasRoutingParams
-            ? static::explicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders)
-            : static::implicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders);
-
-        $hasRequestParams = count($restRoutingHeaders) > 0;
+        
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
@@ -715,39 +696,16 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 $isStreamedRequest ? null : Vector::new([
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                    !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip(
                         $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
                         $required,
                         fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
                     ),
-                    // Request header assignments for required fields.
-                    $requestHeaderAssignments['required'],
                     $method->optionalFields->map(
                         fn ($x) =>
                         AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                            ->then(
-                                AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
-                                // Request header assignment/parsing for optional fields.
-                                !is_null($requestHeaderAssignments['optional'])
-                                    ? $requestHeaderAssignments['optional']->get($x->name, null)
-                                    : null
-                            ),
+                            ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName))),
                     ),
-                    !$hasRequestParams ? null : AST::assign(
-                        $requestParams,
-                        AST::new($this->ctx->type(
-                            Type::fromName(RequestParamsHeaderDescriptor::class)
-                        ))($requestParamHeaders)
-                    ),
-                    !$hasRequestParams ? null : AST::assign(
-                        $optionalArgs->var['headers'],
-                        AST::ternary(
-                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
-                            $requestParams->getHeader()
-                        )
-                    )
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))
@@ -825,79 +783,33 @@ class GapicClientGenerator
 
     private function startCall($method, $optionalArgs, $request): AST
     {
-        $startCallArgs = [
-        $method->name,
-        AST::access($this->ctx->type($method->responseType), AST::CLS),
-        $optionalArgs->var
-      ];
+        $startApiCallArgs = Map::new([
+            'methodName' => $method->name,
+            'interfaceName' => $method->mixinServiceFullname ?? AST::NULL,
+            'request' => $request,
+            'optionalArgs' => $optionalArgs->var
+        ]);
+        $wait = true;
         switch ($method->methodType) {
-      case MethodDetails::CUSTOM_OP:
-        $startCallArgs = [
-            $method->name,
-            $optionalArgs->var,
-            $request,
-            AST::call(AST::THIS, AST::method('getOperationsClient'))(),
-            AST::NULL,
-            AST::access($this->ctx->type($method->responseType), AST::CLS),
-        ];
-        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-      case MethodDetails::NORMAL:
-        $startCallArgs[] = $request;
-        if ($method->isMixin()) {
-            $startCallArgs[] =
-                AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
-      case MethodDetails::LRO:
-        $startCallArgs = [
-          $method->name,
-          $optionalArgs->var,
-          $request,
-          AST::call(AST::THIS, AST::method('getOperationsClient'))()
-        ];
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-      case MethodDetails::PAGINATED:
-        $startCallArgs = [
-          $method->name,
-          $optionalArgs->var,
-          AST::access($this->ctx->type($method->responseType), AST::CLS),
-          $request
-        ];
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
       case MethodDetails::BIDI_STREAMING:
-        $startCallArgs[] = AST::NULL;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
-      case MethodDetails::SERVER_STREAMING:
-        $startCallArgs[] = $request;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+        // Fall through to CLIENT_STREAMING.
       case MethodDetails::CLIENT_STREAMING:
-        $startCallArgs[] = AST::NULL;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+        $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
+        // Fall through to SERVER_STREAMING.
+      case MethodDetails::SERVER_STREAMING:
+        // Fall through to PAGINATED.
+      case MethodDetails::PAGINATED:
+        $wait = false;
+        break;
       default:
-        throw new \Exception("Cannot handle method type: '{$method->methodType}'");
       }
+
+      $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
+      if ($wait) {
+        $call = $call->wait();
+      }
+
+      return $call;
     }
 
     /**

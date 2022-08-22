@@ -25,7 +25,6 @@
 namespace Testing\BasicBidiStreaming\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\Transport\TransportInterface;
@@ -33,7 +32,6 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Request;
-use Testing\BasicBidiStreaming\Response;
 
 /**
  * Service Description:
@@ -247,7 +245,7 @@ class BasicBidiStreamingGapicClient
      */
     public function methodBidi(array $optionalArgs = [])
     {
-        return $this->startCall('MethodBidi', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+        return $this->startApiCall('MethodBidi', null, null, $optionalArgs);
     }
 
     /**
@@ -305,6 +303,6 @@ class BasicBidiStreamingGapicClient
      */
     public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+        return $this->startApiCall('MethodEmpty', null, null, $optionalArgs);
     }
 }
