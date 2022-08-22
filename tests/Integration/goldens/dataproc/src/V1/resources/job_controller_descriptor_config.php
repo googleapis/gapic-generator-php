@@ -15,16 +15,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
@@ -33,22 +33,22 @@ return [
                 'responseType' => 'Google\Cloud\Dataproc\V1\Job',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'job_id',
                         'fieldAccessors' => [
                             'getJobId',
                         ],
-                        'keyName' => 'job_id',
                     ],
                 ],
             ],
@@ -57,22 +57,22 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'job_id',
                         'fieldAccessors' => [
                             'getJobId',
                         ],
-                        'keyName' => 'job_id',
                     ],
                 ],
             ],
@@ -81,22 +81,22 @@ return [
                 'responseType' => 'Google\Cloud\Dataproc\V1\Job',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'job_id',
                         'fieldAccessors' => [
                             'getJobId',
                         ],
-                        'keyName' => 'job_id',
                     ],
                 ],
             ],
@@ -113,16 +113,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
@@ -131,16 +131,16 @@ return [
                 'responseType' => 'Google\Cloud\Dataproc\V1\Job',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
@@ -149,22 +149,22 @@ return [
                 'responseType' => 'Google\Cloud\Dataproc\V1\Job',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'job_id',
                         'fieldAccessors' => [
                             'getJobId',
                         ],
-                        'keyName' => 'job_id',
                     ],
                 ],
             ],

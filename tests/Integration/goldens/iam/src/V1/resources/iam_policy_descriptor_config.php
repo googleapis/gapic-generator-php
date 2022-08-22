@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -32,10 +32,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\TestIamPermissionsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],

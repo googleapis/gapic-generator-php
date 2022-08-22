@@ -338,6 +338,6 @@ class VideoIntelligenceServiceGapicClient
             $request->setLocationId($optionalArgs['locationId']);
         }
 
-        return $this->startOperationsCall('AnnotateVideo', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('AnnotateVideo', null, $request, $optionalArgs)->wait();
     }
 }

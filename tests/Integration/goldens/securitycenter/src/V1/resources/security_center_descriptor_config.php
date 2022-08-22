@@ -15,10 +15,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -27,10 +27,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Finding',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -39,10 +39,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\NotificationConfig',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -51,10 +51,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Source',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -63,10 +63,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -75,10 +75,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -87,10 +87,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\NotificationConfig',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -99,10 +99,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\OrganizationSettings',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -111,10 +111,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Source',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -131,10 +131,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -151,10 +151,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -171,10 +171,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -191,10 +191,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -211,10 +211,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -231,10 +231,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -243,10 +243,10 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Finding',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -255,10 +255,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -267,10 +267,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\TestIamPermissionsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -279,11 +279,11 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Finding',
                 'headerParams' => [
                     [
+                        'keyName' => 'finding.name',
                         'fieldAccessors' => [
                             'getFinding',
                             'getName',
                         ],
-                        'keyName' => 'finding.name',
                     ],
                 ],
             ],
@@ -292,11 +292,11 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\NotificationConfig',
                 'headerParams' => [
                     [
+                        'keyName' => 'notification_config.name',
                         'fieldAccessors' => [
                             'getNotificationConfig',
                             'getName',
                         ],
-                        'keyName' => 'notification_config.name',
                     ],
                 ],
             ],
@@ -305,11 +305,11 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\OrganizationSettings',
                 'headerParams' => [
                     [
+                        'keyName' => 'organization_settings.name',
                         'fieldAccessors' => [
                             'getOrganizationSettings',
                             'getName',
                         ],
-                        'keyName' => 'organization_settings.name',
                     ],
                 ],
             ],
@@ -318,11 +318,11 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\SecurityMarks',
                 'headerParams' => [
                     [
+                        'keyName' => 'security_marks.name',
                         'fieldAccessors' => [
                             'getSecurityMarks',
                             'getName',
                         ],
-                        'keyName' => 'security_marks.name',
                     ],
                 ],
             ],
@@ -331,11 +331,11 @@ return [
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Source',
                 'headerParams' => [
                     [
+                        'keyName' => 'source.name',
                         'fieldAccessors' => [
                             'getSource',
                             'getName',
                         ],
-                        'keyName' => 'source.name',
                     ],
                 ],
             ],

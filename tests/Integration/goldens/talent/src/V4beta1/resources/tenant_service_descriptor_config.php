@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Talent\V4beta1\Tenant',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -32,10 +32,10 @@ return [
                 'responseType' => 'Google\Cloud\Talent\V4beta1\Tenant',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -52,10 +52,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -64,11 +64,11 @@ return [
                 'responseType' => 'Google\Cloud\Talent\V4beta1\Tenant',
                 'headerParams' => [
                     [
+                        'keyName' => 'tenant.name',
                         'fieldAccessors' => [
                             'getTenant',
                             'getName',
                         ],
-                        'keyName' => 'tenant.name',
                     ],
                 ],
             ],

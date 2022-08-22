@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'log_name',
                         'fieldAccessors' => [
                             'getLogName',
                         ],
-                        'keyName' => 'log_name',
                     ],
                 ],
             ],
@@ -40,10 +40,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],

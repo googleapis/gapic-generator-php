@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogBucket',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogExclusion',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -32,10 +32,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogSink',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -44,10 +44,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogView',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -56,10 +56,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -68,10 +68,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -80,10 +80,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'sink_name',
                         'fieldAccessors' => [
                             'getSinkName',
                         ],
-                        'keyName' => 'sink_name',
                     ],
                 ],
             ],
@@ -92,10 +92,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -104,10 +104,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogBucket',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -116,10 +116,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\CmekSettings',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -128,10 +128,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogExclusion',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -140,10 +140,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogSink',
                 'headerParams' => [
                     [
+                        'keyName' => 'sink_name',
                         'fieldAccessors' => [
                             'getSinkName',
                         ],
-                        'keyName' => 'sink_name',
                     ],
                 ],
             ],
@@ -152,10 +152,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogView',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -172,10 +172,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -192,10 +192,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -212,10 +212,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -232,10 +232,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -244,10 +244,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -256,10 +256,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogBucket',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -268,10 +268,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\CmekSettings',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -280,10 +280,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogExclusion',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -292,10 +292,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogSink',
                 'headerParams' => [
                     [
+                        'keyName' => 'sink_name',
                         'fieldAccessors' => [
                             'getSinkName',
                         ],
-                        'keyName' => 'sink_name',
                     ],
                 ],
             ],
@@ -304,10 +304,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogView',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],

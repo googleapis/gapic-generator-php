@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Talent\V4beta1\ClientEvent',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],

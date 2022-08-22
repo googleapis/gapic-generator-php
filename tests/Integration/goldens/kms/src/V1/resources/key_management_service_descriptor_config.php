@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\AsymmetricDecryptResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\AsymmetricSignResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -32,10 +32,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKey',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -44,10 +44,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -56,10 +56,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\ImportJob',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -68,10 +68,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\KeyRing',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -80,10 +80,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\DecryptResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -92,10 +92,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -104,10 +104,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\EncryptResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -116,10 +116,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKey',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -128,10 +128,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -140,10 +140,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -152,10 +152,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\ImportJob',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -164,10 +164,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\KeyRing',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -176,10 +176,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\PublicKey',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -188,10 +188,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -208,10 +208,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -228,10 +228,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -248,10 +248,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -268,10 +268,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -280,10 +280,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -292,11 +292,11 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKey',
                 'headerParams' => [
                     [
+                        'keyName' => 'crypto_key.name',
                         'fieldAccessors' => [
                             'getCryptoKey',
                             'getName',
                         ],
-                        'keyName' => 'crypto_key.name',
                     ],
                 ],
             ],
@@ -305,10 +305,10 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKey',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -317,11 +317,11 @@ return [
                 'responseType' => 'Google\Cloud\Kms\V1\CryptoKeyVersion',
                 'headerParams' => [
                     [
+                        'keyName' => 'crypto_key_version.name',
                         'fieldAccessors' => [
                             'getCryptoKeyVersion',
                             'getName',
                         ],
-                        'keyName' => 'crypto_key_version.name',
                     ],
                 ],
             ],
@@ -330,10 +330,10 @@ return [
                 'responseType' => 'Google\Cloud\Location\Location',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -350,10 +350,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],

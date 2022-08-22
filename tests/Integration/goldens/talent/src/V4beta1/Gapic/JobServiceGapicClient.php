@@ -27,14 +27,14 @@
 namespace Google\Cloud\Talent\V4beta1\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+
 use Google\ApiCore\GapicClientTrait;
-
 use Google\ApiCore\LongRunning\OperationsClient;
-use Google\ApiCore\OperationResponse;
 
+use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -51,17 +51,14 @@ use Google\Cloud\Talent\V4beta1\JobOperationResult;
 use Google\Cloud\Talent\V4beta1\JobQuery;
 use Google\Cloud\Talent\V4beta1\JobView;
 use Google\Cloud\Talent\V4beta1\ListJobsRequest;
-use Google\Cloud\Talent\V4beta1\ListJobsResponse;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest\CustomRankingInfo;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest\DiversificationLevel;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest\SearchMode;
-use Google\Cloud\Talent\V4beta1\SearchJobsResponse;
 use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
-use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: A service handles job management, including job CRUD, enumeration and search.
@@ -641,13 +638,9 @@ class JobServiceGapicClient
     public function batchCreateJobs($parent, $jobs, array $optionalArgs = [])
     {
         $request = new BatchCreateJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJobs($jobs);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('BatchCreateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('BatchCreateJobs', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -697,13 +690,9 @@ class JobServiceGapicClient
     public function batchDeleteJobs($parent, $filter, array $optionalArgs = [])
     {
         $request = new BatchDeleteJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('BatchDeleteJobs', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('BatchDeleteJobs', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -785,17 +774,13 @@ class JobServiceGapicClient
     public function batchUpdateJobs($parent, $jobs, array $optionalArgs = [])
     {
         $request = new BatchUpdateJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJobs($jobs);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('BatchUpdateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('BatchUpdateJobs', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -840,13 +825,9 @@ class JobServiceGapicClient
     public function createJob($parent, $job, array $optionalArgs = [])
     {
         $request = new CreateJobRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJob($job);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateJob', Job::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateJob', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -890,12 +871,8 @@ class JobServiceGapicClient
     public function deleteJob($name, array $optionalArgs = [])
     {
         $request = new DeleteJobRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteJob', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('DeleteJob', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -939,12 +916,8 @@ class JobServiceGapicClient
     public function getJob($name, array $optionalArgs = [])
     {
         $request = new GetJobRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetJob', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1029,10 +1002,8 @@ class JobServiceGapicClient
     public function listJobs($parent, $filter, array $optionalArgs = [])
     {
         $request = new ListJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -1045,9 +1016,7 @@ class JobServiceGapicClient
             $request->setJobView($optionalArgs['jobView']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListJobs', $optionalArgs, ListJobsResponse::class, $request);
+        return $this->startApiCall('ListJobs', null, $request, $optionalArgs);
     }
 
     /**
@@ -1331,10 +1300,8 @@ class JobServiceGapicClient
     public function searchJobs($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['searchMode'])) {
             $request->setSearchMode($optionalArgs['searchMode']);
         }
@@ -1387,9 +1354,7 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchJobs', $optionalArgs, SearchJobsResponse::class, $request);
+        return $this->startApiCall('SearchJobs', null, $request, $optionalArgs);
     }
 
     /**
@@ -1678,10 +1643,8 @@ class JobServiceGapicClient
     public function searchJobsForAlert($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchJobsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['searchMode'])) {
             $request->setSearchMode($optionalArgs['searchMode']);
         }
@@ -1734,9 +1697,7 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchJobsForAlert', $optionalArgs, SearchJobsResponse::class, $request);
+        return $this->startApiCall('SearchJobsForAlert', null, $request, $optionalArgs);
     }
 
     /**
@@ -1783,15 +1744,11 @@ class JobServiceGapicClient
     public function updateJob($job, array $optionalArgs = [])
     {
         $request = new UpdateJobRequest();
-        $requestParamHeaders = [];
         $request->setJob($job);
-        $requestParamHeaders['job.name'] = $job->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateJob', null, $request, $optionalArgs)->wait();
     }
 }

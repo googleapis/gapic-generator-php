@@ -8,22 +8,22 @@ return [
                 'responseType' => 'Google\Cloud\Compute\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project',
                         'fieldAccessors' => [
                             'getProject',
                         ],
-                        'keyName' => 'project',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'operation',
                         'fieldAccessors' => [
                             'getOperation',
                         ],
-                        'keyName' => 'operation',
                     ],
                 ],
             ],

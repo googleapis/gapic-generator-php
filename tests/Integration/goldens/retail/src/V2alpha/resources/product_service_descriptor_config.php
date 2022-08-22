@@ -15,10 +15,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'product',
                         'fieldAccessors' => [
                             'getProduct',
                         ],
-                        'keyName' => 'product',
                     ],
                 ],
             ],
@@ -34,10 +34,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -53,10 +53,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'product',
                         'fieldAccessors' => [
                             'getProduct',
                         ],
-                        'keyName' => 'product',
                     ],
                 ],
             ],
@@ -72,11 +72,11 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'inventory.name',
                         'fieldAccessors' => [
                             'getInventory',
                             'getName',
                         ],
-                        'keyName' => 'inventory.name',
                     ],
                 ],
             ],
@@ -85,10 +85,10 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\Product',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -97,10 +97,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -109,10 +109,10 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\Product',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -129,10 +129,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -141,11 +141,11 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\Product',
                 'headerParams' => [
                     [
+                        'keyName' => 'product.name',
                         'fieldAccessors' => [
                             'getProduct',
                             'getName',
                         ],
-                        'keyName' => 'product.name',
                     ],
                 ],
             ],

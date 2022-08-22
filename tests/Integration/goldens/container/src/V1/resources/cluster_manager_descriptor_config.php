@@ -8,28 +8,28 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'operation_id',
                         'fieldAccessors' => [
                             'getOperationId',
                         ],
-                        'keyName' => 'operation_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -38,28 +38,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -68,22 +68,22 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -92,28 +92,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -122,28 +122,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -152,34 +152,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -188,28 +188,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Cluster',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -218,10 +218,10 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\GetJSONWebKeysResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -230,34 +230,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\NodePool',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -266,28 +266,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'operation_id',
                         'fieldAccessors' => [
                             'getOperationId',
                         ],
-                        'keyName' => 'operation_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -296,22 +296,22 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\ServerConfig',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -320,22 +320,22 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\ListClustersResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -344,28 +344,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\ListNodePoolsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -374,22 +374,22 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\ListOperationsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -406,10 +406,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -418,34 +418,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -454,28 +454,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -484,28 +484,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -514,28 +514,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -544,28 +544,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -574,28 +574,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -604,28 +604,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -634,28 +634,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -664,28 +664,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -694,28 +694,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -724,34 +724,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -760,34 +760,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -796,34 +796,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -832,28 +832,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -862,28 +862,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -892,28 +892,28 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -922,34 +922,34 @@ return [
                 'responseType' => 'Google\Cloud\Container\V1\Operation',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'zone',
                         'fieldAccessors' => [
                             'getZone',
                         ],
-                        'keyName' => 'zone',
                     ],
                     [
+                        'keyName' => 'cluster_id',
                         'fieldAccessors' => [
                             'getClusterId',
                         ],
-                        'keyName' => 'cluster_id',
                     ],
                     [
+                        'keyName' => 'node_pool_id',
                         'fieldAccessors' => [
                             'getNodePoolId',
                         ],
-                        'keyName' => 'node_pool_id',
                     ],
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],

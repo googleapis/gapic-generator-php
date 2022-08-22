@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogMetric',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -20,10 +20,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'metric_name',
                         'fieldAccessors' => [
                             'getMetricName',
                         ],
-                        'keyName' => 'metric_name',
                     ],
                 ],
             ],
@@ -32,10 +32,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogMetric',
                 'headerParams' => [
                     [
+                        'keyName' => 'metric_name',
                         'fieldAccessors' => [
                             'getMetricName',
                         ],
-                        'keyName' => 'metric_name',
                     ],
                 ],
             ],
@@ -52,10 +52,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -64,10 +64,10 @@ return [
                 'responseType' => 'Google\Cloud\Logging\V2\LogMetric',
                 'headerParams' => [
                     [
+                        'keyName' => 'metric_name',
                         'fieldAccessors' => [
                             'getMetricName',
                         ],
-                        'keyName' => 'metric_name',
                     ],
                 ],
             ],

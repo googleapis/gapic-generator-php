@@ -15,10 +15,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'location',
                         'fieldAccessors' => [
                             'getLocation',
                         ],
-                        'keyName' => 'location',
                     ],
                 ],
             ],
@@ -34,10 +34,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -53,11 +53,11 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'function.name',
                         'fieldAccessors' => [
                             'getFunction',
                             'getName',
                         ],
-                        'keyName' => 'function.name',
                     ],
                 ],
             ],
@@ -66,10 +66,10 @@ return [
                 'responseType' => 'Google\Cloud\Functions\V1\CallFunctionResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -78,10 +78,10 @@ return [
                 'responseType' => 'Google\Cloud\Functions\V1\GenerateDownloadUrlResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -90,10 +90,10 @@ return [
                 'responseType' => 'Google\Cloud\Functions\V1\GenerateUploadUrlResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -102,10 +102,10 @@ return [
                 'responseType' => 'Google\Cloud\Functions\V1\CloudFunction',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -114,10 +114,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -134,10 +134,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -146,10 +146,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\Policy',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -158,10 +158,10 @@ return [
                 'responseType' => 'Google\Cloud\Iam\V1\TestIamPermissionsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],

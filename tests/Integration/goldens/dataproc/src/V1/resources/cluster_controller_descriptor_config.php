@@ -15,16 +15,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
@@ -40,22 +40,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -71,22 +71,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -102,22 +102,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -133,22 +133,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -164,22 +164,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -188,22 +188,22 @@ return [
                 'responseType' => 'Google\Cloud\Dataproc\V1\Cluster',
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'cluster_name',
                         'fieldAccessors' => [
                             'getClusterName',
                         ],
-                        'keyName' => 'cluster_name',
                     ],
                 ],
             ],
@@ -220,16 +220,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project_id',
                         'fieldAccessors' => [
                             'getProjectId',
                         ],
-                        'keyName' => 'project_id',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],

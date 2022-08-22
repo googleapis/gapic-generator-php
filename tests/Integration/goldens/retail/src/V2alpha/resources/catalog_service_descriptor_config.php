@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'catalog',
                         'fieldAccessors' => [
                             'getCatalog',
                         ],
-                        'keyName' => 'catalog',
                     ],
                 ],
             ],
@@ -28,10 +28,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -40,10 +40,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'catalog',
                         'fieldAccessors' => [
                             'getCatalog',
                         ],
-                        'keyName' => 'catalog',
                     ],
                 ],
             ],
@@ -52,11 +52,11 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\Catalog',
                 'headerParams' => [
                     [
+                        'keyName' => 'catalog.name',
                         'fieldAccessors' => [
                             'getCatalog',
                             'getName',
                         ],
-                        'keyName' => 'catalog.name',
                     ],
                 ],
             ],

@@ -16,10 +16,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'placement',
                         'fieldAccessors' => [
                             'getPlacement',
                         ],
-                        'keyName' => 'placement',
                     ],
                 ],
             ],

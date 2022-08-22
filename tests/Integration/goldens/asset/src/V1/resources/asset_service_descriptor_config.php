@@ -15,11 +15,11 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'analysis_query.scope',
                         'fieldAccessors' => [
                             'getAnalysisQuery',
                             'getScope',
                         ],
-                        'keyName' => 'analysis_query.scope',
                     ],
                 ],
             ],
@@ -35,10 +35,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -47,11 +47,11 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'analysis_query.scope',
                         'fieldAccessors' => [
                             'getAnalysisQuery',
                             'getScope',
                         ],
-                        'keyName' => 'analysis_query.scope',
                     ],
                 ],
             ],
@@ -60,10 +60,10 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\AnalyzeMoveResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'resource',
                         'fieldAccessors' => [
                             'getResource',
                         ],
-                        'keyName' => 'resource',
                     ],
                 ],
             ],
@@ -72,10 +72,10 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -84,10 +84,10 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\Feed',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -96,10 +96,10 @@ return [
                 'responseType' => 'Google\Protobuf\GPBEmpty',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -108,10 +108,10 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\Feed',
                 'headerParams' => [
                     [
+                        'keyName' => 'name',
                         'fieldAccessors' => [
                             'getName',
                         ],
-                        'keyName' => 'name',
                     ],
                 ],
             ],
@@ -128,10 +128,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -140,10 +140,10 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\ListFeedsResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
                         ],
-                        'keyName' => 'parent',
                     ],
                 ],
             ],
@@ -160,10 +160,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'scope',
                         'fieldAccessors' => [
                             'getScope',
                         ],
-                        'keyName' => 'scope',
                     ],
                 ],
             ],
@@ -180,10 +180,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'scope',
                         'fieldAccessors' => [
                             'getScope',
                         ],
-                        'keyName' => 'scope',
                     ],
                 ],
             ],
@@ -192,11 +192,11 @@ return [
                 'responseType' => 'Google\Cloud\Asset\V1\Feed',
                 'headerParams' => [
                     [
+                        'keyName' => 'feed.name',
                         'fieldAccessors' => [
                             'getFeed',
                             'getName',
                         ],
-                        'keyName' => 'feed.name',
                     ],
                 ],
             ],

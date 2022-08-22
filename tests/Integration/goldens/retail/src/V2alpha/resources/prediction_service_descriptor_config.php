@@ -8,10 +8,10 @@ return [
                 'responseType' => 'Google\Cloud\Retail\V2alpha\PredictResponse',
                 'headerParams' => [
                     [
+                        'keyName' => 'placement',
                         'fieldAccessors' => [
                             'getPlacement',
                         ],
-                        'keyName' => 'placement',
                     ],
                 ],
             ],

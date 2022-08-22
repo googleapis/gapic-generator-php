@@ -27,11 +27,11 @@
 namespace Google\Cloud\Talent\V4beta1\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\CredentialsWrapper;
+
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -39,7 +39,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest\CompletionScope;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest\CompletionType;
-use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
 
 /**
  * Service Description: A service handles auto completion.
@@ -465,11 +464,9 @@ class CompletionGapicClient
     public function completeQuery($parent, $query, $pageSize, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setQuery($query);
         $request->setPageSize($pageSize);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['languageCodes'])) {
             $request->setLanguageCodes($optionalArgs['languageCodes']);
         }
@@ -486,8 +483,6 @@ class CompletionGapicClient
             $request->setType($optionalArgs['type']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CompleteQuery', null, $request, $optionalArgs)->wait();
     }
 }

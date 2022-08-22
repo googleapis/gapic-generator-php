@@ -27,11 +27,11 @@
 namespace Google\Cloud\Talent\V4beta1\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\CredentialsWrapper;
+
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -40,11 +40,9 @@ use Google\Cloud\Talent\V4beta1\CreateTenantRequest;
 use Google\Cloud\Talent\V4beta1\DeleteTenantRequest;
 use Google\Cloud\Talent\V4beta1\GetTenantRequest;
 use Google\Cloud\Talent\V4beta1\ListTenantsRequest;
-use Google\Cloud\Talent\V4beta1\ListTenantsResponse;
 use Google\Cloud\Talent\V4beta1\Tenant;
 use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
 use Google\Protobuf\FieldMask;
-use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: A service that handles tenant management, including CRUD and enumeration.
@@ -337,13 +335,9 @@ class TenantServiceGapicClient
     public function createTenant($parent, $tenant, array $optionalArgs = [])
     {
         $request = new CreateTenantRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTenant($tenant);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateTenant', Tenant::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateTenant', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -380,12 +374,8 @@ class TenantServiceGapicClient
     public function deleteTenant($name, array $optionalArgs = [])
     {
         $request = new DeleteTenantRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteTenant', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('DeleteTenant', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -424,12 +414,8 @@ class TenantServiceGapicClient
     public function getTenant($name, array $optionalArgs = [])
     {
         $request = new GetTenantRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetTenant', Tenant::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetTenant', null, $request, $optionalArgs)->wait();
     }
 
     /**
@@ -489,9 +475,7 @@ class TenantServiceGapicClient
     public function listTenants($parent, array $optionalArgs = [])
     {
         $request = new ListTenantsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -500,9 +484,7 @@ class TenantServiceGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListTenants', $optionalArgs, ListTenantsResponse::class, $request);
+        return $this->startApiCall('ListTenants', null, $request, $optionalArgs);
     }
 
     /**
@@ -546,15 +528,11 @@ class TenantServiceGapicClient
     public function updateTenant($tenant, array $optionalArgs = [])
     {
         $request = new UpdateTenantRequest();
-        $requestParamHeaders = [];
         $request->setTenant($tenant);
-        $requestParamHeaders['tenant.name'] = $tenant->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateTenant', Tenant::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateTenant', null, $request, $optionalArgs)->wait();
     }
 }

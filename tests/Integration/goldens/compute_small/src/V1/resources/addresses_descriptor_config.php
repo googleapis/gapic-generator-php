@@ -22,22 +22,22 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project',
                         'fieldAccessors' => [
                             'getProject',
                         ],
-                        'keyName' => 'project',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                     [
+                        'keyName' => 'address',
                         'fieldAccessors' => [
                             'getAddress',
                         ],
-                        'keyName' => 'address',
                     ],
                 ],
             ],
@@ -60,16 +60,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project',
                         'fieldAccessors' => [
                             'getProject',
                         ],
-                        'keyName' => 'project',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
@@ -86,10 +86,10 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project',
                         'fieldAccessors' => [
                             'getProject',
                         ],
-                        'keyName' => 'project',
                     ],
                 ],
             ],
@@ -106,16 +106,16 @@ return [
                 ],
                 'headerParams' => [
                     [
+                        'keyName' => 'project',
                         'fieldAccessors' => [
                             'getProject',
                         ],
-                        'keyName' => 'project',
                     ],
                     [
+                        'keyName' => 'region',
                         'fieldAccessors' => [
                             'getRegion',
                         ],
-                        'keyName' => 'region',
                     ],
                 ],
             ],
