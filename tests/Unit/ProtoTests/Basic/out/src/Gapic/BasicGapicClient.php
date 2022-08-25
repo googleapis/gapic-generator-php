@@ -193,7 +193,7 @@ class BasicGapicClient
     public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('AMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -248,6 +248,6 @@ class BasicGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->startApiCall('MethodWithArgs', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
     }
 }

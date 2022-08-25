@@ -887,7 +887,7 @@ class LibraryServiceGapicClient
         $request = new AddCommentsRequest();
         $request->setName($name);
         $request->setComments($comments);
-        return $this->startApiCall('AddComments', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AddComments', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -926,7 +926,7 @@ class LibraryServiceGapicClient
         $request = new AddTagRequest();
         $request->setResource($resource);
         $request->setTag($tag);
-        return $this->startApiCall('AddTag', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AddTag', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -967,7 +967,7 @@ class LibraryServiceGapicClient
             $request->setArchive($optionalArgs['archive']);
         }
 
-        return $this->startApiCall('ArchiveBooks', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ArchiveBooks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1005,7 +1005,7 @@ class LibraryServiceGapicClient
         $request = new CreateBookRequest();
         $request->setName($name);
         $request->setBook($book);
-        return $this->startApiCall('CreateBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1054,7 +1054,7 @@ class LibraryServiceGapicClient
             $request->setInventory($optionalArgs['inventory']);
         }
 
-        return $this->startApiCall('CreateInventory', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateInventory', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1090,7 +1090,7 @@ class LibraryServiceGapicClient
     {
         $request = new CreateShelfRequest();
         $request->setShelf($shelf);
-        return $this->startApiCall('CreateShelf', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateShelf', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1123,7 +1123,7 @@ class LibraryServiceGapicClient
     {
         $request = new DeleteBookRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1156,7 +1156,7 @@ class LibraryServiceGapicClient
     {
         $request = new DeleteShelfRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteShelf', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteShelf', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1226,7 +1226,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('FindRelatedBooks', null, $request, $optionalArgs);
+        return $this->startApiCall('FindRelatedBooks', $request, $optionalArgs);
     }
 
     /**
@@ -1286,7 +1286,7 @@ class LibraryServiceGapicClient
     {
         $request = new GetBookRequest();
         $request->setName($name);
-        return $this->startApiCall('GetBigBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBigBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1344,7 +1344,7 @@ class LibraryServiceGapicClient
     {
         $request = new GetBookRequest();
         $request->setName($name);
-        return $this->startApiCall('GetBigNothing', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBigNothing', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1379,7 +1379,7 @@ class LibraryServiceGapicClient
     {
         $request = new GetBookRequest();
         $request->setName($name);
-        return $this->startApiCall('GetBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1421,7 +1421,7 @@ class LibraryServiceGapicClient
             $request->setAltBookName($optionalArgs['altBookName']);
         }
 
-        return $this->startApiCall('GetBookFromAbsolutelyAnywhere', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromAbsolutelyAnywhere', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1466,7 +1466,7 @@ class LibraryServiceGapicClient
         $request->setAltBookName($altBookName);
         $request->setPlace($place);
         $request->setFolder($folder);
-        return $this->startApiCall('GetBookFromAnywhere', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromAnywhere', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1504,7 +1504,7 @@ class LibraryServiceGapicClient
         $request = new GetBookFromArchiveRequest();
         $request->setName($name);
         $request->setParent($parent);
-        return $this->startApiCall('GetBookFromArchive', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromArchive', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1553,7 +1553,7 @@ class LibraryServiceGapicClient
             $request->setStringBuilder($optionalArgs['stringBuilder']);
         }
 
-        return $this->startApiCall('GetShelf', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetShelf', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1612,7 +1612,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListAggregatedShelves', null, $request, $optionalArgs);
+        return $this->startApiCall('ListAggregatedShelves', $request, $optionalArgs);
     }
 
     /**
@@ -1682,7 +1682,7 @@ class LibraryServiceGapicClient
             $request->setFilter($optionalArgs['filter']);
         }
 
-        return $this->startApiCall('ListBooks', null, $request, $optionalArgs);
+        return $this->startApiCall('ListBooks', $request, $optionalArgs);
     }
 
     /**
@@ -1723,7 +1723,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListShelves', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListShelves', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1789,7 +1789,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListStrings', null, $request, $optionalArgs);
+        return $this->startApiCall('ListStrings', $request, $optionalArgs);
     }
 
     /**
@@ -1855,7 +1855,7 @@ class LibraryServiceGapicClient
             $request->setArchive($optionalArgs['archive']);
         }
 
-        return $this->startApiCall('LongRunningArchiveBooks', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('LongRunningArchiveBooks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1895,7 +1895,7 @@ class LibraryServiceGapicClient
         $request = new MergeShelvesRequest();
         $request->setName($name);
         $request->setOtherShelfName($otherShelfName);
-        return $this->startApiCall('MergeShelves', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MergeShelves', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1933,7 +1933,7 @@ class LibraryServiceGapicClient
         $request = new MoveBookRequest();
         $request->setName($name);
         $request->setOtherShelfName($otherShelfName);
-        return $this->startApiCall('MoveBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MoveBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1984,7 +1984,7 @@ class LibraryServiceGapicClient
             $request->setProject($optionalArgs['project']);
         }
 
-        return $this->startApiCall('MoveBooks', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MoveBooks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2025,7 +2025,7 @@ class LibraryServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('PrivateListShelves', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PrivateListShelves', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2085,7 +2085,7 @@ class LibraryServiceGapicClient
             $request->setPublisher($optionalArgs['publisher']);
         }
 
-        return $this->startApiCall('PublishSeries', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PublishSeries', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2271,7 +2271,7 @@ class LibraryServiceGapicClient
             $request->setMapBoolKey($optionalArgs['mapBoolKey']);
         }
 
-        return $this->startApiCall('SaveBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SaveBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2321,7 +2321,7 @@ class LibraryServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateBook', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2360,6 +2360,6 @@ class LibraryServiceGapicClient
         $request->setName($name);
         $request->setIndexName($indexName);
         $request->setIndexMap($indexMap);
-        return $this->startApiCall('UpdateBookIndex', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateBookIndex', $request, $optionalArgs)->wait();
     }
 }

@@ -245,7 +245,7 @@ class BasicBidiStreamingGapicClient
      */
     public function methodBidi(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodBidi', null, null, $optionalArgs);
+        return $this->startApiCall('MethodBidi', null, $optionalArgs);
     }
 
     /**
@@ -303,6 +303,6 @@ class BasicBidiStreamingGapicClient
      */
     public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodEmpty', null, null, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
     }
 }

@@ -277,7 +277,7 @@ class BasicLroGapicClient
     public function method1(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('Method1', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -308,7 +308,7 @@ class BasicLroGapicClient
     public function methodNonLro1(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('MethodNonLro1', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodNonLro1', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -339,6 +339,6 @@ class BasicLroGapicClient
     public function methodNonLro2(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('MethodNonLro2', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodNonLro2', $request, $optionalArgs)->wait();
     }
 }

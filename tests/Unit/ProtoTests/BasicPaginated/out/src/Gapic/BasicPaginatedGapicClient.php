@@ -248,6 +248,6 @@ class BasicPaginatedGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->startApiCall('MethodPaginated', null, $request, $optionalArgs);
+        return $this->startApiCall('MethodPaginated', $request, $optionalArgs);
     }
 }

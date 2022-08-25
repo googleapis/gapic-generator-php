@@ -195,7 +195,7 @@ class DeprecatedServiceGapicClient
             $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startApiCall('FastFibonacci', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -233,6 +233,6 @@ class DeprecatedServiceGapicClient
             $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startApiCall('SlowFibonacci', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
     }
 }

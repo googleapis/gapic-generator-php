@@ -238,6 +238,6 @@ class BasicOneofGapicClient
             $request->setOptionalCount($optionalArgs['optionalCount']);
         }
 
-        return $this->startApiCall('AMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 }

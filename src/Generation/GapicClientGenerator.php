@@ -785,7 +785,6 @@ class GapicClientGenerator
     {
         $startApiCallArgs = Map::new([
             'methodName' => $method->name,
-            'interfaceName' => $method->mixinServiceFullname ?? AST::NULL,
             'request' => $request,
             'optionalArgs' => $optionalArgs->var
         ]);

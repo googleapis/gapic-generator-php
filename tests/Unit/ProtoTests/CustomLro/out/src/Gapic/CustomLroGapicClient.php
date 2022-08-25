@@ -319,6 +319,6 @@ class CustomLroGapicClient
             $request->setFoo($optionalArgs['foo']);
         }
 
-        return $this->startApiCall('CreateFoo', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFoo', $request, $optionalArgs)->wait();
     }
 }

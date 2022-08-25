@@ -193,7 +193,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('DeleteMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -229,7 +229,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -265,7 +265,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetNoPlaceholdersMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNoPlaceholdersMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -301,7 +301,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetNoTemplateMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNoTemplateMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -343,7 +343,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('NestedMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('NestedMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -385,7 +385,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('NestedMultiMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('NestedMultiMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -446,7 +446,7 @@ class RoutingHeadersGapicClient
             $request->setAa($optionalArgs['aa']);
         }
 
-        return $this->startApiCall('OrderingMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('OrderingMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -482,7 +482,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('PatchMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PatchMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -518,7 +518,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('PostMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PostMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -554,7 +554,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('PutMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PutMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -596,7 +596,7 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('RoutingRuleWithOutParameters', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RoutingRuleWithOutParameters', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -638,6 +638,6 @@ class RoutingHeadersGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('RoutingRuleWithParameters', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RoutingRuleWithParameters', $request, $optionalArgs)->wait();
     }
 }

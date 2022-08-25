@@ -207,7 +207,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new CancelOperationRequest();
         $request->setOperation($operation);
-        return $this->startApiCall('Cancel', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -239,7 +239,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new DeleteOperationRequest();
         $request->setOperation($operation);
-        return $this->startApiCall('Delete', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -282,6 +282,6 @@ class CustomLroOperationsGapicClient
         $request->setProject($project);
         $request->setRegion($region);
         $request->setFoo($foo);
-        return $this->startApiCall('Get', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
     }
 }

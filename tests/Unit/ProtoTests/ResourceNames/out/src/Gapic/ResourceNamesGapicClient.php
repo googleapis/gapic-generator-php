@@ -724,7 +724,7 @@ class ResourceNamesGapicClient
             $request->setFolderMultiWildcardName($optionalArgs['folderMultiWildcardName']);
         }
 
-        return $this->startApiCall('FileLevelChildTypeRefMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('FileLevelChildTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -760,7 +760,7 @@ class ResourceNamesGapicClient
             $request->setFileName($optionalArgs['fileName']);
         }
 
-        return $this->startApiCall('FileLevelTypeRefMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('FileLevelTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -796,7 +796,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('MultiPatternMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('MultiPatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -833,7 +833,7 @@ class ResourceNamesGapicClient
             $request->setRealName($optionalArgs['realName']);
         }
 
-        return $this->startApiCall('SinglePatternMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SinglePatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -869,7 +869,7 @@ class ResourceNamesGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('WildcardChildReferenceMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WildcardChildReferenceMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -905,7 +905,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WildcardMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -941,7 +941,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardMultiMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WildcardMultiMethod', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -977,6 +977,6 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardReferenceMethod', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WildcardReferenceMethod', $request, $optionalArgs)->wait();
     }
 }

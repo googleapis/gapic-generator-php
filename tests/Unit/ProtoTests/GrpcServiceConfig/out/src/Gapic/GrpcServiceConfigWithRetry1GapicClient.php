@@ -221,7 +221,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1A(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1A', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1A', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -277,7 +277,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1BLro(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1BLro', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1BLro', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -335,7 +335,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      */
     public function method1BidiStreaming(array $optionalArgs = [])
     {
-        return $this->startApiCall('Method1BidiStreaming', null, null, $optionalArgs);
+        return $this->startApiCall('Method1BidiStreaming', null, $optionalArgs);
     }
 
     /**
@@ -366,7 +366,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1CServiceLevelRetry(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1CServiceLevelRetry', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1CServiceLevelRetry', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -397,7 +397,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1DTimeoutOnlyRetry', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1DTimeoutOnlyRetry', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -430,6 +430,6 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1ServerStreaming(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1ServerStreaming', null, $request, $optionalArgs);
+        return $this->startApiCall('Method1ServerStreaming', $request, $optionalArgs);
     }
 }

@@ -221,7 +221,7 @@ class BasicClientStreamingGapicClient
      */
     public function methodClient(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodClient', null, null, $optionalArgs);
+        return $this->startApiCall('MethodClient', null, $optionalArgs);
     }
 
     /**
@@ -267,6 +267,6 @@ class BasicClientStreamingGapicClient
      */
     public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodEmpty', null, null, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
     }
 }

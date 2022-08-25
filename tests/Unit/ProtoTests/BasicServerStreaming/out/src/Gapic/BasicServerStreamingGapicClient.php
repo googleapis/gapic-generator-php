@@ -190,7 +190,7 @@ class BasicServerStreamingGapicClient
     public function methodEmpty(array $optionalArgs = [])
     {
         $request = new EmptyRequest();
-        return $this->startApiCall('MethodEmpty', null, $request, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', $request, $optionalArgs);
     }
 
     /**
@@ -231,6 +231,6 @@ class BasicServerStreamingGapicClient
             $request->setAString($optionalArgs['aString']);
         }
 
-        return $this->startApiCall('MethodServer', null, $request, $optionalArgs);
+        return $this->startApiCall('MethodServer', $request, $optionalArgs);
     }
 }
