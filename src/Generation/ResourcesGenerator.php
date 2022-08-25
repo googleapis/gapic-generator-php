@@ -133,6 +133,10 @@ class ResourcesGenerator
                 $descriptor['headerParams'] = $method->headerParams;
             }
 
+            if ($method->isMixin()) {
+                $descriptor['interfaceOverride'] = $method->mixinServiceFullName;
+            }
+
             return Map::new($descriptor);
         };
 
