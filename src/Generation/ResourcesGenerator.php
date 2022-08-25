@@ -134,7 +134,7 @@ class ResourcesGenerator
             }
 
             if ($method->isMixin()) {
-                $descriptor['interfaceOverride'] = $method->mixinServiceFullName;
+                $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
             }
 
             return Map::new($descriptor);
