@@ -346,7 +346,7 @@ class ProfileServiceGapicClient
         $request = new CreateProfileRequest();
         $request->setParent($parent);
         $request->setProfile($profile);
-        return $this->startApiCall('CreateProfile', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateProfile', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -387,7 +387,7 @@ class ProfileServiceGapicClient
     {
         $request = new DeleteProfileRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteProfile', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteProfile', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -428,7 +428,7 @@ class ProfileServiceGapicClient
     {
         $request = new GetProfileRequest();
         $request->setName($name);
-        return $this->startApiCall('GetProfile', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetProfile', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -530,7 +530,7 @@ class ProfileServiceGapicClient
             $request->setReadMask($optionalArgs['readMask']);
         }
 
-        return $this->startApiCall('ListProfiles', null, $request, $optionalArgs);
+        return $this->startApiCall('ListProfiles', $request, $optionalArgs);
     }
 
     /**
@@ -791,7 +791,7 @@ class ProfileServiceGapicClient
             $request->setStrictKeywordsSearch($optionalArgs['strictKeywordsSearch']);
         }
 
-        return $this->startApiCall('SearchProfiles', null, $request, $optionalArgs);
+        return $this->startApiCall('SearchProfiles', $request, $optionalArgs);
     }
 
     /**
@@ -836,6 +836,6 @@ class ProfileServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateProfile', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateProfile', $request, $optionalArgs)->wait();
     }
 }

@@ -1301,7 +1301,7 @@ class ConfigServiceV2GapicClient
         $request->setParent($parent);
         $request->setBucketId($bucketId);
         $request->setBucket($bucket);
-        return $this->startApiCall('CreateBucket', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1349,7 +1349,7 @@ class ConfigServiceV2GapicClient
         $request = new CreateExclusionRequest();
         $request->setParent($parent);
         $request->setExclusion($exclusion);
-        return $this->startApiCall('CreateExclusion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1414,7 +1414,7 @@ class ConfigServiceV2GapicClient
             $request->setUniqueWriterIdentity($optionalArgs['uniqueWriterIdentity']);
         }
 
-        return $this->startApiCall('CreateSink', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1461,7 +1461,7 @@ class ConfigServiceV2GapicClient
         $request->setParent($parent);
         $request->setViewId($viewId);
         $request->setView($view);
-        return $this->startApiCall('CreateView', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1505,7 +1505,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new DeleteBucketRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteBucket', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1545,7 +1545,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new DeleteExclusionRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteExclusion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1587,7 +1587,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new DeleteSinkRequest();
         $request->setSinkName($sinkName);
-        return $this->startApiCall('DeleteSink', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1625,7 +1625,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new DeleteViewRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteView', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1668,7 +1668,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new GetBucketRequest();
         $request->setName($name);
-        return $this->startApiCall('GetBucket', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1725,7 +1725,7 @@ class ConfigServiceV2GapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetCmekSettings', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCmekSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1767,7 +1767,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new GetExclusionRequest();
         $request->setName($name);
-        return $this->startApiCall('GetExclusion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1809,7 +1809,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new GetSinkRequest();
         $request->setSinkName($sinkName);
-        return $this->startApiCall('GetSink', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1849,7 +1849,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new GetViewRequest();
         $request->setName($name);
-        return $this->startApiCall('GetView', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1922,7 +1922,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListBuckets', null, $request, $optionalArgs);
+        return $this->startApiCall('ListBuckets', $request, $optionalArgs);
     }
 
     /**
@@ -1991,7 +1991,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListExclusions', null, $request, $optionalArgs);
+        return $this->startApiCall('ListExclusions', $request, $optionalArgs);
     }
 
     /**
@@ -2060,7 +2060,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListSinks', null, $request, $optionalArgs);
+        return $this->startApiCall('ListSinks', $request, $optionalArgs);
     }
 
     /**
@@ -2126,7 +2126,7 @@ class ConfigServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListViews', null, $request, $optionalArgs);
+        return $this->startApiCall('ListViews', $request, $optionalArgs);
     }
 
     /**
@@ -2168,7 +2168,7 @@ class ConfigServiceV2GapicClient
     {
         $request = new UndeleteBucketRequest();
         $request->setName($name);
-        return $this->startApiCall('UndeleteBucket', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UndeleteBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2235,7 +2235,7 @@ class ConfigServiceV2GapicClient
         $request->setName($name);
         $request->setBucket($bucket);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateBucket', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2320,7 +2320,7 @@ class ConfigServiceV2GapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateCmekSettings', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCmekSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2375,7 +2375,7 @@ class ConfigServiceV2GapicClient
         $request->setName($name);
         $request->setExclusion($exclusion);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateExclusion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2461,7 +2461,7 @@ class ConfigServiceV2GapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateSink', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2518,6 +2518,6 @@ class ConfigServiceV2GapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateView', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateView', $request, $optionalArgs)->wait();
     }
 }

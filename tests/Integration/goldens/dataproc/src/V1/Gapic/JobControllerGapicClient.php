@@ -249,7 +249,7 @@ class JobControllerGapicClient
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('CancelJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CancelJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -290,7 +290,7 @@ class JobControllerGapicClient
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('DeleteJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -332,7 +332,7 @@ class JobControllerGapicClient
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('GetJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -436,7 +436,7 @@ class JobControllerGapicClient
             $request->setFilter($optionalArgs['filter']);
         }
 
-        return $this->startApiCall('ListJobs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListJobs', $request, $optionalArgs);
     }
 
     /**
@@ -495,7 +495,7 @@ class JobControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('SubmitJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SubmitJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -579,7 +579,7 @@ class JobControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('SubmitJobAsOperation', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SubmitJobAsOperation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -632,6 +632,6 @@ class JobControllerGapicClient
         $request->setJobId($jobId);
         $request->setJob($job);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateJob', $request, $optionalArgs)->wait();
     }
 }

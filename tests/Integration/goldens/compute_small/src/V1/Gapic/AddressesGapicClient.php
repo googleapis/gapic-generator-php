@@ -338,7 +338,7 @@ class AddressesGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('AggregatedList', null, $request, $optionalArgs);
+        return $this->startApiCall('AggregatedList', $request, $optionalArgs);
     }
 
     /**
@@ -412,7 +412,7 @@ class AddressesGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('Delete', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -486,7 +486,7 @@ class AddressesGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('Insert', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Insert', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -570,6 +570,6 @@ class AddressesGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('List', null, $request, $optionalArgs);
+        return $this->startApiCall('List', $request, $optionalArgs);
     }
 }

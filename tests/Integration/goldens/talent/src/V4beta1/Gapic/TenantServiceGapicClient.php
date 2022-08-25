@@ -337,7 +337,7 @@ class TenantServiceGapicClient
         $request = new CreateTenantRequest();
         $request->setParent($parent);
         $request->setTenant($tenant);
-        return $this->startApiCall('CreateTenant', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateTenant', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -375,7 +375,7 @@ class TenantServiceGapicClient
     {
         $request = new DeleteTenantRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteTenant', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteTenant', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -415,7 +415,7 @@ class TenantServiceGapicClient
     {
         $request = new GetTenantRequest();
         $request->setName($name);
-        return $this->startApiCall('GetTenant', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetTenant', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -484,7 +484,7 @@ class TenantServiceGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListTenants', null, $request, $optionalArgs);
+        return $this->startApiCall('ListTenants', $request, $optionalArgs);
     }
 
     /**
@@ -533,6 +533,6 @@ class TenantServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateTenant', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateTenant', $request, $optionalArgs)->wait();
     }
 }

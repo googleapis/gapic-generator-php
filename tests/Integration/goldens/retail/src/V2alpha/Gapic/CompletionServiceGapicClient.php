@@ -426,7 +426,7 @@ class CompletionServiceGapicClient
             $request->setMaxSuggestions($optionalArgs['maxSuggestions']);
         }
 
-        return $this->startApiCall('CompleteQuery', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -509,6 +509,6 @@ class CompletionServiceGapicClient
             $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
-        return $this->startApiCall('ImportCompletionData', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportCompletionData', $request, $optionalArgs)->wait();
     }
 }

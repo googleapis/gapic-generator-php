@@ -577,6 +577,6 @@ class SearchServiceGapicClient
             $request->setPageCategories($optionalArgs['pageCategories']);
         }
 
-        return $this->startApiCall('Search', null, $request, $optionalArgs);
+        return $this->startApiCall('Search', $request, $optionalArgs);
     }
 }

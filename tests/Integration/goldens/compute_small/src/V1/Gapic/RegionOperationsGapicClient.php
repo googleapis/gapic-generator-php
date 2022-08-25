@@ -217,6 +217,6 @@ class RegionOperationsGapicClient
         $request->setOperation($operation);
         $request->setProject($project);
         $request->setRegion($region);
-        return $this->startApiCall('Get', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
     }
 }

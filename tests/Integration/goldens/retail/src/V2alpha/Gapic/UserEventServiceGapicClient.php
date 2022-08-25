@@ -372,7 +372,7 @@ class UserEventServiceGapicClient
             $request->setEts($optionalArgs['ets']);
         }
 
-        return $this->startApiCall('CollectUserEvent', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CollectUserEvent', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -450,7 +450,7 @@ class UserEventServiceGapicClient
             $request->setErrorsConfig($optionalArgs['errorsConfig']);
         }
 
-        return $this->startApiCall('ImportUserEvents', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportUserEvents', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -551,7 +551,7 @@ class UserEventServiceGapicClient
             $request->setForce($optionalArgs['force']);
         }
 
-        return $this->startApiCall('PurgeUserEvents', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('PurgeUserEvents', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -630,7 +630,7 @@ class UserEventServiceGapicClient
             $request->setUserEventRejoinScope($optionalArgs['userEventRejoinScope']);
         }
 
-        return $this->startApiCall('RejoinUserEvents', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RejoinUserEvents', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -671,6 +671,6 @@ class UserEventServiceGapicClient
         $request = new WriteUserEventRequest();
         $request->setParent($parent);
         $request->setUserEvent($userEvent);
-        return $this->startApiCall('WriteUserEvent', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WriteUserEvent', $request, $optionalArgs)->wait();
     }
 }

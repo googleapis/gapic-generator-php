@@ -340,6 +340,6 @@ class EventServiceGapicClient
         $request = new CreateClientEventRequest();
         $request->setParent($parent);
         $request->setClientEvent($clientEvent);
-        return $this->startApiCall('CreateClientEvent', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateClientEvent', $request, $optionalArgs)->wait();
     }
 }

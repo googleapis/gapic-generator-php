@@ -640,7 +640,7 @@ class JobServiceGapicClient
         $request = new BatchCreateJobsRequest();
         $request->setParent($parent);
         $request->setJobs($jobs);
-        return $this->startApiCall('BatchCreateJobs', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('BatchCreateJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -692,7 +692,7 @@ class JobServiceGapicClient
         $request = new BatchDeleteJobsRequest();
         $request->setParent($parent);
         $request->setFilter($filter);
-        return $this->startApiCall('BatchDeleteJobs', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('BatchDeleteJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -780,7 +780,7 @@ class JobServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('BatchUpdateJobs', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('BatchUpdateJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -827,7 +827,7 @@ class JobServiceGapicClient
         $request = new CreateJobRequest();
         $request->setParent($parent);
         $request->setJob($job);
-        return $this->startApiCall('CreateJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -872,7 +872,7 @@ class JobServiceGapicClient
     {
         $request = new DeleteJobRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -917,7 +917,7 @@ class JobServiceGapicClient
     {
         $request = new GetJobRequest();
         $request->setName($name);
-        return $this->startApiCall('GetJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1016,7 +1016,7 @@ class JobServiceGapicClient
             $request->setJobView($optionalArgs['jobView']);
         }
 
-        return $this->startApiCall('ListJobs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListJobs', $request, $optionalArgs);
     }
 
     /**
@@ -1354,7 +1354,7 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        return $this->startApiCall('SearchJobs', null, $request, $optionalArgs);
+        return $this->startApiCall('SearchJobs', $request, $optionalArgs);
     }
 
     /**
@@ -1697,7 +1697,7 @@ class JobServiceGapicClient
             $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
         }
 
-        return $this->startApiCall('SearchJobsForAlert', null, $request, $optionalArgs);
+        return $this->startApiCall('SearchJobsForAlert', $request, $optionalArgs);
     }
 
     /**
@@ -1749,6 +1749,6 @@ class JobServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateJob', $request, $optionalArgs)->wait();
     }
 }

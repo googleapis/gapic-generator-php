@@ -438,7 +438,7 @@ class CompanyServiceGapicClient
         $request = new CreateCompanyRequest();
         $request->setParent($parent);
         $request->setCompany($company);
-        return $this->startApiCall('CreateCompany', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCompany', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -481,7 +481,7 @@ class CompanyServiceGapicClient
     {
         $request = new DeleteCompanyRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteCompany', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteCompany', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -525,7 +525,7 @@ class CompanyServiceGapicClient
     {
         $request = new GetCompanyRequest();
         $request->setName($name);
-        return $this->startApiCall('GetCompany', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCompany', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -608,7 +608,7 @@ class CompanyServiceGapicClient
             $request->setRequireOpenJobs($optionalArgs['requireOpenJobs']);
         }
 
-        return $this->startApiCall('ListCompanies', null, $request, $optionalArgs);
+        return $this->startApiCall('ListCompanies', $request, $optionalArgs);
     }
 
     /**
@@ -657,6 +657,6 @@ class CompanyServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateCompany', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCompany', $request, $optionalArgs)->wait();
     }
 }

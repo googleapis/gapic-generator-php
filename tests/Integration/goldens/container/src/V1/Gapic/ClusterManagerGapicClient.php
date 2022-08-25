@@ -261,7 +261,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('CancelOperation', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CancelOperation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -324,7 +324,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('CompleteIPRotation', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteIPRotation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -397,7 +397,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('CreateCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -464,7 +464,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('CreateNodePool', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateNodePool', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -535,7 +535,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('DeleteCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -606,7 +606,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('DeleteNodePool', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteNodePool', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -669,7 +669,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -711,7 +711,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('GetJSONWebKeys', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetJSONWebKeys', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -782,7 +782,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetNodePool', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNodePool', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -845,7 +845,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetOperation', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetOperation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -901,7 +901,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetServerConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetServerConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -959,7 +959,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('ListClusters', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListClusters', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1022,7 +1022,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('ListNodePools', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListNodePools', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1079,7 +1079,7 @@ class ClusterManagerGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('ListOperations', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListOperations', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1156,7 +1156,7 @@ class ClusterManagerGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListUsableSubnetworks', null, $request, $optionalArgs);
+        return $this->startApiCall('ListUsableSubnetworks', $request, $optionalArgs);
     }
 
     /**
@@ -1228,7 +1228,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('RollbackNodePoolUpgrade', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RollbackNodePoolUpgrade', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1295,7 +1295,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetAddonsConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetAddonsConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1369,7 +1369,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetLabels', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLabels', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1435,7 +1435,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetLegacyAbac', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLegacyAbac', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1512,7 +1512,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetLocations', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLocations', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1588,7 +1588,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetLoggingService', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLoggingService', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1644,7 +1644,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetMaintenancePolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMaintenancePolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1716,7 +1716,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetMasterAuth', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMasterAuth', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1792,7 +1792,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetMonitoringService', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMonitoringService', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1858,7 +1858,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetNetworkPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNetworkPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1932,7 +1932,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetNodePoolAutoscaling', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolAutoscaling', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2006,7 +2006,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetNodePoolManagement', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolManagement', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2080,7 +2080,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('SetNodePoolSize', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolSize', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2149,7 +2149,7 @@ class ClusterManagerGapicClient
             $request->setRotateCredentials($optionalArgs['rotateCredentials']);
         }
 
-        return $this->startApiCall('StartIPRotation', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('StartIPRotation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2215,7 +2215,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('UpdateCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2290,7 +2290,7 @@ class ClusterManagerGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('UpdateMaster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateMaster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2399,6 +2399,6 @@ class ClusterManagerGapicClient
             $request->setUpgradeSettings($optionalArgs['upgradeSettings']);
         }
 
-        return $this->startApiCall('UpdateNodePool', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateNodePool', $request, $optionalArgs)->wait();
     }
 }

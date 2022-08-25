@@ -454,7 +454,7 @@ class CloudRedisGapicClient
         $request->setParent($parent);
         $request->setInstanceId($instanceId);
         $request->setInstance($instance);
-        return $this->startApiCall('CreateInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -515,7 +515,7 @@ class CloudRedisGapicClient
     {
         $request = new DeleteInstanceRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -585,7 +585,7 @@ class CloudRedisGapicClient
         $request = new ExportInstanceRequest();
         $request->setName($name);
         $request->setOutputConfig($outputConfig);
-        return $this->startApiCall('ExportInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ExportInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -656,7 +656,7 @@ class CloudRedisGapicClient
             $request->setDataProtectionMode($optionalArgs['dataProtectionMode']);
         }
 
-        return $this->startApiCall('FailoverInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('FailoverInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -693,7 +693,7 @@ class CloudRedisGapicClient
     {
         $request = new GetInstanceRequest();
         $request->setName($name);
-        return $this->startApiCall('GetInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -765,7 +765,7 @@ class CloudRedisGapicClient
         $request = new ImportInstanceRequest();
         $request->setName($name);
         $request->setInputConfig($inputConfig);
-        return $this->startApiCall('ImportInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -839,7 +839,7 @@ class CloudRedisGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListInstances', null, $request, $optionalArgs);
+        return $this->startApiCall('ListInstances', $request, $optionalArgs);
     }
 
     /**
@@ -914,7 +914,7 @@ class CloudRedisGapicClient
         $request = new UpdateInstanceRequest();
         $request->setUpdateMask($updateMask);
         $request->setInstance($instance);
-        return $this->startApiCall('UpdateInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateInstance', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -980,6 +980,6 @@ class CloudRedisGapicClient
         $request = new UpgradeInstanceRequest();
         $request->setName($name);
         $request->setRedisVersion($redisVersion);
-        return $this->startApiCall('UpgradeInstance', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpgradeInstance', $request, $optionalArgs)->wait();
     }
 }

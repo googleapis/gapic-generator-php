@@ -327,7 +327,7 @@ class MetricsServiceV2GapicClient
         $request = new CreateLogMetricRequest();
         $request->setParent($parent);
         $request->setMetric($metric);
-        return $this->startApiCall('CreateLogMetric', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateLogMetric', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -362,7 +362,7 @@ class MetricsServiceV2GapicClient
     {
         $request = new DeleteLogMetricRequest();
         $request->setMetricName($metricName);
-        return $this->startApiCall('DeleteLogMetric', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteLogMetric', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -399,7 +399,7 @@ class MetricsServiceV2GapicClient
     {
         $request = new GetLogMetricRequest();
         $request->setMetricName($metricName);
-        return $this->startApiCall('GetLogMetric', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetLogMetric', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -465,7 +465,7 @@ class MetricsServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListLogMetrics', null, $request, $optionalArgs);
+        return $this->startApiCall('ListLogMetrics', $request, $optionalArgs);
     }
 
     /**
@@ -509,6 +509,6 @@ class MetricsServiceV2GapicClient
         $request = new UpdateLogMetricRequest();
         $request->setMetricName($metricName);
         $request->setMetric($metric);
-        return $this->startApiCall('UpdateLogMetric', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateLogMetric', $request, $optionalArgs)->wait();
     }
 }

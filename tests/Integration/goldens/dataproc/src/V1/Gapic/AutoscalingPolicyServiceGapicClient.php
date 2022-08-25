@@ -426,7 +426,7 @@ class AutoscalingPolicyServiceGapicClient
         $request = new CreateAutoscalingPolicyRequest();
         $request->setParent($parent);
         $request->setPolicy($policy);
-        return $this->startApiCall('CreateAutoscalingPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -469,7 +469,7 @@ class AutoscalingPolicyServiceGapicClient
     {
         $request = new DeleteAutoscalingPolicyRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteAutoscalingPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -513,7 +513,7 @@ class AutoscalingPolicyServiceGapicClient
     {
         $request = new GetAutoscalingPolicyRequest();
         $request->setName($name);
-        return $this->startApiCall('GetAutoscalingPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -586,7 +586,7 @@ class AutoscalingPolicyServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListAutoscalingPolicies', null, $request, $optionalArgs);
+        return $this->startApiCall('ListAutoscalingPolicies', $request, $optionalArgs);
     }
 
     /**
@@ -624,6 +624,6 @@ class AutoscalingPolicyServiceGapicClient
     {
         $request = new UpdateAutoscalingPolicyRequest();
         $request->setPolicy($policy);
-        return $this->startApiCall('UpdateAutoscalingPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 }

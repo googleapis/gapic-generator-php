@@ -466,7 +466,7 @@ class WorkflowTemplateServiceGapicClient
         $request = new CreateWorkflowTemplateRequest();
         $request->setParent($parent);
         $request->setTemplate($template);
-        return $this->startApiCall('CreateWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -516,7 +516,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setVersion($optionalArgs['version']);
         }
 
-        return $this->startApiCall('DeleteWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -572,7 +572,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setVersion($optionalArgs['version']);
         }
 
-        return $this->startApiCall('GetWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -679,7 +679,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('InstantiateInlineWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('InstantiateInlineWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -797,7 +797,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setParameters($optionalArgs['parameters']);
         }
 
-        return $this->startApiCall('InstantiateWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('InstantiateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -870,7 +870,7 @@ class WorkflowTemplateServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListWorkflowTemplates', null, $request, $optionalArgs);
+        return $this->startApiCall('ListWorkflowTemplates', $request, $optionalArgs);
     }
 
     /**
@@ -908,6 +908,6 @@ class WorkflowTemplateServiceGapicClient
     {
         $request = new UpdateWorkflowTemplateRequest();
         $request->setTemplate($template);
-        return $this->startApiCall('UpdateWorkflowTemplate', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 }
