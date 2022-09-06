@@ -112,7 +112,7 @@ class ProtoHelpers
     public static function routingBasedHeaderParams(ProtoCatalog $catalog, RoutingRule $routingRule, DescriptorProto $msg): array
     {
 
-        // Organzie rules by resulting key name.
+        // Organize rules by resulting key name.
         $rulesByKey = Vector::new($routingRule->getRoutingParameters())
             ->groupBy(fn($x) => static::fieldOrTemplateVariable($x));
 
