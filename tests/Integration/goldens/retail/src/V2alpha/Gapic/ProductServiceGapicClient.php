@@ -521,7 +521,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        return $this->startApiCall('AddFulfillmentPlaces', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AddFulfillmentPlaces', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -579,7 +579,7 @@ class ProductServiceGapicClient
         $request->setParent($parent);
         $request->setProduct($product);
         $request->setProductId($productId);
-        return $this->startApiCall('CreateProduct', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -635,7 +635,7 @@ class ProductServiceGapicClient
     {
         $request = new DeleteProductRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteProduct', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -681,7 +681,7 @@ class ProductServiceGapicClient
     {
         $request = new GetProductRequest();
         $request->setName($name);
-        return $this->startApiCall('GetProduct', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -806,7 +806,7 @@ class ProductServiceGapicClient
             $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
-        return $this->startApiCall('ImportProducts', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportProducts', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -948,7 +948,7 @@ class ProductServiceGapicClient
             $request->setRequireTotalSize($optionalArgs['requireTotalSize']);
         }
 
-        return $this->startApiCall('ListProducts', null, $request, $optionalArgs);
+        return $this->startApiCall('ListProducts', $request, $optionalArgs);
     }
 
     /**
@@ -1082,7 +1082,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        return $this->startApiCall('RemoveFulfillmentPlaces', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RemoveFulfillmentPlaces', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1249,7 +1249,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        return $this->startApiCall('SetInventory', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetInventory', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1315,6 +1315,6 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        return $this->startApiCall('UpdateProduct', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateProduct', $request, $optionalArgs)->wait();
     }
 }

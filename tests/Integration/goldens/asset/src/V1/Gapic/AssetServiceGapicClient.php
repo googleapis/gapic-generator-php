@@ -445,7 +445,7 @@ class AssetServiceGapicClient
             $request->setExecutionTimeout($optionalArgs['executionTimeout']);
         }
 
-        return $this->startApiCall('AnalyzeIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -516,7 +516,7 @@ class AssetServiceGapicClient
         $request = new AnalyzeIamPolicyLongrunningRequest();
         $request->setAnalysisQuery($analysisQuery);
         $request->setOutputConfig($outputConfig);
-        return $this->startApiCall('AnalyzeIamPolicyLongrunning', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeIamPolicyLongrunning', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -573,7 +573,7 @@ class AssetServiceGapicClient
             $request->setView($optionalArgs['view']);
         }
 
-        return $this->startApiCall('AnalyzeMove', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeMove', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -662,7 +662,7 @@ class AssetServiceGapicClient
             $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
         }
 
-        return $this->startApiCall('BatchGetAssetsHistory', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('BatchGetAssetsHistory', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -713,7 +713,7 @@ class AssetServiceGapicClient
         $request->setParent($parent);
         $request->setFeedId($feedId);
         $request->setFeed($feed);
-        return $this->startApiCall('CreateFeed', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFeed', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -749,7 +749,7 @@ class AssetServiceGapicClient
     {
         $request = new DeleteFeedRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteFeed', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteFeed', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -885,7 +885,7 @@ class AssetServiceGapicClient
             $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
         }
 
-        return $this->startApiCall('ExportAssets', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ExportAssets', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -923,7 +923,7 @@ class AssetServiceGapicClient
     {
         $request = new GetFeedRequest();
         $request->setName($name);
-        return $this->startApiCall('GetFeed', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetFeed', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1052,7 +1052,7 @@ class AssetServiceGapicClient
             $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
         }
 
-        return $this->startApiCall('ListAssets', null, $request, $optionalArgs);
+        return $this->startApiCall('ListAssets', $request, $optionalArgs);
     }
 
     /**
@@ -1089,7 +1089,7 @@ class AssetServiceGapicClient
     {
         $request = new ListFeedsRequest();
         $request->setParent($parent);
-        return $this->startApiCall('ListFeeds', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListFeeds', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1250,7 +1250,7 @@ class AssetServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        return $this->startApiCall('SearchAllIamPolicies', null, $request, $optionalArgs);
+        return $this->startApiCall('SearchAllIamPolicies', $request, $optionalArgs);
     }
 
     /**
@@ -1451,7 +1451,7 @@ class AssetServiceGapicClient
             $request->setReadMask($optionalArgs['readMask']);
         }
 
-        return $this->startApiCall('SearchAllResources', null, $request, $optionalArgs);
+        return $this->startApiCall('SearchAllResources', $request, $optionalArgs);
     }
 
     /**
@@ -1495,6 +1495,6 @@ class AssetServiceGapicClient
         $request = new UpdateFeedRequest();
         $request->setFeed($feed);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateFeed', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateFeed', $request, $optionalArgs)->wait();
     }
 }

@@ -326,7 +326,7 @@ class ClusterControllerGapicClient
             $request->setActionOnFailedPrimaryWorkers($optionalArgs['actionOnFailedPrimaryWorkers']);
         }
 
-        return $this->startApiCall('CreateCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -417,7 +417,7 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('DeleteCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -490,7 +490,7 @@ class ClusterControllerGapicClient
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        return $this->startApiCall('DiagnoseCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DiagnoseCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -532,7 +532,7 @@ class ClusterControllerGapicClient
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        return $this->startApiCall('GetCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -624,7 +624,7 @@ class ClusterControllerGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListClusters', null, $request, $optionalArgs);
+        return $this->startApiCall('ListClusters', $request, $optionalArgs);
     }
 
     /**
@@ -715,7 +715,7 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('StartCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('StartCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -806,7 +806,7 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('StopCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('StopCluster', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -964,6 +964,6 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('UpdateCluster', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCluster', $request, $optionalArgs)->wait();
     }
 }

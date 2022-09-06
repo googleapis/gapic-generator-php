@@ -547,7 +547,7 @@ class ApplicationServiceGapicClient
         $request = new CreateApplicationRequest();
         $request->setParent($parent);
         $request->setApplication($application);
-        return $this->startApiCall('CreateApplication', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -586,7 +586,7 @@ class ApplicationServiceGapicClient
     {
         $request = new DeleteApplicationRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteApplication', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -627,7 +627,7 @@ class ApplicationServiceGapicClient
     {
         $request = new GetApplicationRequest();
         $request->setName($name);
-        return $this->startApiCall('GetApplication', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -697,7 +697,7 @@ class ApplicationServiceGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListApplications', null, $request, $optionalArgs);
+        return $this->startApiCall('ListApplications', $request, $optionalArgs);
     }
 
     /**
@@ -746,6 +746,6 @@ class ApplicationServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateApplication', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateApplication', $request, $optionalArgs)->wait();
     }
 }

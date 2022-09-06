@@ -969,7 +969,7 @@ class SecurityCenterGapicClient
         $request->setParent($parent);
         $request->setFindingId($findingId);
         $request->setFinding($finding);
-        return $this->startApiCall('CreateFinding', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1015,7 +1015,7 @@ class SecurityCenterGapicClient
         $request->setParent($parent);
         $request->setConfigId($configId);
         $request->setNotificationConfig($notificationConfig);
-        return $this->startApiCall('CreateNotificationConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1055,7 +1055,7 @@ class SecurityCenterGapicClient
         $request = new CreateSourceRequest();
         $request->setParent($parent);
         $request->setSource($source);
-        return $this->startApiCall('CreateSource', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1089,7 +1089,7 @@ class SecurityCenterGapicClient
     {
         $request = new DeleteNotificationConfigRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteNotificationConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1132,7 +1132,7 @@ class SecurityCenterGapicClient
             $request->setOptions($optionalArgs['options']);
         }
 
-        return $this->startApiCall('GetIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1168,7 +1168,7 @@ class SecurityCenterGapicClient
     {
         $request = new GetNotificationConfigRequest();
         $request->setName($name);
-        return $this->startApiCall('GetNotificationConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1204,7 +1204,7 @@ class SecurityCenterGapicClient
     {
         $request = new GetOrganizationSettingsRequest();
         $request->setName($name);
-        return $this->startApiCall('GetOrganizationSettings', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1240,7 +1240,7 @@ class SecurityCenterGapicClient
     {
         $request = new GetSourceRequest();
         $request->setName($name);
-        return $this->startApiCall('GetSource', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1435,7 +1435,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('GroupAssets', null, $request, $optionalArgs);
+        return $this->startApiCall('GroupAssets', $request, $optionalArgs);
     }
 
     /**
@@ -1638,7 +1638,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('GroupFindings', null, $request, $optionalArgs);
+        return $this->startApiCall('GroupFindings', $request, $optionalArgs);
     }
 
     /**
@@ -1843,7 +1843,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListAssets', null, $request, $optionalArgs);
+        return $this->startApiCall('ListAssets', $request, $optionalArgs);
     }
 
     /**
@@ -2055,7 +2055,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListFindings', null, $request, $optionalArgs);
+        return $this->startApiCall('ListFindings', $request, $optionalArgs);
     }
 
     /**
@@ -2120,7 +2120,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListNotificationConfigs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListNotificationConfigs', $request, $optionalArgs);
     }
 
     /**
@@ -2186,7 +2186,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListSources', null, $request, $optionalArgs);
+        return $this->startApiCall('ListSources', $request, $optionalArgs);
     }
 
     /**
@@ -2252,7 +2252,7 @@ class SecurityCenterGapicClient
     {
         $request = new RunAssetDiscoveryRequest();
         $request->setParent($parent);
-        return $this->startApiCall('RunAssetDiscovery', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RunAssetDiscovery', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2297,7 +2297,7 @@ class SecurityCenterGapicClient
         $request->setName($name);
         $request->setState($state);
         $request->setStartTime($startTime);
-        return $this->startApiCall('SetFindingState', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetFindingState', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2339,7 +2339,7 @@ class SecurityCenterGapicClient
         $request = new SetIamPolicyRequest();
         $request->setResource($resource);
         $request->setPolicy($policy);
-        return $this->startApiCall('SetIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2381,7 +2381,7 @@ class SecurityCenterGapicClient
         $request = new TestIamPermissionsRequest();
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        return $this->startApiCall('TestIamPermissions', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2434,7 +2434,7 @@ class SecurityCenterGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateFinding', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2479,7 +2479,7 @@ class SecurityCenterGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateNotificationConfig', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2522,7 +2522,7 @@ class SecurityCenterGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateOrganizationSettings', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2575,7 +2575,7 @@ class SecurityCenterGapicClient
             $request->setStartTime($optionalArgs['startTime']);
         }
 
-        return $this->startApiCall('UpdateSecurityMarks', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateSecurityMarks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2618,6 +2618,6 @@ class SecurityCenterGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateSource', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateSource', $request, $optionalArgs)->wait();
     }
 }

@@ -370,7 +370,7 @@ class CloudFunctionsServiceGapicClient
         $request = new CallFunctionRequest();
         $request->setName($name);
         $request->setData($data);
-        return $this->startApiCall('CallFunction', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CallFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -436,7 +436,7 @@ class CloudFunctionsServiceGapicClient
         $request = new CreateFunctionRequest();
         $request->setLocation($location);
         $request->setFunction($function);
-        return $this->startApiCall('CreateFunction', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -496,7 +496,7 @@ class CloudFunctionsServiceGapicClient
     {
         $request = new DeleteFunctionRequest();
         $request->setName($name);
-        return $this->startApiCall('DeleteFunction', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -546,7 +546,7 @@ class CloudFunctionsServiceGapicClient
             $request->setVersionId($optionalArgs['versionId']);
         }
 
-        return $this->startApiCall('GenerateDownloadUrl', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GenerateDownloadUrl', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -609,7 +609,7 @@ class CloudFunctionsServiceGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('GenerateUploadUrl', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GenerateUploadUrl', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -644,7 +644,7 @@ class CloudFunctionsServiceGapicClient
     {
         $request = new GetFunctionRequest();
         $request->setName($name);
-        return $this->startApiCall('GetFunction', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -689,7 +689,7 @@ class CloudFunctionsServiceGapicClient
             $request->setOptions($optionalArgs['options']);
         }
 
-        return $this->startApiCall('GetIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -761,7 +761,7 @@ class CloudFunctionsServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListFunctions', null, $request, $optionalArgs);
+        return $this->startApiCall('ListFunctions', $request, $optionalArgs);
     }
 
     /**
@@ -804,7 +804,7 @@ class CloudFunctionsServiceGapicClient
         $request = new SetIamPolicyRequest();
         $request->setResource($resource);
         $request->setPolicy($policy);
-        return $this->startApiCall('SetIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -849,7 +849,7 @@ class CloudFunctionsServiceGapicClient
         $request = new TestIamPermissionsRequest();
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        return $this->startApiCall('TestIamPermissions', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -915,6 +915,6 @@ class CloudFunctionsServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateFunction', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateFunction', $request, $optionalArgs)->wait();
     }
 }

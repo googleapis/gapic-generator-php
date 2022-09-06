@@ -336,6 +336,7 @@ return [
                         ],
                     ],
                 ],
+                'interfaceOverride' => 'google.cloud.location.Locations',
             ],
             'ListLocations' => [
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
@@ -356,6 +357,7 @@ return [
                         ],
                     ],
                 ],
+                'interfaceOverride' => 'google.cloud.location.Locations',
             ],
         ],
     ],

@@ -502,7 +502,7 @@ class KeyManagementServiceGapicClient
             $request->setCiphertextCrc32c($optionalArgs['ciphertextCrc32c']);
         }
 
-        return $this->startApiCall('AsymmetricDecrypt', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AsymmetricDecrypt', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -574,7 +574,7 @@ class KeyManagementServiceGapicClient
             $request->setDigestCrc32c($optionalArgs['digestCrc32c']);
         }
 
-        return $this->startApiCall('AsymmetricSign', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('AsymmetricSign', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -636,7 +636,7 @@ class KeyManagementServiceGapicClient
             $request->setSkipInitialVersionCreation($optionalArgs['skipInitialVersionCreation']);
         }
 
-        return $this->startApiCall('CreateCryptoKey', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCryptoKey', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -682,7 +682,7 @@ class KeyManagementServiceGapicClient
         $request = new CreateCryptoKeyVersionRequest();
         $request->setParent($parent);
         $request->setCryptoKeyVersion($cryptoKeyVersion);
-        return $this->startApiCall('CreateCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -731,7 +731,7 @@ class KeyManagementServiceGapicClient
         $request->setParent($parent);
         $request->setImportJobId($importJobId);
         $request->setImportJob($importJob);
-        return $this->startApiCall('CreateImportJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateImportJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -777,7 +777,7 @@ class KeyManagementServiceGapicClient
         $request->setParent($parent);
         $request->setKeyRingId($keyRingId);
         $request->setKeyRing($keyRing);
-        return $this->startApiCall('CreateKeyRing', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateKeyRing', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -880,7 +880,7 @@ class KeyManagementServiceGapicClient
             $request->setAdditionalAuthenticatedDataCrc32c($optionalArgs['additionalAuthenticatedDataCrc32c']);
         }
 
-        return $this->startApiCall('Decrypt', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Decrypt', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -933,7 +933,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new DestroyCryptoKeyVersionRequest();
         $request->setName($name);
-        return $this->startApiCall('DestroyCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DestroyCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1056,7 +1056,7 @@ class KeyManagementServiceGapicClient
             $request->setAdditionalAuthenticatedDataCrc32c($optionalArgs['additionalAuthenticatedDataCrc32c']);
         }
 
-        return $this->startApiCall('Encrypt', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Encrypt', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1094,7 +1094,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new GetCryptoKeyRequest();
         $request->setName($name);
-        return $this->startApiCall('GetCryptoKey', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCryptoKey', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1131,7 +1131,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new GetCryptoKeyVersionRequest();
         $request->setName($name);
-        return $this->startApiCall('GetCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1176,7 +1176,7 @@ class KeyManagementServiceGapicClient
             $request->setOptions($optionalArgs['options']);
         }
 
-        return $this->startApiCall('GetIamPolicy', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1212,7 +1212,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new GetImportJobRequest();
         $request->setName($name);
-        return $this->startApiCall('GetImportJob', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetImportJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1248,7 +1248,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new GetKeyRingRequest();
         $request->setName($name);
-        return $this->startApiCall('GetKeyRing', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetKeyRing', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1289,7 +1289,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new GetPublicKeyRequest();
         $request->setName($name);
-        return $this->startApiCall('GetPublicKey', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetPublicKey', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1371,7 +1371,7 @@ class KeyManagementServiceGapicClient
             $request->setRsaAesWrappedKey($optionalArgs['rsaAesWrappedKey']);
         }
 
-        return $this->startApiCall('ImportCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1462,7 +1462,7 @@ class KeyManagementServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        return $this->startApiCall('ListCryptoKeyVersions', null, $request, $optionalArgs);
+        return $this->startApiCall('ListCryptoKeyVersions', $request, $optionalArgs);
     }
 
     /**
@@ -1552,7 +1552,7 @@ class KeyManagementServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        return $this->startApiCall('ListCryptoKeys', null, $request, $optionalArgs);
+        return $this->startApiCall('ListCryptoKeys', $request, $optionalArgs);
     }
 
     /**
@@ -1635,7 +1635,7 @@ class KeyManagementServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        return $this->startApiCall('ListImportJobs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListImportJobs', $request, $optionalArgs);
     }
 
     /**
@@ -1719,7 +1719,7 @@ class KeyManagementServiceGapicClient
             $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        return $this->startApiCall('ListKeyRings', null, $request, $optionalArgs);
+        return $this->startApiCall('ListKeyRings', $request, $optionalArgs);
     }
 
     /**
@@ -1763,7 +1763,7 @@ class KeyManagementServiceGapicClient
     {
         $request = new RestoreCryptoKeyVersionRequest();
         $request->setName($name);
-        return $this->startApiCall('RestoreCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('RestoreCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1801,7 +1801,7 @@ class KeyManagementServiceGapicClient
         $request = new UpdateCryptoKeyRequest();
         $request->setCryptoKey($cryptoKey);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateCryptoKey', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKey', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1845,7 +1845,7 @@ class KeyManagementServiceGapicClient
         $request = new UpdateCryptoKeyPrimaryVersionRequest();
         $request->setName($name);
         $request->setCryptoKeyVersionId($cryptoKeyVersionId);
-        return $this->startApiCall('UpdateCryptoKeyPrimaryVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKeyPrimaryVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1895,7 +1895,7 @@ class KeyManagementServiceGapicClient
         $request = new UpdateCryptoKeyVersionRequest();
         $request->setCryptoKeyVersion($cryptoKeyVersion);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateCryptoKeyVersion', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKeyVersion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1933,7 +1933,7 @@ class KeyManagementServiceGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('GetLocation', 'google.cloud.location.Locations', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetLocation', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2006,6 +2006,6 @@ class KeyManagementServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListLocations', 'google.cloud.location.Locations', $request, $optionalArgs);
+        return $this->startApiCall('ListLocations', $request, $optionalArgs);
     }
 }

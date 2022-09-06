@@ -377,7 +377,7 @@ class CatalogServiceGapicClient
             $request->setCatalog($optionalArgs['catalog']);
         }
 
-        return $this->startApiCall('GetDefaultBranch', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetDefaultBranch', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -449,7 +449,7 @@ class CatalogServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListCatalogs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListCatalogs', $request, $optionalArgs);
     }
 
     /**
@@ -544,7 +544,7 @@ class CatalogServiceGapicClient
             $request->setNote($optionalArgs['note']);
         }
 
-        return $this->startApiCall('SetDefaultBranch', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetDefaultBranch', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -598,6 +598,6 @@ class CatalogServiceGapicClient
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateCatalog', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCatalog', $request, $optionalArgs)->wait();
     }
 }

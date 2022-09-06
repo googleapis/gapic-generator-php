@@ -300,7 +300,7 @@ class SpeechGapicClient
             $request->setOutputConfig($optionalArgs['outputConfig']);
         }
 
-        return $this->startApiCall('LongRunningRecognize', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('LongRunningRecognize', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -340,7 +340,7 @@ class SpeechGapicClient
         $request = new RecognizeRequest();
         $request->setConfig($config);
         $request->setAudio($audio);
-        return $this->startApiCall('Recognize', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Recognize', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -400,6 +400,6 @@ class SpeechGapicClient
      */
     public function streamingRecognize(array $optionalArgs = [])
     {
-        return $this->startApiCall('StreamingRecognize', null, null, $optionalArgs);
+        return $this->startApiCall('StreamingRecognize', null, $optionalArgs);
     }
 }

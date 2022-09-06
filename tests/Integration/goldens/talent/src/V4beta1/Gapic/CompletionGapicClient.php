@@ -483,6 +483,6 @@ class CompletionGapicClient
             $request->setType($optionalArgs['type']);
         }
 
-        return $this->startApiCall('CompleteQuery', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
     }
 }

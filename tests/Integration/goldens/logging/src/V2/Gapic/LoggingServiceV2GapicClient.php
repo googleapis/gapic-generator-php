@@ -537,7 +537,7 @@ class LoggingServiceV2GapicClient
     {
         $request = new DeleteLogRequest();
         $request->setLogName($logName);
-        return $this->startApiCall('DeleteLog', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteLog', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -643,7 +643,7 @@ class LoggingServiceV2GapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListLogEntries', null, $request, $optionalArgs);
+        return $this->startApiCall('ListLogEntries', $request, $optionalArgs);
     }
 
     /**
@@ -729,7 +729,7 @@ class LoggingServiceV2GapicClient
             $request->setResourceNames($optionalArgs['resourceNames']);
         }
 
-        return $this->startApiCall('ListLogs', null, $request, $optionalArgs);
+        return $this->startApiCall('ListLogs', $request, $optionalArgs);
     }
 
     /**
@@ -790,7 +790,7 @@ class LoggingServiceV2GapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListMonitoredResourceDescriptors', null, $request, $optionalArgs);
+        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $optionalArgs);
     }
 
     /**
@@ -852,7 +852,7 @@ class LoggingServiceV2GapicClient
      */
     public function tailLogEntries(array $optionalArgs = [])
     {
-        return $this->startApiCall('TailLogEntries', null, null, $optionalArgs);
+        return $this->startApiCall('TailLogEntries', null, $optionalArgs);
     }
 
     /**
@@ -978,6 +978,6 @@ class LoggingServiceV2GapicClient
             $request->setDryRun($optionalArgs['dryRun']);
         }
 
-        return $this->startApiCall('WriteLogEntries', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('WriteLogEntries', $request, $optionalArgs)->wait();
     }
 }

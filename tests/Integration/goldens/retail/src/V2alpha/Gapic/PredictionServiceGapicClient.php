@@ -324,6 +324,6 @@ class PredictionServiceGapicClient
             $request->setLabels($optionalArgs['labels']);
         }
 
-        return $this->startApiCall('Predict', null, $request, $optionalArgs)->wait();
+        return $this->startApiCall('Predict', $request, $optionalArgs)->wait();
     }
 }
