@@ -153,7 +153,7 @@ class ProtoHelpers
         // a segment matcher other than '**' ("match anything"), with the header
         // key override.
         $temp = $routingParam->getPathTemplate();
-        return !empty($temp) && str_contains($temp, '=') && !str_ends_with($temp, "=**}");
+        return !empty($temp) && static::strContains($temp, '=') && !static::strEndsWith($temp, "=**}");
     }
 
     /**
@@ -465,14 +465,31 @@ class ProtoHelpers
         $opServ = ProtoHelpers::operationService($desc);
         // Prepare fully-qualified proto element name using containing proto package.
         // Values that exist in another package will contain the '.' separator.
-        if (!str_contains($opServ, '.')) {
+        if (!static::strContains($opServ, '.')) {
             $opServ = "{$package}.{$opServ}";
         }
         // Prepend '.' to indicate the name is fully-qualified.
-        if (!str_starts_with($opServ, '.')) {
+        if (!static::strStartsWith($opServ, '.')) {
             $opServ = '.' . $opServ;
         }
 
         return $catalog->servicesByFullname[$opServ];
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strEndsWith($haystack, $needle)
+    {
+        return $needle !== '' ? substr($haystack, -strlen($needle)) === $needle : true;
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strStartsWith($haystack, $needle) {
+        return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strContains( $haystack, $needle)
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
     }
 }
