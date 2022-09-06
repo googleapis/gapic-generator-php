@@ -125,7 +125,7 @@ class ProtoHelpers
             ->filter(fn($key, $matchers) => $matchers->count() > 0)
             ->mapValues(fn($key, $val) => $val->toArray());
 
-        // Reduce the rules for each key into one rule, taking the first it's
+        // Reduce the rules for each key into one rule, taking first its
         // keyName and fieldAccessors. Note: If multiple fields can be configured
         // to supply a value for the same keyName, this will not work. To date,
         // we only support referring to one field with multiple parsing rules
