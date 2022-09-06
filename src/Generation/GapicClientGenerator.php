@@ -790,17 +790,17 @@ class GapicClientGenerator
         ]);
         $wait = true;
         switch ($method->methodType) {
-      case MethodDetails::BIDI_STREAMING:
-        // Fall through to CLIENT_STREAMING.
-      case MethodDetails::CLIENT_STREAMING:
-        $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
-        // Fall through to SERVER_STREAMING.
-      case MethodDetails::SERVER_STREAMING:
-        // Fall through to PAGINATED.
-      case MethodDetails::PAGINATED:
-        $wait = false;
-        break;
-      default:
+            case MethodDetails::BIDI_STREAMING:
+                // Fall through to CLIENT_STREAMING.
+            case MethodDetails::CLIENT_STREAMING:
+                $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
+                // Fall through to SERVER_STREAMING.
+            case MethodDetails::SERVER_STREAMING:
+                // Fall through to PAGINATED.
+            case MethodDetails::PAGINATED:
+                $wait = false;
+                break;
+            default:
       }
 
       $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());

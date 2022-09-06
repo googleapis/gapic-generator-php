@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\Utils;
 
-use Google\Generator\Collections\Map;
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Tests\Tools\ProtoLoader;
