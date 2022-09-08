@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Generator\Ast\AST;
+use Google\Generator\Ast\Expression;
+use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
@@ -131,6 +133,34 @@ class GapicClientExamplesGenerator
                     Vector::new([])
             )
         ];
+    }
+
+    private static function initRequestMessage(MethodDetails $method, SourceFileContext $ctx): AST
+    {
+        // TODO: Switch this to request builder when possible.
+        return AST::new($ctx->type($method->requestType))();
+    }
+
+    public static function sendAsyncExample(ServiceDetails $service, SourceFileContext $ctx): AST
+    {
+        $serviceClient = AST::var($service->clientVarName);
+        $method = $service->methods->firstOrNull(fn($m) => !$m->isStreaming());
+        if (!$method) {
+            return null;
+        }
+        $request = AST::var('request');
+        $response = AST::var('response');
+        $requestInit = static::initRequestMessage($method, $ctx);
+        return AST::block(
+            AST::assign($serviceClient, AST::new($ctx->type($service->emptyClientType, false, true))()),
+            AST::assign($request, $requestInit),
+            AST::try(
+                AST::assign($response,
+                    AST::call($serviceClient, AST::method('sendAsync'))($method->methodName, $request)->wait())
+            )->finally(
+                AST::call($serviceClient, AST::method('close'))()
+            )
+        );
     }
 
     private function rpcMethodExampleNormal(MethodDetails $method): AST

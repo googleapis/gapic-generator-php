@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\Internal\Message;
 use Testing\Basic\PartOfRequestA;
 use Testing\Basic\PartOfRequestB;
 use Testing\Basic\PartOfRequestC;
@@ -165,6 +166,33 @@ class BasicGapicClient
     }
 
     /**
+     * ```
+     * $basicClient = new BasicClient();
+     * $request = new Request();
+     * try {
+     *     $response = $basicClient->sendAsync('aMethod', $request)->wait();
+     * } finally {
+     *     $basicClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Test summary text for AMethod
      *
      * Sample code:
@@ -176,6 +204,8 @@ class BasicGapicClient
      *     $basicClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -210,6 +240,8 @@ class BasicGapicClient
      *     $basicClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string           $aString        A required field...
      * @param PartOfRequestA[] $partOfRequestA ...and a repeated message type, which checks that an extra import is *not* added,

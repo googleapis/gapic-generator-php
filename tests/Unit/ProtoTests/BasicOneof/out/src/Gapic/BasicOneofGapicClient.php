@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\Internal\Message;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Request\Other;
 use Testing\BasicOneof\Request\SupplementaryDataOneof;
@@ -166,6 +167,33 @@ class BasicOneofGapicClient
     }
 
     /**
+     * ```
+     * $basicOneofClient = new BasicOneofClient();
+     * $request = new Request();
+     * try {
+     *     $response = $basicOneofClient->sendAsync('aMethod', $request)->wait();
+     * } finally {
+     *     $basicOneofClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Test including method args with required oneofs.
      *
      * Sample code:
@@ -180,6 +208,8 @@ class BasicOneofGapicClient
      *     $basicOneofClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
      * @param Other                  $other

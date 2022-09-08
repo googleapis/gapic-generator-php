@@ -47,17 +47,18 @@ use Google\Protobuf\FieldMask;
 use Google\Protobuf\FloatValue;
 use Google\Protobuf\Int32Value;
 use Google\Protobuf\Int64Value;
+use Google\Protobuf\Internal\Message;
 use Google\Protobuf\ListValue;
 use Google\Protobuf\StringValue;
 use Google\Protobuf\Struct;
 use Google\Protobuf\Timestamp;
 use Google\Protobuf\UInt32Value;
 use Google\Protobuf\UInt64Value;
+
 use Google\Protobuf\Value;
-
 use Testing\BasicDiregapic\AddCommentsRequest;
-use Testing\BasicDiregapic\AddTagRequest;
 
+use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\Comment;
@@ -855,6 +856,33 @@ class LibraryServiceGapicClient
     }
 
     /**
+     * ```
+     * $libraryServiceClient = new LibraryServiceClient();
+     * $request = new AddCommentsRequest();
+     * try {
+     *     $response = $libraryServiceClient->sendAsync('addComments', $request)->wait();
+     * } finally {
+     *     $libraryServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Adds comments to a book
      *
      * Sample code:
@@ -868,6 +896,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $name
      * @param Comment[] $comments
@@ -905,6 +935,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $resource     REQUIRED: The resource which the tag is being added to.
      *                             In the form "shelves/{shelf_id}/books/{book_id}".
      * @param string $tag          REQUIRED: The tag to add.
@@ -940,6 +972,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -985,6 +1019,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string       $name         The name of the shelf in which the book is created.
      * @param BookResponse $book         The book to create.
      * @param array        $optionalArgs {
@@ -1024,6 +1060,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string   $parent
      * @param string   $asset
@@ -1072,6 +1110,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param ShelfResponse $shelf        The shelf to create.
      * @param array         $optionalArgs {
      *     Optional.
@@ -1107,6 +1147,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to delete.
      * @param array  $optionalArgs {
      *     Optional.
@@ -1139,6 +1181,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         The name of the shelf to delete.
      * @param array  $optionalArgs {
@@ -1188,6 +1232,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string[] $names
      * @param string[] $shelves
@@ -1268,6 +1314,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to retrieve.
      * @param array  $optionalArgs {
      *     Optional.
@@ -1326,6 +1374,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to retrieve.
      * @param array  $optionalArgs {
      *     Optional.
@@ -1361,6 +1411,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to retrieve.
      * @param array  $optionalArgs {
      *     Optional.
@@ -1395,6 +1447,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         The name of the book to retrieve.
      * @param array  $optionalArgs {
@@ -1441,6 +1495,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to retrieve.
      * @param string $altBookName  An alternate book name, used to test restricting flattened field to a
      *                             single resource name type in a oneof.
@@ -1484,6 +1540,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the book to retrieve.
      * @param string $parent
      * @param array  $optionalArgs {
@@ -1521,6 +1579,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         The name of the shelf to retrieve.
      * @param string $options      To test 'options' parameter name conflict.
@@ -1580,6 +1640,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1641,6 +1703,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         The name of the shelf whose books we'd like to list.
      * @param array  $optionalArgs {
      *     Optional.
@@ -1698,6 +1762,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -1750,6 +1816,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1829,6 +1897,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -1875,6 +1945,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name           The name of the shelf we're adding books to.
      * @param string $otherShelfName The name of the shelf we're removing books from and deleting.
      * @param array  $optionalArgs   {
@@ -1913,6 +1985,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name           The name of the book to move.
      * @param string $otherShelfName The name of the destination shelf.
      * @param array  $optionalArgs   {
@@ -1947,6 +2021,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -2000,6 +2076,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -2044,6 +2122,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param ShelfResponse      $shelf        The shelf in which the series is created.
      * @param BookResponse[]     $books        The books to publish in the series.
@@ -2103,6 +2183,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         The resource name of the book.
      *                             BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
@@ -2289,6 +2371,8 @@ class LibraryServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string       $name         The name of the book to update.
      * @param BookResponse $book         The book to update with.
      * @param array        $optionalArgs {
@@ -2339,6 +2423,8 @@ class LibraryServiceGapicClient
      *     $libraryServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         The name of the book to update.
      * @param string $indexName    The name of the index for the book

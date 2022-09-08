@@ -176,6 +176,8 @@ class BasicServerStreamingGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -209,6 +211,8 @@ class BasicServerStreamingGapicClient
      *     $basicServerStreamingClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param int   $aNumber
      * @param array $optionalArgs {

@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 use Testing\GrpcServiceConfig\Request1;
 
 /**
@@ -194,6 +195,33 @@ class GrpcServiceConfigWithRetry1GapicClient
     }
 
     /**
+     * ```
+     * $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+     * $request = new Request1();
+     * try {
+     *     $response = $grpcServiceConfigWithRetry1Client->sendAsync('method1A', $request)->wait();
+     * } finally {
+     *     $grpcServiceConfigWithRetry1Client->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      *
      * Sample code:
      * ```
@@ -204,6 +232,8 @@ class GrpcServiceConfigWithRetry1GapicClient
      *     $grpcServiceConfigWithRetry1Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -260,6 +290,8 @@ class GrpcServiceConfigWithRetry1GapicClient
      *     $grpcServiceConfigWithRetry1Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -350,6 +382,8 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -380,6 +414,8 @@ class GrpcServiceConfigWithRetry1GapicClient
      *     $grpcServiceConfigWithRetry1Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -415,6 +451,8 @@ class GrpcServiceConfigWithRetry1GapicClient
      *     $grpcServiceConfigWithRetry1Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.

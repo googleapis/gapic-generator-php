@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 use Testing\BasicLro\Request;
 
 /**
@@ -222,6 +223,33 @@ class BasicLroGapicClient
     }
 
     /**
+     * ```
+     * $basicLroClient = new BasicLroClient();
+     * $request = new Request();
+     * try {
+     *     $response = $basicLroClient->sendAsync('method1', $request)->wait();
+     * } finally {
+     *     $basicLroClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * To test method ordering; LRO methods referenced in gapic.yaml
      * file are always generated first; so this method will be emitted
      * before the above MethodNonLro1.
@@ -261,6 +289,8 @@ class BasicLroGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -292,6 +322,8 @@ class BasicLroGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -322,6 +354,8 @@ class BasicLroGapicClient
      *     $basicLroClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
