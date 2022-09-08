@@ -36,7 +36,6 @@ use Testing\BasicPaginated\PartOfRequestA;
 use Testing\BasicPaginated\PartOfRequestB;
 use Testing\BasicPaginated\PartOfRequestC;
 use Testing\BasicPaginated\Request;
-use Testing\BasicPaginated\Response;
 
 /**
  * Service Description:
@@ -249,6 +248,6 @@ class BasicPaginatedGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->getPagedListResponse('MethodPaginated', $optionalArgs, Response::class, $request);
+        return $this->startApiCall('MethodPaginated', $request, $optionalArgs);
     }
 }

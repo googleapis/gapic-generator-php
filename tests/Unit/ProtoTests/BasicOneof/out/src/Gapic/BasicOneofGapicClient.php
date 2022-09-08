@@ -35,7 +35,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Request\Other;
 use Testing\BasicOneof\Request\SupplementaryDataOneof;
-use Testing\BasicOneof\Response;
 
 /**
  * Service Description: This is a basic service.
@@ -239,6 +238,6 @@ class BasicOneofGapicClient
             $request->setOptionalCount($optionalArgs['optionalCount']);
         }
 
-        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 }

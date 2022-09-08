@@ -25,7 +25,6 @@
 namespace Testing\BasicClientStreaming\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\Transport\TransportInterface;
@@ -33,7 +32,6 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicClientStreaming\EmptyRequest;
 use Testing\BasicClientStreaming\Request;
-use Testing\BasicClientStreaming\Response;
 
 /**
  * Service Description:
@@ -223,7 +221,7 @@ class BasicClientStreamingGapicClient
      */
     public function methodClient(array $optionalArgs = [])
     {
-        return $this->startCall('MethodClient', Response::class, $optionalArgs, null, Call::CLIENT_STREAMING_CALL);
+        return $this->startApiCall('MethodClient', null, $optionalArgs);
     }
 
     /**
@@ -269,6 +267,6 @@ class BasicClientStreamingGapicClient
      */
     public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::CLIENT_STREAMING_CALL);
+        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
     }
 }

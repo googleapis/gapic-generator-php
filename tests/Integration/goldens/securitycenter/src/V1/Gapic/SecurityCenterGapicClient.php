@@ -25,14 +25,14 @@
 namespace Google\Cloud\SecurityCenter\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+
 use Google\ApiCore\GapicClientTrait;
 
 use Google\ApiCore\LongRunning\OperationsClient;
-
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -42,7 +42,6 @@ use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
-use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\Cloud\SecurityCenter\V1\CreateFindingRequest;
 use Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\CreateSourceRequest;
@@ -53,17 +52,11 @@ use Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest;
 use Google\Cloud\SecurityCenter\V1\GetSourceRequest;
 use Google\Cloud\SecurityCenter\V1\GroupAssetsRequest;
-use Google\Cloud\SecurityCenter\V1\GroupAssetsResponse;
 use Google\Cloud\SecurityCenter\V1\GroupFindingsRequest;
-use Google\Cloud\SecurityCenter\V1\GroupFindingsResponse;
 use Google\Cloud\SecurityCenter\V1\ListAssetsRequest;
-use Google\Cloud\SecurityCenter\V1\ListAssetsResponse;
 use Google\Cloud\SecurityCenter\V1\ListFindingsRequest;
-use Google\Cloud\SecurityCenter\V1\ListFindingsResponse;
 use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest;
-use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse;
 use Google\Cloud\SecurityCenter\V1\ListSourcesRequest;
-use Google\Cloud\SecurityCenter\V1\ListSourcesResponse;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest;
@@ -78,7 +71,6 @@ use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
-use Google\Protobuf\GPBEmpty;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -974,14 +966,10 @@ class SecurityCenterGapicClient
     public function createFinding($parent, $findingId, $finding, array $optionalArgs = [])
     {
         $request = new CreateFindingRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFindingId($findingId);
         $request->setFinding($finding);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateFinding', Finding::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1024,14 +1012,10 @@ class SecurityCenterGapicClient
     public function createNotificationConfig($parent, $configId, $notificationConfig, array $optionalArgs = [])
     {
         $request = new CreateNotificationConfigRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setConfigId($configId);
         $request->setNotificationConfig($notificationConfig);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1069,13 +1053,9 @@ class SecurityCenterGapicClient
     public function createSource($parent, $source, array $optionalArgs = [])
     {
         $request = new CreateSourceRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setSource($source);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateSource', Source::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1108,12 +1088,8 @@ class SecurityCenterGapicClient
     public function deleteNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new DeleteNotificationConfigRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteNotificationConfig', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('DeleteNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1151,16 +1127,12 @@ class SecurityCenterGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
-        $requestParamHeaders = [];
         $request->setResource($resource);
-        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1195,12 +1167,8 @@ class SecurityCenterGapicClient
     public function getNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new GetNotificationConfigRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1235,12 +1203,8 @@ class SecurityCenterGapicClient
     public function getOrganizationSettings($name, array $optionalArgs = [])
     {
         $request = new GetOrganizationSettingsRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1275,12 +1239,8 @@ class SecurityCenterGapicClient
     public function getSource($name, array $optionalArgs = [])
     {
         $request = new GetSourceRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetSource', Source::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1453,10 +1413,8 @@ class SecurityCenterGapicClient
     public function groupAssets($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupAssetsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1477,9 +1435,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('GroupAssets', $optionalArgs, GroupAssetsResponse::class, $request);
+        return $this->startApiCall('GroupAssets', $request, $optionalArgs);
     }
 
     /**
@@ -1660,10 +1616,8 @@ class SecurityCenterGapicClient
     public function groupFindings($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupFindingsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1684,9 +1638,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('GroupFindings', $optionalArgs, GroupFindingsResponse::class, $request);
+        return $this->startApiCall('GroupFindings', $request, $optionalArgs);
     }
 
     /**
@@ -1862,9 +1814,7 @@ class SecurityCenterGapicClient
     public function listAssets($parent, array $optionalArgs = [])
     {
         $request = new ListAssetsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -1893,9 +1843,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListAssets', $optionalArgs, ListAssetsResponse::class, $request);
+        return $this->startApiCall('ListAssets', $request, $optionalArgs);
     }
 
     /**
@@ -2078,9 +2026,7 @@ class SecurityCenterGapicClient
     public function listFindings($parent, array $optionalArgs = [])
     {
         $request = new ListFindingsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -2109,9 +2055,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListFindings', $optionalArgs, ListFindingsResponse::class, $request);
+        return $this->startApiCall('ListFindings', $request, $optionalArgs);
     }
 
     /**
@@ -2167,9 +2111,7 @@ class SecurityCenterGapicClient
     public function listNotificationConfigs($parent, array $optionalArgs = [])
     {
         $request = new ListNotificationConfigsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -2178,9 +2120,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListNotificationConfigs', $optionalArgs, ListNotificationConfigsResponse::class, $request);
+        return $this->startApiCall('ListNotificationConfigs', $request, $optionalArgs);
     }
 
     /**
@@ -2237,9 +2177,7 @@ class SecurityCenterGapicClient
     public function listSources($parent, array $optionalArgs = [])
     {
         $request = new ListSourcesRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -2248,9 +2186,7 @@ class SecurityCenterGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListSources', $optionalArgs, ListSourcesResponse::class, $request);
+        return $this->startApiCall('ListSources', $request, $optionalArgs);
     }
 
     /**
@@ -2315,12 +2251,8 @@ class SecurityCenterGapicClient
     public function runAssetDiscovery($parent, array $optionalArgs = [])
     {
         $request = new RunAssetDiscoveryRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('RunAssetDiscovery', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('RunAssetDiscovery', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2362,14 +2294,10 @@ class SecurityCenterGapicClient
     public function setFindingState($name, $state, $startTime, array $optionalArgs = [])
     {
         $request = new SetFindingStateRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
         $request->setState($state);
         $request->setStartTime($startTime);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetFindingState', Finding::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('SetFindingState', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2409,13 +2337,9 @@ class SecurityCenterGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
-        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        $requestParamHeaders['resource'] = $resource;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2455,13 +2379,9 @@ class SecurityCenterGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
-        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        $requestParamHeaders['resource'] = $resource;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2509,16 +2429,12 @@ class SecurityCenterGapicClient
     public function updateFinding($finding, array $optionalArgs = [])
     {
         $request = new UpdateFindingRequest();
-        $requestParamHeaders = [];
         $request->setFinding($finding);
-        $requestParamHeaders['finding.name'] = $finding->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateFinding', Finding::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2558,16 +2474,12 @@ class SecurityCenterGapicClient
     public function updateNotificationConfig($notificationConfig, array $optionalArgs = [])
     {
         $request = new UpdateNotificationConfigRequest();
-        $requestParamHeaders = [];
         $request->setNotificationConfig($notificationConfig);
-        $requestParamHeaders['notification_config.name'] = $notificationConfig->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2605,16 +2517,12 @@ class SecurityCenterGapicClient
     public function updateOrganizationSettings($organizationSettings, array $optionalArgs = [])
     {
         $request = new UpdateOrganizationSettingsRequest();
-        $requestParamHeaders = [];
         $request->setOrganizationSettings($organizationSettings);
-        $requestParamHeaders['organization_settings.name'] = $organizationSettings->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2658,9 +2566,7 @@ class SecurityCenterGapicClient
     public function updateSecurityMarks($securityMarks, array $optionalArgs = [])
     {
         $request = new UpdateSecurityMarksRequest();
-        $requestParamHeaders = [];
         $request->setSecurityMarks($securityMarks);
-        $requestParamHeaders['security_marks.name'] = $securityMarks->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
@@ -2669,9 +2575,7 @@ class SecurityCenterGapicClient
             $request->setStartTime($optionalArgs['startTime']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSecurityMarks', SecurityMarks::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateSecurityMarks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -2709,15 +2613,11 @@ class SecurityCenterGapicClient
     public function updateSource($source, array $optionalArgs = [])
     {
         $request = new UpdateSourceRequest();
-        $requestParamHeaders = [];
         $request->setSource($source);
-        $requestParamHeaders['source.name'] = $source->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSource', Source::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateSource', $request, $optionalArgs)->wait();
     }
 }

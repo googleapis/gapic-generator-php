@@ -27,11 +27,11 @@
 namespace Google\Cloud\Retail\V2alpha\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\CredentialsWrapper;
+
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -42,7 +42,6 @@ use Google\Cloud\Retail\V2alpha\SearchRequest\DynamicFacetSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\FacetSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\QueryExpansionSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\RelevanceThreshold;
-use Google\Cloud\Retail\V2alpha\SearchResponse;
 use Google\Cloud\Retail\V2alpha\UserInfo;
 
 /**
@@ -512,10 +511,8 @@ class SearchServiceGapicClient
     public function search($placement, $visitorId, array $optionalArgs = [])
     {
         $request = new SearchRequest();
-        $requestParamHeaders = [];
         $request->setPlacement($placement);
         $request->setVisitorId($visitorId);
-        $requestParamHeaders['placement'] = $placement;
         if (isset($optionalArgs['branch'])) {
             $request->setBranch($optionalArgs['branch']);
         }
@@ -580,8 +577,6 @@ class SearchServiceGapicClient
             $request->setPageCategories($optionalArgs['pageCategories']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('Search', $optionalArgs, SearchResponse::class, $request);
+        return $this->startApiCall('Search', $request, $optionalArgs);
     }
 }

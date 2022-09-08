@@ -25,11 +25,11 @@
 namespace Google\Cloud\Dataproc\V1\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 
+use Google\ApiCore\CredentialsWrapper;
+
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -39,9 +39,7 @@ use Google\Cloud\Dataproc\V1\CreateAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\DeleteAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\GetAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest;
-use Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesResponse;
 use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
-use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: The API interface for managing autoscaling policies in the
@@ -426,13 +424,9 @@ class AutoscalingPolicyServiceGapicClient
     public function createAutoscalingPolicy($parent, $policy, array $optionalArgs = [])
     {
         $request = new CreateAutoscalingPolicyRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setPolicy($policy);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -474,12 +468,8 @@ class AutoscalingPolicyServiceGapicClient
     public function deleteAutoscalingPolicy($name, array $optionalArgs = [])
     {
         $request = new DeleteAutoscalingPolicyRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteAutoscalingPolicy', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('DeleteAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -522,12 +512,8 @@ class AutoscalingPolicyServiceGapicClient
     public function getAutoscalingPolicy($name, array $optionalArgs = [])
     {
         $request = new GetAutoscalingPolicyRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -591,9 +577,7 @@ class AutoscalingPolicyServiceGapicClient
     public function listAutoscalingPolicies($parent, array $optionalArgs = [])
     {
         $request = new ListAutoscalingPoliciesRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -602,9 +586,7 @@ class AutoscalingPolicyServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListAutoscalingPolicies', $optionalArgs, ListAutoscalingPoliciesResponse::class, $request);
+        return $this->startApiCall('ListAutoscalingPolicies', $request, $optionalArgs);
     }
 
     /**
@@ -641,11 +623,7 @@ class AutoscalingPolicyServiceGapicClient
     public function updateAutoscalingPolicy($policy, array $optionalArgs = [])
     {
         $request = new UpdateAutoscalingPolicyRequest();
-        $requestParamHeaders = [];
         $request->setPolicy($policy);
-        $requestParamHeaders['policy.name'] = $policy->getName();
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateAutoscalingPolicy', $request, $optionalArgs)->wait();
     }
 }

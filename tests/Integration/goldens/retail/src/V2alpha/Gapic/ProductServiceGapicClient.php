@@ -27,15 +27,15 @@
 namespace Google\Cloud\Retail\V2alpha\Gapic;
 
 use Google\ApiCore\ApiException;
+
 use Google\ApiCore\CredentialsWrapper;
+
 use Google\ApiCore\GapicClientTrait;
 
 use Google\ApiCore\LongRunning\OperationsClient;
 
 use Google\ApiCore\OperationResponse;
-
 use Google\ApiCore\PathTemplate;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -49,7 +49,6 @@ use Google\Cloud\Retail\V2alpha\ImportMetadata;
 use Google\Cloud\Retail\V2alpha\ImportProductsRequest;
 use Google\Cloud\Retail\V2alpha\ImportProductsRequest\ReconciliationMode;
 use Google\Cloud\Retail\V2alpha\ListProductsRequest;
-use Google\Cloud\Retail\V2alpha\ListProductsResponse;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
@@ -57,7 +56,6 @@ use Google\Cloud\Retail\V2alpha\SetInventoryRequest;
 use Google\Cloud\Retail\V2alpha\UpdateProductRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
-use Google\Protobuf\GPBEmpty;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -512,11 +510,9 @@ class ProductServiceGapicClient
     public function addFulfillmentPlaces($product, $type, $placeIds, array $optionalArgs = [])
     {
         $request = new AddFulfillmentPlacesRequest();
-        $requestParamHeaders = [];
         $request->setProduct($product);
         $request->setType($type);
         $request->setPlaceIds($placeIds);
-        $requestParamHeaders['product'] = $product;
         if (isset($optionalArgs['addTime'])) {
             $request->setAddTime($optionalArgs['addTime']);
         }
@@ -525,9 +521,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('AddFulfillmentPlaces', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('AddFulfillmentPlaces', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -582,14 +576,10 @@ class ProductServiceGapicClient
     public function createProduct($parent, $product, $productId, array $optionalArgs = [])
     {
         $request = new CreateProductRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setProduct($product);
         $request->setProductId($productId);
-        $requestParamHeaders['parent'] = $parent;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateProduct', Product::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('CreateProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -644,12 +634,8 @@ class ProductServiceGapicClient
     public function deleteProduct($name, array $optionalArgs = [])
     {
         $request = new DeleteProductRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteProduct', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('DeleteProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -694,12 +680,8 @@ class ProductServiceGapicClient
     public function getProduct($name, array $optionalArgs = [])
     {
         $request = new GetProductRequest();
-        $requestParamHeaders = [];
         $request->setName($name);
-        $requestParamHeaders['name'] = $name;
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetProduct', Product::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('GetProduct', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -802,10 +784,8 @@ class ProductServiceGapicClient
     public function importProducts($parent, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportProductsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
@@ -826,9 +806,7 @@ class ProductServiceGapicClient
             $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ImportProducts', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('ImportProducts', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -949,9 +927,7 @@ class ProductServiceGapicClient
     public function listProducts($parent, array $optionalArgs = [])
     {
         $request = new ListProductsRequest();
-        $requestParamHeaders = [];
         $request->setParent($parent);
-        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -972,9 +948,7 @@ class ProductServiceGapicClient
             $request->setRequireTotalSize($optionalArgs['requireTotalSize']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListProducts', $optionalArgs, ListProductsResponse::class, $request);
+        return $this->startApiCall('ListProducts', $request, $optionalArgs);
     }
 
     /**
@@ -1097,11 +1071,9 @@ class ProductServiceGapicClient
     public function removeFulfillmentPlaces($product, $type, $placeIds, array $optionalArgs = [])
     {
         $request = new RemoveFulfillmentPlacesRequest();
-        $requestParamHeaders = [];
         $request->setProduct($product);
         $request->setType($type);
         $request->setPlaceIds($placeIds);
-        $requestParamHeaders['product'] = $product;
         if (isset($optionalArgs['removeTime'])) {
             $request->setRemoveTime($optionalArgs['removeTime']);
         }
@@ -1110,9 +1082,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('RemoveFulfillmentPlaces', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('RemoveFulfillmentPlaces', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1266,9 +1236,7 @@ class ProductServiceGapicClient
     public function setInventory($inventory, array $optionalArgs = [])
     {
         $request = new SetInventoryRequest();
-        $requestParamHeaders = [];
         $request->setInventory($inventory);
-        $requestParamHeaders['inventory.name'] = $inventory->getName();
         if (isset($optionalArgs['setMask'])) {
             $request->setSetMask($optionalArgs['setMask']);
         }
@@ -1281,9 +1249,7 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('SetInventory', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startApiCall('SetInventory', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1340,9 +1306,7 @@ class ProductServiceGapicClient
     public function updateProduct($product, array $optionalArgs = [])
     {
         $request = new UpdateProductRequest();
-        $requestParamHeaders = [];
         $request->setProduct($product);
-        $requestParamHeaders['product.name'] = $product->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
@@ -1351,8 +1315,6 @@ class ProductServiceGapicClient
             $request->setAllowMissing($optionalArgs['allowMissing']);
         }
 
-        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateProduct', Product::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('UpdateProduct', $request, $optionalArgs)->wait();
     }
 }

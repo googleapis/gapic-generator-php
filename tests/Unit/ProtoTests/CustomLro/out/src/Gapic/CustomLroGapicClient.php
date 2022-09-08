@@ -35,7 +35,6 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\CustomLro\CreateFooRequest;
 use Testing\CustomLro\CustomLroOperationsClient;
-use Testing\CustomLro\CustomOperationResponse;
 
 /**
  * Service Description:
@@ -320,6 +319,6 @@ class CustomLroGapicClient
             $request->setFoo($optionalArgs['foo']);
         }
 
-        return $this->startOperationsCall('CreateFoo', $optionalArgs, $request, $this->getOperationsClient(), null, CustomOperationResponse::class)->wait();
+        return $this->startApiCall('CreateFoo', $request, $optionalArgs)->wait();
     }
 }
