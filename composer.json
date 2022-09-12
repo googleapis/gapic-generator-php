@@ -33,6 +33,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "^1.16"
+        "google/gax": "^1.17"
     }
 }
