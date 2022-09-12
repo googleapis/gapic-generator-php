@@ -43,6 +43,7 @@ use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\StreamingRecognizeRequest;
 use Google\Cloud\Speech\V1\TranscriptOutputConfig;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service that implements Google Cloud Speech API.
@@ -229,6 +230,33 @@ class SpeechGapicClient
     }
 
     /**
+     * ```
+     * $speechClient = new SpeechClient();
+     * $request = new LongRunningRecognizeRequest();
+     * try {
+     *     $response = $speechClient->sendAsync('longRunningRecognize', $request)->wait();
+     * } finally {
+     *     $speechClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Performs asynchronous speech recognition: receive results via the
      * google.longrunning.Operations interface. Returns either an
      * `Operation.error` or an `Operation.response` which contains
@@ -272,6 +300,8 @@ class SpeechGapicClient
      *     $speechClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
      *                                        process the request.
@@ -318,6 +348,8 @@ class SpeechGapicClient
      *     $speechClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
      *                                        process the request.

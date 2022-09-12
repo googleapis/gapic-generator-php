@@ -77,6 +77,7 @@ use Google\Cloud\Container\V1\UpdateClusterRequest;
 use Google\Cloud\Container\V1\UpdateMasterRequest;
 use Google\Cloud\Container\V1\UpdateNodePoolRequest;
 use Google\Cloud\Container\V1\WorkloadMetadataConfig;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Google Kubernetes Engine Cluster Manager v1
@@ -204,6 +205,33 @@ class ClusterManagerGapicClient
     }
 
     /**
+     * ```
+     * $clusterManagerClient = new ClusterManagerClient();
+     * $request = new CancelOperationRequest();
+     * try {
+     *     $response = $clusterManagerClient->sendAsync('cancelOperation', $request)->wait();
+     * } finally {
+     *     $clusterManagerClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Cancels the specified operation.
      *
      * Sample code:
@@ -215,6 +243,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -276,6 +306,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -354,6 +386,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param Cluster $cluster      Required. A [cluster
      *                              resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters)
      * @param array   $optionalArgs {
@@ -413,6 +447,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param NodePool $nodePool     Required. The node pool to create.
      * @param array    $optionalArgs {
@@ -488,6 +524,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -550,6 +588,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -622,6 +662,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -688,6 +730,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -726,6 +770,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -798,6 +844,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -861,6 +909,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -918,6 +968,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -974,6 +1026,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1037,6 +1091,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1107,6 +1163,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -1172,6 +1230,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1245,6 +1305,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param AddonsConfig $addonsConfig Required. The desired configurations for the various addons available to run in the
      *                                   cluster.
      * @param array        $optionalArgs {
@@ -1312,6 +1374,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array  $resourceLabels   Required. The labels to set for that cluster.
      * @param string $labelFingerprint Required. The fingerprint of the previous set of labels for this resource,
@@ -1386,6 +1450,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param bool  $enabled      Required. Whether ABAC authorization will be enabled in the cluster.
      * @param array $optionalArgs {
      *     Optional.
@@ -1454,6 +1520,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string[] $locations    Required. The desired list of Google Compute Engine
      *                               [zones](https://cloud.google.com/compute/docs/zones#available) in which the
@@ -1528,6 +1596,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $loggingService Required. The logging service the cluster should use to write logs.
      *                               Currently available options:
@@ -1608,6 +1678,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string            $projectId         Required. The Google Developers Console [project ID or project
      *                                             number](https://support.google.com/cloud/answer/6158840).
      * @param string            $zone              Required. The name of the Google Compute Engine
@@ -1663,6 +1735,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param int        $action       Required. The exact form of action to be taken on the master auth.
      *                                 For allowed values, use constants defined on {@see \Google\Cloud\Container\V1\SetMasterAuthRequest\Action}
@@ -1732,6 +1806,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $monitoringService Required. The monitoring service the cluster should use to write metrics.
      *                                  Currently available options:
@@ -1809,6 +1885,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param NetworkPolicy $networkPolicy Required. Configuration options for the NetworkPolicy feature.
      * @param array         $optionalArgs  {
      *     Optional.
@@ -1874,6 +1952,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param NodePoolAutoscaling $autoscaling  Required. Autoscaling configuration for the node pool.
      * @param array               $optionalArgs {
@@ -1949,6 +2029,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param NodeManagement $management   Required. NodeManagement configuration for the node pool.
      * @param array          $optionalArgs {
      *     Optional.
@@ -2023,6 +2105,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param int   $nodeCount    Required. The desired node count for the pool.
      * @param array $optionalArgs {
      *     Optional.
@@ -2096,6 +2180,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -2166,6 +2252,8 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param ClusterUpdate $update       Required. A description of the update.
      * @param array         $optionalArgs {
      *     Optional.
@@ -2231,6 +2319,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $masterVersion Required. The Kubernetes version to change the master to.
      *
@@ -2307,6 +2397,8 @@ class ClusterManagerGapicClient
      *     $clusterManagerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $nodeVersion  Required. The Kubernetes version to change the nodes to (typically an
      *                             upgrade).

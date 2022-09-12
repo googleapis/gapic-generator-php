@@ -37,6 +37,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\UserEvent;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for making recommendation prediction.
@@ -170,6 +171,33 @@ class PredictionServiceGapicClient
     }
 
     /**
+     * ```
+     * $predictionServiceClient = new PredictionServiceClient();
+     * $request = new PredictRequest();
+     * try {
+     *     $response = $predictionServiceClient->sendAsync('predict', $request)->wait();
+     * } finally {
+     *     $predictionServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Makes a recommendation prediction.
      *
      * Sample code:
@@ -183,6 +211,8 @@ class PredictionServiceGapicClient
      *     $predictionServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $placement    Required. Full resource name of the format:
      *                                {name=projects/&#42;/locations/global/catalogs/default_catalog/placements/*}

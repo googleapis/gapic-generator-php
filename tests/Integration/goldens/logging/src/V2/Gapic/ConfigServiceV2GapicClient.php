@@ -63,6 +63,7 @@ use Google\Cloud\Logging\V2\UpdateExclusionRequest;
 use Google\Cloud\Logging\V2\UpdateSinkRequest;
 use Google\Cloud\Logging\V2\UpdateViewRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for configuring sinks used to route log entries.
@@ -1255,6 +1256,33 @@ class ConfigServiceV2GapicClient
     }
 
     /**
+     * ```
+     * $configServiceV2Client = new ConfigServiceV2Client();
+     * $request = new CreateBucketRequest();
+     * try {
+     *     $response = $configServiceV2Client->sendAsync('createBucket', $request)->wait();
+     * } finally {
+     *     $configServiceV2Client->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a bucket that can be used to store log entries. Once a bucket has
      * been created, the region cannot be changed.
      *
@@ -1270,6 +1298,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $parent       Required. The resource in which to create the bucket:
      *
@@ -1321,6 +1351,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string       $parent       Required. The parent resource in which to create the exclusion:
      *
      *                                   "projects/[PROJECT_ID]"
@@ -1369,6 +1401,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $parent       Required. The resource in which to create the sink:
      *
@@ -1434,6 +1468,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string  $parent       Required. The bucket in which to create the view
      *
      *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
@@ -1481,6 +1517,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The full resource name of the bucket to delete.
      *
      *                             "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
@@ -1521,6 +1559,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of an existing exclusion to delete:
      *
@@ -1563,6 +1603,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $sinkName     Required. The full resource name of the sink to delete, including the parent
      *                             resource and the sink identifier:
      *
@@ -1604,6 +1646,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The full resource name of the view to delete:
      *
      *                             "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
@@ -1641,6 +1685,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the bucket:
      *
@@ -1692,6 +1738,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -1742,6 +1790,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of an existing exclusion:
      *
      *                             "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
@@ -1784,6 +1834,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $sinkName     Required. The resource name of the sink:
      *
      *                             "projects/[PROJECT_ID]/sinks/[SINK_ID]"
@@ -1825,6 +1877,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the policy:
      *
@@ -1877,6 +1931,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The parent resource whose buckets are to be listed:
      *
@@ -1951,6 +2007,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The parent resource whose exclusions are to be listed.
      *
      *                             "projects/[PROJECT_ID]"
@@ -2019,6 +2077,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The parent resource whose sinks are to be listed:
      *
@@ -2089,6 +2149,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The bucket whose views are to be listed:
      *
      *                             "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
@@ -2144,6 +2206,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The full resource name of the bucket to undelete.
      *
      *                             "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
@@ -2195,6 +2259,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $name         Required. The full resource name of the bucket to update.
      *
@@ -2264,6 +2330,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -2339,6 +2407,8 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string       $name         Required. The resource name of the exclusion to update:
      *
      *                                   "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
@@ -2396,6 +2466,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $sinkName     Required. The full resource name of the sink to update, including the parent
      *                              resource and the sink identifier:
@@ -2479,6 +2551,8 @@ class ConfigServiceV2GapicClient
      *     $configServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $name         Required. The full resource name of the view to update
      *

@@ -59,6 +59,7 @@ use Google\Cloud\Talent\V4beta1\SearchJobsRequest\SearchMode;
 use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service handles job management, including job CRUD, enumeration and search.
@@ -575,6 +576,33 @@ class JobServiceGapicClient
     }
 
     /**
+     * ```
+     * $jobServiceClient = new JobServiceClient();
+     * $request = new BatchCreateJobsRequest();
+     * try {
+     *     $response = $jobServiceClient->sendAsync('batchCreateJobs', $request)->wait();
+     * } finally {
+     *     $jobServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Begins executing a batch create jobs operation.
      *
      * Sample code:
@@ -613,6 +641,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
@@ -657,6 +687,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
@@ -735,6 +767,8 @@ class JobServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
@@ -801,6 +835,8 @@ class JobServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
@@ -847,6 +883,8 @@ class JobServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the job to be deleted.
      *
      *                             The format is
@@ -889,6 +927,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the job to retrieve.
      *
@@ -946,6 +986,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the tenant under which the job is created.
      *
@@ -1049,6 +1091,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string          $parent          Required. The resource name of the tenant to search within.
      *
@@ -1393,6 +1437,8 @@ class JobServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string          $parent          Required. The resource name of the tenant to search within.
      *
      *                                         The format is "projects/{project_id}/tenants/{tenant_id}". For example,
@@ -1716,6 +1762,8 @@ class JobServiceGapicClient
      *     $jobServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Job   $job          Required. The Job to be updated.
      * @param array $optionalArgs {

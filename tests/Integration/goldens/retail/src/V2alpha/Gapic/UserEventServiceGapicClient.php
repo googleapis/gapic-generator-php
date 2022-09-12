@@ -49,8 +49,9 @@ use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
 use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
-
 use Google\LongRunning\Operation;
+
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for ingesting end user actions on the customer website.
@@ -313,6 +314,33 @@ class UserEventServiceGapicClient
     }
 
     /**
+     * ```
+     * $userEventServiceClient = new UserEventServiceClient();
+     * $request = new CollectUserEventRequest();
+     * try {
+     *     $response = $userEventServiceClient->sendAsync('collectUserEvent', $request)->wait();
+     * } finally {
+     *     $userEventServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Writes a single user event from the browser. This uses a GET request to
      * due to browser restriction of POST-ing to a 3rd party domain.
      *
@@ -330,6 +358,8 @@ class UserEventServiceGapicClient
      *     $userEventServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The parent catalog name, such as
      *                             `projects/1234/locations/global/catalogs/default_catalog`.
@@ -421,6 +451,8 @@ class UserEventServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string               $parent       Required. `projects/1234/locations/global/catalogs/default_catalog`
      * @param UserEventInputConfig $inputConfig  Required. The desired input location of the data.
      * @param array                $optionalArgs {
@@ -495,6 +527,8 @@ class UserEventServiceGapicClient
      *     $userEventServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the catalog under which the events are
      *                             created. The format is
@@ -599,6 +633,8 @@ class UserEventServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The parent catalog resource name, such as
      *                             `projects/1234/locations/global/catalogs/default_catalog`.
      * @param array  $optionalArgs {
@@ -647,6 +683,8 @@ class UserEventServiceGapicClient
      *     $userEventServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $parent       Required. The parent catalog resource name, such as
      *                                `projects/1234/locations/global/catalogs/default_catalog`.

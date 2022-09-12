@@ -45,6 +45,7 @@ use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Cloud\Dataproc\V1\UpdateJobRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: The JobController provides methods to manage jobs.
@@ -207,6 +208,33 @@ class JobControllerGapicClient
     }
 
     /**
+     * ```
+     * $jobControllerClient = new JobControllerClient();
+     * $request = new CancelJobRequest();
+     * try {
+     *     $response = $jobControllerClient->sendAsync('cancelJob', $request)->wait();
+     * } finally {
+     *     $jobControllerClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Starts a job cancellation request. To access the job resource
      * after cancellation, call
      * [regions/{region}/jobs.list](https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list)
@@ -225,6 +253,8 @@ class JobControllerGapicClient
      *     $jobControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
@@ -269,6 +299,8 @@ class JobControllerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
@@ -308,6 +340,8 @@ class JobControllerGapicClient
      *     $jobControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
@@ -361,6 +395,8 @@ class JobControllerGapicClient
      *     $jobControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
@@ -455,6 +491,8 @@ class JobControllerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
@@ -539,6 +577,8 @@ class JobControllerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
@@ -599,6 +639,8 @@ class JobControllerGapicClient
      *     $jobControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                                belongs to.

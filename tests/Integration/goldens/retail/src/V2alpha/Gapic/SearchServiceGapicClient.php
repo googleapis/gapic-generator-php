@@ -43,6 +43,7 @@ use Google\Cloud\Retail\V2alpha\SearchRequest\FacetSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\QueryExpansionSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\RelevanceThreshold;
 use Google\Cloud\Retail\V2alpha\UserInfo;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for search.
@@ -287,6 +288,33 @@ class SearchServiceGapicClient
     }
 
     /**
+     * ```
+     * $searchServiceClient = new SearchServiceClient();
+     * $request = new SearchRequest();
+     * try {
+     *     $response = $searchServiceClient->sendAsync('search', $request)->wait();
+     * } finally {
+     *     $searchServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Performs a search.
      *
      * This feature is only available for users who have Retail Search enabled.
@@ -316,6 +344,8 @@ class SearchServiceGapicClient
      *     $searchServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $placement    Required. The resource name of the search engine placement, such as
      *                             `projects/&#42;/locations/global/catalogs/default_catalog/placements/default_search`.

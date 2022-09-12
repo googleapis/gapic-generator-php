@@ -39,6 +39,7 @@ use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Cloud\Compute\V1\InsertAddressRequest;
 use Google\Cloud\Compute\V1\ListAddressesRequest;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description:
@@ -252,6 +253,33 @@ class AddressesGapicClient
     }
 
     /**
+     * ```
+     * $addressesClient = new AddressesClient();
+     * $request = new AggregatedListAddressesRequest();
+     * try {
+     *     $response = $addressesClient->sendAsync('aggregatedList', $request)->wait();
+     * } finally {
+     *     $addressesClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Retrieves an aggregated list of addresses.
      *
      * Sample code:
@@ -276,6 +304,8 @@ class AddressesGapicClient
      *     $addressesClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $project      Project ID for this request.
      * @param array  $optionalArgs {
@@ -380,6 +410,8 @@ class AddressesGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $address      Name of the address resource to delete.
      * @param string $project      Project ID for this request.
      * @param string $region       Name of the region for this request.
@@ -454,6 +486,8 @@ class AddressesGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param Address $addressResource The body resource for this request
      * @param string  $project         Project ID for this request.
      * @param string  $region          Name of the region for this request.
@@ -516,6 +550,8 @@ class AddressesGapicClient
      *     $addressesClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $orderBy      Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
      *

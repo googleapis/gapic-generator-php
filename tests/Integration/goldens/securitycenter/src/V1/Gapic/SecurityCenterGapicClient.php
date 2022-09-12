@@ -71,6 +71,7 @@ use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -927,6 +928,33 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * $request = new CreateFindingRequest();
+     * try {
+     *     $response = $securityCenterClient->sendAsync('createFinding', $request)->wait();
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a finding. The corresponding source must exist for finding creation
      * to succeed.
      *
@@ -942,6 +970,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $parent       Required. Resource name of the new finding's parent. Its format should be
      *                              "organizations/[organization_id]/sources/[source_id]".
@@ -988,6 +1018,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string             $parent             Required. Resource name of the new notification config's parent. Its format is
      *                                               "organizations/[organization_id]".
      * @param string             $configId           Required.
@@ -1033,6 +1065,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. Resource name of the new source's parent. Its format should be
      *                             "organizations/[organization_id]".
      * @param Source $source       Required. The Source being created, only the display_name and description will be
@@ -1072,6 +1106,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Name of the notification config to delete. Its format is
      *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
      * @param array  $optionalArgs {
@@ -1105,6 +1141,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
@@ -1149,6 +1187,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Name of the notification config to get. Its format is
      *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
      * @param array  $optionalArgs {
@@ -1185,6 +1225,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Name of the organization to get organization settings for. Its format is
      *                             "organizations/[organization_id]/organizationSettings".
      * @param array  $optionalArgs {
@@ -1220,6 +1262,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. Relative resource name of the source. Its format is
      *                             "organizations/[organization_id]/source/[source_id]".
@@ -1270,6 +1314,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Name of the organization to groupBy. Its format is
      *                             "organizations/[organization_id], folders/[folder_id], or
@@ -1471,6 +1517,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. Name of the source to groupBy. Its format is
      *                             "organizations/[organization_id]/sources/[source_id]",
      *                             folders/[folder_id]/sources/[source_id], or
@@ -1666,6 +1714,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Name of the organization assets should belong to. Its format is
      *                             "organizations/[organization_id], folders/[folder_id], or
@@ -1874,6 +1924,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Name of the source the findings belong to. Its format is
      *                             "organizations/[organization_id]/sources/[source_id],
@@ -2084,6 +2136,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. Name of the organization to list notification configs.
      *                             Its format is "organizations/[organization_id]".
      * @param array  $optionalArgs {
@@ -2148,6 +2202,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Resource name of the parent of sources to list. Its format should be
      *                             "organizations/[organization_id], folders/[folder_id], or
@@ -2233,6 +2289,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. Name of the organization to run asset discovery for. Its format is
      *                             "organizations/[organization_id]".
      * @param array  $optionalArgs {
@@ -2270,6 +2328,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $name         Required. The relative resource name of the finding. See:
      *                                https://cloud.google.com/apis/design/resource_names#relative_resource_name
@@ -2315,6 +2375,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $resource     REQUIRED: The resource for which the policy is being specified.
      *                             See the operation documentation for the appropriate value for this field.
      * @param Policy $policy       REQUIRED: The complete policy to be applied to the `resource`. The size of
@@ -2357,6 +2419,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string   $resource     REQUIRED: The resource for which the policy detail is being requested.
      *                               See the operation documentation for the appropriate value for this field.
      * @param string[] $permissions  The set of permissions to check for the `resource`. Permissions with
@@ -2398,6 +2462,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Finding $finding      Required. The finding resource to update or create if it does not already exist.
      *                              parent, security_marks, and update_time will be ignored.
@@ -2453,6 +2519,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param NotificationConfig $notificationConfig Required. The notification config to update.
      * @param array              $optionalArgs       {
      *     Optional.
@@ -2496,6 +2564,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param OrganizationSettings $organizationSettings Required. The organization settings resource to update.
      * @param array                $optionalArgs         {
      *     Optional.
@@ -2538,6 +2608,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param SecurityMarks $securityMarks Required. The security marks resource to update.
      * @param array         $optionalArgs  {
@@ -2591,6 +2663,8 @@ class SecurityCenterGapicClient
      *     $securityCenterClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Source $source       Required. The source resource to update.
      * @param array  $optionalArgs {

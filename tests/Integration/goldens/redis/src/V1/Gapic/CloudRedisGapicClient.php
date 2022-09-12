@@ -49,9 +49,10 @@ use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\OutputConfig;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
-
 use Google\LongRunning\Operation;
+
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -372,6 +373,33 @@ class CloudRedisGapicClient
     }
 
     /**
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * $request = new CreateInstanceRequest();
+     * try {
+     *     $response = $cloudRedisClient->sendAsync('createInstance', $request)->wait();
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a Redis instance based on the specified tier and memory size.
      *
      * By default, the instance is accessible from the project's
@@ -422,6 +450,8 @@ class CloudRedisGapicClient
      *     $cloudRedisClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string   $parent       Required. The resource name of the instance location using the form:
      *                               `projects/{project_id}/locations/{location_id}`
@@ -495,6 +525,8 @@ class CloudRedisGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
@@ -563,6 +595,8 @@ class CloudRedisGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string       $name         Required. Redis instance resource name using the form:
      *                                   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                                   where `location_id` refers to a GCP region.
@@ -628,6 +662,8 @@ class CloudRedisGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
@@ -672,6 +708,8 @@ class CloudRedisGapicClient
      *     $cloudRedisClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
@@ -743,6 +781,8 @@ class CloudRedisGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string      $name         Required. Redis instance resource name using the form:
      *                                  `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                                  where `location_id` refers to a GCP region.
@@ -801,6 +841,8 @@ class CloudRedisGapicClient
      *     $cloudRedisClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the instance location using the form:
      *                             `projects/{project_id}/locations/{location_id}`
@@ -886,6 +928,8 @@ class CloudRedisGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param FieldMask $updateMask   Required. Mask of fields to update. At least one path must be supplied in
      *                                this field. The elements of the repeated paths field may only include these
      *                                fields from [Instance][google.cloud.redis.v1.Instance]:
@@ -957,6 +1001,8 @@ class CloudRedisGapicClient
      *     $cloudRedisClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`

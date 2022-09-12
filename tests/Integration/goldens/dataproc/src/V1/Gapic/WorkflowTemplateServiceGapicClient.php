@@ -48,6 +48,7 @@ use Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\WorkflowMetadata;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: The API interface for managing Workflow Templates in the
@@ -423,6 +424,33 @@ class WorkflowTemplateServiceGapicClient
     }
 
     /**
+     * ```
+     * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
+     * $request = new CreateWorkflowTemplateRequest();
+     * try {
+     *     $response = $workflowTemplateServiceClient->sendAsync('createWorkflowTemplate', $request)->wait();
+     * } finally {
+     *     $workflowTemplateServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates new workflow template.
      *
      * Sample code:
@@ -436,6 +464,8 @@ class WorkflowTemplateServiceGapicClient
      *     $workflowTemplateServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string           $parent       Required. The resource name of the region or location, as described
      *                                       in https://cloud.google.com/apis/design/resource_names.
@@ -482,6 +512,8 @@ class WorkflowTemplateServiceGapicClient
      *     $workflowTemplateServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the workflow template, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
@@ -535,6 +567,8 @@ class WorkflowTemplateServiceGapicClient
      *     $workflowTemplateServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the workflow template, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
@@ -635,6 +669,8 @@ class WorkflowTemplateServiceGapicClient
      *     $workflowTemplateServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string           $parent       Required. The resource name of the region or location, as described
      *                                       in https://cloud.google.com/apis/design/resource_names.
@@ -738,6 +774,8 @@ class WorkflowTemplateServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the workflow template, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
      *
@@ -826,6 +864,8 @@ class WorkflowTemplateServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the region or location, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
      *
@@ -887,6 +927,8 @@ class WorkflowTemplateServiceGapicClient
      *     $workflowTemplateServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param WorkflowTemplate $template     Required. The updated workflow template.
      *

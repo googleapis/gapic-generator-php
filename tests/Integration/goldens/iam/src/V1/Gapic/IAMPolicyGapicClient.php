@@ -37,6 +37,7 @@ use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: ## API Overview
@@ -187,6 +188,33 @@ class IAMPolicyGapicClient
     }
 
     /**
+     * ```
+     * $iAMPolicyClient = new IAMPolicyClient();
+     * $request = new GetIamPolicyRequest();
+     * try {
+     *     $response = $iAMPolicyClient->sendAsync('getIamPolicy', $request)->wait();
+     * } finally {
+     *     $iAMPolicyClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Gets the access control policy for a resource.
      * Returns an empty policy if the resource exists and does not have a policy
      * set.
@@ -201,6 +229,8 @@ class IAMPolicyGapicClient
      *     $iAMPolicyClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
@@ -246,6 +276,8 @@ class IAMPolicyGapicClient
      *     $iAMPolicyClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being specified.
      *                             See the operation documentation for the appropriate value for this field.
@@ -294,6 +326,8 @@ class IAMPolicyGapicClient
      *     $iAMPolicyClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string   $resource     REQUIRED: The resource for which the policy detail is being requested.
      *                               See the operation documentation for the appropriate value for this field.

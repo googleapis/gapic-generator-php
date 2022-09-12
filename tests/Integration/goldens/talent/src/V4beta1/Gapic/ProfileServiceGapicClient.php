@@ -47,6 +47,7 @@ use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchProfilesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that handles profile management, including profile CRUD,
@@ -307,6 +308,33 @@ class ProfileServiceGapicClient
     }
 
     /**
+     * ```
+     * $profileServiceClient = new ProfileServiceClient();
+     * $request = new CreateProfileRequest();
+     * try {
+     *     $response = $profileServiceClient->sendAsync('createProfile', $request)->wait();
+     * } finally {
+     *     $profileServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates and returns a new profile.
      *
      * Sample code:
@@ -320,6 +348,8 @@ class ProfileServiceGapicClient
      *     $profileServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $parent       Required. The name of the tenant this profile belongs to.
      *
@@ -365,6 +395,8 @@ class ProfileServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Resource name of the profile to be deleted.
      *
      *                             The format is
@@ -403,6 +435,8 @@ class ProfileServiceGapicClient
      *     $profileServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. Resource name of the profile to get.
      *
@@ -456,6 +490,8 @@ class ProfileServiceGapicClient
      *     $profileServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the tenant under which the profile is created.
      *
@@ -564,6 +600,8 @@ class ProfileServiceGapicClient
      *     $profileServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string          $parent          Required. The resource name of the tenant to search within.
      *
@@ -807,6 +845,8 @@ class ProfileServiceGapicClient
      *     $profileServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Profile $profile      Required. Profile to be updated.
      * @param array   $optionalArgs {

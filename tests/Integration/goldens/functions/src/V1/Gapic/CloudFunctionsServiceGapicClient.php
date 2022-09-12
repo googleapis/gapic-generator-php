@@ -53,6 +53,7 @@ use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that application uses to manipulate triggers and functions.
@@ -333,6 +334,33 @@ class CloudFunctionsServiceGapicClient
     }
 
     /**
+     * ```
+     * $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
+     * $request = new CallFunctionRequest();
+     * try {
+     *     $response = $cloudFunctionsServiceClient->sendAsync('callFunction', $request)->wait();
+     * } finally {
+     *     $cloudFunctionsServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Synchronously invokes a deployed Cloud Function. To be used for testing
      * purposes as very limited traffic is allowed. For more information on
      * the actual limits, refer to
@@ -349,6 +377,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The name of the function to be called.
      * @param string $data         Required. Input to be passed to the function.
@@ -415,6 +445,8 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string        $location     Required. The project and location in which the function should be created, specified
      *                                    in the format `projects/&#42;/locations/*`
      * @param CloudFunction $function     Required. Function to be created.
@@ -478,6 +510,8 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The name of the function which should be deleted.
      * @param array  $optionalArgs {
      *     Optional.
@@ -515,6 +549,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -586,6 +622,8 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -626,6 +664,8 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The name of the function which details should be obtained.
      * @param array  $optionalArgs {
      *     Optional.
@@ -662,6 +702,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
@@ -716,6 +758,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -780,6 +824,8 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $resource     REQUIRED: The resource for which the policy is being specified.
      *                             See the operation documentation for the appropriate value for this field.
      * @param Policy $policy       REQUIRED: The complete policy to be applied to the `resource`. The size of
@@ -824,6 +870,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string   $resource     REQUIRED: The resource for which the policy detail is being requested.
      *                               See the operation documentation for the appropriate value for this field.
@@ -890,6 +938,8 @@ class CloudFunctionsServiceGapicClient
      *     $cloudFunctionsServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param CloudFunction $function     Required. New version of the function.
      * @param array         $optionalArgs {

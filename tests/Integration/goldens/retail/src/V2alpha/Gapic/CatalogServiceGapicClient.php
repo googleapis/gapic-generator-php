@@ -42,6 +42,7 @@ use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for managing catalog configuration.
@@ -334,6 +335,33 @@ class CatalogServiceGapicClient
     }
 
     /**
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * $request = new GetDefaultBranchRequest();
+     * try {
+     *     $response = $catalogServiceClient->sendAsync('getDefaultBranch', $request)->wait();
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Get which branch is currently default branch set by
      * [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
      * method under a specified parent catalog.
@@ -351,6 +379,8 @@ class CatalogServiceGapicClient
      *     $catalogServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -406,6 +436,8 @@ class CatalogServiceGapicClient
      *     $catalogServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The account resource name with an associated location.
      *
@@ -501,6 +533,8 @@ class CatalogServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param array $optionalArgs {
      *     Optional.
      *
@@ -560,6 +594,8 @@ class CatalogServiceGapicClient
      *     $catalogServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Catalog $catalog      Required. The [Catalog][google.cloud.retail.v2alpha.Catalog] to update.
      *
