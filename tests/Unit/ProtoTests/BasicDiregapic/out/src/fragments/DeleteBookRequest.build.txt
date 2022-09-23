@@ -1,0 +1,11 @@
+    /**
+     * @param string $name The name of the book to delete. Please see
+     *                     {@see LibraryClient::bookName()} for help formatting this field.
+     *
+     * @return \Testing\BasicDiregapic\DeleteBookRequest
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

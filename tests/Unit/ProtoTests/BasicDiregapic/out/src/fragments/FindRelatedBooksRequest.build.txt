@@ -1,0 +1,18 @@
+    /**
+     * @param string[] $names          Please see {@see LibraryClient::bookName()} for help formatting this field.
+     * @param string[] $shelves        Please see {@see LibraryClient::shelfName()} for help formatting this field.
+     * @param mixed    $optionalFields {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *     @type string $pageToken
+     * }
+     *
+     * @return \Testing\BasicDiregapic\FindRelatedBooksRequest
+     */
+    public static function build(array $names, array $shelves, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setNames($names)
+            ->setShelves($shelves);
+    }

@@ -324,7 +324,7 @@ abstract class MethodDetails
                     $this->methodType = MethodDetails::CUSTOM_OP;
                     $this->methodReturnType = Type::fromName(OperationResponse::class);
                     $this->operationService = ProtoHelpers::lookupOperationService($catalog, $desc, $svc->package);
-                    
+
                     // Find the RPC annotated as the polling method on the operation_service.
                     $polling = Vector::new($this->operationService->getMethod())
                         ->filter(fn ($x) =>
@@ -334,7 +334,7 @@ abstract class MethodDetails
                     }
                     $pollingMethod = $polling->firstOrNull();
                     $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);
-                    
+
                     // Collect the operation_response_field mapping from the polling request message.
                     $customOperation = $catalog->msgsByFullname[$desc->getOutputType()];
                     $copFields = Vector::new($customOperation->getField())->toMap(
@@ -348,7 +348,7 @@ abstract class MethodDetails
                             fn ($x) => new FieldDetails($catalog, $pollingMsg, $x),
                             fn ($x) => $copFields[ProtoHelpers::operationResponseField($x)]
                         );
-                    
+
                     // Collect operation_request_field mapping from input message fields.
                     $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
                     $pollingFields = Vector::new($pollingMsg->getField())->toMap(
@@ -494,6 +494,9 @@ abstract class MethodDetails
     /** @var HttpRule *Readonly* HttpRule for method, if given; null otherwise. */
     public ?HttpRule $httpRule;
 
+    /** @var Vector *Readonly* method signature, if specified in google.protobuf.method_signature proto option */
+    public ?Vector $methodSignature;
+
     /** @var ?string *Readonly* REST method, if specified in a 'google.api.http' proto option. */
     public ?string $restMethod;
 
@@ -545,6 +548,7 @@ abstract class MethodDetails
         if (!is_null($routingRule)) {
             $this->routingParameters = ProtoHelpers::routingParameters($this->catalog, $this->inputMsg, $routingRule);
         }
+        $this->methodSignature = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_METHODSIGNATURE);
     }
 
     public function isStreaming(): bool

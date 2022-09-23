@@ -21,6 +21,7 @@ namespace Google\Generator;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\SnippetGenerator;
+use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\EmptyClientV2Generator;
 use Google\Generator\Generation\EnumConstantGenerator;
@@ -367,6 +368,15 @@ class CodeGenerator
             $json = ResourcesGenerator::generateClientConfig($service, $gapicYamlConfig, $grpcServiceConfig);
             yield ["src/{$version}resources/{$service->clientConfigFilename}", $json];
             // TODO: Further files, as required.
+            // Resource: build_method.txt
+            $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
+            $buildMethodFragments = BuildMethodFragmentGenerator::generate($ctx, $service);
+            foreach ($buildMethodFragments as [$fragmentName, $buildMethodFragments]) {
+                $buildMethodFragmentCode = BuildMethodFragmentGenerator::format(
+                    $buildMethodFragments->reduce('', fn ($v, $i) => $v . $i->toCode())
+                );
+                yield ["src/fragments/{$fragmentName}.build.txt", $buildMethodFragmentCode];
+            }
         }
         if ($generateGapicMetadata) {
             foreach ($versionToNamespace as $ver => $ns) {
@@ -390,14 +400,14 @@ class CodeGenerator
             $parent = $catalog->enumsToFile['.' . $enum->desc->getFullName()];
             $pkgNamespace = ProtoHelpers::getNamespace($parent);
             $pkgNamespace = str_replace('\\\\', '\\', $pkgNamespace);
-            
+
             // Trim the package namespace from the enum's fullname to get the
             // relative path of the enum.
             $enumFullname = Type::fromEnum($enum->desc)->getFullname(/* omitLeadingBackslash */ true);
             $relativeNamespace = str_replace($pkgNamespace . "\\", '', $enumFullname);
             $filename = str_replace('\\', '/', $relativeNamespace);
             $namespace = $pkgNamespace . '\\Enums\\' . $relativeNamespace;
-            
+
             // Extract the version, if present, from the enum namespace.
             $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
             if ($version !== '') {

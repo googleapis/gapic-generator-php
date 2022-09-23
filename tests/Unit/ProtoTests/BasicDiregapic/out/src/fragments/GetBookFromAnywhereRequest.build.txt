@@ -1,0 +1,19 @@
+    /**
+     * @param string $name        The name of the book to retrieve. Please see
+     *                            {@see LibraryClient::bookName()} for help formatting this field.
+     * @param string $altBookName An alternate book name, used to test restricting flattened field to a
+     *                            single resource name type in a oneof. Please see
+     *                            {@see LibraryClient::bookName()} for help formatting this field.
+     * @param string $place       Please see {@see LibraryClient::locationName()} for help formatting this field.
+     * @param string $folder      Please see {@see LibraryClient::folderName()} for help formatting this field.
+     *
+     * @return \Testing\BasicDiregapic\GetBookFromAnywhereRequest
+     */
+    public static function build(string $name, string $altBookName, string $place, string $folder): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setAltBookName($altBookName)
+            ->setPlace($place)
+            ->setFolder($folder);
+    }
