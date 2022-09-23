@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 
 /** A method within a class. */
 final class PhpMethod extends PhpClassMember
@@ -31,6 +32,9 @@ final class PhpMethod extends PhpClassMember
 
     /** @var string *Readonly* The name of this method. */
     public string $name;
+
+    /** @var ResolvedType *Readonly* The return type of this method. */
+    public ?ResolvedType $returnType;
 
     /**
      * Create a method with the specified parameters.
@@ -57,6 +61,18 @@ final class PhpMethod extends PhpClassMember
         return $this->clone(fn ($clone) => $clone->body = $body);
     }
 
+    /**
+     * Create a method with the specified body.
+     *
+     * @param ResolvedType $returnType The return type of the method.
+     *
+     * @return PhpMethod
+     */
+    public function withReturnType(ResolvedType $returnType): PhpMethod
+    {
+        return $this->clone(fn ($clone) => $clone->returnType = $returnType);
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -68,8 +84,14 @@ final class PhpMethod extends PhpClassMember
             $this->phpDocToCode() .
             $this->accessToCode() .
             "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
+            $this->returnTypeToCode() .
             "{\n" .
             static::toPhp($this->body) .
             "}\n";
+    }
+
+    private function returnTypeToCode(): string
+    {
+        return isset($this->returnType) ? ': ' . $this->returnType->toCode() : '';
     }
 }

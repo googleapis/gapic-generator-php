@@ -1,0 +1,20 @@
+    /**
+     * @param string $operation      Name of the Operations resource to return.
+     * @param string $project        Project ID for this request.
+     * @param string $region         Name of the region for this request.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type string $foo
+     *           The foo from the initial request.
+     * }
+     *
+     * @return \Testing\CustomLro\GetOperationRequest
+     */
+    public static function build(string $operation, string $project, string $region, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setOperation($operation)
+            ->setProject($project)
+            ->setRegion($region);
+    }

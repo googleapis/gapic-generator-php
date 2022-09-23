@@ -1,0 +1,24 @@
+    /**
+     * @param \Testing\BasicDiregapic\ShelfResponse      $shelf          The shelf in which the series is created.
+     * @param \Testing\BasicDiregapic\BookResponse[]     $books          The books to publish in the series.
+     * @param int                                        $edition        The edition of the series
+     * @param \Testing\BasicDiregapic\SeriesUuidResponse $seriesUuid     Uniquely identifies the series to the publishing house.
+     * @param string                                     $publisher      The publisher of the series.
+     * @param mixed                                      $optionalFields {
+     *     Optional.
+     *
+     *     @type bool $reviewCopy
+     *           If the book is in a pre-publish state
+     * }
+     *
+     * @return \Testing\BasicDiregapic\PublishSeriesRequest
+     */
+    public static function build(\Testing\BasicDiregapic\ShelfResponse $shelf, \Testing\BasicDiregapic\BookResponse $books, int $edition, \Testing\BasicDiregapic\SeriesUuidResponse $seriesUuid, string $publisher, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setShelf($shelf)
+            ->setBooks($books)
+            ->setEdition($edition)
+            ->setSeriesUuid($seriesUuid)
+            ->setPublisher($publisher);
+    }

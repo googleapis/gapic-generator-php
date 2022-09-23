@@ -1,0 +1,18 @@
+    /**
+     * @param string[] $names
+     * @param string[] $shelves
+     * @param mixed    $optionalFields {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *     @type string $pageToken
+     * }
+     *
+     * @return \Testing\BasicDiregapic\FindRelatedBooksRequest
+     */
+    public static function build(string $names, string $shelves, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setNames($names)
+            ->setShelves($shelves);
+    }

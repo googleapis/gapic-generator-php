@@ -1,0 +1,12 @@
+    /**
+     * @param string $name           The name of the book to move.
+     * @param string $otherShelfName The name of the destination shelf.
+     *
+     * @return \Testing\BasicDiregapic\MoveBookRequest
+     */
+    public static function build(string $name, string $otherShelfName): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setOtherShelfName($otherShelfName);
+    }

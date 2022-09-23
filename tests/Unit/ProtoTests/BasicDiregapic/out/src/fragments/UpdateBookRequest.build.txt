@@ -1,0 +1,20 @@
+    /**
+     * @param string                               $name           The name of the book to update.
+     * @param \Testing\BasicDiregapic\BookResponse $book           The book to update with.
+     * @param mixed                                $optionalFields {
+     *     Optional.
+     *
+     *     @type string $optionalFoo
+     *           An optional foo.
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           A field mask to apply, rendered as an HTTP parameter.
+     * }
+     *
+     * @return \Testing\BasicDiregapic\UpdateBookRequest
+     */
+    public static function build(string $name, \Testing\BasicDiregapic\BookResponse $book, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setName($name)
+            ->setBook($book);
+    }

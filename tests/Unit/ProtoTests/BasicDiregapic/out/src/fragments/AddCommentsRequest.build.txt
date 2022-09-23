@@ -1,0 +1,12 @@
+    /**
+     * @param string                            $name
+     * @param \Testing\BasicDiregapic\Comment[] $comments
+     *
+     * @return \Testing\BasicDiregapic\AddCommentsRequest
+     */
+    public static function build(string $name, \Testing\BasicDiregapic\Comment $comments): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setComments($comments);
+    }

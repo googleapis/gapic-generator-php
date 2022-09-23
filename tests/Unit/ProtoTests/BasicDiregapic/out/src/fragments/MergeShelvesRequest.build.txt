@@ -1,0 +1,12 @@
+    /**
+     * @param string $name           The name of the shelf we're adding books to.
+     * @param string $otherShelfName The name of the shelf we're removing books from and deleting.
+     *
+     * @return \Testing\BasicDiregapic\MergeShelvesRequest
+     */
+    public static function build(string $name, string $otherShelfName): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setOtherShelfName($otherShelfName);
+    }

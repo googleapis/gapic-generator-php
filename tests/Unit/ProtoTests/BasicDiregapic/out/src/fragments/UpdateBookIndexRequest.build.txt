@@ -1,0 +1,14 @@
+    /**
+     * @param string $name      The name of the book to update.
+     * @param string $indexName The name of the index for the book
+     * @param array  $indexMap  The index to update the book with
+     *
+     * @return \Testing\BasicDiregapic\UpdateBookIndexRequest
+     */
+    public static function build(string $name, string $indexName, \Testing\BasicDiregapic\UpdateBookIndexRequest\IndexMapEntry $indexMap): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setIndexName($indexName)
+            ->setIndexMap($indexMap);
+    }

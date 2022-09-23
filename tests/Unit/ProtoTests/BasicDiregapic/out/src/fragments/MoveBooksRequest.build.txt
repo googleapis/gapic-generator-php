@@ -1,0 +1,16 @@
+    /**
+     * @param string   $source
+     * @param string   $destination
+     * @param string[] $publishers
+     * @param string   $project
+     *
+     * @return \Testing\BasicDiregapic\MoveBooksRequest
+     */
+    public static function build(string $source, string $destination, string $publishers, string $project): self
+    {
+        return (new self())
+            ->setSource($source)
+            ->setDestination($destination)
+            ->setPublishers($publishers)
+            ->setProject($project);
+    }

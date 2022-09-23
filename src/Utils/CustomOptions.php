@@ -28,6 +28,7 @@ class CustomOptions
     public const GOOGLE_API_RESOURCEREFERENCE = 1055;
     public const GOOGLE_API_RESOURCEDEFINITION = 1053;
 
+
     public const GOOGLE_API_FIELDBEHAVIOR_REQUIRED = 2;
 
     // Protobuf extension numbers from https://github.com/googleapis/googleapis/blob/master/google/cloud/extended_operations.proto.
@@ -39,4 +40,7 @@ class CustomOptions
 
     // Protobuf extension number for https://github.com/googleapis/googleapis/blob/master/google/api/routing.proto.
     public const GOOGLE_API_ROUTING = 72295729;
+
+    // Protobuf extension number for fhttps://github.com/googleapis/googleapis/blob/master/google/api/client.proto.
+    public const GOOGLE_API_METHODSIGNATURE = 1051;
 }
