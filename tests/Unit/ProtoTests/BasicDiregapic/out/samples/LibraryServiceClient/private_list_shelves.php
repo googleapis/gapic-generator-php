@@ -28,10 +28,12 @@ use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /** This method is not exposed in the GAPIC config. It should be generated. */
-function private_list_shelves_sample()
+function private_list_shelves_sample(): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
         $response = $libraryServiceClient->privateListShelves();
@@ -40,6 +42,4 @@ function private_list_shelves_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END library-example_generated_LibraryService_PrivateListShelves_sync]

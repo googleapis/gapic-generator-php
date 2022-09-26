@@ -28,10 +28,12 @@ use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
 /**  */
-function multi_pattern_method_sample()
+function multi_pattern_method_sample(): void
 {
+    // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
         $response = $resourceNamesClient->multiPatternMethod();
@@ -40,6 +42,4 @@ function multi_pattern_method_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END resourcenames_generated_ResourceNames_MultiPatternMethod_sync]

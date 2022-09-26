@@ -20,29 +20,51 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_ListAssets_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Asset\V1\Asset;
 use Google\Cloud\Asset\V1\AssetServiceClient;
 
+/**
+ * Lists assets with time and resource types and returns paged results in
+ * response.
+ *
+ * @param string $parent Name of the organization or project the assets belong to. Format:
+ *                       "organizations/[organization-number]" (such as "organizations/123"),
+ *                       "projects/[project-id]" (such as "projects/my-project-id"), or
+ *                       "projects/[project-number]" (such as "projects/12345").
+ */
+function list_assets_sample(string $parent): void
+{
+    // Create a client.
+    $assetServiceClient = new AssetServiceClient();
 
-$assetServiceClient = new AssetServiceClient();
-$parent = 'parent';
-// Iterate over pages of elements
-$pagedResponse = $assetServiceClient->listAssets($parent);
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $assetServiceClient->listAssets($parent);
+
+        /** @var Asset $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
 
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $assetServiceClient->listAssets($parent);
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $parent = '[PARENT]';
+
+    list_assets_sample($parent);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_ListAssets_sync]

@@ -28,10 +28,12 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListShelvesResponse;
 
 /** Lists shelves. */
-function list_shelves_sample()
+function list_shelves_sample(): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var ListShelvesResponse $response */
         $response = $libraryServiceClient->listShelves();
@@ -40,6 +42,4 @@ function list_shelves_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END library-example_generated_LibraryService_ListShelves_sync]

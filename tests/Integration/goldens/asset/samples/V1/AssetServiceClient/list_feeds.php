@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_ListFeeds_sync]
 use Google\ApiCore\ApiException;
@@ -30,20 +30,22 @@ use Google\Cloud\Asset\V1\ListFeedsResponse;
 /**
  * Lists all asset feeds in a parent project/folder/organization.
  *
- * @param string $parent Required. The parent project/folder/organization whose feeds are to be
+ * @param string $parent The parent project/folder/organization whose feeds are to be
  *                       listed. It can only be using project/folder/organization number (such as
  *                       "folders/12345")", or a project ID (such as "projects/my-project-id").
  */
-function list_feeds_sample(string $parent)
+function list_feeds_sample(string $parent): void
 {
+    // Create a client.
     $assetServiceClient = new AssetServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var ListFeedsResponse $response */
         $response = $assetServiceClient->listFeeds($parent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -52,12 +54,10 @@ function list_feeds_sample(string $parent)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $parent = 'parent';
-    
+    $parent = '[PARENT]';
+
     list_feeds_sample($parent);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_ListFeeds_sync]

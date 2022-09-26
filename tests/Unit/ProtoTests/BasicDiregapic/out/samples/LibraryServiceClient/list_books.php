@@ -24,26 +24,28 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START library-example_generated_LibraryService_ListBooks_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
+use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
-
 
 /**
  * Lists books in a shelf.
  *
  * @param string $formattedName The name of the shelf whose books we'd like to list.
  */
-function list_books_sample(string $formattedName)
+function list_books_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
-        // Iterate over pages of elements
+        /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listBooks($formattedName);
-        foreach ($response->iteratePages() as $page) {
-            /** @var array $element */
-            foreach ($page as $element) {
-                printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
-            }
+
+        /** @var BookResponse $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -55,12 +57,10 @@ function list_books_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = LibraryServiceClient::shelfName('[SHELF]');
-    
+
     list_books_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_ListBooks_sync]

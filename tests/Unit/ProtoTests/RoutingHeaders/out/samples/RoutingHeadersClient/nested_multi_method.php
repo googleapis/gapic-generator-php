@@ -25,18 +25,29 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START routingheaders_generated_RoutingHeaders_NestedMultiMethod_sync]
 use Google\ApiCore\ApiException;
 use Testing\RoutingHeaders\NestedRequest\Inner1;
+use Testing\RoutingHeaders\NestedRequest\Inner1\Inner2;
 use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\RoutingHeadersClient;
 
 /**
  *
+ * @param string $nest1Nest2Name
  * @param string $anotherName
  */
-function nested_multi_method_sample(string $anotherName)
-{
+function nested_multi_method_sample(
+    string $nest1Nest2Name,
+    string $anotherName
+): void {
+    // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-    $nest1 = (new Inner1())->setNest2($inner1Nest2);
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $nest1Nest2 = (new Inner2())
+        ->setName($nest1Nest2Name);
+    $nest1 = (new Inner1())
+        ->setNest2($nest1Nest2);
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response $response */
         $response = $routingHeadersClient->nestedMultiMethod($nest1, $anotherName);
@@ -51,12 +62,11 @@ function nested_multi_method_sample(string $anotherName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $anotherName = 'another_name';
-    
-    nested_multi_method_sample($anotherName);
+    $nest1Nest2Name = '[NAME]';
+    $anotherName = '[ANOTHER_NAME]';
+
+    nested_multi_method_sample($nest1Nest2Name, $anotherName);
 }
-
-
 // [END routingheaders_generated_RoutingHeaders_NestedMultiMethod_sync]

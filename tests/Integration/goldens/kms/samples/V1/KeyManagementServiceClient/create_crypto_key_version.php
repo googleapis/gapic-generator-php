@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_sync]
 use Google\ApiCore\ApiException;
@@ -35,21 +35,28 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set to
  * [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
  *
- * @param string $formattedParent Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the
+ * @param string $formattedParent The [name][google.cloud.kms.v1.CryptoKey.name] of the
  *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with the
  *                                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
  */
-function create_crypto_key_version_sample(string $formattedParent)
+function create_crypto_key_version_sample(string $formattedParent): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
+
+    // Prepare any non-scalar elements to be passed along with the request.
     $cryptoKeyVersion = new CryptoKeyVersion();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->createCryptoKeyVersion($formattedParent, $cryptoKeyVersion);
+        $response = $keyManagementServiceClient->createCryptoKeyVersion(
+            $formattedParent,
+            $cryptoKeyVersion
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -58,12 +65,15 @@ function create_crypto_key_version_sample(string $formattedParent)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-    
+    $formattedParent = KeyManagementServiceClient::cryptoKeyName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[CRYPTO_KEY]'
+    );
+
     create_crypto_key_version_sample($formattedParent);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_sync]

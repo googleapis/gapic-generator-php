@@ -31,12 +31,15 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName The name of the shelf to delete.
  */
-function delete_shelf_sample(string $formattedName)
+function delete_shelf_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $libraryServiceClient->deleteShelf($formattedName);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -47,12 +50,10 @@ function delete_shelf_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = LibraryServiceClient::shelfName('[SHELF]');
-    
+
     delete_shelf_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_DeleteShelf_sync]

@@ -28,10 +28,12 @@ use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\Response1;
 
 /**  */
-function method1_a_sample()
+function method1_a_sample(): void
 {
+    // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response1 $response */
         $response = $grpcServiceConfigWithRetry1Client->method1A();
@@ -40,6 +42,4 @@ function method1_a_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1A_sync]

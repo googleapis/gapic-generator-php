@@ -25,32 +25,39 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1BLro_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Rpc\Status;
 use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\LroResponse;
 
 /**  */
-function method1_b_lro_sample()
+function method1_b_lro_sample(): void
 {
+    // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
         $response = $grpcServiceConfigWithRetry1Client->method1BLro();
         $response->pollUntilComplete();
-        
+
         if ($response->operationSucceeded()) {
             /** @var LroResponse $response */
             $result = $response->getResult();
-            printf('Response data: %s' . PHP_EOL, $result->serializeToJsonString());
+            printf(
+                'Operation successful with response data: %s' . PHP_EOL,
+                $result->serializeToJsonString()
+            );
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf('Operation failed with data: %s' . PHP_EOL, $error->serializeToJsonString());
+            printf(
+                'Operation failed with error data: %s' . PHP_EOL,
+                $error->serializeToJsonString()
+            );
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1BLro_sync]

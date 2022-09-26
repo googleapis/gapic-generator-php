@@ -32,10 +32,12 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName The name of the book to retrieve.
  */
-function get_book_sample(string $formattedName)
+function get_book_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
         $response = $libraryServiceClient->getBook($formattedName);
@@ -50,12 +52,14 @@ function get_book_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+
     get_book_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_GetBook_sync]

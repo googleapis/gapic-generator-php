@@ -465,17 +465,9 @@ abstract class PhpDoc
                 ->map(fn ($x) => '    //' . (strlen($x) === 0 ? "\n" : " {$x}\n"))
                 ->join();
         } else {
-//            return
-//                "/**\n" .
-//                $lines
-//                    ->map(fn ($x) => rtrim($x))
-//                    ->map(fn ($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
-//                " */\n";
-
-            // TODO: uncomment these lines, commented out for now to preserve existing multiline comments on properties
-             if (count($lines) <= 1) {
+            if (count($lines) <= 1) {
                 return "/** {$lines->join()} */\n";
-             } else {
+            } else {
                 return
                     "/**\n" .
                     $lines

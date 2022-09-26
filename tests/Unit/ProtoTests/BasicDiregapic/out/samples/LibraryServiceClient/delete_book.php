@@ -31,12 +31,15 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName The name of the book to delete.
  */
-function delete_book_sample(string $formattedName)
+function delete_book_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $libraryServiceClient->deleteBook($formattedName);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -47,12 +50,14 @@ function delete_book_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+
     delete_book_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_DeleteBook_sync]

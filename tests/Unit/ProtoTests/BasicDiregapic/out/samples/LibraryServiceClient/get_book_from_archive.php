@@ -33,13 +33,20 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  * @param string $formattedName   The name of the book to retrieve.
  * @param string $formattedParent
  */
-function get_book_from_archive_sample(string $formattedName, string $formattedParent)
-{
+function get_book_from_archive_sample(
+    string $formattedName,
+    string $formattedParent
+): void {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookFromArchiveResponse $response */
-        $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
+        $response = $libraryServiceClient->getBookFromArchive(
+            $formattedName,
+            $formattedParent
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -51,13 +58,11 @@ function get_book_from_archive_sample(string $formattedName, string $formattedPa
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
     $formattedParent = LibraryServiceClient::projectName('[PROJECT]');
-    
+
     get_book_from_archive_sample($formattedName, $formattedParent);
 }
-
-
 // [END library-example_generated_LibraryService_GetBookFromArchive_sync]

@@ -20,12 +20,14 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_CreateImportJob_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\ImportJob;
+use Google\Cloud\Kms\V1\ImportJob\ImportMethod;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\ProtectionLevel;
 
 /**
  * Create a new [ImportJob][google.cloud.kms.v1.ImportJob] within a
@@ -34,26 +36,42 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [ImportJob.import_method][google.cloud.kms.v1.ImportJob.import_method] is
  * required.
  *
- * @param string $formattedParent Required. The [name][google.cloud.kms.v1.KeyRing.name] of the
- *                                [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
- *                                [ImportJobs][google.cloud.kms.v1.ImportJob].
- * @param string $importJobId     Required. It must be unique within a KeyRing and match the regular
- *                                expression `[a-zA-Z0-9_-]{1,63}`
+ * @param string $formattedParent          The [name][google.cloud.kms.v1.KeyRing.name] of the
+ *                                         [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
+ *                                         [ImportJobs][google.cloud.kms.v1.ImportJob].
+ * @param string $importJobId              It must be unique within a KeyRing and match the regular
+ *                                         expression `[a-zA-Z0-9_-]{1,63}`
+ * @param int    $importJobImportMethod    Immutable. The wrapping method to be used for incoming key material.
+ * @param int    $importJobProtectionLevel Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the
+ *                                         [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level] of the
+ *                                         [version_template][google.cloud.kms.v1.CryptoKey.version_template] on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you
+ *                                         attempt to import into.
  */
-function create_import_job_sample(string $formattedParent, string $importJobId)
-{
+function create_import_job_sample(
+    string $formattedParent,
+    string $importJobId,
+    int $importJobImportMethod,
+    int $importJobProtectionLevel
+): void {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    $importJob = new ImportJob([
-        'import_method' => 'import_method',
-        'protection_level' => 'protection_level',
-    ]);
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $importJob = (new ImportJob())
+        ->setImportMethod($importJobImportMethod)
+        ->setProtectionLevel($importJobProtectionLevel);
+
+    // Call the API and handle any network failures.
     try {
         /** @var ImportJob $response */
-        $response = $keyManagementServiceClient->createImportJob($formattedParent, $importJobId, $importJob);
+        $response = $keyManagementServiceClient->createImportJob(
+            $formattedParent,
+            $importJobId,
+            $importJob
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -62,13 +80,22 @@ function create_import_job_sample(string $formattedParent, string $importJobId)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-    $importJobId = 'import_job_id';
-    
-    create_import_job_sample($formattedParent, $importJobId);
+    $formattedParent = KeyManagementServiceClient::keyRingName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]'
+    );
+    $importJobId = '[IMPORT_JOB_ID]';
+    $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
+    $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;
+
+    create_import_job_sample(
+        $formattedParent,
+        $importJobId,
+        $importJobImportMethod,
+        $importJobProtectionLevel
+    );
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_CreateImportJob_sync]

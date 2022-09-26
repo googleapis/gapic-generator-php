@@ -28,10 +28,12 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\MoveBooksResponse;
 
 /**  */
-function move_books_sample()
+function move_books_sample(): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var MoveBooksResponse $response */
         $response = $libraryServiceClient->moveBooks();
@@ -40,6 +42,4 @@ function move_books_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END library-example_generated_LibraryService_MoveBooks_sync]

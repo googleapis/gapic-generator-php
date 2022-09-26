@@ -30,12 +30,15 @@ use Testing\CustomLro\CustomLroOperationsClient;
  *
  * @param string $operation Name of th Operations resource to cancel.
  */
-function cancel_sample(string $operation)
+function cancel_sample(string $operation): void
 {
+    // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $customLroOperationsClient->cancel($operation);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -46,12 +49,10 @@ function cancel_sample(string $operation)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $operation = 'operation';
-    
+    $operation = '[OPERATION]';
+
     cancel_sample($operation);
 }
-
-
 // [END customlro_generated_CustomLroOperations_Cancel_sync]

@@ -20,29 +20,52 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_ListKeyRings_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\KeyRing;
 
+/**
+ * Lists [KeyRings][google.cloud.kms.v1.KeyRing].
+ *
+ * @param string $formattedParent The resource name of the location associated with the
+ *                                [KeyRings][google.cloud.kms.v1.KeyRing], in the format
+ *                                `projects/&#42;/locations/*`.
+ */
+function list_key_rings_sample(string $formattedParent): void
+{
+    // Create a client.
+    $keyManagementServiceClient = new KeyManagementServiceClient();
 
-$keyManagementServiceClient = new KeyManagementServiceClient();
-$formattedParent = KeyManagementServiceClient::locationName('[PROJECT]', '[LOCATION]');
-// Iterate over pages of elements
-$pagedResponse = $keyManagementServiceClient->listKeyRings($formattedParent);
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $keyManagementServiceClient->listKeyRings($formattedParent);
+
+        /** @var KeyRing $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
 
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $keyManagementServiceClient->listKeyRings($formattedParent);
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $formattedParent = KeyManagementServiceClient::locationName(
+        '[PROJECT]',
+        '[LOCATION]'
+    );
+
+    list_key_rings_sample($formattedParent);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_ListKeyRings_sync]

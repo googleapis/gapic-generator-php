@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_sync]
 use Google\ApiCore\ApiException;
@@ -35,22 +35,32 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
  * are required.
  *
- * @param string $formattedParent Required. The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
+ * @param string $formattedParent The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
  *                                associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey].
- * @param string $cryptoKeyId     Required. It must be unique within a KeyRing and match the regular
+ * @param string $cryptoKeyId     It must be unique within a KeyRing and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
  */
-function create_crypto_key_sample(string $formattedParent, string $cryptoKeyId)
-{
+function create_crypto_key_sample(
+    string $formattedParent,
+    string $cryptoKeyId
+): void {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
+
+    // Prepare any non-scalar elements to be passed along with the request.
     $cryptoKey = new CryptoKey();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var CryptoKey $response */
-        $response = $keyManagementServiceClient->createCryptoKey($formattedParent, $cryptoKeyId, $cryptoKey);
+        $response = $keyManagementServiceClient->createCryptoKey(
+            $formattedParent,
+            $cryptoKeyId,
+            $cryptoKey
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -59,13 +69,15 @@ function create_crypto_key_sample(string $formattedParent, string $cryptoKeyId)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-    $cryptoKeyId = 'crypto_key_id';
-    
+    $formattedParent = KeyManagementServiceClient::keyRingName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]'
+    );
+    $cryptoKeyId = '[CRYPTO_KEY_ID]';
+
     create_crypto_key_sample($formattedParent, $cryptoKeyId);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_sync]

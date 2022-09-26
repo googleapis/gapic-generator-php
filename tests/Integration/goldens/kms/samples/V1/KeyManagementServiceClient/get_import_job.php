@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_GetImportJob_sync]
 use Google\ApiCore\ApiException;
@@ -30,19 +30,21 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 /**
  * Returns metadata for a given [ImportJob][google.cloud.kms.v1.ImportJob].
  *
- * @param string $formattedName Required. The [name][google.cloud.kms.v1.ImportJob.name] of the
+ * @param string $formattedName The [name][google.cloud.kms.v1.ImportJob.name] of the
  *                              [ImportJob][google.cloud.kms.v1.ImportJob] to get.
  */
-function get_import_job_sample(string $formattedName)
+function get_import_job_sample(string $formattedName): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var ImportJob $response */
         $response = $keyManagementServiceClient->getImportJob($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -51,12 +53,15 @@ function get_import_job_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = KeyManagementServiceClient::importJobName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]');
-    
+    $formattedName = KeyManagementServiceClient::importJobName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[IMPORT_JOB]'
+    );
+
     get_import_job_sample($formattedName);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_GetImportJob_sync]

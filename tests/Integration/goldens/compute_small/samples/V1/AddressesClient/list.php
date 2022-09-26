@@ -1,0 +1,74 @@
+<?php
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * GENERATED CODE WARNING
+ * This file was automatically generated - do not edit!
+ */
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+// [START compute_v1_generated_Addresses_List_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Compute\V1\Address;
+use Google\Cloud\Compute\V1\AddressesClient;
+
+/**
+ * Retrieves a list of addresses contained within the specified region.
+ *
+ * @param string $orderBy Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+ *
+ *                        You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+ *
+ *                        Currently, only sorting by name or creationTimestamp desc is supported.
+ * @param string $project Project ID for this request.
+ * @param string $region  Name of the region for this request.
+ */
+function list_sample(string $orderBy, string $project, string $region): void
+{
+    // Create a client.
+    $addressesClient = new AddressesClient();
+
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $addressesClient->list($orderBy, $project, $region);
+
+        /** @var Address $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
+    }
+}
+
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $orderBy = '[ORDER_BY]';
+    $project = '[PROJECT]';
+    $region = '[REGION]';
+
+    list_sample($orderBy, $project, $region);
+}
+// [END compute_v1_generated_Addresses_List_sync]

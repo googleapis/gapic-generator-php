@@ -28,10 +28,12 @@ use Testing\Basic\BasicClient;
 use Testing\Basic\Response;
 
 /** Test summary text for AMethod */
-function a_method_sample()
+function a_method_sample(): void
 {
+    // Create a client.
     $basicClient = new BasicClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response $response */
         $response = $basicClient->aMethod();
@@ -40,6 +42,4 @@ function a_method_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END basic_generated_Basic_AMethod_sync]

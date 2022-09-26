@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_Decrypt_sync]
 use Google\ApiCore\ApiException;
@@ -33,22 +33,24 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
  * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
  *
- * @param string $formattedName Required. The resource name of the
+ * @param string $formattedName The resource name of the
  *                              [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for decryption. The
  *                              server will choose the appropriate version.
- * @param string $ciphertext    Required. The encrypted data originally returned in
+ * @param string $ciphertext    The encrypted data originally returned in
  *                              [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
  */
-function decrypt_sample(string $formattedName, string $ciphertext)
+function decrypt_sample(string $formattedName, string $ciphertext): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var DecryptResponse $response */
         $response = $keyManagementServiceClient->decrypt($formattedName, $ciphertext);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -57,13 +59,16 @@ function decrypt_sample(string $formattedName, string $ciphertext)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = KeyManagementServiceClient::cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-    $ciphertext = '';
-    
+    $formattedName = KeyManagementServiceClient::cryptoKeyName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[CRYPTO_KEY]'
+    );
+    $ciphertext = '...';
+
     decrypt_sample($formattedName, $ciphertext);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_Decrypt_sync]

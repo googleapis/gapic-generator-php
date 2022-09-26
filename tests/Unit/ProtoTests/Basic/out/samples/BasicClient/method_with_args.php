@@ -25,6 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START basic_generated_Basic_MethodWithArgs_sync]
 use Google\ApiCore\ApiException;
 use Testing\Basic\BasicClient;
+use Testing\Basic\PartOfRequestA;
 use Testing\Basic\Response;
 
 /**
@@ -32,13 +33,15 @@ use Testing\Basic\Response;
  *
  * @param string $aString A required field...
  */
-function method_with_args_sample(string $aString)
+function method_with_args_sample(string $aString): void
 {
+    // Create a client.
     $basicClient = new BasicClient();
-    $partOfRequestA = [
-        new PartOfRequestA(),
-    ];
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $partOfRequestA = [new PartOfRequestA()];
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response $response */
         $response = $basicClient->methodWithArgs($aString, $partOfRequestA);
@@ -53,12 +56,10 @@ function method_with_args_sample(string $aString)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $aString = 'a_string';
-    
+    $aString = '[A_STRING]';
+
     method_with_args_sample($aString);
 }
-
-
 // [END basic_generated_Basic_MethodWithArgs_sync]

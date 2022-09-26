@@ -28,10 +28,12 @@ use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
 /**  */
-function file_level_type_ref_method_sample()
+function file_level_type_ref_method_sample(): void
 {
+    // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
         $response = $resourceNamesClient->fileLevelTypeRefMethod();
@@ -40,6 +42,4 @@ function file_level_type_ref_method_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END resourcenames_generated_ResourceNames_FileLevelTypeRefMethod_sync]

@@ -24,23 +24,27 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START bidi_generated_BasicBidiStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\BidiStream;
 use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
-
+use Testing\BasicBidiStreaming\EmptyRequest;
+use Testing\BasicBidiStreaming\Response;
 
 /**  */
-function method_empty_sample()
+function method_empty_sample(): void
 {
+    // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $request = new EmptyRequest();
+
+    // Call the API and handle any network failures.
     try {
-        $request = new EmptyRequest();
-        // Write all requests to the server, then read all responses until the
-        // stream is complete
-        $requests = [
-            $request,
-        ];
+        /** @var BidiStream $stream */
         $stream = $basicBidiStreamingClient->methodEmpty();
-        $stream->writeAll($requests);
+        $stream->writeAll([$request,]);
+
+        /** @var Response $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
@@ -48,6 +52,4 @@ function method_empty_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END bidi_generated_BasicBidiStreaming_MethodEmpty_sync]

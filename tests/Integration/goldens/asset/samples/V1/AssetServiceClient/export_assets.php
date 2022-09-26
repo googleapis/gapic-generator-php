@@ -20,44 +20,76 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_ExportAssets_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\OperationResponse;
 use Google\Cloud\Asset\V1\AssetServiceClient;
+use Google\Cloud\Asset\V1\ExportAssetsResponse;
+use Google\Cloud\Asset\V1\OutputConfig;
+use Google\Rpc\Status;
 
-use Google\LongRunning\Operation;
+/**
+ * Exports assets with time and resource types to a given Cloud Storage
+ * location/BigQuery table. For Cloud Storage location destinations, the
+ * output format is newline-delimited JSON. Each line represents a
+ * [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in the JSON format; for BigQuery table
+ * destinations, the output table stores the fields in asset proto as columns.
+ * This API implements the [google.longrunning.Operation][google.longrunning.Operation] API
+ * , which allows you to keep track of the export. We recommend intervals of
+ * at least 2 seconds with exponential retry to poll the export operation
+ * result. For regular-size resource parent, the export operation usually
+ * finishes within 5 minutes.
+ *
+ * @param string $parent The relative name of the root asset. This can only be an
+ *                       organization number (such as "organizations/123"), a project ID (such as
+ *                       "projects/my-project-id"), or a project number (such as "projects/12345"),
+ *                       or a folder number (such as "folders/123").
+ */
+function export_assets_sample(string $parent): void
+{
+    // Create a client.
+    $assetServiceClient = new AssetServiceClient();
 
+    // Prepare any non-scalar elements to be passed along with the request.
+    $outputConfig = new OutputConfig();
 
-$assetServiceClient = new AssetServiceClient();
-$parent = 'parent';
-$operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
-$operationResponse->pollUntilComplete();
-if ($operationResponse->operationSucceeded()) {
-    $result = $operationResponse->getResult();
-// doSomethingWith($result)
-} else {
-    $error = $operationResponse->getError();
-    // handleError($error)
+    // Call the API and handle any network failures.
+    try {
+        /** @var OperationResponse $response */
+        $response = $assetServiceClient->exportAssets($parent, $outputConfig);
+        $response->pollUntilComplete();
+
+        if ($response->operationSucceeded()) {
+            /** @var ExportAssetsResponse $response */
+            $result = $response->getResult();
+            printf(
+                'Operation successful with response data: %s' . PHP_EOL,
+                $result->serializeToJsonString()
+            );
+        } else {
+            /** @var Status $error */
+            $error = $response->getError();
+            printf(
+                'Operation failed with error data: %s' . PHP_EOL,
+                $error->serializeToJsonString()
+            );
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
+    }
 }
 
-// Alternatively:
-// start the operation, keep the operation name, and resume later
-$operationResponse = $assetServiceClient->exportAssets($parent, $outputConfig);
-$operationName = $operationResponse->getName();
-// ... do other work
-$newOperationResponse = $assetServiceClient->resumeOperation($operationName, 'exportAssets');
-while (!$newOperationResponse->isDone()) {
-    // ... do other work
-    $newOperationResponse->reload();
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $parent = '[PARENT]';
+
+    export_assets_sample($parent);
 }
-
-if ($newOperationResponse->operationSucceeded()) {
-    $result = $newOperationResponse->getResult();
-// doSomethingWith($result)
-} else {
-    $error = $newOperationResponse->getError();
-    // handleError($error)
-}
-
-
 // [END cloudasset_v1_generated_AssetService_ExportAssets_sync]

@@ -35,12 +35,15 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *                     BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                     Message field comment may include special characters: <>&"`'&#64;.
  */
-function save_book_sample(string $name)
+function save_book_sample(string $name): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $libraryServiceClient->saveBook($name);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -51,12 +54,10 @@ function save_book_sample(string $name)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $name = 'name';
-    
+    $name = '[NAME]';
+
     save_book_sample($name);
 }
-
-
 // [END library-example_generated_LibraryService_SaveBook_sync]

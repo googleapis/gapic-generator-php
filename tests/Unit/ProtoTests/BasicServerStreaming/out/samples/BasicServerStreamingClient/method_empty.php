@@ -24,17 +24,22 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\ServerStream;
 use Testing\BasicServerStreaming\BasicServerStreamingClient;
-
+use Testing\BasicServerStreaming\Response;
 
 /**  */
-function method_empty_sample()
+function method_empty_sample(): void
 {
+    // Create a client.
     $basicServerStreamingClient = new BasicServerStreamingClient();
-    
+
+    // Call the API and handle any network failures.
     try {
-        // Read all responses until the stream is complete
+        /** @var ServerStream $stream */
         $stream = $basicServerStreamingClient->methodEmpty();
+
+        /** @var Response $element */
         foreach ($stream->readAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
@@ -42,6 +47,4 @@ function method_empty_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]

@@ -24,26 +24,36 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START library-example_generated_LibraryService_FindRelatedBooks_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
-
 
 /**
  *
- * @param string $formattedNames
- * @param string $formattedShelves
+ * @param string $formattedNamesElement
+ * @param string $formattedShelvesElement
  */
-function find_related_books_sample(string $formattedNames, string $formattedShelves)
-{
+function find_related_books_sample(
+    string $formattedNamesElement,
+    string $formattedShelvesElement
+): void {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $formattedNames = [$formattedNamesElement,];
+    $formattedShelves = [$formattedShelvesElement,];
+
+    // Call the API and handle any network failures.
     try {
-        // Iterate over pages of elements
-        $response = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
-        foreach ($response->iteratePages() as $page) {
-            /** @var array $element */
-            foreach ($page as $element) {
-                printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
-            }
+        /** @var PagedListResponse $response */
+        $response = $libraryServiceClient->findRelatedBooks(
+            $formattedNames,
+            $formattedShelves
+        );
+
+        /** @var string $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -55,17 +65,15 @@ function find_related_books_sample(string $formattedNames, string $formattedShel
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedNames = [
-        LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-    ];
-    $formattedShelves = [
-        LibraryServiceClient::shelfName('[SHELF]'),
-    ];
-    
-    find_related_books_sample($formattedNames, $formattedShelves);
+    $formattedNamesElement = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+    $formattedShelvesElement = LibraryServiceClient::shelfName('[SHELF]');
+
+    find_related_books_sample($formattedNamesElement, $formattedShelvesElement);
 }
-
-
 // [END library-example_generated_LibraryService_FindRelatedBooks_sync]

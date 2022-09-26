@@ -36,13 +36,24 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  * @param string $formattedPlace
  * @param string $formattedFolder
  */
-function get_book_from_anywhere_sample(string $formattedName, string $formattedAltBookName, string $formattedPlace, string $formattedFolder)
-{
+function get_book_from_anywhere_sample(
+    string $formattedName,
+    string $formattedAltBookName,
+    string $formattedPlace,
+    string $formattedFolder
+): void {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookFromAnywhereResponse $response */
-        $response = $libraryServiceClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+        $response = $libraryServiceClient->getBookFromAnywhere(
+            $formattedName,
+            $formattedAltBookName,
+            $formattedPlace,
+            $formattedFolder
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -54,15 +65,26 @@ function get_book_from_anywhere_sample(string $formattedName, string $formattedA
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedAltBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+    $formattedAltBookName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
     $formattedPlace = LibraryServiceClient::locationName('[PROJECT]', '[LOCATION]');
     $formattedFolder = LibraryServiceClient::folderName('[FOLDER]');
-    
-    get_book_from_anywhere_sample($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
+
+    get_book_from_anywhere_sample(
+        $formattedName,
+        $formattedAltBookName,
+        $formattedPlace,
+        $formattedFolder
+    );
 }
-
-
 // [END library-example_generated_LibraryService_GetBookFromAnywhere_sync]

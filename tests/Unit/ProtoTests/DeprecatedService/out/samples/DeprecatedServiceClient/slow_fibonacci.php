@@ -27,16 +27,17 @@ use Google\ApiCore\ApiException;
 use Testing\Deprecated\DeprecatedServiceClient;
 
 /** Calculates Fibonacci on the provided value, slowly. */
-function slow_fibonacci_sample()
+function slow_fibonacci_sample(): void
 {
+    // Create a client.
     $deprecatedServiceClient = new DeprecatedServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $deprecatedServiceClient->slowFibonacci();
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END localhost:7469_generated_DeprecatedService_SlowFibonacci_sync]

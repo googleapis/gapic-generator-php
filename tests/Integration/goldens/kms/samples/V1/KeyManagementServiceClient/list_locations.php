@@ -20,28 +20,31 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_ListLocations_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Location\Location;
 
+/** This is a different comment for ListLocations in the yaml file that should clobber the protobuf's documentation. */
+function list_locations_sample(): void
+{
+    // Create a client.
+    $keyManagementServiceClient = new KeyManagementServiceClient();
 
-$keyManagementServiceClient = new KeyManagementServiceClient();
-// Iterate over pages of elements
-$pagedResponse = $keyManagementServiceClient->listLocations();
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $keyManagementServiceClient->listLocations();
+
+        /** @var Location $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
-
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $keyManagementServiceClient->listLocations();
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
-}
-
-
 // [END cloudkms_v1_generated_KeyManagementService_ListLocations_sync]

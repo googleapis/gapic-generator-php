@@ -28,10 +28,12 @@ use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\Request;
 
 /**  */
-function method_non_lro2_sample()
+function method_non_lro2_sample(): void
 {
+    // Create a client.
     $basicLroClient = new BasicLroClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Request $response */
         $response = $basicLroClient->methodNonLro2();
@@ -40,6 +42,4 @@ function method_non_lro2_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END lro_generated_BasicLro_MethodNonLro2_sync]

@@ -38,25 +38,19 @@ use stdClass;
  */
 class ResourceNamesClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return ResourceNamesClient
-     */
+    /** @return ResourceNamesClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -65,9 +59,7 @@ class ResourceNamesClientTest extends GeneratedTest
         return new ResourceNamesClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function fileLevelChildTypeRefMethodTest()
     {
         $transport = $this->createTransport();
@@ -104,9 +96,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function fileLevelChildTypeRefMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -143,9 +133,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function fileLevelTypeRefMethodTest()
     {
         $transport = $this->createTransport();
@@ -166,9 +154,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function fileLevelTypeRefMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -199,9 +185,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function multiPatternMethodTest()
     {
         $transport = $this->createTransport();
@@ -222,9 +206,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function multiPatternMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -255,9 +237,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function singlePatternMethodTest()
     {
         $transport = $this->createTransport();
@@ -278,9 +258,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function singlePatternMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -311,9 +289,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardChildReferenceMethodTest()
     {
         $transport = $this->createTransport();
@@ -334,9 +310,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardChildReferenceMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -367,9 +341,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardMethodTest()
     {
         $transport = $this->createTransport();
@@ -390,9 +362,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -423,9 +393,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardMultiMethodTest()
     {
         $transport = $this->createTransport();
@@ -446,9 +414,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardMultiMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -479,9 +445,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardReferenceMethodTest()
     {
         $transport = $this->createTransport();
@@ -502,9 +466,7 @@ class ResourceNamesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function wildcardReferenceMethodExceptionTest()
     {
         $transport = $this->createTransport();

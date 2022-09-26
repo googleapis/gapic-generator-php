@@ -20,12 +20,13 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
+use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\TimeWindow;
 
 /**
@@ -37,22 +38,32 @@ use Google\Cloud\Asset\V1\TimeWindow;
  * If a specified asset does not exist, this API returns an INVALID_ARGUMENT
  * error.
  *
- * @param string      $parent      Required. The relative name of the root asset. It can only be an
- *                                 organization number (such as "organizations/123"), a project ID (such as
- *                                 "projects/my-project-id")", or a project number (such as "projects/12345").
- * @param ContentType $contentType Optional. The content type.
+ * @param string $parent      The relative name of the root asset. It can only be an
+ *                            organization number (such as "organizations/123"), a project ID (such as
+ *                            "projects/my-project-id")", or a project number (such as "projects/12345").
+ * @param int    $contentType Optional. The content type.
  */
-function batch_get_assets_history_sample(string $parent, ContentType $contentType)
-{
+function batch_get_assets_history_sample(
+    string $parent,
+    int $contentType
+): void {
+    // Create a client.
     $assetServiceClient = new AssetServiceClient();
+
+    // Prepare any non-scalar elements to be passed along with the request.
     $readTimeWindow = new TimeWindow();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BatchGetAssetsHistoryResponse $response */
-        $response = $assetServiceClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
+        $response = $assetServiceClient->batchGetAssetsHistory(
+            $parent,
+            $contentType,
+            $readTimeWindow
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -61,13 +72,11 @@ function batch_get_assets_history_sample(string $parent, ContentType $contentTyp
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $parent = 'parent';
+    $parent = '[PARENT]';
     $contentType = ContentType::CONTENT_TYPE_UNSPECIFIED;
-    
+
     batch_get_assets_history_sample($parent, $contentType);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync]

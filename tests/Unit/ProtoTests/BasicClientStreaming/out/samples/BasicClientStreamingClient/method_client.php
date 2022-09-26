@@ -24,28 +24,32 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START clientstreaming_generated_BasicClientStreaming_MethodClient_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\ClientStream;
 use Testing\BasicClientStreaming\BasicClientStreamingClient;
+use Testing\BasicClientStreaming\Request;
 use Testing\BasicClientStreaming\Response;
 
 /**
  *
  * @param int $aNumber
  */
-function method_client_sample(int $aNumber)
+function method_client_sample(int $aNumber): void
 {
+    // Create a client.
     $basicClientStreamingClient = new BasicClientStreamingClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $request = (new Request())
+        ->setANumber($aNumber);
+
+    // Call the API and handle any network failures.
     try {
-        $aNumber = 0;
-        $request = new Request();
-        $request->setANumber($aNumber);
-        // Write data to server and wait for a response
-        $requests = [
-            $request,
-        ];
+        /** @var ClientStream $stream */
         $stream = $basicClientStreamingClient->methodClient();
-        $result = $stream->writeAllAndReadResponse($requests);
-        printf('Response data: %s' . PHP_EOL, $result->serializeToJsonString());
+
+        /** @var Response $response */
+        $response = $stream->writeAllAndReadResponse([$request,]);
+        printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -56,12 +60,10 @@ function method_client_sample(int $aNumber)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $aNumber = 0;
-    
+
     method_client_sample($aNumber);
 }
-
-
 // [END clientstreaming_generated_BasicClientStreaming_MethodClient_sync]

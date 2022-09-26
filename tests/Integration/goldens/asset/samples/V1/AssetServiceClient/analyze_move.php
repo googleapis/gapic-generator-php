@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_AnalyzeMove_sync]
 use Google\ApiCore\ApiException;
@@ -34,26 +34,30 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
  * The policies and configuration are subject to change before the actual
  * resource migration takes place.
  *
- * @param string $resource          Required. Name of the resource to perform the analysis against.
+ * @param string $resource          Name of the resource to perform the analysis against.
  *                                  Only GCP Project are supported as of today. Hence, this can only be Project
  *                                  ID (such as "projects/my-project-id") or a Project Number (such as
  *                                  "projects/12345").
- * @param string $destinationParent Required. Name of the GCP Folder or Organization to reparent the target
+ * @param string $destinationParent Name of the GCP Folder or Organization to reparent the target
  *                                  resource. The analysis will be performed against hypothetically moving the
  *                                  resource to this specified desitination parent. This can only be a Folder
  *                                  number (such as "folders/123") or an Organization number (such as
  *                                  "organizations/123").
  */
-function analyze_move_sample(string $resource, string $destinationParent)
-{
+function analyze_move_sample(
+    string $resource,
+    string $destinationParent
+): void {
+    // Create a client.
     $assetServiceClient = new AssetServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var AnalyzeMoveResponse $response */
         $response = $assetServiceClient->analyzeMove($resource, $destinationParent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -62,13 +66,11 @@ function analyze_move_sample(string $resource, string $destinationParent)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $resource = 'resource';
-    $destinationParent = 'destination_parent';
-    
+    $resource = '[RESOURCE]';
+    $destinationParent = '[DESTINATION_PARENT]';
+
     analyze_move_sample($resource, $destinationParent);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_AnalyzeMove_sync]

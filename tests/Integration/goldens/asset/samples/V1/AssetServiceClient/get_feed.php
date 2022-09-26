@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_GetFeed_sync]
 use Google\ApiCore\ApiException;
@@ -30,21 +30,23 @@ use Google\Cloud\Asset\V1\Feed;
 /**
  * Gets details about an asset feed.
  *
- * @param string $formattedName Required. The name of the Feed and it must be in the format of:
+ * @param string $formattedName The name of the Feed and it must be in the format of:
  *                              projects/project_number/feeds/feed_id
  *                              folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
  */
-function get_feed_sample(string $formattedName)
+function get_feed_sample(string $formattedName): void
 {
+    // Create a client.
     $assetServiceClient = new AssetServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Feed $response */
         $response = $assetServiceClient->getFeed($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -53,12 +55,10 @@ function get_feed_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = AssetServiceClient::feedName('[PROJECT]', '[FEED]');
-    
+
     get_feed_sample($formattedName);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_GetFeed_sync]

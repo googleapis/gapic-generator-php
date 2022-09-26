@@ -20,29 +20,56 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Kms\V1\CryptoKeyVersion;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
+/**
+ * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
+ *
+ * @param string $formattedParent The resource name of the
+ *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
+ *                                `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`.
+ */
+function list_crypto_key_versions_sample(string $formattedParent): void
+{
+    // Create a client.
+    $keyManagementServiceClient = new KeyManagementServiceClient();
 
-$keyManagementServiceClient = new KeyManagementServiceClient();
-$formattedParent = KeyManagementServiceClient::cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-// Iterate over pages of elements
-$pagedResponse = $keyManagementServiceClient->listCryptoKeyVersions($formattedParent);
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $keyManagementServiceClient->listCryptoKeyVersions(
+            $formattedParent
+        );
+
+        /** @var CryptoKeyVersion $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
 
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $keyManagementServiceClient->listCryptoKeyVersions($formattedParent);
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $formattedParent = KeyManagementServiceClient::cryptoKeyName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[CRYPTO_KEY]'
+    );
+
+    list_crypto_key_versions_sample($formattedParent);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_sync]

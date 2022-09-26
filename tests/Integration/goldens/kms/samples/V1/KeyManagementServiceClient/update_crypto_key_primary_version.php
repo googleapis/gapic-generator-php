@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync]
 use Google\ApiCore\ApiException;
@@ -34,21 +34,28 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * Returns an error if called on an asymmetric key.
  *
- * @param string $formattedName      Required. The resource name of the
+ * @param string $formattedName      The resource name of the
  *                                   [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
- * @param string $cryptoKeyVersionId Required. The id of the child
+ * @param string $cryptoKeyVersionId The id of the child
  *                                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use as primary.
  */
-function update_crypto_key_primary_version_sample(string $formattedName, string $cryptoKeyVersionId)
-{
+function update_crypto_key_primary_version_sample(
+    string $formattedName,
+    string $cryptoKeyVersionId
+): void {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var CryptoKey $response */
-        $response = $keyManagementServiceClient->updateCryptoKeyPrimaryVersion($formattedName, $cryptoKeyVersionId);
+        $response = $keyManagementServiceClient->updateCryptoKeyPrimaryVersion(
+            $formattedName,
+            $cryptoKeyVersionId
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -57,13 +64,16 @@ function update_crypto_key_primary_version_sample(string $formattedName, string 
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = KeyManagementServiceClient::cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-    $cryptoKeyVersionId = 'crypto_key_version_id';
-    
+    $formattedName = KeyManagementServiceClient::cryptoKeyName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[CRYPTO_KEY]'
+    );
+    $cryptoKeyVersionId = '[CRYPTO_KEY_VERSION_ID]';
+
     update_crypto_key_primary_version_sample($formattedName, $cryptoKeyVersionId);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync]

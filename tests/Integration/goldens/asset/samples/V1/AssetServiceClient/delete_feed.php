@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_DeleteFeed_sync]
 use Google\ApiCore\ApiException;
@@ -29,19 +29,22 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
 /**
  * Deletes an asset feed.
  *
- * @param string $formattedName Required. The name of the feed and it must be in the format of:
+ * @param string $formattedName The name of the feed and it must be in the format of:
  *                              projects/project_number/feeds/feed_id
  *                              folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
  */
-function delete_feed_sample(string $formattedName)
+function delete_feed_sample(string $formattedName): void
 {
+    // Create a client.
     $assetServiceClient = new AssetServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         $assetServiceClient->deleteFeed($formattedName);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -50,12 +53,10 @@ function delete_feed_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = AssetServiceClient::feedName('[PROJECT]', '[FEED]');
-    
+
     delete_feed_sample($formattedName);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_DeleteFeed_sync]

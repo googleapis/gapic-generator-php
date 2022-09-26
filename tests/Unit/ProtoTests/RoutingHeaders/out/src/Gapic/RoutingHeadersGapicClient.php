@@ -57,29 +57,19 @@ class RoutingHeadersGapicClient
 {
     use GapicClientTrait;
 
-    /**
-     * The name of the service.
-     */
+    /** The name of the service. */
     const SERVICE_NAME = 'testing.routingheaders.RoutingHeaders';
 
-    /**
-     * The default address of the service.
-     */
+    /** The default address of the service. */
     const SERVICE_ADDRESS = 'routingheaders.example.com';
 
-    /**
-     * The default port of the service.
-     */
+    /** The default port of the service. */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /**
-     * The name of the code generator, to be included in the agent header.
-     */
+    /** The name of the code generator, to be included in the agent header. */
     const CODEGEN_NAME = 'gapic';
 
-    /**
-     * The default scopes required by the service.
-     */
+    /** The default scopes required by the service. */
     public static $serviceScopes = [];
 
     private static function getClientDefaults()
@@ -688,20 +678,17 @@ class RoutingHeadersGapicClient
             $requestParamHeaders['foo_name'] = $fooNameMatches['foo_name'];
         }
 
-        
         $barNameMatches = [];
         if (preg_match('/^projects\/[^\/]+\/foos\/[^\/]+\/(?<bar_name>bars\/[^\/]+)(?:\/.*)?$/', $anotherName, $barNameMatches)) {
             $requestParamHeaders['bar_name'] = $barNameMatches['bar_name'];
         }
 
-        
         $requestParamHeaders['nested_name'] = $nest1->getNest2()->getName();
         $partOfNestedMatches = [];
         if (preg_match('/^(?<part_of_nested>projects\/[^\/]+)\/bars$/', $nest1->getNest2()->getName(), $partOfNestedMatches)) {
             $requestParamHeaders['part_of_nested'] = $partOfNestedMatches['part_of_nested'];
         }
 
-        
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
             $requestParamHeaders['name'] = $optionalArgs['name'];
@@ -709,8 +696,6 @@ class RoutingHeadersGapicClient
             if (preg_match('/^(?<name>projects\/[^\/]+)\/foos$/', $optionalArgs['name'], $nameMatches)) {
                 $requestParamHeaders['name'] = $nameMatches['name'];
             }
-
-            
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);

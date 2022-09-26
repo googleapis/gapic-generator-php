@@ -24,31 +24,36 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START customlro_generated_CustomLro_CreateFoo_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\OperationResponse;
+use Google\Rpc\Status;
 use Testing\CustomLro\CustomLroClient;
-
 
 /**
  *
  * @param string $project
  * @param string $region
  */
-function create_foo_sample(string $project, string $region)
+function create_foo_sample(string $project, string $region): void
 {
+    // Create a client.
     $customLroClient = new CustomLroClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
         $response = $customLroClient->createFoo($project, $region);
         $response->pollUntilComplete();
-        
+
         if ($response->operationSucceeded()) {
-            // if creating/modifying, retrieve the target resource
+            printf('Operation completed successfully.');
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf('Operation failed with data: %s' . PHP_EOL, $error->serializeToJsonString());
+            printf(
+                'Operation failed with error data: %s' . PHP_EOL,
+                $error->serializeToJsonString()
+            );
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -59,13 +64,11 @@ function create_foo_sample(string $project, string $region)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $project = 'project';
-    $region = 'region';
-    
+    $project = '[PROJECT]';
+    $region = '[REGION]';
+
     create_foo_sample($project, $region);
 }
-
-
 // [END customlro_generated_CustomLro_CreateFoo_sync]

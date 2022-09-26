@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_sync]
 use Google\ApiCore\ApiException;
@@ -42,20 +42,25 @@ use Google\Protobuf\FieldMask;
  * [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
  * to move between other states.
  */
-function update_crypto_key_version_sample()
+function update_crypto_key_version_sample(): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
+
+    // Prepare any non-scalar elements to be passed along with the request.
     $cryptoKeyVersion = new CryptoKeyVersion();
     $updateMask = new FieldMask();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
+        $response = $keyManagementServiceClient->updateCryptoKeyVersion(
+            $cryptoKeyVersion,
+            $updateMask
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_sync]

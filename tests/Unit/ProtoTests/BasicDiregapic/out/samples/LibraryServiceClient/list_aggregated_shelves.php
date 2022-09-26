@@ -24,27 +24,27 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START library-example_generated_LibraryService_ListAggregatedShelves_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
-
+use Testing\BasicDiregapic\ShelfResponse;
 
 /** Lists shelves. */
-function list_aggregated_shelves_sample()
+function list_aggregated_shelves_sample(): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
-        // Iterate over pages of elements
+        /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listAggregatedShelves();
-        foreach ($response->iteratePages() as $page) {
-            /** @var array $element */
-            foreach ($page as $element) {
-                printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
-            }
+
+        /** @var ShelfResponse $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END library-example_generated_LibraryService_ListAggregatedShelves_sync]

@@ -28,10 +28,12 @@ use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\RoutingHeadersClient;
 
 /**  */
-function get_method_sample()
+function get_method_sample(): void
 {
+    // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response $response */
         $response = $routingHeadersClient->getMethod();
@@ -40,6 +42,4 @@ function get_method_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END routingheaders_generated_RoutingHeaders_GetMethod_sync]

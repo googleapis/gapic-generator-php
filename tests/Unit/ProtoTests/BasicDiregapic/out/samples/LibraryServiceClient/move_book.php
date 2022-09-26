@@ -33,13 +33,20 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  * @param string $formattedName           The name of the book to move.
  * @param string $formattedOtherShelfName The name of the destination shelf.
  */
-function move_book_sample(string $formattedName, string $formattedOtherShelfName)
-{
+function move_book_sample(
+    string $formattedName,
+    string $formattedOtherShelfName
+): void {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryServiceClient->moveBook($formattedName, $formattedOtherShelfName);
+        $response = $libraryServiceClient->moveBook(
+            $formattedName,
+            $formattedOtherShelfName
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -51,13 +58,15 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
     $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
-    
+
     move_book_sample($formattedName, $formattedOtherShelfName);
 }
-
-
 // [END library-example_generated_LibraryService_MoveBook_sync]

@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_sync]
 use Google\ApiCore\ApiException;
@@ -31,19 +31,21 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * Returns metadata for a given
  * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
  *
- * @param string $formattedName Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+ * @param string $formattedName The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
  *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get.
  */
-function get_crypto_key_version_sample(string $formattedName)
+function get_crypto_key_version_sample(string $formattedName): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
         $response = $keyManagementServiceClient->getCryptoKeyVersion($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -52,12 +54,16 @@ function get_crypto_key_version_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = KeyManagementServiceClient::cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-    
+    $formattedName = KeyManagementServiceClient::cryptoKeyVersionName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]',
+        '[CRYPTO_KEY]',
+        '[CRYPTO_KEY_VERSION]'
+    );
+
     get_crypto_key_version_sample($formattedName);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_sync]

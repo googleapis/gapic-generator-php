@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_GetLocation_sync]
 use Google\ApiCore\ApiException;
@@ -28,18 +28,18 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Google\Cloud\Location\Location;
 
 /** Gets information about a location. */
-function get_location_sample()
+function get_location_sample(): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Location $response */
         $response = $keyManagementServiceClient->getLocation();
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_GetLocation_sync]

@@ -20,29 +20,52 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_ListImportJobs_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Kms\V1\ImportJob;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
+/**
+ * Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
+ *
+ * @param string $formattedParent The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
+ *                                to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
+ */
+function list_import_jobs_sample(string $formattedParent): void
+{
+    // Create a client.
+    $keyManagementServiceClient = new KeyManagementServiceClient();
 
-$keyManagementServiceClient = new KeyManagementServiceClient();
-$formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
-// Iterate over pages of elements
-$pagedResponse = $keyManagementServiceClient->listImportJobs($formattedParent);
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $keyManagementServiceClient->listImportJobs($formattedParent);
+
+        /** @var ImportJob $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
 
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $keyManagementServiceClient->listImportJobs($formattedParent);
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $formattedParent = KeyManagementServiceClient::keyRingName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[KEY_RING]'
+    );
+
+    list_import_jobs_sample($formattedParent);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_ListImportJobs_sync]

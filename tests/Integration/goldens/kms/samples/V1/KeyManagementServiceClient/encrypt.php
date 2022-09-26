@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_Encrypt_sync]
 use Google\ApiCore\ApiException;
@@ -33,14 +33,14 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
  * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
  *
- * @param string $name      Required. The resource name of the
+ * @param string $name      The resource name of the
  *                          [CryptoKey][google.cloud.kms.v1.CryptoKey] or
  *                          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
  *                          encryption.
  *
  *                          If a [CryptoKey][google.cloud.kms.v1.CryptoKey] is specified, the server
  *                          will use its [primary version][google.cloud.kms.v1.CryptoKey.primary].
- * @param string $plaintext Required. The data to encrypt. Must be no larger than 64KiB.
+ * @param string $plaintext The data to encrypt. Must be no larger than 64KiB.
  *
  *                          The maximum size depends on the key version's
  *                          [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level].
@@ -50,16 +50,18 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *                          the plaintext and additional_authenticated_data fields must be no larger
  *                          than 8KiB.
  */
-function encrypt_sample(string $name, string $plaintext)
+function encrypt_sample(string $name, string $plaintext): void
 {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var EncryptResponse $response */
         $response = $keyManagementServiceClient->encrypt($name, $plaintext);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -68,13 +70,11 @@ function encrypt_sample(string $name, string $plaintext)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $name = 'name';
-    $plaintext = '';
-    
+    $name = '[NAME]';
+    $plaintext = '...';
+
     encrypt_sample($name, $plaintext);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_Encrypt_sync]

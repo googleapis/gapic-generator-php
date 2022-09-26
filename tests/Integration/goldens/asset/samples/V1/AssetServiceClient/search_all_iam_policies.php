@@ -20,29 +20,61 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_SearchAllIamPolicies_sync]
+use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Asset\V1\AssetServiceClient;
+use Google\Cloud\Asset\V1\IamPolicySearchResult;
 
+/**
+ * Searches all IAM policies within the specified scope, such as a project,
+ * folder, or organization. The caller must be granted the
+ * `cloudasset.assets.searchAllIamPolicies` permission on the desired scope,
+ * otherwise the request will be rejected.
+ *
+ * @param string $scope A scope can be a project, a folder, or an organization. The search is
+ *                      limited to the IAM policies within the `scope`. The caller must be granted
+ *                      the
+ *                      [`cloudasset.assets.searchAllIamPolicies`](https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+ *                      permission on the desired scope.
+ *
+ *                      The allowed values are:
+ *
+ *                      * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+ *                      * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+ *                      * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+ *                      * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
+ */
+function search_all_iam_policies_sample(string $scope): void
+{
+    // Create a client.
+    $assetServiceClient = new AssetServiceClient();
 
-$assetServiceClient = new AssetServiceClient();
-$scope = 'scope';
-// Iterate over pages of elements
-$pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
-foreach ($pagedResponse->iteratePages() as $page) {
-    foreach ($page as $element) {
-        // doSomethingWith($element);
+    // Call the API and handle any network failures.
+    try {
+        /** @var PagedListResponse $response */
+        $response = $assetServiceClient->searchAllIamPolicies($scope);
+
+        /** @var IamPolicySearchResult $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
+    } catch (ApiException $ex) {
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
-
 }
 
-// Alternatively:
-// Iterate through all elements
-$pagedResponse = $assetServiceClient->searchAllIamPolicies($scope);
-foreach ($pagedResponse->iterateAllElements() as $element) {
-    // doSomethingWith($element);
+/**
+ * Helper to execute the sample.
+ *
+ * TODO(developer): Replace sample parameters before running the code.
+ */
+function callSample(): void
+{
+    $scope = '[SCOPE]';
+
+    search_all_iam_policies_sample($scope);
 }
-
-
 // [END cloudasset_v1_generated_AssetService_SearchAllIamPolicies_sync]

@@ -24,27 +24,30 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START clientstreaming_generated_BasicClientStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\ClientStream;
 use Testing\BasicClientStreaming\BasicClientStreamingClient;
+use Testing\BasicClientStreaming\EmptyRequest;
 use Testing\BasicClientStreaming\Response;
 
 /**  */
-function method_empty_sample()
+function method_empty_sample(): void
 {
+    // Create a client.
     $basicClientStreamingClient = new BasicClientStreamingClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $request = new EmptyRequest();
+
+    // Call the API and handle any network failures.
     try {
-        $request = new EmptyRequest();
-        // Write data to server and wait for a response
-        $requests = [
-            $request,
-        ];
+        /** @var ClientStream $stream */
         $stream = $basicClientStreamingClient->methodEmpty();
-        $result = $stream->writeAllAndReadResponse($requests);
-        printf('Response data: %s' . PHP_EOL, $result->serializeToJsonString());
+
+        /** @var Response $response */
+        $response = $stream->writeAllAndReadResponse([$request,]);
+        printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END clientstreaming_generated_BasicClientStreaming_MethodEmpty_sync]

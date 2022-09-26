@@ -25,6 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START library-example_generated_LibraryService_GetBigNothing_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Rpc\Status;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
@@ -32,23 +33,27 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName The name of the book to retrieve.
  */
-function get_big_nothing_sample(string $formattedName)
+function get_big_nothing_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
         $response = $libraryServiceClient->getBigNothing($formattedName);
         $response->pollUntilComplete();
-        
+
         if ($response->operationSucceeded()) {
-            // operation succeeded and returns no value
+            printf('Operation completed successfully.');
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf('Operation failed with data: %s' . PHP_EOL, $error->serializeToJsonString());
+            printf(
+                'Operation failed with error data: %s' . PHP_EOL,
+                $error->serializeToJsonString()
+            );
         }
-
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -59,12 +64,14 @@ function get_big_nothing_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+
     get_big_nothing_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_GetBigNothing_sync]

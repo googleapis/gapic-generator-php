@@ -31,13 +31,19 @@ use Testing\BasicDiregapic\ShelfResponse;
  * Creates a shelf, and returns the new Shelf.
  * RPC method comment may include special characters: <>&"`'&#64;.
  *
- * @param string $shelfResponseName The shelf to create.
+ * @param string $shelfName The resource name of the shelf.
+ *                          ShelfResponse names have the form `shelves/{shelf}`.
  */
-function create_shelf_sample(string $shelfResponseName)
+function create_shelf_sample(string $shelfName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    $shelf = (new ShelfResponse())->setName($shelfResponseName);
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $shelf = (new ShelfResponse())
+        ->setName($shelfName);
+
+    // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
         $response = $libraryServiceClient->createShelf($shelf);
@@ -52,12 +58,10 @@ function create_shelf_sample(string $shelfResponseName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $shelfResponseName = 'name';
-    
-    create_shelf_sample($shelfResponseName);
+    $shelfName = '[NAME]';
+
+    create_shelf_sample($shelfName);
 }
-
-
 // [END library-example_generated_LibraryService_CreateShelf_sync]

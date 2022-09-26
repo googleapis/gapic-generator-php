@@ -28,10 +28,12 @@ use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**  */
-function archive_books_sample()
+function archive_books_sample(): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var ArchiveBooksResponse $response */
         $response = $libraryServiceClient->archiveBooks();
@@ -40,6 +42,4 @@ function archive_books_sample()
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-
-
 // [END library-example_generated_LibraryService_ArchiveBooks_sync]

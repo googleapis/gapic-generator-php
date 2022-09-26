@@ -24,6 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START library-example_generated_LibraryService_AddComments_sync]
 use Google\ApiCore\ApiException;
+use Testing\BasicDiregapic\Comment;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
@@ -31,15 +32,18 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName
  */
-function add_comments_sample(string $formattedName)
+function add_comments_sample(string $formattedName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    $comments = [
-        new Comment(),
-    ];
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $comments = [new Comment()];
+
+    // Call the API and handle any network failures.
     try {
         $libraryServiceClient->addComments($formattedName, $comments);
+        printf('Call completed successfully.');
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -50,12 +54,14 @@ function add_comments_sample(string $formattedName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    
+    $formattedName = LibraryServiceClient::bookName(
+        '[SHELF]',
+        '[BOOK_ONE]',
+        '[BOOK_TWO]'
+    );
+
     add_comments_sample($formattedName);
 }
-
-
 // [END library-example_generated_LibraryService_AddComments_sync]

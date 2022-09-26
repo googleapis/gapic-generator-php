@@ -24,6 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START library-example_generated_LibraryService_PublishSeries_sync]
 use Google\ApiCore\ApiException;
+use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
@@ -33,18 +34,26 @@ use Testing\BasicDiregapic\ShelfResponse;
  * Creates a series of books.
  * Tests PHP required nested fields.
  *
- * @param string $shelfResponseName The shelf in which the series is created.
- * @param string $bookResponseName  The books to publish in the series.
+ * @param string $shelfName The resource name of the shelf.
+ *                          ShelfResponse names have the form `shelves/{shelf}`.
+ * @param string $booksName The resource name of the book.
+ *                          BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                          Message field comment may include special characters: <>&"`'&#64;.
  */
-function publish_series_sample(string $shelfResponseName, string $bookResponseName)
+function publish_series_sample(string $shelfName, string $booksName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    $shelf = (new ShelfResponse())->setName($shelfResponseName);
-    $books = [
-        (new BookResponse())->setName($bookResponseName),
-    ];
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $shelf = (new ShelfResponse())
+        ->setName($shelfName);
+    $bookResponse = (new BookResponse())
+        ->setName($booksName);
+    $books = [$bookResponse,];
     $seriesUuid = new SeriesUuidResponse();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var PublishSeriesResponse $response */
         $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
@@ -59,13 +68,11 @@ function publish_series_sample(string $shelfResponseName, string $bookResponseNa
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $shelfResponseName = 'name';
-    $bookResponseName = 'name';
-    
-    publish_series_sample($shelfResponseName, $bookResponseName);
+    $shelfName = '[NAME]';
+    $booksName = '[NAME]';
+
+    publish_series_sample($shelfName, $booksName);
 }
-
-
 // [END library-example_generated_LibraryService_PublishSeries_sync]

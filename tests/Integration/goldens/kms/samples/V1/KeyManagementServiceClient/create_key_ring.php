@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_CreateKeyRing_sync]
 use Google\ApiCore\ApiException;
@@ -31,23 +31,33 @@ use Google\Cloud\Kms\V1\KeyRing;
  * Create a new [KeyRing][google.cloud.kms.v1.KeyRing] in a given Project and
  * Location.
  *
- * @param string $formattedParent Required. The resource name of the location associated with the
+ * @param string $formattedParent The resource name of the location associated with the
  *                                [KeyRings][google.cloud.kms.v1.KeyRing], in the format
  *                                `projects/&#42;/locations/*`.
- * @param string $keyRingId       Required. It must be unique within a location and match the regular
+ * @param string $keyRingId       It must be unique within a location and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
  */
-function create_key_ring_sample(string $formattedParent, string $keyRingId)
-{
+function create_key_ring_sample(
+    string $formattedParent,
+    string $keyRingId
+): void {
+    // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
+
+    // Prepare any non-scalar elements to be passed along with the request.
     $keyRing = new KeyRing();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var KeyRing $response */
-        $response = $keyManagementServiceClient->createKeyRing($formattedParent, $keyRingId, $keyRing);
+        $response = $keyManagementServiceClient->createKeyRing(
+            $formattedParent,
+            $keyRingId,
+            $keyRing
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
-        printf('Call failed with message: %s', $ex->getMessage());
+        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
 
@@ -56,13 +66,14 @@ function create_key_ring_sample(string $formattedParent, string $keyRingId)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::locationName('[PROJECT]', '[LOCATION]');
-    $keyRingId = 'key_ring_id';
-    
+    $formattedParent = KeyManagementServiceClient::locationName(
+        '[PROJECT]',
+        '[LOCATION]'
+    );
+    $keyRingId = '[KEY_RING_ID]';
+
     create_key_ring_sample($formattedParent, $keyRingId);
 }
-
-
 // [END cloudkms_v1_generated_KeyManagementService_CreateKeyRing_sync]

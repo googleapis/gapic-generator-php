@@ -34,10 +34,12 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *                         In the form "shelves/{shelf_id}/books/{book_id}".
  * @param string $tag      REQUIRED: The tag to add.
  */
-function add_tag_sample(string $resource, string $tag)
+function add_tag_sample(string $resource, string $tag): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var AddTagResponse $response */
         $response = $libraryServiceClient->addTag($resource, $tag);
@@ -52,13 +54,11 @@ function add_tag_sample(string $resource, string $tag)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $resource = 'resource';
-    $tag = 'tag';
-    
+    $resource = '[RESOURCE]';
+    $tag = '[TAG]';
+
     add_tag_sample($resource, $tag);
 }
-
-
 // [END library-example_generated_LibraryService_AddTag_sync]

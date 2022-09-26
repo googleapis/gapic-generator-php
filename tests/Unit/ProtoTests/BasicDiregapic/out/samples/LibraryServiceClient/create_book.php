@@ -30,14 +30,21 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Creates a book.
  *
- * @param string $formattedName    The name of the shelf in which the book is created.
- * @param string $bookResponseName The book to create.
+ * @param string $formattedName The name of the shelf in which the book is created.
+ * @param string $bookName      The resource name of the book.
+ *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                              Message field comment may include special characters: <>&"`'&#64;.
  */
-function create_book_sample(string $formattedName, string $bookResponseName)
+function create_book_sample(string $formattedName, string $bookName): void
 {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    $book = (new BookResponse())->setName($bookResponseName);
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $book = (new BookResponse())
+        ->setName($bookName);
+
+    // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
         $response = $libraryServiceClient->createBook($formattedName, $book);
@@ -52,13 +59,11 @@ function create_book_sample(string $formattedName, string $bookResponseName)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedName = LibraryServiceClient::shelfName('[SHELF]');
-    $bookResponseName = 'name';
-    
-    create_book_sample($formattedName, $bookResponseName);
+    $bookName = '[NAME]';
+
+    create_book_sample($formattedName, $bookName);
 }
-
-
 // [END library-example_generated_LibraryService_CreateBook_sync]

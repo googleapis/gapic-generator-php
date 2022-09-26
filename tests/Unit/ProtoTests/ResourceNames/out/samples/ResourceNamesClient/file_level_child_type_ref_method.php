@@ -35,13 +35,26 @@ use Testing\ResourceNames\ResourceNamesClient;
  * @param string $formattedReqOrderTest1
  * @param string $formattedReqOrderTest2
  */
-function file_level_child_type_ref_method_sample(string $formattedReqFolderName, string $formattedReqFolderMultiName, string $formattedReqFolderMultiNameHistory, string $formattedReqOrderTest1, string $formattedReqOrderTest2)
-{
+function file_level_child_type_ref_method_sample(
+    string $formattedReqFolderName,
+    string $formattedReqFolderMultiName,
+    string $formattedReqFolderMultiNameHistory,
+    string $formattedReqOrderTest1,
+    string $formattedReqOrderTest2
+): void {
+    // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
-        $response = $resourceNamesClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
+        $response = $resourceNamesClient->fileLevelChildTypeRefMethod(
+            $formattedReqFolderName,
+            $formattedReqFolderMultiName,
+            $formattedReqFolderMultiNameHistory,
+            $formattedReqOrderTest1,
+            $formattedReqOrderTest2
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -53,16 +66,22 @@ function file_level_child_type_ref_method_sample(string $formattedReqFolderName,
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $formattedReqFolderName = ResourceNamesClient::folderName('[FOLDER_ID]');
     $formattedReqFolderMultiName = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
-    $formattedReqFolderMultiNameHistory = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
+    $formattedReqFolderMultiNameHistory = ResourceNamesClient::folder1Name(
+        '[FOLDER1_ID]'
+    );
     $formattedReqOrderTest1 = ResourceNamesClient::order2Name('[ORDER2_ID]');
     $formattedReqOrderTest2 = ResourceNamesClient::order2Name('[ORDER2_ID]');
-    
-    file_level_child_type_ref_method_sample($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
+
+    file_level_child_type_ref_method_sample(
+        $formattedReqFolderName,
+        $formattedReqFolderMultiName,
+        $formattedReqFolderMultiNameHistory,
+        $formattedReqOrderTest1,
+        $formattedReqOrderTest2
+    );
 }
-
-
 // [END resourcenames_generated_ResourceNames_FileLevelChildTypeRefMethod_sync]

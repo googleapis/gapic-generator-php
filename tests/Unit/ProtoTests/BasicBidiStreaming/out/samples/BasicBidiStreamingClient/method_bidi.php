@@ -24,27 +24,31 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START bidi_generated_BasicBidiStreaming_MethodBidi_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\BidiStream;
 use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
-
+use Testing\BasicBidiStreaming\Request;
+use Testing\BasicBidiStreaming\Response;
 
 /**
  *
  * @param int $aNumber
  */
-function method_bidi_sample(int $aNumber)
+function method_bidi_sample(int $aNumber): void
 {
+    // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $request = (new Request())
+        ->setANumber($aNumber);
+
+    // Call the API and handle any network failures.
     try {
-        $request = new Request();
-        $request->setANumber($aNumber);
-        // Write all requests to the server, then read all responses until the
-        // stream is complete
-        $requests = [
-            $request,
-        ];
+        /** @var BidiStream $stream */
         $stream = $basicBidiStreamingClient->methodBidi();
-        $stream->writeAll($requests);
+        $stream->writeAll([$request,]);
+
+        /** @var Response $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }
@@ -58,12 +62,10 @@ function method_bidi_sample(int $aNumber)
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
     $aNumber = 0;
-    
+
     method_bidi_sample($aNumber);
 }
-
-
 // [END bidi_generated_BasicBidiStreaming_MethodBidi_sync]

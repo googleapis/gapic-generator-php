@@ -39,25 +39,19 @@ use stdClass;
  */
 class CustomLroOperationsClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return CustomLroOperationsClient
-     */
+    /** @return CustomLroOperationsClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -66,9 +60,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         return new CustomLroOperationsClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function cancelTest()
     {
         $transport = $this->createTransport();
@@ -92,9 +84,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function cancelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -127,9 +117,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteTest()
     {
         $transport = $this->createTransport();
@@ -153,9 +141,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteExceptionTest()
     {
         $transport = $this->createTransport();
@@ -188,9 +174,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getTest()
     {
         $transport = $this->createTransport();
@@ -230,9 +214,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getExceptionTest()
     {
         $transport = $this->createTransport();

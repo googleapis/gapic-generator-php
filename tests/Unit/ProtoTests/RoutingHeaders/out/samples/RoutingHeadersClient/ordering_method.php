@@ -35,10 +35,17 @@ use Testing\RoutingHeaders\RoutingHeadersClient;
  * @param string $c
  * @param string $e
  */
-function ordering_method_sample(string $a, string $b, string $d, string $c, string $e)
-{
+function ordering_method_sample(
+    string $a,
+    string $b,
+    string $d,
+    string $c,
+    string $e
+): void {
+    // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-    
+
+    // Call the API and handle any network failures.
     try {
         /** @var Response $response */
         $response = $routingHeadersClient->orderingMethod($a, $b, $d, $c, $e);
@@ -53,16 +60,14 @@ function ordering_method_sample(string $a, string $b, string $d, string $c, stri
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $a = 'a';
-    $b = 'b';
-    $d = 'd';
-    $c = 'c';
-    $e = 'e';
-    
+    $a = '[A]';
+    $b = '[B]';
+    $d = '[D]';
+    $c = '[C]';
+    $e = '[E]';
+
     ordering_method_sample($a, $b, $d, $c, $e);
 }
-
-
 // [END routingheaders_generated_RoutingHeaders_OrderingMethod_sync]

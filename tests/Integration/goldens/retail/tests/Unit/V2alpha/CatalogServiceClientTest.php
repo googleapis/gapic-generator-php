@@ -22,14 +22,12 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
+use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Cloud\Retail\V2alpha\Catalog;
-use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
 use Google\Cloud\Retail\V2alpha\ProductLevelConfig;
@@ -44,25 +42,19 @@ use stdClass;
  */
 class CatalogServiceClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return CatalogServiceClient
-     */
+    /** @return CatalogServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -71,9 +63,7 @@ class CatalogServiceClientTest extends GeneratedTest
         return new CatalogServiceClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getDefaultBranchTest()
     {
         $transport = $this->createTransport();
@@ -98,9 +88,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getDefaultBranchExceptionTest()
     {
         $transport = $this->createTransport();
@@ -131,9 +119,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listCatalogsTest()
     {
         $transport = $this->createTransport();
@@ -168,9 +154,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listCatalogsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -203,9 +187,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function setDefaultBranchTest()
     {
         $transport = $this->createTransport();
@@ -225,9 +207,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function setDefaultBranchExceptionTest()
     {
         $transport = $this->createTransport();
@@ -258,9 +238,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateCatalogTest()
     {
         $transport = $this->createTransport();
@@ -295,9 +273,7 @@ class CatalogServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateCatalogExceptionTest()
     {
         $transport = $this->createTransport();

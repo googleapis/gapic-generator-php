@@ -33,15 +33,29 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  * @param string $formattedParent
  * @param string $asset
  * @param string $parentAsset
- * @param array  $assets
+ * @param string $assetsElement
  */
-function create_inventory_sample(string $formattedParent, string $asset, string $parentAsset, array $assets)
-{
+function create_inventory_sample(
+    string $formattedParent,
+    string $asset,
+    string $parentAsset,
+    string $assetsElement
+): void {
+    // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
-    
+
+    // Prepare any non-scalar elements to be passed along with the request.
+    $assets = [$assetsElement,];
+
+    // Call the API and handle any network failures.
     try {
         /** @var InventoryResponse $response */
-        $response = $libraryServiceClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
+        $response = $libraryServiceClient->createInventory(
+            $formattedParent,
+            $asset,
+            $parentAsset,
+            $assets
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -53,15 +67,17 @@ function create_inventory_sample(string $formattedParent, string $asset, string 
  *
  * TODO(developer): Replace sample parameters before running the code.
  */
-function callSample()
+function callSample(): void
 {
-    $formattedParent = LibraryServiceClient::publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
-    $asset = 'asset';
-    $parentAsset = 'parent_asset';
-    $assets = [];
-    
-    create_inventory_sample($formattedParent, $asset, $parentAsset, $assets);
+    $formattedParent = LibraryServiceClient::publisherName(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[PUBLISHER]'
+    );
+    $asset = '[ASSET]';
+    $parentAsset = '[PARENT_ASSET]';
+    $assetsElement = '[ASSETS]';
+
+    create_inventory_sample($formattedParent, $asset, $parentAsset, $assetsElement);
 }
-
-
 // [END library-example_generated_LibraryService_CreateInventory_sync]
