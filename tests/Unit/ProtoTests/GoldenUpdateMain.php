@@ -79,11 +79,6 @@ const UNIT_TESTS = [
     'package' => 'testing.customlro',
     'transport' => 'rest'
   ],
-  14 => [
-    'name' => 'Kms',
-    'protoPath' => 'Kms/service.proto',
-    'package' => 'google.cloud.kms.v1'
-  ],
 ];
 
 $optionString = implode("\n", array_map(
