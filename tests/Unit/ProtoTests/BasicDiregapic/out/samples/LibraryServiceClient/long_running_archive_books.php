@@ -29,7 +29,6 @@ use Google\Rpc\Status;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
-/**  */
 function long_running_archive_books_sample(): void
 {
     // Create a client.

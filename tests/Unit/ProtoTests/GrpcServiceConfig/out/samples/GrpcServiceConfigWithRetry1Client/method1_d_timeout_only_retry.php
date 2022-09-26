@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\Response1;
 
-/**  */
 function method1_d_timeout_only_retry_sample(): void
 {
     // Create a client.

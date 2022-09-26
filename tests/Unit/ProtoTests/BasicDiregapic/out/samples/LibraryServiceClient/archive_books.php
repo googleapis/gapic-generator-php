@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
-/**  */
 function archive_books_sample(): void
 {
     // Create a client.

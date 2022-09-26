@@ -29,7 +29,6 @@ use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Response;
 
-/**  */
 function method_empty_sample(): void
 {
     // Create a client.

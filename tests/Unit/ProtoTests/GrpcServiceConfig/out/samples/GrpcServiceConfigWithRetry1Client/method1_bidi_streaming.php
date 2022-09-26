@@ -29,7 +29,6 @@ use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
-/**  */
 function method1_bidi_streaming_sample(): void
 {
     // Create a client.

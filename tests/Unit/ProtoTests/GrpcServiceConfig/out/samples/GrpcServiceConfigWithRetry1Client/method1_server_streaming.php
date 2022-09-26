@@ -28,7 +28,6 @@ use Google\ApiCore\ServerStream;
 use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\Response1;
 
-/**  */
 function method1_server_streaming_sample(): void
 {
     // Create a client.

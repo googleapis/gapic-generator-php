@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
-/**  */
 function file_level_type_ref_method_sample(): void
 {
     // Create a client.

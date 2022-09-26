@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\Request;
 
-/**  */
 function method_non_lro1_sample(): void
 {
     // Create a client.

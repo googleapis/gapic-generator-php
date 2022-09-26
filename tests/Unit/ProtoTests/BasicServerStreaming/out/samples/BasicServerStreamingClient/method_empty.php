@@ -28,7 +28,6 @@ use Google\ApiCore\ServerStream;
 use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\Response;
 
-/**  */
 function method_empty_sample(): void
 {
     // Create a client.

@@ -29,7 +29,6 @@ use Testing\BasicClientStreaming\BasicClientStreamingClient;
 use Testing\BasicClientStreaming\EmptyRequest;
 use Testing\BasicClientStreaming\Response;
 
-/**  */
 function method_empty_sample(): void
 {
     // Create a client.

@@ -29,7 +29,6 @@ use Google\Rpc\Status;
 use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\LroResponse;
 
-/**  */
 function method1_b_lro_sample(): void
 {
     // Create a client.

@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
-/**  */
 function wildcard_reference_method_sample(): void
 {
     // Create a client.

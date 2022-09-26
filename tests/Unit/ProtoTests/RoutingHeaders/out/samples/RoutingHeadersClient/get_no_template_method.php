@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\RoutingHeadersClient;
 
-/**  */
 function get_no_template_method_sample(): void
 {
     // Create a client.

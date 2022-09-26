@@ -358,13 +358,9 @@ class SnippetGenerator
         $callSampleFn = $hasSampleParams
             ? $this->buildCallSampleFunction($snippetDetails, $sampleName)
             : null;
+        $shouldGenerateDocBlock = count($snippetDetails->methodDetails->docLines) > 0
+            || count($snippetDetails->phpDocParams) > 0;
         $sampleFn = AST::fn($sampleName)
-            ->withPhpDoc(
-                PhpDoc::block(
-                    PhpDoc::preFormattedText($snippetDetails->methodDetails->docLines),
-                    $snippetDetails->phpDocParams
-                )
-            )
             ->withParams($snippetDetails->sampleParams)
             ->withReturnType($snippetDetails->context->type(Type::void()))
             ->withBody(
@@ -386,6 +382,15 @@ class SnippetGenerator
                     $this->buildTryCatchStatement($tryStatements, $snippetDetails)
                 )
             );
+
+        if ($shouldGenerateDocBlock) {
+            $sampleFn = $sampleFn->withPhpDoc(
+                PhpDoc::block(
+                    PhpDoc::preFormattedText($snippetDetails->methodDetails->docLines),
+                    $snippetDetails->phpDocParams
+                )
+            );
+        }
 
         if (!$hasSampleParams) {
             $sampleFn = $sampleFn->withoutNewlineAfterDeclaration();

@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\MoveBooksResponse;
 
-/**  */
 function move_books_sample(): void
 {
     // Create a client.
