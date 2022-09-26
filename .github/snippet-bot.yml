@@ -1,0 +1,5 @@
+aggregateChecks: false
+alwaysCreateStatusCheck: false
+ignoreFiles:
+  - src/**
+  - tests/**
