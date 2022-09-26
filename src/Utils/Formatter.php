@@ -19,6 +19,12 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Generator\Collections\Vector;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfig;
+use Symplify\CodingStandard\Fixer as SymplifyFixer;
+use Symplify\CodingStandard\TokenAnalyzer;
+use Symplify\CodingStandard\TokenRunner;
 
 class Formatter
 {
@@ -30,10 +36,11 @@ class Formatter
      * formatting is done by the code generation in the AST classes.
      *
      * @param string $code Unformatted code, to be formatted.
+     * @param int $lineLength A line length to adhere the formatted code to.
      *
      * @return string The same code as passed in, but formatted.
      */
-    public static function format(string $code): string
+    public static function format(string $code, int $lineLength = null): string
     {
         $psr2SingleClassElementPerStatementFixer =
           new \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
@@ -41,55 +48,64 @@ class Formatter
         $psr2MethodArgumentSpaceFixer =
           new \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
         $psr2MethodArgumentSpaceFixer->configure(['on_multiline' => 'ensure_fully_multiline']);
+        $visibilityFixer = new Fixer\ClassNotation\VisibilityRequiredFixer();
+        $visibilityFixer->configure(['elements' => ['property', 'method']]);
         // Same rules as in PSR2.
         $fixers = [
-          new \PhpCsFixer\Fixer\Basic\EncodingFixer(), // 100, PSR2
-          new \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer(), // 98, PSR2
+              new Fixer\Basic\EncodingFixer(), // 100, PSR2
+              new Fixer\PhpTag\FullOpeningTagFixer(), // 98, PSR2
 
-          // No priority provided.
-          new \PhpCsFixer\Fixer\Casing\ConstantCaseFixer(),
-          new \PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer(),
-          new \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer(),
-          new \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer(),
-          new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer(),
-          new \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer(),
+              // No priority provided.
+              new Fixer\Casing\ConstantCaseFixer(),
+              new Fixer\FunctionNotation\FunctionDeclarationFixer(),
+              new Fixer\Casing\LowercaseKeywordsFixer(),
+              new Fixer\PhpTag\NoClosingTagFixer(),
+              new Fixer\ControlStructure\SwitchCaseSpaceFixer(),
+              $visibilityFixer,
+              // Ordered.
+              $psr2SingleClassElementPerStatementFixer,  // 56, PSR2
+              new Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
+              new Fixer\Whitespace\IndentationTypeFixer(), // 50, PSR2
+        ];
 
-          // Ordered.
-          $psr2SingleClassElementPerStatementFixer,  // 56, PSR2
-          new \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
-          new \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer(), // 50, PSR2
-          new \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer(), // 2, PSR2
-          new \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer(), // 2
-          new \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
-          new \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1, Critical to preserving sample code.
-          new \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer(), // 1, PSR2
-          new \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer(), // 0, Multiline comment.
-          new \PhpCsFixer\Fixer\ControlStructure\ElseifFixer(), // 0, PSR2
-          new \PhpCsFixer\Fixer\Whitespace\LineEndingFixer(), // 0, PSR2
-          new \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer(), // 0, PSR2,
-          new \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer(), // 0, PSR2
-          new \PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer(), // 0, PSR2
-          new \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
-          new \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer(), // 0
-          new \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer(), // 0, PSR2
-          new \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer(), // -10
-          new \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer(), // -11, PSR2
-          new \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer(), // -19
-          new \PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(), // -20, PSR2
-          new \PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer(), // -20
-          new \PhpCsFixer\Fixer\Basic\BracesFixer(), // -25, PSR2
-          $psr2MethodArgumentSpaceFixer, // -30, PSR2
-          new \PhpCsFixer\Fixer\Import\OrderedImportsFixer(), // -30
-          new \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer(), // -31
-          new \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50, PSR2 (must run last)
+        if ($lineLength) {
+            $fixers[] = self::buildLineLengthFixer($lineLength);
+        }
+
+        $fixers += [
+            new Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer(), // 2, PSR2
+            new Fixer\Comment\NoEmptyCommentFixer(), // 2
+            new Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
+            new Fixer\PhpTag\BlankLineAfterOpeningTagFixer(), // 1, Critical to preserving sample code.
+            new Fixer\Import\SingleImportPerStatementFixer(), // 1, PSR2
+            new Fixer\Phpdoc\PhpdocLineSpanFixer(), // 0, Multiline comment.
+            new Fixer\ControlStructure\ElseifFixer(), // 0, PSR2
+            new Fixer\Whitespace\LineEndingFixer(), // 0, PSR2
+            new Fixer\Whitespace\NoTrailingWhitespaceFixer(), // 0, PSR2,
+            new Fixer\Comment\NoTrailingWhitespaceInCommentFixer(), // 0, PSR2
+            new Fixer\ControlStructure\NoBreakCommentFixer(), // 0, PSR2
+            new Fixer\PhpTag\LinebreakAfterOpeningTagFixer(), // 0
+            new Fixer\ClassNotation\ClassDefinitionFixer(), // 0
+            new Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer(), // 0, PSR2
+            new Fixer\Import\NoUnusedImportsFixer(), // -10
+            new Fixer\Import\SingleLineAfterImportsFixer(), // -11, PSR2
+            new Fixer\Comment\SingleLineCommentStyleFixer(), // -19
+            new Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(), // -20, PSR2
+            new Fixer\Whitespace\NoExtraBlankLinesFixer(), // -20
+            new Fixer\Basic\BracesFixer(), // -25, PSR2
+            $psr2MethodArgumentSpaceFixer, // -30, PSR2
+            new Fixer\Import\OrderedImportsFixer(), // -30
+            new Fixer\Whitespace\ArrayIndentationFixer(), // -31
+            new Fixer\Whitespace\MethodChainingIndentationFixer(), // -34
+            new Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50, PSR2 (must run last)
         ];
 
         // Fixer temporarily removed:
-        // new \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
+        // new Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21
         // TODO: Understand why this fixer causes too many blank line insertions in some cases.
 
         try {
-            $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($code);
+            $tokens = Tokens::fromCode($code);
 
             // All the fixers we'll use don't reference the file passed in, so use a dummy file.
             $fakeFile = new \SplFileInfo('');
@@ -97,7 +113,7 @@ class Formatter
                 $fixer->fix($fakeFile, $tokens);
             }
             // This must run last, otherwise it collapses comments immediately succeeding blocks that may have semicolons.
-            $semicolonFixer = new \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer();
+            $semicolonFixer = new Fixer\Semicolon\NoEmptyStatementFixer();
             $semicolonFixer->fix($fakeFile, $tokens);
 
 
@@ -144,5 +160,52 @@ class Formatter
         $usings = $usings->take($index)->append($line)->concat($usings->skip($index));
 
         return $pre->concat($usings)->concat($post)->join("\n");
+    }
+
+    private static function buildLineLengthFixer(int $lineLength)
+    {
+        $blockFinder = new TokenRunner\Analyzer\FixerAnalyzer\BlockFinder();
+        $tokenSkipper = new TokenRunner\Analyzer\FixerAnalyzer\TokenSkipper(
+            $blockFinder
+        );
+        $callAnalyzer = new TokenRunner\Analyzer\FixerAnalyzer\CallAnalyzer();
+        $whitespacesFixerConfig = new WhitespacesFixerConfig();
+
+        $fixer = new SymplifyFixer\LineLength\LineLengthFixer(
+            new TokenRunner\Transformer\FixerTransformer\LineLengthTransformer(
+                new TokenRunner\Transformer\FixerTransformer\LineLengthResolver(),
+                new TokenRunner\Transformer\FixerTransformer\TokensInliner(
+                    $tokenSkipper
+                ),
+                new TokenRunner\Transformer\FixerTransformer\FirstLineLengthResolver(
+                    new TokenRunner\ValueObjectFactory\LineLengthAndPositionFactory()
+                ),
+                new TokenRunner\Transformer\FixerTransformer\TokensNewliner(
+                    new TokenRunner\Transformer\FixerTransformer\LineLengthCloserTransformer(
+                        $callAnalyzer,
+                        new TokenRunner\TokenFinder()
+                    ),
+                    $tokenSkipper,
+                    new TokenRunner\Transformer\FixerTransformer\LineLengthOpenerTransformer(
+                        $callAnalyzer
+                    ),
+                    $whitespacesFixerConfig,
+                    new TokenRunner\Whitespace\IndentResolver(
+                        new TokenRunner\Analyzer\FixerAnalyzer\IndentDetector(
+                            $whitespacesFixerConfig
+                        ),
+                        $whitespacesFixerConfig
+                    )
+                )
+            ),
+            $blockFinder,
+            new TokenAnalyzer\FunctionCallNameMatcher()
+        );
+
+        $fixer->configure([
+            'line_length' => $lineLength
+        ]);
+
+        return $fixer;
     }
 }
