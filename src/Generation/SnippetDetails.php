@@ -18,21 +18,13 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\ApiCore\ApiException;
-use Google\ApiCore\OperationResponse;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\Variable;
-use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
-use Google\LongRunning\Operation;
-use Google\Protobuf\GPBEmpty;
-use Google\Protobuf\Internal\DescriptorProto;
-use Google\Protobuf\Internal\GPBType;
 
-// TODO: improve readability
 class SnippetDetails
 {
     /** @var Vector The main sample's parameters. */
@@ -62,9 +54,6 @@ class SnippetDetails
     /** @var SourceFileContext A context assigned to the file associated with the snippet. */
     public SourceFileContext $context;
 
-    /** @var Set The use statements associated with the given snippet. */
-    public Set $useStatements;
-
     /** @var Variable An AST node representing the service client associated with this method. */
     public Variable $serviceClientVar;
 
@@ -79,7 +68,6 @@ class SnippetDetails
         $this->rpcArguments = Vector::new();
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
-        $this->useStatements = Set::new();
         $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
 
         $this->initialize();
@@ -87,199 +75,296 @@ class SnippetDetails
 
     private function initialize(): void
     {
-        $responseFullName = $this->methodDetails->responseType->getFullName(true);
-        $this->useStatements = $this->useStatements->add(ApiException::class);
-        $this->useStatements = $this->useStatements
-            ->add($this->serviceDetails->emptyClientType->getFullname(true));
-
-        // TODO: handle cases where the OperationResponse wrapper is not used
-        if ($responseFullName === Operation::class) {
-            $this->useStatements = $this->useStatements->add(OperationResponse::class);
-        } else if ($responseFullName !== GPBEmpty::class) {
-            $this->useStatements = $this->useStatements->add($responseFullName);
-        }
-
-        foreach ($this->methodDetails->requiredFields as $field) {
-            if ($field->isOneOf || $field->isFirstFieldInOneof()) {
-                continue;
-            }
-
-            // Handle resource based format fields
-            if ($field->useResourceTestValue) {
-                $this->handleFormattedResource($field);
-                continue;
-            }
-
-            $this->rpcArguments = $this->rpcArguments->append(
-                AST::var($field->camelName)
-            );
-
-            if ($field->isMessage) {
-                $this->handleMessage($field);
-                continue;
-            }
-
-            $param = AST::param(
-                $this->context->type(
-                    Type::fromField(
-                        $this->serviceDetails->catalog,
-                        $field->desc->desc
-                    )
-                ),
-                AST::var($field->camelName)
-            );
-            $this->callSampleAssignments = $this->callSampleAssignments->append(
-                AST::assign(
-                    AST::var($field->camelName),
-                    $field->exampleValue($this->context) // TODO: make sure this formats strings as expected (e.g, [VALUE])
-                )
-            );
-            $this->sampleParams = $this->sampleParams->append($param);
-            // TODO: filter docLines to make proto references more readable/usable
-            $this->phpDocParams = $this->phpDocParams->append(
-                PhpDoc::param(
-                    $param,
-                    PhpDoc::preFormattedText($field->docLines)
-                )
-            );
-            $this->sampleArguments = $this->sampleArguments->append(AST::var($field->camelName));
-        }
-    }
-
-    private function handleMessage(FieldDetails $field): void
-    {
-        if (!$field->isRepeated) {
-            $this->useStatements = $this->useStatements->add($field->typeSingular->getFullname(true));
-        }
-        $messageDescriptor = $this->serviceDetails
-            ->catalog
-            ->msgsByFullname[$field->fullname];
-
-        // TODO: make the map's value configurable
-        if ($field->isMap) {
-            $keyName = Helpers::toCamelCase($field->camelName . '_key');
-            $valueVar = AST::var(
-                Helpers::toCamelCase($field->camelName . '_value')
-            );
-            
-            $this->sampleAssignments = $this->sampleAssignments->append(
-                AST::assign(
-                    AST::var($field->camelName),
-                    AST::array([$keyName => $valueVar])
-                )
-            );
-
+        if ($this->methodDetails->isClientStreaming() || $this->methodDetails->isBidiStreaming()) {
+            $this->handleBidiOrClientStreaming();
             return;
         }
 
-        $requiredFields = $this->handleRequiredFieldsOnMessage($messageDescriptor, $field);
+        foreach ($this->methodDetails->requiredFields as $field) {
+            if ($field->isOneOf && !$field->isFirstFieldInOneof()) {
+                continue;
+            }
+            $this->handleField($field);
+        }
+    }
+
+    /**
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function handleField(FieldDetails $field, string $parentFieldName = null): void
+    {
+        // resource based format fields
+        if ($field->useResourceTestValue) {
+            $this->handleFormattedResource($field);
+            return;
+        }
+
+        // maps
+        if ($field->isMap) {
+            $this->handleMap($field, $parentFieldName);
+            return;
+        }
+
+        // messages
+        if ($field->isMessage && !$field->isOneOf) {
+            $this->handleMessage($field, $parentFieldName);
+            return;
+        }
+
+        // oneofs
+        if ($field->isOneOf) {
+            $this->handleOneof($field, $parentFieldName);
+            return;
+        }
+
+        // scalar/enum
+        $this->handleScalarAndEnum($field, $parentFieldName);
+    }
+
+    private function handleBidiOrClientStreaming(): void
+    {
+        // bidi/client stream RPC initiations accept a request message
+        $value = AST::new(
+            $this->context->type($this->methodDetails->requestType)
+        )();
+
+        foreach ($this->methodDetails->requiredFields as $field) {
+            if ($field->isOneOf && !$field->isFirstFieldInOneof()) {
+                continue;
+            }
+
+            $this->handleField($field, '');
+            $setter = $field->setter->getName();
+            $value = $value->$setter(
+                AST::var(Helpers::toCamelCase($field->camelName))
+            );
+        }
+
+        $requestVar = AST::var('request');
+        $this->sampleAssignments = $this->sampleAssignments->append(
+            AST::assign(
+                $requestVar,
+                $value
+            )
+        );
+        $this->rpcArguments = $this->rpcArguments->append([$requestVar]);
+    }
+
+    /**
+     * TODO: make map key/value configurable to showcase valid values
+     *
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function handleMap(FieldDetails $field, string $parentFieldName = null): void
+    {
+        $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
+        if ($parentFieldName === null) {
+            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
+        }
+        $this->sampleAssignments = $this->sampleAssignments->append(
+            AST::assign(
+                $fieldVar,
+                AST::array([]),
+            )
+        );
+    }
+
+    /**
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function handleMessage(FieldDetails $field, string $parentFieldName = null): void
+    {
+        $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
+        if ($parentFieldName === null) {
+            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
+        }
         $value = AST::new(
             $this->context->type($field->typeSingular)
         )();
 
-        if ($requiredFields) {
-            foreach ($requiredFields as $setter => $v) {
-                $value = $value->$setter($v);
+        foreach ($field->requiredSubFields as $subField) {
+            if ($subField->isOneOf && !$subField->isFirstFieldInOneof()) {
+                continue;
             }
+
+            $this->handleField($subField, $fieldVar->name);
+            $setter = $subField->setter->getName();
+            $value = $value->$setter(
+                AST::var(Helpers::toCamelCase($fieldVar->name . '_' . $subField->camelName))
+            );
         }
 
-        $value = $field->isRepeated
-            ? AST::array([$value])
-            : $value;
+        if ($field->isRepeated) {
+            if (count($field->requiredSubFields) > 0) {
+                $repeatedItemVar = AST::var(Helpers::toCamelCase($field->typeSingular->name));
+                $this->sampleAssignments = $this->sampleAssignments->append(
+                    AST::assign($repeatedItemVar, $value)
+                );
+                $value = $repeatedItemVar;
+            }
+            $value = [$value];
+        }
 
         $this->sampleAssignments = $this->sampleAssignments->append(
-            AST::assign(
-                AST::var($field->camelName),
-                $value
-            ) 
+            AST::assign($fieldVar, $value)
         );
     }
 
-    private function handleRequiredFieldsOnMessage(DescriptorProto $messageDescriptor, FieldDetails $field): array
+    /**
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function handleScalarAndEnum(FieldDetails $field, string $parentFieldName = null): void
     {
-        $requiredFields = [];
+        $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
+        $arrayElementVar = null;
 
-        // loop through each field on the message - if it is required set an example value
-        // TODO: if nested field is a message, ensure the type is added to the imports
-        // TODO: determine how many message layers deep we should go, currently only 1 layer
-        foreach ($messageDescriptor->getField() as $protoField) {
-            $subField = new FieldDetails($this->serviceDetails->catalog, $messageDescriptor, $protoField);
+        if ($parentFieldName === null) {
+            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
+        }
 
-            if (!$subField->isRequired) {
-                continue;
-            }
-
-            $nestedVar = AST::var(
-                Helpers::toCamelCase($field->typeSingular->name . '_' . $subField->camelName)
-            );
-            $requiredFields[$subField->setter->getName()] = $nestedVar;
-            // TODO: refactor to have example value for strings match format of [VALUE]
-            $exampleValue = $subField->exampleValue($this->context);
-
-            // if type a message or enum, nothing more to do
-            if (in_array($subField->desc->getType(), [GPBType::MESSAGE, GPBType::ENUM])) {
-                continue;
-            }
-
-            $param = AST::param(
-                $this->context->type(
-                    Type::fromField(
-                        $this->serviceDetails->catalog,
-                        $protoField->desc
-                    )
-                ),
-                $nestedVar
-            );
-            $this->sampleArguments = $this->sampleArguments->append($nestedVar);
-            $this->callSampleAssignments = $this->callSampleAssignments->append(
-                AST::assign($nestedVar, $exampleValue)
-            );
-            $this->sampleParams = $this->sampleParams->append($param);
-            $this->phpDocParams = $this->phpDocParams->append(
-                PhpDoc::param(
-                    $param,
-                    PhpDoc::preFormattedText($field->docLines)
+        if ($field->isRepeated) {
+            $arrayElementVar = AST::var($fieldVar->name . 'Element');
+            $this->sampleAssignments = $this->sampleAssignments->append(
+                AST::assign(
+                    $fieldVar,
+                    AST::array([$arrayElementVar])
                 )
             );
         }
 
-        return $requiredFields;
+        $this->handleSampleParams($field, $arrayElementVar ?: $fieldVar);
     }
 
+    /**
+     * TODO: handle oneofs that use a comment to indicate required instead of an annotation
+     *
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function handleOneof(FieldDetails $field, string $parentFieldName = null): void
+    {
+        $oneOfName = $field->getOneofDesc()->getName();
+        $wrapperVar = null;
+
+        if ($parentFieldName === null) {
+            $wrapperVar = AST::var(Helpers::toCamelCase($oneOfName));
+            $this->rpcArguments = $this->rpcArguments->append($wrapperVar);
+        }
+
+        if ($field->isMessage) {
+            $this->handleMessage($field, $parentFieldName ?: '');
+        } else {
+            $this->handleScalarAndEnum($field, $parentFieldName ?: $oneOfName);
+        }
+
+        if ($wrapperVar) {
+            $wrapperArgVar = $field->isMessage
+                ? AST::var($field->camelName)
+                : AST::var(Helpers::toCamelCase($oneOfName . '_' . $field->camelName));
+            $this->sampleAssignments = $this->sampleAssignments->append(
+                AST::assign(
+                    $wrapperVar,
+                    AST::call(
+                        AST::new(
+                            $this->context->type(
+                                $field->toOneofWrapperType(
+                                    $this->serviceDetails->namespace
+                                )
+                            )
+                        )(),
+                        AST::method($field->setter->name)
+                    )($wrapperArgVar)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param FieldDetails $field
+     */
     private function handleFormattedResource(FieldDetails $field): void
     {
+        $fieldName = Helpers::toCamelCase("formatted_{$field->name}");
+        $var = AST::var($fieldName);
+        $arrayElementVar = null;
         $formatMethodArgs = $field->resourceDetails
             ->getParams()
-            ->map(function (array $paramDetails) {
+            ->map(function (array $paramDetails) use ($field) {
                 return strtoupper("[$paramDetails[0]]");
             });
         $value = AST::staticCall(
             $this->context->type($this->serviceDetails->emptyClientType),
             $field->resourceDetails->formatMethod
         )($formatMethodArgs);
-
-        // TODO: ensure params are updated 
         if ($field->isRepeated) {
-            $value = AST::array([$value]);
+            $arrayElementVar = AST::var("{$fieldName}Element");
+            $this->sampleAssignments = $this->sampleAssignments->append(
+                AST::assign($var, [$arrayElementVar])
+            );
         }
+        $this->handleSampleParams($field, $arrayElementVar ?: $var, $value);
+        $this->rpcArguments = $this->rpcArguments->append($var);
+    }
 
-        $var = AST::var(Helpers::toCamelCase("formatted_{$field->name}"));
+    /**
+     * @param FieldDetails $field
+     * @param Variable $var
+     * @param mixed $value
+     */
+    private function handleSampleParams(FieldDetails $field, Variable $var, $value = null): void
+    {
+        $paramType = $field->isEnum
+            ? Type::int()
+            : $field->typeSingular;
         $param = AST::param(
-            $this->context->type(Type::string()),
+            $this->context->type($paramType),
             $var
         );
-
-        $this->rpcArguments = $this->rpcArguments->append($var);
-        $this->sampleArguments = $this->sampleArguments->append($var);
-        $this->callSampleAssignments = $this->callSampleAssignments->append(
-            AST::assign($var, $value)
-        );
+        $value = $value ?: $field->exampleValue($this->context, true, true);
         $this->sampleParams = $this->sampleParams->append($param);
         $this->phpDocParams = $this->phpDocParams->append(
             PhpDoc::param(
                 $param,
-                PhpDoc::preFormattedText($field->docLines)
+                PhpDoc::preFormattedText(
+                    $this->filterDocLines($field->docLines)
+                )
             )
         );
+        $this->callSampleAssignments = $this->callSampleAssignments->append(
+            AST::assign(
+                $var,
+                $value
+            )
+        );
+        $this->sampleArguments = $this->sampleArguments->append($var);
+    }
+
+    /**
+     * TODO: parse [Sample][google.service.v1.Sample] into {@see Sample}. Consider migrating this into PhpDoc.
+     *
+     * @param Vector $docLines
+     * @return Vector
+     */
+    private function filterDocLines(Vector $docLines): Vector
+    {
+        return $docLines->map(function ($line) {
+            return preg_replace('/^Required. /', '', $line);
+        });
+    }
+
+    /**
+     * @param FieldDetails $field
+     * @param string|null $parentFieldName
+     */
+    private function buildFieldVar(string $fieldName, ?string $parentFieldName): Variable
+    {
+        $prefix = $parentFieldName === null || $parentFieldName === ''
+            ? ''
+            : $parentFieldName . '_';
+        return AST::var(Helpers::toCamelCase($prefix . $fieldName));
     }
 }

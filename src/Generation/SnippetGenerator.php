@@ -19,18 +19,19 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\BidiStream;
+use Google\ApiCore\ClientStream;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\ServerStream;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
-use Google\Generator\Ast\PhpMethod;
+use Google\Generator\Ast\PhpFunction;
 use Google\Generator\Ast\Variable;
-use Google\Generator\Collections\Map;
-use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
-use Google\LongRunning\Operation;
 use Google\Protobuf\GPBEmpty;
+use Google\Rpc\Status;
 
 class SnippetGenerator
 {
@@ -40,45 +41,53 @@ class SnippetGenerator
     /** @var ServiceDetails The service details. */
     private ServiceDetails $serviceDetails;
 
-    // TODO: existing idioms make constructor private, consider this
+    /**
+     * @param int $licenseYear
+     * @param ServiceDetails $serviceDetails
+     */
     public function __construct(int $licenseYear, ServiceDetails $serviceDetails)
     {
         $this->licenseYear = $licenseYear;
         $this->serviceDetails = $serviceDetails;
     }
 
-    public static function generate(int $licenseYear, ServiceDetails $serviceDetails): Map
+    /**
+     * @param int $licenseYear
+     * @param ServiceDetails $serviceDetails
+     * @return array
+     */
+    public static function generate(int $licenseYear, ServiceDetails $serviceDetails): array
     {
         return (new SnippetGenerator($licenseYear, $serviceDetails))->generateImpl();
     }
 
-    public function generateImpl(): Map
+    /**
+     * @return array
+     */
+    private function generateImpl(): array
     {
-        $files = Map::new();
+        $files = [];
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
             $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
-
-            // TODO: run prettier-php on the resulting files. it'll help clean up any outstanding formatting issues
-            // the existing formatters aren't equipped to catch
-            $files = $files->set(
-                $method->name,
-                AST::file(null)
-                    ->withApacheLicense($this->licenseYear)
-                    ->withGeneratedCodeWarning()
-                    ->withBlock(
-                        AST::block(
-                            AST::literal("require_once __DIR__ . '/../../../vendor/autoload.php'"),
-                            PHP_EOL,
-                            "// [START $regionTag]",
-                            $snippetDetails
-                                ->useStatements
-                                ->toVector()
-                                ->map(fn ($use) => AST::literal("use {$use}")),
-                            $this->rpcMethodExample($method, $snippetDetails),
-                            "// [END $regionTag]"
-                        )
+            $rpcMethodExample = $this->rpcMethodExample($snippetDetails);
+            $files[Helpers::toSnakeCase($method->name)] = AST::file(null)
+                ->withApacheLicense($this->licenseYear)
+                ->withGeneratedCodeWarning()
+                ->withBlock(
+                    AST::block(
+                        AST::literal("require_once __DIR__ . '/../../../vendor/autoload.php'"),
+                        PHP_EOL,
+                        "// [START $regionTag]",
+                        $snippetDetails
+                            ->context
+                            ->usesByShortName
+                            ->values()
+                            ->map(fn ($use) => AST::literal("use {$use}")),
+                        PHP_EOL,
+                        $rpcMethodExample,
+                        "// [END $regionTag]"
                     )
                 );
         }
@@ -86,272 +95,240 @@ class SnippetGenerator
         return $files;
     }
 
-    private function rpcMethodExample(MethodDetails $method, SnippetDetails $snippetDetails): AST
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     * @throws \Exception
+     */
+    private function rpcMethodExample(SnippetDetails $snippetDetails): AST
     {
-        // this approach is based heavily on the existing code in ExamplesGenerator
-        // TODO: investigate replacing ExamplesGenerator with this codebase, and instead
-        // of generating examples directly in client code, link out to these seperate snippets
-        // using the @example phpdoc annotation
-        switch ($method->methodType) {
+        switch ($snippetDetails->methodDetails->methodType) {
             case MethodDetails::NORMAL:
-                $code = $this->rpcMethodExampleNormal($method, $snippetDetails);
+                $code = $this->rpcMethodExampleNormal($snippetDetails);
                 break;
             case MethodDetails::CUSTOM_OP:
                 // Fallthrough - rpcMethodExampleOperation handles custom operations as well.
             case MethodDetails::LRO:
-                $code = $this->rpcMethodExampleOperation($method, $snippetDetails);
+                $code = $this->rpcMethodExampleOperation($snippetDetails);
                 break;
             case MethodDetails::PAGINATED:
-                $code = $this->rpcMethodExamplePaginated($method, $snippetDetails);
+                $code = $this->rpcMethodExamplePaginated($snippetDetails);
                 break;
             case MethodDetails::BIDI_STREAMING:
-                $code = $this->rpcMethodExampleBidiStreaming($method, $snippetDetails);
+                $code = $this->rpcMethodExampleBidiStreaming($snippetDetails);
                 break;
             case MethodDetails::SERVER_STREAMING:
-                $code = $this->rpcMethodExampleServerStreaming($method, $snippetDetails);
+                $code = $this->rpcMethodExampleServerStreaming($snippetDetails);
                 break;
             case MethodDetails::CLIENT_STREAMING:
-                $code = $this->rpcMethodExampleClientStreaming($method, $snippetDetails);
+                $code = $this->rpcMethodExampleClientStreaming($snippetDetails);
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+                throw new \Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
         }
         $snippetDetails->context->finalize(null);
         return $code;
     }
 
-    private function rpcMethodExampleNormal(MethodDetails $method, SnippetDetails $snippetDetails): AST
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleNormal(SnippetDetails $snippetDetails): AST
     {
         $responseVar = AST::var('response');
-        $call = AST::call(
-            $snippetDetails->serviceClientVar,
-            AST::method($method->methodName)
-        )($snippetDetails->rpcArguments);
 
-        return $this->buildSnippetStructure(
-            $method,
+        return $this->buildSnippetFunctions(
             $snippetDetails,
-            $method->hasEmptyResponse
-                ? [$call]
-                : [
-                    AST::literal("/** @var {$method->responseType->name} {$responseVar->toCode()} */"),
-                    AST::assign(
-                        $responseVar,
-                        $call
-                    ),
-                    AST::call("\0printf")(
-                        AST::literal(
-                            "'Response data: %s' . PHP_EOL, {$responseVar->toCode()}->serializeToJsonString()"
-                        )
-                    )
-                ]
+            [
+                $this->buildClientMethodCall($snippetDetails, $responseVar),
+                $this->buildPrintFCall(
+                    $snippetDetails->methodDetails->hasEmptyResponse
+                        ? "'Call completed successfully.'"
+                        : "'Response data: %s' . PHP_EOL, {$responseVar->toCode()}->serializeToJsonString()"
+                )
+            ]
         );
     }
 
-    // rpcMethodExampleOperation handles both google.longrunning and custom operations.
-    private function rpcMethodExampleOperation(MethodDetails $method, SnippetDetails $snippetDetails): AST
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleOperation(SnippetDetails $snippetDetails): AST
     {
         $responseVar = AST::var('response');
-        $useResponseFn = function (Variable $var) use ($method, $responseVar) {
-            $isCustomOp = $method->methodType === MethodDetails::CUSTOM_OP;
-            $result = AST::var('result');
-            $error = AST::var('error');
-            $noResult = $isCustomOp
-                ? '// if creating/modifying, retrieve the target resource'
-                : '// operation succeeded and returns no value';
+        $resultVar = AST::var('result');
+        $errorVar = AST::var('error');
+        $isCustomOp = $snippetDetails->methodDetails->methodType === MethodDetails::CUSTOM_OP;
+        $context = $snippetDetails->context;
 
-            // TODO: ensure responsetype/ status classes are ended to imports
-            return AST::if($var->operationSucceeded())
-                ->then(
-                    // Custom operations and google.protobuf.Empty responses have no result.
-                    $isCustomOp || $method->hasEmptyLroResponse
-                        ? $noResult
-                        : Vector::new([
-                            AST::literal("/** @var {$method->lroResponseType->name} {$responseVar->toCode()} */"),
-                            AST::assign($result, $var->getResult()),
-                            AST::call("\0printf")(
-                                AST::literal(
-                                    "'Response data: %s' . PHP_EOL, {$result->toCode()}->serializeToJsonString()"
-                                )
-                            )
-                        ])
-                )->else(
-                    AST::literal("/** @var Status {$error->toCode()} */"),
-                    AST::assign($error, $var->getError()),
-                    AST::call("\0printf")(
-                        AST::literal(
-                            "'Operation failed with data: %s' . PHP_EOL, {$error->toCode()}->serializeToJsonString()"
-                        )
-                    )
-                );
-        };
-        
-        return $this->buildSnippetStructure(
-            $method,
+        return $this->buildSnippetFunctions(
             $snippetDetails,
             [
-                AST::literal("/** @var OperationResponse {$responseVar->toCode()} */"),
-                AST::assign(
-                    $responseVar,
-                    AST::call(
-                        $snippetDetails->serviceClientVar,
-                        AST::method($method->methodName)
-                    )($snippetDetails->rpcArguments)
-                ),
+                $this->buildClientMethodCall($snippetDetails, $responseVar),
                 $responseVar->pollUntilComplete(),
                 PHP_EOL,
-                $useResponseFn($responseVar)
+                AST::if($responseVar->operationSucceeded(), false)
+                    ->then(
+                        // Custom operations and google.protobuf.Empty responses have no result.
+                        $isCustomOp || $snippetDetails->methodDetails->hasEmptyLroResponse
+                            ? $this->buildPrintFCall("'Operation completed successfully.'")
+                            : Vector::new([
+                                AST::inlineVarDoc(
+                                    $context->type($snippetDetails->methodDetails->lroResponseType),
+                                    $responseVar
+                                ),
+                                AST::assign($resultVar, $responseVar->getResult()),
+                                $this->buildPrintFCall(
+                                    "'Operation successful with response data: %s' . PHP_EOL, {$resultVar->toCode()}->serializeToJsonString()"
+                                )
+                            ])
+                    )->else(
+                        AST::inlineVarDoc(
+                            $context->type(Type::fromName(Status::class)),
+                            $errorVar
+                        ),
+                        AST::assign($errorVar, $responseVar->getError()),
+                        $this->buildPrintFCall(
+                            "'Operation failed with error data: %s' . PHP_EOL, {$errorVar->toCode()}->serializeToJsonString()"
+                        )
+                    )
             ]
         );
     }
 
-    private function rpcMethodExamplePaginated(MethodDetails $method, SnippetDetails $snippetDetails): AST
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExamplePaginated(SnippetDetails $snippetDetails): AST
     {
         $responseVar = AST::var('response');
-        $page = AST::var('page');
-        $isMap = $method->resourcesField->isMap;
-        $element = AST::var('element');
-        $indexVar = $isMap ? AST::var('key') : null;
+        $elementVar = AST::var('element');
+        $context = $snippetDetails->context;
 
-        return $this->buildSnippetStructure(
-            $method,
+        return $this->buildSnippetFunctions(
             $snippetDetails,
             [
-                '// Iterate over pages of elements',
+                $this->buildClientMethodCall($snippetDetails, $responseVar),
+                PHP_EOL,
+                AST::inlineVarDoc(
+                    $context->type($snippetDetails->methodDetails->resourceType),
+                    $elementVar
+                ),
+                AST::foreach($responseVar, $elementVar)(
+                    AST::call(AST::PRINT_F)(
+                        AST::literal(
+                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
+                        )
+                    )
+                )
+            ]
+        );
+    }
+
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleBidiStreaming(SnippetDetails $snippetDetails): AST
+    {
+        $streamVar = AST::var('stream');
+        $elementVar = AST::var('element');
+        $context = $snippetDetails->context;
+
+        return $this->buildSnippetFunctions(
+            $snippetDetails,
+            [
+                $this->buildClientMethodCall($snippetDetails, $streamVar),
+                $streamVar->writeAll($snippetDetails->rpcArguments),
+                PHP_EOL,
+                AST::inlineVarDoc(
+                    $context->type($snippetDetails->methodDetails->responseType),
+                    $elementVar
+                ),
+                AST::foreach($streamVar->closeWriteAndReadAll(), $elementVar)(
+                    AST::call(AST::PRINT_F)(
+                        AST::literal(
+                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
+                        )
+                    )
+                )
+            ]
+        );
+    }
+
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleServerStreaming(SnippetDetails $snippetDetails): AST
+    {
+        $streamVar = AST::var('stream');
+        $elementVar = AST::var('element');
+        $context = $snippetDetails->context;
+
+        return $this->buildSnippetFunctions(
+            $snippetDetails,
+            [
+                $this->buildClientMethodCall($snippetDetails, $streamVar),
+                PHP_EOL,
+                AST::inlineVarDoc(
+                    $context->type($snippetDetails->methodDetails->responseType),
+                    $elementVar
+                ),
+                AST::foreach($streamVar->readAll(), $elementVar)(
+                    AST::call(AST::PRINT_F)(
+                        AST::literal(
+                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
+                        )
+                    )
+                )
+            ]
+        );
+    }
+
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleClientStreaming(SnippetDetails $snippetDetails): AST
+    {
+        $streamVar = AST::var('stream');
+        $responseVar = AST::var('response');
+        $context = $snippetDetails->context;
+
+        return $this->buildSnippetFunctions(
+            $snippetDetails,
+            [
+                $this->buildClientMethodCall($snippetDetails, $streamVar),
+                PHP_EOL,
+                AST::inlineVarDoc(
+                    $context->type($snippetDetails->methodDetails->responseType),
+                    $responseVar
+                ),
                 AST::assign(
                     $responseVar,
-                    AST::call(
-                        $snippetDetails->serviceClientVar,
-                        AST::method($method->methodName)
-                    )($snippetDetails->rpcArguments)
+                    $streamVar->writeAllAndReadResponse($snippetDetails->rpcArguments)
                 ),
-                AST::foreach($responseVar->iteratePages(), $page)(
-                    // TODO: figure out how to get the type of the element being iterated over
-                    AST::literal("/** @var {$method->resourcesField->type->name} {$element->toCode()} */"),
-                    AST::foreach($page, $element, $indexVar)(
-                        AST::call("\0printf")(
-                            AST::literal(
-                                "'Element data: %s' . PHP_EOL, {$element->toCode()}->serializeToJsonString()"
-                            )
-                        )
+                AST::call(AST::PRINT_F)(
+                    AST::literal(
+                        "'Response data: %s' . PHP_EOL, {$responseVar->toCode()}->serializeToJsonString()"
                     )
                 )
             ]
         );
     }
 
-    private function rpcMethodExampleBidiStreaming(MethodDetails $method, SnippetDetails $snippetDetails): AST
-    {
-        $requestVars = $method->requiredFields->map(fn ($x) => AST::var($x->camelName));
-        $request = AST::var('request');
-        $requests = AST::var('requests');
-        $stream = AST::var('stream');
-        $element = AST::var('element');
-
-        return $this->buildSnippetStructure(
-            $method,
-            $snippetDetails,
-            [
-                Vector::zip(
-                    $snippetDetails->sampleAssignments,
-                    $method->requiredFields,
-                    fn ($var, $f) => AST::assign(
-                        $var,
-                        $f->exampleValue($snippetDetails->context)
-                    )
-                ),
-                AST::assign(
-                    $request,
-                    AST::new(
-                        $snippetDetails
-                            ->context
-                            ->type($method->requestType)
-                    )()
-                ),
-                Vector::zip(
-                    $method->requiredFields,
-                    $requestVars,
-                    fn ($field, $param) => AST::call(
-                        $request,
-                        $field->setter
-                    )($param)
-                ),
-                '// Write all requests to the server, then read all responses until the',
-                '// stream is complete',
-                AST::assign($requests, AST::array([$request])),
-                AST::assign(
-                    $stream,
-                    $snippetDetails
-                        ->serviceClientVar
-                        ->instanceCall(
-                            AST::method($method->methodName)
-                        )()
-                ),
-                $stream->writeAll($requests),
-                AST::foreach($stream->closeWriteAndReadAll(), $element)(
-                    AST::call("\0printf")(
-                        AST::literal(
-                            "'Element data: %s' . PHP_EOL, {$element->toCode()}->serializeToJsonString()"
-                        )
-                    )
-                )
-            ]
-        );
-    }
-
-    private function rpcMethodExampleServerStreaming(MethodDetails $method, SnippetDetails $snippetDetails): AST
-    {
-        $stream = AST::var('stream');
-        $element = AST::var('element');
-
-        return $this->buildSnippetStructure(
-            $method,
-            $snippetDetails,
-            [
-                '// Read all responses until the stream is complete',
-                AST::assign(
-                    $stream,
-                    AST::call(
-                        $snippetDetails->serviceClientVar,
-                        AST::method($method->methodName)
-                    )($snippetDetails->rpcArguments)
-                ),
-                AST::foreach($stream->readAll(), $element)(
-                    AST::call("\0printf")(
-                        AST::literal(
-                            "'Element data: %s' . PHP_EOL, {$element->toCode()}->serializeToJsonString()"
-                        )
-                    )
-                )
-            ]
-        );
-    }
-
-    private function rpcMethodExampleClientStreaming(MethodDetails $method, SnippetDetails $snippetDetails): AST
-    {
-        $requestVars = $method->requiredFields->map(fn ($x) => AST::var($x->camelName));
-        $request = AST::var('request');
-        $requests = AST::var('requests');
-        $stream = AST::var('stream');
-        $result = AST::var('result');
-
-        return $this->buildSnippetStructure(
-            $method,
-            $snippetDetails,
-            [
-                Vector::zip($requestVars, $method->requiredFields, fn ($var, $f) => AST::assign($var, $f->exampleValue($snippetDetails->context))),
-                AST::assign($request, AST::new($snippetDetails->context->type($method->requestType))()),
-                Vector::zip($method->requiredFields, $requestVars, fn ($field, $param) => AST::call($request, $field->setter)($param)),
-                '// Write data to server and wait for a response',
-                AST::assign($requests, AST::array([$request])),
-                AST::assign($stream, $snippetDetails->serviceClientVar->instanceCall(AST::method($method->methodName))()),
-                AST::assign($result, $stream->writeAllAndReadResponse($requests)),
-                AST::call("\0printf")(AST::literal("'Response data: %s' . PHP_EOL, {$result->toCode()}->serializeToJsonString()"))
-            ]
-        );
-    }
-
-    private function buildTryCatchStatement(array $tryStatements, SnippetDetails $snippetDetails)
+    /**
+     * Defines the try/catch statement used to wrap every RPC.
+     *
+     * @param array $tryStatements
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function buildTryCatchStatement(array $tryStatements, SnippetDetails $snippetDetails): AST
     {
         $exceptionVar = AST::var('ex');
 
@@ -362,60 +339,83 @@ class SnippetGenerator
                     ->type(Type::fromName(ApiException::class)),
                 $exceptionVar
             )(
-                AST::call("\0printf")(
-                    AST::literal(
-                        "'Call failed with message: %s' . PHP_EOL, {$exceptionVar->toCode()}->getMessage()"
-                    )
-                )
+                $this->buildPrintFCall("'Call failed with message: %s' . PHP_EOL, {$exceptionVar->toCode()}->getMessage()")
             );
     }
 
-    private function buildSnippetStructure(MethodDetails $method, SnippetDetails $snippetDetails, array $tryStatements)
+    /**
+     * Defines the basic outline of the main sample and the "callSample" function if one is needed.
+     *
+     * @param SnippetDetails $snippetDetails
+     * @param array $tryStatements
+     * @return AST
+     */
+    private function buildSnippetFunctions(SnippetDetails $snippetDetails, array $tryStatements): AST
     {
-        $sampleName = Helpers::toSnakeCase($method->methodName) . '_sample';
-        $callSample = $this->getCallSampleFn($snippetDetails, $sampleName);
+        $sampleName = Helpers::toSnakeCase($snippetDetails->methodDetails->methodName) . '_sample';
+        $hasSampleParams = count($snippetDetails->sampleParams) > 0;
+        $hasSampleAssignments = count($snippetDetails->sampleAssignments) > 0;
+        $callSampleFn = $hasSampleParams
+            ? $this->buildCallSampleFunction($snippetDetails, $sampleName)
+            : null;
+        $sampleFn = AST::fn($sampleName)
+            ->withPhpDoc(
+                PhpDoc::block(
+                    PhpDoc::preFormattedText($snippetDetails->methodDetails->docLines),
+                    $snippetDetails->phpDocParams
+                )
+            )
+            ->withParams($snippetDetails->sampleParams)
+            ->withReturnType($snippetDetails->context->type(Type::void()))
+            ->withBody(
+                AST::block(
+                    '// Create a client.',
+                    AST::assign(
+                        $snippetDetails->serviceClientVar,
+                        AST::new(
+                            $snippetDetails->context->type(
+                                $this->serviceDetails->emptyClientType
+                            )
+                        )()
+                    ),
+                    $hasSampleAssignments ? PHP_EOL : null,
+                    $hasSampleAssignments ? '// Prepare any non-scalar elements to be passed along with the request.' : null,
+                    $snippetDetails->sampleAssignments,
+                    PHP_EOL,
+                    '// Call the API and handle any network failures.',
+                    $this->buildTryCatchStatement($tryStatements, $snippetDetails)
+                )
+            );
+
+        if (!$hasSampleParams) {
+            $sampleFn = $sampleFn->withoutNewlineAfterDeclaration();
+        }
 
         return AST::block(
-            AST::fn($sampleName)
-                ->withPhpDoc(
-                    PhpDoc::block(
-                        PhpDoc::preFormattedText($method->docLines),
-                        $snippetDetails->phpDocParams
-                    )
-                )
-                ->withParams($snippetDetails->sampleParams)
-                ->withBody(
-                    AST::block(
-                        AST::assign(
-                            $snippetDetails->serviceClientVar,
-                            AST::new(
-                                $snippetDetails->context->type(
-                                    $this->serviceDetails->emptyClientType
-                                )
-                            )()
-                        ),
-                        $snippetDetails->sampleAssignments,
-                        PHP_EOL,
-                        $this->buildTryCatchStatement($tryStatements, $snippetDetails)
-                    )
-                ),
-            $callSample
+            $sampleFn,
+            $callSampleFn
         );
     }
 
-    private function getCallSampleFn(SnippetDetails $snippetDetails, string $sampleName)
+    /**
+     * The "callSample" function acts as an entry point for the main sample. If required, it also prepares basic scalar
+     * assignments.
+     *
+     * @param SnippetDetails $snippetDetails
+     * @param string $sampleName
+     * @return PhpFunction
+     */
+    private function buildCallSampleFunction(SnippetDetails $snippetDetails, string $sampleName): PhpFunction
     {
-        if (count($snippetDetails->sampleParams) === 0) {
-            return null;
-        }
-
         return AST::fn('callSample')
+            ->withoutNewlineAfterDeclaration()
             ->withPhpDoc(
                 PhpDoc::block(
                     PhpDoc::text('Helper to execute the sample.'),
                     PhpDoc::text('TODO(developer): Replace sample parameters before running the code.')
                 )
             )
+            ->withReturnType($snippetDetails->context->type(Type::void()))
             ->withBody(
                 AST::block(
                     $snippetDetails->callSampleAssignments,
@@ -425,7 +425,59 @@ class SnippetGenerator
             );
     }
 
-    private function generateRegionTag($methodName)
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @param Variable $var
+     * @return Vector
+     */
+    private function buildClientMethodCall(SnippetDetails $snippetDetails, Variable $var): Vector
+    {
+        $vector = Vector::new();
+        $methodDetails = $snippetDetails->methodDetails;
+        $returnType = $methodDetails->methodReturnType;
+
+        if (!$methodDetails->hasEmptyResponse) {
+            $vector = $vector->append(
+                AST::inlineVarDoc(
+                    $snippetDetails
+                        ->context
+                        ->type($returnType),
+                    $var
+                )
+            );
+        }
+        $call = AST::call(
+            $snippetDetails->serviceClientVar,
+            AST::method($methodDetails->methodName)
+        );
+        $call = $methodDetails->isClientStreaming() || $methodDetails->isBidiStreaming()
+            ? $call()
+            : $call($snippetDetails->rpcArguments);
+        return $vector->append(
+            $methodDetails->hasEmptyResponse
+                ? $call
+                : AST::assign($var, $call)
+        );
+    }
+
+    /**
+     * @param string $str A string literal to be proxied to AST::literal.
+     * @return AST
+     */
+    private function buildPrintFCall(string $str): AST
+    {
+        return AST::call(AST::PRINT_F)(
+            AST::literal($str)
+        );
+    }
+
+    /**
+     * A region tag is used to identify a sample internally.
+     *
+     * @param string $methodName
+     * @return string
+     */
+    private function generateRegionTag(string $methodName): string
     {
         $version = strtolower(Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace)) ?: '_';
         if ($version !== '_') {

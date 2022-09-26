@@ -27,11 +27,13 @@ use Google\Generator\Utils\Type;
 class SourceFileContext
 {
     private string $namespace;
-    private Map $usesByShortName;
     private bool $isFinalized;
 
     /** @var *Readonly* Year value for license headers, if set. */
     public ?int $licenseYear;
+
+    /** @var *Readonly* The import statements associated with this context. */
+    public Map $usesByShortName;
 
     public function __construct(string $namespace, ?int $licenseYear = null)
     {

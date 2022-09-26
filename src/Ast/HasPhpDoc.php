@@ -39,7 +39,7 @@ trait HasPhpDoc
      *
      * @return self
      */
-    public function WithPhpDocText(string $summaryText): self
+    public function withPhpDocText(string $summaryText): self
     {
         return $this->withPhpDoc(PhpDoc::block(PhpDoc::text($summaryText)));
     }

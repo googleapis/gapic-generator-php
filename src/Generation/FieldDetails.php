@@ -94,12 +94,17 @@ class FieldDetails
     /** @var ?ResourceDetails The resource details, if this field is a resource; null otherwise. */
     public ?ResourceDetails $resourceDetails;
 
-    /** @var bool Whether tests and examples should use use a resource-type value. */
+    /** @var bool Whether tests and examples should use a resource-type value. */
     public bool $useResourceTestValue;
 
     /** @var ?int null if not in a one-of; otherwise the index of the one-of - ie every field in a oneof has the same index. */
     public ?int $oneOfIndex;
 
+    /**
+     * @var Vector *Readonly* Vector of FieldDetails. Contains all required subfields on this field, given the field
+     * is a message. Will be empty otherwise.
+     */
+    public Vector $requiredSubFields;
 
     /**
      * Reverts fields which were previously required, but were made optional
@@ -158,6 +163,7 @@ class FieldDetails
         $this->isInTestResponse = $field->getType() !== GPBType::MESSAGE && $field->getType() !== GPBType::ENUM && !$field->desc->isRepeated();
         $this->isRepeated = $field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
+        $this->requiredSubFields = Vector::new();
         // Load resource details, if relevant.
         $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
         if (!is_null($resRef)) {
@@ -187,6 +193,15 @@ class FieldDetails
         // Ignore synthetic oneofs created by proto3_optional fields.
         $this->isOneOf = $field->hasOneofIndex() && !$field->getProto3Optional();
         $this->oneOfIndex = $this->isOneOf ? $field->getOneofIndex() : null;
+        if ($this->isMessage) {
+            $fDesc = $this->catalog->msgsByFullname[$desc->getMessageType()];
+            foreach ($fDesc->getField() as $f) {
+                if (ProtoHelpers::isRequired($f)) {
+                    $this->requiredSubFields = $this->requiredSubFields
+                        ->append(new FieldDetails($this->catalog, $fDesc, $f));
+                }
+            }
+        }
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
@@ -260,9 +275,12 @@ class FieldDetails
         return !$this->isOneOf ? null : $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
     }
 
-    public function exampleValue(SourceFileContext $ctx)
-    {
-        if ($this->desc->desc->isRepeated()) {
+    public function exampleValue(
+        SourceFileContext $ctx,
+        bool $formatStringWithBrackets = false,
+        bool $ignoreRepeated = false
+    ) {
+        if (!$ignoreRepeated && $this->desc->desc->isRepeated()) {
             return AST::array([]);
         }
         switch ($this->desc->getType()) {
@@ -283,11 +301,15 @@ class FieldDetails
             case GPBType::BOOL: // 8
                 return false;
             case GPBType::STRING: // 9
+                if ($formatStringWithBrackets) {
+                    return '[' . strtoupper($this->name) . ']';
+                }
+
                 return $this->name;
             case GPBType::MESSAGE: // 11
                 return AST::new($ctx->type(Type::fromField($this->catalog, $this->desc->desc)))();
             case GPBType::BYTES: // 12
-                return '';
+                return '...';
             case GPBType::ENUM: // 14
                 $enumValueName = $this->catalog->enumsByFullname[$this->desc->desc->getEnumType()]->getValue()[0]->getName();
                 return AST::access($ctx->type(Type::fromField($this->catalog, $this->desc->desc)), AST::property($enumValueName));

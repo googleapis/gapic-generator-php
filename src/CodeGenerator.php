@@ -281,13 +281,12 @@ class CodeGenerator
             $code = Formatter::format($code);
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
 
-            // snippet gen wip
+            // Snippet Generator.
             $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
 
-            foreach ($snippetFiles as $snippetFile) {
-                $code = $snippetFile[1]->toCode();
-                $code = Formatter::format($code);
-                $methodName = Helpers::toSnakeCase($snippetFile[0]);
+            foreach ($snippetFiles as $methodName => $snippetFile) {
+                $code = $snippetFile->toCode();
+                $code = Formatter::format($code, 80);
                 yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
             }
 

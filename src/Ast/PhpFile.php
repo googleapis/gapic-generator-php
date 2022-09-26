@@ -23,14 +23,15 @@ use Google\Generator\Collections\Vector;
 
 final class PhpFile extends AST
 {
-    public function __construct(PhpClass $class = null)
+    public function __construct(?PhpClass $class)
     {
         $this->class = $class;
         $this->uses = Set::new();
         $this->headerLines = Vector::new();
     }
 
-    private AST $block;
+    public ?PhpClass $class;
+    private ?AST $block;
     private Set $uses;
     private Vector $headerLines;
 
@@ -95,6 +96,9 @@ final class PhpFile extends AST
 
     public function withBlock($block)
     {
+        if ($this->class) {
+            throw new \RuntimeException('Cannot add a code block when the file already has a class configured.');
+        }
         return $this->clone(fn ($clone) => $clone->block = $block);
     }
 

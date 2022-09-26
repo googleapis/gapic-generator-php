@@ -70,6 +70,12 @@ class Type implements Equality
         return new Type(null, 'mixed');
     }
 
+    /** The built-in 'void' type. */
+    public static function void(): Type
+    {
+        return new Type(null, 'void');
+    }
+
     /** The built-in 'stdClass' type. */
     public static function stdClass(): Type
     {

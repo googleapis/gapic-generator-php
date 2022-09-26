@@ -41,8 +41,15 @@ final class PhpParam extends AST
 
     public function toCode(): string
     {
-        $type = is_null($this->type) ? '' : static::toPhp($this->type) . ' ';
-        $default = is_null($this->default) ? '' : ' = ' . static::toPhp($this->default);
+        $type = null;
+        if ($this->type) {
+            $type = substr($this->type->type->name, -2) === '[]'
+                ? 'array '
+                : static::toPhp($this->type) . ' ';
+        }
+        $default = $this->default
+            ? ' = ' . static::toPhp($this->default)
+            : '';
         return $type . static::toPhp($this->var) . $default;
     }
 }

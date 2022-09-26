@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 
 /** A function that can be placed in any block of code. */
 final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
@@ -28,9 +29,21 @@ final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
     /** @var string The name of this function. */
     private string $name;
 
+    /** @var bool Whether a newline should be appended to the end of the function declaration. */
+    private bool $appendNewline = true;
+
     /** @var Vector The function's parameters. */
     private Vector $params;
 
+    /** @var string The return type of the function. */
+    private ?ResolvedType $returnType = null;
+
+    /** @var string The body of the function. */
+    private ?AST $body = null;
+
+    /**
+     * @param string $name The name of this function.
+     */
     public function __construct(string $name)
     {
         $this->name = $name;
@@ -40,7 +53,7 @@ final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
     /**
      * Create a function with the specified parameters.
      *
-     * @param array $params Array of AST::vars(); The parameters of the function.
+     * @param array $params Array of AST::param(); The parameters of the function.
      *
      * @return PhpFunction
      */
@@ -62,6 +75,28 @@ final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
         return $this->clone(fn ($clone) => $clone->body = $body);
     }
 
+    /**
+     * Create a function with the specified return type.
+     *
+     * @param ResolvedType $returnType The return type of the function.
+     *
+     * @return PhpFunction
+     */
+    public function withReturnType(ResolvedType $returnType): PhpFunction
+    {
+        return $this->clone(fn ($clone) => $clone->returnType = $returnType);
+    }
+
+    /**
+     * Omits a newline after the function declaration.
+     *
+     * @return PhpFunction
+     */
+    public function withoutNewlineAfterDeclaration(): PhpFunction
+    {
+        return $this->clone(fn ($clone) => $clone->appendNewline = false);
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -69,11 +104,19 @@ final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
 
     public function toCode(): string
     {
-        return
-            $this->phpDocToCode() .
+        $fnSignatureDeclaration =
             "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
-            "{\n" .
-            static::toPhp($this->body) .
-            PHP_EOL . "}" . PHP_EOL;
+            ($this->returnType ? ': ' . static::toPhp($this->returnType) : null);
+
+        $code = $this->phpDocToCode() .
+                $fnSignatureDeclaration .
+                '{' . PHP_EOL .
+                static::toPhp($this->body) .
+                PHP_EOL . '}';
+        if ($this->appendNewline) {
+            $code .= PHP_EOL;
+        }
+
+        return $code;
     }
 }

@@ -415,7 +415,7 @@ abstract class PhpDoc
                 $code = Formatter::format("<?php\n{$code}");
                 $code = str_replace('[ELLIPSIS]', '[...]', $code);
                 $code = Vector::new(explode("\n", $code))
-                    ->skip(2)->skipLast(1)
+                    ->skip(1)->skipLast(1)
                     ->filter(fn ($x) => $x !== '');
                 if (!$this->noBackticks) {
                     $code = $code->prepend('```')->append('```');
@@ -465,9 +465,17 @@ abstract class PhpDoc
                 ->map(fn ($x) => '    //' . (strlen($x) === 0 ? "\n" : " {$x}\n"))
                 ->join();
         } else {
-            if (count($lines) <= 1) {
+//            return
+//                "/**\n" .
+//                $lines
+//                    ->map(fn ($x) => rtrim($x))
+//                    ->map(fn ($x) => ' *' . (strlen($x) === 0 ? "\n" : " {$x}\n"))->join() .
+//                " */\n";
+
+            // TODO: uncomment these lines, commented out for now to preserve existing multiline comments on properties
+             if (count($lines) <= 1) {
                 return "/** {$lines->join()} */\n";
-            } else {
+             } else {
                 return
                     "/**\n" .
                     $lines
