@@ -67,6 +67,7 @@ abstract class AST
     protected static function toPhp($x, &$omitSemicolon = false): string
     {
         $omitSemicolon = false;
+
         if (is_string($x)) {
             if (strncmp($x, "\0", 1) === 0) {
                 // \0 prefix means the string that follows is used verbatim.
@@ -118,7 +119,7 @@ abstract class AST
      *
      * @return PhpFile
      */
-    public static function file(PhpClass $class): PhpFile
+    public static function file(PhpClass $class = null): PhpFile
     {
         return new PhpFile($class);
     }
@@ -219,9 +220,11 @@ abstract class AST
             public function toCode(): string
             {
                 $omitSemicolon = false;
-                return $this->code
+                $x = $this->code
                     ->map(fn ($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
                     ->join();
+                //var_dump($x);
+                return $x;
             }
         };
     }

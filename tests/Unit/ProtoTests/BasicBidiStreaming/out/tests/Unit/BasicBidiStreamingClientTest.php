@@ -22,19 +22,17 @@
 
 namespace Testing\BasicBidiStreaming\Tests\Unit;
 
+use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
+use stdClass;
 
 /**
  * @group basicbidistreaming

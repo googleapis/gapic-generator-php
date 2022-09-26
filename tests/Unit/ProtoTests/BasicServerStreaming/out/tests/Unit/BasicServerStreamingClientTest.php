@@ -22,18 +22,16 @@
 
 namespace Testing\BasicServerStreaming\Tests\Unit;
 
+use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
+use stdClass;
 
 /**
  * @group basicserverstreaming

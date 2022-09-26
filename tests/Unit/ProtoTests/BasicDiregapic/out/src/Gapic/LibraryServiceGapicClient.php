@@ -27,13 +27,10 @@ namespace Testing\BasicDiregapic\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
-
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -57,10 +54,8 @@ use Google\Protobuf\UInt32Value;
 use Google\Protobuf\UInt64Value;
 use Google\Protobuf\Value;
 use Testing\BasicDiregapic\AddCommentsRequest;
-
 use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
-
 use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
@@ -84,7 +79,6 @@ use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksRequest;
 use Testing\BasicDiregapic\ListBooksResponse;
-
 use Testing\BasicDiregapic\ListShelvesRequest;
 use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsRequest;

@@ -22,16 +22,14 @@
 
 namespace Testing\Deprecated\Tests\Unit;
 
+use Testing\Deprecated\DeprecatedServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use stdClass;
-use Testing\Deprecated\DeprecatedServiceClient;
 
 /**
  * @group deprecated

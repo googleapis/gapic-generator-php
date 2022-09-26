@@ -22,22 +22,19 @@
 
 namespace Testing\BasicLro\Tests\Unit;
 
+use Testing\BasicLro\BasicLroClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\GetOperationRequest;
-
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
+use stdClass;
 
 /**
  * @group basiclro

@@ -22,17 +22,16 @@
 
 namespace Testing\CustomLro\Tests\Unit;
 
+use Testing\CustomLro\CustomLroClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\CustomLro\CustomLroClient;
 use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\CustomOperationResponse\Status;
+use stdClass;
 
 /**
  * @group customlro

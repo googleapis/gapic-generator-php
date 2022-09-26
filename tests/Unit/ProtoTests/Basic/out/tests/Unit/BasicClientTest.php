@@ -22,17 +22,15 @@
 
 namespace Testing\Basic\Tests\Unit;
 
+use Testing\Basic\BasicClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Rpc\Code;
-use stdClass;
-use Testing\Basic\BasicClient;
 use Testing\Basic\Request;
 use Testing\Basic\Response;
+use stdClass;
 
 /**
  * @group basic

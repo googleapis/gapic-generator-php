@@ -22,17 +22,15 @@
 
 namespace Testing\BasicPaginated\Tests\Unit;
 
+use Testing\BasicPaginated\BasicPaginatedClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicPaginated\BasicPaginatedClient;
 use Testing\BasicPaginated\Request;
 use Testing\BasicPaginated\Response;
+use stdClass;
 
 /**
  * @group basicpaginated

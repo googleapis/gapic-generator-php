@@ -22,21 +22,17 @@
 
 namespace Testing\BasicDiregapic\Tests\Unit;
 
+use Testing\BasicDiregapic\LibraryServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
-
 use Google\Protobuf\Any;
-
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use stdClass;
 use Testing\BasicDiregapic\AddTagResponse;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
@@ -44,7 +40,6 @@ use Testing\BasicDiregapic\BookFromArchiveResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\FindRelatedBooksResponse;
 use Testing\BasicDiregapic\InventoryResponse;
-use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
@@ -53,6 +48,7 @@ use Testing\BasicDiregapic\MoveBooksResponse;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
+use stdClass;
 
 /**
  * @group basicdiregapic

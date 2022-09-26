@@ -134,7 +134,7 @@ class TestNameValueProducer
         return [$perField, $callArgs];
     }
 
-    // TODO: Refactor this to share code with very similar code in GapicClientExamplesGenerator.php
+    // TODO: Refactor this to share code with very similar code in ExamplesGenerator.php
     // TODO: Handle nesting - see PublishSeries.
     public function fieldInit(MethodDetails $method, FieldDetails $field, &$fieldVar, string $fieldVarName, ?Variable $clientVar, Vector &$astAcc)
     {
