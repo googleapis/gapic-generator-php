@@ -39,14 +39,15 @@ class BuildMethodFragmentGenerator
     public static function format(string $code): string
     {
         // Add a class wrapper so that the formatter works (requires valid PHP)
-        $codePrefix = "<?php\n\nnew class {\n";
-        $codeSuffix = "\n};";
+        $codeWrap = "<?php\n\nnew class {\n%s\n};";
 
         // Apply the standard Formatter
-        $code = Formatter::format($codePrefix . $code . $codeSuffix);
+        $code = Formatter::format(sprintf($codeWrap, $code));
 
         // Remove the wrapping class
-        return str_replace($codePrefix, '', substr_replace($code, '', -3));
+        preg_match(sprintf('/' . $codeWrap . '/s', '(.*)'), $code, $matches);
+
+        return $matches[1] . PHP_EOL;
     }
 
     private function generateImpl(): Map
