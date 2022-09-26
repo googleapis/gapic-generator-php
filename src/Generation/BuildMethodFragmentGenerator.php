@@ -42,14 +42,8 @@ class BuildMethodFragmentGenerator
         $codePrefix = "<?php\n\nnew class {\n";
         $codeSuffix = "\n};";
 
-        // Apply our special formatter for the fluid interface (must be done first)
-        $tokens = \PhpCsFixer\Tokenizer\Tokens::fromCode($codePrefix . $code . $codeSuffix);
-        $fixer = new \Google\Generator\Fixer\StatementIndentationFixer(true);
-        $fixer->fix(new \SplFileInfo(''), $tokens);
-        $code = $tokens->generateCode();
-
         // Apply the standard Formatter
-        $code = Formatter::format($code);
+        $code = Formatter::format($codePrefix . $code . $codeSuffix);
 
         // Remove the wrapping class
         return str_replace($codePrefix, '', substr_replace($code, '', -3));
