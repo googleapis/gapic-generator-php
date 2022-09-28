@@ -159,7 +159,7 @@ class FieldDetails
         $this->isRepeated = $field->desc->isRepeated();
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
         // Load resource details, if relevant.
-        $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+        $resRef = ProtoHelpers::resourceReference($field);
         if (!is_null($resRef)) {
             if ($resRef->getType() === '' && $resRef->getChildType() === '') {
                 throw new \Exception('type of child_type must be set to a value.');
@@ -294,5 +294,25 @@ class FieldDetails
             default:
                 throw new \Exception("No exampleValue for type: {$this->desc->getType()}");
         }
+    }
+
+    public function exampleResourceName(SourceFileContext $ctx, string $namespace)
+    {
+        // IMPORTANT: The template name getters are always generated with the first
+        // pattern in the proto, so keep that behavior here.
+        if (count($this->resourceDetails->patterns) > 0) {
+            $args = $this->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
+        } else {
+            // TODO: Better handling of wild-card patterns.
+            $args = $this->name . "-" . hash("md5", $this->name);
+        }
+        $helperClass = $this->resourceDetails->helperClass($namespace);
+        
+        $varValue = AST::call($ctx->type($helperClass), $this->resourceDetails->formatMethod)($args);
+        if ($this->isRepeated) {
+            $varValue = AST::array([$varValue]);
+        }
+
+        return $varValue;
     }
 }

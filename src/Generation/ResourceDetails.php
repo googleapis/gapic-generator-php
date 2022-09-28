@@ -24,6 +24,7 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpProperty;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\Type;
 
 class ResourceDetails implements ResourcePart
 {
@@ -35,13 +36,17 @@ class ResourceDetails implements ResourcePart
             throw new \Exception("Resource-name type is illformed: '{$this->type}'");
         }
         $this->nameCamelCase = Helpers::toCamelCase($typeParts[1]);
+        $this->nameUpperCamelCase = Helpers::toUpperCamelCase($typeParts[1]);
         $this->nameSnakeCase = Helpers::toSnakeCase($typeParts[1]);
         $this->templateProperty = Ast::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase('get_' . $typeParts[1]) . 'NameTemplate');
-        $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
         $this->patterns = Vector::new($desc->getPattern())
             ->filter(fn ($x) => $x !== '*')
             ->map(fn ($x) => new ResourcePatternDetails($x));
+        // Just use the first pattern for the format method in examples.
+        $this->formatMethod = $this->patterns->count() > 0 ?
+            $this->patterns->firstOrNull()->getFormatMethod() :
+            new PhpMethod($this->nameCamelCase);
     }
 
     /** @var string The type name (unique resource name) of this resource. */
@@ -49,6 +54,9 @@ class ResourceDetails implements ResourcePart
 
     /** @var string The underlying name of this resource. */
     public string $nameCamelCase;
+
+    /** @var string The underlying name of this resource in UpperCamelCase. */
+    public string $nameUpperCamelCase;
 
     /** @var string The underlying name of this resource. */
     public string $nameSnakeCase;
@@ -64,6 +72,18 @@ class ResourceDetails implements ResourcePart
 
     /** @var Vector Vector of ResourcePatternDetails; the resource-name patterns. */
     public Vector $patterns;
+
+    /** 
+     * Given a package-level namespace, construct the helper class type for this resource.
+     * 
+     * @param string $namespace The package-level namespace for the resource.
+     * 
+     * @return Type type of the generated helper class for the resource.
+     */
+    public function helperClass(string $namespace): Type
+    {
+        return Type::fromName($namespace . '\\ResourceNames\\' . $this->nameUpperCamelCase);
+    }
 
     // ResourcePart implementation.
 

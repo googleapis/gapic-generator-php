@@ -27,12 +27,10 @@ namespace Testing\BasicDiregapic\Gapic;
 use Google\ApiCore\ApiException;
 
 use Google\ApiCore\CredentialsWrapper;
-
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\LongRunning\OperationsClient;
 
+use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -115,7 +113,7 @@ use Testing\BasicDiregapic\Used;
  * ```
  * $libraryServiceClient = new LibraryServiceClient();
  * try {
- *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+ *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
  *     $comments = [];
  *     $libraryServiceClient->addComments($formattedName, $comments);
  * } finally {
@@ -124,9 +122,9 @@ use Testing\BasicDiregapic\Used;
  * ```
  *
  * Many parameters require resource names to be formatted in a particular way. To
- * assist with these names, this class includes a format method for each type of
- * name, and additionally a parseName method to extract the individual identifiers
- * contained within formatted names that are returned by the API.
+ * assist with these names, this package includes resource name builder classes for
+ * each reource type with formatting methods for requests, and parsing methods for
+ * extracting resource ID segments.
  */
 class LibraryServiceGapicClient
 {
@@ -159,42 +157,6 @@ class LibraryServiceGapicClient
         'https://www.googleapis.com/auth/library',
         'https://www.googleapis.com/auth/cloud-platform',
     ];
-
-    private static $archiveNameTemplate;
-
-    private static $archiveBookNameTemplate;
-
-    private static $archivedBookNameTemplate;
-
-    private static $bookNameTemplate;
-
-    private static $folderNameTemplate;
-
-    private static $inventoryNameTemplate;
-
-    private static $locationNameTemplate;
-
-    private static $organizationReaderNameTemplate;
-
-    private static $projectNameTemplate;
-
-    private static $projectBookNameTemplate;
-
-    private static $projectLocationPublisherBookNameTemplate;
-
-    private static $projectReaderNameTemplate;
-
-    private static $projectShelfReaderSurnameReaderFirstNameNameTemplate;
-
-    private static $publisherNameTemplate;
-
-    private static $readerNameTemplate;
-
-    private static $shelfNameTemplate;
-
-    private static $shelfBookOneBookTwoNameTemplate;
-
-    private static $pathTemplateMap;
 
     private $operationsClient;
 
@@ -233,538 +195,6 @@ class LibraryServiceGapicClient
         return [
             'rest',
         ];
-    }
-
-    private static function getArchiveNameTemplate()
-    {
-        if (self::$archiveNameTemplate == null) {
-            self::$archiveNameTemplate = new PathTemplate('archives/{archive}');
-        }
-
-        return self::$archiveNameTemplate;
-    }
-
-    private static function getArchiveBookNameTemplate()
-    {
-        if (self::$archiveBookNameTemplate == null) {
-            self::$archiveBookNameTemplate = new PathTemplate('archives/{archive}/books/{book}');
-        }
-
-        return self::$archiveBookNameTemplate;
-    }
-
-    private static function getArchivedBookNameTemplate()
-    {
-        if (self::$archivedBookNameTemplate == null) {
-            self::$archivedBookNameTemplate = new PathTemplate('archives/{archive}/books/{book}');
-        }
-
-        return self::$archivedBookNameTemplate;
-    }
-
-    private static function getBookNameTemplate()
-    {
-        if (self::$bookNameTemplate == null) {
-            self::$bookNameTemplate = new PathTemplate('shelves/{shelf}/books/{book_one}~{book_two}');
-        }
-
-        return self::$bookNameTemplate;
-    }
-
-    private static function getFolderNameTemplate()
-    {
-        if (self::$folderNameTemplate == null) {
-            self::$folderNameTemplate = new PathTemplate('folders/{folder}');
-        }
-
-        return self::$folderNameTemplate;
-    }
-
-    private static function getInventoryNameTemplate()
-    {
-        if (self::$inventoryNameTemplate == null) {
-            self::$inventoryNameTemplate = new PathTemplate('projects/{project}/locations/{location}/publishers/{publisher}/inventory');
-        }
-
-        return self::$inventoryNameTemplate;
-    }
-
-    private static function getLocationNameTemplate()
-    {
-        if (self::$locationNameTemplate == null) {
-            self::$locationNameTemplate = new PathTemplate('projects/{project}/locations/{location}');
-        }
-
-        return self::$locationNameTemplate;
-    }
-
-    private static function getOrganizationReaderNameTemplate()
-    {
-        if (self::$organizationReaderNameTemplate == null) {
-            self::$organizationReaderNameTemplate = new PathTemplate('organization/{organization}/reader');
-        }
-
-        return self::$organizationReaderNameTemplate;
-    }
-
-    private static function getProjectNameTemplate()
-    {
-        if (self::$projectNameTemplate == null) {
-            self::$projectNameTemplate = new PathTemplate('projects/{project}');
-        }
-
-        return self::$projectNameTemplate;
-    }
-
-    private static function getProjectBookNameTemplate()
-    {
-        if (self::$projectBookNameTemplate == null) {
-            self::$projectBookNameTemplate = new PathTemplate('projects/{project}/books/{book}');
-        }
-
-        return self::$projectBookNameTemplate;
-    }
-
-    private static function getProjectLocationPublisherBookNameTemplate()
-    {
-        if (self::$projectLocationPublisherBookNameTemplate == null) {
-            self::$projectLocationPublisherBookNameTemplate = new PathTemplate('projects/{project}/locations/{location}/publishers/{publisher}/inventory/books/{book}');
-        }
-
-        return self::$projectLocationPublisherBookNameTemplate;
-    }
-
-    private static function getProjectReaderNameTemplate()
-    {
-        if (self::$projectReaderNameTemplate == null) {
-            self::$projectReaderNameTemplate = new PathTemplate('projects/{project}/readers/{reader}');
-        }
-
-        return self::$projectReaderNameTemplate;
-    }
-
-    private static function getProjectShelfReaderSurnameReaderFirstNameNameTemplate()
-    {
-        if (self::$projectShelfReaderSurnameReaderFirstNameNameTemplate == null) {
-            self::$projectShelfReaderSurnameReaderFirstNameNameTemplate = new PathTemplate('projects/{project}/shelves/{shelf}/readers/{reader_surname}.{reader_first_name}');
-        }
-
-        return self::$projectShelfReaderSurnameReaderFirstNameNameTemplate;
-    }
-
-    private static function getPublisherNameTemplate()
-    {
-        if (self::$publisherNameTemplate == null) {
-            self::$publisherNameTemplate = new PathTemplate('projects/{project}/locations/{location}/publishers/{publisher}');
-        }
-
-        return self::$publisherNameTemplate;
-    }
-
-    private static function getReaderNameTemplate()
-    {
-        if (self::$readerNameTemplate == null) {
-            self::$readerNameTemplate = new PathTemplate('projects/{project}/readers/{reader}');
-        }
-
-        return self::$readerNameTemplate;
-    }
-
-    private static function getShelfNameTemplate()
-    {
-        if (self::$shelfNameTemplate == null) {
-            self::$shelfNameTemplate = new PathTemplate('shelves/{shelf}');
-        }
-
-        return self::$shelfNameTemplate;
-    }
-
-    private static function getShelfBookOneBookTwoNameTemplate()
-    {
-        if (self::$shelfBookOneBookTwoNameTemplate == null) {
-            self::$shelfBookOneBookTwoNameTemplate = new PathTemplate('shelves/{shelf}/books/{book_one}~{book_two}');
-        }
-
-        return self::$shelfBookOneBookTwoNameTemplate;
-    }
-
-    private static function getPathTemplateMap()
-    {
-        if (self::$pathTemplateMap == null) {
-            self::$pathTemplateMap = [
-                'archive' => self::getArchiveNameTemplate(),
-                'archiveBook' => self::getArchiveBookNameTemplate(),
-                'archivedBook' => self::getArchivedBookNameTemplate(),
-                'book' => self::getBookNameTemplate(),
-                'folder' => self::getFolderNameTemplate(),
-                'inventory' => self::getInventoryNameTemplate(),
-                'location' => self::getLocationNameTemplate(),
-                'organizationReader' => self::getOrganizationReaderNameTemplate(),
-                'project' => self::getProjectNameTemplate(),
-                'projectBook' => self::getProjectBookNameTemplate(),
-                'projectLocationPublisherBook' => self::getProjectLocationPublisherBookNameTemplate(),
-                'projectReader' => self::getProjectReaderNameTemplate(),
-                'projectShelfReaderSurnameReaderFirstName' => self::getProjectShelfReaderSurnameReaderFirstNameNameTemplate(),
-                'publisher' => self::getPublisherNameTemplate(),
-                'reader' => self::getReaderNameTemplate(),
-                'shelf' => self::getShelfNameTemplate(),
-                'shelfBookOneBookTwo' => self::getShelfBookOneBookTwoNameTemplate(),
-            ];
-        }
-
-        return self::$pathTemplateMap;
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a archive
-     * resource.
-     *
-     * @param string $archive
-     *
-     * @return string The formatted archive resource.
-     */
-    public static function archiveName($archive)
-    {
-        return self::getArchiveNameTemplate()->render([
-            'archive' => $archive,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a archive_book
-     * resource.
-     *
-     * @param string $archive
-     * @param string $book
-     *
-     * @return string The formatted archive_book resource.
-     */
-    public static function archiveBookName($archive, $book)
-    {
-        return self::getArchiveBookNameTemplate()->render([
-            'archive' => $archive,
-            'book' => $book,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * archived_book resource.
-     *
-     * @param string $archive
-     * @param string $book
-     *
-     * @return string The formatted archived_book resource.
-     */
-    public static function archivedBookName($archive, $book)
-    {
-        return self::getArchivedBookNameTemplate()->render([
-            'archive' => $archive,
-            'book' => $book,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a book
-     * resource.
-     *
-     * @param string $shelf
-     * @param string $bookOne
-     * @param string $bookTwo
-     *
-     * @return string The formatted book resource.
-     */
-    public static function bookName($shelf, $bookOne, $bookTwo)
-    {
-        return self::getBookNameTemplate()->render([
-            'shelf' => $shelf,
-            'book_one' => $bookOne,
-            'book_two' => $bookTwo,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a folder
-     * resource.
-     *
-     * @param string $folder
-     *
-     * @return string The formatted folder resource.
-     */
-    public static function folderName($folder)
-    {
-        return self::getFolderNameTemplate()->render([
-            'folder' => $folder,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a inventory
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $publisher
-     *
-     * @return string The formatted inventory resource.
-     */
-    public static function inventoryName($project, $location, $publisher)
-    {
-        return self::getInventoryNameTemplate()->render([
-            'project' => $project,
-            'location' => $location,
-            'publisher' => $publisher,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a location
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     *
-     * @return string The formatted location resource.
-     */
-    public static function locationName($project, $location)
-    {
-        return self::getLocationNameTemplate()->render([
-            'project' => $project,
-            'location' => $location,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_reader resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted organization_reader resource.
-     */
-    public static function organizationReaderName($organization)
-    {
-        return self::getOrganizationReaderNameTemplate()->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a project
-     * resource.
-     *
-     * @param string $project
-     *
-     * @return string The formatted project resource.
-     */
-    public static function projectName($project)
-    {
-        return self::getProjectNameTemplate()->render([
-            'project' => $project,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a project_book
-     * resource.
-     *
-     * @param string $project
-     * @param string $book
-     *
-     * @return string The formatted project_book resource.
-     */
-    public static function projectBookName($project, $book)
-    {
-        return self::getProjectBookNameTemplate()->render([
-            'project' => $project,
-            'book' => $book,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_location_publisher_book resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $publisher
-     * @param string $book
-     *
-     * @return string The formatted project_location_publisher_book resource.
-     */
-    public static function projectLocationPublisherBookName($project, $location, $publisher, $book)
-    {
-        return self::getProjectLocationPublisherBookNameTemplate()->render([
-            'project' => $project,
-            'location' => $location,
-            'publisher' => $publisher,
-            'book' => $book,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_reader resource.
-     *
-     * @param string $project
-     * @param string $reader
-     *
-     * @return string The formatted project_reader resource.
-     */
-    public static function projectReaderName($project, $reader)
-    {
-        return self::getProjectReaderNameTemplate()->render([
-            'project' => $project,
-            'reader' => $reader,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_shelf_reader_surname_reader_first_name resource.
-     *
-     * @param string $project
-     * @param string $shelf
-     * @param string $readerSurname
-     * @param string $readerFirstName
-     *
-     * @return string The formatted project_shelf_reader_surname_reader_first_name resource.
-     */
-    public static function projectShelfReaderSurnameReaderFirstNameName($project, $shelf, $readerSurname, $readerFirstName)
-    {
-        return self::getProjectShelfReaderSurnameReaderFirstNameNameTemplate()->render([
-            'project' => $project,
-            'shelf' => $shelf,
-            'reader_surname' => $readerSurname,
-            'reader_first_name' => $readerFirstName,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a publisher
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $publisher
-     *
-     * @return string The formatted publisher resource.
-     */
-    public static function publisherName($project, $location, $publisher)
-    {
-        return self::getPublisherNameTemplate()->render([
-            'project' => $project,
-            'location' => $location,
-            'publisher' => $publisher,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a reader
-     * resource.
-     *
-     * @param string $project
-     * @param string $reader
-     *
-     * @return string The formatted reader resource.
-     */
-    public static function readerName($project, $reader)
-    {
-        return self::getReaderNameTemplate()->render([
-            'project' => $project,
-            'reader' => $reader,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a shelf
-     * resource.
-     *
-     * @param string $shelf
-     *
-     * @return string The formatted shelf resource.
-     */
-    public static function shelfName($shelf)
-    {
-        return self::getShelfNameTemplate()->render([
-            'shelf' => $shelf,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * shelf_book_one_book_two resource.
-     *
-     * @param string $shelf
-     * @param string $bookOne
-     * @param string $bookTwo
-     *
-     * @return string The formatted shelf_book_one_book_two resource.
-     */
-    public static function shelfBookOneBookTwoName($shelf, $bookOne, $bookTwo)
-    {
-        return self::getShelfBookOneBookTwoNameTemplate()->render([
-            'shelf' => $shelf,
-            'book_one' => $bookOne,
-            'book_two' => $bookTwo,
-        ]);
-    }
-
-    /**
-     * Parses a formatted name string and returns an associative array of the components in the name.
-     * The following name formats are supported:
-     * Template: Pattern
-     * - archive: archives/{archive}
-     * - archiveBook: archives/{archive}/books/{book}
-     * - archivedBook: archives/{archive}/books/{book}
-     * - book: shelves/{shelf}/books/{book_one}~{book_two}
-     * - folder: folders/{folder}
-     * - inventory: projects/{project}/locations/{location}/publishers/{publisher}/inventory
-     * - location: projects/{project}/locations/{location}
-     * - organizationReader: organization/{organization}/reader
-     * - project: projects/{project}
-     * - projectBook: projects/{project}/books/{book}
-     * - projectLocationPublisherBook: projects/{project}/locations/{location}/publishers/{publisher}/inventory/books/{book}
-     * - projectReader: projects/{project}/readers/{reader}
-     * - projectShelfReaderSurnameReaderFirstName: projects/{project}/shelves/{shelf}/readers/{reader_surname}.{reader_first_name}
-     * - publisher: projects/{project}/locations/{location}/publishers/{publisher}
-     * - reader: projects/{project}/readers/{reader}
-     * - shelf: shelves/{shelf}
-     * - shelfBookOneBookTwo: shelves/{shelf}/books/{book_one}~{book_two}
-     *
-     * The optional $template argument can be supplied to specify a particular pattern,
-     * and must match one of the templates listed above. If no $template argument is
-     * provided, or if the $template argument does not match one of the templates
-     * listed, then parseName will check each of the supported templates, and return
-     * the first match.
-     *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
-     *
-     * @return array An associative array from name component IDs to component values.
-     *
-     * @throws ValidationException If $formattedName could not be matched.
-     */
-    public static function parseName($formattedName, $template = null)
-    {
-        $templateMap = self::getPathTemplateMap();
-        if ($template) {
-            if (!isset($templateMap[$template])) {
-                throw new ValidationException("Template name $template does not exist");
-            }
-
-            return $templateMap[$template]->match($formattedName);
-        }
-
-        foreach ($templateMap as $templateName => $pathTemplate) {
-            try {
-                return $pathTemplate->match($formattedName);
-            } catch (ValidationException $ex) {
-                // Swallow the exception to continue trying other path templates
-            }
-        }
-
-        throw new ValidationException("Input did not match any known format. Input: $formattedName");
     }
 
     /**
@@ -861,7 +291,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $comments = [];
      *     $libraryServiceClient->addComments($formattedName, $comments);
      * } finally {
@@ -977,7 +407,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Shelf::fromShelf('[SHELF]');
      *     $book = new BookResponse();
      *     $response = $libraryServiceClient->createBook($formattedName, $book);
      * } finally {
@@ -1015,7 +445,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedParent = $libraryServiceClient->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+     *     $formattedParent = Publisher::fromProjectLocationPublisher('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
      *     $asset = 'asset';
      *     $parentAsset = 'parent_asset';
      *     $assets = [];
@@ -1100,7 +530,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $libraryServiceClient->deleteBook($formattedName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1133,7 +563,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Shelf::fromShelf('[SHELF]');
      *     $libraryServiceClient->deleteShelf($formattedName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1166,10 +596,10 @@ class LibraryServiceGapicClient
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
      *     $formattedNames = [
-     *         $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+     *         Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
      *     ];
      *     $formattedShelves = [
-     *         $libraryServiceClient->shelfName('[SHELF]'),
+     *         Shelf::fromShelf('[SHELF]'),
      *     ];
      *     // Iterate over pages of elements
      *     $pagedResponse = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
@@ -1236,7 +666,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $operationResponse = $libraryServiceClient->getBigBook($formattedName);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
@@ -1296,7 +726,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $operationResponse = $libraryServiceClient->getBigNothing($formattedName);
      *     $operationResponse->pollUntilComplete();
      *     if ($operationResponse->operationSucceeded()) {
@@ -1354,7 +784,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $response = $libraryServiceClient->getBook($formattedName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1389,7 +819,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere($formattedName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1431,10 +861,10 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedAltBookName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedPlace = $libraryServiceClient->locationName('[PROJECT]', '[LOCATION]');
-     *     $formattedFolder = $libraryServiceClient->folderName('[FOLDER]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedAltBookName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedPlace = Location::fromProjectLocation('[PROJECT]', '[LOCATION]');
+     *     $formattedFolder = Folder::fromFolder('[FOLDER]');
      *     $response = $libraryServiceClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1476,8 +906,8 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->archivedBookName('[ARCHIVE]', '[BOOK]');
-     *     $formattedParent = $libraryServiceClient->projectName('[PROJECT]');
+     *     $formattedName = ArchivedBook::fromArchiveBook('[ARCHIVE]', '[BOOK]');
+     *     $formattedParent = Project::fromProject('[PROJECT]');
      *     $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1514,7 +944,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Shelf::fromShelf('[SHELF]');
      *     $options = 'options';
      *     $response = $libraryServiceClient->getShelf($formattedName, $options);
      * } finally {
@@ -1622,7 +1052,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Shelf::fromShelf('[SHELF]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $libraryServiceClient->listBooks($formattedName);
      *     foreach ($pagedResponse->iteratePages() as $page) {
@@ -1867,8 +1297,8 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $formattedOtherShelfName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Shelf::fromShelf('[SHELF]');
+     *     $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
      *     $response = $libraryServiceClient->mergeShelves($formattedName, $formattedOtherShelfName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -1905,8 +1335,8 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedOtherShelfName = $libraryServiceClient->shelfName('[SHELF]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
      *     $response = $libraryServiceClient->moveBook($formattedName, $formattedOtherShelfName);
      * } finally {
      *     $libraryServiceClient->close();
@@ -2281,7 +1711,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $book = new BookResponse();
      *     $response = $libraryServiceClient->updateBook($formattedName, $book);
      * } finally {
@@ -2331,7 +1761,7 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
      *     $indexName = 'index_name';
      *     $indexMap = [];
      *     $libraryServiceClient->updateBookIndex($formattedName, $indexName, $indexMap);

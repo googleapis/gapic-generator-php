@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Api\ResourceDescriptor;
-use Google\Api\ResourceReference;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Collections\Map;
 use Google\Protobuf\Internal\DescriptorProto;
@@ -52,6 +50,12 @@ class ProtoCatalog
 
     /** @var Map *Readonly* Map<string, Vector<ResourceDescriptor>> of all child/parent resources. */
     public Map $parentResourceByChildType;
+
+    /** @var Map *Readonly* Map<string, Vector<ResourceDescriptor>> resources, message and file based, by proto package. */
+    public Map $resourcesByPackage;
+
+    /** @var Map *Readonly* Map<string, Vector<ResourceDescriptor>> resources referenced, both direct and indirect (via child_type) references, within a proto package. */
+    public Map $referencedResourcesByPackage;
 
     /** @var Map *Readonly* Map<string, ServiceDescriptorProto> of all services by full name. */
     public Map $servicesByFullname;
@@ -135,16 +139,39 @@ class ProtoCatalog
         }
 
         $messagesResourceDefs = $allMsgs
-            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
+            ->map(fn ($x) => ProtoHelpers::resourceDefintion($x))
             ->filter(fn ($x) => !is_null($x));
         $this->msgResourcesByFullname = $allMsgs
           ->toMap(
               fn ($x) => $x->desc->getFullName(),
-              fn ($x) =>  ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class)
+              fn ($x) =>  ProtoHelpers::resourceDefintion($x)
           )->filter(fn ($k, $v) => !is_null($v));
         $fileResourceDefs = $fileDescs
-            ->flatMap(fn ($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
+            ->flatMap(fn ($x) => ProtoHelpers::fileResourceDefintions($x));
         $resourceDefs = $messagesResourceDefs->concat($fileResourceDefs);
+
+        // Collect the file-level google.api.resource_definition annotations and
+        // organize them into flattened Vectors by protobuf package.
+        $fileResourcesByPackage = $fileDescs
+            ->groupBy(
+                fn($x) => $x->getPackage(),
+                fn($x) => ProtoHelpers::fileResourceDefintions($x))
+            ->mapValues(fn($_, $x) => $x->flatMap(fn($y) => $y));
+        
+        // Group message-level google.api.resource definitions by protobuf package
+        // combined with the file-level definitions in the same package.
+        $this->resourcesByPackage = $allMsgs
+            ->filter(fn($m) => ProtoHelpers::resourceDefintion($m) != null)
+            ->groupBy(
+                fn($m) => $this->msgsToFile->get('.' . $m->desc->getFullName(), null)->getPackage(),
+                fn($m) => ProtoHelpers::resourceDefintion($m))
+            ->mapValues(fn($k, $v) => $fileResourcesByPackage->get($k, null) != null ?
+                // Combine message-level and file-level resource definitions in the same package.
+                $v->concat($fileResourcesByPackage->get($k, Vector::new())) :
+                $v);
+
+        
+
         $this->resourcesByType = $resourceDefs->toMap(fn ($x) => $x->getType());
         // Use 'distinct()' here to keep just the first resource if there are multiple resources with the same pattern.
         $this->resourcesByPattern = $resourceDefs->flatMap(fn ($res) =>
@@ -157,7 +184,7 @@ class ProtoCatalog
             ->toMap(fn ($x) => $x[1]->getType(), fn ($x) => $x[0]);
         $this->parentResourceByChildType = $allMsgs
             ->flatMap(fn ($x) => Vector::new($x->getField()))
-            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+            ->map(fn ($x) => ProtoHelpers::resourceReference($x))
             ->filter(fn ($x) => !is_null($x) && $x->getChildType() !== '')
             ->map(fn ($x) => $x->getChildType())
             ->distinct()
@@ -177,6 +204,27 @@ class ProtoCatalog
             })
             ->filter(fn ($x) => !is_null($x))
             ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);
+
+        $this->referencedResourcesByPackage = $allMsgs
+            ->groupBy(
+                fn($m) => $this->msgsToFile->get('.' . $m->desc->getFullName(), null)->getPackage(),
+                fn($m) => Vector::new($m->getField())
+                    // Collect all non-wildcard resource references.
+                    ->map(fn($x) => ProtoHelpers::resourceReference($x))
+                    ->filter(fn($x) => !is_null($x) && $x->getType() !== '*')
+                    // Resolve direct references to the actual resource, and resolve
+                    // indirect (child_type) references to the possible (parent) resources.
+                    ->flatMap(fn($x) => $x->getType() !== '' ?
+                        Vector::new([$this->resourcesByType->get($x->getType(), null)]) :
+                        $this->parentResourceByChildType->get($x->getChildType(), Vector::new())))
+            ->mapValues(
+                fn($_, $v) => $v
+                    ->flatten()
+                    // Dedupe the resources as there could be many resources that
+                    // share a parent or that reference the same resource.
+                    ->distinct(fn($x) => $x->getType()));
+
+
     }
 
     private static function parentPattern(string $pattern): string

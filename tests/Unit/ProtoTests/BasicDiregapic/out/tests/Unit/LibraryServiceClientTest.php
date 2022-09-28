@@ -51,6 +51,13 @@ use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsResponse;
 use Testing\BasicDiregapic\MoveBooksResponse;
 use Testing\BasicDiregapic\PublishSeriesResponse;
+use Testing\BasicDiregapic\ResourceNames\ArchivedBook;
+use Testing\BasicDiregapic\ResourceNames\Book;
+use Testing\BasicDiregapic\ResourceNames\Folder;
+use Testing\BasicDiregapic\ResourceNames\Location;
+use Testing\BasicDiregapic\ResourceNames\Project;
+use Testing\BasicDiregapic\ResourceNames\Publisher;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
 
@@ -102,7 +109,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $comments = [];
         $gapicClient->addComments($formattedName, $comments);
         $actualRequests = $transport->popReceivedCalls();
@@ -138,7 +145,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $comments = [];
         try {
             $gapicClient->addComments($formattedName, $comments);
@@ -301,7 +308,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
@@ -340,7 +347,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
@@ -373,7 +380,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setName($name);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedParent = $gapicClient->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+        $formattedParent = Publisher::fromProjectLocationPublisher('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
         $asset = 'asset93121264';
         $parentAsset = 'parentAsset1389473563';
         $assets = [];
@@ -416,7 +423,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedParent = $gapicClient->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+        $formattedParent = Publisher::fromProjectLocationPublisher('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
         $asset = 'asset93121264';
         $parentAsset = 'parentAsset1389473563';
         $assets = [];
@@ -519,7 +526,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $gapicClient->deleteBook($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -552,7 +559,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
             $gapicClient->deleteBook($formattedName);
             // If the $gapicClient method call did not throw, fail the test
@@ -580,7 +587,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $gapicClient->deleteShelf($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -613,7 +620,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         try {
             $gapicClient->deleteShelf($formattedName);
             // If the $gapicClient method call did not throw, fail the test
@@ -649,10 +656,10 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedNames = [
-            $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+            Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
         ];
         $formattedShelves = [
-            $gapicClient->shelfName('[SHELF]'),
+            Shelf::fromShelf('[SHELF]'),
         ];
         $response = $gapicClient->findRelatedBooks($formattedNames, $formattedShelves);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
@@ -693,10 +700,10 @@ class LibraryServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         // Mock request
         $formattedNames = [
-            $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
+            Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
         ];
         $formattedShelves = [
-            $gapicClient->shelfName('[SHELF]'),
+            Shelf::fromShelf('[SHELF]'),
         ];
         try {
             $gapicClient->findRelatedBooks($formattedNames, $formattedShelves);
@@ -753,7 +760,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBigBook($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -819,7 +826,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBigBook($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -874,7 +881,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBigNothing($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -940,7 +947,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBigNothing($formattedName);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
@@ -987,7 +994,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBook($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1021,7 +1028,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
             $gapicClient->getBook($formattedName);
             // If the $gapicClient method call did not throw, fail the test
@@ -1057,7 +1064,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setRead($read);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $response = $gapicClient->getBookFromAbsolutelyAnywhere($formattedName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1091,7 +1098,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
             $gapicClient->getBookFromAbsolutelyAnywhere($formattedName);
             // If the $gapicClient method call did not throw, fail the test
@@ -1127,10 +1134,10 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setRead($read);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedAltBookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedPlace = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
-        $formattedFolder = $gapicClient->folderName('[FOLDER]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedAltBookName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedPlace = Location::fromProjectLocation('[PROJECT]', '[LOCATION]');
+        $formattedFolder = Folder::fromFolder('[FOLDER]');
         $response = $gapicClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1170,10 +1177,10 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedAltBookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedPlace = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
-        $formattedFolder = $gapicClient->folderName('[FOLDER]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedAltBookName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedPlace = Location::fromProjectLocation('[PROJECT]', '[LOCATION]');
+        $formattedFolder = Folder::fromFolder('[FOLDER]');
         try {
             $gapicClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
             // If the $gapicClient method call did not throw, fail the test
@@ -1209,8 +1216,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setRead($read);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->archivedBookName('[ARCHIVE]', '[BOOK]');
-        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $formattedName = ArchivedBook::fromArchiveBook('[ARCHIVE]', '[BOOK]');
+        $formattedParent = Project::fromProject('[PROJECT]');
         $response = $gapicClient->getBookFromArchive($formattedName, $formattedParent);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1246,8 +1253,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->archivedBookName('[ARCHIVE]', '[BOOK]');
-        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $formattedName = ArchivedBook::fromArchiveBook('[ARCHIVE]', '[BOOK]');
+        $formattedParent = Project::fromProject('[PROJECT]');
         try {
             $gapicClient->getBookFromArchive($formattedName, $formattedParent);
             // If the $gapicClient method call did not throw, fail the test
@@ -1281,7 +1288,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setInternalTheme($internalTheme);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $options = 'options-1249474914';
         $response = $gapicClient->getShelf($formattedName, $options);
         $this->assertEquals($expectedResponse, $response);
@@ -1318,7 +1325,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $options = 'options-1249474914';
         try {
             $gapicClient->getShelf($formattedName, $options);
@@ -1420,7 +1427,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setBooks($books);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         $response = $gapicClient->listBooks($formattedName);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
@@ -1457,7 +1464,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
         try {
             $gapicClient->listBooks($formattedName);
             // If the $gapicClient method call did not throw, fail the test
@@ -1732,8 +1739,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setInternalTheme($internalTheme);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
-        $formattedOtherShelfName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
+        $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
         $response = $gapicClient->mergeShelves($formattedName, $formattedOtherShelfName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1769,8 +1776,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->shelfName('[SHELF]');
-        $formattedOtherShelfName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Shelf::fromShelf('[SHELF]');
+        $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
         try {
             $gapicClient->mergeShelves($formattedName, $formattedOtherShelfName);
             // If the $gapicClient method call did not throw, fail the test
@@ -1808,8 +1815,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedOtherShelfName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
         $response = $gapicClient->moveBook($formattedName, $formattedOtherShelfName);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -1845,8 +1852,8 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-        $formattedOtherShelfName = $gapicClient->shelfName('[SHELF]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
         try {
             $gapicClient->moveBook($formattedName, $formattedOtherShelfName);
             // If the $gapicClient method call did not throw, fail the test
@@ -2143,7 +2150,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse->setReader($reader);
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
@@ -2182,7 +2189,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
         $bookName = 'bookName2004454676';
         $book->setName($bookName);
@@ -2213,7 +2220,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $indexName = 'indexName746962392';
         $indexMapValue = 'indexMapValue980783207';
         $indexMap = [
@@ -2255,7 +2262,7 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $indexName = 'indexName746962392';
         $indexMapValue = 'indexMapValue980783207';
         $indexMap = [

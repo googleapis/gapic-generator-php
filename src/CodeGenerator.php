@@ -25,6 +25,8 @@ use Google\Generator\Generation\EnumConstantGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\OneofWrapperGenerator;
+use Google\Generator\Generation\ResourceBuilderGenerator;
+use Google\Generator\Generation\ResourceDetails;
 use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\ServiceDetails;
@@ -242,6 +244,15 @@ class CodeGenerator
             }
         }
 
+        foreach (static::generateResourceNameBuilders(
+            $byPackage,
+            $catalog,
+            $licenseYear
+        ) as $file) {
+            $result[] = $file;
+        }
+
+
         return $result;
     }
 
@@ -361,6 +372,40 @@ class CodeGenerator
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}Enums/{$filename}.php", $code];
+        }
+    }
+
+    private static function generateResourceNameBuilders(Map $inputFilesByPackage, ProtoCatalog $catalog, int $licenseYear)
+    {
+        $packagesWithRes = $inputFilesByPackage->keys()
+            ->filter(fn($k) => $catalog->resourcesByPackage->get($k, null) != null);
+
+        foreach($packagesWithRes as $package) {
+            $pkgNamespace = ProtoHelpers::getNamespace($inputFilesByPackage->get($package, Vector::new())->firstOrNull());
+            // Extract the version, if present, from the resource namespace.
+            $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
+            if ($version !== '') {
+                $version = explode('/', $version, /* limit */ 1)[0].'/';
+            }
+            
+            // Resources defined within the package to generate.
+            $resourcesToGenerate = $catalog->resourcesByPackage->get($package, Vector::new());
+            $resourcesToGenerate = $resourcesToGenerate
+                // Combine with parents of those resources defined in the package to generate.
+                ->concat($resourcesToGenerate
+                    ->flatMap(fn($child) => $catalog->parentResourceByChildType->get($child->getType(), Vector::new())))
+                // Combine with the resources referenced in the package to generate.
+                ->concat($catalog->referencedResourcesByPackage->get($package, Vector::new()))
+                // Dedupe resources to generate.
+                ->distinct(fn($r) => $r->getType());
+            foreach($resourcesToGenerate as $resource) {
+                $ctx = new SourceFileContext($pkgNamespace . "\\ResourceNames", $licenseYear);
+                $detail = new ResourceDetails($resource);
+                $file = ResourceBuilderGenerator::generate($ctx, $detail, $pkgNamespace);
+                $code = $file->toCode();
+                $code = Formatter::format($code);
+                yield ["src/{$version}ResourceNames/{$detail->nameUpperCamelCase}.php", $code];
+            }
         }
     }
 }

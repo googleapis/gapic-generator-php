@@ -251,10 +251,4 @@ message FileLevelChildTypeRefRequest {
   ];
 }
 
-// This isn't referenced anywhere, so should be ignored.
-option (google.api.resource_definition) = {
-  type: "resourcenames.example.com/IgnoreMe",
-  pattern: "items_to_ignore/{item_to_ignore_id}"
-};
-
 message PlaceholderResponse {}

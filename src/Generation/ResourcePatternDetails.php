@@ -47,15 +47,17 @@ class ResourcePatternDetails implements ResourcePart
             ->map(fn ($x) => $x->getKey());
         // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
         $tokens = explode("/", $pattern);
-        $nameSegments = $varSegments;
+        $this->idSegments = $varSegments;
         if (substr(end($tokens), 0, 1) !== "{" && substr($pattern, strlen($pattern) - 1) !== "}") {
-            $nameSegments = $nameSegments->append(end($tokens));
+            $this->idSegments = $this->idSegments->append(end($tokens));
         }
-        $this->nameSnakeCase = $nameSegments->join('_');
+
+        $this->nameSnakeCase = $this->idSegments->join('_');
         $this->nameCamelCase = Helpers::toCamelCase($this->nameSnakeCase);
+        $this->nameUpperCamelCase = Helpers::toUpperCamelCase($this->nameSnakeCase);
         $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase("get_{$this->nameCamelCase}") . 'NameTemplate');
-        $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
+        $this->formatMethod = AST::method('from' . $this->nameUpperCamelCase);
         $this->params = $varSegments->map(fn ($x) => [$x, AST::param(null, AST::var(Helpers::toCamelCase($x)))]);
     }
 
@@ -64,6 +66,9 @@ class ResourcePatternDetails implements ResourcePart
 
     /** @var string The underlying name of this resource. */
     public string $nameCamelCase;
+
+    /** @var string The underlying name of this resource in UpperCamelCase. */
+    public string $nameUpperCamelCase;
 
     /** @var string The underlying name of this resource. */
     public string $nameSnakeCase;
@@ -79,6 +84,9 @@ class ResourcePatternDetails implements ResourcePart
 
     /** @var Vector Vector of [name, PhpParam] for each pattern variable segment. */
     public Vector $params;
+
+    /** @var Vector Vector of resource ID variable segments from the pattern. */
+    public Vector $idSegments;
 
     // ResourcePart implementation.
 

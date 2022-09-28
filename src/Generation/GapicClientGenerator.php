@@ -19,11 +19,9 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
@@ -112,12 +110,11 @@ class GapicClientGenerator
                 ])),
                 count($this->serviceDetails->methods) === 0 ? null :
                     PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
-                count($this->serviceDetails->resourceParts) === 0 ? null :
+                !$this->serviceDetails->hasResources ? null :
                      PhpDoc::text(
                          'Many parameters require resource names to be formatted in a particular way. To assist ' .
-                        'with these names, this class includes a format method for each type of name, and additionally ' .
-                        'a parseName method to extract the individual identifiers contained within formatted names ' .
-                        'that are returned by the API.'
+                        'with these names, this package includes resource name builder classes for each reource type ' .
+                        'with formatting methods for requests, and parsing methods for extracting resource ID segments.'
                      ),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
@@ -128,12 +125,10 @@ class GapicClientGenerator
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
-            ->withMembers($this->resourceProperties())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
             ->withMember($this->defaultTransport())
             ->withMember($this->getSupportedTransports())
-            ->withMembers($this->resourceMethods())
             ->withMembers($this->operationMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
@@ -173,127 +168,6 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC, Access::STATIC)
             ->withPhpDocText('The default scopes required by the service.')
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
-    }
-
-    private function resourceProperties(): Vector
-    {
-        if (count($this->serviceDetails->resourceParts) > 0) {
-            // Prevent duplicate properties. Vector's toMap currently does not support cloberring keys.
-            // Sorts these properties alphabetically as a nice side effect.
-            $templateMap = [];
-            foreach ($this->serviceDetails->resourceParts as $r) {
-                $templateMap[$r->nameCamelCase] =
-                  $r->getTemplateProperty()->withAccess(Access::PRIVATE, Access::STATIC);
-            }
-            $templates = Vector::new(array_values($templateMap));
-            $pathTemplateMap = AST::property('pathTemplateMap')
-                ->withAccess(Access::PRIVATE, Access::STATIC);
-            return Vector::new($templates->append($pathTemplateMap));
-        } else {
-            return Vector::new([]);
-        }
-    }
-
-    private function resourceMethods(): Vector
-    {
-        $resourceParts = $this->serviceDetails->resourceParts;
-        if (count($resourceParts) > 0) {
-            $templateGetters = $resourceParts
-                ->map(fn ($x) => $x->getTemplateGetterMethod()
-                    ->withAccess(Access::PRIVATE, Access::STATIC)
-                    ->withBody(AST::block(
-                        AST::if(AST::binaryOp(AST::access(AST::SELF, $x->getTemplateProperty()), '==', AST::NULL))->then(
-                            AST::assign(
-                                AST::access(AST::SELF, $x->getTemplateProperty()),
-                                AST::new($this->ctx->type(Type::fromName(PathTemplate::class)))($x->getPattern())
-                            )
-                        ),
-                        AST::return(AST::access(AST::SELF, $x->getTemplateProperty()))
-                    )));
-            $pathTemplateMap = AST::property('pathTemplateMap');
-            $getPathTemplateMap = AST::method('getPathTemplateMap')
-                ->withAccess(Access::PRIVATE, Access::STATIC)
-                ->withBody(AST::block(
-                    AST::if(AST::binaryOp(AST::access(AST::SELF, $pathTemplateMap), '==', AST::NULL))->then(
-                        AST::assign(
-                            AST::access(AST::SELF, $pathTemplateMap),
-                            AST::array($resourceParts
-                            ->toArray(fn ($x) => $x->getNameCamelCase(), fn ($x) => AST::call(AST::SELF, $x->getTemplateGetterMethod())()))
-                        )
-                    ),
-                    AST::return(AST::access(AST::SELF, $pathTemplateMap))
-                ));
-            $formatMethods = $resourceParts
-                ->map(fn ($x) => $x->getFormatMethod()
-                    ->withAccess(Access::PUBLIC, Access::STATIC)
-                    ->withParams($x->getParams()->map(fn ($x) => $x[1]))
-                    ->withBody(AST::block(
-                        AST::return(AST::call(AST::SELF, $x->getTemplateGetterMethod())()->render(
-                            AST::array($x->getParams()->toArray(fn ($x) => $x[0], fn ($x) => $x[1]))
-                        ))
-                    ))
-                    ->withPhpDoc(PhpDoc::block(
-                        PhpDoc::text(
-                            'Formats a string containing the fully-qualified path to represent a',
-                            $x->getNameSnakeCase(),
-                            'resource.'
-                        ),
-                        $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
-                        $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
-                    )));
-            $formattedName = AST::param(null, AST::var('formattedName'));
-            $template = AST::param(null, AST::var('template'), AST::NULL);
-            $templateMap = AST::var('templateMap');
-            $templateName = AST::var('templateName');
-            $pathTemplate = AST::var('pathTemplate');
-            $ex = AST::var('ex');
-            $parseMethod = AST::method('parseName')
-                ->withAccess(Access::PUBLIC, Access::STATIC)
-                ->withParams($formattedName, $template)
-                ->withBody(AST::block(
-                    AST::assign($templateMap, AST::call(AST::SELF, $getPathTemplateMap)()),
-                    AST::if($template->var)->then(
-                        AST::if(AST::not(AST::call(AST::ISSET)($templateMap[$template->var])))->then(
-                            AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                                AST::interpolatedString('Template name $template does not exist')
-                            ))
-                        ),
-                        AST::return($templateMap[$template->var]->match($formattedName->var))
-                    ),
-                    AST::foreach($templateMap, $pathTemplate, $templateName)(
-                        AST::try(
-                            AST::return($pathTemplate->match($formattedName))
-                        )->catch($this->ctx->type(Type::fromName(ValidationException::class)), $ex)(
-                            '// Swallow the exception to continue trying other path templates'
-                        )
-                    ),
-                    AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                        AST::interpolatedString('Input did not match any known format. Input: $formattedName')
-                    ))
-                ))
-                ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::preFormattedText(Vector::new([
-                        'Parses a formatted name string and returns an associative array of the components in the name.',
-                        'The following name formats are supported:',
-                        'Template: Pattern',
-                    ])->concat($resourceParts->map(fn ($x) => "- {$x->getNameCamelCase()}: {$x->getPattern()}"))),
-                    PhpDoc::text(
-                        'The optional $template argument can be supplied to specify a particular pattern, and must',
-                        'match one of the templates listed above. If no $template argument is provided, or if the',
-                        '$template argument does not match one of the templates listed, then parseName will check',
-                        'each of the supported templates, and return the first match.'
-                    ),
-                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
-                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
-                    PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
-                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
-                ));
-            return $templateGetters->append($getPathTemplateMap)->concat($formatMethods)->append($parseMethod);
-        } else {
-            return Vector::new([]);
-        }
     }
 
     private function operationsClient(): ?PhpClassMember

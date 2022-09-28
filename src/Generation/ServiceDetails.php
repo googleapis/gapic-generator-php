@@ -18,9 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Api\ResourceDescriptor;
-use Google\Api\ResourceReference;
-use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
@@ -28,8 +25,6 @@ use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
 use Google\Protobuf\Internal\ServiceDescriptorProto;
 
@@ -116,14 +111,8 @@ class ServiceDetails
 
     public bool $hasCustomOpCancel;
 
-    /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
-    public Vector $resourceParts;
-
-    /**
-     * @var Vector *Readonly* Vector of ResourceDetails; all resource definitions in this service's
-     * RPC's request messages.
-     */
-    public Vector $resourceDefs;
+    /** @var bool *Readonly* Whether this service's package defines or refers to resources. */
+    public bool $hasResources;
 
     /** @var bool *Readonly* Whether the service is deprecated. */
     public bool $isDeprecated = false;
@@ -197,84 +186,8 @@ class ServiceDetails
             $this->unitTestGroupName = null;
         }
         $this->hasLro = $this->methods->any(fn ($x) => $x->methodType === MethodDetails::LRO);
-        // Resource-names
-        // Wildcard patterns are ignored.
-        // A resource-name which has just a single wild-card pattern is ignored.
-        $msgsSeen = Set::new();
-        $gatherMsgResDefs = null;
-        $gatherMsgResDefs = function (DescriptorProto $msg, int $level) use (&$gatherMsgResDefs, &$msgsSeen, $catalog): Vector {
-            if ($msgsSeen[$msg->desc->getFullname()]) {
-                return Vector::new([]);
-            }
-            $msgsSeen = $msgsSeen->add($msg->desc->getFullname());
-            // Only top-level resource-defs are included; matches monolith behaviour.
-            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
-            $messageResourceDef = $level === 0 ?
-                ProtoHelpers::getCustomOption($msg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class) :
-                null;
-            $fields = Vector::new($msg->getField());
-            $resourceRefs = $fields
-                ->map(fn ($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
-                ->filter(fn ($x) => !is_null($x));
-            $typeRefResourceDefs = $resourceRefs
-                ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
-                ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
-            $childTypeRefResourceDefs = $resourceRefs
-                ->filter(fn ($x) => $x->getChildType() !== '')
-                ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
-
-            // Find all fields (only one level deep) that are resources defined elsewhere.
-            $typeFieldRefResourceDefs = Vector::new([]);
-            $childFieldTypeRefResourceDefs = Vector::new([]);
-            if ($level == 0) {
-                $fieldDetails = $fields
-                ->filter(fn ($f) => !is_null($f))
-                ->map(fn ($f) => new FieldDetails($catalog, $msg, $f));
-
-                $fullnameFn = function ($fd) {
-                    return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
-                };
-                $fieldResourceRefs = $fieldDetails
-                ->filter(fn ($x) => $x->isRequired
-                  && $x->isMessage
-                  && !is_null($x->fullname))
-                  ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
-                  ->filter(fn ($x) => !is_null($x));
-                $typeFieldRefResourceDefs = $fieldResourceRefs
-                ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
-                ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
-                $childFieldTypeRefResourceDefs = $fieldResourceRefs
-                ->filter(fn ($x) => $x->getType() !== '')
-                ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getType(), Vector::new([])));
-            }
-
-            // Recurse one level down into message fields; matches monolith behaviour.
-            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
-            if ($level === 0) {
-                $nestedDefs = $fields
-                    ->filter(fn ($f) => $f->getType() === GPBType::MESSAGE)
-                    ->map(fn ($f) => $catalog->msgsByFullname[$f->desc->getMessageType()])
-                    ->flatMap(fn ($nestedMsg) => $gatherMsgResDefs($nestedMsg, $level + 1));
-            } else {
-                $nestedDefs = Vector::new([]);
-            }
-            return $typeRefResourceDefs
-              ->concat($typeFieldRefResourceDefs)
-              ->concat($childFieldTypeRefResourceDefs)
-              ->concat($childTypeRefResourceDefs)
-              ->append($messageResourceDef)
-              ->concat($nestedDefs);
-        };
-        $this->resourceDefs = $this->methods
-            ->flatMap(fn ($x) => $gatherMsgResDefs($x->inputMsg, 0))
-            ->filter(fn ($x) => !is_null($x))
-            ->map(fn ($res) => new ResourceDetails($res));
-        $this->resourceParts = $this->resourceDefs
-            ->filter(fn ($x) => $x->patterns->any())
-            // CAREFUL! This is a mix of ResourceDetails and ResourcePatternDetails.
-            ->concat($this->resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
-            ->distinct(fn ($x) => $x->getNameCamelCase())
-            ->orderBy(fn ($x) => $x->getNameCamelCase());
+        $this->hasResources = $this->catalog->resourcesByPackage->get($this->package, Vector::new())->count() > 0 ||
+            $this->catalog->referencedResourcesByPackage->get($this->package, Vector::new())->count() > 0;
     }
 
     /**
