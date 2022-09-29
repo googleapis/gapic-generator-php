@@ -32,15 +32,13 @@ use Google\Cloud\Logging\V2\LogBucket;
  * Lists buckets.
  *
  * @param string $formattedParent The parent resource whose buckets are to be listed:
- *
  *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
  *                                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]"
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
- *                                "folders/[FOLDER_ID]/locations/[LOCATION_ID]"
- *
- *                                Note: The locations portion of the resource must be specified, but
- *                                supplying the character `-` in place of [LOCATION_ID] will return all
- *                                buckets.
+ *                                "folders/[FOLDER_ID]/locations/[LOCATION_ID]" Note: The locations portion of the
+ *                                resource must be specified, but supplying the character `-` in place of
+ *                                [LOCATION_ID] will return all buckets. For help formatting this field, please
+ *                                see {@see ConfigServiceV2Client::organizationLocationName()}.
  */
 function list_buckets_sample(string $formattedParent): void
 {
@@ -68,10 +66,7 @@ function list_buckets_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = ConfigServiceV2Client::organizationLocationName(
-        '[ORGANIZATION]',
-        '[LOCATION]'
-    );
+    $formattedParent = ConfigServiceV2Client::organizationLocationName('[ORGANIZATION]', '[LOCATION]');
 
     list_buckets_sample($formattedParent);
 }

@@ -38,7 +38,8 @@ use Google\Cloud\Kms\V1\ProtectionLevel;
  *
  * @param string $formattedParent          The [name][google.cloud.kms.v1.KeyRing.name] of the
  *                                         [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
- *                                         [ImportJobs][google.cloud.kms.v1.ImportJob].
+ *                                         [ImportJobs][google.cloud.kms.v1.ImportJob]. For help formatting this field,
+ *                                         please see {@see KeyManagementServiceClient::keyRingName()}.
  * @param string $importJobId              It must be unique within a KeyRing and match the regular
  *                                         expression `[a-zA-Z0-9_-]{1,63}`
  * @param int    $importJobImportMethod    Immutable. The wrapping method to be used for incoming key material.
@@ -82,11 +83,7 @@ function create_import_job_sample(
  */
 function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::keyRingName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[KEY_RING]'
-    );
+    $formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
     $importJobId = '[IMPORT_JOB_ID]';
     $importJobImportMethod = ImportMethod::IMPORT_METHOD_UNSPECIFIED;
     $importJobProtectionLevel = ProtectionLevel::PROTECTION_LEVEL_UNSPECIFIED;

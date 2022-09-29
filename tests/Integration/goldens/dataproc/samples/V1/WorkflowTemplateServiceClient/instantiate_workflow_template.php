@@ -50,16 +50,16 @@ use Google\Rpc\Status;
  * [Operation.response][google.longrunning.Operation.response] will be
  * [Empty][google.protobuf.Empty].
  *
- * @param string $formattedName The resource name of the workflow template, as described
- *                              in https://cloud.google.com/apis/design/resource_names.
- *
- *                              * For `projects.regions.workflowTemplates.instantiate`, the resource name
- *                              of the template has the following format:
- *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
- *
- *                              * For `projects.locations.workflowTemplates.instantiate`, the resource name
- *                              of the template has the following format:
+ * @param string $formattedName The resource name of the workflow template, as described in
+ *                              https://cloud.google.com/apis/design/resource_names. * For
+ *                              `projects.regions.workflowTemplates.instantiate`, the resource name of the
+ *                              template has the following format:
+ *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}` * For
+ *                              `projects.locations.workflowTemplates.instantiate`, the resource name of the
+ *                              template has the following format:
  *                              `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+ *                              For help formatting this field, please see {@see
+ *                              WorkflowTemplateServiceClient::workflowTemplateName()}.
  */
 function instantiate_workflow_template_sample(string $formattedName): void
 {
@@ -69,20 +69,15 @@ function instantiate_workflow_template_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $workflowTemplateServiceClient->instantiateWorkflowTemplate(
-            $formattedName
-        );
+        $response = $workflowTemplateServiceClient->instantiateWorkflowTemplate($formattedName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

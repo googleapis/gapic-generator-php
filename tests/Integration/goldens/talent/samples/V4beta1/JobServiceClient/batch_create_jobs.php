@@ -33,19 +33,16 @@ use Google\Rpc\Status;
 /**
  * Begins executing a batch create jobs operation.
  *
- * @param string $formattedParent   The resource name of the tenant under which the job is created.
- *
- *                                  The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                  "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
- *                                  is created. For example, "projects/foo".
- * @param string $formattedCompany  The resource name of the company listing the job.
- *
- *                                  The format is
- *                                  "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For
- *                                  example, "projects/foo/tenants/bar/companies/baz".
- *
- *                                  If tenant id is unspecified, the default tenant is used. For
- *                                  example, "projects/foo/companies/bar".
+ * @param string $formattedParent   The resource name of the tenant under which the job is created. The format is
+ *                                  "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                  "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant is
+ *                                  created. For example, "projects/foo". For help formatting this field, please see
+ *                                  {@see JobServiceClient::projectName()}.
+ * @param string $formattedCompany  The resource name of the company listing the job. The format is
+ *                                  "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For example,
+ *                                  "projects/foo/tenants/bar/companies/baz". If tenant id is unspecified, the
+ *                                  default tenant is used. For example, "projects/foo/companies/bar". For help
+ *                                  formatting this field, please see {@see JobServiceClient::companyName()}.
  * @param string $jobsRequisitionId The requisition ID, also referred to as the posting ID, is assigned by the
  *                                  client to identify a job. This field is intended to be used by clients
  *                                  for client identification and tracking of postings. A job isn't allowed
@@ -88,27 +85,17 @@ function batch_create_jobs_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $jobServiceClient->batchCreateJobs(
-            $formattedParent,
-            $jobs,
-            $formattedCompany
-        );
+        $response = $jobServiceClient->batchCreateJobs($formattedParent, $jobs, $formattedCompany);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var JobOperationResult $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -123,11 +110,7 @@ function batch_create_jobs_sample(
 function callSample(): void
 {
     $formattedParent = JobServiceClient::projectName('[PROJECT]');
-    $formattedCompany = JobServiceClient::companyName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[COMPANY]'
-    );
+    $formattedCompany = JobServiceClient::companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
     $jobsRequisitionId = '[REQUISITION_ID]';
     $jobsTitle = '[TITLE]';
     $jobsDescription = '[DESCRIPTION]';

@@ -31,13 +31,11 @@ use Google\Cloud\Talent\V4beta1\CompletionClient;
  * Completes the specified prefix with keyword suggestions.
  * Intended for use by a job search auto-complete search box.
  *
- * @param string $formattedParent Resource name of tenant the completion is performed within.
- *
- *                                The format is "projects/{project_id}/tenants/{tenant_id}", for example,
- *                                "projects/foo/tenant/bar".
- *
- *                                If tenant id is unspecified, the default tenant is used, for
- *                                example, "projects/foo".
+ * @param string $formattedParent Resource name of tenant the completion is performed within. The format is
+ *                                "projects/{project_id}/tenants/{tenant_id}", for example,
+ *                                "projects/foo/tenant/bar". If tenant id is unspecified, the default tenant is
+ *                                used, for example, "projects/foo". For help formatting this field, please see
+ *                                {@see CompletionClient::projectName()}.
  * @param string $query           The query used to generate suggestions.
  *
  *                                The maximum number of allowed characters is 255.
@@ -45,22 +43,15 @@ use Google\Cloud\Talent\V4beta1\CompletionClient;
  *
  *                                The maximum allowed page size is 10.
  */
-function complete_query_sample(
-    string $formattedParent,
-    string $query,
-    int $pageSize
-): void {
+function complete_query_sample(string $formattedParent, string $query, int $pageSize): void
+{
     // Create a client.
     $completionClient = new CompletionClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var CompleteQueryResponse $response */
-        $response = $completionClient->completeQuery(
-            $formattedParent,
-            $query,
-            $pageSize
-        );
+        $response = $completionClient->completeQuery($formattedParent, $query, $pageSize);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

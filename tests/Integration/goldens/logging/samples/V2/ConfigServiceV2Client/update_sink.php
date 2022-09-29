@@ -34,15 +34,13 @@ use Google\Cloud\Logging\V2\LogSink;
  * The updated sink might also have a new `writer_identity`; see the
  * `unique_writer_identity` field.
  *
- * @param string $formattedSinkName The full resource name of the sink to update, including the parent
- *                                  resource and the sink identifier:
- *
- *                                  "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+ * @param string $formattedSinkName The full resource name of the sink to update, including the parent resource and
+ *                                  the sink identifier: "projects/[PROJECT_ID]/sinks/[SINK_ID]"
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
- *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
- *
- *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`.
+ *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]" Example:
+ *                                  `"projects/my-project-id/sinks/my-sink-id"`. For help formatting this field,
+ *                                  please see {@see ConfigServiceV2Client::logSinkName()}.
  * @param string $sinkName          The client-assigned sink identifier, unique within the project. Example:
  *                                  `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
  *                                  characters and can include only the following characters: upper and

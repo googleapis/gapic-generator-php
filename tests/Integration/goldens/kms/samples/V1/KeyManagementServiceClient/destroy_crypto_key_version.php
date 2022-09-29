@@ -48,7 +48,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * may be called to reverse the process.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy. For help
+ *                              formatting this field, please see {@see
+ *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
  */
 function destroy_crypto_key_version_sample(string $formattedName): void
 {
@@ -58,9 +60,7 @@ function destroy_crypto_key_version_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->destroyCryptoKeyVersion(
-            $formattedName
-        );
+        $response = $keyManagementServiceClient->destroyCryptoKeyVersion($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

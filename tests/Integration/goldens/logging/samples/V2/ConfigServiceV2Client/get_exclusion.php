@@ -31,13 +31,12 @@ use Google\Cloud\Logging\V2\LogExclusion;
  * Gets the description of an exclusion.
  *
  * @param string $formattedName The resource name of an existing exclusion:
- *
  *                              "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
  *                              "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
- *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
- *
- *                              Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
+ *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
+ *                              `"projects/my-project-id/exclusions/my-exclusion-id"`. For help formatting this
+ *                              field, please see {@see ConfigServiceV2Client::logExclusionName()}.
  */
 function get_exclusion_sample(string $formattedName): void
 {
@@ -61,10 +60,7 @@ function get_exclusion_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logExclusionName(
-        '[PROJECT]',
-        '[EXCLUSION]'
-    );
+    $formattedName = ConfigServiceV2Client::logExclusionName('[PROJECT]', '[EXCLUSION]');
 
     get_exclusion_sample($formattedName);
 }

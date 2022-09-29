@@ -35,7 +35,9 @@ use Google\Protobuf\Timestamp;
  * @param string $formattedName The relative resource name of the finding. See:
  *                              https://cloud.google.com/apis/design/resource_names#relative_resource_name
  *                              Example:
- *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
+ *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}". For
+ *                              help formatting this field, please see {@see
+ *                              SecurityCenterClient::findingName()}.
  * @param int    $state         The desired State of the finding.
  */
 function set_finding_state_sample(string $formattedName, int $state): void
@@ -49,11 +51,7 @@ function set_finding_state_sample(string $formattedName, int $state): void
     // Call the API and handle any network failures.
     try {
         /** @var Finding $response */
-        $response = $securityCenterClient->setFindingState(
-            $formattedName,
-            $state,
-            $startTime
-        );
+        $response = $securityCenterClient->setFindingState($formattedName, $state, $startTime);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -67,11 +65,7 @@ function set_finding_state_sample(string $formattedName, int $state): void
  */
 function callSample(): void
 {
-    $formattedName = SecurityCenterClient::findingName(
-        '[ORGANIZATION]',
-        '[SOURCE]',
-        '[FINDING]'
-    );
+    $formattedName = SecurityCenterClient::findingName('[ORGANIZATION]', '[SOURCE]', '[FINDING]');
     $state = State::STATE_UNSPECIFIED;
 
     set_finding_state_sample($formattedName, $state);

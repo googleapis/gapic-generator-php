@@ -33,14 +33,12 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * deleted.
  *
  * @param string $formattedName The full resource name of the bucket to delete.
- *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
+ *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" Example:
+ *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. For help
+ *                              formatting this field, please see {@see ConfigServiceV2Client::logBucketName()}.
  */
 function delete_bucket_sample(string $formattedName): void
 {
@@ -50,7 +48,7 @@ function delete_bucket_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $configServiceV2Client->deleteBucket($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -63,11 +61,7 @@ function delete_bucket_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logBucketName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[BUCKET]'
-    );
+    $formattedName = ConfigServiceV2Client::logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
 
     delete_bucket_sample($formattedName);
 }

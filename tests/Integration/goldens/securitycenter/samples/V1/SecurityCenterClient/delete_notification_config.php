@@ -30,7 +30,9 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Deletes a notification config.
  *
  * @param string $formattedName Name of the notification config to delete. Its format is
- *                              "organizations/[organization_id]/notificationConfigs/[config_id]".
+ *                              "organizations/[organization_id]/notificationConfigs/[config_id]". For help
+ *                              formatting this field, please see {@see
+ *                              SecurityCenterClient::notificationConfigName()}.
  */
 function delete_notification_config_sample(string $formattedName): void
 {
@@ -40,7 +42,7 @@ function delete_notification_config_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $securityCenterClient->deleteNotificationConfig($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

@@ -31,8 +31,9 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Gets a logs-based metric.
  *
  * @param string $formattedMetricName The resource name of the desired metric:
- *
  *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+ *                                    For help formatting this field, please see {@see
+ *                                    MetricsServiceV2Client::logMetricName()}.
  */
 function get_log_metric_sample(string $formattedMetricName): void
 {
@@ -56,10 +57,7 @@ function get_log_metric_sample(string $formattedMetricName): void
  */
 function callSample(): void
 {
-    $formattedMetricName = MetricsServiceV2Client::logMetricName(
-        '[PROJECT]',
-        '[METRIC]'
-    );
+    $formattedMetricName = MetricsServiceV2Client::logMetricName('[PROJECT]', '[METRIC]');
 
     get_log_metric_sample($formattedMetricName);
 }

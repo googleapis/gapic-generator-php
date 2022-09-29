@@ -48,10 +48,7 @@ function set_labels_sample(string $labelFingerprint): void
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setLabels(
-            $resourceLabels,
-            $labelFingerprint
-        );
+        $response = $clusterManagerClient->setLabels($resourceLabels, $labelFingerprint);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -38,7 +38,8 @@ use Google\Rpc\Status;
  * error.
  *
  * @param string $formattedParent Name of the organization to run asset discovery for. Its format is
- *                                "organizations/[organization_id]".
+ *                                "organizations/[organization_id]". For help formatting this field, please see
+ *                                {@see SecurityCenterClient::organizationName()}.
  */
 function run_asset_discovery_sample(string $formattedParent): void
 {
@@ -54,17 +55,11 @@ function run_asset_discovery_sample(string $formattedParent): void
         if ($response->operationSucceeded()) {
             /** @var RunAssetDiscoveryResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

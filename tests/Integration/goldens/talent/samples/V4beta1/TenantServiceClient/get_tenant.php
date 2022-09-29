@@ -30,10 +30,10 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 /**
  * Retrieves specified tenant.
  *
- * @param string $formattedName The resource name of the tenant to be retrieved.
- *
- *                              The format is "projects/{project_id}/tenants/{tenant_id}", for example,
- *                              "projects/foo/tenants/bar".
+ * @param string $formattedName The resource name of the tenant to be retrieved. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}", for example,
+ *                              "projects/foo/tenants/bar". For help formatting this field, please see {@see
+ *                              TenantServiceClient::tenantName()}.
  */
 function get_tenant_sample(string $formattedName): void
 {

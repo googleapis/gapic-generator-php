@@ -41,11 +41,11 @@ use Google\Cloud\Talent\V4beta1\SearchJobsResponse\MatchingJob;
  * present in the database, and only returns jobs the caller has
  * permission to search against.
  *
- * @param string $formattedParent The resource name of the tenant to search within.
- *
- *                                The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
- *                                is created. For example, "projects/foo".
+ * @param string $formattedParent The resource name of the tenant to search within. The format is
+ *                                "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant is
+ *                                created. For example, "projects/foo". For help formatting this field, please see
+ *                                {@see JobServiceClient::projectName()}.
  */
 function search_jobs_for_alert_sample(string $formattedParent): void
 {
@@ -58,10 +58,7 @@ function search_jobs_for_alert_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $jobServiceClient->searchJobsForAlert(
-            $formattedParent,
-            $requestMetadata
-        );
+        $response = $jobServiceClient->searchJobsForAlert($formattedParent, $requestMetadata);
 
         /** @var MatchingJob $element */
         foreach ($response as $element) {

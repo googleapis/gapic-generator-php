@@ -33,14 +33,11 @@ use Google\Cloud\Logging\V2\LogSink;
  * `writer_identity` is not permitted to write to the destination. A sink can
  * export log entries only from the resource owning the sink.
  *
- * @param string $formattedParent The resource in which to create the sink:
- *
- *                                "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]"
- *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                "folders/[FOLDER_ID]"
- *
- *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
+ * @param string $formattedParent The resource in which to create the sink: "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
+ *                                "folders/[FOLDER_ID]" Examples: `"projects/my-logging-project"`,
+ *                                `"organizations/123456789"`. For help formatting this field, please see {@see
+ *                                ConfigServiceV2Client::projectName()}.
  * @param string $sinkName        The client-assigned sink identifier, unique within the project. Example:
  *                                `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
  *                                characters and can include only the following characters: upper and

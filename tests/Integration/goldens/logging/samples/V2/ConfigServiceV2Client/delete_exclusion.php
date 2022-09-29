@@ -30,13 +30,12 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * Deletes an exclusion.
  *
  * @param string $formattedName The resource name of an existing exclusion to delete:
- *
  *                              "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
  *                              "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
- *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
- *
- *                              Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
+ *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
+ *                              `"projects/my-project-id/exclusions/my-exclusion-id"`. For help formatting this
+ *                              field, please see {@see ConfigServiceV2Client::logExclusionName()}.
  */
 function delete_exclusion_sample(string $formattedName): void
 {
@@ -46,7 +45,7 @@ function delete_exclusion_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $configServiceV2Client->deleteExclusion($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -59,10 +58,7 @@ function delete_exclusion_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logExclusionName(
-        '[PROJECT]',
-        '[EXCLUSION]'
-    );
+    $formattedName = ConfigServiceV2Client::logExclusionName('[PROJECT]', '[EXCLUSION]');
 
     delete_exclusion_sample($formattedName);
 }

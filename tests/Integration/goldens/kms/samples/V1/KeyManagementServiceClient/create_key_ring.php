@@ -33,14 +33,13 @@ use Google\Cloud\Kms\V1\KeyRing;
  *
  * @param string $formattedParent The resource name of the location associated with the
  *                                [KeyRings][google.cloud.kms.v1.KeyRing], in the format
- *                                `projects/&#42;/locations/*`.
+ *                                `projects/&#42;/locations/*`. For help formatting this field, please see {@see
+ *                                KeyManagementServiceClient::locationName()}.
  * @param string $keyRingId       It must be unique within a location and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
  */
-function create_key_ring_sample(
-    string $formattedParent,
-    string $keyRingId
-): void {
+function create_key_ring_sample(string $formattedParent, string $keyRingId): void
+{
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
@@ -50,11 +49,7 @@ function create_key_ring_sample(
     // Call the API and handle any network failures.
     try {
         /** @var KeyRing $response */
-        $response = $keyManagementServiceClient->createKeyRing(
-            $formattedParent,
-            $keyRingId,
-            $keyRing
-        );
+        $response = $keyManagementServiceClient->createKeyRing($formattedParent, $keyRingId, $keyRing);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -68,10 +63,7 @@ function create_key_ring_sample(
  */
 function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::locationName(
-        '[PROJECT]',
-        '[LOCATION]'
-    );
+    $formattedParent = KeyManagementServiceClient::locationName('[PROJECT]', '[LOCATION]');
     $keyRingId = '[KEY_RING_ID]';
 
     create_key_ring_sample($formattedParent, $keyRingId);

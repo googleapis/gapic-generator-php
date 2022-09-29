@@ -31,12 +31,11 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * Lists the logs in projects, organizations, folders, or billing accounts.
  * Only logs that have entries are listed.
  *
- * @param string $formattedParent The resource name that owns the logs:
- *
- *                                "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]"
- *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
+ * @param string $formattedParent The resource name that owns the logs: "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]"
+ *                                For help formatting this field, please see {@see
+ *                                LoggingServiceV2Client::projectName()}.
  */
 function list_logs_sample(string $formattedParent): void
 {

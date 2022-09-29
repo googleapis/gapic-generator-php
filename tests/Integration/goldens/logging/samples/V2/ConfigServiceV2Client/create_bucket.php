@@ -32,10 +32,10 @@ use Google\Cloud\Logging\V2\LogBucket;
  * been created, the region cannot be changed.
  *
  * @param string $formattedParent The resource in which to create the bucket:
- *
- *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
- *
- *                                Example: `"projects/my-logging-project/locations/global"`
+ *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]" Example:
+ *                                `"projects/my-logging-project/locations/global"`
+ *                                For help formatting this field, please see {@see
+ *                                ConfigServiceV2Client::organizationLocationName()}.
  * @param string $bucketId        A client-assigned identifier such as `"my-bucket"`. Identifiers are
  *                                limited to 100 characters and can include only letters, digits,
  *                                underscores, hyphens, and periods.
@@ -51,11 +51,7 @@ function create_bucket_sample(string $formattedParent, string $bucketId): void
     // Call the API and handle any network failures.
     try {
         /** @var LogBucket $response */
-        $response = $configServiceV2Client->createBucket(
-            $formattedParent,
-            $bucketId,
-            $bucket
-        );
+        $response = $configServiceV2Client->createBucket($formattedParent, $bucketId, $bucket);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -69,10 +65,7 @@ function create_bucket_sample(string $formattedParent, string $bucketId): void
  */
 function callSample(): void
 {
-    $formattedParent = ConfigServiceV2Client::organizationLocationName(
-        '[ORGANIZATION]',
-        '[LOCATION]'
-    );
+    $formattedParent = ConfigServiceV2Client::organizationLocationName('[ORGANIZATION]', '[LOCATION]');
     $bucketId = '[BUCKET_ID]';
 
     create_bucket_sample($formattedParent, $bucketId);

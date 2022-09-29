@@ -32,6 +32,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *
  * @param string $formattedParent The parent catalog resource name, such as
  *                                `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`.
+ *                                For help formatting this field, please see {@see
+ *                                ProductServiceClient::branchName()}.
  * @param string $productTitle    Product title.
  *
  *                                This field must be a UTF-8 encoded string with a length limit of 1,000
@@ -71,11 +73,7 @@ function create_product_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Product $response */
-        $response = $productServiceClient->createProduct(
-            $formattedParent,
-            $product,
-            $productId
-        );
+        $response = $productServiceClient->createProduct($formattedParent, $product, $productId);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

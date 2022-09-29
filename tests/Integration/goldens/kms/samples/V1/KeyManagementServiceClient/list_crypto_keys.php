@@ -31,8 +31,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 /**
  * Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
  *
- * @param string $formattedParent The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
- *                                to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
+ * @param string $formattedParent The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
+ *                                format `projects/&#42;/locations/&#42;/keyRings/*`. For help formatting this
+ *                                field, please see {@see KeyManagementServiceClient::keyRingName()}.
  */
 function list_crypto_keys_sample(string $formattedParent): void
 {
@@ -60,11 +61,7 @@ function list_crypto_keys_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::keyRingName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[KEY_RING]'
-    );
+    $formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
 
     list_crypto_keys_sample($formattedParent);
 }

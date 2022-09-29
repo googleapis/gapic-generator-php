@@ -31,14 +31,12 @@ use Google\Cloud\Logging\V2\LogBucket;
  * Gets a bucket.
  *
  * @param string $formattedName The resource name of the bucket:
- *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
+ *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" Example:
+ *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. For help
+ *                              formatting this field, please see {@see ConfigServiceV2Client::logBucketName()}.
  */
 function get_bucket_sample(string $formattedName): void
 {
@@ -62,11 +60,7 @@ function get_bucket_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logBucketName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[BUCKET]'
-    );
+    $formattedName = ConfigServiceV2Client::logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
 
     get_bucket_sample($formattedName);
 }

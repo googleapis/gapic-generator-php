@@ -29,11 +29,16 @@ use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  *
- * @param string $formattedReqFolderName
- * @param string $formattedReqFolderMultiName
- * @param string $formattedReqFolderMultiNameHistory
- * @param string $formattedReqOrderTest1
- * @param string $formattedReqOrderTest2
+ * @param string $formattedReqFolderName             For help formatting this field, please see {@see
+ *                                                   ResourceNamesClient::folderName()}.
+ * @param string $formattedReqFolderMultiName        For help formatting this field, please see {@see
+ *                                                   ResourceNamesClient::folder1Name()}.
+ * @param string $formattedReqFolderMultiNameHistory For help formatting this field, please see {@see
+ *                                                   ResourceNamesClient::folder1Name()}.
+ * @param string $formattedReqOrderTest1             For help formatting this field, please see {@see
+ *                                                   ResourceNamesClient::order2Name()}.
+ * @param string $formattedReqOrderTest2             For help formatting this field, please see {@see
+ *                                                   ResourceNamesClient::order2Name()}.
  */
 function file_level_child_type_ref_method_sample(
     string $formattedReqFolderName,

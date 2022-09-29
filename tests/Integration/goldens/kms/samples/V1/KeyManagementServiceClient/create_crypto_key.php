@@ -35,15 +35,14 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
  * are required.
  *
- * @param string $formattedParent The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
- *                                associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+ * @param string $formattedParent The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing associated with the
+ *                                [CryptoKeys][google.cloud.kms.v1.CryptoKey]. For help formatting this field,
+ *                                please see {@see KeyManagementServiceClient::keyRingName()}.
  * @param string $cryptoKeyId     It must be unique within a KeyRing and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
  */
-function create_crypto_key_sample(
-    string $formattedParent,
-    string $cryptoKeyId
-): void {
+function create_crypto_key_sample(string $formattedParent, string $cryptoKeyId): void
+{
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
@@ -71,11 +70,7 @@ function create_crypto_key_sample(
  */
 function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::keyRingName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[KEY_RING]'
-    );
+    $formattedParent = KeyManagementServiceClient::keyRingName('[PROJECT]', '[LOCATION]', '[KEY_RING]');
     $cryptoKeyId = '[CRYPTO_KEY_ID]';
 
     create_crypto_key_sample($formattedParent, $cryptoKeyId);

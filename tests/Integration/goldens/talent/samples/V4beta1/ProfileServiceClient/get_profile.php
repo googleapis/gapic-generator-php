@@ -30,11 +30,10 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 /**
  * Gets the specified profile.
  *
- * @param string $formattedName Resource name of the profile to get.
- *
- *                              The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
- *                              example, "projects/foo/tenants/bar/profiles/baz".
+ * @param string $formattedName Resource name of the profile to get. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For example,
+ *                              "projects/foo/tenants/bar/profiles/baz". For help formatting this field, please
+ *                              see {@see ProfileServiceClient::profileName()}.
  */
 function get_profile_sample(string $formattedName): void
 {
@@ -58,11 +57,7 @@ function get_profile_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ProfileServiceClient::profileName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[PROFILE]'
-    );
+    $formattedName = ProfileServiceClient::profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
 
     get_profile_sample($formattedName);
 }

@@ -30,8 +30,9 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Deletes a logs-based metric.
  *
  * @param string $formattedMetricName The resource name of the metric to delete:
- *
  *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+ *                                    For help formatting this field, please see {@see
+ *                                    MetricsServiceV2Client::logMetricName()}.
  */
 function delete_log_metric_sample(string $formattedMetricName): void
 {
@@ -41,7 +42,7 @@ function delete_log_metric_sample(string $formattedMetricName): void
     // Call the API and handle any network failures.
     try {
         $metricsServiceV2Client->deleteLogMetric($formattedMetricName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -54,10 +55,7 @@ function delete_log_metric_sample(string $formattedMetricName): void
  */
 function callSample(): void
 {
-    $formattedMetricName = MetricsServiceV2Client::logMetricName(
-        '[PROJECT]',
-        '[METRIC]'
-    );
+    $formattedMetricName = MetricsServiceV2Client::logMetricName('[PROJECT]', '[METRIC]');
 
     delete_log_metric_sample($formattedMetricName);
 }

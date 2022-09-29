@@ -30,16 +30,14 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 /**
  * Gets a [Product][google.cloud.retail.v2alpha.Product].
  *
- * @param string $formattedName Full resource name of
- *                              [Product][google.cloud.retail.v2alpha.Product], such as
+ * @param string $formattedName Full resource name of [Product][google.cloud.retail.v2alpha.Product], such as
  *                              `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
- *
  *                              If the caller does not have permission to access the
- *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
- *                              not it exists, a PERMISSION_DENIED error is returned.
- *
- *                              If the requested [Product][google.cloud.retail.v2alpha.Product] does not
- *                              exist, a NOT_FOUND error is returned.
+ *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or not it
+ *                              exists, a PERMISSION_DENIED error is returned. If the requested
+ *                              [Product][google.cloud.retail.v2alpha.Product] does not exist, a NOT_FOUND error
+ *                              is returned. For help formatting this field, please see {@see
+ *                              ProductServiceClient::productName()}.
  */
 function get_product_sample(string $formattedName): void
 {

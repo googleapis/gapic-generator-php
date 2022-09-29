@@ -29,16 +29,16 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 /**
  * Deletes a workflow template. It does not cancel in-progress workflows.
  *
- * @param string $formattedName The resource name of the workflow template, as described
- *                              in https://cloud.google.com/apis/design/resource_names.
- *
- *                              * For `projects.regions.workflowTemplates.delete`, the resource name
- *                              of the template has the following format:
- *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
- *
- *                              * For `projects.locations.workflowTemplates.instantiate`, the resource name
- *                              of the template has the following format:
+ * @param string $formattedName The resource name of the workflow template, as described in
+ *                              https://cloud.google.com/apis/design/resource_names. * For
+ *                              `projects.regions.workflowTemplates.delete`, the resource name of the template
+ *                              has the following format:
+ *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}` * For
+ *                              `projects.locations.workflowTemplates.instantiate`, the resource name of the
+ *                              template has the following format:
  *                              `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+ *                              For help formatting this field, please see {@see
+ *                              WorkflowTemplateServiceClient::workflowTemplateName()}.
  */
 function delete_workflow_template_sample(string $formattedName): void
 {
@@ -48,7 +48,7 @@ function delete_workflow_template_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $workflowTemplateServiceClient->deleteWorkflowTemplate($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

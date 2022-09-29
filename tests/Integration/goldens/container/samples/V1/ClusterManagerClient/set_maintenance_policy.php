@@ -38,11 +38,8 @@ use Google\Cloud\Container\V1\Operation;
  *                          cluster resides.
  * @param string $clusterId The name of the cluster to update.
  */
-function set_maintenance_policy_sample(
-    string $projectId,
-    string $zone,
-    string $clusterId
-): void {
+function set_maintenance_policy_sample(string $projectId, string $zone, string $clusterId): void
+{
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 

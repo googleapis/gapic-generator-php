@@ -37,10 +37,11 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * @param string $formattedParent Name of the source the findings belong to. Its format is
  *                                "organizations/[organization_id]/sources/[source_id],
  *                                folders/[folder_id]/sources/[source_id], or
- *                                projects/[project_id]/sources/[source_id]". To list across all sources
- *                                provide a source_id of `-`. For example:
- *                                organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
- *                                projects/{projects_id}/sources/-
+ *                                projects/[project_id]/sources/[source_id]". To list across all sources provide a
+ *                                source_id of `-`. For example: organizations/{organization_id}/sources/-,
+ *                                folders/{folder_id}/sources/- or projects/{projects_id}/sources/-
+ *                                For help formatting this field, please see {@see
+ *                                SecurityCenterClient::sourceName()}.
  */
 function list_findings_sample(string $formattedParent): void
 {
@@ -68,10 +69,7 @@ function list_findings_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = SecurityCenterClient::sourceName(
-        '[ORGANIZATION]',
-        '[SOURCE]'
-    );
+    $formattedParent = SecurityCenterClient::sourceName('[ORGANIZATION]', '[SOURCE]');
 
     list_findings_sample($formattedParent);
 }

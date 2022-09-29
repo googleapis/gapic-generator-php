@@ -31,10 +31,10 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 /**
  * Lists profiles by filter. The order is unspecified.
  *
- * @param string $formattedParent The resource name of the tenant under which the profile is created.
- *
- *                                The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                "projects/foo/tenants/bar".
+ * @param string $formattedParent The resource name of the tenant under which the profile is created. The format
+ *                                is "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                "projects/foo/tenants/bar". For help formatting this field, please see {@see
+ *                                ProfileServiceClient::tenantName()}.
  */
 function list_profiles_sample(string $formattedParent): void
 {

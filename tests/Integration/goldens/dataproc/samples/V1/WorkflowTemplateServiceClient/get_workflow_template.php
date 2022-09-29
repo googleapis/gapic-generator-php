@@ -33,16 +33,16 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
  * Can retrieve previously instantiated template by specifying optional
  * version parameter.
  *
- * @param string $formattedName The resource name of the workflow template, as described
- *                              in https://cloud.google.com/apis/design/resource_names.
- *
- *                              * For `projects.regions.workflowTemplates.get`, the resource name of the
- *                              template has the following format:
- *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
- *
- *                              * For `projects.locations.workflowTemplates.get`, the resource name of the
- *                              template has the following format:
+ * @param string $formattedName The resource name of the workflow template, as described in
+ *                              https://cloud.google.com/apis/design/resource_names. * For
+ *                              `projects.regions.workflowTemplates.get`, the resource name of the template has
+ *                              the following format:
+ *                              `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}` * For
+ *                              `projects.locations.workflowTemplates.get`, the resource name of the template
+ *                              has the following format:
  *                              `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+ *                              For help formatting this field, please see {@see
+ *                              WorkflowTemplateServiceClient::workflowTemplateName()}.
  */
 function get_workflow_template_sample(string $formattedName): void
 {

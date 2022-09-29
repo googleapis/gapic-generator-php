@@ -30,14 +30,12 @@ use Google\Cloud\Logging\V2\LogSink;
 /**
  * Gets a sink.
  *
- * @param string $formattedSinkName The resource name of the sink:
- *
- *                                  "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+ * @param string $formattedSinkName The resource name of the sink: "projects/[PROJECT_ID]/sinks/[SINK_ID]"
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
- *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
- *
- *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`.
+ *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]" Example:
+ *                                  `"projects/my-project-id/sinks/my-sink-id"`. For help formatting this field,
+ *                                  please see {@see ConfigServiceV2Client::logSinkName()}.
  */
 function get_sink_sample(string $formattedSinkName): void
 {

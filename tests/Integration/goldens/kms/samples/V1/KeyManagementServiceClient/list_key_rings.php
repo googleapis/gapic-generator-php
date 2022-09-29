@@ -33,7 +33,8 @@ use Google\Cloud\Kms\V1\KeyRing;
  *
  * @param string $formattedParent The resource name of the location associated with the
  *                                [KeyRings][google.cloud.kms.v1.KeyRing], in the format
- *                                `projects/&#42;/locations/*`.
+ *                                `projects/&#42;/locations/*`. For help formatting this field, please see {@see
+ *                                KeyManagementServiceClient::locationName()}.
  */
 function list_key_rings_sample(string $formattedParent): void
 {
@@ -61,10 +62,7 @@ function list_key_rings_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = KeyManagementServiceClient::locationName(
-        '[PROJECT]',
-        '[LOCATION]'
-    );
+    $formattedParent = KeyManagementServiceClient::locationName('[PROJECT]', '[LOCATION]');
 
     list_key_rings_sample($formattedParent);
 }

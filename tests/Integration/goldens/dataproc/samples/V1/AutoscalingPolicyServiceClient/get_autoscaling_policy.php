@@ -30,16 +30,16 @@ use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 /**
  * Retrieves autoscaling policy.
  *
- * @param string $formattedName The "resource name" of the autoscaling policy, as described
- *                              in https://cloud.google.com/apis/design/resource_names.
- *
- *                              * For `projects.regions.autoscalingPolicies.get`, the resource name
- *                              of the policy has the following format:
- *                              `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}`
- *
- *                              * For `projects.locations.autoscalingPolicies.get`, the resource name
- *                              of the policy has the following format:
+ * @param string $formattedName The "resource name" of the autoscaling policy, as described in
+ *                              https://cloud.google.com/apis/design/resource_names. * For
+ *                              `projects.regions.autoscalingPolicies.get`, the resource name of the policy has
+ *                              the following format:
+ *                              `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}` * For
+ *                              `projects.locations.autoscalingPolicies.get`, the resource name of the policy
+ *                              has the following format:
  *                              `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
+ *                              For help formatting this field, please see {@see
+ *                              AutoscalingPolicyServiceClient::autoscalingPolicyName()}.
  */
 function get_autoscaling_policy_sample(string $formattedName): void
 {
@@ -49,9 +49,7 @@ function get_autoscaling_policy_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var AutoscalingPolicy $response */
-        $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy(
-            $formattedName
-        );
+        $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

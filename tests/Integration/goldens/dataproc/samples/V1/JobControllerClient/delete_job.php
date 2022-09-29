@@ -35,18 +35,15 @@ use Google\Cloud\Dataproc\V1\JobControllerClient;
  * @param string $region    The Dataproc region in which to handle the request.
  * @param string $jobId     The job ID.
  */
-function delete_job_sample(
-    string $projectId,
-    string $region,
-    string $jobId
-): void {
+function delete_job_sample(string $projectId, string $region, string $jobId): void
+{
     // Create a client.
     $jobControllerClient = new JobControllerClient();
 
     // Call the API and handle any network failures.
     try {
         $jobControllerClient->deleteJob($projectId, $region, $jobId);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

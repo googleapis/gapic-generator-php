@@ -31,12 +31,11 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Creates or updates a logs-based metric.
  *
  * @param string $formattedMetricName The resource name of the metric to update:
- *
- *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
- *
- *                                    The updated metric must be provided in the request and it's
- *                                    `name` field must be the same as `[METRIC_ID]` If the metric
- *                                    does not exist in `[PROJECT_ID]`, then a new metric is created.
+ *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]" The updated metric must be provided
+ *                                    in the request and it's `name` field must be the same as `[METRIC_ID]` If the
+ *                                    metric does not exist in `[PROJECT_ID]`, then a new metric is created. For help
+ *                                    formatting this field, please see {@see
+ *                                    MetricsServiceV2Client::logMetricName()}.
  * @param string $metricName          The client-assigned metric identifier.
  *                                    Examples: `"error_count"`, `"nginx/requests"`.
  *
@@ -74,10 +73,7 @@ function update_log_metric_sample(
     // Call the API and handle any network failures.
     try {
         /** @var LogMetric $response */
-        $response = $metricsServiceV2Client->updateLogMetric(
-            $formattedMetricName,
-            $metric
-        );
+        $response = $metricsServiceV2Client->updateLogMetric($formattedMetricName, $metric);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -91,10 +87,7 @@ function update_log_metric_sample(
  */
 function callSample(): void
 {
-    $formattedMetricName = MetricsServiceV2Client::logMetricName(
-        '[PROJECT]',
-        '[METRIC]'
-    );
+    $formattedMetricName = MetricsServiceV2Client::logMetricName('[PROJECT]', '[METRIC]');
     $metricName = '[NAME]';
     $metricFilter = '[FILTER]';
 

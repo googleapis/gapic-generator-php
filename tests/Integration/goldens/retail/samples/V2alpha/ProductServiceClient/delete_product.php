@@ -29,28 +29,22 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 /**
  * Deletes a [Product][google.cloud.retail.v2alpha.Product].
  *
- * @param string $formattedName Full resource name of
- *                              [Product][google.cloud.retail.v2alpha.Product], such as
+ * @param string $formattedName Full resource name of [Product][google.cloud.retail.v2alpha.Product], such as
  *                              `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
- *
  *                              If the caller does not have permission to delete the
- *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
- *                              not it exists, a PERMISSION_DENIED error is returned.
- *
- *                              If the [Product][google.cloud.retail.v2alpha.Product] to delete does not
- *                              exist, a NOT_FOUND error is returned.
- *
- *                              The [Product][google.cloud.retail.v2alpha.Product] to delete can neither be
- *                              a
+ *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or not it
+ *                              exists, a PERMISSION_DENIED error is returned. If the
+ *                              [Product][google.cloud.retail.v2alpha.Product] to delete does not exist, a
+ *                              NOT_FOUND error is returned. The [Product][google.cloud.retail.v2alpha.Product]
+ *                              to delete can neither be a
  *                              [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
  *                              [Product][google.cloud.retail.v2alpha.Product] member nor a
  *                              [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
  *                              [Product][google.cloud.retail.v2alpha.Product] with more than one
  *                              [variants][google.cloud.retail.v2alpha.Product.Type.VARIANT]. Otherwise, an
- *                              INVALID_ARGUMENT error is returned.
- *
- *                              All inventory information for the named
- *                              [Product][google.cloud.retail.v2alpha.Product] will be deleted.
+ *                              INVALID_ARGUMENT error is returned. All inventory information for the named
+ *                              [Product][google.cloud.retail.v2alpha.Product] will be deleted. For help
+ *                              formatting this field, please see {@see ProductServiceClient::productName()}.
  */
 function delete_product_sample(string $formattedName): void
 {
@@ -60,7 +54,7 @@ function delete_product_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $productServiceClient->deleteProduct($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

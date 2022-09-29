@@ -46,13 +46,12 @@ use Google\Rpc\Status;
  * Please submit a form [here](https://cloud.google.com/contact) to contact
  * cloud sales if you are interested in using Retail Search.
  *
- * @param string $formattedProduct Full resource name of
- *                                 [Product][google.cloud.retail.v2alpha.Product], such as
+ * @param string $formattedProduct Full resource name of [Product][google.cloud.retail.v2alpha.Product], such as
  *                                 `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
- *
  *                                 If the caller does not have permission to access the
- *                                 [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
- *                                 not it exists, a PERMISSION_DENIED error is returned.
+ *                                 [Product][google.cloud.retail.v2alpha.Product], regardless of whether or not it
+ *                                 exists, a PERMISSION_DENIED error is returned. For help formatting this field,
+ *                                 please see {@see ProductServiceClient::productName()}.
  * @param string $type             The fulfillment type, including commonly used types (such as
  *                                 pickup in store and same day delivery), and custom types.
  *
@@ -102,27 +101,17 @@ function add_fulfillment_places_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->addFulfillmentPlaces(
-            $formattedProduct,
-            $type,
-            $placeIds
-        );
+        $response = $productServiceClient->addFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var AddFulfillmentPlacesResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

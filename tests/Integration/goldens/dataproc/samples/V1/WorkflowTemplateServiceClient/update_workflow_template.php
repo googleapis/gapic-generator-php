@@ -46,10 +46,8 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
  *                                   underscores (_), and hyphens (-). Cannot begin or end with underscore
  *                                   or hyphen. Must consist of between 3 and 50 characters.
  */
-function update_workflow_template_sample(
-    string $templateId,
-    string $templateJobsStepId
-): void {
+function update_workflow_template_sample(string $templateId, string $templateJobsStepId): void
+{
     // Create a client.
     $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
 

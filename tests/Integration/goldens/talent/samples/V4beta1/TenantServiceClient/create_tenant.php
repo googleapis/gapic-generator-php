@@ -30,18 +30,15 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 /**
  * Creates a new tenant entity.
  *
- * @param string $formattedParent  Resource name of the project under which the tenant is created.
- *
- *                                 The format is "projects/{project_id}", for example,
- *                                 "projects/foo".
+ * @param string $formattedParent  Resource name of the project under which the tenant is created. The format is
+ *                                 "projects/{project_id}", for example, "projects/foo". For help formatting this
+ *                                 field, please see {@see TenantServiceClient::projectName()}.
  * @param string $tenantExternalId Client side tenant identifier, used to uniquely identify the tenant.
  *
  *                                 The maximum number of allowed characters is 255.
  */
-function create_tenant_sample(
-    string $formattedParent,
-    string $tenantExternalId
-): void {
+function create_tenant_sample(string $formattedParent, string $tenantExternalId): void
+{
     // Create a client.
     $tenantServiceClient = new TenantServiceClient();
 

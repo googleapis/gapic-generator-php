@@ -44,10 +44,8 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
  *                                  number (such as "folders/123") or an Organization number (such as
  *                                  "organizations/123").
  */
-function analyze_move_sample(
-    string $resource,
-    string $destinationParent
-): void {
+function analyze_move_sample(string $resource, string $destinationParent): void
+{
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 

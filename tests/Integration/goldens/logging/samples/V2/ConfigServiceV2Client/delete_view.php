@@ -30,11 +30,11 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * Deletes a view from a bucket.
  *
  * @param string $formattedName The full resource name of the view to delete:
- *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
- *
  *                              Example:
  *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
+ *                              For help formatting this field, please see {@see
+ *                              ConfigServiceV2Client::logViewName()}.
  */
 function delete_view_sample(string $formattedName): void
 {
@@ -44,7 +44,7 @@ function delete_view_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $configServiceV2Client->deleteView($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

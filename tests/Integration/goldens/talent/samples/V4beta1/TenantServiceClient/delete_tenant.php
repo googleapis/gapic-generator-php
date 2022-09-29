@@ -29,10 +29,10 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 /**
  * Deletes specified tenant.
  *
- * @param string $formattedName The resource name of the tenant to be deleted.
- *
- *                              The format is "projects/{project_id}/tenants/{tenant_id}", for example,
- *                              "projects/foo/tenants/bar".
+ * @param string $formattedName The resource name of the tenant to be deleted. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}", for example,
+ *                              "projects/foo/tenants/bar". For help formatting this field, please see {@see
+ *                              TenantServiceClient::tenantName()}.
  */
 function delete_tenant_sample(string $formattedName): void
 {
@@ -42,7 +42,7 @@ function delete_tenant_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $tenantServiceClient->deleteTenant($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

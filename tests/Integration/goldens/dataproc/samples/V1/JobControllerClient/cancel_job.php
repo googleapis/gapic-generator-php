@@ -39,11 +39,8 @@ use Google\Cloud\Dataproc\V1\JobControllerClient;
  * @param string $region    The Dataproc region in which to handle the request.
  * @param string $jobId     The job ID.
  */
-function cancel_job_sample(
-    string $projectId,
-    string $region,
-    string $jobId
-): void {
+function cancel_job_sample(string $projectId, string $region, string $jobId): void
+{
     // Create a client.
     $jobControllerClient = new JobControllerClient();
 

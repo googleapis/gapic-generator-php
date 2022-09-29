@@ -55,27 +55,17 @@ function submit_job_as_operation_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $jobControllerClient->submitJobAsOperation(
-            $projectId,
-            $region,
-            $job
-        );
+        $response = $jobControllerClient->submitJobAsOperation($projectId, $region, $job);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var Job $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

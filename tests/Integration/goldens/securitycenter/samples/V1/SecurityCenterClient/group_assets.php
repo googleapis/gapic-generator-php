@@ -34,7 +34,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *
  * @param string $formattedParent Name of the organization to groupBy. Its format is
  *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]".
+ *                                projects/[project_id]". For help formatting this field, please see {@see
+ *                                SecurityCenterClient::projectName()}.
  * @param string $groupBy         Expression that defines what assets fields to use for grouping. The string
  *                                value should follow SQL syntax: comma separated list of fields. For
  *                                example:

@@ -31,10 +31,9 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 /**
  * Lists all tenants associated with the project.
  *
- * @param string $formattedParent Resource name of the project under which the tenant is created.
- *
- *                                The format is "projects/{project_id}", for example,
- *                                "projects/foo".
+ * @param string $formattedParent Resource name of the project under which the tenant is created. The format is
+ *                                "projects/{project_id}", for example, "projects/foo". For help formatting this
+ *                                field, please see {@see TenantServiceClient::projectName()}.
  */
 function list_tenants_sample(string $formattedParent): void
 {

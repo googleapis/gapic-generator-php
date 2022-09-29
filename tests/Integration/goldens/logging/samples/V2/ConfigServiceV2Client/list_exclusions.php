@@ -31,12 +31,11 @@ use Google\Cloud\Logging\V2\LogExclusion;
 /**
  * Lists all the exclusions in a parent resource.
  *
- * @param string $formattedParent The parent resource whose exclusions are to be listed.
- *
- *                                "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]"
- *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
+ * @param string $formattedParent The parent resource whose exclusions are to be listed. "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]"
+ *                                For help formatting this field, please see {@see
+ *                                ConfigServiceV2Client::projectName()}.
  */
 function list_exclusions_sample(string $formattedParent): void
 {

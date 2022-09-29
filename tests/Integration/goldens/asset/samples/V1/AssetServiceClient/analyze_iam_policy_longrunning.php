@@ -55,9 +55,8 @@ use Google\Rpc\Status;
  *                                   To know how to get folder or project id, visit [here
  *                                   ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
  */
-function analyze_iam_policy_longrunning_sample(
-    string $analysisQueryScope
-): void {
+function analyze_iam_policy_longrunning_sample(string $analysisQueryScope): void
+{
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 
@@ -69,26 +68,17 @@ function analyze_iam_policy_longrunning_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $assetServiceClient->analyzeIamPolicyLongrunning(
-            $analysisQuery,
-            $outputConfig
-        );
+        $response = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var AnalyzeIamPolicyLongrunningResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

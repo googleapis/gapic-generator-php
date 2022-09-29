@@ -35,26 +35,22 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * ASYMMETRIC_DECRYPT.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
- *                              decryption.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for decryption.
+ *                              For help formatting this field, please see {@see
+ *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
  * @param string $ciphertext    The data encrypted with the named
  *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s public key using
  *                              OAEP.
  */
-function asymmetric_decrypt_sample(
-    string $formattedName,
-    string $ciphertext
-): void {
+function asymmetric_decrypt_sample(string $formattedName, string $ciphertext): void
+{
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var AsymmetricDecryptResponse $response */
-        $response = $keyManagementServiceClient->asymmetricDecrypt(
-            $formattedName,
-            $ciphertext
-        );
+        $response = $keyManagementServiceClient->asymmetricDecrypt($formattedName, $ciphertext);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

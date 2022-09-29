@@ -43,10 +43,8 @@ use Google\Cloud\Asset\V1\TimeWindow;
  *                            "projects/my-project-id")", or a project number (such as "projects/12345").
  * @param int    $contentType Optional. The content type.
  */
-function batch_get_assets_history_sample(
-    string $parent,
-    int $contentType
-): void {
+function batch_get_assets_history_sample(string $parent, int $contentType): void
+{
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 
@@ -56,11 +54,7 @@ function batch_get_assets_history_sample(
     // Call the API and handle any network failures.
     try {
         /** @var BatchGetAssetsHistoryResponse $response */
-        $response = $assetServiceClient->batchGetAssetsHistory(
-            $parent,
-            $contentType,
-            $readTimeWindow
-        );
+        $response = $assetServiceClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

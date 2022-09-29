@@ -40,10 +40,8 @@ use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
  *                                   information see
  *                                   [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
  */
-function test_iam_permissions_sample(
-    string $resource,
-    string $permissionsElement
-): void {
+function test_iam_permissions_sample(string $resource, string $permissionsElement): void
+{
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
@@ -53,10 +51,7 @@ function test_iam_permissions_sample(
     // Call the API and handle any network failures.
     try {
         /** @var TestIamPermissionsResponse $response */
-        $response = $cloudFunctionsServiceClient->testIamPermissions(
-            $resource,
-            $permissions
-        );
+        $response = $cloudFunctionsServiceClient->testIamPermissions($resource, $permissions);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

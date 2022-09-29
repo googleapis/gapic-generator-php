@@ -32,20 +32,18 @@ use Google\Protobuf\Timestamp;
 /**
  * Creates a new application entity.
  *
- * @param string $formattedParent       Resource name of the profile under which the application is created.
- *
- *                                      The format is
- *                                      "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}".
- *                                      For example, "projects/foo/tenants/bar/profiles/baz".
+ * @param string $formattedParent       Resource name of the profile under which the application is created. The format
+ *                                      is "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
+ *                                      example, "projects/foo/tenants/bar/profiles/baz". For help formatting this
+ *                                      field, please see {@see ApplicationServiceClient::profileName()}.
  * @param string $applicationExternalId Client side application identifier, used to uniquely identify the
  *                                      application.
  *
  *                                      The maximum number of allowed characters is 255.
- * @param string $formattedJob          Resource name of the job which the candidate applied for.
- *
- *                                      The format is
+ * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
- *                                      "projects/foo/tenants/bar/jobs/baz".
+ *                                      "projects/foo/tenants/bar/jobs/baz". For help formatting this field, please see
+ *                                      {@see ApplicationServiceClient::jobName()}.
  * @param int    $applicationStage      What is the most recent stage of the application (that is, new,
  *                                      screen, send cv, hired, finished work)?  This field is intentionally not
  *                                      comprehensive of every possible status, but instead, represents statuses
@@ -89,17 +87,9 @@ function create_application_sample(
  */
 function callSample(): void
 {
-    $formattedParent = ApplicationServiceClient::profileName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[PROFILE]'
-    );
+    $formattedParent = ApplicationServiceClient::profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
     $applicationExternalId = '[EXTERNAL_ID]';
-    $formattedJob = ApplicationServiceClient::jobName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[JOB]'
-    );
+    $formattedJob = ApplicationServiceClient::jobName('[PROJECT]', '[TENANT]', '[JOB]');
     $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
 
     create_application_sample(

@@ -31,14 +31,11 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
  * Retrieves the specified job, whose status is OPEN or recently EXPIRED
  * within the last 90 days.
  *
- * @param string $formattedName The resource name of the job to retrieve.
- *
- *                              The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For
- *                              example, "projects/foo/tenants/bar/jobs/baz".
- *
- *                              If tenant id is unspecified, the default tenant is used. For
- *                              example, "projects/foo/jobs/bar".
+ * @param string $formattedName The resource name of the job to retrieve. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
+ *                              "projects/foo/tenants/bar/jobs/baz". If tenant id is unspecified, the default
+ *                              tenant is used. For example, "projects/foo/jobs/bar". For help formatting this
+ *                              field, please see {@see JobServiceClient::jobName()}.
  */
 function get_job_sample(string $formattedName): void
 {

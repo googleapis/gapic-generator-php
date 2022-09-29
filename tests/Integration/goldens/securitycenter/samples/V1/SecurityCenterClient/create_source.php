@@ -31,7 +31,8 @@ use Google\Cloud\SecurityCenter\V1\Source;
  * Creates a source.
  *
  * @param string $formattedParent Resource name of the new source's parent. Its format should be
- *                                "organizations/[organization_id]".
+ *                                "organizations/[organization_id]". For help formatting this field, please see
+ *                                {@see SecurityCenterClient::organizationName()}.
  */
 function create_source_sample(string $formattedParent): void
 {

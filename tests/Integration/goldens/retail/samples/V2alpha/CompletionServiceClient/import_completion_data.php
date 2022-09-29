@@ -40,9 +40,9 @@ use Google\Rpc\Status;
  * Please submit a form [here](https://cloud.google.com/contact) to contact
  * cloud sales if you are interested in using Retail Search.
  *
- * @param string $formattedParent                    The catalog which the suggestions dataset belongs to.
- *
- *                                                   Format: `projects/1234/locations/global/catalogs/default_catalog`.
+ * @param string $formattedParent                    The catalog which the suggestions dataset belongs to. Format:
+ *                                                   `projects/1234/locations/global/catalogs/default_catalog`. For help formatting
+ *                                                   this field, please see {@see CompletionServiceClient::catalogName()}.
  * @param string $inputConfigBigQuerySourceDatasetId The BigQuery data set to copy the data from with a length limit
  *                                                   of 1,024 characters.
  * @param string $inputConfigBigQuerySourceTableId   The BigQuery table to copy the data from with a length limit of
@@ -66,26 +66,17 @@ function import_completion_data_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $completionServiceClient->importCompletionData(
-            $formattedParent,
-            $inputConfig
-        );
+        $response = $completionServiceClient->importCompletionData($formattedParent, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var ImportCompletionDataResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -99,11 +90,7 @@ function import_completion_data_sample(
  */
 function callSample(): void
 {
-    $formattedParent = CompletionServiceClient::catalogName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[CATALOG]'
-    );
+    $formattedParent = CompletionServiceClient::catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
     $inputConfigBigQuerySourceDatasetId = '[DATASET_ID]';
     $inputConfigBigQuerySourceTableId = '[TABLE_ID]';
 

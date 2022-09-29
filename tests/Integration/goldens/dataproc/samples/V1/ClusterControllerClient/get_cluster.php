@@ -35,22 +35,15 @@ use Google\Cloud\Dataproc\V1\ClusterControllerClient;
  * @param string $region      The Dataproc region in which to handle the request.
  * @param string $clusterName The cluster name.
  */
-function get_cluster_sample(
-    string $projectId,
-    string $region,
-    string $clusterName
-): void {
+function get_cluster_sample(string $projectId, string $region, string $clusterName): void
+{
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var Cluster $response */
-        $response = $clusterControllerClient->getCluster(
-            $projectId,
-            $region,
-            $clusterName
-        );
+        $response = $clusterControllerClient->getCluster($projectId, $region, $clusterName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

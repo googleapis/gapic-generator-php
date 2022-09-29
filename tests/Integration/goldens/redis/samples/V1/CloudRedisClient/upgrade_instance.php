@@ -34,14 +34,13 @@ use Google\Rpc\Status;
  * request.
  *
  * @param string $formattedName Redis instance resource name using the form:
- *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
- *                              where `location_id` refers to a GCP region.
+ *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+ *                              `location_id` refers to a GCP region. For help formatting this field, please see
+ *                              {@see CloudRedisClient::instanceName()}.
  * @param string $redisVersion  Specifies the target version of Redis software to upgrade to.
  */
-function upgrade_instance_sample(
-    string $formattedName,
-    string $redisVersion
-): void {
+function upgrade_instance_sample(string $formattedName, string $redisVersion): void
+{
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
@@ -54,17 +53,11 @@ function upgrade_instance_sample(
         if ($response->operationSucceeded()) {
             /** @var Instance $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -78,11 +71,7 @@ function upgrade_instance_sample(
  */
 function callSample(): void
 {
-    $formattedName = CloudRedisClient::instanceName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[INSTANCE]'
-    );
+    $formattedName = CloudRedisClient::instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
     $redisVersion = '[REDIS_VERSION]';
 
     upgrade_instance_sample($formattedName, $redisVersion);

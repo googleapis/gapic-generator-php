@@ -31,11 +31,10 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
  * Prerequisite: The profile has no associated applications or assignments
  * associated.
  *
- * @param string $formattedName Resource name of the profile to be deleted.
- *
- *                              The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
- *                              example, "projects/foo/tenants/bar/profiles/baz".
+ * @param string $formattedName Resource name of the profile to be deleted. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For example,
+ *                              "projects/foo/tenants/bar/profiles/baz". For help formatting this field, please
+ *                              see {@see ProfileServiceClient::profileName()}.
  */
 function delete_profile_sample(string $formattedName): void
 {
@@ -45,7 +44,7 @@ function delete_profile_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $profileServiceClient->deleteProfile($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -58,11 +57,7 @@ function delete_profile_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ProfileServiceClient::profileName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[PROFILE]'
-    );
+    $formattedName = ProfileServiceClient::profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
 
     delete_profile_sample($formattedName);
 }

@@ -32,12 +32,11 @@ use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
  * Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s associated
  * with the project.
  *
- * @param string $formattedParent The account resource name with an associated location.
- *
- *                                If the caller does not have permission to list
- *                                [Catalog][google.cloud.retail.v2alpha.Catalog]s under this location,
- *                                regardless of whether or not this location exists, a PERMISSION_DENIED
- *                                error is returned.
+ * @param string $formattedParent The account resource name with an associated location. If the caller does not
+ *                                have permission to list [Catalog][google.cloud.retail.v2alpha.Catalog]s under
+ *                                this location, regardless of whether or not this location exists, a
+ *                                PERMISSION_DENIED error is returned. For help formatting this field, please see
+ *                                {@see CatalogServiceClient::locationName()}.
  */
 function list_catalogs_sample(string $formattedParent): void
 {
@@ -65,10 +64,7 @@ function list_catalogs_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = CatalogServiceClient::locationName(
-        '[PROJECT]',
-        '[LOCATION]'
-    );
+    $formattedParent = CatalogServiceClient::locationName('[PROJECT]', '[LOCATION]');
 
     list_catalogs_sample($formattedParent);
 }

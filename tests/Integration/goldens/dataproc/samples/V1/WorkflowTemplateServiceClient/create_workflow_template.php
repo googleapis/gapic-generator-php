@@ -32,16 +32,14 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 /**
  * Creates new workflow template.
  *
- * @param string $formattedParent    The resource name of the region or location, as described
- *                                   in https://cloud.google.com/apis/design/resource_names.
- *
- *                                   * For `projects.regions.workflowTemplates,create`, the resource name of the
- *                                   region has the following format:
- *                                   `projects/{project_id}/regions/{region}`
- *
- *                                   * For `projects.locations.workflowTemplates.create`, the resource name of
- *                                   the location has the following format:
- *                                   `projects/{project_id}/locations/{location}`
+ * @param string $formattedParent    The resource name of the region or location, as described in
+ *                                   https://cloud.google.com/apis/design/resource_names. * For
+ *                                   `projects.regions.workflowTemplates,create`, the resource name of the region has
+ *                                   the following format: `projects/{project_id}/regions/{region}` * For
+ *                                   `projects.locations.workflowTemplates.create`, the resource name of the location
+ *                                   has the following format: `projects/{project_id}/locations/{location}`
+ *                                   For help formatting this field, please see {@see
+ *                                   WorkflowTemplateServiceClient::regionName()}.
  * @param string $templateId
  * @param string $templateJobsStepId The step id. The id must be unique among all jobs
  *                                   within the template.
@@ -76,10 +74,7 @@ function create_workflow_template_sample(
     // Call the API and handle any network failures.
     try {
         /** @var WorkflowTemplate $response */
-        $response = $workflowTemplateServiceClient->createWorkflowTemplate(
-            $formattedParent,
-            $template
-        );
+        $response = $workflowTemplateServiceClient->createWorkflowTemplate($formattedParent, $template);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -93,17 +88,10 @@ function create_workflow_template_sample(
  */
 function callSample(): void
 {
-    $formattedParent = WorkflowTemplateServiceClient::regionName(
-        '[PROJECT]',
-        '[REGION]'
-    );
+    $formattedParent = WorkflowTemplateServiceClient::regionName('[PROJECT]', '[REGION]');
     $templateId = '[ID]';
     $templateJobsStepId = '[STEP_ID]';
 
-    create_workflow_template_sample(
-        $formattedParent,
-        $templateId,
-        $templateJobsStepId
-    );
+    create_workflow_template_sample($formattedParent, $templateId, $templateJobsStepId);
 }
 // [END dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_sync]

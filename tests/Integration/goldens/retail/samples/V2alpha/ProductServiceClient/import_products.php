@@ -41,9 +41,9 @@ use Google\Rpc\Status;
  *
  * @param string $formattedParent Required.
  *                                `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
- *
- *                                If no updateMask is specified, requires products.create permission.
- *                                If updateMask is specified, requires products.update permission.
+ *                                If no updateMask is specified, requires products.create permission. If
+ *                                updateMask is specified, requires products.update permission. For help
+ *                                formatting this field, please see {@see ProductServiceClient::branchName()}.
  */
 function import_products_sample(string $formattedParent): void
 {
@@ -56,26 +56,17 @@ function import_products_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->importProducts(
-            $formattedParent,
-            $inputConfig
-        );
+        $response = $productServiceClient->importProducts($formattedParent, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var ImportProductsResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

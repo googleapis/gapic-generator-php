@@ -30,10 +30,10 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 /**
  * Creates and returns a new profile.
  *
- * @param string $formattedParent The name of the tenant this profile belongs to.
- *
- *                                The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                "projects/foo/tenants/bar".
+ * @param string $formattedParent The name of the tenant this profile belongs to. The format is
+ *                                "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                "projects/foo/tenants/bar". For help formatting this field, please see {@see
+ *                                ProfileServiceClient::tenantName()}.
  */
 function create_profile_sample(string $formattedParent): void
 {

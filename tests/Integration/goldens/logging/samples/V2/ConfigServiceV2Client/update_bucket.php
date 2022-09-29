@@ -41,16 +41,15 @@ use Google\Protobuf\FieldMask;
  * A buckets region may not be modified after it is created.
  *
  * @param string $formattedName The full resource name of the bucket to update.
- *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
- *
- *                              Example:
+ *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" Example:
  *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Also
- *                              requires permission "resourcemanager.projects.updateLiens" to set the
- *                              locked property
+ *                              requires permission "resourcemanager.projects.updateLiens" to set the locked
+ *                              property
+ *                              For help formatting this field, please see {@see
+ *                              ConfigServiceV2Client::logBucketName()}.
  */
 function update_bucket_sample(string $formattedName): void
 {
@@ -64,11 +63,7 @@ function update_bucket_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var LogBucket $response */
-        $response = $configServiceV2Client->updateBucket(
-            $formattedName,
-            $bucket,
-            $updateMask
-        );
+        $response = $configServiceV2Client->updateBucket($formattedName, $bucket, $updateMask);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -82,11 +77,7 @@ function update_bucket_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logBucketName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[BUCKET]'
-    );
+    $formattedName = ConfigServiceV2Client::logBucketName('[PROJECT]', '[LOCATION]', '[BUCKET]');
 
     update_bucket_sample($formattedName);
 }

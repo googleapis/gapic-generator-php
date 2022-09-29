@@ -37,7 +37,8 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * @param string $formattedParent The [name][google.cloud.kms.v1.CryptoKey.name] of the
  *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with the
- *                                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
+ *                                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]. For help formatting
+ *                                this field, please see {@see KeyManagementServiceClient::cryptoKeyName()}.
  */
 function create_crypto_key_version_sample(string $formattedParent): void
 {

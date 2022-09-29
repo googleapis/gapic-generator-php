@@ -34,8 +34,10 @@ use Google\Rpc\Status;
  * the specified project, the long running operation will return
  * `ALREADY_EXISTS` error.
  *
- * @param string $formattedLocation The project and location in which the function should be created, specified
- *                                  in the format `projects/&#42;/locations/*`
+ * @param string $formattedLocation The project and location in which the function should be created, specified in
+ *                                  the format `projects/&#42;/locations/*`
+ *                                  For help formatting this field, please see {@see
+ *                                  CloudFunctionsServiceClient::locationName()}.
  */
 function create_function_sample(string $formattedLocation): void
 {
@@ -48,26 +50,17 @@ function create_function_sample(string $formattedLocation): void
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudFunctionsServiceClient->createFunction(
-            $formattedLocation,
-            $function
-        );
+        $response = $cloudFunctionsServiceClient->createFunction($formattedLocation, $function);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var CloudFunction $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -81,10 +74,7 @@ function create_function_sample(string $formattedLocation): void
  */
 function callSample(): void
 {
-    $formattedLocation = CloudFunctionsServiceClient::locationName(
-        '[PROJECT]',
-        '[LOCATION]'
-    );
+    $formattedLocation = CloudFunctionsServiceClient::locationName('[PROJECT]', '[LOCATION]');
 
     create_function_sample($formattedLocation);
 }

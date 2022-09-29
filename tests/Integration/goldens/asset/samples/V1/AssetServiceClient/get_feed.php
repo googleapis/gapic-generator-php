@@ -31,9 +31,10 @@ use Google\Cloud\Asset\V1\Feed;
  * Gets details about an asset feed.
  *
  * @param string $formattedName The name of the Feed and it must be in the format of:
- *                              projects/project_number/feeds/feed_id
- *                              folders/folder_number/feeds/feed_id
+ *                              projects/project_number/feeds/feed_id folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
+ *                              For help formatting this field, please see {@see
+ *                              AssetServiceClient::feedName()}.
  */
 function get_feed_sample(string $formattedName): void
 {

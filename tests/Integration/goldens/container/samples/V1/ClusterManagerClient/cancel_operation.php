@@ -35,7 +35,7 @@ function cancel_operation_sample(): void
     // Call the API and handle any network failures.
     try {
         $clusterManagerClient->cancelOperation();
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

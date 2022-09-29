@@ -33,7 +33,8 @@ use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
  * the actual limits, refer to
  * [Rate Limits](https://cloud.google.com/functions/quotas#rate_limits).
  *
- * @param string $formattedName The name of the function to be called.
+ * @param string $formattedName The name of the function to be called. For help formatting this field, please
+ *                              see {@see CloudFunctionsServiceClient::cloudFunctionName()}.
  * @param string $data          Input to be passed to the function.
  */
 function call_function_sample(string $formattedName, string $data): void

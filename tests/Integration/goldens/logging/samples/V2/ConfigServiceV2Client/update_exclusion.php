@@ -32,13 +32,12 @@ use Google\Protobuf\FieldMask;
  * Changes one or more properties of an existing exclusion.
  *
  * @param string $formattedName   The resource name of the exclusion to update:
- *
  *                                "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
  *                                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
- *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
- *
- *                                Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
+ *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
+ *                                `"projects/my-project-id/exclusions/my-exclusion-id"`. For help formatting this
+ *                                field, please see {@see ConfigServiceV2Client::logExclusionName()}.
  * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
  *                                Identifiers are limited to 100 characters and can include only letters,
  *                                digits, underscores, hyphens, and periods. First character has to be
@@ -70,11 +69,7 @@ function update_exclusion_sample(
     // Call the API and handle any network failures.
     try {
         /** @var LogExclusion $response */
-        $response = $configServiceV2Client->updateExclusion(
-            $formattedName,
-            $exclusion,
-            $updateMask
-        );
+        $response = $configServiceV2Client->updateExclusion($formattedName, $exclusion, $updateMask);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -88,10 +83,7 @@ function update_exclusion_sample(
  */
 function callSample(): void
 {
-    $formattedName = ConfigServiceV2Client::logExclusionName(
-        '[PROJECT]',
-        '[EXCLUSION]'
-    );
+    $formattedName = ConfigServiceV2Client::logExclusionName('[PROJECT]', '[EXCLUSION]');
     $exclusionName = '[NAME]';
     $exclusionFilter = '[FILTER]';
 

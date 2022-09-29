@@ -36,11 +36,10 @@ use Google\Protobuf\Timestamp;
  *                                      application.
  *
  *                                      The maximum number of allowed characters is 255.
- * @param string $formattedJob          Resource name of the job which the candidate applied for.
- *
- *                                      The format is
+ * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
- *                                      "projects/foo/tenants/bar/jobs/baz".
+ *                                      "projects/foo/tenants/bar/jobs/baz". For help formatting this field, please see
+ *                                      {@see ApplicationServiceClient::jobName()}.
  * @param int    $applicationStage      What is the most recent stage of the application (that is, new,
  *                                      screen, send cv, hired, finished work)?  This field is intentionally not
  *                                      comprehensive of every possible status, but instead, represents statuses
@@ -65,10 +64,7 @@ function update_application_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Application $response */
-        $response = $applicationServiceClient->updateApplication(
-            $application,
-            $formattedJob
-        );
+        $response = $applicationServiceClient->updateApplication($application, $formattedJob);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -83,17 +79,9 @@ function update_application_sample(
 function callSample(): void
 {
     $applicationExternalId = '[EXTERNAL_ID]';
-    $formattedJob = ApplicationServiceClient::jobName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[JOB]'
-    );
+    $formattedJob = ApplicationServiceClient::jobName('[PROJECT]', '[TENANT]', '[JOB]');
     $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
 
-    update_application_sample(
-        $applicationExternalId,
-        $formattedJob,
-        $applicationStage
-    );
+    update_application_sample($applicationExternalId, $formattedJob, $applicationStage);
 }
 // [END jobs_v4beta1_generated_ApplicationService_UpdateApplication_sync]

@@ -38,33 +38,23 @@ use Google\Rpc\Status;
  * @param string $region      The Dataproc region in which to handle the request.
  * @param string $clusterName The cluster name.
  */
-function delete_cluster_sample(
-    string $projectId,
-    string $region,
-    string $clusterName
-): void {
+function delete_cluster_sample(string $projectId, string $region, string $clusterName): void
+{
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->deleteCluster(
-            $projectId,
-            $region,
-            $clusterName
-        );
+        $response = $clusterControllerClient->deleteCluster($projectId, $region, $clusterName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -34,10 +34,9 @@ use Google\Cloud\Retail\V2alpha\CompletionServiceClient;
  * Please submit a form [here](https://cloud.google.com/contact) to contact
  * cloud sales if you are interested in using Retail Search.
  *
- * @param string $formattedCatalog Catalog for which the completion is performed.
- *
- *                                 Full resource name of catalog, such as
- *                                 `projects/&#42;/locations/global/catalogs/default_catalog`.
+ * @param string $formattedCatalog Catalog for which the completion is performed. Full resource name of catalog,
+ *                                 such as `projects/&#42;/locations/global/catalogs/default_catalog`. For help
+ *                                 formatting this field, please see {@see CompletionServiceClient::catalogName()}.
  * @param string $query            The query used to generate suggestions.
  *
  *                                 The maximum number of allowed characters is 255.
@@ -64,11 +63,7 @@ function complete_query_sample(string $formattedCatalog, string $query): void
  */
 function callSample(): void
 {
-    $formattedCatalog = CompletionServiceClient::catalogName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[CATALOG]'
-    );
+    $formattedCatalog = CompletionServiceClient::catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
     $query = '[QUERY]';
 
     complete_query_sample($formattedCatalog, $query);

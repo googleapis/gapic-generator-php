@@ -30,11 +30,11 @@ use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 /**
  * Retrieves specified application.
  *
- * @param string $formattedName The resource name of the application to be retrieved.
- *
- *                              The format is
+ * @param string $formattedName The resource name of the application to be retrieved. The format is
  *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
- *                              For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
+ *                              For example, "projects/foo/tenants/bar/profiles/baz/applications/qux". For help
+ *                              formatting this field, please see {@see
+ *                              ApplicationServiceClient::applicationName()}.
  */
 function get_application_sample(string $formattedName): void
 {

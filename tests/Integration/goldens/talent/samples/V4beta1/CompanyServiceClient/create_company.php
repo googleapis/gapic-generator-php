@@ -30,11 +30,11 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
 /**
  * Creates a new company entity.
  *
- * @param string $formattedParent    Resource name of the tenant under which the company is created.
- *
- *                                   The format is "projects/{project_id}/tenants/{tenant_id}", for example,
- *                                   "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
- *                                   is created, for example, "projects/foo".
+ * @param string $formattedParent    Resource name of the tenant under which the company is created. The format is
+ *                                   "projects/{project_id}/tenants/{tenant_id}", for example,
+ *                                   "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant is
+ *                                   created, for example, "projects/foo". For help formatting this field, please see
+ *                                   {@see CompanyServiceClient::projectName()}.
  * @param string $companyDisplayName The display name of the company, for example, "Google LLC".
  * @param string $companyExternalId  Client side company identifier, used to uniquely identify the
  *                                   company.
@@ -75,10 +75,6 @@ function callSample(): void
     $companyDisplayName = '[DISPLAY_NAME]';
     $companyExternalId = '[EXTERNAL_ID]';
 
-    create_company_sample(
-        $formattedParent,
-        $companyDisplayName,
-        $companyExternalId
-    );
+    create_company_sample($formattedParent, $companyDisplayName, $companyExternalId);
 }
 // [END jobs_v4beta1_generated_CompanyService_CreateCompany_sync]

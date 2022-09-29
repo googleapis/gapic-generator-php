@@ -79,17 +79,11 @@ function update_cluster_sample(
         if ($response->operationSucceeded()) {
             /** @var Cluster $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -109,12 +103,6 @@ function callSample(): void
     $clusterProjectId = '[PROJECT_ID]';
     $clusterClusterName = '[CLUSTER_NAME]';
 
-    update_cluster_sample(
-        $projectId,
-        $region,
-        $clusterName,
-        $clusterProjectId,
-        $clusterClusterName
-    );
+    update_cluster_sample($projectId, $region, $clusterName, $clusterProjectId, $clusterClusterName);
 }
 // [END dataproc_v1_generated_ClusterController_UpdateCluster_sync]

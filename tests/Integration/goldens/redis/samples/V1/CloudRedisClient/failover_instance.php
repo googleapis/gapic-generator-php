@@ -34,8 +34,9 @@ use Google\Rpc\Status;
  * specific STANDARD tier Cloud Memorystore for Redis instance.
  *
  * @param string $formattedName Redis instance resource name using the form:
- *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
- *                              where `location_id` refers to a GCP region.
+ *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+ *                              `location_id` refers to a GCP region. For help formatting this field, please see
+ *                              {@see CloudRedisClient::instanceName()}.
  */
 function failover_instance_sample(string $formattedName): void
 {
@@ -51,17 +52,11 @@ function failover_instance_sample(string $formattedName): void
         if ($response->operationSucceeded()) {
             /** @var Instance $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -75,11 +70,7 @@ function failover_instance_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = CloudRedisClient::instanceName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[INSTANCE]'
-    );
+    $formattedName = CloudRedisClient::instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
 
     failover_instance_sample($formattedName);
 }

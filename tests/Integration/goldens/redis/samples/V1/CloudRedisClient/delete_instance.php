@@ -33,8 +33,9 @@ use Google\Rpc\Status;
  * deleted.
  *
  * @param string $formattedName Redis instance resource name using the form:
- *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
- *                              where `location_id` refers to a GCP region.
+ *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+ *                              `location_id` refers to a GCP region. For help formatting this field, please see
+ *                              {@see CloudRedisClient::instanceName()}.
  */
 function delete_instance_sample(string $formattedName): void
 {
@@ -48,14 +49,11 @@ function delete_instance_sample(string $formattedName): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -69,11 +67,7 @@ function delete_instance_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = CloudRedisClient::instanceName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[INSTANCE]'
-    );
+    $formattedName = CloudRedisClient::instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
 
     delete_instance_sample($formattedName);
 }

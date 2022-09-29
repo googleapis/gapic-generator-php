@@ -31,7 +31,9 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Gets a notification config.
  *
  * @param string $formattedName Name of the notification config to get. Its format is
- *                              "organizations/[organization_id]/notificationConfigs/[config_id]".
+ *                              "organizations/[organization_id]/notificationConfigs/[config_id]". For help
+ *                              formatting this field, please see {@see
+ *                              SecurityCenterClient::notificationConfigName()}.
  */
 function get_notification_config_sample(string $formattedName): void
 {

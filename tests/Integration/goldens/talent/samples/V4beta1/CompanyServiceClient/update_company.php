@@ -36,10 +36,8 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
  *
  *                                   The maximum number of allowed characters is 255.
  */
-function update_company_sample(
-    string $companyDisplayName,
-    string $companyExternalId
-): void {
+function update_company_sample(string $companyDisplayName, string $companyExternalId): void
+{
     // Create a client.
     $companyServiceClient = new CompanyServiceClient();
 

@@ -36,8 +36,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
- *                              signing.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for signing. For
+ *                              help formatting this field, please see {@see
+ *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
  */
 function asymmetric_sign_sample(string $formattedName): void
 {
@@ -50,10 +51,7 @@ function asymmetric_sign_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var AsymmetricSignResponse $response */
-        $response = $keyManagementServiceClient->asymmetricSign(
-            $formattedName,
-            $digest
-        );
+        $response = $keyManagementServiceClient->asymmetricSign($formattedName, $digest);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

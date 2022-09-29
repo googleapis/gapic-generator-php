@@ -33,7 +33,8 @@ use Google\Rpc\Status;
  * given function is used by some trigger, the trigger will be updated to
  * remove this function.
  *
- * @param string $formattedName The name of the function which should be deleted.
+ * @param string $formattedName The name of the function which should be deleted. For help formatting this
+ *                              field, please see {@see CloudFunctionsServiceClient::cloudFunctionName()}.
  */
 function delete_function_sample(string $formattedName): void
 {
@@ -47,14 +48,11 @@ function delete_function_sample(string $formattedName): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

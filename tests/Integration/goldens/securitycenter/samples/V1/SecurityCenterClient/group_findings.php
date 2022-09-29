@@ -40,10 +40,11 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * @param string $formattedParent Name of the source to groupBy. Its format is
  *                                "organizations/[organization_id]/sources/[source_id]",
  *                                folders/[folder_id]/sources/[source_id], or
- *                                projects/[project_id]/sources/[source_id]. To groupBy across all sources
- *                                provide a source_id of `-`. For example:
- *                                organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
- *                                or projects/{project_id}/sources/-
+ *                                projects/[project_id]/sources/[source_id]. To groupBy across all sources provide
+ *                                a source_id of `-`. For example: organizations/{organization_id}/sources/-,
+ *                                folders/{folder_id}/sources/-, or projects/{project_id}/sources/-
+ *                                For help formatting this field, please see {@see
+ *                                SecurityCenterClient::sourceName()}.
  * @param string $groupBy         Expression that defines what assets fields to use for grouping (including
  *                                `state_change`). The string value should follow SQL syntax: comma separated
  *                                list of fields. For example: "parent,resource_name".
@@ -86,10 +87,7 @@ function group_findings_sample(string $formattedParent, string $groupBy): void
  */
 function callSample(): void
 {
-    $formattedParent = SecurityCenterClient::sourceName(
-        '[ORGANIZATION]',
-        '[SOURCE]'
-    );
+    $formattedParent = SecurityCenterClient::sourceName('[ORGANIZATION]', '[SOURCE]');
     $groupBy = '[GROUP_BY]';
 
     group_findings_sample($formattedParent, $groupBy);

@@ -31,16 +31,14 @@ use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 /**
  * Lists autoscaling policies in the project.
  *
- * @param string $formattedParent The "resource name" of the region or location, as described
- *                                in https://cloud.google.com/apis/design/resource_names.
- *
- *                                * For `projects.regions.autoscalingPolicies.list`, the resource name
- *                                of the region has the following format:
- *                                `projects/{project_id}/regions/{region}`
- *
- *                                * For `projects.locations.autoscalingPolicies.list`, the resource name
- *                                of the location has the following format:
- *                                `projects/{project_id}/locations/{location}`
+ * @param string $formattedParent The "resource name" of the region or location, as described in
+ *                                https://cloud.google.com/apis/design/resource_names. * For
+ *                                `projects.regions.autoscalingPolicies.list`, the resource name of the region has
+ *                                the following format: `projects/{project_id}/regions/{region}` * For
+ *                                `projects.locations.autoscalingPolicies.list`, the resource name of the location
+ *                                has the following format: `projects/{project_id}/locations/{location}`
+ *                                For help formatting this field, please see {@see
+ *                                AutoscalingPolicyServiceClient::regionName()}.
  */
 function list_autoscaling_policies_sample(string $formattedParent): void
 {
@@ -50,9 +48,7 @@ function list_autoscaling_policies_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $autoscalingPolicyServiceClient->listAutoscalingPolicies(
-            $formattedParent
-        );
+        $response = $autoscalingPolicyServiceClient->listAutoscalingPolicies($formattedParent);
 
         /** @var AutoscalingPolicy $element */
         foreach ($response as $element) {
@@ -70,10 +66,7 @@ function list_autoscaling_policies_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = AutoscalingPolicyServiceClient::regionName(
-        '[PROJECT]',
-        '[REGION]'
-    );
+    $formattedParent = AutoscalingPolicyServiceClient::regionName('[PROJECT]', '[REGION]');
 
     list_autoscaling_policies_sample($formattedParent);
 }

@@ -37,10 +37,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *                                   information see
  *                                   [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
  */
-function test_iam_permissions_sample(
-    string $resource,
-    string $permissionsElement
-): void {
+function test_iam_permissions_sample(string $resource, string $permissionsElement): void
+{
     // Create a client.
     $securityCenterClient = new SecurityCenterClient();
 

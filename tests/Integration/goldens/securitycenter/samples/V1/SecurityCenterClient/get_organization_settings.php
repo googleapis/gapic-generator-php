@@ -31,7 +31,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Gets the settings for an organization.
  *
  * @param string $formattedName Name of the organization to get organization settings for. Its format is
- *                              "organizations/[organization_id]/organizationSettings".
+ *                              "organizations/[organization_id]/organizationSettings". For help formatting this
+ *                              field, please see {@see SecurityCenterClient::organizationSettingsName()}.
  */
 function get_organization_settings_sample(string $formattedName): void
 {
@@ -55,9 +56,7 @@ function get_organization_settings_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = SecurityCenterClient::organizationSettingsName(
-        '[ORGANIZATION]'
-    );
+    $formattedName = SecurityCenterClient::organizationSettingsName('[ORGANIZATION]');
 
     get_organization_settings_sample($formattedName);
 }

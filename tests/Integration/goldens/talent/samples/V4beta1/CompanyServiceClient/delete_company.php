@@ -30,14 +30,11 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
  * Deletes specified company.
  * Prerequisite: The company has no jobs associated with it.
  *
- * @param string $formattedName The resource name of the company to be deleted.
- *
- *                              The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
- *                              example, "projects/foo/tenants/bar/companies/baz".
- *
- *                              If tenant id is unspecified, the default tenant is used, for
- *                              example, "projects/foo/companies/bar".
+ * @param string $formattedName The resource name of the company to be deleted. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for example,
+ *                              "projects/foo/tenants/bar/companies/baz". If tenant id is unspecified, the
+ *                              default tenant is used, for example, "projects/foo/companies/bar". For help
+ *                              formatting this field, please see {@see CompanyServiceClient::companyName()}.
  */
 function delete_company_sample(string $formattedName): void
 {
@@ -47,7 +44,7 @@ function delete_company_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $companyServiceClient->deleteCompany($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -60,11 +57,7 @@ function delete_company_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = CompanyServiceClient::companyName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[COMPANY]'
-    );
+    $formattedName = CompanyServiceClient::companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
 
     delete_company_sample($formattedName);
 }

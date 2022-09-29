@@ -30,7 +30,8 @@ use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
 /**
  * Returns a function with the given name from the requested project.
  *
- * @param string $formattedName The name of the function which details should be obtained.
+ * @param string $formattedName The name of the function which details should be obtained. For help formatting
+ *                              this field, please see {@see CloudFunctionsServiceClient::cloudFunctionName()}.
  */
 function get_function_sample(string $formattedName): void
 {

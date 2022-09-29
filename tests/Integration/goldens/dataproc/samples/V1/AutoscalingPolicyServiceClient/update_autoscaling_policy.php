@@ -75,9 +75,7 @@ function update_autoscaling_policy_sample(
     // Prepare any non-scalar elements to be passed along with the request.
     $policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout = new Duration();
     $policyBasicAlgorithmYarnConfig = (new BasicYarnAutoscalingConfig())
-        ->setGracefulDecommissionTimeout(
-            $policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout
-        )
+        ->setGracefulDecommissionTimeout($policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout)
         ->setScaleUpFactor($policyBasicAlgorithmYarnConfigScaleUpFactor)
         ->setScaleDownFactor($policyBasicAlgorithmYarnConfigScaleDownFactor);
     $policyBasicAlgorithm = (new BasicAutoscalingAlgorithm())

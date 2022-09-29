@@ -47,11 +47,8 @@ use Google\Cloud\Asset\V1\FeedOutputConfig;
  *                         The client-assigned feed identifier must be unique within the parent
  *                         project/folder/organization.
  */
-function create_feed_sample(
-    string $parent,
-    string $feedId,
-    string $feedName
-): void {
+function create_feed_sample(string $parent, string $feedId, string $feedName): void
+{
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 

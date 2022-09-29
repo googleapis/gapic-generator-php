@@ -37,10 +37,8 @@ use Google\Cloud\Retail\V2alpha\ProductLevelConfig;
  *                                   This field must be a UTF-8 encoded string with a length limit of 128
  *                                   characters. Otherwise, an INVALID_ARGUMENT error is returned.
  */
-function update_catalog_sample(
-    string $catalogName,
-    string $catalogDisplayName
-): void {
+function update_catalog_sample(string $catalogName, string $catalogDisplayName): void
+{
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 

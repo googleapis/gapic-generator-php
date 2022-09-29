@@ -45,8 +45,9 @@ use Google\Rpc\Status;
  * is no need to call DeleteOperation.
  *
  * @param string $formattedParent      The resource name of the instance location using the form:
- *                                     `projects/{project_id}/locations/{location_id}`
- *                                     where `location_id` refers to a GCP region.
+ *                                     `projects/{project_id}/locations/{location_id}` where `location_id` refers to a
+ *                                     GCP region. For help formatting this field, please see {@see
+ *                                     CloudRedisClient::locationName()}.
  * @param string $instanceId           The logical name of the Redis instance in the customer project
  *                                     with the following restrictions:
  *
@@ -86,27 +87,17 @@ function create_instance_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->createInstance(
-            $formattedParent,
-            $instanceId,
-            $instance
-        );
+        $response = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var Instance $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

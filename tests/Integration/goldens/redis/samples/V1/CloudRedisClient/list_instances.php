@@ -40,8 +40,9 @@ use Google\Cloud\Redis\V1\Instance;
  * available to the project are queried, and the results are aggregated.
  *
  * @param string $formattedParent The resource name of the instance location using the form:
- *                                `projects/{project_id}/locations/{location_id}`
- *                                where `location_id` refers to a GCP region.
+ *                                `projects/{project_id}/locations/{location_id}` where `location_id` refers to a
+ *                                GCP region. For help formatting this field, please see {@see
+ *                                CloudRedisClient::locationName()}.
  */
 function list_instances_sample(string $formattedParent): void
 {

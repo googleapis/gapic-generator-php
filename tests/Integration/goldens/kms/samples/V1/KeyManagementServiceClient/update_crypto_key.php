@@ -41,10 +41,7 @@ function update_crypto_key_sample(): void
     // Call the API and handle any network failures.
     try {
         /** @var CryptoKey $response */
-        $response = $keyManagementServiceClient->updateCryptoKey(
-            $cryptoKey,
-            $updateMask
-        );
+        $response = $keyManagementServiceClient->updateCryptoKey($cryptoKey, $updateMask);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

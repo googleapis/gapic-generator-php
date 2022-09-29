@@ -61,27 +61,17 @@ function create_cluster_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->createCluster(
-            $projectId,
-            $region,
-            $cluster
-        );
+        $response = $clusterControllerClient->createCluster($projectId, $region, $cluster);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var Cluster $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -100,11 +90,6 @@ function callSample(): void
     $clusterProjectId = '[PROJECT_ID]';
     $clusterClusterName = '[CLUSTER_NAME]';
 
-    create_cluster_sample(
-        $projectId,
-        $region,
-        $clusterProjectId,
-        $clusterClusterName
-    );
+    create_cluster_sample($projectId, $region, $clusterProjectId, $clusterClusterName);
 }
 // [END dataproc_v1_generated_ClusterController_CreateCluster_sync]

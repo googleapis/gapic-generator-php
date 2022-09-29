@@ -30,7 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Creates an inventory. Tests singleton resources.
  *
- * @param string $formattedParent
+ * @param string $formattedParent For help formatting this field, please see {@see
+ *                                LibraryServiceClient::publisherName()}.
  * @param string $asset
  * @param string $parentAsset
  * @param string $assetsElement

@@ -30,14 +30,12 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
 /**
  * Retrieves specified company.
  *
- * @param string $formattedName The resource name of the company to be retrieved.
- *
- *                              The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
- *                              example, "projects/api-test-project/tenants/foo/companies/bar".
- *
- *                              If tenant id is unspecified, the default tenant is used, for
- *                              example, "projects/api-test-project/companies/bar".
+ * @param string $formattedName The resource name of the company to be retrieved. The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for example,
+ *                              "projects/api-test-project/tenants/foo/companies/bar". If tenant id is
+ *                              unspecified, the default tenant is used, for example,
+ *                              "projects/api-test-project/companies/bar". For help formatting this field,
+ *                              please see {@see CompanyServiceClient::companyName()}.
  */
 function get_company_sample(string $formattedName): void
 {
@@ -61,11 +59,7 @@ function get_company_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = CompanyServiceClient::companyName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[COMPANY]'
-    );
+    $formattedName = CompanyServiceClient::companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
 
     get_company_sample($formattedName);
 }

@@ -37,7 +37,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey][google.cloud.kms.v1.CryptoKey].
  *
  * @param string $formattedParent The [name][google.cloud.kms.v1.CryptoKey.name] of the
- *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to be imported into.
+ *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to be imported into. For help
+ *                                formatting this field, please see {@see
+ *                                KeyManagementServiceClient::cryptoKeyName()}.
  * @param int    $algorithm       The
  *                                [algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
  *                                of the key being imported. This does not need to match the

@@ -32,18 +32,15 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * be deleted. Entries received after the delete operation with a timestamp
  * before the operation will be deleted.
  *
- * @param string $formattedLogName The resource name of the log to delete:
- *
- *                                 "projects/[PROJECT_ID]/logs/[LOG_ID]"
+ * @param string $formattedLogName The resource name of the log to delete: "projects/[PROJECT_ID]/logs/[LOG_ID]"
  *                                 "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
  *                                 "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
- *                                 "folders/[FOLDER_ID]/logs/[LOG_ID]"
- *
- *                                 `[LOG_ID]` must be URL-encoded. For example,
+ *                                 "folders/[FOLDER_ID]/logs/[LOG_ID]" `[LOG_ID]` must be URL-encoded. For example,
  *                                 `"projects/my-project-id/logs/syslog"`,
  *                                 `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
  *                                 For more information about log names, see
- *                                 [LogEntry][google.logging.v2.LogEntry].
+ *                                 [LogEntry][google.logging.v2.LogEntry]. For help formatting this field, please
+ *                                 see {@see LoggingServiceV2Client::logName()}.
  */
 function delete_log_sample(string $formattedLogName): void
 {
@@ -53,7 +50,7 @@ function delete_log_sample(string $formattedLogName): void
     // Call the API and handle any network failures.
     try {
         $loggingServiceV2Client->deleteLog($formattedLogName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

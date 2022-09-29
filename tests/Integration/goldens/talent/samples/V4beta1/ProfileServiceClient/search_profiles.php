@@ -37,10 +37,10 @@ use Google\Cloud\Talent\V4beta1\RequestMetadata;
  *
  * See [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest] for more information.
  *
- * @param string $formattedParent The resource name of the tenant to search within.
- *
- *                                The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                "projects/foo/tenants/bar".
+ * @param string $formattedParent The resource name of the tenant to search within. The format is
+ *                                "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                "projects/foo/tenants/bar". For help formatting this field, please see {@see
+ *                                ProfileServiceClient::tenantName()}.
  */
 function search_profiles_sample(string $formattedParent): void
 {
@@ -53,10 +53,7 @@ function search_profiles_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $profileServiceClient->searchProfiles(
-            $formattedParent,
-            $requestMetadata
-        );
+        $response = $profileServiceClient->searchProfiles($formattedParent, $requestMetadata);
 
         /** @var HistogramQueryResult $element */
         foreach ($response as $element) {

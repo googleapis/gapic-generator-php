@@ -34,16 +34,14 @@ use Google\Protobuf\Duration;
 /**
  * Creates new autoscaling policy.
  *
- * @param string $formattedParent                               The "resource name" of the region or location, as described
- *                                                              in https://cloud.google.com/apis/design/resource_names.
- *
- *                                                              * For `projects.regions.autoscalingPolicies.create`, the resource name
- *                                                              of the region has the following format:
- *                                                              `projects/{project_id}/regions/{region}`
- *
- *                                                              * For `projects.locations.autoscalingPolicies.create`, the resource name
- *                                                              of the location has the following format:
- *                                                              `projects/{project_id}/locations/{location}`
+ * @param string $formattedParent                               The "resource name" of the region or location, as described in
+ *                                                              https://cloud.google.com/apis/design/resource_names. * For
+ *                                                              `projects.regions.autoscalingPolicies.create`, the resource name of the region
+ *                                                              has the following format: `projects/{project_id}/regions/{region}` * For
+ *                                                              `projects.locations.autoscalingPolicies.create`, the resource name of the
+ *                                                              location has the following format: `projects/{project_id}/locations/{location}`
+ *                                                              For help formatting this field, please see {@see
+ *                                                              AutoscalingPolicyServiceClient::regionName()}.
  * @param float  $policyBasicAlgorithmYarnConfigScaleUpFactor   Fraction of average YARN pending memory in the last cooldown period
  *                                                              for which to add workers. A scale-up factor of 1.0 will result in scaling
  *                                                              up so that there is no pending memory remaining after the update (more
@@ -83,9 +81,7 @@ function create_autoscaling_policy_sample(
     // Prepare any non-scalar elements to be passed along with the request.
     $policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout = new Duration();
     $policyBasicAlgorithmYarnConfig = (new BasicYarnAutoscalingConfig())
-        ->setGracefulDecommissionTimeout(
-            $policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout
-        )
+        ->setGracefulDecommissionTimeout($policyBasicAlgorithmYarnConfigGracefulDecommissionTimeout)
         ->setScaleUpFactor($policyBasicAlgorithmYarnConfigScaleUpFactor)
         ->setScaleDownFactor($policyBasicAlgorithmYarnConfigScaleDownFactor);
     $policyBasicAlgorithm = (new BasicAutoscalingAlgorithm())
@@ -99,10 +95,7 @@ function create_autoscaling_policy_sample(
     // Call the API and handle any network failures.
     try {
         /** @var AutoscalingPolicy $response */
-        $response = $autoscalingPolicyServiceClient->createAutoscalingPolicy(
-            $formattedParent,
-            $policy
-        );
+        $response = $autoscalingPolicyServiceClient->createAutoscalingPolicy($formattedParent, $policy);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -116,10 +109,7 @@ function create_autoscaling_policy_sample(
  */
 function callSample(): void
 {
-    $formattedParent = AutoscalingPolicyServiceClient::regionName(
-        '[PROJECT]',
-        '[REGION]'
-    );
+    $formattedParent = AutoscalingPolicyServiceClient::regionName('[PROJECT]', '[REGION]');
     $policyBasicAlgorithmYarnConfigScaleUpFactor = 0.0;
     $policyBasicAlgorithmYarnConfigScaleDownFactor = 0.0;
     $policyWorkerConfigMaxInstances = 0;

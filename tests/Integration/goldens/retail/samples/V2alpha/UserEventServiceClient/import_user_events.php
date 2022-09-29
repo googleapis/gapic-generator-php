@@ -42,6 +42,8 @@ use Google\Rpc\Status;
  * Operation.metadata is of type ImportMetadata.
  *
  * @param string $formattedParent                                     `projects/1234/locations/global/catalogs/default_catalog`
+ *                                                                    For help formatting this field, please see {@see
+ *                                                                    UserEventServiceClient::catalogName()}.
  * @param string $inputConfigUserEventInlineSourceUserEventsEventType User event type. Allowed values are:
  *
  *                                                                    * `add-to-cart`: Products being added to cart.
@@ -90,26 +92,17 @@ function import_user_events_sample(
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->importUserEvents(
-            $formattedParent,
-            $inputConfig
-        );
+        $response = $userEventServiceClient->importUserEvents($formattedParent, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
             /** @var ImportUserEventsResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -123,11 +116,7 @@ function import_user_events_sample(
  */
 function callSample(): void
 {
-    $formattedParent = UserEventServiceClient::catalogName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[CATALOG]'
-    );
+    $formattedParent = UserEventServiceClient::catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
     $inputConfigUserEventInlineSourceUserEventsEventType = '[EVENT_TYPE]';
     $inputConfigUserEventInlineSourceUserEventsVisitorId = '[VISITOR_ID]';
 

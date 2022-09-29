@@ -35,8 +35,10 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a single
  *                                     resource name type in a oneof. For help formatting this field, please see {@see
  *                                     LibraryServiceClient::bookName()}.
- * @param string $formattedPlace
- * @param string $formattedFolder
+ * @param string $formattedPlace       For help formatting this field, please see {@see
+ *                                     LibraryServiceClient::locationName()}.
+ * @param string $formattedFolder      For help formatting this field, please see {@see
+ *                                     LibraryServiceClient::folderName()}.
  */
 function get_book_from_anywhere_sample(
     string $formattedName,

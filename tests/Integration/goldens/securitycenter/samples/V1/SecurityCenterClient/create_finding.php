@@ -32,15 +32,14 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * to succeed.
  *
  * @param string $formattedParent Resource name of the new finding's parent. Its format should be
- *                                "organizations/[organization_id]/sources/[source_id]".
+ *                                "organizations/[organization_id]/sources/[source_id]". For help formatting this
+ *                                field, please see {@see SecurityCenterClient::sourceName()}.
  * @param string $findingId       Unique identifier provided by the client within the parent scope.
  *                                It must be alphanumeric and less than or equal to 32 characters and
  *                                greater than 0 characters in length.
  */
-function create_finding_sample(
-    string $formattedParent,
-    string $findingId
-): void {
+function create_finding_sample(string $formattedParent, string $findingId): void
+{
     // Create a client.
     $securityCenterClient = new SecurityCenterClient();
 
@@ -50,11 +49,7 @@ function create_finding_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Finding $response */
-        $response = $securityCenterClient->createFinding(
-            $formattedParent,
-            $findingId,
-            $finding
-        );
+        $response = $securityCenterClient->createFinding($formattedParent, $findingId, $finding);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -68,10 +63,7 @@ function create_finding_sample(
  */
 function callSample(): void
 {
-    $formattedParent = SecurityCenterClient::sourceName(
-        '[ORGANIZATION]',
-        '[SOURCE]'
-    );
+    $formattedParent = SecurityCenterClient::sourceName('[ORGANIZATION]', '[SOURCE]');
     $findingId = '[FINDING_ID]';
 
     create_finding_sample($formattedParent, $findingId);

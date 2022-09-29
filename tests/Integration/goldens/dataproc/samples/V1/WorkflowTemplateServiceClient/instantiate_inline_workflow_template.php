@@ -57,16 +57,15 @@ use Google\Rpc\Status;
  * [Operation.response][google.longrunning.Operation.response] will be
  * [Empty][google.protobuf.Empty].
  *
- * @param string $formattedParent    The resource name of the region or location, as described
- *                                   in https://cloud.google.com/apis/design/resource_names.
- *
- *                                   * For `projects.regions.workflowTemplates,instantiateinline`, the resource
- *                                   name of the region has the following format:
- *                                   `projects/{project_id}/regions/{region}`
- *
- *                                   * For `projects.locations.workflowTemplates.instantiateinline`, the
- *                                   resource name of the location has the following format:
+ * @param string $formattedParent    The resource name of the region or location, as described in
+ *                                   https://cloud.google.com/apis/design/resource_names. * For
+ *                                   `projects.regions.workflowTemplates,instantiateinline`, the resource name of the
+ *                                   region has the following format: `projects/{project_id}/regions/{region}` * For
+ *                                   `projects.locations.workflowTemplates.instantiateinline`, the resource name of
+ *                                   the location has the following format:
  *                                   `projects/{project_id}/locations/{location}`
+ *                                   For help formatting this field, please see {@see
+ *                                   WorkflowTemplateServiceClient::regionName()}.
  * @param string $templateId
  * @param string $templateJobsStepId The step id. The id must be unique among all jobs
  *                                   within the template.
@@ -108,14 +107,11 @@ function instantiate_inline_workflow_template_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -129,17 +125,10 @@ function instantiate_inline_workflow_template_sample(
  */
 function callSample(): void
 {
-    $formattedParent = WorkflowTemplateServiceClient::regionName(
-        '[PROJECT]',
-        '[REGION]'
-    );
+    $formattedParent = WorkflowTemplateServiceClient::regionName('[PROJECT]', '[REGION]');
     $templateId = '[ID]';
     $templateJobsStepId = '[STEP_ID]';
 
-    instantiate_inline_workflow_template_sample(
-        $formattedParent,
-        $templateId,
-        $templateJobsStepId
-    );
+    instantiate_inline_workflow_template_sample($formattedParent, $templateId, $templateJobsStepId);
 }
 // [END dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_sync]

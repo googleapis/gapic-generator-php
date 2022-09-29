@@ -30,9 +30,10 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
  * Deletes an asset feed.
  *
  * @param string $formattedName The name of the feed and it must be in the format of:
- *                              projects/project_number/feeds/feed_id
- *                              folders/folder_number/feeds/feed_id
+ *                              projects/project_number/feeds/feed_id folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
+ *                              For help formatting this field, please see {@see
+ *                              AssetServiceClient::feedName()}.
  */
 function delete_feed_sample(string $formattedName): void
 {
@@ -42,7 +43,7 @@ function delete_feed_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $assetServiceClient->deleteFeed($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

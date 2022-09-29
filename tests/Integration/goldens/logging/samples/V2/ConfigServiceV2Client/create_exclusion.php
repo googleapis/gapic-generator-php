@@ -32,14 +32,11 @@ use Google\Cloud\Logging\V2\LogExclusion;
  * Only log entries belonging to that resource can be excluded.
  * You can have up to 10 exclusions in a resource.
  *
- * @param string $formattedParent The parent resource in which to create the exclusion:
- *
- *                                "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]"
- *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                "folders/[FOLDER_ID]"
- *
- *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
+ * @param string $formattedParent The parent resource in which to create the exclusion: "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
+ *                                "folders/[FOLDER_ID]" Examples: `"projects/my-logging-project"`,
+ *                                `"organizations/123456789"`. For help formatting this field, please see {@see
+ *                                ConfigServiceV2Client::projectName()}.
  * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
  *                                Identifiers are limited to 100 characters and can include only letters,
  *                                digits, underscores, hyphens, and periods. First character has to be
@@ -70,10 +67,7 @@ function create_exclusion_sample(
     // Call the API and handle any network failures.
     try {
         /** @var LogExclusion $response */
-        $response = $configServiceV2Client->createExclusion(
-            $formattedParent,
-            $exclusion
-        );
+        $response = $configServiceV2Client->createExclusion($formattedParent, $exclusion);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

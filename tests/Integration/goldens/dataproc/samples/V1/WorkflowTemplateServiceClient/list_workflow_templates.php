@@ -31,16 +31,14 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 /**
  * Lists workflows that match the specified filter in the request.
  *
- * @param string $formattedParent The resource name of the region or location, as described
- *                                in https://cloud.google.com/apis/design/resource_names.
- *
- *                                * For `projects.regions.workflowTemplates,list`, the resource
- *                                name of the region has the following format:
- *                                `projects/{project_id}/regions/{region}`
- *
- *                                * For `projects.locations.workflowTemplates.list`, the
- *                                resource name of the location has the following format:
- *                                `projects/{project_id}/locations/{location}`
+ * @param string $formattedParent The resource name of the region or location, as described in
+ *                                https://cloud.google.com/apis/design/resource_names. * For
+ *                                `projects.regions.workflowTemplates,list`, the resource name of the region has
+ *                                the following format: `projects/{project_id}/regions/{region}` * For
+ *                                `projects.locations.workflowTemplates.list`, the resource name of the location
+ *                                has the following format: `projects/{project_id}/locations/{location}`
+ *                                For help formatting this field, please see {@see
+ *                                WorkflowTemplateServiceClient::regionName()}.
  */
 function list_workflow_templates_sample(string $formattedParent): void
 {
@@ -50,9 +48,7 @@ function list_workflow_templates_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $workflowTemplateServiceClient->listWorkflowTemplates(
-            $formattedParent
-        );
+        $response = $workflowTemplateServiceClient->listWorkflowTemplates($formattedParent);
 
         /** @var WorkflowTemplate $element */
         foreach ($response as $element) {
@@ -70,10 +66,7 @@ function list_workflow_templates_sample(string $formattedParent): void
  */
 function callSample(): void
 {
-    $formattedParent = WorkflowTemplateServiceClient::regionName(
-        '[PROJECT]',
-        '[REGION]'
-    );
+    $formattedParent = WorkflowTemplateServiceClient::regionName('[PROJECT]', '[REGION]');
 
     list_workflow_templates_sample($formattedParent);
 }

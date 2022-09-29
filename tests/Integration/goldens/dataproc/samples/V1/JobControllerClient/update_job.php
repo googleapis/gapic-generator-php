@@ -57,13 +57,7 @@ function update_job_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobControllerClient->updateJob(
-            $projectId,
-            $region,
-            $jobId,
-            $job,
-            $updateMask
-        );
+        $response = $jobControllerClient->updateJob($projectId, $region, $jobId, $job, $updateMask);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

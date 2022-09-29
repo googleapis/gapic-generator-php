@@ -31,8 +31,9 @@ use Google\Cloud\Redis\V1\Instance;
  * Gets the details of a specific Redis instance.
  *
  * @param string $formattedName Redis instance resource name using the form:
- *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
- *                              where `location_id` refers to a GCP region.
+ *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+ *                              `location_id` refers to a GCP region. For help formatting this field, please see
+ *                              {@see CloudRedisClient::instanceName()}.
  */
 function get_instance_sample(string $formattedName): void
 {
@@ -56,11 +57,7 @@ function get_instance_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = CloudRedisClient::instanceName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[INSTANCE]'
-    );
+    $formattedName = CloudRedisClient::instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
 
     get_instance_sample($formattedName);
 }

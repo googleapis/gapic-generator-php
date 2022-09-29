@@ -34,8 +34,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * Returns an error if called on an asymmetric key.
  *
- * @param string $formattedName      The resource name of the
- *                                   [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+ * @param string $formattedName      The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+ *                                   For help formatting this field, please see {@see
+ *                                   KeyManagementServiceClient::cryptoKeyName()}.
  * @param string $cryptoKeyVersionId The id of the child
  *                                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use as primary.
  */

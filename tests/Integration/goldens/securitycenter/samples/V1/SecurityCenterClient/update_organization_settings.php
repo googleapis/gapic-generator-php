@@ -39,9 +39,7 @@ function update_organization_settings_sample(): void
     // Call the API and handle any network failures.
     try {
         /** @var OrganizationSettings $response */
-        $response = $securityCenterClient->updateOrganizationSettings(
-            $organizationSettings
-        );
+        $response = $securityCenterClient->updateOrganizationSettings($organizationSettings);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

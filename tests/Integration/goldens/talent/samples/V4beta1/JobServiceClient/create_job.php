@@ -33,19 +33,16 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
  * Typically, the job becomes searchable within 10 seconds, but it may take
  * up to 5 minutes.
  *
- * @param string $formattedParent  The resource name of the tenant under which the job is created.
- *
- *                                 The format is "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                 "projects/foo/tenant/bar". If tenant id is unspecified a default tenant
- *                                 is created. For example, "projects/foo".
- * @param string $formattedCompany The resource name of the company listing the job.
- *
- *                                 The format is
- *                                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For
- *                                 example, "projects/foo/tenants/bar/companies/baz".
- *
- *                                 If tenant id is unspecified, the default tenant is used. For
- *                                 example, "projects/foo/companies/bar".
+ * @param string $formattedParent  The resource name of the tenant under which the job is created. The format is
+ *                                 "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                 "projects/foo/tenant/bar". If tenant id is unspecified a default tenant is
+ *                                 created. For example, "projects/foo". For help formatting this field, please see
+ *                                 {@see JobServiceClient::projectName()}.
+ * @param string $formattedCompany The resource name of the company listing the job. The format is
+ *                                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For example,
+ *                                 "projects/foo/tenants/bar/companies/baz". If tenant id is unspecified, the
+ *                                 default tenant is used. For example, "projects/foo/companies/bar". For help
+ *                                 formatting this field, please see {@see JobServiceClient::companyName()}.
  * @param string $jobRequisitionId The requisition ID, also referred to as the posting ID, is assigned by the
  *                                 client to identify a job. This field is intended to be used by clients
  *                                 for client identification and tracking of postings. A job isn't allowed
@@ -87,11 +84,7 @@ function create_job_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobServiceClient->createJob(
-            $formattedParent,
-            $job,
-            $formattedCompany
-        );
+        $response = $jobServiceClient->createJob($formattedParent, $job, $formattedCompany);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -106,11 +99,7 @@ function create_job_sample(
 function callSample(): void
 {
     $formattedParent = JobServiceClient::projectName('[PROJECT]');
-    $formattedCompany = JobServiceClient::companyName(
-        '[PROJECT]',
-        '[TENANT]',
-        '[COMPANY]'
-    );
+    $formattedCompany = JobServiceClient::companyName('[PROJECT]', '[TENANT]', '[COMPANY]');
     $jobRequisitionId = '[REQUISITION_ID]';
     $jobTitle = '[TITLE]';
     $jobDescription = '[DESCRIPTION]';

@@ -31,9 +31,10 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 /**
  * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
  *
- * @param string $formattedParent The resource name of the
- *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
- *                                `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`.
+ * @param string $formattedParent The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in
+ *                                the format `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. For
+ *                                help formatting this field, please see {@see
+ *                                KeyManagementServiceClient::cryptoKeyName()}.
  */
 function list_crypto_key_versions_sample(string $formattedParent): void
 {
@@ -43,9 +44,7 @@ function list_crypto_key_versions_sample(string $formattedParent): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $keyManagementServiceClient->listCryptoKeyVersions(
-            $formattedParent
-        );
+        $response = $keyManagementServiceClient->listCryptoKeyVersions($formattedParent);
 
         /** @var CryptoKeyVersion $element */
         foreach ($response as $element) {

@@ -39,7 +39,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * be cleared.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore. For help
+ *                              formatting this field, please see {@see
+ *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
  */
 function restore_crypto_key_version_sample(string $formattedName): void
 {
@@ -49,9 +51,7 @@ function restore_crypto_key_version_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->restoreCryptoKeyVersion(
-            $formattedName
-        );
+        $response = $keyManagementServiceClient->restoreCryptoKeyVersion($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
