@@ -275,6 +275,16 @@ class FieldDetails
         return !$this->isOneOf ? null : $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
     }
 
+    /**
+     * Create an example value based off the type of this field.
+     *
+     * @param SourceFileContext $ctx The context this field is attached to.
+     * @param bool $formatStringWithBrackets Whether or not to format a string
+     *             value as "['VALUE']" or "'value'".
+     * @param bool $ignoredRepeated If the field is repeated, setting this value
+     *             to true will return a value of the singular type (treats it as non-repeated).
+     * @return mixed
+     */
     public function exampleValue(
         SourceFileContext $ctx,
         bool $formatStringWithBrackets = false,
