@@ -488,7 +488,7 @@ abstract class AST
                     if (substr($objCode, 0, 4) === 'new ') {
                         $objCode = '(' . $objCode . ')';
                         $calleeOnNewline = true;
-                    } elseif (strpos($objCode, 'new ') !== false) {
+                    } elseif (substr($objCode, 0, 5) === '(new ') {
                         $calleeOnNewline = true;
                     }
 
