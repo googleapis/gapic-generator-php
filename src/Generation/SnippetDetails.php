@@ -306,16 +306,38 @@ class SnippetDetails
                 AST::assign($var, [$arrayElementVar])
             );
         }
-        $this->handleSampleParams($field, $arrayElementVar ?: $var, $value);
+
+        // append a message to the param description guiding users where to find the helper.
+        $docLineCount = count($field->docLines);
+        $formatCall = $this->serviceDetails->emptyClientType->name .
+                      '::' . $field->resourceDetails->formatMethod->getName() . '()';
+        $formatString = "For help formatting this field, please see {@see $formatCall}.";
+        if ($docLineCount > 0) {
+            $field->docLines = $field->docLines->map(function ($item, $index) use ($docLineCount, $formatString) {
+                return $index === $docLineCount - 1
+                    ? $item .= " $formatString"
+                    : $item;
+            });
+        } else {
+            $field->docLines->append($formatString);
+        }
+
+        $this->handleSampleParams(
+            $field,
+            $arrayElementVar ?: $var,
+            $value,
+            PhpDoc::text(...$this->filterDocLines($field->docLines))
+        );
         $this->rpcArguments = $this->rpcArguments->append($var);
     }
 
     /**
      * @param FieldDetails $field
      * @param Variable $var
-     * @param mixed $value
+     * @param mixed $value A value override.
+     * @param PhpDoc $phpDocText A phpdoc param description override.
      */
-    private function handleSampleParams(FieldDetails $field, Variable $var, $value = null): void
+    private function handleSampleParams(FieldDetails $field, Variable $var, $value = null, PhpDoc $phpDocText = null): void
     {
         $paramType = $field->isEnum
             ? Type::int()
@@ -329,7 +351,7 @@ class SnippetDetails
         $this->phpDocParams = $this->phpDocParams->append(
             PhpDoc::param(
                 $param,
-                PhpDoc::preFormattedText(
+                $phpDocText ?: PhpDoc::preFormattedText(
                     $this->filterDocLines($field->docLines)
                 )
             )
