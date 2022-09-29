@@ -280,7 +280,7 @@ class FieldDetails
      *
      * @param SourceFileContext $ctx The context this field is attached to.
      * @param bool $formatStringWithBrackets Whether or not to format a string
-     *             value as "['VALUE']" or "'value'".
+     *             value as "'[VALUE]'" or "'value'".
      * @param bool $ignoredRepeated If the field is repeated, setting this value
      *             to true will return a value of the singular type (treats it as non-repeated).
      * @return mixed
