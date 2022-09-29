@@ -296,10 +296,10 @@ class SnippetDetails
             ->map(function (array $paramDetails) use ($field) {
                 return strtoupper("[$paramDetails[0]]");
             });
-        $value = AST::staticCall(
+        $clientCall = AST::staticCall(
             $this->context->type($this->serviceDetails->emptyClientType),
             $field->resourceDetails->formatMethod
-        )($formatMethodArgs);
+        );
         if ($field->isRepeated) {
             $arrayElementVar = AST::var("{$fieldName}Element");
             $this->sampleAssignments = $this->sampleAssignments->append(
@@ -308,18 +308,20 @@ class SnippetDetails
         }
 
         // append a message to the param description guiding users where to find the helper.
-        $formatCall = $this->serviceDetails->emptyClientType->name .
-                      '::' . $field->resourceDetails->formatMethod->getName() . '()';
         if (count($field->docLines) > 0 && substr($field->docLines->last(), -1) !== '.') {
             $field->docLines = $field->docLines->append(PhpDoc::newLine());
         }
-        $field->docLines = $field->docLines->append("For help formatting this field, please see {@see $formatCall}.");
+        $field->docLines = $field->docLines->append("Please see")
+            ->append($clientCall())
+            ->append('for help formatting this field.');
 
         $this->handleSampleParams(
             $field,
             $arrayElementVar ?: $var,
-            $value,
-            PhpDoc::text(...$this->filterDocLines($field->docLines))
+            $clientCall($formatMethodArgs),
+            PhpDoc::text(
+                ...$this->filterDocLines($field->docLines),
+            )
         );
         $this->rpcArguments = $this->rpcArguments->append($var);
     }
