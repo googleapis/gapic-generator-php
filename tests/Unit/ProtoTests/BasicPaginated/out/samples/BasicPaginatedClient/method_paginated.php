@@ -47,11 +47,7 @@ function method_paginated_sample(string $aField, string $pageToken): void
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $basicPaginatedClient->methodPaginated(
-            $aField,
-            $pageToken,
-            $partOfRequestA
-        );
+        $response = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
 
         /** @var string $element */
         foreach ($response as $element) {

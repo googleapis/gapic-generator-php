@@ -32,7 +32,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Test long-running operations
  *
- * @param string $formattedName The name of the book to retrieve.
+ * @param string $formattedName The name of the book to retrieve. For help formatting this field, please see
+ *                              {@see LibraryServiceClient::bookName()}.
  */
 function get_big_book_sample(string $formattedName): void
 {
@@ -48,17 +49,11 @@ function get_big_book_sample(string $formattedName): void
         if ($response->operationSucceeded()) {
             /** @var BookResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -72,11 +67,7 @@ function get_big_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     get_big_book_sample($formattedName);
 }

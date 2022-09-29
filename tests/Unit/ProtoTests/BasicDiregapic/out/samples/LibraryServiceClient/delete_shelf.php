@@ -29,7 +29,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Deletes a shelf.
  *
- * @param string $formattedName The name of the shelf to delete.
+ * @param string $formattedName The name of the shelf to delete. For help formatting this field, please see
+ *                              {@see LibraryServiceClient::shelfName()}.
  */
 function delete_shelf_sample(string $formattedName): void
 {
@@ -39,7 +40,7 @@ function delete_shelf_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $libraryServiceClient->deleteShelf($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

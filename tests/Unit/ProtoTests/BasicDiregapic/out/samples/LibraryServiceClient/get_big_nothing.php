@@ -31,7 +31,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Test long-running operations with empty return type.
  *
- * @param string $formattedName The name of the book to retrieve.
+ * @param string $formattedName The name of the book to retrieve. For help formatting this field, please see
+ *                              {@see LibraryServiceClient::bookName()}.
  */
 function get_big_nothing_sample(string $formattedName): void
 {
@@ -45,14 +46,11 @@ function get_big_nothing_sample(string $formattedName): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            printf('Operation completed successfully.');
+            printf('Operation completed successfully.' . PHP_EOL);
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -66,11 +64,7 @@ function get_big_nothing_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     get_big_nothing_sample($formattedName);
 }

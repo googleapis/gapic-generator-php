@@ -34,10 +34,8 @@ use Testing\RoutingHeaders\RoutingHeadersClient;
  * @param string $nest1Nest2Name
  * @param string $anotherName
  */
-function routing_rule_with_parameters_sample(
-    string $nest1Nest2Name,
-    string $anotherName
-): void {
+function routing_rule_with_parameters_sample(string $nest1Nest2Name, string $anotherName): void
+{
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 
@@ -50,10 +48,7 @@ function routing_rule_with_parameters_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $routingHeadersClient->routingRuleWithParameters(
-            $nest1,
-            $anotherName
-        );
+        $response = $routingHeadersClient->routingRuleWithParameters($nest1, $anotherName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

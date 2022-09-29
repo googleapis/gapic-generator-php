@@ -38,7 +38,7 @@ function delete_sample(string $operation): void
     // Call the API and handle any network failures.
     try {
         $customLroOperationsClient->delete($operation);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }

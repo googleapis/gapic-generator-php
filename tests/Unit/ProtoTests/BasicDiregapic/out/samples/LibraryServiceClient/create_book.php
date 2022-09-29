@@ -30,7 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Creates a book.
  *
- * @param string $formattedName The name of the shelf in which the book is created.
+ * @param string $formattedName The name of the shelf in which the book is created. For help formatting this
+ *                              field, please see {@see LibraryServiceClient::shelfName()}.
  * @param string $bookName      The resource name of the book.
  *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                              Message field comment may include special characters: <>&"`'&#64;.

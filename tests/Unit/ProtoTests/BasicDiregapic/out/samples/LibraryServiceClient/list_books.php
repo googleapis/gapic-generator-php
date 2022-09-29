@@ -31,7 +31,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Lists books in a shelf.
  *
- * @param string $formattedName The name of the shelf whose books we'd like to list.
+ * @param string $formattedName The name of the shelf whose books we'd like to list. For help formatting this
+ *                              field, please see {@see LibraryServiceClient::shelfName()}.
  */
 function list_books_sample(string $formattedName): void
 {

@@ -53,11 +53,7 @@ function a_method_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $basicOneofClient->aMethod(
-            $supplementaryData,
-            $other,
-            $requiredOptional
-        );
+        $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -75,10 +71,6 @@ function callSample(): void
     $otherFirst = '[FIRST]';
     $requiredOptional = '[REQUIRED_OPTIONAL]';
 
-    a_method_sample(
-        $supplementaryDataExtraDescription,
-        $otherFirst,
-        $requiredOptional
-    );
+    a_method_sample($supplementaryDataExtraDescription, $otherFirst, $requiredOptional);
 }
 // [END basic_generated_BasicOneof_AMethod_sync]

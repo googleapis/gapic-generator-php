@@ -34,10 +34,8 @@ use Testing\RoutingHeaders\RoutingHeadersClient;
  * @param string $nest1Nest2Name
  * @param string $anotherName
  */
-function nested_multi_method_sample(
-    string $nest1Nest2Name,
-    string $anotherName
-): void {
+function nested_multi_method_sample(string $nest1Nest2Name, string $anotherName): void
+{
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 

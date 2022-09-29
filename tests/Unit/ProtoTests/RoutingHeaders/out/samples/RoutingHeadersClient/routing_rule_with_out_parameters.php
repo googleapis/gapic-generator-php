@@ -50,10 +50,7 @@ function routing_rule_with_out_parameters_sample(
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $routingHeadersClient->routingRuleWithOutParameters(
-            $nest1,
-            $anotherName
-        );
+        $response = $routingHeadersClient->routingRuleWithOutParameters($nest1, $anotherName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

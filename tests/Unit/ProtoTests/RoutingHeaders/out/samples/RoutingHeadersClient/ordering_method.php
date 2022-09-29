@@ -35,13 +35,8 @@ use Testing\RoutingHeaders\RoutingHeadersClient;
  * @param string $c
  * @param string $e
  */
-function ordering_method_sample(
-    string $a,
-    string $b,
-    string $d,
-    string $c,
-    string $e
-): void {
+function ordering_method_sample(string $a, string $b, string $d, string $c, string $e): void
+{
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 

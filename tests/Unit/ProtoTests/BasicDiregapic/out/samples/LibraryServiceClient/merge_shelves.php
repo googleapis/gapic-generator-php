@@ -32,23 +32,20 @@ use Testing\BasicDiregapic\ShelfResponse;
  * `other_shelf_name` to shelf `name`, and deletes
  * `other_shelf_name`. Returns the updated shelf.
  *
- * @param string $formattedName           The name of the shelf we're adding books to.
- * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting.
+ * @param string $formattedName           The name of the shelf we're adding books to. For help formatting this field,
+ *                                        please see {@see LibraryServiceClient::shelfName()}.
+ * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. For help
+ *                                        formatting this field, please see {@see LibraryServiceClient::shelfName()}.
  */
-function merge_shelves_sample(
-    string $formattedName,
-    string $formattedOtherShelfName
-): void {
+function merge_shelves_sample(string $formattedName, string $formattedOtherShelfName): void
+{
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
-        $response = $libraryServiceClient->mergeShelves(
-            $formattedName,
-            $formattedOtherShelfName
-        );
+        $response = $libraryServiceClient->mergeShelves($formattedName, $formattedOtherShelfName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

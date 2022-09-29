@@ -30,7 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Test proper OneOf-Any resource name mapping
  *
- * @param string $formattedName The name of the book to retrieve.
+ * @param string $formattedName The name of the book to retrieve. For help formatting this field, please see
+ *                              {@see LibraryServiceClient::bookName()}.
  */
 function get_book_from_absolutely_anywhere_sample(string $formattedName): void
 {
@@ -40,9 +41,7 @@ function get_book_from_absolutely_anywhere_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         /** @var BookFromAnywhereResponse $response */
-        $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere(
-            $formattedName
-        );
+        $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -56,11 +55,7 @@ function get_book_from_absolutely_anywhere_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     get_book_from_absolutely_anywhere_sample($formattedName);
 }

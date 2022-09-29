@@ -29,13 +29,12 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Updates the index of a book.
  *
- * @param string $formattedName The name of the book to update.
+ * @param string $formattedName The name of the book to update. For help formatting this field, please see {@see
+ *                              LibraryServiceClient::bookName()}.
  * @param string $indexName     The name of the index for the book
  */
-function update_book_index_sample(
-    string $formattedName,
-    string $indexName
-): void {
+function update_book_index_sample(string $formattedName, string $indexName): void
+{
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
@@ -45,7 +44,7 @@ function update_book_index_sample(
     // Call the API and handle any network failures.
     try {
         $libraryServiceClient->updateBookIndex($formattedName, $indexName, $indexMap);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -58,11 +57,7 @@ function update_book_index_sample(
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $indexName = '[INDEX_NAME]';
 
     update_book_index_sample($formattedName, $indexName);

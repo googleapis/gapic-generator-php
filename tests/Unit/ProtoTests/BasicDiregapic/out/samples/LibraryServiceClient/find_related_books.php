@@ -46,10 +46,7 @@ function find_related_books_sample(
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryServiceClient->findRelatedBooks(
-            $formattedNames,
-            $formattedShelves
-        );
+        $response = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
 
         /** @var string $element */
         foreach ($response as $element) {
@@ -67,11 +64,7 @@ function find_related_books_sample(
  */
 function callSample(): void
 {
-    $formattedNamesElement = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedNamesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $formattedShelvesElement = LibraryServiceClient::shelfName('[SHELF]');
 
     find_related_books_sample($formattedNamesElement, $formattedShelvesElement);

@@ -70,9 +70,7 @@ function callSample(): void
 {
     $formattedReqFolderName = ResourceNamesClient::folderName('[FOLDER_ID]');
     $formattedReqFolderMultiName = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
-    $formattedReqFolderMultiNameHistory = ResourceNamesClient::folder1Name(
-        '[FOLDER1_ID]'
-    );
+    $formattedReqFolderMultiNameHistory = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
     $formattedReqOrderTest1 = ResourceNamesClient::order2Name('[ORDER2_ID]');
     $formattedReqOrderTest2 = ResourceNamesClient::order2Name('[ORDER2_ID]');
 

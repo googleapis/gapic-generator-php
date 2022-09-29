@@ -30,23 +30,19 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Gets a book from an archive.
  *
- * @param string $formattedName   The name of the book to retrieve.
+ * @param string $formattedName   The name of the book to retrieve. For help formatting this field, please see
+ *                                {@see LibraryServiceClient::archivedBookName()}.
  * @param string $formattedParent
  */
-function get_book_from_archive_sample(
-    string $formattedName,
-    string $formattedParent
-): void {
+function get_book_from_archive_sample(string $formattedName, string $formattedParent): void
+{
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var BookFromArchiveResponse $response */
-        $response = $libraryServiceClient->getBookFromArchive(
-            $formattedName,
-            $formattedParent
-        );
+        $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

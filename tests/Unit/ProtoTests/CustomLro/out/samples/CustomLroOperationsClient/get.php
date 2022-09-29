@@ -34,24 +34,15 @@ use Testing\CustomLro\CustomOperationResponse;
  * @param string $region    Name of the region for this request.
  * @param string $foo       The foo from the initial request.
  */
-function get_sample(
-    string $operation,
-    string $project,
-    string $region,
-    string $foo
-): void {
+function get_sample(string $operation, string $project, string $region, string $foo): void
+{
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
 
     // Call the API and handle any network failures.
     try {
         /** @var CustomOperationResponse $response */
-        $response = $customLroOperationsClient->get(
-            $operation,
-            $project,
-            $region,
-            $foo
-        );
+        $response = $customLroOperationsClient->get($operation, $project, $region, $foo);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

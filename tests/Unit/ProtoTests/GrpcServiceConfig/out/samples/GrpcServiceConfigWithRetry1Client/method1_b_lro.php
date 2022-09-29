@@ -43,17 +43,11 @@ function method1_b_lro_sample(): void
         if ($response->operationSucceeded()) {
             /** @var LroResponse $response */
             $result = $response->getResult();
-            printf(
-                'Operation successful with response data: %s' . PHP_EOL,
-                $result->serializeToJsonString()
-            );
+            printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
             /** @var Status $error */
             $error = $response->getError();
-            printf(
-                'Operation failed with error data: %s' . PHP_EOL,
-                $error->serializeToJsonString()
-            );
+            printf('Operation failed with error data: %s' . PHP_EOL, $error->serializeToJsonString());
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

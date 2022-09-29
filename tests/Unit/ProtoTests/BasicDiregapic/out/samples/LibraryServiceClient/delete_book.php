@@ -29,7 +29,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Deletes a book.
  *
- * @param string $formattedName The name of the book to delete.
+ * @param string $formattedName The name of the book to delete. For help formatting this field, please see {@see
+ *                              LibraryServiceClient::bookName()}.
  */
 function delete_book_sample(string $formattedName): void
 {
@@ -39,7 +40,7 @@ function delete_book_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $libraryServiceClient->deleteBook($formattedName);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -52,11 +53,7 @@ function delete_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     delete_book_sample($formattedName);
 }

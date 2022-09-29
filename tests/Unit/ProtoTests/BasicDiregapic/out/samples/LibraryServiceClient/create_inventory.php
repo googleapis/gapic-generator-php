@@ -50,12 +50,7 @@ function create_inventory_sample(
     // Call the API and handle any network failures.
     try {
         /** @var InventoryResponse $response */
-        $response = $libraryServiceClient->createInventory(
-            $formattedParent,
-            $asset,
-            $parentAsset,
-            $assets
-        );
+        $response = $libraryServiceClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -69,11 +64,7 @@ function create_inventory_sample(
  */
 function callSample(): void
 {
-    $formattedParent = LibraryServiceClient::publisherName(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PUBLISHER]'
-    );
+    $formattedParent = LibraryServiceClient::publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
     $asset = '[ASSET]';
     $parentAsset = '[PARENT_ASSET]';
     $assetsElement = '[ASSETS]';

@@ -30,9 +30,11 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Gets a book from a shelf or archive.
  *
- * @param string $formattedName        The name of the book to retrieve.
- * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a
- *                                     single resource name type in a oneof.
+ * @param string $formattedName        The name of the book to retrieve. For help formatting this field, please see
+ *                                     {@see LibraryServiceClient::bookName()}.
+ * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a single
+ *                                     resource name type in a oneof. For help formatting this field, please see {@see
+ *                                     LibraryServiceClient::bookName()}.
  * @param string $formattedPlace
  * @param string $formattedFolder
  */
@@ -67,16 +69,8 @@ function get_book_from_anywhere_sample(
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
-    $formattedAltBookName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedAltBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $formattedPlace = LibraryServiceClient::locationName('[PROJECT]', '[LOCATION]');
     $formattedFolder = LibraryServiceClient::folderName('[FOLDER]');
 

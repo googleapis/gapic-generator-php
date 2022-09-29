@@ -43,7 +43,7 @@ function add_comments_sample(string $formattedName): void
     // Call the API and handle any network failures.
     try {
         $libraryServiceClient->addComments($formattedName, $comments);
-        printf('Call completed successfully.');
+        printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -56,11 +56,7 @@ function add_comments_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     add_comments_sample($formattedName);
 }

@@ -30,7 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Updates a book.
  *
- * @param string $formattedName The name of the book to update.
+ * @param string $formattedName The name of the book to update. For help formatting this field, please see {@see
+ *                              LibraryServiceClient::bookName()}.
  * @param string $bookName      The resource name of the book.
  *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                              Message field comment may include special characters: <>&"`'&#64;.
@@ -61,11 +62,7 @@ function update_book_sample(string $formattedName, string $bookName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName(
-        '[SHELF]',
-        '[BOOK_ONE]',
-        '[BOOK_TWO]'
-    );
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $bookName = '[NAME]';
 
     update_book_sample($formattedName, $bookName);
