@@ -21,7 +21,10 @@ namespace Google\Generator\Ast;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 
-/** A function that can be placed in any block of code. */
+/**
+ * A function that can be placed in any block of code. Please use
+ * {@see PhpMethod} if you intend to add a function to a class. 
+ */
 final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
 {
     use HasPhpDoc;
