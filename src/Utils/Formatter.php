@@ -162,6 +162,7 @@ class Formatter
         return $pre->concat($usings)->concat($post)->join("\n");
     }
 
+    // TODO: Investigate if there are more succinct ways to build out this fixer
     private static function buildLineLengthFixer(int $lineLength)
     {
         $blockFinder = new TokenRunner\Analyzer\FixerAnalyzer\BlockFinder();
