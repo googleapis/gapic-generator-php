@@ -37,8 +37,8 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
  *                                the following format: `projects/{project_id}/regions/{region}` * For
  *                                `projects.locations.workflowTemplates.list`, the resource name of the location
  *                                has the following format: `projects/{project_id}/locations/{location}`
- *                                For help formatting this field, please see {@see
- *                                WorkflowTemplateServiceClient::regionName()}.
+ *                                Please see {@see WorkflowTemplateServiceClient::regionName()} for help
+ *                                formatting this field.
  */
 function list_workflow_templates_sample(string $formattedParent): void
 {

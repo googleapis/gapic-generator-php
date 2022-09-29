@@ -33,8 +33,9 @@ use Google\Rpc\Status;
  * given function is used by some trigger, the trigger will be updated to
  * remove this function.
  *
- * @param string $formattedName The name of the function which should be deleted. For help formatting this
- *                              field, please see {@see CloudFunctionsServiceClient::cloudFunctionName()}.
+ * @param string $formattedName The name of the function which should be deleted. Please see
+ *                              {@see CloudFunctionsServiceClient::cloudFunctionName()} for help formatting this
+ *                              field.
  */
 function delete_function_sample(string $formattedName): void
 {

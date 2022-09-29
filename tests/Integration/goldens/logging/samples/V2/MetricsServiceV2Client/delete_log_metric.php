@@ -31,8 +31,8 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  *
  * @param string $formattedMetricName The resource name of the metric to delete:
  *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
- *                                    For help formatting this field, please see {@see
- *                                    MetricsServiceV2Client::logMetricName()}.
+ *                                    Please see {@see MetricsServiceV2Client::logMetricName()} for help formatting
+ *                                    this field.
  */
 function delete_log_metric_sample(string $formattedMetricName): void
 {

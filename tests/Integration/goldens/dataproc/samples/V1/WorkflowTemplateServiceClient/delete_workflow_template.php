@@ -37,8 +37,8 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
  *                              `projects.locations.workflowTemplates.instantiate`, the resource name of the
  *                              template has the following format:
  *                              `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
- *                              For help formatting this field, please see {@see
- *                              WorkflowTemplateServiceClient::workflowTemplateName()}.
+ *                              Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help
+ *                              formatting this field.
  */
 function delete_workflow_template_sample(string $formattedName): void
 {

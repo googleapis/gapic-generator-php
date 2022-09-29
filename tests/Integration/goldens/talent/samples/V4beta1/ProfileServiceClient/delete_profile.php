@@ -33,8 +33,8 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
  *
  * @param string $formattedName Resource name of the profile to be deleted. The format is
  *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For example,
- *                              "projects/foo/tenants/bar/profiles/baz". For help formatting this field, please
- *                              see {@see ProfileServiceClient::profileName()}.
+ *                              "projects/foo/tenants/bar/profiles/baz". Please see
+ *                              {@see ProfileServiceClient::profileName()} for help formatting this field.
  */
 function delete_profile_sample(string $formattedName): void
 {

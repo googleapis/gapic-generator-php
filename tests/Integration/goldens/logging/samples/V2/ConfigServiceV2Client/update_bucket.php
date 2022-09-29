@@ -48,8 +48,8 @@ use Google\Protobuf\FieldMask;
  *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Also
  *                              requires permission "resourcemanager.projects.updateLiens" to set the locked
  *                              property
- *                              For help formatting this field, please see {@see
- *                              ConfigServiceV2Client::logBucketName()}.
+ *                              Please see {@see ConfigServiceV2Client::logBucketName()} for help formatting
+ *                              this field.
  */
 function update_bucket_sample(string $formattedName): void
 {

@@ -36,8 +36,8 @@ use Google\Cloud\Logging\V2\LogSink;
  * @param string $formattedParent The resource in which to create the sink: "projects/[PROJECT_ID]"
  *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]" Examples: `"projects/my-logging-project"`,
- *                                `"organizations/123456789"`. For help formatting this field, please see {@see
- *                                ConfigServiceV2Client::projectName()}.
+ *                                `"organizations/123456789"`. Please see
+ *                                {@see ConfigServiceV2Client::projectName()} for help formatting this field.
  * @param string $sinkName        The client-assigned sink identifier, unique within the project. Example:
  *                                `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
  *                                characters and can include only the following characters: upper and

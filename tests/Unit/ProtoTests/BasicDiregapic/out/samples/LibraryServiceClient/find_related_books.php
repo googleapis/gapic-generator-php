@@ -29,10 +29,10 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  *
- * @param string $formattedNamesElement   For help formatting this field, please see {@see
- *                                        LibraryServiceClient::bookName()}.
- * @param string $formattedShelvesElement For help formatting this field, please see {@see
- *                                        LibraryServiceClient::shelfName()}.
+ * @param string $formattedNamesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this
+ *                                        field.
+ * @param string $formattedShelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this
+ *                                        field.
  */
 function find_related_books_sample(
     string $formattedNamesElement,

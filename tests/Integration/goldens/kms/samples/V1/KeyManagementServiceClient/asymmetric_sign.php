@@ -36,9 +36,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for signing. For
- *                              help formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for signing.
+ *                              Please see {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help
+ *                              formatting this field.
  */
 function asymmetric_sign_sample(string $formattedName): void
 {

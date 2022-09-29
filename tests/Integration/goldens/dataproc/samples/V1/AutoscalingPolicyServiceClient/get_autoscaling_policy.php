@@ -38,8 +38,8 @@ use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
  *                              `projects.locations.autoscalingPolicies.get`, the resource name of the policy
  *                              has the following format:
  *                              `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
- *                              For help formatting this field, please see {@see
- *                              AutoscalingPolicyServiceClient::autoscalingPolicyName()}.
+ *                              Please see {@see AutoscalingPolicyServiceClient::autoscalingPolicyName()} for
+ *                              help formatting this field.
  */
 function get_autoscaling_policy_sample(string $formattedName): void
 {

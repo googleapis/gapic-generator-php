@@ -33,9 +33,9 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * @param string $formattedMetricName The resource name of the metric to update:
  *                                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]" The updated metric must be provided
  *                                    in the request and it's `name` field must be the same as `[METRIC_ID]` If the
- *                                    metric does not exist in `[PROJECT_ID]`, then a new metric is created. For help
- *                                    formatting this field, please see {@see
- *                                    MetricsServiceV2Client::logMetricName()}.
+ *                                    metric does not exist in `[PROJECT_ID]`, then a new metric is created. Please
+ *                                    see {@see MetricsServiceV2Client::logMetricName()} for help formatting this
+ *                                    field.
  * @param string $metricName          The client-assigned metric identifier.
  *                                    Examples: `"error_count"`, `"nginx/requests"`.
  *

@@ -32,8 +32,7 @@ use Google\Cloud\Asset\V1\AssetServiceClient;
  * @param string $formattedName The name of the feed and it must be in the format of:
  *                              projects/project_number/feeds/feed_id folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
- *                              For help formatting this field, please see {@see
- *                              AssetServiceClient::feedName()}.
+ *                              Please see {@see AssetServiceClient::feedName()} for help formatting this field.
  */
 function delete_feed_sample(string $formattedName): void
 {

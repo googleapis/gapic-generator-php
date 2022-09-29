@@ -48,9 +48,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * may be called to reverse the process.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy. For help
- *                              formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help formatting
+ *                              this field.
  */
 function destroy_crypto_key_version_sample(string $formattedName): void
 {

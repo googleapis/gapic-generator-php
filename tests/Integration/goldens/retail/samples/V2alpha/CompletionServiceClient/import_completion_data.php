@@ -41,8 +41,8 @@ use Google\Rpc\Status;
  * cloud sales if you are interested in using Retail Search.
  *
  * @param string $formattedParent                    The catalog which the suggestions dataset belongs to. Format:
- *                                                   `projects/1234/locations/global/catalogs/default_catalog`. For help formatting
- *                                                   this field, please see {@see CompletionServiceClient::catalogName()}.
+ *                                                   `projects/1234/locations/global/catalogs/default_catalog`. Please see
+ *                                                   {@see CompletionServiceClient::catalogName()} for help formatting this field.
  * @param string $inputConfigBigQuerySourceDatasetId The BigQuery data set to copy the data from with a length limit
  *                                                   of 1,024 characters.
  * @param string $inputConfigBigQuerySourceTableId   The BigQuery table to copy the data from with a length limit of

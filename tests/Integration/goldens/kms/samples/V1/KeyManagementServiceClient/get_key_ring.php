@@ -31,8 +31,8 @@ use Google\Cloud\Kms\V1\KeyRing;
  * Returns metadata for a given [KeyRing][google.cloud.kms.v1.KeyRing].
  *
  * @param string $formattedName The [name][google.cloud.kms.v1.KeyRing.name] of the
- *                              [KeyRing][google.cloud.kms.v1.KeyRing] to get. For help formatting this field,
- *                              please see {@see KeyManagementServiceClient::keyRingName()}.
+ *                              [KeyRing][google.cloud.kms.v1.KeyRing] to get. Please see
+ *                              {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
  */
 function get_key_ring_sample(string $formattedName): void
 {

@@ -32,8 +32,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Test long-running operations
  *
- * @param string $formattedName The name of the book to retrieve. For help formatting this field, please see
- *                              {@see LibraryServiceClient::bookName()}.
+ * @param string $formattedName The name of the book to retrieve. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
 function get_big_book_sample(string $formattedName): void
 {

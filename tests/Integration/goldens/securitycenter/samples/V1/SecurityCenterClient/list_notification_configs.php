@@ -32,8 +32,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Lists notification configs.
  *
  * @param string $formattedParent Name of the organization to list notification configs. Its format is
- *                                "organizations/[organization_id]". For help formatting this field, please see
- *                                {@see SecurityCenterClient::organizationName()}.
+ *                                "organizations/[organization_id]". Please see
+ *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
  */
 function list_notification_configs_sample(string $formattedParent): void
 {

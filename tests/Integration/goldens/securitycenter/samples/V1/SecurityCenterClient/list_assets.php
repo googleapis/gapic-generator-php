@@ -33,8 +33,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *
  * @param string $formattedParent Name of the organization assets should belong to. Its format is
  *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]". For help formatting this field, please see {@see
- *                                SecurityCenterClient::projectName()}.
+ *                                projects/[project_id]". Please see {@see SecurityCenterClient::projectName()}
+ *                                for help formatting this field.
  */
 function list_assets_sample(string $formattedParent): void
 {

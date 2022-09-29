@@ -39,9 +39,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * be cleared.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore. For help
- *                              formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help formatting
+ *                              this field.
  */
 function restore_crypto_key_version_sample(string $formattedName): void
 {

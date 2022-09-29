@@ -34,8 +34,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
  *
  * @param string $formattedName The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for
- *                              decryption. The server will choose the appropriate version. For help formatting
- *                              this field, please see {@see KeyManagementServiceClient::cryptoKeyName()}.
+ *                              decryption. The server will choose the appropriate version. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this
+ *                              field.
  * @param string $ciphertext    The encrypted data originally returned in
  *                              [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
  */

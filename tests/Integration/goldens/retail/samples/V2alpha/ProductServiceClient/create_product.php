@@ -32,8 +32,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *
  * @param string $formattedParent The parent catalog resource name, such as
  *                                `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`.
- *                                For help formatting this field, please see {@see
- *                                ProductServiceClient::branchName()}.
+ *                                Please see {@see ProductServiceClient::branchName()} for help formatting this
+ *                                field.
  * @param string $productTitle    Product title.
  *
  *                                This field must be a UTF-8 encoded string with a length limit of 1,000

@@ -32,9 +32,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
  *
  * @param string $formattedParent The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in
- *                                the format `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. For
- *                                help formatting this field, please see {@see
- *                                KeyManagementServiceClient::cryptoKeyName()}.
+ *                                the format `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. Please
+ *                                see {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this
+ *                                field.
  */
 function list_crypto_key_versions_sample(string $formattedParent): void
 {

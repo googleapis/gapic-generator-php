@@ -30,10 +30,10 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Gets a book from an archive.
  *
- * @param string $formattedName   The name of the book to retrieve. For help formatting this field, please see
- *                                {@see LibraryServiceClient::archivedBookName()}.
- * @param string $formattedParent For help formatting this field, please see {@see
- *                                LibraryServiceClient::projectName()}.
+ * @param string $formattedName   The name of the book to retrieve. Please see
+ *                                {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
+ * @param string $formattedParent Please see {@see LibraryServiceClient::projectName()} for help formatting this
+ *                                field.
  */
 function get_book_from_archive_sample(string $formattedName, string $formattedParent): void
 {

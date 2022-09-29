@@ -42,8 +42,8 @@ use Google\Rpc\Status;
  * Operation.metadata is of type ImportMetadata.
  *
  * @param string $formattedParent                                     `projects/1234/locations/global/catalogs/default_catalog`
- *                                                                    For help formatting this field, please see {@see
- *                                                                    UserEventServiceClient::catalogName()}.
+ *                                                                    Please see {@see UserEventServiceClient::catalogName()} for help formatting this
+ *                                                                    field.
  * @param string $inputConfigUserEventInlineSourceUserEventsEventType User event type. Allowed values are:
  *
  *                                                                    * `add-to-cart`: Products being added to cart.

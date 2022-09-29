@@ -33,8 +33,8 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
  * @param string $formattedName The resource name of the company to be deleted. The format is
  *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for example,
  *                              "projects/foo/tenants/bar/companies/baz". If tenant id is unspecified, the
- *                              default tenant is used, for example, "projects/foo/companies/bar". For help
- *                              formatting this field, please see {@see CompanyServiceClient::companyName()}.
+ *                              default tenant is used, for example, "projects/foo/companies/bar". Please see
+ *                              {@see CompanyServiceClient::companyName()} for help formatting this field.
  */
 function delete_company_sample(string $formattedName): void
 {

@@ -32,8 +32,8 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
  *
  * @param string $formattedParent The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
- *                                format `projects/&#42;/locations/&#42;/keyRings/*`. For help formatting this
- *                                field, please see {@see KeyManagementServiceClient::keyRingName()}.
+ *                                format `projects/&#42;/locations/&#42;/keyRings/*`. Please see
+ *                                {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
  */
 function list_import_jobs_sample(string $formattedParent): void
 {

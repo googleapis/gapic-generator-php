@@ -33,8 +33,8 @@ use Google\Cloud\SecurityCenter\V1\Source;
  *
  * @param string $formattedParent Resource name of the parent of sources to list. Its format should be
  *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]". For help formatting this field, please see {@see
- *                                SecurityCenterClient::projectName()}.
+ *                                projects/[project_id]". Please see {@see SecurityCenterClient::projectName()}
+ *                                for help formatting this field.
  */
 function list_sources_sample(string $formattedParent): void
 {

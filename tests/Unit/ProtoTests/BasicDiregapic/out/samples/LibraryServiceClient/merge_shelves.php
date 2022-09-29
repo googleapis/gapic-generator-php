@@ -32,10 +32,10 @@ use Testing\BasicDiregapic\ShelfResponse;
  * `other_shelf_name` to shelf `name`, and deletes
  * `other_shelf_name`. Returns the updated shelf.
  *
- * @param string $formattedName           The name of the shelf we're adding books to. For help formatting this field,
- *                                        please see {@see LibraryServiceClient::shelfName()}.
- * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. For help
- *                                        formatting this field, please see {@see LibraryServiceClient::shelfName()}.
+ * @param string $formattedName           The name of the shelf we're adding books to. Please see
+ *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. Please see
+ *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
 function merge_shelves_sample(string $formattedName, string $formattedOtherShelfName): void
 {

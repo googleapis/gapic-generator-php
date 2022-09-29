@@ -36,13 +36,13 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
  * @param string $formattedParent  The resource name of the tenant under which the job is created. The format is
  *                                 "projects/{project_id}/tenants/{tenant_id}". For example,
  *                                 "projects/foo/tenant/bar". If tenant id is unspecified a default tenant is
- *                                 created. For example, "projects/foo". For help formatting this field, please see
- *                                 {@see JobServiceClient::projectName()}.
+ *                                 created. For example, "projects/foo". Please see
+ *                                 {@see JobServiceClient::projectName()} for help formatting this field.
  * @param string $formattedCompany The resource name of the company listing the job. The format is
  *                                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For example,
  *                                 "projects/foo/tenants/bar/companies/baz". If tenant id is unspecified, the
- *                                 default tenant is used. For example, "projects/foo/companies/bar". For help
- *                                 formatting this field, please see {@see JobServiceClient::companyName()}.
+ *                                 default tenant is used. For example, "projects/foo/companies/bar". Please see
+ *                                 {@see JobServiceClient::companyName()} for help formatting this field.
  * @param string $jobRequisitionId The requisition ID, also referred to as the posting ID, is assigned by the
  *                                 client to identify a job. This field is intended to be used by clients
  *                                 for client identification and tracking of postings. A job isn't allowed

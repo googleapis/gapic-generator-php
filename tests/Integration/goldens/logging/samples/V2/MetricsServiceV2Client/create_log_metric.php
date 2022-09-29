@@ -31,8 +31,8 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Creates a logs-based metric.
  *
  * @param string $formattedParent The resource name of the project in which to create the metric:
- *                                "projects/[PROJECT_ID]" The new metric must be provided in the request. For help
- *                                formatting this field, please see {@see MetricsServiceV2Client::projectName()}.
+ *                                "projects/[PROJECT_ID]" The new metric must be provided in the request. Please
+ *                                see {@see MetricsServiceV2Client::projectName()} for help formatting this field.
  * @param string $metricName      The client-assigned metric identifier.
  *                                Examples: `"error_count"`, `"nginx/requests"`.
  *

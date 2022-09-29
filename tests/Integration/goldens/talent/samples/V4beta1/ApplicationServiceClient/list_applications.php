@@ -33,8 +33,8 @@ use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
  *
  * @param string $formattedParent Resource name of the profile under which the application is created. The format
  *                                is "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}", for
- *                                example, "projects/foo/tenants/bar/profiles/baz". For help formatting this
- *                                field, please see {@see ApplicationServiceClient::profileName()}.
+ *                                example, "projects/foo/tenants/bar/profiles/baz". Please see
+ *                                {@see ApplicationServiceClient::profileName()} for help formatting this field.
  */
 function list_applications_sample(string $formattedParent): void
 {

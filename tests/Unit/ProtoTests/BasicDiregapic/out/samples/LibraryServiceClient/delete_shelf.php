@@ -29,8 +29,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Deletes a shelf.
  *
- * @param string $formattedName The name of the shelf to delete. For help formatting this field, please see
- *                              {@see LibraryServiceClient::shelfName()}.
+ * @param string $formattedName The name of the shelf to delete. Please see
+ *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
 function delete_shelf_sample(string $formattedName): void
 {

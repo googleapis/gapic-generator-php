@@ -34,8 +34,8 @@ use Google\Cloud\Logging\V2\LogSink;
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
  *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]" Example:
- *                                  `"projects/my-project-id/sinks/my-sink-id"`. For help formatting this field,
- *                                  please see {@see ConfigServiceV2Client::logSinkName()}.
+ *                                  `"projects/my-project-id/sinks/my-sink-id"`. Please see
+ *                                  {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
  */
 function get_sink_sample(string $formattedSinkName): void
 {

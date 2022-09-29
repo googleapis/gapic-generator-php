@@ -35,8 +35,8 @@ use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
  * @param string $formattedParent The account resource name with an associated location. If the caller does not
  *                                have permission to list [Catalog][google.cloud.retail.v2alpha.Catalog]s under
  *                                this location, regardless of whether or not this location exists, a
- *                                PERMISSION_DENIED error is returned. For help formatting this field, please see
- *                                {@see CatalogServiceClient::locationName()}.
+ *                                PERMISSION_DENIED error is returned. Please see
+ *                                {@see CatalogServiceClient::locationName()} for help formatting this field.
  */
 function list_catalogs_sample(string $formattedParent): void
 {

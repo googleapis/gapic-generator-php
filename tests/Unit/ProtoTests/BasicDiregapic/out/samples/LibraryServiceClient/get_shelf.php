@@ -30,8 +30,8 @@ use Testing\BasicDiregapic\ShelfResponse;
 /**
  * Gets a shelf.
  *
- * @param string $formattedName The name of the shelf to retrieve. For help formatting this field, please see
- *                              {@see LibraryServiceClient::shelfName()}.
+ * @param string $formattedName The name of the shelf to retrieve. Please see
+ *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
  * @param string $options       To test 'options' parameter name conflict.
  */
 function get_shelf_sample(string $formattedName, string $options): void

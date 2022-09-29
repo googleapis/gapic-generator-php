@@ -30,8 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Gets a book.
  *
- * @param string $formattedName The name of the book to retrieve. For help formatting this field, please see
- *                              {@see LibraryServiceClient::bookName()}.
+ * @param string $formattedName The name of the book to retrieve. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
 function get_book_sample(string $formattedName): void
 {

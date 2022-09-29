@@ -30,8 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Updates a book.
  *
- * @param string $formattedName The name of the book to update. For help formatting this field, please see {@see
- *                              LibraryServiceClient::bookName()}.
+ * @param string $formattedName The name of the book to update. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  * @param string $bookName      The resource name of the book.
  *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                              Message field comment may include special characters: <>&"`'&#64;.

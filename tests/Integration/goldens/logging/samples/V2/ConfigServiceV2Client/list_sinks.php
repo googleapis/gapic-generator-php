@@ -34,8 +34,8 @@ use Google\Cloud\Logging\V2\LogSink;
  * @param string $formattedParent The parent resource whose sinks are to be listed: "projects/[PROJECT_ID]"
  *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]"
- *                                For help formatting this field, please see {@see
- *                                ConfigServiceV2Client::projectName()}.
+ *                                Please see {@see ConfigServiceV2Client::projectName()} for help formatting this
+ *                                field.
  */
 function list_sinks_sample(string $formattedParent): void
 {

@@ -32,9 +32,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
  *
  * @param string $formattedName The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get. For help
- *                              formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help formatting
+ *                              this field.
  */
 function get_crypto_key_version_sample(string $formattedName): void
 {

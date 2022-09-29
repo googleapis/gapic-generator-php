@@ -34,8 +34,8 @@ use Google\Cloud\Logging\V2\LogBucket;
  * @param string $formattedParent The resource in which to create the bucket:
  *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]" Example:
  *                                `"projects/my-logging-project/locations/global"`
- *                                For help formatting this field, please see {@see
- *                                ConfigServiceV2Client::organizationLocationName()}.
+ *                                Please see {@see ConfigServiceV2Client::organizationLocationName()} for help
+ *                                formatting this field.
  * @param string $bucketId        A client-assigned identifier such as `"my-bucket"`. Identifiers are
  *                                limited to 100 characters and can include only letters, digits,
  *                                underscores, hyphens, and periods.

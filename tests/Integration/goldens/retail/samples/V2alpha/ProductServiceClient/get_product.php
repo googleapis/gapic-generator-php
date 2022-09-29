@@ -36,8 +36,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or not it
  *                              exists, a PERMISSION_DENIED error is returned. If the requested
  *                              [Product][google.cloud.retail.v2alpha.Product] does not exist, a NOT_FOUND error
- *                              is returned. For help formatting this field, please see {@see
- *                              ProductServiceClient::productName()}.
+ *                              is returned. Please see {@see ProductServiceClient::productName()} for help
+ *                              formatting this field.
  */
 function get_product_sample(string $formattedName): void
 {

@@ -31,8 +31,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * Returns metadata for a given [ImportJob][google.cloud.kms.v1.ImportJob].
  *
  * @param string $formattedName The [name][google.cloud.kms.v1.ImportJob.name] of the
- *                              [ImportJob][google.cloud.kms.v1.ImportJob] to get. For help formatting this
- *                              field, please see {@see KeyManagementServiceClient::importJobName()}.
+ *                              [ImportJob][google.cloud.kms.v1.ImportJob] to get. Please see
+ *                              {@see KeyManagementServiceClient::importJobName()} for help formatting this
+ *                              field.
  */
 function get_import_job_sample(string $formattedName): void
 {

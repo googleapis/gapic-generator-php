@@ -43,8 +43,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *                              [Product][google.cloud.retail.v2alpha.Product] with more than one
  *                              [variants][google.cloud.retail.v2alpha.Product.Type.VARIANT]. Otherwise, an
  *                              INVALID_ARGUMENT error is returned. All inventory information for the named
- *                              [Product][google.cloud.retail.v2alpha.Product] will be deleted. For help
- *                              formatting this field, please see {@see ProductServiceClient::productName()}.
+ *                              [Product][google.cloud.retail.v2alpha.Product] will be deleted. Please see
+ *                              {@see ProductServiceClient::productName()} for help formatting this field.
  */
 function delete_product_sample(string $formattedName): void
 {

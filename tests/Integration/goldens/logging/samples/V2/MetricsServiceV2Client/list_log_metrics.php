@@ -32,8 +32,8 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Lists logs-based metrics.
  *
  * @param string $formattedParent The name of the project containing the metrics: "projects/[PROJECT_ID]"
- *                                For help formatting this field, please see {@see
- *                                MetricsServiceV2Client::projectName()}.
+ *                                Please see {@see MetricsServiceV2Client::projectName()} for help formatting this
+ *                                field.
  */
 function list_log_metrics_sample(string $formattedParent): void
 {

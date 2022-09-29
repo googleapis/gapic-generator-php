@@ -36,8 +36,8 @@ use Google\Protobuf\FieldMask;
  *                                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
  *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
- *                                `"projects/my-project-id/exclusions/my-exclusion-id"`. For help formatting this
- *                                field, please see {@see ConfigServiceV2Client::logExclusionName()}.
+ *                                `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
+ *                                {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
  * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
  *                                Identifiers are limited to 100 characters and can include only letters,
  *                                digits, underscores, hyphens, and periods. First character has to be

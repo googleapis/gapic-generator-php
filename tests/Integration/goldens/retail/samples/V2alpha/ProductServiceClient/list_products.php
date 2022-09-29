@@ -36,9 +36,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *                                `default_branch` as the branch ID, to list products under the default branch. If
  *                                the caller does not have permission to list
  *                                [Product][google.cloud.retail.v2alpha.Product]s under this branch, regardless of
- *                                whether or not this branch exists, a PERMISSION_DENIED error is returned. For
- *                                help formatting this field, please see {@see
- *                                ProductServiceClient::branchName()}.
+ *                                whether or not this branch exists, a PERMISSION_DENIED error is returned. Please
+ *                                see {@see ProductServiceClient::branchName()} for help formatting this field.
  */
 function list_products_sample(string $formattedParent): void
 {

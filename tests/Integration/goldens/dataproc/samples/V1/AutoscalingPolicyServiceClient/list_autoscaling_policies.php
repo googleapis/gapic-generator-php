@@ -37,8 +37,8 @@ use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
  *                                the following format: `projects/{project_id}/regions/{region}` * For
  *                                `projects.locations.autoscalingPolicies.list`, the resource name of the location
  *                                has the following format: `projects/{project_id}/locations/{location}`
- *                                For help formatting this field, please see {@see
- *                                AutoscalingPolicyServiceClient::regionName()}.
+ *                                Please see {@see AutoscalingPolicyServiceClient::regionName()} for help
+ *                                formatting this field.
  */
 function list_autoscaling_policies_sample(string $formattedParent): void
 {

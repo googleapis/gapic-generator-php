@@ -34,8 +34,8 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
  * @param string $formattedName The resource name of the job to retrieve. The format is
  *                              "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
  *                              "projects/foo/tenants/bar/jobs/baz". If tenant id is unspecified, the default
- *                              tenant is used. For example, "projects/foo/jobs/bar". For help formatting this
- *                              field, please see {@see JobServiceClient::jobName()}.
+ *                              tenant is used. For example, "projects/foo/jobs/bar". Please see
+ *                              {@see JobServiceClient::jobName()} for help formatting this field.
  */
 function get_job_sample(string $formattedName): void
 {

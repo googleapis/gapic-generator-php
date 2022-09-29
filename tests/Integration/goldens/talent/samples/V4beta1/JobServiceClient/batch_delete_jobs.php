@@ -32,8 +32,8 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
  * @param string $formattedParent The resource name of the tenant under which the job is created. The format is
  *                                "projects/{project_id}/tenants/{tenant_id}". For example,
  *                                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant is
- *                                created. For example, "projects/foo". For help formatting this field, please see
- *                                {@see JobServiceClient::projectName()}.
+ *                                created. For example, "projects/foo". Please see
+ *                                {@see JobServiceClient::projectName()} for help formatting this field.
  * @param string $filter          The filter string specifies the jobs to be deleted.
  *
  *                                Supported operator: =, AND

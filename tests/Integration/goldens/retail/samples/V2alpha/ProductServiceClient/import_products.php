@@ -42,8 +42,8 @@ use Google\Rpc\Status;
  * @param string $formattedParent Required.
  *                                `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
  *                                If no updateMask is specified, requires products.create permission. If
- *                                updateMask is specified, requires products.update permission. For help
- *                                formatting this field, please see {@see ProductServiceClient::branchName()}.
+ *                                updateMask is specified, requires products.update permission. Please see
+ *                                {@see ProductServiceClient::branchName()} for help formatting this field.
  */
 function import_products_sample(string $formattedParent): void
 {

@@ -35,9 +35,9 @@ use Google\Protobuf\Timestamp;
  * @param string $formattedName The relative resource name of the finding. See:
  *                              https://cloud.google.com/apis/design/resource_names#relative_resource_name
  *                              Example:
- *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}". For
- *                              help formatting this field, please see {@see
- *                              SecurityCenterClient::findingName()}.
+ *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
+ *                              Please see {@see SecurityCenterClient::findingName()} for help formatting this
+ *                              field.
  * @param int    $state         The desired State of the finding.
  */
 function set_finding_state_sample(string $formattedName, int $state): void

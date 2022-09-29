@@ -34,8 +34,8 @@ use Google\Cloud\Talent\V4beta1\CompletionClient;
  * @param string $formattedParent Resource name of tenant the completion is performed within. The format is
  *                                "projects/{project_id}/tenants/{tenant_id}", for example,
  *                                "projects/foo/tenant/bar". If tenant id is unspecified, the default tenant is
- *                                used, for example, "projects/foo". For help formatting this field, please see
- *                                {@see CompletionClient::projectName()}.
+ *                                used, for example, "projects/foo". Please see
+ *                                {@see CompletionClient::projectName()} for help formatting this field.
  * @param string $query           The query used to generate suggestions.
  *
  *                                The maximum number of allowed characters is 255.

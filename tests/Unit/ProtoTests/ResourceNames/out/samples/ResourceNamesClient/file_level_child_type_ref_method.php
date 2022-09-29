@@ -29,16 +29,16 @@ use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  *
- * @param string $formattedReqFolderName             For help formatting this field, please see {@see
- *                                                   ResourceNamesClient::folderName()}.
- * @param string $formattedReqFolderMultiName        For help formatting this field, please see {@see
- *                                                   ResourceNamesClient::folder1Name()}.
- * @param string $formattedReqFolderMultiNameHistory For help formatting this field, please see {@see
- *                                                   ResourceNamesClient::folder1Name()}.
- * @param string $formattedReqOrderTest1             For help formatting this field, please see {@see
- *                                                   ResourceNamesClient::order2Name()}.
- * @param string $formattedReqOrderTest2             For help formatting this field, please see {@see
- *                                                   ResourceNamesClient::order2Name()}.
+ * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this
+ *                                                   field.
+ * @param string $formattedReqFolderMultiName        Please see {@see ResourceNamesClient::folder1Name()} for help formatting this
+ *                                                   field.
+ * @param string $formattedReqFolderMultiNameHistory Please see {@see ResourceNamesClient::folder1Name()} for help formatting this
+ *                                                   field.
+ * @param string $formattedReqOrderTest1             Please see {@see ResourceNamesClient::order2Name()} for help formatting this
+ *                                                   field.
+ * @param string $formattedReqOrderTest2             Please see {@see ResourceNamesClient::order2Name()} for help formatting this
+ *                                                   field.
  */
 function file_level_child_type_ref_method_sample(
     string $formattedReqFolderName,

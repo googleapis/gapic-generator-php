@@ -34,8 +34,8 @@ use Google\Cloud\Logging\V2\LogView;
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
  *                              Example:
  *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
- *                              For help formatting this field, please see {@see
- *                              ConfigServiceV2Client::logViewName()}.
+ *                              Please see {@see ConfigServiceV2Client::logViewName()} for help formatting this
+ *                              field.
  */
 function get_view_sample(string $formattedName): void
 {

@@ -31,8 +31,8 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
  *
  * @param string $formattedName The resource name of the tenant to be deleted. The format is
  *                              "projects/{project_id}/tenants/{tenant_id}", for example,
- *                              "projects/foo/tenants/bar". For help formatting this field, please see {@see
- *                              TenantServiceClient::tenantName()}.
+ *                              "projects/foo/tenants/bar". Please see {@see TenantServiceClient::tenantName()}
+ *                              for help formatting this field.
  */
 function delete_tenant_sample(string $formattedName): void
 {

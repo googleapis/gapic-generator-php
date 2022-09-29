@@ -40,8 +40,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *                                projects/[project_id]/sources/[source_id]". To list across all sources provide a
  *                                source_id of `-`. For example: organizations/{organization_id}/sources/-,
  *                                folders/{folder_id}/sources/- or projects/{projects_id}/sources/-
- *                                For help formatting this field, please see {@see
- *                                SecurityCenterClient::sourceName()}.
+ *                                Please see {@see SecurityCenterClient::sourceName()} for help formatting this
+ *                                field.
  */
 function list_findings_sample(string $formattedParent): void
 {

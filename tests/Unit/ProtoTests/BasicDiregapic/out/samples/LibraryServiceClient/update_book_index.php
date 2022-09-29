@@ -29,8 +29,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Updates the index of a book.
  *
- * @param string $formattedName The name of the book to update. For help formatting this field, please see {@see
- *                              LibraryServiceClient::bookName()}.
+ * @param string $formattedName The name of the book to update. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  * @param string $indexName     The name of the index for the book
  */
 function update_book_index_sample(string $formattedName, string $indexName): void

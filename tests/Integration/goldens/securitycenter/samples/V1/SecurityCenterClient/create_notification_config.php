@@ -31,8 +31,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Creates a notification config.
  *
  * @param string $formattedParent Resource name of the new notification config's parent. Its format is
- *                                "organizations/[organization_id]". For help formatting this field, please see
- *                                {@see SecurityCenterClient::organizationName()}.
+ *                                "organizations/[organization_id]". Please see
+ *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
  * @param string $configId        Required.
  *                                Unique identifier provided by the client within the parent scope.
  *                                It must be between 1 and 128 characters, and contains alphanumeric

@@ -36,8 +36,8 @@ use Google\Rpc\Status;
  *
  * @param string $formattedLocation The project and location in which the function should be created, specified in
  *                                  the format `projects/&#42;/locations/*`
- *                                  For help formatting this field, please see {@see
- *                                  CloudFunctionsServiceClient::locationName()}.
+ *                                  Please see {@see CloudFunctionsServiceClient::locationName()} for help
+ *                                  formatting this field.
  */
 function create_function_sample(string $formattedLocation): void
 {

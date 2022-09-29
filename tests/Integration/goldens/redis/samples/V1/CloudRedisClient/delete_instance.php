@@ -34,8 +34,8 @@ use Google\Rpc\Status;
  *
  * @param string $formattedName Redis instance resource name using the form:
  *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
- *                              `location_id` refers to a GCP region. For help formatting this field, please see
- *                              {@see CloudRedisClient::instanceName()}.
+ *                              `location_id` refers to a GCP region. Please see
+ *                              {@see CloudRedisClient::instanceName()} for help formatting this field.
  */
 function delete_instance_sample(string $formattedName): void
 {

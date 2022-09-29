@@ -29,8 +29,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Deletes a book.
  *
- * @param string $formattedName The name of the book to delete. For help formatting this field, please see {@see
- *                              LibraryServiceClient::bookName()}.
+ * @param string $formattedName The name of the book to delete. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
 function delete_book_sample(string $formattedName): void
 {

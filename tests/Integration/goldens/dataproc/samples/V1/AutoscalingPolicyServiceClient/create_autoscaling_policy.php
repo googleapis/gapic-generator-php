@@ -40,8 +40,8 @@ use Google\Protobuf\Duration;
  *                                                              has the following format: `projects/{project_id}/regions/{region}` * For
  *                                                              `projects.locations.autoscalingPolicies.create`, the resource name of the
  *                                                              location has the following format: `projects/{project_id}/locations/{location}`
- *                                                              For help formatting this field, please see {@see
- *                                                              AutoscalingPolicyServiceClient::regionName()}.
+ *                                                              Please see {@see AutoscalingPolicyServiceClient::regionName()} for help
+ *                                                              formatting this field.
  * @param float  $policyBasicAlgorithmYarnConfigScaleUpFactor   Fraction of average YARN pending memory in the last cooldown period
  *                                                              for which to add workers. A scale-up factor of 1.0 will result in scaling
  *                                                              up so that there is no pending memory remaining after the update (more

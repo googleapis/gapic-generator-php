@@ -37,8 +37,9 @@ use Google\Cloud\Logging\V2\LogBucket;
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
  *                                "folders/[FOLDER_ID]/locations/[LOCATION_ID]" Note: The locations portion of the
  *                                resource must be specified, but supplying the character `-` in place of
- *                                [LOCATION_ID] will return all buckets. For help formatting this field, please
- *                                see {@see ConfigServiceV2Client::organizationLocationName()}.
+ *                                [LOCATION_ID] will return all buckets. Please see
+ *                                {@see ConfigServiceV2Client::organizationLocationName()} for help formatting
+ *                                this field.
  */
 function list_buckets_sample(string $formattedParent): void
 {

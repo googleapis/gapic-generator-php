@@ -38,8 +38,8 @@ use Google\Cloud\Kms\V1\ProtectionLevel;
  *
  * @param string $formattedParent          The [name][google.cloud.kms.v1.KeyRing.name] of the
  *                                         [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
- *                                         [ImportJobs][google.cloud.kms.v1.ImportJob]. For help formatting this field,
- *                                         please see {@see KeyManagementServiceClient::keyRingName()}.
+ *                                         [ImportJobs][google.cloud.kms.v1.ImportJob]. Please see
+ *                                         {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
  * @param string $importJobId              It must be unique within a KeyRing and match the regular
  *                                         expression `[a-zA-Z0-9_-]{1,63}`
  * @param int    $importJobImportMethod    Immutable. The wrapping method to be used for incoming key material.

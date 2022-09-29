@@ -43,8 +43,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *                                projects/[project_id]/sources/[source_id]. To groupBy across all sources provide
  *                                a source_id of `-`. For example: organizations/{organization_id}/sources/-,
  *                                folders/{folder_id}/sources/-, or projects/{project_id}/sources/-
- *                                For help formatting this field, please see {@see
- *                                SecurityCenterClient::sourceName()}.
+ *                                Please see {@see SecurityCenterClient::sourceName()} for help formatting this
+ *                                field.
  * @param string $groupBy         Expression that defines what assets fields to use for grouping (including
  *                                `state_change`). The string value should follow SQL syntax: comma separated
  *                                list of fields. For example: "parent,resource_name".

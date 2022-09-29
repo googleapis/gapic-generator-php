@@ -39,8 +39,8 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  *                                 `"projects/my-project-id/logs/syslog"`,
  *                                 `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
  *                                 For more information about log names, see
- *                                 [LogEntry][google.logging.v2.LogEntry]. For help formatting this field, please
- *                                 see {@see LoggingServiceV2Client::logName()}.
+ *                                 [LogEntry][google.logging.v2.LogEntry]. Please see
+ *                                 {@see LoggingServiceV2Client::logName()} for help formatting this field.
  */
 function delete_log_sample(string $formattedLogName): void
 {

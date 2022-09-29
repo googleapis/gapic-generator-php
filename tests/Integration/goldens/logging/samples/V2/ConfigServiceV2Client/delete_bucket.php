@@ -37,8 +37,9 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  *                              "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. For help
- *                              formatting this field, please see {@see ConfigServiceV2Client::logBucketName()}.
+ *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Please
+ *                              see {@see ConfigServiceV2Client::logBucketName()} for help formatting this
+ *                              field.
  */
 function delete_bucket_sample(string $formattedName): void
 {

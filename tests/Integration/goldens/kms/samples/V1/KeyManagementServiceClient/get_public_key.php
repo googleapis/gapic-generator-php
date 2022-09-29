@@ -36,9 +36,9 @@ use Google\Cloud\Kms\V1\PublicKey;
  * [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
  *
  * @param string $formattedName The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key to get. For
- *                              help formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key to get.
+ *                              Please see {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help
+ *                              formatting this field.
  */
 function get_public_key_sample(string $formattedName): void
 {

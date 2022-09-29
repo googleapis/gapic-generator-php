@@ -36,8 +36,8 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * @param string $formattedName The resource name of the
  *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for decryption.
- *                              For help formatting this field, please see {@see
- *                              KeyManagementServiceClient::cryptoKeyVersionName()}.
+ *                              Please see {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help
+ *                              formatting this field.
  * @param string $ciphertext    The data encrypted with the named
  *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s public key using
  *                              OAEP.

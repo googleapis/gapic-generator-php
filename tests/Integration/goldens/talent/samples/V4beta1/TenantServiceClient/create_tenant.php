@@ -31,8 +31,8 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
  * Creates a new tenant entity.
  *
  * @param string $formattedParent  Resource name of the project under which the tenant is created. The format is
- *                                 "projects/{project_id}", for example, "projects/foo". For help formatting this
- *                                 field, please see {@see TenantServiceClient::projectName()}.
+ *                                 "projects/{project_id}", for example, "projects/foo". Please see
+ *                                 {@see TenantServiceClient::projectName()} for help formatting this field.
  * @param string $tenantExternalId Client side tenant identifier, used to uniquely identify the tenant.
  *
  *                                 The maximum number of allowed characters is 255.

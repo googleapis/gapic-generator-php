@@ -38,8 +38,8 @@ use Google\Protobuf\Timestamp;
  *                                      The maximum number of allowed characters is 255.
  * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
- *                                      "projects/foo/tenants/bar/jobs/baz". For help formatting this field, please see
- *                                      {@see ApplicationServiceClient::jobName()}.
+ *                                      "projects/foo/tenants/bar/jobs/baz". Please see
+ *                                      {@see ApplicationServiceClient::jobName()} for help formatting this field.
  * @param int    $applicationStage      What is the most recent stage of the application (that is, new,
  *                                      screen, send cv, hired, finished work)?  This field is intentionally not
  *                                      comprehensive of every possible status, but instead, represents statuses

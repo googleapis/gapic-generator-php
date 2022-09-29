@@ -38,8 +38,8 @@ use Google\Rpc\Status;
  * error.
  *
  * @param string $formattedParent Name of the organization to run asset discovery for. Its format is
- *                                "organizations/[organization_id]". For help formatting this field, please see
- *                                {@see SecurityCenterClient::organizationName()}.
+ *                                "organizations/[organization_id]". Please see
+ *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
  */
 function run_asset_discovery_sample(string $formattedParent): void
 {

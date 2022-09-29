@@ -32,8 +32,8 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
  *
  * @param string $formattedParent The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
- *                                format `projects/&#42;/locations/&#42;/keyRings/*`. For help formatting this
- *                                field, please see {@see KeyManagementServiceClient::keyRingName()}.
+ *                                format `projects/&#42;/locations/&#42;/keyRings/*`. Please see
+ *                                {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
  */
 function list_crypto_keys_sample(string $formattedParent): void
 {

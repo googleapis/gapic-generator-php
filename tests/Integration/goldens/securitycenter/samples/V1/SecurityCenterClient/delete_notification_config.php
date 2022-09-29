@@ -30,9 +30,9 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  * Deletes a notification config.
  *
  * @param string $formattedName Name of the notification config to delete. Its format is
- *                              "organizations/[organization_id]/notificationConfigs/[config_id]". For help
- *                              formatting this field, please see {@see
- *                              SecurityCenterClient::notificationConfigName()}.
+ *                              "organizations/[organization_id]/notificationConfigs/[config_id]". Please see
+ *                              {@see SecurityCenterClient::notificationConfigName()} for help formatting this
+ *                              field.
  */
 function delete_notification_config_sample(string $formattedName): void
 {

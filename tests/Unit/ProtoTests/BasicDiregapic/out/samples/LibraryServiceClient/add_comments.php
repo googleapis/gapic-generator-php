@@ -30,8 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Adds comments to a book
  *
- * @param string $formattedName For help formatting this field, please see {@see
- *                              LibraryServiceClient::bookName()}.
+ * @param string $formattedName Please see {@see LibraryServiceClient::bookName()} for help formatting this
+ *                              field.
  */
 function add_comments_sample(string $formattedName): void
 {

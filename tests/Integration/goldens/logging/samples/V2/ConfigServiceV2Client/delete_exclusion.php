@@ -34,8 +34,8 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  *                              "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
  *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
- *                              `"projects/my-project-id/exclusions/my-exclusion-id"`. For help formatting this
- *                              field, please see {@see ConfigServiceV2Client::logExclusionName()}.
+ *                              `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
+ *                              {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
  */
 function delete_exclusion_sample(string $formattedName): void
 {

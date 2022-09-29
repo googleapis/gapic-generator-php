@@ -34,16 +34,16 @@ use Google\Protobuf\Timestamp;
  *
  * @param string $formattedParent       Resource name of the profile under which the application is created. The format
  *                                      is "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
- *                                      example, "projects/foo/tenants/bar/profiles/baz". For help formatting this
- *                                      field, please see {@see ApplicationServiceClient::profileName()}.
+ *                                      example, "projects/foo/tenants/bar/profiles/baz". Please see
+ *                                      {@see ApplicationServiceClient::profileName()} for help formatting this field.
  * @param string $applicationExternalId Client side application identifier, used to uniquely identify the
  *                                      application.
  *
  *                                      The maximum number of allowed characters is 255.
  * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
- *                                      "projects/foo/tenants/bar/jobs/baz". For help formatting this field, please see
- *                                      {@see ApplicationServiceClient::jobName()}.
+ *                                      "projects/foo/tenants/bar/jobs/baz". Please see
+ *                                      {@see ApplicationServiceClient::jobName()} for help formatting this field.
  * @param int    $applicationStage      What is the most recent stage of the application (that is, new,
  *                                      screen, send cv, hired, finished work)?  This field is intentionally not
  *                                      comprehensive of every possible status, but instead, represents statuses

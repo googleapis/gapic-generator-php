@@ -34,8 +34,8 @@ use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
  *                              "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for example,
  *                              "projects/api-test-project/tenants/foo/companies/bar". If tenant id is
  *                              unspecified, the default tenant is used, for example,
- *                              "projects/api-test-project/companies/bar". For help formatting this field,
- *                              please see {@see CompanyServiceClient::companyName()}.
+ *                              "projects/api-test-project/companies/bar". Please see
+ *                              {@see CompanyServiceClient::companyName()} for help formatting this field.
  */
 function get_company_sample(string $formattedName): void
 {

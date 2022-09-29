@@ -30,15 +30,15 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Gets a book from a shelf or archive.
  *
- * @param string $formattedName        The name of the book to retrieve. For help formatting this field, please see
- *                                     {@see LibraryServiceClient::bookName()}.
+ * @param string $formattedName        The name of the book to retrieve. Please see
+ *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
  * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a single
- *                                     resource name type in a oneof. For help formatting this field, please see {@see
- *                                     LibraryServiceClient::bookName()}.
- * @param string $formattedPlace       For help formatting this field, please see {@see
- *                                     LibraryServiceClient::locationName()}.
- * @param string $formattedFolder      For help formatting this field, please see {@see
- *                                     LibraryServiceClient::folderName()}.
+ *                                     resource name type in a oneof. Please see
+ *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedPlace       Please see {@see LibraryServiceClient::locationName()} for help formatting this
+ *                                     field.
+ * @param string $formattedFolder      Please see {@see LibraryServiceClient::folderName()} for help formatting this
+ *                                     field.
  */
 function get_book_from_anywhere_sample(
     string $formattedName,
