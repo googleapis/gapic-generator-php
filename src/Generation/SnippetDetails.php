@@ -308,19 +308,12 @@ class SnippetDetails
         }
 
         // append a message to the param description guiding users where to find the helper.
-        $docLineCount = count($field->docLines);
         $formatCall = $this->serviceDetails->emptyClientType->name .
                       '::' . $field->resourceDetails->formatMethod->getName() . '()';
-        $formatString = "For help formatting this field, please see {@see $formatCall}.";
-        if ($docLineCount > 0) {
-            $field->docLines = $field->docLines->map(function ($item, $index) use ($docLineCount, $formatString) {
-                return $index === $docLineCount - 1
-                    ? $item .= " $formatString"
-                    : $item;
-            });
-        } else {
-            $field->docLines->append($formatString);
+        if (count($field->docLines) > 0 && substr($field->docLines->last(), -1) !== '.') {
+            $field->docLines = $field->docLines->append(PhpDoc::newLine());
         }
+        $field->docLines = $field->docLines->append("For help formatting this field, please see {@see $formatCall}.");
 
         $this->handleSampleParams(
             $field,
@@ -374,7 +367,11 @@ class SnippetDetails
     private function filterDocLines(Vector $docLines): Vector
     {
         return $docLines->map(function ($line) {
-            return preg_replace('/^Required. /', '', $line);
+            if (is_string($line)) {
+                return preg_replace('/^Required. /', '', $line);
+            }
+
+            return $line;
         });
     }
 
