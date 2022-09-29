@@ -142,11 +142,9 @@ class SnippetGenerator
             $snippetDetails,
             [
                 $this->buildClientMethodCall($snippetDetails, $responseVar),
-                $this->buildPrintFCall(
-                    $snippetDetails->methodDetails->hasEmptyResponse
-                        ? "'Call completed successfully.'"
-                        : "'Response data: %s' . PHP_EOL, {$responseVar->toCode()}->serializeToJsonString()"
-                )
+                $snippetDetails->methodDetails->hasEmptyResponse
+                    ? $this->buildPrintFCall('Call completed successfully.')
+                    : $this->buildPrintFCall('Response data: %s', "{$responseVar->toCode()}->serializeToJsonString()")
             ]
         );
     }
@@ -173,7 +171,7 @@ class SnippetGenerator
                     ->then(
                         // Custom operations and google.protobuf.Empty responses have no result.
                         $isCustomOp || $snippetDetails->methodDetails->hasEmptyLroResponse
-                            ? $this->buildPrintFCall("'Operation completed successfully.'")
+                            ? $this->buildPrintFCall('Operation completed successfully.')
                             : Vector::new([
                                 AST::inlineVarDoc(
                                     $context->type($snippetDetails->methodDetails->lroResponseType),
@@ -181,7 +179,8 @@ class SnippetGenerator
                                 ),
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
-                                    "'Operation successful with response data: %s' . PHP_EOL, {$resultVar->toCode()}->serializeToJsonString()"
+                                    'Operation successful with response data: %s',
+                                    "{$resultVar->toCode()}->serializeToJsonString()"
                                 )
                             ])
                     )->else(
@@ -191,7 +190,8 @@ class SnippetGenerator
                         ),
                         AST::assign($errorVar, $responseVar->getError()),
                         $this->buildPrintFCall(
-                            "'Operation failed with error data: %s' . PHP_EOL, {$errorVar->toCode()}->serializeToJsonString()"
+                            'Operation failed with error data: %s',
+                            "{$errorVar->toCode()}->serializeToJsonString()"
                         )
                     )
             ]
@@ -218,10 +218,9 @@ class SnippetGenerator
                     $elementVar
                 ),
                 AST::foreach($responseVar, $elementVar)(
-                    AST::call(AST::PRINT_F)(
-                        AST::literal(
-                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
-                        )
+                    $this->buildPrintFCall(
+                        'Element data: %s',
+                        "{$elementVar->toCode()}->serializeToJsonString()"
                     )
                 )
             ]
@@ -249,10 +248,9 @@ class SnippetGenerator
                     $elementVar
                 ),
                 AST::foreach($streamVar->closeWriteAndReadAll(), $elementVar)(
-                    AST::call(AST::PRINT_F)(
-                        AST::literal(
-                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
-                        )
+                    $this->buildPrintFCall(
+                        'Element data: %s',
+                        "{$elementVar->toCode()}->serializeToJsonString()"
                     )
                 )
             ]
@@ -279,10 +277,9 @@ class SnippetGenerator
                     $elementVar
                 ),
                 AST::foreach($streamVar->readAll(), $elementVar)(
-                    AST::call(AST::PRINT_F)(
-                        AST::literal(
-                            "'Element data: %s' . PHP_EOL, {$elementVar->toCode()}->serializeToJsonString()"
-                        )
+                    $this->buildPrintFCall(
+                        'Element data: %s',
+                        "{$elementVar->toCode()}->serializeToJsonString()"
                     )
                 )
             ]
@@ -312,10 +309,9 @@ class SnippetGenerator
                     $responseVar,
                     $streamVar->writeAllAndReadResponse($snippetDetails->rpcArguments)
                 ),
-                AST::call(AST::PRINT_F)(
-                    AST::literal(
-                        "'Response data: %s' . PHP_EOL, {$responseVar->toCode()}->serializeToJsonString()"
-                    )
+                $this->buildPrintFCall(
+                    'Response data: %s',
+                    "{$responseVar->toCode()}->serializeToJsonString()"
                 )
             ]
         );
@@ -339,7 +335,10 @@ class SnippetGenerator
                     ->type(Type::fromName(ApiException::class)),
                 $exceptionVar
             )(
-                $this->buildPrintFCall("'Call failed with message: %s' . PHP_EOL, {$exceptionVar->toCode()}->getMessage()")
+                $this->buildPrintFCall(
+                    'Call failed with message: %s',
+                    "{$exceptionVar->toCode()}->getMessage()"
+                )
             );
     }
 
@@ -466,13 +465,23 @@ class SnippetGenerator
     }
 
     /**
-     * @param string $str A string literal to be proxied to AST::literal.
+     * @param string $format The format string.
+     * @param string $values
      * @return AST
      */
-    private function buildPrintFCall(string $str): AST
+    private function buildPrintFCall(string $format, string ...$values): AST
     {
+        $valueStr = array_reduce($values, function($carry, $item) {
+            return $carry .= "$item, ";
+        });
+
+        $strLiteral = "'$format' . PHP_EOL";
+        if ($valueStr) {
+            $strLiteral .= ', ' . substr($valueStr, 0, -2);
+        }
+
         return AST::call(AST::PRINT_F)(
-            AST::literal($str)
+            AST::literal($strLiteral)
         );
     }
 
