@@ -500,8 +500,16 @@ class SnippetGenerator
         $serviceParts = explode('.', $this->serviceDetails->serviceName);
         $hostNameParts = explode('.', $this->serviceDetails->defaultHost);
         $serviceName = end($serviceParts);
-        $shortName = $hostNameParts[0];
+        $shortName = null;
 
+        // See b/247776440 for more details.
+        if ($hostNameParts[0] === 'iam-meta-api') {
+            $shortName = 'iam';
+        } else {
+            // account for regional default endpoints e.g., "us-east1-pubsub.googleapis.com"
+            $shortNameParts = explode('-', $hostNameParts[0]);
+            $shortName = end($shortNameParts);
+        }
         return $shortName . $version . 'generated_' . $serviceName . '_' . $methodName . '_sync';
     }
 }
