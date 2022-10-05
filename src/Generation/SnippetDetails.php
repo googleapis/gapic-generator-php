@@ -308,19 +308,37 @@ class SnippetDetails
         }
 
         // append a message to the param description guiding users where to find the helper.
-        if (count($field->docLines) > 0 && substr($field->docLines->last(), -1) !== '.') {
-            $field->docLines = $field->docLines->append(PhpDoc::newLine());
+        $docLineCount = count($field->docLines);
+        $formatCall = $this->serviceDetails->emptyClientType->name .
+                      '::' . $field->resourceDetails->formatMethod->getName() . '()';
+        $formatString = "Please see {@see $formatCall} for help formatting this field.";
+        if ($docLineCount > 0) {
+            $lastItem = $field->docLines->last();
+            $itemLength = strlen($lastItem);
+            if ($lastItem[$itemLength - 1] !== '.') {
+                $field->docLines = $field->docLines->append($formatString);
+            } else {
+                $field->docLines = $field->docLines->skipLast(1);
+                $lastItem .= ' ';
+                $pos = strpos($formatString, '{');
+                if (strlen($formatString) + $itemLength > 80) {
+                    $field->docLines = $field->docLines
+                        ->append($lastItem . substr($formatString, 0, $pos))
+                        ->append(substr($formatString, $pos));
+                } else {
+                    $field->docLines = $field->docLine->append($lastItem . $formatString);
+                }
+            }
+        } else {
+            $field->docLines = $field->docLines->append($formatString);
         }
-        $field->docLines = $field->docLines->append("Please see")
-            ->append($clientCall())
-            ->append('for help formatting this field.');
 
         $this->handleSampleParams(
             $field,
             $arrayElementVar ?: $var,
             $clientCall($formatMethodArgs),
-            PhpDoc::text(
-                ...$this->filterDocLines($field->docLines),
+            PhpDoc::preFormattedText(
+                $this->filterDocLines($field->docLines)
             )
         );
         $this->rpcArguments = $this->rpcArguments->append($var);
