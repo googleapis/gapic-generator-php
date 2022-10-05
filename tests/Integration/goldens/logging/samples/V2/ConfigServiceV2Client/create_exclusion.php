@@ -32,10 +32,14 @@ use Google\Cloud\Logging\V2\LogExclusion;
  * Only log entries belonging to that resource can be excluded.
  * You can have up to 10 exclusions in a resource.
  *
- * @param string $formattedParent The parent resource in which to create the exclusion: "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                "folders/[FOLDER_ID]" Examples: `"projects/my-logging-project"`,
- *                                `"organizations/123456789"`. Please see
+ * @param string $formattedParent The parent resource in which to create the exclusion:
+ *
+ *                                "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]"
+ *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
+ *                                "folders/[FOLDER_ID]"
+ *
+ *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`. Please see
  *                                {@see ConfigServiceV2Client::projectName()} for help formatting this field.
  * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
  *                                Identifiers are limited to 100 characters and can include only letters,
@@ -77,7 +81,12 @@ function create_exclusion_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

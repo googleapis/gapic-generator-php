@@ -32,15 +32,19 @@ use Google\Protobuf\Timestamp;
 /**
  * Creates a new application entity.
  *
- * @param string $formattedParent       Resource name of the profile under which the application is created. The format
- *                                      is "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
- *                                      example, "projects/foo/tenants/bar/profiles/baz". Please see
+ * @param string $formattedParent       Resource name of the profile under which the application is created.
+ *
+ *                                      The format is
+ *                                      "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}".
+ *                                      For example, "projects/foo/tenants/bar/profiles/baz". Please see
  *                                      {@see ApplicationServiceClient::profileName()} for help formatting this field.
  * @param string $applicationExternalId Client side application identifier, used to uniquely identify the
  *                                      application.
  *
  *                                      The maximum number of allowed characters is 255.
- * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
+ * @param string $formattedJob          Resource name of the job which the candidate applied for.
+ *
+ *                                      The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
  *                                      "projects/foo/tenants/bar/jobs/baz". Please see
  *                                      {@see ApplicationServiceClient::jobName()} for help formatting this field.
@@ -83,7 +87,12 @@ function create_application_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

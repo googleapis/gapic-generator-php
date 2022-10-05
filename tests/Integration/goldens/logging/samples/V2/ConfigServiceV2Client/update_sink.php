@@ -34,12 +34,15 @@ use Google\Cloud\Logging\V2\LogSink;
  * The updated sink might also have a new `writer_identity`; see the
  * `unique_writer_identity` field.
  *
- * @param string $formattedSinkName The full resource name of the sink to update, including the parent resource and
- *                                  the sink identifier: "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+ * @param string $formattedSinkName The full resource name of the sink to update, including the parent
+ *                                  resource and the sink identifier:
+ *
+ *                                  "projects/[PROJECT_ID]/sinks/[SINK_ID]"
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
- *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]" Example:
- *                                  `"projects/my-project-id/sinks/my-sink-id"`. Please see
+ *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+ *
+ *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`. Please see
  *                                  {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
  * @param string $sinkName          The client-assigned sink identifier, unique within the project. Example:
  *                                  `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
@@ -84,7 +87,12 @@ function update_sink_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

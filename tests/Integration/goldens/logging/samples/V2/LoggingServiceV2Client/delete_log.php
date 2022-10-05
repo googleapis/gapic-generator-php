@@ -32,10 +32,14 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * be deleted. Entries received after the delete operation with a timestamp
  * before the operation will be deleted.
  *
- * @param string $formattedLogName The resource name of the log to delete: "projects/[PROJECT_ID]/logs/[LOG_ID]"
+ * @param string $formattedLogName The resource name of the log to delete:
+ *
+ *                                 "projects/[PROJECT_ID]/logs/[LOG_ID]"
  *                                 "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
  *                                 "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
- *                                 "folders/[FOLDER_ID]/logs/[LOG_ID]" `[LOG_ID]` must be URL-encoded. For example,
+ *                                 "folders/[FOLDER_ID]/logs/[LOG_ID]"
+ *
+ *                                 `[LOG_ID]` must be URL-encoded. For example,
  *                                 `"projects/my-project-id/logs/syslog"`,
  *                                 `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
  *                                 For more information about log names, see
@@ -59,7 +63,12 @@ function delete_log_sample(string $formattedLogName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

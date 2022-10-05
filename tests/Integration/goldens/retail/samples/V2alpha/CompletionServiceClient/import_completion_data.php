@@ -40,8 +40,9 @@ use Google\Rpc\Status;
  * Please submit a form [here](https://cloud.google.com/contact) to contact
  * cloud sales if you are interested in using Retail Search.
  *
- * @param string $formattedParent                    The catalog which the suggestions dataset belongs to. Format:
- *                                                   `projects/1234/locations/global/catalogs/default_catalog`. Please see
+ * @param string $formattedParent                    The catalog which the suggestions dataset belongs to.
+ *
+ *                                                   Format: `projects/1234/locations/global/catalogs/default_catalog`. Please see
  *                                                   {@see CompletionServiceClient::catalogName()} for help formatting this field.
  * @param string $inputConfigBigQuerySourceDatasetId The BigQuery data set to copy the data from with a length limit
  *                                                   of 1,024 characters.
@@ -86,7 +87,12 @@ function import_completion_data_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

@@ -31,8 +31,8 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 /**
  * Lists notification configs.
  *
- * @param string $formattedParent Name of the organization to list notification configs. Its format is
- *                                "organizations/[organization_id]". Please see
+ * @param string $formattedParent Name of the organization to list notification configs.
+ *                                Its format is "organizations/[organization_id]". Please see
  *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
  */
 function list_notification_configs_sample(string $formattedParent): void
@@ -57,7 +57,12 @@ function list_notification_configs_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

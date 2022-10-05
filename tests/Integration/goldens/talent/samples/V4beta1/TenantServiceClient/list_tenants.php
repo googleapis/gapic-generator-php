@@ -31,8 +31,10 @@ use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 /**
  * Lists all tenants associated with the project.
  *
- * @param string $formattedParent Resource name of the project under which the tenant is created. The format is
- *                                "projects/{project_id}", for example, "projects/foo". Please see
+ * @param string $formattedParent Resource name of the project under which the tenant is created.
+ *
+ *                                The format is "projects/{project_id}", for example,
+ *                                "projects/foo". Please see
  *                                {@see TenantServiceClient::projectName()} for help formatting this field.
  */
 function list_tenants_sample(string $formattedParent): void
@@ -57,7 +59,12 @@ function list_tenants_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

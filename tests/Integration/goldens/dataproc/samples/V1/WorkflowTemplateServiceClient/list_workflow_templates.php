@@ -31,14 +31,17 @@ use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 /**
  * Lists workflows that match the specified filter in the request.
  *
- * @param string $formattedParent The resource name of the region or location, as described in
- *                                https://cloud.google.com/apis/design/resource_names. * For
- *                                `projects.regions.workflowTemplates,list`, the resource name of the region has
- *                                the following format: `projects/{project_id}/regions/{region}` * For
- *                                `projects.locations.workflowTemplates.list`, the resource name of the location
- *                                has the following format: `projects/{project_id}/locations/{location}`
- *                                Please see {@see WorkflowTemplateServiceClient::regionName()} for help
- *                                formatting this field.
+ * @param string $formattedParent The resource name of the region or location, as described
+ *                                in https://cloud.google.com/apis/design/resource_names.
+ *
+ *                                * For `projects.regions.workflowTemplates,list`, the resource
+ *                                name of the region has the following format:
+ *                                `projects/{project_id}/regions/{region}`
+ *
+ *                                * For `projects.locations.workflowTemplates.list`, the
+ *                                resource name of the location has the following format:
+ *                                `projects/{project_id}/locations/{location}`
+ *                                Please see {@see WorkflowTemplateServiceClient::regionName()} for help formatting this field.
  */
 function list_workflow_templates_sample(string $formattedParent): void
 {
@@ -62,7 +65,12 @@ function list_workflow_templates_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

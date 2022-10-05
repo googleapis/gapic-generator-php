@@ -34,14 +34,17 @@ use Google\Protobuf\Duration;
 /**
  * Creates new autoscaling policy.
  *
- * @param string $formattedParent                               The "resource name" of the region or location, as described in
- *                                                              https://cloud.google.com/apis/design/resource_names. * For
- *                                                              `projects.regions.autoscalingPolicies.create`, the resource name of the region
- *                                                              has the following format: `projects/{project_id}/regions/{region}` * For
- *                                                              `projects.locations.autoscalingPolicies.create`, the resource name of the
- *                                                              location has the following format: `projects/{project_id}/locations/{location}`
- *                                                              Please see {@see AutoscalingPolicyServiceClient::regionName()} for help
- *                                                              formatting this field.
+ * @param string $formattedParent                               The "resource name" of the region or location, as described
+ *                                                              in https://cloud.google.com/apis/design/resource_names.
+ *
+ *                                                              * For `projects.regions.autoscalingPolicies.create`, the resource name
+ *                                                              of the region has the following format:
+ *                                                              `projects/{project_id}/regions/{region}`
+ *
+ *                                                              * For `projects.locations.autoscalingPolicies.create`, the resource name
+ *                                                              of the location has the following format:
+ *                                                              `projects/{project_id}/locations/{location}`
+ *                                                              Please see {@see AutoscalingPolicyServiceClient::regionName()} for help formatting this field.
  * @param float  $policyBasicAlgorithmYarnConfigScaleUpFactor   Fraction of average YARN pending memory in the last cooldown period
  *                                                              for which to add workers. A scale-up factor of 1.0 will result in scaling
  *                                                              up so that there is no pending memory remaining after the update (more
@@ -105,7 +108,12 @@ function create_autoscaling_policy_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_GetBookFromAnywhere_sync]
+// [START example_generated_LibraryService_GetBookFromAnywhere_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
@@ -32,13 +32,11 @@ use Testing\BasicDiregapic\LibraryServiceClient;
  *
  * @param string $formattedName        The name of the book to retrieve. Please see
  *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a single
- *                                     resource name type in a oneof. Please see
+ * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a
+ *                                     single resource name type in a oneof. Please see
  *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedPlace       Please see {@see LibraryServiceClient::locationName()} for help formatting this
- *                                     field.
- * @param string $formattedFolder      Please see {@see LibraryServiceClient::folderName()} for help formatting this
- *                                     field.
+ * @param string $formattedPlace       Please see {@see LibraryServiceClient::locationName()} for help formatting this field.
+ * @param string $formattedFolder      Please see {@see LibraryServiceClient::folderName()} for help formatting this field.
  */
 function get_book_from_anywhere_sample(
     string $formattedName,
@@ -67,7 +65,12 @@ function get_book_from_anywhere_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {
@@ -83,4 +86,4 @@ function callSample(): void
         $formattedFolder
     );
 }
-// [END library-example_generated_LibraryService_GetBookFromAnywhere_sync]
+// [END example_generated_LibraryService_GetBookFromAnywhere_sync]

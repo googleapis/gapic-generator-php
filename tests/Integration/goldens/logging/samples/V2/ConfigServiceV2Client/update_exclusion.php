@@ -32,11 +32,13 @@ use Google\Protobuf\FieldMask;
  * Changes one or more properties of an existing exclusion.
  *
  * @param string $formattedName   The resource name of the exclusion to update:
+ *
  *                                "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
  *                                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
- *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]" Example:
- *                                `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
+ *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+ *
+ *                                Example: `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
  *                                {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
  * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
  *                                Identifiers are limited to 100 characters and can include only letters,
@@ -79,7 +81,12 @@ function update_exclusion_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

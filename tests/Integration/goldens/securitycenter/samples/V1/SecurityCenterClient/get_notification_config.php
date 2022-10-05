@@ -32,8 +32,7 @@ use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
  *
  * @param string $formattedName Name of the notification config to get. Its format is
  *                              "organizations/[organization_id]/notificationConfigs/[config_id]". Please see
- *                              {@see SecurityCenterClient::notificationConfigName()} for help formatting this
- *                              field.
+ *                              {@see SecurityCenterClient::notificationConfigName()} for help formatting this field.
  */
 function get_notification_config_sample(string $formattedName): void
 {
@@ -53,7 +52,12 @@ function get_notification_config_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

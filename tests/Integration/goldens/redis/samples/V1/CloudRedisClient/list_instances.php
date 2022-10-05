@@ -40,9 +40,9 @@ use Google\Cloud\Redis\V1\Instance;
  * available to the project are queried, and the results are aggregated.
  *
  * @param string $formattedParent The resource name of the instance location using the form:
- *                                `projects/{project_id}/locations/{location_id}` where `location_id` refers to a
- *                                GCP region. Please see {@see CloudRedisClient::locationName()} for help
- *                                formatting this field.
+ *                                `projects/{project_id}/locations/{location_id}`
+ *                                where `location_id` refers to a GCP region. Please see
+ *                                {@see CloudRedisClient::locationName()} for help formatting this field.
  */
 function list_instances_sample(string $formattedParent): void
 {
@@ -66,7 +66,12 @@ function list_instances_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

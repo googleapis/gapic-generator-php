@@ -30,9 +30,11 @@ use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 /**
  * Gets the specified profile.
  *
- * @param string $formattedName Resource name of the profile to get. The format is
- *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For example,
- *                              "projects/foo/tenants/bar/profiles/baz". Please see
+ * @param string $formattedName Resource name of the profile to get.
+ *
+ *                              The format is
+ *                              "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
+ *                              example, "projects/foo/tenants/bar/profiles/baz". Please see
  *                              {@see ProfileServiceClient::profileName()} for help formatting this field.
  */
 function get_profile_sample(string $formattedName): void
@@ -53,7 +55,12 @@ function get_profile_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

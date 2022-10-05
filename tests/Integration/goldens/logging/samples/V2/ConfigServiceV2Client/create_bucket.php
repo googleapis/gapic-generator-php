@@ -32,10 +32,11 @@ use Google\Cloud\Logging\V2\LogBucket;
  * been created, the region cannot be changed.
  *
  * @param string $formattedParent The resource in which to create the bucket:
- *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]" Example:
- *                                `"projects/my-logging-project/locations/global"`
- *                                Please see {@see ConfigServiceV2Client::organizationLocationName()} for help
- *                                formatting this field.
+ *
+ *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
+ *
+ *                                Example: `"projects/my-logging-project/locations/global"`
+ *                                Please see {@see ConfigServiceV2Client::organizationLocationName()} for help formatting this field.
  * @param string $bucketId        A client-assigned identifier such as `"my-bucket"`. Identifiers are
  *                                limited to 100 characters and can include only letters, digits,
  *                                underscores, hyphens, and periods.
@@ -61,7 +62,12 @@ function create_bucket_sample(string $formattedParent, string $bucketId): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

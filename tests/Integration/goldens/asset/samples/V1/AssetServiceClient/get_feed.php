@@ -31,7 +31,8 @@ use Google\Cloud\Asset\V1\Feed;
  * Gets details about an asset feed.
  *
  * @param string $formattedName The name of the Feed and it must be in the format of:
- *                              projects/project_number/feeds/feed_id folders/folder_number/feeds/feed_id
+ *                              projects/project_number/feeds/feed_id
+ *                              folders/folder_number/feeds/feed_id
  *                              organizations/organization_number/feeds/feed_id
  *                              Please see {@see AssetServiceClient::feedName()} for help formatting this field.
  */
@@ -53,7 +54,12 @@ function get_feed_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

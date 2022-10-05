@@ -34,8 +34,8 @@ use Google\Rpc\Status;
  * request.
  *
  * @param string $formattedName Redis instance resource name using the form:
- *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
- *                              `location_id` refers to a GCP region. Please see
+ *                              `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+ *                              where `location_id` refers to a GCP region. Please see
  *                              {@see CloudRedisClient::instanceName()} for help formatting this field.
  * @param string $redisVersion  Specifies the target version of Redis software to upgrade to.
  */
@@ -67,7 +67,12 @@ function upgrade_instance_sample(string $formattedName, string $redisVersion): v
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

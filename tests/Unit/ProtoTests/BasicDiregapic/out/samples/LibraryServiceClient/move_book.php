@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_MoveBook_sync]
+// [START example_generated_LibraryService_MoveBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
@@ -30,8 +30,8 @@ use Testing\BasicDiregapic\LibraryServiceClient;
 /**
  * Moves a book to another shelf, and returns the new book.
  *
- * @param string $formattedName           The name of the book to move. Please see {@see LibraryServiceClient::bookName()}
- *                                        for help formatting this field.
+ * @param string $formattedName           The name of the book to move. Please see
+ *                                        {@see LibraryServiceClient::bookName()} for help formatting this field.
  * @param string $formattedOtherShelfName The name of the destination shelf. Please see
  *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
@@ -53,7 +53,12 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {
@@ -62,4 +67,4 @@ function callSample(): void
 
     move_book_sample($formattedName, $formattedOtherShelfName);
 }
-// [END library-example_generated_LibraryService_MoveBook_sync]
+// [END example_generated_LibraryService_MoveBook_sync]

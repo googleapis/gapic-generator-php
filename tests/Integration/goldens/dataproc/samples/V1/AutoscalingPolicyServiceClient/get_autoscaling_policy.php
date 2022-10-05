@@ -30,16 +30,17 @@ use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 /**
  * Retrieves autoscaling policy.
  *
- * @param string $formattedName The "resource name" of the autoscaling policy, as described in
- *                              https://cloud.google.com/apis/design/resource_names. * For
- *                              `projects.regions.autoscalingPolicies.get`, the resource name of the policy has
- *                              the following format:
- *                              `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}` * For
- *                              `projects.locations.autoscalingPolicies.get`, the resource name of the policy
- *                              has the following format:
+ * @param string $formattedName The "resource name" of the autoscaling policy, as described
+ *                              in https://cloud.google.com/apis/design/resource_names.
+ *
+ *                              * For `projects.regions.autoscalingPolicies.get`, the resource name
+ *                              of the policy has the following format:
+ *                              `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}`
+ *
+ *                              * For `projects.locations.autoscalingPolicies.get`, the resource name
+ *                              of the policy has the following format:
  *                              `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
- *                              Please see {@see AutoscalingPolicyServiceClient::autoscalingPolicyName()} for
- *                              help formatting this field.
+ *                              Please see {@see AutoscalingPolicyServiceClient::autoscalingPolicyName()} for help formatting this field.
  */
 function get_autoscaling_policy_sample(string $formattedName): void
 {
@@ -59,7 +60,12 @@ function get_autoscaling_policy_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

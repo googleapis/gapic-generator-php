@@ -36,7 +36,9 @@ use Google\Protobuf\Timestamp;
  *                                      application.
  *
  *                                      The maximum number of allowed characters is 255.
- * @param string $formattedJob          Resource name of the job which the candidate applied for. The format is
+ * @param string $formattedJob          Resource name of the job which the candidate applied for.
+ *
+ *                                      The format is
  *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
  *                                      "projects/foo/tenants/bar/jobs/baz". Please see
  *                                      {@see ApplicationServiceClient::jobName()} for help formatting this field.
@@ -74,7 +76,12 @@ function update_application_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

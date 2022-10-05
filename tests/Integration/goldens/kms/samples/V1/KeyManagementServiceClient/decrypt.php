@@ -33,10 +33,10 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
  * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
  *
- * @param string $formattedName The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for
- *                              decryption. The server will choose the appropriate version. Please see
- *                              {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this
- *                              field.
+ * @param string $formattedName The resource name of the
+ *                              [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for decryption. The
+ *                              server will choose the appropriate version. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this field.
  * @param string $ciphertext    The encrypted data originally returned in
  *                              [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
  */
@@ -58,7 +58,12 @@ function decrypt_sample(string $formattedName, string $ciphertext): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

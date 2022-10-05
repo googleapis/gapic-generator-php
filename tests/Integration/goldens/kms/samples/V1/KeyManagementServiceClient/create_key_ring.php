@@ -34,8 +34,7 @@ use Google\Cloud\Kms\V1\KeyRing;
  * @param string $formattedParent The resource name of the location associated with the
  *                                [KeyRings][google.cloud.kms.v1.KeyRing], in the format
  *                                `projects/&#42;/locations/*`. Please see
- *                                {@see KeyManagementServiceClient::locationName()} for help formatting this
- *                                field.
+ *                                {@see KeyManagementServiceClient::locationName()} for help formatting this field.
  * @param string $keyRingId       It must be unique within a location and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
  */
@@ -60,7 +59,12 @@ function create_key_ring_sample(string $formattedParent, string $keyRingId): voi
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

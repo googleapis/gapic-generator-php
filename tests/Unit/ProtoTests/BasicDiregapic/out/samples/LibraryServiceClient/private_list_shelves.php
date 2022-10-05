@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_PrivateListShelves_sync]
+// [START example_generated_LibraryService_PrivateListShelves_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
@@ -42,4 +42,4 @@ function private_list_shelves_sample(): void
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-// [END library-example_generated_LibraryService_PrivateListShelves_sync]
+// [END example_generated_LibraryService_PrivateListShelves_sync]

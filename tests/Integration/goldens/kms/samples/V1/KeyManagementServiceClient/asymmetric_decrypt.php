@@ -35,9 +35,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * ASYMMETRIC_DECRYPT.
  *
  * @param string $formattedName The resource name of the
- *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for decryption.
- *                              Please see {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help
- *                              formatting this field.
+ *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
+ *                              decryption. Please see
+ *                              {@see KeyManagementServiceClient::cryptoKeyVersionName()} for help formatting this field.
  * @param string $ciphertext    The data encrypted with the named
  *                              [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s public key using
  *                              OAEP.
@@ -60,7 +60,12 @@ function asymmetric_decrypt_sample(string $formattedName, string $ciphertext): v
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

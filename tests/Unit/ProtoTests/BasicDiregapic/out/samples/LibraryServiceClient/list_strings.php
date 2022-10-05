@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_ListStrings_sync]
+// [START example_generated_LibraryService_ListStrings_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
@@ -46,4 +46,4 @@ function list_strings_sample(): void
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-// [END library-example_generated_LibraryService_ListStrings_sync]
+// [END example_generated_LibraryService_ListStrings_sync]

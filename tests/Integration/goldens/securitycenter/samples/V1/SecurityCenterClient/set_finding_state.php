@@ -35,9 +35,8 @@ use Google\Protobuf\Timestamp;
  * @param string $formattedName The relative resource name of the finding. See:
  *                              https://cloud.google.com/apis/design/resource_names#relative_resource_name
  *                              Example:
- *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
- *                              Please see {@see SecurityCenterClient::findingName()} for help formatting this
- *                              field.
+ *                              "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}". Please see
+ *                              {@see SecurityCenterClient::findingName()} for help formatting this field.
  * @param int    $state         The desired State of the finding.
  */
 function set_finding_state_sample(string $formattedName, int $state): void
@@ -61,7 +60,12 @@ function set_finding_state_sample(string $formattedName, int $state): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

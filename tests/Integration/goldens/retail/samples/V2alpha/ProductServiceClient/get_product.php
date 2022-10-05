@@ -30,14 +30,17 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 /**
  * Gets a [Product][google.cloud.retail.v2alpha.Product].
  *
- * @param string $formattedName Full resource name of [Product][google.cloud.retail.v2alpha.Product], such as
+ * @param string $formattedName Full resource name of
+ *                              [Product][google.cloud.retail.v2alpha.Product], such as
  *                              `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
+ *
  *                              If the caller does not have permission to access the
- *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or not it
- *                              exists, a PERMISSION_DENIED error is returned. If the requested
- *                              [Product][google.cloud.retail.v2alpha.Product] does not exist, a NOT_FOUND error
- *                              is returned. Please see {@see ProductServiceClient::productName()} for help
- *                              formatting this field.
+ *                              [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
+ *                              not it exists, a PERMISSION_DENIED error is returned.
+ *
+ *                              If the requested [Product][google.cloud.retail.v2alpha.Product] does not
+ *                              exist, a NOT_FOUND error is returned. Please see
+ *                              {@see ProductServiceClient::productName()} for help formatting this field.
  */
 function get_product_sample(string $formattedName): void
 {
@@ -57,7 +60,12 @@ function get_product_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

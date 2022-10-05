@@ -34,14 +34,20 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * entries, see [Exporting
  * Logs](https://cloud.google.com/logging/docs/export).
  *
- * @param string $formattedResourceNamesElement Names of one or more parent resources from which to retrieve log entries:
- *                                              "projects/[PROJECT_ID]" "organizations/[ORGANIZATION_ID]"
- *                                              "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]" May alternatively
- *                                              be one or more views
+ * @param string $formattedResourceNamesElement Names of one or more parent resources from which to
+ *                                              retrieve log entries:
+ *
+ *                                              "projects/[PROJECT_ID]"
+ *                                              "organizations/[ORGANIZATION_ID]"
+ *                                              "billingAccounts/[BILLING_ACCOUNT_ID]"
+ *                                              "folders/[FOLDER_ID]"
+ *
+ *                                              May alternatively be one or more views
  *                                              projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
  *                                              organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
  *                                              billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
  *                                              folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+ *
  *                                              Projects listed in the `project_ids` field are added to this list. Please see
  *                                              {@see LoggingServiceV2Client::projectName()} for help formatting this field.
  */
@@ -70,7 +76,12 @@ function list_log_entries_sample(string $formattedResourceNamesElement): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

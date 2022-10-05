@@ -32,14 +32,16 @@ use Google\Cloud\Logging\V2\LogBucket;
  * Lists buckets.
  *
  * @param string $formattedParent The parent resource whose buckets are to be listed:
+ *
  *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
  *                                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]"
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
- *                                "folders/[FOLDER_ID]/locations/[LOCATION_ID]" Note: The locations portion of the
- *                                resource must be specified, but supplying the character `-` in place of
- *                                [LOCATION_ID] will return all buckets. Please see
- *                                {@see ConfigServiceV2Client::organizationLocationName()} for help formatting
- *                                this field.
+ *                                "folders/[FOLDER_ID]/locations/[LOCATION_ID]"
+ *
+ *                                Note: The locations portion of the resource must be specified, but
+ *                                supplying the character `-` in place of [LOCATION_ID] will return all
+ *                                buckets. Please see
+ *                                {@see ConfigServiceV2Client::organizationLocationName()} for help formatting this field.
  */
 function list_buckets_sample(string $formattedParent): void
 {
@@ -63,7 +65,12 @@ function list_buckets_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

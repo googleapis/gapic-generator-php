@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_ArchiveBooks_sync]
+// [START example_generated_LibraryService_ArchiveBooks_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
@@ -41,4 +41,4 @@ function archive_books_sample(): void
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-// [END library-example_generated_LibraryService_ArchiveBooks_sync]
+// [END example_generated_LibraryService_ArchiveBooks_sync]

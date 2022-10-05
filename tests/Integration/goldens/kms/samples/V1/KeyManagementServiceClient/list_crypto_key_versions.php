@@ -31,10 +31,10 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 /**
  * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
  *
- * @param string $formattedParent The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in
- *                                the format `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. Please
- *                                see {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this
- *                                field.
+ * @param string $formattedParent The resource name of the
+ *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
+ *                                `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. Please see
+ *                                {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this field.
  */
 function list_crypto_key_versions_sample(string $formattedParent): void
 {
@@ -58,7 +58,12 @@ function list_crypto_key_versions_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

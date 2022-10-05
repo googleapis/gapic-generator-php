@@ -32,10 +32,12 @@ use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
  * Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s associated
  * with the project.
  *
- * @param string $formattedParent The account resource name with an associated location. If the caller does not
- *                                have permission to list [Catalog][google.cloud.retail.v2alpha.Catalog]s under
- *                                this location, regardless of whether or not this location exists, a
- *                                PERMISSION_DENIED error is returned. Please see
+ * @param string $formattedParent The account resource name with an associated location.
+ *
+ *                                If the caller does not have permission to list
+ *                                [Catalog][google.cloud.retail.v2alpha.Catalog]s under this location,
+ *                                regardless of whether or not this location exists, a PERMISSION_DENIED
+ *                                error is returned. Please see
  *                                {@see CatalogServiceClient::locationName()} for help formatting this field.
  */
 function list_catalogs_sample(string $formattedParent): void
@@ -60,7 +62,12 @@ function list_catalogs_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

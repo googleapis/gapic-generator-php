@@ -31,8 +31,11 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  * Creates a logs-based metric.
  *
  * @param string $formattedParent The resource name of the project in which to create the metric:
- *                                "projects/[PROJECT_ID]" The new metric must be provided in the request. Please
- *                                see {@see MetricsServiceV2Client::projectName()} for help formatting this field.
+ *
+ *                                "projects/[PROJECT_ID]"
+ *
+ *                                The new metric must be provided in the request. Please see
+ *                                {@see MetricsServiceV2Client::projectName()} for help formatting this field.
  * @param string $metricName      The client-assigned metric identifier.
  *                                Examples: `"error_count"`, `"nginx/requests"`.
  *
@@ -80,7 +83,12 @@ function create_log_metric_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

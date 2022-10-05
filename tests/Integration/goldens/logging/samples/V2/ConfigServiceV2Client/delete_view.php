@@ -30,11 +30,12 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * Deletes a view from a bucket.
  *
  * @param string $formattedName The full resource name of the view to delete:
+ *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+ *
  *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
- *                              Please see {@see ConfigServiceV2Client::logViewName()} for help formatting this
- *                              field.
+ *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`. Please see
+ *                              {@see ConfigServiceV2Client::logViewName()} for help formatting this field.
  */
 function delete_view_sample(string $formattedName): void
 {
@@ -53,7 +54,12 @@ function delete_view_sample(string $formattedName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

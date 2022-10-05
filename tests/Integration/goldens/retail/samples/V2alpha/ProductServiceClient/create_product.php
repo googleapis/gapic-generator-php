@@ -31,9 +31,8 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  * Creates a [Product][google.cloud.retail.v2alpha.Product].
  *
  * @param string $formattedParent The parent catalog resource name, such as
- *                                `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`.
- *                                Please see {@see ProductServiceClient::branchName()} for help formatting this
- *                                field.
+ *                                `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`. Please see
+ *                                {@see ProductServiceClient::branchName()} for help formatting this field.
  * @param string $productTitle    Product title.
  *
  *                                This field must be a UTF-8 encoded string with a length limit of 1,000
@@ -83,7 +82,12 @@ function create_product_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

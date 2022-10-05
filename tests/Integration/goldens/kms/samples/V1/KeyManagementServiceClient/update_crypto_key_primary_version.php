@@ -34,9 +34,9 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * Returns an error if called on an asymmetric key.
  *
- * @param string $formattedName      The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
- *                                   Please see {@see KeyManagementServiceClient::cryptoKeyName()} for help
- *                                   formatting this field.
+ * @param string $formattedName      The resource name of the
+ *                                   [CryptoKey][google.cloud.kms.v1.CryptoKey] to update. Please see
+ *                                   {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this field.
  * @param string $cryptoKeyVersionId The id of the child
  *                                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use as primary.
  */
@@ -63,7 +63,12 @@ function update_crypto_key_primary_version_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

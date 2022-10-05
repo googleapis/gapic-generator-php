@@ -34,8 +34,10 @@ use Google\Cloud\Retail\V2alpha\CompletionServiceClient;
  * Please submit a form [here](https://cloud.google.com/contact) to contact
  * cloud sales if you are interested in using Retail Search.
  *
- * @param string $formattedCatalog Catalog for which the completion is performed. Full resource name of catalog,
- *                                 such as `projects/&#42;/locations/global/catalogs/default_catalog`. Please see
+ * @param string $formattedCatalog Catalog for which the completion is performed.
+ *
+ *                                 Full resource name of catalog, such as
+ *                                 `projects/&#42;/locations/global/catalogs/default_catalog`. Please see
  *                                 {@see CompletionServiceClient::catalogName()} for help formatting this field.
  * @param string $query            The query used to generate suggestions.
  *
@@ -59,7 +61,12 @@ function complete_query_sample(string $formattedCatalog, string $query): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

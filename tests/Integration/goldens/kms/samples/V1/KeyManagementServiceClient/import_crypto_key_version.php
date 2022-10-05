@@ -38,8 +38,7 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  *
  * @param string $formattedParent The [name][google.cloud.kms.v1.CryptoKey.name] of the
  *                                [CryptoKey][google.cloud.kms.v1.CryptoKey] to be imported into. Please see
- *                                {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this
- *                                field.
+ *                                {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this field.
  * @param int    $algorithm       The
  *                                [algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
  *                                of the key being imported. This does not need to match the
@@ -74,7 +73,12 @@ function import_crypto_key_version_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

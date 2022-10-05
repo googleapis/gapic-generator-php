@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_LongRunningArchiveBooks_sync]
+// [START example_generated_LibraryService_LongRunningArchiveBooks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
@@ -53,4 +53,4 @@ function long_running_archive_books_sample(): void
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-// [END library-example_generated_LibraryService_LongRunningArchiveBooks_sync]
+// [END example_generated_LibraryService_LongRunningArchiveBooks_sync]

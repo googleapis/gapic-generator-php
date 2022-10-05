@@ -34,10 +34,9 @@ use Google\Rpc\Status;
  * the specified project, the long running operation will return
  * `ALREADY_EXISTS` error.
  *
- * @param string $formattedLocation The project and location in which the function should be created, specified in
- *                                  the format `projects/&#42;/locations/*`
- *                                  Please see {@see CloudFunctionsServiceClient::locationName()} for help
- *                                  formatting this field.
+ * @param string $formattedLocation The project and location in which the function should be created, specified
+ *                                  in the format `projects/&#42;/locations/*`
+ *                                  Please see {@see CloudFunctionsServiceClient::locationName()} for help formatting this field.
  */
 function create_function_sample(string $formattedLocation): void
 {
@@ -70,7 +69,12 @@ function create_function_sample(string $formattedLocation): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

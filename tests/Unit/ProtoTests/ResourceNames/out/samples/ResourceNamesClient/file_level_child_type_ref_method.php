@@ -29,16 +29,11 @@ use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  *
- * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this
- *                                                   field.
- * @param string $formattedReqFolderMultiName        Please see {@see ResourceNamesClient::folder1Name()} for help formatting this
- *                                                   field.
- * @param string $formattedReqFolderMultiNameHistory Please see {@see ResourceNamesClient::folder1Name()} for help formatting this
- *                                                   field.
- * @param string $formattedReqOrderTest1             Please see {@see ResourceNamesClient::order2Name()} for help formatting this
- *                                                   field.
- * @param string $formattedReqOrderTest2             Please see {@see ResourceNamesClient::order2Name()} for help formatting this
- *                                                   field.
+ * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this field.
+ * @param string $formattedReqFolderMultiName        Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
+ * @param string $formattedReqFolderMultiNameHistory Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
+ * @param string $formattedReqOrderTest1             Please see {@see ResourceNamesClient::order2Name()} for help formatting this field.
+ * @param string $formattedReqOrderTest2             Please see {@see ResourceNamesClient::order2Name()} for help formatting this field.
  */
 function file_level_child_type_ref_method_sample(
     string $formattedReqFolderName,
@@ -69,7 +64,12 @@ function file_level_child_type_ref_method_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

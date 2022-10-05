@@ -29,10 +29,11 @@ use Google\Cloud\Talent\V4beta1\JobServiceClient;
 /**
  * Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
  *
- * @param string $formattedParent The resource name of the tenant under which the job is created. The format is
- *                                "projects/{project_id}/tenants/{tenant_id}". For example,
- *                                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant is
- *                                created. For example, "projects/foo". Please see
+ * @param string $formattedParent The resource name of the tenant under which the job is created.
+ *
+ *                                The format is "projects/{project_id}/tenants/{tenant_id}". For example,
+ *                                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
+ *                                is created. For example, "projects/foo". Please see
  *                                {@see JobServiceClient::projectName()} for help formatting this field.
  * @param string $filter          The filter string specifies the jobs to be deleted.
  *
@@ -63,7 +64,12 @@ function batch_delete_jobs_sample(string $formattedParent, string $filter): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

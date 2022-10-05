@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START library-example_generated_LibraryService_CreateShelf_sync]
+// [START example_generated_LibraryService_CreateShelf_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ShelfResponse;
@@ -56,7 +56,12 @@ function create_shelf_sample(string $shelfName): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {
@@ -64,4 +69,4 @@ function callSample(): void
 
     create_shelf_sample($shelfName);
 }
-// [END library-example_generated_LibraryService_CreateShelf_sync]
+// [END example_generated_LibraryService_CreateShelf_sync]

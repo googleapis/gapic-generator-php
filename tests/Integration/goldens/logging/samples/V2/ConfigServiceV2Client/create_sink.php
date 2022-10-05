@@ -33,10 +33,14 @@ use Google\Cloud\Logging\V2\LogSink;
  * `writer_identity` is not permitted to write to the destination. A sink can
  * export log entries only from the resource owning the sink.
  *
- * @param string $formattedParent The resource in which to create the sink: "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]" "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                "folders/[FOLDER_ID]" Examples: `"projects/my-logging-project"`,
- *                                `"organizations/123456789"`. Please see
+ * @param string $formattedParent The resource in which to create the sink:
+ *
+ *                                "projects/[PROJECT_ID]"
+ *                                "organizations/[ORGANIZATION_ID]"
+ *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
+ *                                "folders/[FOLDER_ID]"
+ *
+ *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`. Please see
  *                                {@see ConfigServiceV2Client::projectName()} for help formatting this field.
  * @param string $sinkName        The client-assigned sink identifier, unique within the project. Example:
  *                                `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
@@ -81,7 +85,12 @@ function create_sink_sample(
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

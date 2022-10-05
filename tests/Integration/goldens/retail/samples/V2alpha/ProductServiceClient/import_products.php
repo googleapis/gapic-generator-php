@@ -41,8 +41,9 @@ use Google\Rpc\Status;
  *
  * @param string $formattedParent Required.
  *                                `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
- *                                If no updateMask is specified, requires products.create permission. If
- *                                updateMask is specified, requires products.update permission. Please see
+ *
+ *                                If no updateMask is specified, requires products.create permission.
+ *                                If updateMask is specified, requires products.update permission. Please see
  *                                {@see ProductServiceClient::branchName()} for help formatting this field.
  */
 function import_products_sample(string $formattedParent): void
@@ -76,7 +77,12 @@ function import_products_sample(string $formattedParent): void
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {

@@ -35,8 +35,8 @@ use Google\Cloud\Kms\V1\KeyManagementServiceClient;
  * [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
  * are required.
  *
- * @param string $formattedParent The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing associated with the
- *                                [CryptoKeys][google.cloud.kms.v1.CryptoKey]. Please see
+ * @param string $formattedParent The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
+ *                                associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey]. Please see
  *                                {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
  * @param string $cryptoKeyId     It must be unique within a KeyRing and match the regular
  *                                expression `[a-zA-Z0-9_-]{1,63}`
@@ -66,7 +66,12 @@ function create_crypto_key_sample(string $formattedParent, string $cryptoKeyId):
 /**
  * Helper to execute the sample.
  *
- * TODO(developer): Replace sample parameters before running the code.
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function callSample(): void
 {
