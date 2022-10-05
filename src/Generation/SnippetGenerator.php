@@ -416,7 +416,17 @@ class SnippetGenerator
             ->withPhpDoc(
                 PhpDoc::block(
                     PhpDoc::text('Helper to execute the sample.'),
-                    PhpDoc::text('TODO(developer): Replace sample parameters before running the code.')
+                    PhpDoc::text(
+                        'This sample has been automatically generated and should be regarded as a code template only.',
+                        'It will require modifications to work:'
+                    ),
+                    PhpDoc::preFormattedText(
+                        Vector::new([
+                            ' - It may require correct/in-range values for request initialization.',
+                            ' - It may require specifying regional endpoints when creating the service client,',
+                            '   please see the apiEndpoint client configuration option for more details.'
+                        ])
+                    )
                 )
             )
             ->withReturnType($snippetDetails->context->type(Type::void()))
