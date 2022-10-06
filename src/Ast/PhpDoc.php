@@ -415,7 +415,8 @@ abstract class PhpDoc
                 $code = Formatter::format("<?php\n{$code}");
                 $code = str_replace('[ELLIPSIS]', '[...]', $code);
                 $code = Vector::new(explode("\n", $code))
-                    ->skip(2)->skipLast(1)
+                    // remove <?php statement and closing newline
+                    ->skip(1)->skipLast(1)
                     ->filter(fn ($x) => $x !== '');
                 if (!$this->noBackticks) {
                     $code = $code->prepend('```')->append('```');

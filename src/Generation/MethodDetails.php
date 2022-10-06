@@ -202,7 +202,7 @@ abstract class MethodDetails
                 $this->responseNextPageTokenSetter = AST::method($nextPageToken->getSetter());
                 $this->resourcesGetter = AST::method($resources->getGetter());
                 $this->resourcesSetter = AST::method($resources->getSetter());
-                $this->resourceType = Type::fromField($svc->catalog, $resources);
+                $this->resourceType = Type::fromField($svc->catalog, $resources, false);
                 $this->resourcesFieldName = Helpers::toCamelCase($resources->getName());
                 $this->resourcesField = new FieldDetails($svc->catalog, $outputMsg, $resources->underlyingProto);
                 $this->methodReturnType = Type::fromName(PagedListResponse::class);
@@ -540,6 +540,16 @@ abstract class MethodDetails
     public function isServerStreaming(): bool
     {
         return $this->methodType === static::SERVER_STREAMING;
+    }
+
+    public function isClientStreaming(): bool
+    {
+        return $this->methodType === static::CLIENT_STREAMING;
+    }
+
+    public function isBidiStreaming(): bool
+    {
+        return $this->methodType === static::BIDI_STREAMING;
     }
 
     public function isMixin(): bool

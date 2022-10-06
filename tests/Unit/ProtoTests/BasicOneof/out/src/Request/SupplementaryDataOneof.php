@@ -33,39 +33,25 @@ use Testing\BasicOneof\PartOfRequestA;
  */
 class SupplementaryDataOneof
 {
-    /**
-     * The value for the field extra_description, if set.
-     */
+    /** The value for the field extra_description, if set. */
     private $extraDescription;
 
-    /**
-     * The value for the field extra_summary, if set.
-     */
+    /** The value for the field extra_summary, if set. */
     private $extraSummary;
 
-    /**
-     * The value for the field extra_request, if set.
-     */
+    /** The value for the field extra_request, if set. */
     private $extraRequest;
 
-    /**
-     * The value for the field extra_index, if set.
-     */
+    /** The value for the field extra_index, if set. */
     private $extraIndex;
 
-    /**
-     * The value for the field extra_double, if set.
-     */
+    /** The value for the field extra_double, if set. */
     private $extraDouble;
 
-    /**
-     * The value for the field extra_float, if set.
-     */
+    /** The value for the field extra_float, if set. */
     private $extraFloat;
 
-    /**
-     * The value for the field extra_bool, if set.
-     */
+    /** The value for the field extra_bool, if set. */
     private $extraBool;
 
     /**

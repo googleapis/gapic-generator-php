@@ -59,6 +59,9 @@ abstract class AST
     /** @var string Constant to reference `preg_match`. */
     public const PREG_MATCH = "\0preg_match";
 
+    /** @var string Constant to reference `printf`. */
+    public const PRINT_F = "\0printf";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
@@ -66,12 +69,15 @@ abstract class AST
 
     protected static function toPhp($x, &$omitSemicolon = false): string
     {
-        $omitSemicolon = false;
+        if ($x instanceof ShouldNotApplySemicolonInterface) {
+            $omitSemicolon = true;
+        }
+
         if (is_string($x)) {
             if (strncmp($x, "\0", 1) === 0) {
                 // \0 prefix means the string that follows is used verbatim.
                 return substr($x, 1);
-            } elseif (substr($x, 0, 2) === '//') {
+            } elseif (substr($x, 0, 2) === '//' || $x === PHP_EOL) {
                 // '//' prefix means a comment.
                 $omitSemicolon = true;
                 return $x;
@@ -114,11 +120,11 @@ abstract class AST
     /**
      * Create a PHP file.
      *
-     * @param PhpClass $class The class to be contained within this file.
+     * @param ?PhpClass $class The class to be contained within this file.
      *
      * @return PhpFile
      */
-    public static function file(PhpClass $class): PhpFile
+    public static function file(?PhpClass $class): PhpFile
     {
         return new PhpFile($class);
     }
@@ -127,6 +133,7 @@ abstract class AST
      * Create a class.
      *
      * @param Type $type The type of the class to create.
+     * @param ?ResolvedType $extends
      *
      * @return PhpClass
      */
@@ -172,6 +179,19 @@ abstract class AST
     }
 
     /**
+     * Create a function.
+     *
+     * @param string $name The name of the function.
+     * @param bool $appendNewline Whether a newline should be appended to the end of the function declaration.
+     *
+     * @return PhpFunction
+     */
+    public static function fn(string $name, bool $appendNewline = true): PhpFunction
+    {
+        return new PhpFunction($name, $appendNewline);
+    }
+
+    /**
      * Create a parameter.
      *
      * @param ?ResolvedType $type The type of the parameter.
@@ -208,20 +228,33 @@ abstract class AST
      */
     public static function block(...$code): AST
     {
-        $code = Vector::new($code)
-            ->flatten()
-            ->filter(fn ($x) => !is_null($x));
-        return new class($code) extends AST {
-            public function __construct($code)
+        return new PhpBlock($code);
+    }
+
+    /**
+     * Creates an inline variable comment.
+     *
+     * @param ResolvedType $type
+     * @param Variable $var
+     * @param string $comment
+     *
+     * @return Expression
+     */
+    public static function inlineVarDoc(ResolvedType $type, Variable $var, string $comment = null): Expression
+    {
+        return new class($type, $var, $comment) extends Expression {
+            public function __construct(ResolvedType $type, Variable $var, string $comment = null)
             {
-                $this->code = $code;
+                $this->type = $type;
+                $this->var = $var;
+                $this->comment = $comment;
             }
             public function toCode(): string
             {
-                $omitSemicolon = false;
-                return $this->code
-                    ->map(fn ($x) => static::toPhp($x, $omitSemicolon) . ($omitSemicolon ? '' : ';') . "\n")
-                    ->join();
+                if ($this->comment) {
+                    $this->comment = ' ' . $this->comment;
+                }
+                return "/** @var {$this->type->toCode()} {$this->var->toCode()}{$this->comment} */";
             }
         };
     }
@@ -351,6 +384,9 @@ abstract class AST
                 $items = $isAssocArray ?
                     $this->keyValues->map(fn ($x) => static::toPhp($x[0]) . ' => ' . static::toPhp($x[1])) :
                     $this->keyValues->map(fn ($x) => static::toPhp($x[1]));
+                if (count($items) === 1 && substr($items[0], 0, 4) === 'new ') {
+                    return "{$items}";
+                }
                 $itemsStr = $items->map(fn ($x) => "{$x},\n")->join();
                 $firstNl = count($items) === 0 ? '' : "\n";
                 return "[{$firstNl}{$itemsStr}]";
@@ -423,12 +459,12 @@ abstract class AST
     }
 
     /**
-     * Create an expression to call a method. This method returns a Callable into which the args are passed.
+     * Create an expression to call a method. This method returns a callable into which the args are passed.
      *
      * @param mixed $obj The object containing the method to call; or a built-in function.
      * @param mixed $callee The method to call; or null if calling a built-in function.
      *
-     * @return Callable The returned Callable returns an Expression once called with callee args.
+     * @return callable The returned callable returns an Expression once called with callee args.
      */
     public static function call($obj, $callee = null): callable
     {
@@ -448,21 +484,56 @@ abstract class AST
                     // Handle calling a function directly on a constructor.
                     // We assume that a constructor call will always start with `new `.
                     $objCode = static::toPhp($this->obj);
+                    $calleeOnNewline = false;
                     if (substr($objCode, 0, 4) === 'new ') {
                         $objCode = '(' . $objCode . ')';
+                        $calleeOnNewline = true;
+                    } elseif (substr($objCode, 0, 5) === '(new ') {
+                        $calleeOnNewline = true;
                     }
-                    return $objCode . static::deref($this->obj) . static::toPhp($this->callee) . "({$args})";
+
+                    return $objCode .
+                        ($calleeOnNewline ? PHP_EOL : null) .
+                        static::deref($this->obj) .
+                        static::toPhp($this->callee) .
+                        "({$args})";
                 }
             }
         };
     }
 
     /**
-     * Create an object instantiation expression. This method returns a Callable into which the args are passed.
+     * Create an expression to call a static method. This method returns a callable into which the args are passed.
+     *
+     * @param ResolvedType $type The object type to intantiate the call from.
+     * @param mixed $callee The method to call.
+     *
+     * @return callable The returned callable returns an Expression once called with callee args.
+     */
+    public static function staticCall(ResolvedType $type, $callee): callable
+    {
+        return fn (...$args) => new class($type, $callee, $args) extends Expression {
+            public function __construct($type, $callee, $args)
+            {
+                $this->type = $type;
+                $this->callee = $callee;
+                $this->args = Vector::new($args)->flatten();
+            }
+
+            public function toCode(): string
+            {
+                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
+                return static::toPhp($this->type) . '::' . static::toPhp($this->callee) . "({$args})";
+            }
+        };
+    }
+
+    /**
+     * Create an object instantiation expression. This method returns a callable into which the args are passed.
      *
      * @param ResolvedType $type The type to instantiate.
      *
-     * @return Callable The returned Callable returns an Expression once called with callee args.
+     * @return callable The returned callable returns an Expression once called with callee args.
      */
     public static function new(ResolvedType $type): callable
     {
@@ -472,6 +543,7 @@ abstract class AST
                 $this->type = $type;
                 $this->args = $args;
             }
+
             public function toCode(): string
             {
                 $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
@@ -576,18 +648,20 @@ abstract class AST
      * Create an if statement.
      *
      * @param Expression $expr The conditional expression for the if statement.
+     * @param bool $appendNewline Whether a newline should be appended to the end of the statement.
      *
      * @return AST
      */
-    public static function if(Expression $expr): AST
+    public static function if(Expression $expr, bool $appendNewline = true): AST
     {
-        return new class($expr) extends AST {
-            public function __construct($expr)
+        return new class($expr, $appendNewline) extends AST implements ShouldNotApplySemicolonInterface {
+            public function __construct($expr, $appendNewline)
             {
                 $this->expr = $expr;
                 $this->then = null;
                 $this->elseif = Vector::new([]);
                 $this->else = null;
+                $this->appendNewline = $appendNewline;
             }
             public function then(...$code)
             {
@@ -614,9 +688,15 @@ abstract class AST
                     " else {\n" .
                     static::toPhp($this->else) . "\n" .
                     "}";
-                return 'if (' . static::toPhp($this->expr) . ") {\n" .
+                $code = 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
-                    "}{$elseif}{$else}\n";
+                    "}{$elseif}{$else}";
+
+                if ($this->appendNewline) {
+                    $code .= "\n";
+                }
+
+                return $code;
             }
         };
     }
@@ -649,15 +729,15 @@ abstract class AST
     }
 
     /**
-     * Create a while statement. This method returns a Callable into which the loop code is passed.
+     * Create a while statement. This method returns a callable into which the loop code is passed.
      *
      * @param Expression $condition The condition checked at the top of the while loop.
      *
-     * @return Callable The returned Callable returns a while statement once called with the loop code.
+     * @return callable The returned callable returns a while statement once called with the loop code.
      */
     public static function while(Expression $condition): callable
     {
-        return fn (...$code) => new class($condition, $code) extends AST {
+        return fn (...$code) => new class($condition, $code) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($condition, $code)
             {
                 $this->condition = $condition;
@@ -667,23 +747,23 @@ abstract class AST
             {
                 return 'while (' . static::toPhp($this->condition) . ") {\n" .
                     static::toPhp($this->code) .
-                    "}\n";
+                    "\n}\n";
             }
         };
     }
 
     /**
-     * Create a foreach statement. This method returns a Callable into which the foreach body code is passed.
+     * Create a foreach statement. This method returns a callable into which the foreach body code is passed.
      *
      * @param Expression $expr The expression to foreach over.
      * @param Variable $var The variable into which each element is placed.
      * @param Variable $indexVar Optional; The index variable, if required.
      *
-     * @return Callable The returned Callable returns a foreach statement once called with the foreach body code.
+     * @return callable The returned callable returns a foreach statement once called with the foreach body code.
      */
     public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): callable
     {
-        return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST {
+        return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($expr, $var, $indexVar, $code)
             {
                 $this->expr = $expr;
@@ -696,7 +776,7 @@ abstract class AST
                 $index = is_null($this->indexVar) ? '' : (static::toPhp($this->indexVar) . ' => ');
                 return 'foreach (' . static::toPhp($this->expr) . ' as ' . $index . static::toPhp($this->var) . ") {\n" .
                     static::toPhp($this->code) .
-                    "}\n";
+                    "\n}\n";
             }
         };
     }
@@ -710,7 +790,7 @@ abstract class AST
      */
     public static function try(...$tryCode): AST
     {
-        return new class($tryCode) extends AST {
+        return new class($tryCode) extends AST implements ShouldNotApplySemicolonInterface {
             public function __construct($tryCode)
             {
                 $this->tryCode = AST::block(...$tryCode);
@@ -735,7 +815,7 @@ abstract class AST
                     (is_null($this->catch) ? '' : 'catch (' .
                         static::toPhp($this->catch[0]) . ' ' . static::toPhp($this->catch[1]) . ") {\n" .
                         static::toPhp($this->catch[2]) . "\n}") .
-                    (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}");
+                    (is_null($this->finallyCode) ? '' : "finally {\n" . static::toPhp($this->finallyCode) . "\n}" . PHP_EOL);
             }
         };
     }

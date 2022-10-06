@@ -27,7 +27,6 @@ namespace Google\Cloud\Kms\V1\Gapic;
 use Google\ApiCore\ApiException;
 
 use Google\ApiCore\CredentialsWrapper;
-
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RetrySettings;
@@ -92,7 +91,7 @@ use Google\Protobuf\Int64Value;
  * $keyManagementServiceClient = new KeyManagementServiceClient();
  * try {
  *     $formattedName = $keyManagementServiceClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
- *     $ciphertext = '';
+ *     $ciphertext = '...';
  *     $response = $keyManagementServiceClient->asymmetricDecrypt($formattedName, $ciphertext);
  * } finally {
  *     $keyManagementServiceClient->close();
@@ -108,29 +107,19 @@ class KeyManagementServiceGapicClient
 {
     use GapicClientTrait;
 
-    /**
-     * The name of the service.
-     */
+    /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.kms.v1.KeyManagementService';
 
-    /**
-     * The default address of the service.
-     */
+    /** The default address of the service. */
     const SERVICE_ADDRESS = 'cloudkms.googleapis.com';
 
-    /**
-     * The default port of the service.
-     */
+    /** The default port of the service. */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /**
-     * The name of the code generator, to be included in the agent header.
-     */
+    /** The name of the code generator, to be included in the agent header. */
     const CODEGEN_NAME = 'gapic';
 
-    /**
-     * The default scopes required by the service.
-     */
+    /** The default scopes required by the service. */
     public static $serviceScopes = [
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/cloudkms',
@@ -445,7 +434,7 @@ class KeyManagementServiceGapicClient
      * $keyManagementServiceClient = new KeyManagementServiceClient();
      * try {
      *     $formattedName = $keyManagementServiceClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
-     *     $ciphertext = '';
+     *     $ciphertext = '...';
      *     $response = $keyManagementServiceClient->asymmetricDecrypt($formattedName, $ciphertext);
      * } finally {
      *     $keyManagementServiceClient->close();
@@ -791,7 +780,7 @@ class KeyManagementServiceGapicClient
      * $keyManagementServiceClient = new KeyManagementServiceClient();
      * try {
      *     $formattedName = $keyManagementServiceClient->cryptoKeyName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]');
-     *     $ciphertext = '';
+     *     $ciphertext = '...';
      *     $response = $keyManagementServiceClient->decrypt($formattedName, $ciphertext);
      * } finally {
      *     $keyManagementServiceClient->close();
@@ -947,7 +936,7 @@ class KeyManagementServiceGapicClient
      * $keyManagementServiceClient = new KeyManagementServiceClient();
      * try {
      *     $name = 'name';
-     *     $plaintext = '';
+     *     $plaintext = '...';
      *     $response = $keyManagementServiceClient->encrypt($name, $plaintext);
      * } finally {
      *     $keyManagementServiceClient->close();

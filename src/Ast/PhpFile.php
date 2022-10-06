@@ -23,13 +23,15 @@ use Google\Generator\Collections\Vector;
 
 final class PhpFile extends AST
 {
-    public function __construct(PhpClass $class)
+    public function __construct(?PhpClass $class)
     {
         $this->class = $class;
         $this->uses = Set::new();
         $this->headerLines = Vector::new();
     }
 
+    public ?PhpClass $class;
+    private ?AST $block;
     private Set $uses;
     private Vector $headerLines;
 
@@ -92,6 +94,14 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
+    public function withBlock($block)
+    {
+        if ($this->class) {
+            throw new \RuntimeException('Cannot add a code block when the file already has a class configured.');
+        }
+        return $this->clone(fn ($clone) => $clone->block = $block);
+    }
+
     public function toCode(): string
     {
         $lines = [
@@ -99,11 +109,15 @@ final class PhpFile extends AST
             $this->headerLines->map(fn ($x) => "{$x}\n")->join(),
             // TODO(miraleung): Uncomment this when the client libraries support only PHP 7+.
             // "declare(strict_types=1);\n",
-            "namespace {$this->class->type->getNamespace()};\n",
-            $this->uses->toVector()->map(fn ($x) => "use {$x};\n")->join()
         ];
+
+        if ($this->class) {
+            $lines[] = "namespace {$this->class->type->getNamespace()};\n";
+            $lines[] = $this->uses->toVector()->map(fn ($x) => "use {$x};")->join();
+        }
+
         return implode("\n", $lines) .
             (count($this->uses) >= 1 ? "\n" : '') .
-            static::toPhp($this->class);
+            static::toPhp($this->class ?: $this->block);
     }
 }
