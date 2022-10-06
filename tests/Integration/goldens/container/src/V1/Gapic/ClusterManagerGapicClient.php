@@ -42,9 +42,7 @@ use Google\Cloud\Container\V1\DeleteClusterRequest;
 use Google\Cloud\Container\V1\DeleteNodePoolRequest;
 use Google\Cloud\Container\V1\GetClusterRequest;
 use Google\Cloud\Container\V1\GetJSONWebKeysRequest;
-use Google\Cloud\Container\V1\GetJSONWebKeysResponse;
 use Google\Cloud\Container\V1\GetNodePoolRequest;
-
 use Google\Cloud\Container\V1\GetOperationRequest;
 use Google\Cloud\Container\V1\GetServerConfigRequest;
 use Google\Cloud\Container\V1\ListClustersRequest;
@@ -58,7 +56,6 @@ use Google\Cloud\Container\V1\NodeManagement;
 use Google\Cloud\Container\V1\NodePool;
 use Google\Cloud\Container\V1\NodePoolAutoscaling;
 use Google\Cloud\Container\V1\NodePool\UpgradeSettings;
-use Google\Cloud\Container\V1\Operation;
 use Google\Cloud\Container\V1\RollbackNodePoolUpgradeRequest;
 use Google\Cloud\Container\V1\SetAddonsConfigRequest;
 use Google\Cloud\Container\V1\SetLabelsRequest;

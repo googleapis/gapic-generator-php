@@ -25,7 +25,6 @@
 namespace Google\Cloud\Redis\V1\Gapic;
 
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -47,7 +46,6 @@ use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\OutputConfig;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
-
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
 

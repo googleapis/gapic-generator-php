@@ -25,7 +25,6 @@
 namespace Google\Cloud\Functions\V1\Gapic;
 
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;

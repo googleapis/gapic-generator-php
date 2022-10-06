@@ -27,7 +27,6 @@
 namespace Google\Cloud\Retail\V2alpha\Gapic;
 
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -36,7 +35,6 @@ use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
-use Google\Api\HttpBody;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
 use Google\Cloud\Retail\V2alpha\ImportErrorsConfig;

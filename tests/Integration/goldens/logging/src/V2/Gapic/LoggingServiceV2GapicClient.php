@@ -25,7 +25,6 @@
 namespace Google\Cloud\Logging\V2\Gapic;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
