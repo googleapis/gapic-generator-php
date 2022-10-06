@@ -22,17 +22,15 @@
 
 namespace Testing\CustomLro\Tests\Unit;
 
+use Testing\CustomLro\CustomLroOperationsClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
+use stdClass;
 
 /**
  * @group customlro
@@ -41,25 +39,19 @@ use Testing\CustomLro\CustomOperationResponse;
  */
 class CustomLroOperationsClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return CustomLroOperationsClient
-     */
+    /** @return CustomLroOperationsClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,9 +60,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         return new CustomLroOperationsClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function cancelTest()
     {
         $transport = $this->createTransport();
@@ -94,9 +84,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function cancelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -129,9 +117,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteTest()
     {
         $transport = $this->createTransport();
@@ -155,9 +141,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteExceptionTest()
     {
         $transport = $this->createTransport();
@@ -190,9 +174,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getTest()
     {
         $transport = $this->createTransport();
@@ -232,9 +214,7 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getExceptionTest()
     {
         $transport = $this->createTransport();

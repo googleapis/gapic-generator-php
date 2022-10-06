@@ -25,7 +25,6 @@
 namespace Testing\BasicOneof\Gapic;
 
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\RetrySettings;
@@ -45,7 +44,8 @@ use Testing\BasicOneof\Request\SupplementaryDataOneof;
  * ```
  * $basicOneofClient = new BasicOneofClient();
  * try {
- *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+ *     $supplementaryData = (new SupplementaryDataOneof())
+ *         ->setExtraDescription('extra_description');
  *     $other = new Other();
  *     $requiredOptional = 'required_optional';
  *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
@@ -58,29 +58,19 @@ class BasicOneofGapicClient
 {
     use GapicClientTrait;
 
-    /**
-     * The name of the service.
-     */
+    /** The name of the service. */
     const SERVICE_NAME = 'testing.basiconeof.BasicOneof';
 
-    /**
-     * The default address of the service.
-     */
+    /** The default address of the service. */
     const SERVICE_ADDRESS = 'basic.example.com';
 
-    /**
-     * The default port of the service.
-     */
+    /** The default port of the service. */
     const DEFAULT_SERVICE_PORT = 443;
 
-    /**
-     * The name of the code generator, to be included in the agent header.
-     */
+    /** The name of the code generator, to be included in the agent header. */
     const CODEGEN_NAME = 'gapic';
 
-    /**
-     * The default scopes required by the service.
-     */
+    /** The default scopes required by the service. */
     public static $serviceScopes = [
         'scope1',
         'scope2',
@@ -172,7 +162,8 @@ class BasicOneofGapicClient
      * ```
      * $basicOneofClient = new BasicOneofClient();
      * try {
-     *     $supplementaryData = (new SupplementaryDataOneof())->setExtraDescription('extra_description');
+     *     $supplementaryData = (new SupplementaryDataOneof())
+     *         ->setExtraDescription('extra_description');
      *     $other = new Other();
      *     $requiredOptional = 'required_optional';
      *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
@@ -223,7 +214,6 @@ class BasicOneofGapicClient
             throw new ValidationException("A field for the oneof supplementary_data must be set in param $supplementaryData");
         }
 
-        
         $request->setOther($other);
         $request->setRequiredOptional($requiredOptional);
         if (isset($optionalArgs['anInt'])) {
