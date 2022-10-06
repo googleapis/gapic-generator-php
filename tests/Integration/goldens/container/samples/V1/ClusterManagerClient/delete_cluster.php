@@ -37,6 +37,12 @@ use Google\Cloud\Container\V1\Operation;
  * Other Google Compute Engine resources that might be in use by the cluster,
  * such as load balancer resources, are not deleted if they weren't present
  * when the cluster was initially created.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function delete_cluster_sample(): void
 {

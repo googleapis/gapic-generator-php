@@ -30,6 +30,12 @@ use Google\Cloud\Container\V1\Operation;
 /**
  * Rolls back a previously Aborted or Failed NodePool upgrade.
  * This makes no changes if the last upgrade successfully completed.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function rollback_node_pool_upgrade_sample(): void
 {

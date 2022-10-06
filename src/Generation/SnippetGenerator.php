@@ -354,11 +354,13 @@ class SnippetGenerator
         $sampleName = Helpers::toSnakeCase($snippetDetails->methodDetails->methodName) . '_sample';
         $hasSampleParams = count($snippetDetails->sampleParams) > 0;
         $hasSampleAssignments = count($snippetDetails->sampleAssignments) > 0;
+        $docLineCount = count($snippetDetails->methodDetails->docLines);
         $callSampleFn = $hasSampleParams
             ? $this->buildCallSampleFunction($snippetDetails, $sampleName)
             : null;
-        $shouldGenerateDocBlock = count($snippetDetails->methodDetails->docLines) > 0
-            || count($snippetDetails->phpDocParams) > 0;
+        $shouldGenerateDocBlock = $docLineCount > 0
+            || count($snippetDetails->phpDocParams) > 0
+            || !$hasSampleParams;
         $sampleFn = AST::fn($sampleName)
             ->withParams($snippetDetails->sampleParams)
             ->withReturnType($snippetDetails->context->type(Type::void()))
@@ -385,7 +387,10 @@ class SnippetGenerator
         if ($shouldGenerateDocBlock) {
             $sampleFn = $sampleFn->withPhpDoc(
                 PhpDoc::block(
-                    PhpDoc::preFormattedText($snippetDetails->methodDetails->docLines),
+                    $docLineCount > 0
+                        ? PhpDoc::preFormattedText($snippetDetails->methodDetails->docLines)
+                        : null,
+                    !$hasSampleParams ? $this->buildGeneratedNotice() : null,
                     $snippetDetails->phpDocParams
                 )
             );
@@ -416,17 +421,7 @@ class SnippetGenerator
             ->withPhpDoc(
                 PhpDoc::block(
                     PhpDoc::text('Helper to execute the sample.'),
-                    PhpDoc::text(
-                        'This sample has been automatically generated and should be regarded as a code template only.',
-                        'It will require modifications to work:'
-                    ),
-                    PhpDoc::preFormattedText(
-                        Vector::new([
-                            ' - It may require correct/in-range values for request initialization.',
-                            ' - It may require specifying regional endpoints when creating the service client,',
-                            '   please see the apiEndpoint client configuration option for more details.'
-                        ])
-                    )
+                    $this->buildGeneratedNotice()
                 )
             )
             ->withReturnType($snippetDetails->context->type(Type::void()))
@@ -492,6 +487,27 @@ class SnippetGenerator
 
         return AST::call(AST::PRINT_F)(
             AST::literal($strLiteral)
+        );
+    }
+
+    /**
+     * Generates a notice letting users know the sample may require modifications
+     * to execute successfully.
+     *
+     * @return PhpDoc
+     */
+    private function buildGeneratedNotice()
+    {
+        return PhpDoc::text(
+            'This sample has been automatically generated and should be regarded as a code template only.',
+            'It will require modifications to work:',
+            PhpDoc::preFormattedText(
+                Vector::new([
+                    ' - It may require correct/in-range values for request initialization.',
+                    ' - It may require specifying regional endpoints when creating the service client,',
+                    '   please see the apiEndpoint client configuration option for more details.'
+                ])
+            )
         );
     }
 

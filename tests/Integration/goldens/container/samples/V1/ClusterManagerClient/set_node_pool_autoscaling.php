@@ -28,7 +28,15 @@ use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\NodePoolAutoscaling;
 use Google\Cloud\Container\V1\Operation;
 
-/** Sets the autoscaling settings for the specified node pool. */
+/**
+ * Sets the autoscaling settings for the specified node pool.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function set_node_pool_autoscaling_sample(): void
 {
     // Create a client.

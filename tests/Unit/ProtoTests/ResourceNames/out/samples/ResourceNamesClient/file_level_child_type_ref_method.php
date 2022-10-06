@@ -28,7 +28,6 @@ use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
 /**
- *
  * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this field.
  * @param string $formattedReqFolderMultiName        Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
  * @param string $formattedReqFolderMultiNameHistory Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
@@ -66,7 +65,6 @@ function file_level_child_type_ref_method_sample(
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:
- *
  *  - It may require correct/in-range values for request initialization.
  *  - It may require specifying regional endpoints when creating the service client,
  *    please see the apiEndpoint client configuration option for more details.

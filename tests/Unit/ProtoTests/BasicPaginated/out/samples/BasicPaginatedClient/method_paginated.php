@@ -29,7 +29,6 @@ use Testing\BasicPaginated\BasicPaginatedClient;
 use Testing\BasicPaginated\PartOfRequestA;
 
 /**
- *
  * @param string $aField
  * @param string $pageToken A page token is used to specify a page of values to be returned.
  *                          If no page token is specified (the default), the first page
@@ -63,7 +62,6 @@ function method_paginated_sample(string $aField, string $pageToken): void
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:
- *
  *  - It may require correct/in-range values for request initialization.
  *  - It may require specifying regional endpoints when creating the service client,
  *    please see the apiEndpoint client configuration option for more details.

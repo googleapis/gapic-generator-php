@@ -28,7 +28,6 @@ use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\RoutingHeadersClient;
 
 /**
- *
  * @param string $a
  * @param string $b
  * @param string $d
@@ -55,7 +54,6 @@ function ordering_method_sample(string $a, string $b, string $d, string $c, stri
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:
- *
  *  - It may require correct/in-range values for request initialization.
  *  - It may require specifying regional endpoints when creating the service client,
  *    please see the apiEndpoint client configuration option for more details.

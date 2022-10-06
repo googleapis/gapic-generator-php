@@ -26,10 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\CustomLro\CustomLroOperationsClient;
 
-/**
- *
- * @param string $operation Name of th Operations resource to cancel.
- */
+/** @param string $operation Name of th Operations resource to cancel. */
 function cancel_sample(string $operation): void
 {
     // Create a client.
@@ -49,7 +46,6 @@ function cancel_sample(string $operation): void
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:
- *
  *  - It may require correct/in-range values for request initialization.
  *  - It may require specifying regional endpoints when creating the service client,
  *    please see the apiEndpoint client configuration option for more details.

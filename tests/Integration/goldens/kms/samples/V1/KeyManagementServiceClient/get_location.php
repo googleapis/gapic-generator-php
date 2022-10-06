@@ -27,7 +27,15 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Google\Cloud\Location\Location;
 
-/** Gets information about a location. */
+/**
+ * Gets information about a location.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function get_location_sample(): void
 {
     // Create a client.

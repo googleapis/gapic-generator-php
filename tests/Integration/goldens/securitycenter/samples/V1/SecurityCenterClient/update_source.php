@@ -27,7 +27,15 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 use Google\Cloud\SecurityCenter\V1\Source;
 
-/** Updates a source. */
+/**
+ * Updates a source.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function update_source_sample(): void
 {
     // Create a client.

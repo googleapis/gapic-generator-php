@@ -43,6 +43,12 @@ use Google\Cloud\Container\V1\Operation;
  *
  * Finally, an entry is added to the project's global metadata indicating
  * which CIDR range the cluster is using.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function create_cluster_sample(): void
 {

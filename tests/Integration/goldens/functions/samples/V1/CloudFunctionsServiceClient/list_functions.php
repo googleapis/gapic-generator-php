@@ -28,7 +28,15 @@ use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Functions\V1\CloudFunction;
 use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
 
-/** Returns a list of functions that belong to the requested project. */
+/**
+ * Returns a list of functions that belong to the requested project.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function list_functions_sample(): void
 {
     // Create a client.

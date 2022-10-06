@@ -27,7 +27,15 @@ use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
-/** This method is not exposed in the GAPIC config. It should be generated. */
+/**
+ * This method is not exposed in the GAPIC config. It should be generated.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function private_list_shelves_sample(): void
 {
     // Create a client.

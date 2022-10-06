@@ -33,6 +33,12 @@ use Google\Cloud\Functions\V1\GenerateDownloadUrlResponse;
  * minutes after generation.
  * For more information about the signed URL usage see:
  * https://cloud.google.com/storage/docs/access-control/signed-urls
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
  */
 function generate_download_url_sample(): void
 {

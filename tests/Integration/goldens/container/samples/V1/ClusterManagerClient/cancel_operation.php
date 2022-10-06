@@ -26,7 +26,15 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 
-/** Cancels the specified operation. */
+/**
+ * Cancels the specified operation.
+ *
+ * This sample has been automatically generated and should be regarded as a code
+ * template only. It will require modifications to work:
+ *  - It may require correct/in-range values for request initialization.
+ *  - It may require specifying regional endpoints when creating the service client,
+ *    please see the apiEndpoint client configuration option for more details.
+ */
 function cancel_operation_sample(): void
 {
     // Create a client.
