@@ -22,22 +22,19 @@
 
 namespace Testing\BasicLro\Tests\Unit;
 
+use Testing\BasicLro\BasicLroClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
-
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\GetOperationRequest;
-
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
+use stdClass;
 
 /**
  * @group basiclro
@@ -46,25 +43,19 @@ use Testing\BasicLro\Request;
  */
 class BasicLroClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return BasicLroClient
-     */
+    /** @return BasicLroClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -73,9 +64,7 @@ class BasicLroClientTest extends GeneratedTest
         return new BasicLroClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function method1Test()
     {
         $operationsTransport = $this->createTransport();
@@ -135,9 +124,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function method1ExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -190,9 +177,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function methodNonLro1Test()
     {
         $transport = $this->createTransport();
@@ -213,9 +198,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function methodNonLro1ExceptionTest()
     {
         $transport = $this->createTransport();
@@ -246,9 +229,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function methodNonLro2Test()
     {
         $transport = $this->createTransport();
@@ -269,9 +250,7 @@ class BasicLroClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function methodNonLro2ExceptionTest()
     {
         $transport = $this->createTransport();

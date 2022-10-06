@@ -22,17 +22,16 @@
 
 namespace Testing\RoutingHeaders\Tests\Unit;
 
+use Testing\RoutingHeaders\RoutingHeadersClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
 use Testing\RoutingHeaders\NestedRequest\Inner1;
 use Testing\RoutingHeaders\NestedRequest\Inner1\Inner2;
 use Testing\RoutingHeaders\Response;
-use Testing\RoutingHeaders\RoutingHeadersClient;
+use stdClass;
 
 /**
  * @group routingheaders
@@ -41,25 +40,19 @@ use Testing\RoutingHeaders\RoutingHeadersClient;
  */
 class RoutingHeadersClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return RoutingHeadersClient
-     */
+    /** @return RoutingHeadersClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,9 +61,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         return new RoutingHeadersClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteMethodTest()
     {
         $transport = $this->createTransport();
@@ -91,9 +82,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -124,9 +113,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getMethodTest()
     {
         $transport = $this->createTransport();
@@ -147,9 +134,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -180,9 +165,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getNoPlaceholdersMethodTest()
     {
         $transport = $this->createTransport();
@@ -203,9 +186,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getNoPlaceholdersMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -236,9 +217,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getNoTemplateMethodTest()
     {
         $transport = $this->createTransport();
@@ -259,9 +238,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getNoTemplateMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -292,9 +269,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function nestedMethodTest()
     {
         $transport = $this->createTransport();
@@ -326,9 +301,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function nestedMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -366,9 +339,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function nestedMultiMethodTest()
     {
         $transport = $this->createTransport();
@@ -400,9 +371,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function nestedMultiMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -440,9 +409,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function orderingMethodTest()
     {
         $transport = $this->createTransport();
@@ -479,9 +446,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function orderingMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -518,9 +483,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function patchMethodTest()
     {
         $transport = $this->createTransport();
@@ -541,9 +504,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function patchMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -574,9 +535,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function postMethodTest()
     {
         $transport = $this->createTransport();
@@ -597,9 +556,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function postMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -630,9 +587,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function putMethodTest()
     {
         $transport = $this->createTransport();
@@ -653,9 +608,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function putMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -686,9 +639,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function routingRuleWithOutParametersTest()
     {
         $transport = $this->createTransport();
@@ -720,9 +671,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function routingRuleWithOutParametersExceptionTest()
     {
         $transport = $this->createTransport();
@@ -760,9 +709,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function routingRuleWithParametersTest()
     {
         $transport = $this->createTransport();
@@ -794,9 +741,7 @@ class RoutingHeadersClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function routingRuleWithParametersExceptionTest()
     {
         $transport = $this->createTransport();

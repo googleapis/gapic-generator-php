@@ -20,6 +20,7 @@ namespace Google\Generator;
 
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Generation\SnippetGenerator;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\EnumConstantGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
@@ -267,7 +268,6 @@ class CodeGenerator
                 $versionToNamespace[$version] = $service->namespace;
             }
 
-
             $serviceName = $service->serviceName;
             // Load various configs; if they're not provided then defaults will be used.
             $grpcServiceConfig = new GrpcServiceConfig($serviceName, $grpcServiceConfigJson);
@@ -280,6 +280,15 @@ class CodeGenerator
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
+
+            // Snippet Generator.
+            $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
+
+            foreach ($snippetFiles as $methodName => $snippetFile) {
+                $code = $snippetFile->toCode();
+                $code = Formatter::format($code, 100);
+                yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
+            }
 
             // Oneof wrapper classes.
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);

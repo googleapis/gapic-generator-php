@@ -22,17 +22,16 @@
 
 namespace Testing\CustomLro\Tests\Unit;
 
+use Testing\CustomLro\CustomLroClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\CustomLro\CustomLroClient;
 use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\CustomOperationResponse\Status;
+use stdClass;
 
 /**
  * @group customlro
@@ -41,25 +40,19 @@ use Testing\CustomLro\CustomOperationResponse\Status;
  */
 class CustomLroClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return CustomLroClient
-     */
+    /** @return CustomLroClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,9 +61,7 @@ class CustomLroClientTest extends GeneratedTest
         return new CustomLroClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createFooTest()
     {
         $operationsTransport = $this->createTransport();
@@ -132,9 +123,7 @@ class CustomLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createFooExceptionTest()
     {
         $operationsTransport = $this->createTransport();
