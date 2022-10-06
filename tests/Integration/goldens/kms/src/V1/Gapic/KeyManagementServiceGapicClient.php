@@ -25,7 +25,6 @@
 namespace Google\Cloud\Kms\V1\Gapic;
 
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
@@ -57,9 +56,7 @@ use Google\Cloud\Kms\V1\ImportCryptoKeyVersionRequest;
 use Google\Cloud\Kms\V1\ImportJob;
 use Google\Cloud\Kms\V1\KeyRing;
 use Google\Cloud\Kms\V1\ListCryptoKeyVersionsRequest;
-use Google\Cloud\Kms\V1\ListCryptoKeyVersionsResponse;
 use Google\Cloud\Kms\V1\ListCryptoKeysRequest;
-use Google\Cloud\Kms\V1\ListCryptoKeysResponse;
 use Google\Cloud\Kms\V1\ListImportJobsRequest;
 use Google\Cloud\Kms\V1\ListKeyRingsRequest;
 use Google\Cloud\Kms\V1\RestoreCryptoKeyVersionRequest;
@@ -69,7 +66,6 @@ use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
 use Google\Protobuf\FieldMask;
-
 use Google\Protobuf\Int64Value;
 
 /**

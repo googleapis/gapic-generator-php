@@ -29,7 +29,6 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -45,7 +44,6 @@ use Google\Cloud\Dataproc\V1\ListClustersRequest;
 use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
-
 use Google\LongRunning\Operation;
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
