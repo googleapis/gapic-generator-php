@@ -22,21 +22,17 @@
 
 namespace Testing\BasicDiregapic\Tests\Unit;
 
+use Testing\BasicDiregapic\LibraryServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
-
 use Google\Protobuf\Any;
-
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
-use stdClass;
 use Testing\BasicDiregapic\AddTagResponse;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
@@ -44,7 +40,6 @@ use Testing\BasicDiregapic\BookFromArchiveResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\FindRelatedBooksResponse;
 use Testing\BasicDiregapic\InventoryResponse;
-use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;
@@ -53,6 +48,7 @@ use Testing\BasicDiregapic\MoveBooksResponse;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
+use stdClass;
 
 /**
  * @group basicdiregapic
@@ -61,25 +57,19 @@ use Testing\BasicDiregapic\ShelfResponse;
  */
 class LibraryServiceClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return LibraryServiceClient
-     */
+    /** @return LibraryServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -88,9 +78,7 @@ class LibraryServiceClientTest extends GeneratedTest
         return new LibraryServiceClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addCommentsTest()
     {
         $transport = $this->createTransport();
@@ -117,9 +105,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addCommentsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -153,9 +139,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addTagTest()
     {
         $transport = $this->createTransport();
@@ -183,9 +167,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addTagExceptionTest()
     {
         $transport = $this->createTransport();
@@ -219,9 +201,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function archiveBooksTest()
     {
         $transport = $this->createTransport();
@@ -244,9 +224,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function archiveBooksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -277,9 +255,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createBookTest()
     {
         $transport = $this->createTransport();
@@ -319,9 +295,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -357,9 +331,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createInventoryTest()
     {
         $transport = $this->createTransport();
@@ -395,9 +367,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createInventoryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -433,9 +403,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createShelfTest()
     {
         $transport = $this->createTransport();
@@ -468,9 +436,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createShelfExceptionTest()
     {
         $transport = $this->createTransport();
@@ -505,9 +471,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteBookTest()
     {
         $transport = $this->createTransport();
@@ -531,9 +495,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -566,9 +528,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteShelfTest()
     {
         $transport = $this->createTransport();
@@ -592,9 +552,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteShelfExceptionTest()
     {
         $transport = $this->createTransport();
@@ -627,9 +585,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function findRelatedBooksTest()
     {
         $transport = $this->createTransport();
@@ -671,9 +627,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function findRelatedBooksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -711,9 +665,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBigBookTest()
     {
         $operationsTransport = $this->createTransport();
@@ -785,9 +737,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBigBookExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -842,9 +792,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBigNothingTest()
     {
         $operationsTransport = $this->createTransport();
@@ -906,9 +854,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBigNothingExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -963,9 +909,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookTest()
     {
         $transport = $this->createTransport();
@@ -1000,9 +944,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1035,9 +977,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromAbsolutelyAnywhereTest()
     {
         $transport = $this->createTransport();
@@ -1070,9 +1010,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromAbsolutelyAnywhereExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1105,9 +1043,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromAnywhereTest()
     {
         $transport = $this->createTransport();
@@ -1149,9 +1085,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromAnywhereExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1187,9 +1121,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromArchiveTest()
     {
         $transport = $this->createTransport();
@@ -1225,9 +1157,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getBookFromArchiveExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1261,9 +1191,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getShelfTest()
     {
         $transport = $this->createTransport();
@@ -1297,9 +1225,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getShelfExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1333,9 +1259,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listAggregatedShelvesTest()
     {
         $transport = $this->createTransport();
@@ -1366,9 +1290,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listAggregatedShelvesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1399,9 +1321,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listBooksTest()
     {
         $transport = $this->createTransport();
@@ -1436,9 +1356,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listBooksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1471,9 +1389,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listShelvesTest()
     {
         $transport = $this->createTransport();
@@ -1496,9 +1412,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listShelvesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1529,9 +1443,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listStringsTest()
     {
         $transport = $this->createTransport();
@@ -1562,9 +1474,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listStringsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1595,9 +1505,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function longRunningArchiveBooksTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1657,9 +1565,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function longRunningArchiveBooksExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1712,9 +1618,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function mergeShelvesTest()
     {
         $transport = $this->createTransport();
@@ -1748,9 +1652,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function mergeShelvesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1784,9 +1686,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function moveBookTest()
     {
         $transport = $this->createTransport();
@@ -1824,9 +1724,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function moveBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1860,9 +1758,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function moveBooksTest()
     {
         $transport = $this->createTransport();
@@ -1885,9 +1781,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function moveBooksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1918,9 +1812,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function privateListShelvesTest()
     {
         $transport = $this->createTransport();
@@ -1951,9 +1843,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function privateListShelvesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1984,9 +1874,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function publishSeriesTest()
     {
         $transport = $this->createTransport();
@@ -2019,9 +1907,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function publishSeriesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2058,9 +1944,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function saveBookTest()
     {
         $transport = $this->createTransport();
@@ -2084,9 +1968,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function saveBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2119,9 +2001,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateBookTest()
     {
         $transport = $this->createTransport();
@@ -2161,9 +2041,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateBookExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2199,9 +2077,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateBookIndexTest()
     {
         $transport = $this->createTransport();
@@ -2234,9 +2110,7 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateBookIndexExceptionTest()
     {
         $transport = $this->createTransport();

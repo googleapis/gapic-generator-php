@@ -22,15 +22,13 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
+use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Cloud\Talent\V4beta1\Application;
 use Google\Cloud\Talent\V4beta1\Application\ApplicationStage;
-use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\ListApplicationsResponse;
 use Google\Protobuf\GPBEmpty;
 use Google\Protobuf\Timestamp;
@@ -44,25 +42,19 @@ use stdClass;
  */
 class ApplicationServiceClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return ApplicationServiceClient
-     */
+    /** @return ApplicationServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -71,9 +63,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         return new ApplicationServiceClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createApplicationTest()
     {
         $transport = $this->createTransport();
@@ -123,9 +113,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createApplicationExceptionTest()
     {
         $transport = $this->createTransport();
@@ -167,9 +155,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteApplicationTest()
     {
         $transport = $this->createTransport();
@@ -193,9 +179,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteApplicationExceptionTest()
     {
         $transport = $this->createTransport();
@@ -228,9 +212,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getApplicationTest()
     {
         $transport = $this->createTransport();
@@ -269,9 +251,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getApplicationExceptionTest()
     {
         $transport = $this->createTransport();
@@ -304,9 +284,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listApplicationsTest()
     {
         $transport = $this->createTransport();
@@ -341,9 +319,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listApplicationsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -376,9 +352,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateApplicationTest()
     {
         $transport = $this->createTransport();
@@ -425,9 +399,7 @@ class ApplicationServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateApplicationExceptionTest()
     {
         $transport = $this->createTransport();
