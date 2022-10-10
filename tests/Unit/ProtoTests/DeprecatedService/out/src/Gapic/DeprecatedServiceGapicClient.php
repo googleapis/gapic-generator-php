@@ -159,7 +159,7 @@ class DeprecatedServiceGapicClient
      */
     public function fastFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
+        $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -181,6 +181,6 @@ class DeprecatedServiceGapicClient
      */
     public function slowFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
+        $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
     }
 }

@@ -828,7 +828,7 @@ class LibraryServiceGapicClient
      */
     public function addComments(AddCommentsRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('AddComments', $request, $optionalArgs)->wait();
+        $this->startApiCall('AddComments', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -957,7 +957,7 @@ class LibraryServiceGapicClient
      */
     public function deleteBook(DeleteBookRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('DeleteBook', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -977,7 +977,7 @@ class LibraryServiceGapicClient
      */
     public function deleteShelf(DeleteShelfRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('DeleteShelf', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteShelf', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1392,7 +1392,7 @@ class LibraryServiceGapicClient
      */
     public function saveBook(BookResponse $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('SaveBook', $request, $optionalArgs)->wait();
+        $this->startApiCall('SaveBook', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1434,6 +1434,6 @@ class LibraryServiceGapicClient
      */
     public function updateBookIndex(UpdateBookIndexRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('UpdateBookIndex', $request, $optionalArgs)->wait();
+        $this->startApiCall('UpdateBookIndex', $request, $optionalArgs)->wait();
     }
 }

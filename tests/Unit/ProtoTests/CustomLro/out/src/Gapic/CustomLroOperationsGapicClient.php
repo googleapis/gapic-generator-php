@@ -169,7 +169,7 @@ class CustomLroOperationsGapicClient
      */
     public function cancel(CancelOperationRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
+        $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -187,7 +187,7 @@ class CustomLroOperationsGapicClient
      */
     public function delete(DeleteOperationRequest $request, array $optionalArgs = []): void
     {
-        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
+        $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**

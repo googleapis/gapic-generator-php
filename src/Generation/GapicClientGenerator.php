@@ -661,6 +661,16 @@ class GapicClientGenerator
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $usesRequest = !$method->isClientStreaming()
             && !$method->isBidiStreaming();
+        $startCall = $this->startCall($method, $optionalArgs, $request);
+        $phpDocReturnType = null;
+        $returnType = null;
+        if ($method->hasEmptyResponse) {
+            $returnType = $this->ctx->type(Type::void());
+        } else {
+            $startCall = AST::return($startCall);
+            $returnType = $this->ctx->type($method->methodReturnType);
+            $phpDocReturnType = PhpDoc::return($this->ctx->type($method->methodReturnType));
+        }
 
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
@@ -668,18 +678,8 @@ class GapicClientGenerator
                 $usesRequest ? $required : null,
                 $optionalArgs
             )
-            ->withBody(
-                AST::block(
-                    AST::return(
-                        $this->startCall($method, $optionalArgs, $request)
-                    )
-                )
-            )
-            ->withReturnType(
-                $method->hasEmptyResponse
-                    ? $this->ctx->type(Type::void())
-                    : $this->ctx->type($method->methodReturnType)
-            )
+            ->withBody(AST::block($startCall))
+            ->withReturnType($returnType)
             ->withPhpDoc(
                 PhpDoc::block(
                     count($method->docLines) > 0
@@ -709,9 +709,7 @@ class GapicClientGenerator
                             )
                         )
                     ),
-                    $method->hasEmptyResponse
-                        ? null
-                        : PhpDoc::return($this->ctx->type($method->methodReturnType)),
+                    $phpDocReturnType,
                     PhpDoc::throws(
                         $this->ctx->type(Type::fromName(ApiException::class)),
                         PhpDoc::text('Thrown if the API call fails.')
