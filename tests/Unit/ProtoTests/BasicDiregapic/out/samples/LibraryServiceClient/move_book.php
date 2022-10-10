@@ -26,14 +26,16 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 
 /**
  * Moves a book to another shelf, and returns the new book.
  *
  * @param string $formattedName           The name of the book to move. Please see
- *                                        {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                                        {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  * @param string $formattedOtherShelfName The name of the destination shelf. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                                        {@see Shelf::fromShelf()} for help formatting this field.
  */
 function move_book_sample(string $formattedName, string $formattedOtherShelfName): void
 {
@@ -61,8 +63,8 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
 
     move_book_sample($formattedName, $formattedOtherShelfName);
 }

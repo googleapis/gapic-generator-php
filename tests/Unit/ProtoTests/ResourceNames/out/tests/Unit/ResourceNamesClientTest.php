@@ -29,10 +29,9 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
 use Testing\ResourceNames\PlaceholderResponse;
-use Testing\ResourceNames\ResourceNames\Folder;
 use Testing\ResourceNames\ResourceNames\Folder1;
+use Testing\ResourceNames\ResourceNames\Folder;
 use Testing\ResourceNames\ResourceNames\Order2;
-use Testing\ResourceNames\ResourceNamesClient;
 use stdClass;
 
 /**

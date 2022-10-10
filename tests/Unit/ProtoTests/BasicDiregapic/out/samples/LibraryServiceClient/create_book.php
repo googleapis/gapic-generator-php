@@ -26,12 +26,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 
 /**
  * Creates a book.
  *
  * @param string $formattedName The name of the shelf in which the book is created. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                              {@see Shelf::fromShelf()} for help formatting this field.
  * @param string $bookName      The resource name of the book.
  *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                              Message field comment may include special characters: <>&"`'&#64;.
@@ -66,7 +67,7 @@ function create_book_sample(string $formattedName, string $bookName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Shelf::fromShelf('[SHELF]');
     $bookName = '[NAME]';
 
     create_book_sample($formattedName, $bookName);

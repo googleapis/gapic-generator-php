@@ -26,13 +26,16 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
+use Testing\ResourceNames\ResourceNames\Folder1;
+use Testing\ResourceNames\ResourceNames\Folder;
+use Testing\ResourceNames\ResourceNames\Order2;
 
 /**
- * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this field.
- * @param string $formattedReqFolderMultiName        Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
- * @param string $formattedReqFolderMultiNameHistory Please see {@see ResourceNamesClient::folder1Name()} for help formatting this field.
- * @param string $formattedReqOrderTest1             Please see {@see ResourceNamesClient::order2Name()} for help formatting this field.
- * @param string $formattedReqOrderTest2             Please see {@see ResourceNamesClient::order2Name()} for help formatting this field.
+ * @param string $formattedReqFolderName             Please see {@see Folder::fromFolderId()} for help formatting this field.
+ * @param string $formattedReqFolderMultiName        Please see {@see Folder1::fromFolder1Id()} for help formatting this field.
+ * @param string $formattedReqFolderMultiNameHistory Please see {@see Folder1::fromFolder1Id()} for help formatting this field.
+ * @param string $formattedReqOrderTest1             Please see {@see Order2::fromOrder2Id()} for help formatting this field.
+ * @param string $formattedReqOrderTest2             Please see {@see Order2::fromOrder2Id()} for help formatting this field.
  */
 function file_level_child_type_ref_method_sample(
     string $formattedReqFolderName,
@@ -71,11 +74,11 @@ function file_level_child_type_ref_method_sample(
  */
 function callSample(): void
 {
-    $formattedReqFolderName = ResourceNamesClient::folderName('[FOLDER_ID]');
-    $formattedReqFolderMultiName = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
-    $formattedReqFolderMultiNameHistory = ResourceNamesClient::folder1Name('[FOLDER1_ID]');
-    $formattedReqOrderTest1 = ResourceNamesClient::order2Name('[ORDER2_ID]');
-    $formattedReqOrderTest2 = ResourceNamesClient::order2Name('[ORDER2_ID]');
+    $formattedReqFolderName = Folder::fromFolderId('[FOLDER_ID]');
+    $formattedReqFolderMultiName = Folder1::fromFolder1Id('[FOLDER1_ID]');
+    $formattedReqFolderMultiNameHistory = Folder1::fromFolder1Id('[FOLDER1_ID]');
+    $formattedReqOrderTest1 = Order2::fromOrder2Id('[ORDER2_ID]');
+    $formattedReqOrderTest2 = Order2::fromOrder2Id('[ORDER2_ID]');
 
     file_level_child_type_ref_method_sample(
         $formattedReqFolderName,

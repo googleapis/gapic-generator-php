@@ -25,6 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_MergeShelves_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
@@ -33,9 +34,9 @@ use Testing\BasicDiregapic\ShelfResponse;
  * `other_shelf_name`. Returns the updated shelf.
  *
  * @param string $formattedName           The name of the shelf we're adding books to. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                                        {@see Shelf::fromShelf()} for help formatting this field.
  * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                                        {@see Shelf::fromShelf()} for help formatting this field.
  */
 function merge_shelves_sample(string $formattedName, string $formattedOtherShelfName): void
 {
@@ -63,8 +64,8 @@ function merge_shelves_sample(string $formattedName, string $formattedOtherShelf
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
-    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Shelf::fromShelf('[SHELF]');
+    $formattedOtherShelfName = Shelf::fromShelf('[SHELF]');
 
     merge_shelves_sample($formattedName, $formattedOtherShelfName);
 }

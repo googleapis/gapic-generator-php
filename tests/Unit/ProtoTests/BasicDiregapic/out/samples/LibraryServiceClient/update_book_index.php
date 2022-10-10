@@ -25,12 +25,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_UpdateBookIndex_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Updates the index of a book.
  *
  * @param string $formattedName The name of the book to update. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                              {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  * @param string $indexName     The name of the index for the book
  */
 function update_book_index_sample(string $formattedName, string $indexName): void
@@ -61,7 +62,7 @@ function update_book_index_sample(string $formattedName, string $indexName): voi
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $indexName = '[INDEX_NAME]';
 
     update_book_index_sample($formattedName, $indexName);

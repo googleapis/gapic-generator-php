@@ -25,13 +25,14 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_GetShelf_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
  * Gets a shelf.
  *
  * @param string $formattedName The name of the shelf to retrieve. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                              {@see Shelf::fromShelf()} for help formatting this field.
  * @param string $options       To test 'options' parameter name conflict.
  */
 function get_shelf_sample(string $formattedName, string $options): void
@@ -60,7 +61,7 @@ function get_shelf_sample(string $formattedName, string $options): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Shelf::fromShelf('[SHELF]');
     $options = '[OPTIONS]';
 
     get_shelf_sample($formattedName, $options);

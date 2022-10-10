@@ -27,12 +27,13 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 
 /**
  * Lists books in a shelf.
  *
  * @param string $formattedName The name of the shelf whose books we'd like to list. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                              {@see Shelf::fromShelf()} for help formatting this field.
  */
 function list_books_sample(string $formattedName): void
 {
@@ -64,7 +65,7 @@ function list_books_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Shelf::fromShelf('[SHELF]');
 
     list_books_sample($formattedName);
 }

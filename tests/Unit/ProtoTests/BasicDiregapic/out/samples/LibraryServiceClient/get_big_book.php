@@ -28,12 +28,13 @@ use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Test long-running operations
  *
  * @param string $formattedName The name of the book to retrieve. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                              {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  */
 function get_big_book_sample(string $formattedName): void
 {
@@ -71,7 +72,7 @@ function get_big_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     get_big_book_sample($formattedName);
 }

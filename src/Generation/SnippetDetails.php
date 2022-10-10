@@ -296,8 +296,9 @@ class SnippetDetails
             ->map(function (array $paramDetails) use ($field) {
                 return strtoupper("[$paramDetails[0]]");
             });
-        $clientCall = AST::staticCall(
-            $this->context->type($this->serviceDetails->emptyClientType),
+        $builderClass = $field->resourceDetails->helperClass($this->serviceDetails->namespace);
+        $builderInvocation = AST::staticCall(
+            $this->context->type($builderClass),
             $field->resourceDetails->formatMethod
         );
         if ($field->isRepeated) {
@@ -309,7 +310,7 @@ class SnippetDetails
 
         // append a message to the param description guiding users where to find the helper.
         $docLineCount = count($field->docLines);
-        $formatCall = $this->serviceDetails->emptyClientType->name .
+        $formatCall = $builderClass->name .
                       '::' . $field->resourceDetails->formatMethod->getName() . '()';
         $formatString = "Please see {@see $formatCall} for help formatting this field.";
         if ($docLineCount > 0) {
@@ -336,7 +337,7 @@ class SnippetDetails
         $this->handleSampleParams(
             $field,
             $arrayElementVar ?: $var,
-            $clientCall($formatMethodArgs),
+            $builderInvocation($formatMethodArgs),
             PhpDoc::preFormattedText(
                 $this->filterDocLines($field->docLines)
             )

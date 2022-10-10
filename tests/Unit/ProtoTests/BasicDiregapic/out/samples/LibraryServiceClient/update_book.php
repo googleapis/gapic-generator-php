@@ -26,12 +26,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Updates a book.
  *
  * @param string $formattedName The name of the book to update. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                              {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  * @param string $bookName      The resource name of the book.
  *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
  *                              Message field comment may include special characters: <>&"`'&#64;.
@@ -66,7 +67,7 @@ function update_book_sample(string $formattedName, string $bookName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $bookName = '[NAME]';
 
     update_book_sample($formattedName, $bookName);

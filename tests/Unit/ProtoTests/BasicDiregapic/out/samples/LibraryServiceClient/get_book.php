@@ -26,12 +26,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Gets a book.
  *
  * @param string $formattedName The name of the book to retrieve. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                              {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  */
 function get_book_sample(string $formattedName): void
 {
@@ -59,7 +60,7 @@ function get_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     get_book_sample($formattedName);
 }

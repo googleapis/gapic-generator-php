@@ -25,12 +25,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_DeleteBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Deletes a book.
  *
  * @param string $formattedName The name of the book to delete. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                              {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  */
 function delete_book_sample(string $formattedName): void
 {
@@ -57,7 +58,7 @@ function delete_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     delete_book_sample($formattedName);
 }

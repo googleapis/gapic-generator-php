@@ -26,17 +26,20 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
+use Testing\BasicDiregapic\ResourceNames\Folder;
+use Testing\BasicDiregapic\ResourceNames\Location;
 
 /**
  * Gets a book from a shelf or archive.
  *
  * @param string $formattedName        The name of the book to retrieve. Please see
- *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
+ *                                     {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a
  *                                     single resource name type in a oneof. Please see
- *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedPlace       Please see {@see LibraryServiceClient::locationName()} for help formatting this field.
- * @param string $formattedFolder      Please see {@see LibraryServiceClient::folderName()} for help formatting this field.
+ *                                     {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
+ * @param string $formattedPlace       Please see {@see Location::fromProjectLocation()} for help formatting this field.
+ * @param string $formattedFolder      Please see {@see Folder::fromFolder()} for help formatting this field.
  */
 function get_book_from_anywhere_sample(
     string $formattedName,
@@ -73,10 +76,10 @@ function get_book_from_anywhere_sample(
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedAltBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedPlace = LibraryServiceClient::locationName('[PROJECT]', '[LOCATION]');
-    $formattedFolder = LibraryServiceClient::folderName('[FOLDER]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedAltBookName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedPlace = Location::fromProjectLocation('[PROJECT]', '[LOCATION]');
+    $formattedFolder = Folder::fromFolder('[FOLDER]');
 
     get_book_from_anywhere_sample(
         $formattedName,

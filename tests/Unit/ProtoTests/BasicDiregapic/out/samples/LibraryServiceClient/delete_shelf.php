@@ -25,12 +25,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_DeleteShelf_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 
 /**
  * Deletes a shelf.
  *
  * @param string $formattedName The name of the shelf to delete. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ *                              {@see Shelf::fromShelf()} for help formatting this field.
  */
 function delete_shelf_sample(string $formattedName): void
 {
@@ -57,7 +58,7 @@ function delete_shelf_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = Shelf::fromShelf('[SHELF]');
 
     delete_shelf_sample($formattedName);
 }

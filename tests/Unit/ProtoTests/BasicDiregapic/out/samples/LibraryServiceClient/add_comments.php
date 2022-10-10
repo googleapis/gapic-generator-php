@@ -26,11 +26,12 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\Comment;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
 
 /**
  * Adds comments to a book
  *
- * @param string $formattedName Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedName Please see {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
  */
 function add_comments_sample(string $formattedName): void
 {
@@ -60,7 +61,7 @@ function add_comments_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
     add_comments_sample($formattedName);
 }

@@ -26,13 +26,15 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromArchiveResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\ArchivedBook;
+use Testing\BasicDiregapic\ResourceNames\Project;
 
 /**
  * Gets a book from an archive.
  *
  * @param string $formattedName   The name of the book to retrieve. Please see
- *                                {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
- * @param string $formattedParent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
+ *                                {@see ArchivedBook::fromArchiveBook()} for help formatting this field.
+ * @param string $formattedParent Please see {@see Project::fromProject()} for help formatting this field.
  */
 function get_book_from_archive_sample(string $formattedName, string $formattedParent): void
 {
@@ -60,8 +62,8 @@ function get_book_from_archive_sample(string $formattedName, string $formattedPa
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
-    $formattedParent = LibraryServiceClient::projectName('[PROJECT]');
+    $formattedName = ArchivedBook::fromArchiveBook('[ARCHIVE]', '[BOOK]');
+    $formattedParent = Project::fromProject('[PROJECT]');
 
     get_book_from_archive_sample($formattedName, $formattedParent);
 }

@@ -26,11 +26,12 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Publisher;
 
 /**
  * Creates an inventory. Tests singleton resources.
  *
- * @param string $formattedParent Please see {@see LibraryServiceClient::publisherName()} for help formatting this field.
+ * @param string $formattedParent Please see {@see Publisher::fromProjectLocationPublisher()} for help formatting this field.
  * @param string $asset
  * @param string $parentAsset
  * @param string $assetsElement
@@ -68,7 +69,11 @@ function create_inventory_sample(
  */
 function callSample(): void
 {
-    $formattedParent = LibraryServiceClient::publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+    $formattedParent = Publisher::fromProjectLocationPublisher(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[PUBLISHER]'
+    );
     $asset = '[ASSET]';
     $parentAsset = '[PARENT_ASSET]';
     $assetsElement = '[ASSETS]';

@@ -26,10 +26,12 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ResourceNames\Book;
+use Testing\BasicDiregapic\ResourceNames\Shelf;
 
 /**
- * @param string $formattedNamesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedShelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedNamesElement   Please see {@see Book::fromShelfBookOneBookTwo()} for help formatting this field.
+ * @param string $formattedShelvesElement Please see {@see Shelf::fromShelf()} for help formatting this field.
  */
 function find_related_books_sample(
     string $formattedNamesElement,
@@ -67,8 +69,8 @@ function find_related_books_sample(
  */
 function callSample(): void
 {
-    $formattedNamesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedShelvesElement = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedNamesElement = Book::fromShelfBookOneBookTwo('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedShelvesElement = Shelf::fromShelf('[SHELF]');
 
     find_related_books_sample($formattedNamesElement, $formattedShelvesElement);
 }
