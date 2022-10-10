@@ -32,27 +32,13 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicOneof\Request;
-use Testing\BasicOneof\Request\Other;
-use Testing\BasicOneof\Request\SupplementaryDataOneof;
+use Testing\BasicOneof\Response;
 
 /**
  * Service Description: This is a basic service.
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $basicOneofClient = new BasicOneofClient();
- * try {
- *     $supplementaryData = (new SupplementaryDataOneof())
- *         ->setExtraDescription('extra_description');
- *     $other = new Other();
- *     $requiredOptional = 'required_optional';
- *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
- * } finally {
- *     $basicOneofClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class BasicOneofGapicClient
 {
@@ -158,76 +144,22 @@ class BasicOneofGapicClient
     /**
      * Test including method args with required oneofs.
      *
-     * Sample code:
-     * ```
-     * $basicOneofClient = new BasicOneofClient();
-     * try {
-     *     $supplementaryData = (new SupplementaryDataOneof())
-     *         ->setExtraDescription('extra_description');
-     *     $other = new Other();
-     *     $requiredOptional = 'required_optional';
-     *     $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
-     * } finally {
-     *     $basicOneofClient->close();
-     * }
-     * ```
-     *
-     * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
-     * @param Other                  $other
-     * @param string                 $requiredOptional
-     * @param array                  $optionalArgs      {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
-     *     @type int $anInt
-     *     @type string $optionalPayload
-     *           An optional payload.
-     *     @type int $optionalCount
-     *           An optional count.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicOneof\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod($supplementaryData, $other, $requiredOptional, array $optionalArgs = [])
+    public function aMethod(Request $request, array $optionalArgs = []): Response
     {
-        $request = new Request();
-        if ($supplementaryData->isExtraDescription()) {
-            $request->setExtraDescription($supplementaryData->getExtraDescription());
-        } elseif ($supplementaryData->isExtraSummary()) {
-            $request->setExtraSummary($supplementaryData->getExtraSummary());
-        } elseif ($supplementaryData->isExtraRequest()) {
-            $request->setExtraRequest($supplementaryData->getExtraRequest());
-        } elseif ($supplementaryData->isExtraIndex()) {
-            $request->setExtraIndex($supplementaryData->getExtraIndex());
-        } elseif ($supplementaryData->isExtraDouble()) {
-            $request->setExtraDouble($supplementaryData->getExtraDouble());
-        } elseif ($supplementaryData->isExtraFloat()) {
-            $request->setExtraFloat($supplementaryData->getExtraFloat());
-        } elseif ($supplementaryData->isExtraBool()) {
-            $request->setExtraBool($supplementaryData->getExtraBool());
-        } else {
-            throw new ValidationException("A field for the oneof supplementary_data must be set in param $supplementaryData");
-        }
-
-        $request->setOther($other);
-        $request->setRequiredOptional($requiredOptional);
-        if (isset($optionalArgs['anInt'])) {
-            $request->setAnInt($optionalArgs['anInt']);
-        }
-
-        if (isset($optionalArgs['optionalPayload'])) {
-            $request->setOptionalPayload($optionalArgs['optionalPayload']);
-        }
-
-        if (isset($optionalArgs['optionalCount'])) {
-            $request->setOptionalCount($optionalArgs['optionalCount']);
-        }
-
         return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 }

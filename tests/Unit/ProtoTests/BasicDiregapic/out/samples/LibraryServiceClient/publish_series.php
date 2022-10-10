@@ -26,6 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\PublishSeriesRequest;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
@@ -45,18 +46,22 @@ function publish_series_sample(string $shelfName, string $booksName): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $shelf = (new ShelfResponse())
         ->setName($shelfName);
     $bookResponse = (new BookResponse())
         ->setName($booksName);
     $books = [$bookResponse,];
     $seriesUuid = new SeriesUuidResponse();
+    $request = (new PublishSeriesRequest())
+        ->setShelf($shelf)
+        ->setBooks($books)
+        ->setSeriesUuid($seriesUuid);
 
     // Call the API and handle any network failures.
     try {
         /** @var PublishSeriesResponse $response */
-        $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
+        $response = $libraryServiceClient->publishSeries($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

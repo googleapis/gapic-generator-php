@@ -32,6 +32,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\CustomLro\CancelOperationRequest;
+use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\DeleteOperationRequest;
 use Testing\CustomLro\GetOperationRequest;
 
@@ -39,17 +40,7 @@ use Testing\CustomLro\GetOperationRequest;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $customLroOperationsClient = new CustomLroOperationsClient();
- * try {
- *     $operation = 'operation';
- *     $customLroOperationsClient->cancel($operation);
- * } finally {
- *     $customLroOperationsClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class CustomLroOperationsGapicClient
 {
@@ -164,20 +155,8 @@ class CustomLroOperationsGapicClient
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $customLroOperationsClient = new CustomLroOperationsClient();
-     * try {
-     *     $operation = 'operation';
-     *     $customLroOperationsClient->cancel($operation);
-     * } finally {
-     *     $customLroOperationsClient->close();
-     * }
-     * ```
-     *
-     * @param string $operation    Name of th Operations resource to cancel.
-     * @param array  $optionalArgs {
+     * @param CancelOperationRequest $request      A request to house fields associated with the call.
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -186,30 +165,16 @@ class CustomLroOperationsGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function cancel($operation, array $optionalArgs = [])
+    public function cancel(CancelOperationRequest $request, array $optionalArgs = []): void
     {
-        $request = new CancelOperationRequest();
-        $request->setOperation($operation);
         return $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $customLroOperationsClient = new CustomLroOperationsClient();
-     * try {
-     *     $operation = 'operation';
-     *     $customLroOperationsClient->delete($operation);
-     * } finally {
-     *     $customLroOperationsClient->close();
-     * }
-     * ```
-     *
-     * @param string $operation    Name of th Operations resource to delete.
-     * @param array  $optionalArgs {
+     * @param DeleteOperationRequest $request      A request to house fields associated with the call.
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -218,36 +183,16 @@ class CustomLroOperationsGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function delete($operation, array $optionalArgs = [])
+    public function delete(DeleteOperationRequest $request, array $optionalArgs = []): void
     {
-        $request = new DeleteOperationRequest();
-        $request->setOperation($operation);
         return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $customLroOperationsClient = new CustomLroOperationsClient();
-     * try {
-     *     $operation = 'operation';
-     *     $project = 'project';
-     *     $region = 'region';
-     *     $foo = 'foo';
-     *     $response = $customLroOperationsClient->get($operation, $project, $region, $foo);
-     * } finally {
-     *     $customLroOperationsClient->close();
-     * }
-     * ```
-     *
-     * @param string $operation    Name of the Operations resource to return.
-     * @param string $project      Project ID for this request.
-     * @param string $region       Name of the region for this request.
-     * @param string $foo          The foo from the initial request.
-     * @param array  $optionalArgs {
+     * @param GetOperationRequest $request      A request to house fields associated with the call.
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -256,17 +201,12 @@ class CustomLroOperationsGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\CustomLro\CustomOperationResponse
+     * @return CustomOperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function get($operation, $project, $region, $foo, array $optionalArgs = [])
+    public function get(GetOperationRequest $request, array $optionalArgs = []): CustomOperationResponse
     {
-        $request = new GetOperationRequest();
-        $request->setOperation($operation);
-        $request->setProject($project);
-        $request->setRegion($region);
-        $request->setFoo($foo);
         return $this->startApiCall('Get', $request, $optionalArgs)->wait();
     }
 }

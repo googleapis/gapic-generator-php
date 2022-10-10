@@ -25,6 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1CServiceLevelRetry_sync]
 use Google\ApiCore\ApiException;
 use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
 /**
@@ -39,10 +40,13 @@ function method1_c_service_level_retry_sample(): void
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
 
+    // Prepare the request message.
+    $request = new Request1();
+
     // Call the API and handle any network failures.
     try {
         /** @var Response1 $response */
-        $response = $grpcServiceConfigWithRetry1Client->method1CServiceLevelRetry();
+        $response = $grpcServiceConfigWithRetry1Client->method1CServiceLevelRetry($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

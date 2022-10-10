@@ -38,16 +38,7 @@ use Testing\Deprecated\FibonacciRequest;
  * It takes up multiple lines, like so.
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $deprecatedServiceClient = new DeprecatedServiceClient();
- * try {
- *     $deprecatedServiceClient->fastFibonacci();
- * } finally {
- *     $deprecatedServiceClient->close();
- * }
- * ```
+ * calls that map to API methods.
  *
  * @deprecated This class will be removed in the next major version update.
  */
@@ -154,74 +145,42 @@ class DeprecatedServiceGapicClient
     /**
      * Calculates Fibonacci on the provided value, quickly.
      *
-     * Sample code:
-     * ```
-     * $deprecatedServiceClient = new DeprecatedServiceClient();
-     * try {
-     *     $deprecatedServiceClient->fastFibonacci();
-     * } finally {
-     *     $deprecatedServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param FibonacciRequest $request      A request to house fields associated with the call.
+     * @param array            $optionalArgs {
      *     Optional.
      *
-     *     @type int $value
-     *           The nth term to retrieve in the Fibonacci sequence.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function fastFibonacci(array $optionalArgs = [])
+    public function fastFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
     {
-        $request = new FibonacciRequest();
-        if (isset($optionalArgs['value'])) {
-            $request->setValue($optionalArgs['value']);
-        }
-
         return $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
     }
 
     /**
      * Calculates Fibonacci on the provided value, slowly.
      *
-     * Sample code:
-     * ```
-     * $deprecatedServiceClient = new DeprecatedServiceClient();
-     * try {
-     *     $deprecatedServiceClient->slowFibonacci();
-     * } finally {
-     *     $deprecatedServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param FibonacciRequest $request      A request to house fields associated with the call.
+     * @param array            $optionalArgs {
      *     Optional.
      *
-     *     @type int $value
-     *           The nth term to retrieve in the Fibonacci sequence.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function slowFibonacci(array $optionalArgs = [])
+    public function slowFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
     {
-        $request = new FibonacciRequest();
-        if (isset($optionalArgs['value'])) {
-            $request->setValue($optionalArgs['value']);
-        }
-
         return $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
     }
 }

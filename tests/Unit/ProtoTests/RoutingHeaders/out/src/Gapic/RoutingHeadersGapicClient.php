@@ -32,24 +32,15 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\RoutingHeaders\NestedRequest;
-use Testing\RoutingHeaders\NestedRequest\Inner1;
 use Testing\RoutingHeaders\OrderRequest;
+use Testing\RoutingHeaders\Response;
 use Testing\RoutingHeaders\SimpleRequest;
 
 /**
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $routingHeadersClient = new RoutingHeadersClient();
- * try {
- *     $response = $routingHeadersClient->deleteMethod();
- * } finally {
- *     $routingHeadersClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class RoutingHeadersGapicClient
 {
@@ -150,483 +141,242 @@ class RoutingHeadersGapicClient
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->deleteMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteMethod(array $optionalArgs = [])
+    public function deleteMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('DeleteMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->getMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getMethod(array $optionalArgs = [])
+    public function getMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('GetMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->getNoPlaceholdersMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoPlaceholdersMethod(array $optionalArgs = [])
+    public function getNoPlaceholdersMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('GetNoPlaceholdersMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->getNoTemplateMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoTemplateMethod(array $optionalArgs = [])
+    public function getNoTemplateMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('GetNoTemplateMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $nest1 = new Inner1();
-     *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->nestedMethod($nest1, $anotherName);
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param Inner1 $nest1
-     * @param string $anotherName
-     * @param array  $optionalArgs {
+     * @param NestedRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMethod($nest1, $anotherName, array $optionalArgs = [])
+    public function nestedMethod(NestedRequest $request, array $optionalArgs = []): Response
     {
-        $request = new NestedRequest();
-        $request->setNest1($nest1);
-        $request->setAnotherName($anotherName);
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('NestedMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $nest1 = new Inner1();
-     *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->nestedMultiMethod($nest1, $anotherName);
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param Inner1 $nest1
-     * @param string $anotherName
-     * @param array  $optionalArgs {
+     * @param NestedRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMultiMethod($nest1, $anotherName, array $optionalArgs = [])
+    public function nestedMultiMethod(NestedRequest $request, array $optionalArgs = []): Response
     {
-        $request = new NestedRequest();
-        $request->setNest1($nest1);
-        $request->setAnotherName($anotherName);
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('NestedMultiMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $a = 'a';
-     *     $b = 'b';
-     *     $d = 'd';
-     *     $c = 'c';
-     *     $e = 'e';
-     *     $response = $routingHeadersClient->orderingMethod($a, $b, $d, $c, $e);
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param string $a
-     * @param string $b
-     * @param string $d
-     * @param string $c
-     * @param string $e
-     * @param array  $optionalArgs {
+     * @param OrderRequest $request      A request to house fields associated with the call.
+     * @param array        $optionalArgs {
      *     Optional.
      *
-     *     @type string $aId
-     *     @type string $bId
-     *     @type string $aa
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function orderingMethod($a, $b, $d, $c, $e, array $optionalArgs = [])
+    public function orderingMethod(OrderRequest $request, array $optionalArgs = []): Response
     {
-        $request = new OrderRequest();
-        $request->setA($a);
-        $request->setB($b);
-        $request->setD($d);
-        $request->setC($c);
-        $request->setE($e);
-        if (isset($optionalArgs['aId'])) {
-            $request->setAId($optionalArgs['aId']);
-        }
-
-        if (isset($optionalArgs['bId'])) {
-            $request->setBId($optionalArgs['bId']);
-        }
-
-        if (isset($optionalArgs['aa'])) {
-            $request->setAa($optionalArgs['aa']);
-        }
-
         return $this->startApiCall('OrderingMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->patchMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function patchMethod(array $optionalArgs = [])
+    public function patchMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('PatchMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->postMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function postMethod(array $optionalArgs = [])
+    public function postMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('PostMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $response = $routingHeadersClient->putMethod();
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SimpleRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function putMethod(array $optionalArgs = [])
+    public function putMethod(SimpleRequest $request, array $optionalArgs = []): Response
     {
-        $request = new SimpleRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('PutMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $nest1 = new Inner1();
-     *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->routingRuleWithOutParameters($nest1, $anotherName);
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param Inner1 $nest1
-     * @param string $anotherName
-     * @param array  $optionalArgs {
+     * @param NestedRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithOutParameters($nest1, $anotherName, array $optionalArgs = [])
+    public function routingRuleWithOutParameters(NestedRequest $request, array $optionalArgs = []): Response
     {
-        $request = new NestedRequest();
-        $request->setNest1($nest1);
-        $request->setAnotherName($anotherName);
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('RoutingRuleWithOutParameters', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $routingHeadersClient = new RoutingHeadersClient();
-     * try {
-     *     $nest1 = new Inner1();
-     *     $anotherName = 'another_name';
-     *     $response = $routingHeadersClient->routingRuleWithParameters($nest1, $anotherName);
-     * } finally {
-     *     $routingHeadersClient->close();
-     * }
-     * ```
-     *
-     * @param Inner1 $nest1
-     * @param string $anotherName
-     * @param array  $optionalArgs {
+     * @param NestedRequest $request      A request to house fields associated with the call.
+     * @param array         $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\RoutingHeaders\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithParameters($nest1, $anotherName, array $optionalArgs = [])
+    public function routingRuleWithParameters(NestedRequest $request, array $optionalArgs = []): Response
     {
-        $request = new NestedRequest();
-        $request->setNest1($nest1);
-        $request->setAnotherName($anotherName);
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('RoutingRuleWithParameters', $request, $optionalArgs)->wait();
     }
 }

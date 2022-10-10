@@ -27,6 +27,7 @@ namespace Testing\BasicServerStreaming\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
@@ -37,20 +38,7 @@ use Testing\BasicServerStreaming\Request;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $basicServerStreamingClient = new BasicServerStreamingClient();
- * try {
- *     // Read all responses until the stream is complete
- *     $stream = $basicServerStreamingClient->methodEmpty();
- *     foreach ($stream->readAll() as $element) {
- *         // doSomethingWith($element);
- *     }
- * } finally {
- *     $basicServerStreamingClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class BasicServerStreamingGapicClient
 {
@@ -151,76 +139,38 @@ class BasicServerStreamingGapicClient
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodEmpty();
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param EmptyRequest $request      A request to house fields associated with the call.
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
      *           Timeout to use for this call.
      * }
      *
-     * @return \Google\ApiCore\ServerStream
+     * @return ServerStream
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodEmpty(array $optionalArgs = [])
+    public function methodEmpty(EmptyRequest $request, array $optionalArgs = []): ServerStream
     {
-        $request = new EmptyRequest();
         return $this->startApiCall('MethodEmpty', $request, $optionalArgs);
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     $aNumber = 0;
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodServer($aNumber);
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param int   $aNumber
-     * @param array $optionalArgs {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
-     *     @type string $aString
      *     @type int $timeoutMillis
      *           Timeout to use for this call.
      * }
      *
-     * @return \Google\ApiCore\ServerStream
+     * @return ServerStream
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodServer($aNumber, array $optionalArgs = [])
+    public function methodServer(Request $request, array $optionalArgs = []): ServerStream
     {
-        $request = new Request();
-        $request->setANumber($aNumber);
-        if (isset($optionalArgs['aString'])) {
-            $request->setAString($optionalArgs['aString']);
-        }
-
         return $this->startApiCall('MethodServer', $request, $optionalArgs);
     }
 }

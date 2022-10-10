@@ -31,26 +31,15 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Testing\Basic\PartOfRequestA;
-use Testing\Basic\PartOfRequestB;
-use Testing\Basic\PartOfRequestC;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
+use Testing\Basic\Response;
 
 /**
  * Service Description: This is a basic service.
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $basicClient = new BasicClient();
- * try {
- *     $response = $basicClient->aMethod();
- * } finally {
- *     $basicClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class BasicGapicClient
 {
@@ -156,17 +145,8 @@ class BasicGapicClient
     /**
      * Test summary text for AMethod
      *
-     * Sample code:
-     * ```
-     * $basicClient = new BasicClient();
-     * try {
-     *     $response = $basicClient->aMethod();
-     * } finally {
-     *     $basicClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -175,68 +155,34 @@ class BasicGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\Basic\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod(array $optionalArgs = [])
+    public function aMethod(Request $request, array $optionalArgs = []): Response
     {
-        $request = new Request();
         return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * Test including method args.
      *
-     * Sample code:
-     * ```
-     * $basicClient = new BasicClient();
-     * try {
-     *     $aString = 'a_string';
-     *     $partOfRequestA = [];
-     *     $response = $basicClient->methodWithArgs($aString, $partOfRequestA);
-     * } finally {
-     *     $basicClient->close();
-     * }
-     * ```
-     *
-     * @param string           $aString        A required field...
-     * @param PartOfRequestA[] $partOfRequestA ...and a repeated message type, which checks that an extra import is *not* added,
-     *                                         in contrast to a paginated method where an extra import *is* added.
-     * @param array            $optionalArgs   {
+     * @param RequestWithArgs $request      A request to house fields associated with the call.
+     * @param array           $optionalArgs {
      *     Optional.
      *
-     *     @type int $anInt
-     *           ...and an optional field.
-     *     @type PartOfRequestB[] $partOfRequestB
-     *     @type PartOfRequestC $partOfRequestC
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\Basic\Response
+     * @return Response
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodWithArgs($aString, $partOfRequestA, array $optionalArgs = [])
+    public function methodWithArgs(RequestWithArgs $request, array $optionalArgs = []): Response
     {
-        $request = new RequestWithArgs();
-        $request->setAString($aString);
-        $request->setPartOfRequestA($partOfRequestA);
-        if (isset($optionalArgs['anInt'])) {
-            $request->setAnInt($optionalArgs['anInt']);
-        }
-
-        if (isset($optionalArgs['partOfRequestB'])) {
-            $request->setPartOfRequestB($optionalArgs['partOfRequestB']);
-        }
-
-        if (isset($optionalArgs['partOfRequestC'])) {
-            $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
-        }
-
         return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
     }
 }

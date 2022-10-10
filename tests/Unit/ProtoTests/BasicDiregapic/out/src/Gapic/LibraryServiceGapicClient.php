@@ -29,31 +29,20 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
-use Google\Protobuf\Any;
-use Google\Protobuf\BoolValue;
-use Google\Protobuf\BytesValue;
-use Google\Protobuf\DoubleValue;
-use Google\Protobuf\Duration;
-use Google\Protobuf\FieldMask;
-use Google\Protobuf\FloatValue;
-use Google\Protobuf\Int32Value;
-use Google\Protobuf\Int64Value;
-use Google\Protobuf\ListValue;
-use Google\Protobuf\StringValue;
-use Google\Protobuf\Struct;
-use Google\Protobuf\Timestamp;
-use Google\Protobuf\UInt32Value;
-use Google\Protobuf\UInt64Value;
-use Google\Protobuf\Value;
 use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
+use Testing\BasicDiregapic\AddTagResponse;
 use Testing\BasicDiregapic\ArchiveBooksRequest;
+use Testing\BasicDiregapic\ArchiveBooksResponse;
+use Testing\BasicDiregapic\BookFromAnywhereResponse;
+use Testing\BasicDiregapic\BookFromArchiveResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\Comment;
 use Testing\BasicDiregapic\CreateBookRequest;
@@ -71,18 +60,17 @@ use Testing\BasicDiregapic\InventoryResponse;
 use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
 use Testing\BasicDiregapic\ListBooksRequest;
 use Testing\BasicDiregapic\ListShelvesRequest;
+use Testing\BasicDiregapic\ListShelvesResponse;
 use Testing\BasicDiregapic\ListStringsRequest;
 use Testing\BasicDiregapic\MergeShelvesRequest;
 use Testing\BasicDiregapic\MoveBookRequest;
 use Testing\BasicDiregapic\MoveBooksRequest;
+use Testing\BasicDiregapic\MoveBooksResponse;
 use Testing\BasicDiregapic\PublishSeriesRequest;
-use Testing\BasicDiregapic\SeriesUuidResponse;
+use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\ShelfResponse;
-use Testing\BasicDiregapic\SomeMessage;
-use Testing\BasicDiregapic\StringBuilder;
 use Testing\BasicDiregapic\UpdateBookIndexRequest;
 use Testing\BasicDiregapic\UpdateBookRequest;
-use Testing\BasicDiregapic\Used;
 
 /**
  * Service Description: This API represents a simple digital library.  It lets you manage Shelf
@@ -104,18 +92,7 @@ use Testing\BasicDiregapic\Used;
  *
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $libraryServiceClient = new LibraryServiceClient();
- * try {
- *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
- *     $comments = [];
- *     $libraryServiceClient->addComments($formattedName, $comments);
- * } finally {
- *     $libraryServiceClient->close();
- * }
- * ```
+ * calls that map to API methods.
  *
  * Many parameters require resource names to be formatted in a particular way. To
  * assist with these names, this class includes a format method for each type of
@@ -837,21 +814,8 @@ class LibraryServiceGapicClient
     /**
      * Adds comments to a book
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $comments = [];
-     *     $libraryServiceClient->addComments($formattedName, $comments);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string    $name
-     * @param Comment[] $comments
-     * @param array     $optionalArgs {
+     * @param AddCommentsRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -860,199 +824,17 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function addComments($name, $comments, array $optionalArgs = [])
+    public function addComments(AddCommentsRequest $request, array $optionalArgs = []): void
     {
-        $request = new AddCommentsRequest();
-        $request->setName($name);
-        $request->setComments($comments);
         return $this->startApiCall('AddComments', $request, $optionalArgs)->wait();
     }
 
     /**
      * Adds a tag to the book. This RPC is a mixin.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $resource = 'resource';
-     *     $tag = 'tag';
-     *     $response = $libraryServiceClient->addTag($resource, $tag);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $resource     REQUIRED: The resource which the tag is being added to.
-     *                             In the form "shelves/{shelf_id}/books/{book_id}".
-     * @param string $tag          REQUIRED: The tag to add.
-     * @param array  $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
-     *           associative array of retry settings parameters. See the documentation on
-     *           {@see RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\AddTagResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function addTag($resource, $tag, array $optionalArgs = [])
-    {
-        $request = new AddTagRequest();
-        $request->setResource($resource);
-        $request->setTag($tag);
-        return $this->startApiCall('AddTag', $request, $optionalArgs)->wait();
-    }
-
-    /**
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $response = $libraryServiceClient->archiveBooks();
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
-     *     Optional.
-     *
-     *     @type string $source
-     *     @type string $archive
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
-     *           associative array of retry settings parameters. See the documentation on
-     *           {@see RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\ArchiveBooksResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function archiveBooks(array $optionalArgs = [])
-    {
-        $request = new ArchiveBooksRequest();
-        if (isset($optionalArgs['source'])) {
-            $request->setSource($optionalArgs['source']);
-        }
-
-        if (isset($optionalArgs['archive'])) {
-            $request->setArchive($optionalArgs['archive']);
-        }
-
-        return $this->startApiCall('ArchiveBooks', $request, $optionalArgs)->wait();
-    }
-
-    /**
-     * Creates a book.
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $book = new BookResponse();
-     *     $response = $libraryServiceClient->createBook($formattedName, $book);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string       $name         The name of the shelf in which the book is created.
-     * @param BookResponse $book         The book to create.
-     * @param array        $optionalArgs {
-     *     Optional.
-     *
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
-     *           associative array of retry settings parameters. See the documentation on
-     *           {@see RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\BookResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function createBook($name, $book, array $optionalArgs = [])
-    {
-        $request = new CreateBookRequest();
-        $request->setName($name);
-        $request->setBook($book);
-        return $this->startApiCall('CreateBook', $request, $optionalArgs)->wait();
-    }
-
-    /**
-     * Creates an inventory. Tests singleton resources.
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedParent = $libraryServiceClient->publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
-     *     $asset = 'asset';
-     *     $parentAsset = 'parent_asset';
-     *     $assets = [];
-     *     $response = $libraryServiceClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string   $parent
-     * @param string   $asset
-     * @param string   $parentAsset
-     * @param string[] $assets
-     * @param array    $optionalArgs {
-     *     Optional.
-     *
-     *     @type InventoryResponse $inventory
-     *     @type RetrySettings|array $retrySettings
-     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
-     *           associative array of retry settings parameters. See the documentation on
-     *           {@see RetrySettings} for example usage.
-     * }
-     *
-     * @return \Testing\BasicDiregapic\InventoryResponse
-     *
-     * @throws ApiException if the remote call fails
-     */
-    public function createInventory($parent, $asset, $parentAsset, $assets, array $optionalArgs = [])
-    {
-        $request = new CreateInventoryRequest();
-        $request->setParent($parent);
-        $request->setAsset($asset);
-        $request->setParentAsset($parentAsset);
-        $request->setAssets($assets);
-        if (isset($optionalArgs['inventory'])) {
-            $request->setInventory($optionalArgs['inventory']);
-        }
-
-        return $this->startApiCall('CreateInventory', $request, $optionalArgs)->wait();
-    }
-
-    /**
-     * Creates a shelf, and returns the new Shelf.
-     * RPC method comment may include special characters: <>&"`'&#64;.
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $shelf = new ShelfResponse();
-     *     $response = $libraryServiceClient->createShelf($shelf);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param ShelfResponse $shelf        The shelf to create.
+     * @param AddTagRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
      *
@@ -1062,33 +844,107 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\ShelfResponse
+     * @return AddTagResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function createShelf($shelf, array $optionalArgs = [])
+    public function addTag(AddTagRequest $request, array $optionalArgs = []): AddTagResponse
     {
-        $request = new CreateShelfRequest();
-        $request->setShelf($shelf);
+        return $this->startApiCall('AddTag', $request, $optionalArgs)->wait();
+    }
+
+    /**
+     * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
+     * @param array               $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return ArchiveBooksResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function archiveBooks(ArchiveBooksRequest $request, array $optionalArgs = []): ArchiveBooksResponse
+    {
+        return $this->startApiCall('ArchiveBooks', $request, $optionalArgs)->wait();
+    }
+
+    /**
+     * Creates a book.
+     *
+     * @param CreateBookRequest $request      A request to house fields associated with the call.
+     * @param array             $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BookResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createBook(CreateBookRequest $request, array $optionalArgs = []): BookResponse
+    {
+        return $this->startApiCall('CreateBook', $request, $optionalArgs)->wait();
+    }
+
+    /**
+     * Creates an inventory. Tests singleton resources.
+     *
+     * @param CreateInventoryRequest $request      A request to house fields associated with the call.
+     * @param array                  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return InventoryResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createInventory(CreateInventoryRequest $request, array $optionalArgs = []): InventoryResponse
+    {
+        return $this->startApiCall('CreateInventory', $request, $optionalArgs)->wait();
+    }
+
+    /**
+     * Creates a shelf, and returns the new Shelf.
+     * RPC method comment may include special characters: <>&"`'&#64;.
+     *
+     * @param CreateShelfRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return ShelfResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createShelf(CreateShelfRequest $request, array $optionalArgs = []): ShelfResponse
+    {
         return $this->startApiCall('CreateShelf', $request, $optionalArgs)->wait();
     }
 
     /**
      * Deletes a book.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $libraryServiceClient->deleteBook($formattedName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to delete.
-     * @param array  $optionalArgs {
+     * @param DeleteBookRequest $request      A request to house fields associated with the call.
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1097,31 +953,18 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBook($name, array $optionalArgs = [])
+    public function deleteBook(DeleteBookRequest $request, array $optionalArgs = []): void
     {
-        $request = new DeleteBookRequest();
-        $request->setName($name);
         return $this->startApiCall('DeleteBook', $request, $optionalArgs)->wait();
     }
 
     /**
      * Deletes a shelf.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $libraryServiceClient->deleteShelf($formattedName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the shelf to delete.
-     * @param array  $optionalArgs {
+     * @param DeleteShelfRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1130,126 +973,38 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteShelf($name, array $optionalArgs = [])
+    public function deleteShelf(DeleteShelfRequest $request, array $optionalArgs = []): void
     {
-        $request = new DeleteShelfRequest();
-        $request->setName($name);
         return $this->startApiCall('DeleteShelf', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedNames = [
-     *         $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]'),
-     *     ];
-     *     $formattedShelves = [
-     *         $libraryServiceClient->shelfName('[SHELF]'),
-     *     ];
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string[] $names
-     * @param string[] $shelves
-     * @param array    $optionalArgs {
+     * @param FindRelatedBooksRequest $request      A request to house fields associated with the call.
+     * @param array                   $optionalArgs {
      *     Optional.
      *
-     *     @type int $pageSize
-     *           The maximum number of resources contained in the underlying API
-     *           response. The API may return fewer values in a page, even if
-     *           there are additional values to be retrieved.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\PagedListResponse
+     * @return PagedListResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function findRelatedBooks($names, $shelves, array $optionalArgs = [])
+    public function findRelatedBooks(FindRelatedBooksRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        $request = new FindRelatedBooksRequest();
-        $request->setNames($names);
-        $request->setShelves($shelves);
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
         return $this->startApiCall('FindRelatedBooks', $request, $optionalArgs);
     }
 
     /**
      * Test long-running operations
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $operationResponse = $libraryServiceClient->getBigBook($formattedName);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $libraryServiceClient->getBigBook($formattedName);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $libraryServiceClient->resumeOperation($operationName, 'getBigBook');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param array  $optionalArgs {
+     * @param GetBookRequest $request      A request to house fields associated with the call.
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1258,56 +1013,20 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return OperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBigBook($name, array $optionalArgs = [])
+    public function getBigBook(GetBookRequest $request, array $optionalArgs = []): OperationResponse
     {
-        $request = new GetBookRequest();
-        $request->setName($name);
         return $this->startApiCall('GetBigBook', $request, $optionalArgs)->wait();
     }
 
     /**
      * Test long-running operations with empty return type.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $operationResponse = $libraryServiceClient->getBigNothing($formattedName);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         // operation succeeded and returns no value
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $libraryServiceClient->getBigNothing($formattedName);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $libraryServiceClient->resumeOperation($operationName, 'getBigNothing');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         // operation succeeded and returns no value
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param array  $optionalArgs {
+     * @param GetBookRequest $request      A request to house fields associated with the call.
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1316,33 +1035,20 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return OperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBigNothing($name, array $optionalArgs = [])
+    public function getBigNothing(GetBookRequest $request, array $optionalArgs = []): OperationResponse
     {
-        $request = new GetBookRequest();
-        $request->setName($name);
         return $this->startApiCall('GetBigNothing', $request, $optionalArgs)->wait();
     }
 
     /**
      * Gets a book.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $response = $libraryServiceClient->getBook($formattedName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param array  $optionalArgs {
+     * @param GetBookRequest $request      A request to house fields associated with the call.
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1351,82 +1057,42 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookResponse
+     * @return BookResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBook($name, array $optionalArgs = [])
+    public function getBook(GetBookRequest $request, array $optionalArgs = []): BookResponse
     {
-        $request = new GetBookRequest();
-        $request->setName($name);
         return $this->startApiCall('GetBook', $request, $optionalArgs)->wait();
     }
 
     /**
      * Test proper OneOf-Any resource name mapping
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere($formattedName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param array  $optionalArgs {
+     * @param GetBookFromAbsolutelyAnywhereRequest $request      A request to house fields associated with the call.
+     * @param array                                $optionalArgs {
      *     Optional.
      *
-     *     @type string $altBookName
-     *           An alternate book name, used to test proper processing of placeholders
-     *           within additional bindings.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromAnywhereResponse
+     * @return BookFromAnywhereResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromAbsolutelyAnywhere($name, array $optionalArgs = [])
+    public function getBookFromAbsolutelyAnywhere(GetBookFromAbsolutelyAnywhereRequest $request, array $optionalArgs = []): BookFromAnywhereResponse
     {
-        $request = new GetBookFromAbsolutelyAnywhereRequest();
-        $request->setName($name);
-        if (isset($optionalArgs['altBookName'])) {
-            $request->setAltBookName($optionalArgs['altBookName']);
-        }
-
         return $this->startApiCall('GetBookFromAbsolutelyAnywhere', $request, $optionalArgs)->wait();
     }
 
     /**
      * Gets a book from a shelf or archive.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedAltBookName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedPlace = $libraryServiceClient->locationName('[PROJECT]', '[LOCATION]');
-     *     $formattedFolder = $libraryServiceClient->folderName('[FOLDER]');
-     *     $response = $libraryServiceClient->getBookFromAnywhere($formattedName, $formattedAltBookName, $formattedPlace, $formattedFolder);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param string $altBookName  An alternate book name, used to test restricting flattened field to a
-     *                             single resource name type in a oneof.
-     * @param string $place
-     * @param string $folder
-     * @param array  $optionalArgs {
+     * @param GetBookFromAnywhereRequest $request      A request to house fields associated with the call.
+     * @param array                      $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1435,38 +1101,20 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromAnywhereResponse
+     * @return BookFromAnywhereResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromAnywhere($name, $altBookName, $place, $folder, array $optionalArgs = [])
+    public function getBookFromAnywhere(GetBookFromAnywhereRequest $request, array $optionalArgs = []): BookFromAnywhereResponse
     {
-        $request = new GetBookFromAnywhereRequest();
-        $request->setName($name);
-        $request->setAltBookName($altBookName);
-        $request->setPlace($place);
-        $request->setFolder($folder);
         return $this->startApiCall('GetBookFromAnywhere', $request, $optionalArgs)->wait();
     }
 
     /**
      * Gets a book from an archive.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->archivedBookName('[ARCHIVE]', '[BOOK]');
-     *     $formattedParent = $libraryServiceClient->projectName('[PROJECT]');
-     *     $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to retrieve.
-     * @param string $parent
-     * @param array  $optionalArgs {
+     * @param GetBookFromArchiveRequest $request      A request to house fields associated with the call.
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1475,366 +1123,142 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookFromArchiveResponse
+     * @return BookFromArchiveResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromArchive($name, $parent, array $optionalArgs = [])
+    public function getBookFromArchive(GetBookFromArchiveRequest $request, array $optionalArgs = []): BookFromArchiveResponse
     {
-        $request = new GetBookFromArchiveRequest();
-        $request->setName($name);
-        $request->setParent($parent);
         return $this->startApiCall('GetBookFromArchive', $request, $optionalArgs)->wait();
     }
 
     /**
      * Gets a shelf.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $options = 'options';
-     *     $response = $libraryServiceClient->getShelf($formattedName, $options);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the shelf to retrieve.
-     * @param string $options      To test 'options' parameter name conflict.
-     * @param array  $optionalArgs {
+     * @param GetShelfRequest $request      A request to house fields associated with the call.
+     * @param array           $optionalArgs {
      *     Optional.
      *
-     *     @type SomeMessage $message
-     *           Field to verify that message-type query parameter gets flattened.
-     *     @type StringBuilder $stringBuilder
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\ShelfResponse
+     * @return ShelfResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function getShelf($name, $options, array $optionalArgs = [])
+    public function getShelf(GetShelfRequest $request, array $optionalArgs = []): ShelfResponse
     {
-        $request = new GetShelfRequest();
-        $request->setName($name);
-        $request->setOptions($options);
-        if (isset($optionalArgs['message'])) {
-            $request->setMessage($optionalArgs['message']);
-        }
-
-        if (isset($optionalArgs['stringBuilder'])) {
-            $request->setStringBuilder($optionalArgs['stringBuilder']);
-        }
-
         return $this->startApiCall('GetShelf', $request, $optionalArgs)->wait();
     }
 
     /**
      * Lists shelves.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $libraryServiceClient->listAggregatedShelves();
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $libraryServiceClient->listAggregatedShelves();
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param ListAggregatedShelvesRequest $request      A request to house fields associated with the call.
+     * @param array                        $optionalArgs {
      *     Optional.
      *
-     *     @type int $maxResults
-     *           Requested page size.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\PagedListResponse
+     * @return PagedListResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function listAggregatedShelves(array $optionalArgs = [])
+    public function listAggregatedShelves(ListAggregatedShelvesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        $request = new ListAggregatedShelvesRequest();
-        if (isset($optionalArgs['maxResults'])) {
-            $request->setMaxResults($optionalArgs['maxResults']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
         return $this->startApiCall('ListAggregatedShelves', $request, $optionalArgs);
     }
 
     /**
      * Lists books in a shelf.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $libraryServiceClient->listBooks($formattedName);
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $libraryServiceClient->listBooks($formattedName);
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the shelf whose books we'd like to list.
-     * @param array  $optionalArgs {
+     * @param ListBooksRequest $request      A request to house fields associated with the call.
+     * @param array            $optionalArgs {
      *     Optional.
      *
-     *     @type int $pageSize
-     *           The maximum number of resources contained in the underlying API
-     *           response. The API may return fewer values in a page, even if
-     *           there are additional values to be retrieved.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
-     *     @type string $filter
-     *           To test python built-in wrapping.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\PagedListResponse
+     * @return PagedListResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function listBooks($name, array $optionalArgs = [])
+    public function listBooks(ListBooksRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        $request = new ListBooksRequest();
-        $request->setName($name);
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
-        }
-
         return $this->startApiCall('ListBooks', $request, $optionalArgs);
     }
 
     /**
      * Lists shelves.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $response = $libraryServiceClient->listShelves();
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param ListShelvesRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
      *     Optional.
      *
-     *     @type string $pageToken
-     *           A token identifying a page of results the server should return.
-     *           Typically, this is the value of
-     *           [ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token]
-     *           returned from the previous call to `ListShelves` method.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\ListShelvesResponse
+     * @return ListShelvesResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function listShelves(array $optionalArgs = [])
+    public function listShelves(ListShelvesRequest $request, array $optionalArgs = []): ListShelvesResponse
     {
-        $request = new ListShelvesRequest();
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
         return $this->startApiCall('ListShelves', $request, $optionalArgs)->wait();
     }
 
     /**
      * Lists a primitive resource. To test go page streaming.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     // Iterate over pages of elements
-     *     $pagedResponse = $libraryServiceClient->listStrings();
-     *     foreach ($pagedResponse->iteratePages() as $page) {
-     *         foreach ($page as $element) {
-     *             // doSomethingWith($element);
-     *         }
-     *     }
-     *     // Alternatively:
-     *     // Iterate through all elements
-     *     $pagedResponse = $libraryServiceClient->listStrings();
-     *     foreach ($pagedResponse->iterateAllElements() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param ListStringsRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
-     *     @type int $pageSize
-     *           The maximum number of resources contained in the underlying API
-     *           response. The API may return fewer values in a page, even if
-     *           there are additional values to be retrieved.
-     *     @type string $pageToken
-     *           A page token is used to specify a page of values to be returned.
-     *           If no page token is specified (the default), the first page
-     *           of values will be returned. Any page token used here must have
-     *           been generated by a previous call to the API.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\PagedListResponse
+     * @return PagedListResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function listStrings(array $optionalArgs = [])
+    public function listStrings(ListStringsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        $request = new ListStringsRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
-        }
-
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
         return $this->startApiCall('ListStrings', $request, $optionalArgs);
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $operationResponse = $libraryServiceClient->longRunningArchiveBooks();
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $libraryServiceClient->longRunningArchiveBooks();
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $libraryServiceClient->resumeOperation($operationName, 'longRunningArchiveBooks');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
+     * @param array               $optionalArgs {
      *     Optional.
      *
-     *     @type string $source
-     *     @type string $archive
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return OperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function longRunningArchiveBooks(array $optionalArgs = [])
+    public function longRunningArchiveBooks(ArchiveBooksRequest $request, array $optionalArgs = []): OperationResponse
     {
-        $request = new ArchiveBooksRequest();
-        if (isset($optionalArgs['source'])) {
-            $request->setSource($optionalArgs['source']);
-        }
-
-        if (isset($optionalArgs['archive'])) {
-            $request->setArchive($optionalArgs['archive']);
-        }
-
         return $this->startApiCall('LongRunningArchiveBooks', $request, $optionalArgs)->wait();
     }
 
@@ -1843,21 +1267,8 @@ class LibraryServiceGapicClient
      * `other_shelf_name` to shelf `name`, and deletes
      * `other_shelf_name`. Returns the updated shelf.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $formattedOtherShelfName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $response = $libraryServiceClient->mergeShelves($formattedName, $formattedOtherShelfName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name           The name of the shelf we're adding books to.
-     * @param string $otherShelfName The name of the shelf we're removing books from and deleting.
-     * @param array  $optionalArgs   {
+     * @param MergeShelvesRequest $request      A request to house fields associated with the call.
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1866,36 +1277,20 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\ShelfResponse
+     * @return ShelfResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function mergeShelves($name, $otherShelfName, array $optionalArgs = [])
+    public function mergeShelves(MergeShelvesRequest $request, array $optionalArgs = []): ShelfResponse
     {
-        $request = new MergeShelvesRequest();
-        $request->setName($name);
-        $request->setOtherShelfName($otherShelfName);
         return $this->startApiCall('MergeShelves', $request, $optionalArgs)->wait();
     }
 
     /**
      * Moves a book to another shelf, and returns the new book.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $formattedOtherShelfName = $libraryServiceClient->shelfName('[SHELF]');
-     *     $response = $libraryServiceClient->moveBook($formattedName, $formattedOtherShelfName);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name           The name of the book to move.
-     * @param string $otherShelfName The name of the destination shelf.
-     * @param array  $optionalArgs   {
+     * @param MoveBookRequest $request      A request to house fields associated with the call.
+     * @param array           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1904,107 +1299,54 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookResponse
+     * @return BookResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function moveBook($name, $otherShelfName, array $optionalArgs = [])
+    public function moveBook(MoveBookRequest $request, array $optionalArgs = []): BookResponse
     {
-        $request = new MoveBookRequest();
-        $request->setName($name);
-        $request->setOtherShelfName($otherShelfName);
         return $this->startApiCall('MoveBook', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $response = $libraryServiceClient->moveBooks();
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param MoveBooksRequest $request      A request to house fields associated with the call.
+     * @param array            $optionalArgs {
      *     Optional.
      *
-     *     @type string $source
-     *     @type string $destination
-     *     @type string[] $publishers
-     *     @type string $project
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\MoveBooksResponse
+     * @return MoveBooksResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function moveBooks(array $optionalArgs = [])
+    public function moveBooks(MoveBooksRequest $request, array $optionalArgs = []): MoveBooksResponse
     {
-        $request = new MoveBooksRequest();
-        if (isset($optionalArgs['source'])) {
-            $request->setSource($optionalArgs['source']);
-        }
-
-        if (isset($optionalArgs['destination'])) {
-            $request->setDestination($optionalArgs['destination']);
-        }
-
-        if (isset($optionalArgs['publishers'])) {
-            $request->setPublishers($optionalArgs['publishers']);
-        }
-
-        if (isset($optionalArgs['project'])) {
-            $request->setProject($optionalArgs['project']);
-        }
-
         return $this->startApiCall('MoveBooks', $request, $optionalArgs)->wait();
     }
 
     /**
      * This method is not exposed in the GAPIC config. It should be generated.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $response = $libraryServiceClient->privateListShelves();
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param ListShelvesRequest $request      A request to house fields associated with the call.
+     * @param array              $optionalArgs {
      *     Optional.
      *
-     *     @type string $pageToken
-     *           A token identifying a page of results the server should return.
-     *           Typically, this is the value of
-     *           [ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token]
-     *           returned from the previous call to `ListShelves` method.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookResponse
+     * @return BookResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function privateListShelves(array $optionalArgs = [])
+    public function privateListShelves(ListShelvesRequest $request, array $optionalArgs = []): BookResponse
     {
-        $request = new ListShelvesRequest();
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
-        }
-
         return $this->startApiCall('PrivateListShelves', $request, $optionalArgs)->wait();
     }
 
@@ -2012,59 +1354,22 @@ class LibraryServiceGapicClient
      * Creates a series of books.
      * Tests PHP required nested fields.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $shelf = new ShelfResponse();
-     *     $books = [];
-     *     $seriesUuid = new SeriesUuidResponse();
-     *     $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param ShelfResponse      $shelf        The shelf in which the series is created.
-     * @param BookResponse[]     $books        The books to publish in the series.
-     * @param SeriesUuidResponse $seriesUuid   Uniquely identifies the series to the publishing house.
-     * @param array              $optionalArgs {
+     * @param PublishSeriesRequest $request      A request to house fields associated with the call.
+     * @param array                $optionalArgs {
      *     Optional.
      *
-     *     @type int $edition
-     *           The edition of the series
-     *     @type bool $reviewCopy
-     *           If the book is in a pre-publish state
-     *     @type string $publisher
-     *           The publisher of the series.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\PublishSeriesResponse
+     * @return PublishSeriesResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function publishSeries($shelf, $books, $seriesUuid, array $optionalArgs = [])
+    public function publishSeries(PublishSeriesRequest $request, array $optionalArgs = []): PublishSeriesResponse
     {
-        $request = new PublishSeriesRequest();
-        $request->setShelf($shelf);
-        $request->setBooks($books);
-        $request->setSeriesUuid($seriesUuid);
-        if (isset($optionalArgs['edition'])) {
-            $request->setEdition($optionalArgs['edition']);
-        }
-
-        if (isset($optionalArgs['reviewCopy'])) {
-            $request->setReviewCopy($optionalArgs['reviewCopy']);
-        }
-
-        if (isset($optionalArgs['publisher'])) {
-            $request->setPublisher($optionalArgs['publisher']);
-        }
-
         return $this->startApiCall('PublishSeries', $request, $optionalArgs)->wait();
     }
 
@@ -2073,257 +1378,50 @@ class LibraryServiceGapicClient
      * (CreateSubscription) for historical reasons. New APIs should always create
      * a separate message for a request.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $name = 'name';
-     *     $libraryServiceClient->saveBook($name);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The resource name of the book.
-     *                             BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
-     *                             Message field comment may include special characters: <>&"`'&#64;.
-     * @param array  $optionalArgs {
+     * @param BookResponse $request      A request to house fields associated with the call.
+     * @param array        $optionalArgs {
      *     Optional.
      *
-     *     @type string $author
-     *           The name of the book author.
-     *     @type string $title
-     *           The title of the book.
-     *     @type bool $read
-     *           Value indicating whether the book has been read.
-     *     @type int $rating
-     *           For testing enums.
-     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\BookResponse\Rating}
-     *     @type string $reader
-     *     @type Any $anyValue
-     *           For testing all well-known types.
-     *     @type Struct $structValue
-     *     @type Value $valueValue
-     *     @type ListValue $listValueValue
-     *     @type array $mapListValueValue
-     *     @type Timestamp $timeValue
-     *     @type Duration $durationValue
-     *     @type FieldMask $fieldMaskValue
-     *     @type Int32Value $int32Value
-     *     @type UInt32Value $uint32Value
-     *     @type Int64Value $int64Value
-     *     @type UInt64Value $uint64Value
-     *     @type FloatValue $floatValue
-     *     @type DoubleValue $doubleValue
-     *     @type StringValue $stringValue
-     *     @type BoolValue $boolValue
-     *     @type BytesValue $bytesValue
-     *     @type array $mapStringValue
-     *           Test doc generation of lists:
-     *
-     *           +   Here is a sentence about the first element of the list that continues
-     *           into a second line.
-     *           +   The second element of the list.
-     *           +   Another element of the list where the indentation isn't consistent
-     *           after a blank space.
-     *
-     *           The second paragraph of the list
-     *           that doesn't have a hanging indent.
-     *     @type array $mapMessageValue
-     *     @type Used $resource
-     *           Tests Python doc generation: should generate a dummy file for shared_type
-     *           resource, but *not* its import, other_shared_type
-     *     @type array $mapBoolKey
-     *           For testing accessing map fields in samplegen
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function saveBook($name, array $optionalArgs = [])
+    public function saveBook(BookResponse $request, array $optionalArgs = []): void
     {
-        $request = new BookResponse();
-        $request->setName($name);
-        if (isset($optionalArgs['author'])) {
-            $request->setAuthor($optionalArgs['author']);
-        }
-
-        if (isset($optionalArgs['title'])) {
-            $request->setTitle($optionalArgs['title']);
-        }
-
-        if (isset($optionalArgs['read'])) {
-            $request->setRead($optionalArgs['read']);
-        }
-
-        if (isset($optionalArgs['rating'])) {
-            $request->setRating($optionalArgs['rating']);
-        }
-
-        if (isset($optionalArgs['reader'])) {
-            $request->setReader($optionalArgs['reader']);
-        }
-
-        if (isset($optionalArgs['anyValue'])) {
-            $request->setAnyValue($optionalArgs['anyValue']);
-        }
-
-        if (isset($optionalArgs['structValue'])) {
-            $request->setStructValue($optionalArgs['structValue']);
-        }
-
-        if (isset($optionalArgs['valueValue'])) {
-            $request->setValueValue($optionalArgs['valueValue']);
-        }
-
-        if (isset($optionalArgs['listValueValue'])) {
-            $request->setListValueValue($optionalArgs['listValueValue']);
-        }
-
-        if (isset($optionalArgs['mapListValueValue'])) {
-            $request->setMapListValueValue($optionalArgs['mapListValueValue']);
-        }
-
-        if (isset($optionalArgs['timeValue'])) {
-            $request->setTimeValue($optionalArgs['timeValue']);
-        }
-
-        if (isset($optionalArgs['durationValue'])) {
-            $request->setDurationValue($optionalArgs['durationValue']);
-        }
-
-        if (isset($optionalArgs['fieldMaskValue'])) {
-            $request->setFieldMaskValue($optionalArgs['fieldMaskValue']);
-        }
-
-        if (isset($optionalArgs['int32Value'])) {
-            $request->setInt32Value($optionalArgs['int32Value']);
-        }
-
-        if (isset($optionalArgs['uint32Value'])) {
-            $request->setUint32Value($optionalArgs['uint32Value']);
-        }
-
-        if (isset($optionalArgs['int64Value'])) {
-            $request->setInt64Value($optionalArgs['int64Value']);
-        }
-
-        if (isset($optionalArgs['uint64Value'])) {
-            $request->setUint64Value($optionalArgs['uint64Value']);
-        }
-
-        if (isset($optionalArgs['floatValue'])) {
-            $request->setFloatValue($optionalArgs['floatValue']);
-        }
-
-        if (isset($optionalArgs['doubleValue'])) {
-            $request->setDoubleValue($optionalArgs['doubleValue']);
-        }
-
-        if (isset($optionalArgs['stringValue'])) {
-            $request->setStringValue($optionalArgs['stringValue']);
-        }
-
-        if (isset($optionalArgs['boolValue'])) {
-            $request->setBoolValue($optionalArgs['boolValue']);
-        }
-
-        if (isset($optionalArgs['bytesValue'])) {
-            $request->setBytesValue($optionalArgs['bytesValue']);
-        }
-
-        if (isset($optionalArgs['mapStringValue'])) {
-            $request->setMapStringValue($optionalArgs['mapStringValue']);
-        }
-
-        if (isset($optionalArgs['mapMessageValue'])) {
-            $request->setMapMessageValue($optionalArgs['mapMessageValue']);
-        }
-
-        if (isset($optionalArgs['resource'])) {
-            $request->setResource($optionalArgs['resource']);
-        }
-
-        if (isset($optionalArgs['mapBoolKey'])) {
-            $request->setMapBoolKey($optionalArgs['mapBoolKey']);
-        }
-
         return $this->startApiCall('SaveBook', $request, $optionalArgs)->wait();
     }
 
     /**
      * Updates a book.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $book = new BookResponse();
-     *     $response = $libraryServiceClient->updateBook($formattedName, $book);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string       $name         The name of the book to update.
-     * @param BookResponse $book         The book to update with.
-     * @param array        $optionalArgs {
+     * @param UpdateBookRequest $request      A request to house fields associated with the call.
+     * @param array             $optionalArgs {
      *     Optional.
      *
-     *     @type string $optionalFoo
-     *           An optional foo.
-     *     @type FieldMask $updateMask
-     *           A field mask to apply, rendered as an HTTP parameter.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicDiregapic\BookResponse
+     * @return BookResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBook($name, $book, array $optionalArgs = [])
+    public function updateBook(UpdateBookRequest $request, array $optionalArgs = []): BookResponse
     {
-        $request = new UpdateBookRequest();
-        $request->setName($name);
-        $request->setBook($book);
-        if (isset($optionalArgs['optionalFoo'])) {
-            $request->setOptionalFoo($optionalArgs['optionalFoo']);
-        }
-
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
-        }
-
         return $this->startApiCall('UpdateBook', $request, $optionalArgs)->wait();
     }
 
     /**
      * Updates the index of a book.
      *
-     * Sample code:
-     * ```
-     * $libraryServiceClient = new LibraryServiceClient();
-     * try {
-     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-     *     $indexName = 'index_name';
-     *     $indexMap = [];
-     *     $libraryServiceClient->updateBookIndex($formattedName, $indexName, $indexMap);
-     * } finally {
-     *     $libraryServiceClient->close();
-     * }
-     * ```
-     *
-     * @param string $name         The name of the book to update.
-     * @param string $indexName    The name of the index for the book
-     * @param array  $indexMap     The index to update the book with
-     * @param array  $optionalArgs {
+     * @param UpdateBookIndexRequest $request      A request to house fields associated with the call.
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2332,14 +1430,10 @@ class LibraryServiceGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBookIndex($name, $indexName, $indexMap, array $optionalArgs = [])
+    public function updateBookIndex(UpdateBookIndexRequest $request, array $optionalArgs = []): void
     {
-        $request = new UpdateBookIndexRequest();
-        $request->setName($name);
-        $request->setIndexName($indexName);
-        $request->setIndexMap($indexMap);
         return $this->startApiCall('UpdateBookIndex', $request, $optionalArgs)->wait();
     }
 }

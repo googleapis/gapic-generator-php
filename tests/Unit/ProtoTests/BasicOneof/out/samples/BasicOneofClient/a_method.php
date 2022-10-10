@@ -25,35 +25,37 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START basic_generated_BasicOneof_AMethod_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicOneof\BasicOneofClient;
+use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Request\Other;
-use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 
 /**
  * Test including method args with required oneofs.
  *
- * @param string $supplementaryDataExtraDescription Supplemental request description.
+ * @param string $extraDescription Supplemental request description.
  * @param string $otherFirst
  * @param string $requiredOptional
  */
 function a_method_sample(
-    string $supplementaryDataExtraDescription,
+    string $extraDescription,
     string $otherFirst,
     string $requiredOptional
 ): void {
     // Create a client.
     $basicOneofClient = new BasicOneofClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
-    $supplementaryData = (new SupplementaryDataOneof())
-        ->setExtraDescription($supplementaryDataExtraDescription);
+    // Prepare the request message.
     $other = (new Other())
         ->setFirst($otherFirst);
+    $request = (new Request())
+        ->setExtraDescription($extraDescription)
+        ->setOther($other)
+        ->setRequiredOptional($requiredOptional);
 
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $basicOneofClient->aMethod($supplementaryData, $other, $requiredOptional);
+        $response = $basicOneofClient->aMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -71,10 +73,10 @@ function a_method_sample(
  */
 function callSample(): void
 {
-    $supplementaryDataExtraDescription = '[EXTRA_DESCRIPTION]';
+    $extraDescription = '[EXTRA_DESCRIPTION]';
     $otherFirst = '[FIRST]';
     $requiredOptional = '[REQUIRED_OPTIONAL]';
 
-    a_method_sample($supplementaryDataExtraDescription, $otherFirst, $requiredOptional);
+    a_method_sample($extraDescription, $otherFirst, $requiredOptional);
 }
 // [END basic_generated_BasicOneof_AMethod_sync]

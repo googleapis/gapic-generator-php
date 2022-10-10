@@ -35,6 +35,7 @@ use Google\Auth\FetchAuthTokenInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\MultiPatternRequest;
+use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\SinglePatternRequest;
 use Testing\ResourceNames\WildcardChildReferenceRequest;
 use Testing\ResourceNames\WildcardMultiPatternRequest;
@@ -45,21 +46,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $resourceNamesClient = new ResourceNamesClient();
- * try {
- *     $formattedReqFolderName = $resourceNamesClient->folderName('[FOLDER_ID]');
- *     $formattedReqFolderMultiName = $resourceNamesClient->folder1Name('[FOLDER1_ID]');
- *     $formattedReqFolderMultiNameHistory = $resourceNamesClient->folder1Name('[FOLDER1_ID]');
- *     $formattedReqOrderTest1 = $resourceNamesClient->order2Name('[ORDER2_ID]');
- *     $formattedReqOrderTest2 = $resourceNamesClient->order2Name('[ORDER2_ID]');
- *     $response = $resourceNamesClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
- * } finally {
- *     $resourceNamesClient->close();
- * }
- * ```
+ * calls that map to API methods.
  *
  * Many parameters require resource names to be formatted in a particular way. To
  * assist with these names, this class includes a format method for each type of
@@ -655,316 +642,162 @@ class ResourceNamesGapicClient
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $formattedReqFolderName = $resourceNamesClient->folderName('[FOLDER_ID]');
-     *     $formattedReqFolderMultiName = $resourceNamesClient->folder1Name('[FOLDER1_ID]');
-     *     $formattedReqFolderMultiNameHistory = $resourceNamesClient->folder1Name('[FOLDER1_ID]');
-     *     $formattedReqOrderTest1 = $resourceNamesClient->order2Name('[ORDER2_ID]');
-     *     $formattedReqOrderTest2 = $resourceNamesClient->order2Name('[ORDER2_ID]');
-     *     $response = $resourceNamesClient->fileLevelChildTypeRefMethod($formattedReqFolderName, $formattedReqFolderMultiName, $formattedReqFolderMultiNameHistory, $formattedReqOrderTest1, $formattedReqOrderTest2);
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param string $reqFolderName
-     * @param string $reqFolderMultiName
-     * @param string $reqFolderMultiNameHistory
-     * @param string $reqOrderTest1
-     * @param string $reqOrderTest2
-     * @param array  $optionalArgs              {
+     * @param FileLevelChildTypeRefRequest $request      A request to house fields associated with the call.
+     * @param array                        $optionalArgs {
      *     Optional.
      *
-     *     @type string $folderName
-     *     @type string $folderMultiName
-     *     @type string $folderMultiWildcardName
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function fileLevelChildTypeRefMethod($reqFolderName, $reqFolderMultiName, $reqFolderMultiNameHistory, $reqOrderTest1, $reqOrderTest2, array $optionalArgs = [])
+    public function fileLevelChildTypeRefMethod(FileLevelChildTypeRefRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new FileLevelChildTypeRefRequest();
-        $request->setReqFolderName($reqFolderName);
-        $request->setReqFolderMultiName($reqFolderMultiName);
-        $request->setReqFolderMultiNameHistory($reqFolderMultiNameHistory);
-        $request->setReqOrderTest1($reqOrderTest1);
-        $request->setReqOrderTest2($reqOrderTest2);
-        if (isset($optionalArgs['folderName'])) {
-            $request->setFolderName($optionalArgs['folderName']);
-        }
-
-        if (isset($optionalArgs['folderMultiName'])) {
-            $request->setFolderMultiName($optionalArgs['folderMultiName']);
-        }
-
-        if (isset($optionalArgs['folderMultiWildcardName'])) {
-            $request->setFolderMultiWildcardName($optionalArgs['folderMultiWildcardName']);
-        }
-
         return $this->startApiCall('FileLevelChildTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->fileLevelTypeRefMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param FileLevelTypeRefRequest $request      A request to house fields associated with the call.
+     * @param array                   $optionalArgs {
      *     Optional.
      *
-     *     @type string $fileName
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function fileLevelTypeRefMethod(array $optionalArgs = [])
+    public function fileLevelTypeRefMethod(FileLevelTypeRefRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new FileLevelTypeRefRequest();
-        if (isset($optionalArgs['fileName'])) {
-            $request->setFileName($optionalArgs['fileName']);
-        }
-
         return $this->startApiCall('FileLevelTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->multiPatternMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param MultiPatternRequest $request      A request to house fields associated with the call.
+     * @param array               $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function multiPatternMethod(array $optionalArgs = [])
+    public function multiPatternMethod(MultiPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new MultiPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('MultiPatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->singlePatternMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param SinglePatternRequest $request      A request to house fields associated with the call.
+     * @param array                $optionalArgs {
      *     Optional.
      *
-     *     @type string $realName
-     *           Test non-standard field name.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function singlePatternMethod(array $optionalArgs = [])
+    public function singlePatternMethod(SinglePatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new SinglePatternRequest();
-        if (isset($optionalArgs['realName'])) {
-            $request->setRealName($optionalArgs['realName']);
-        }
-
         return $this->startApiCall('SinglePatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->wildcardChildReferenceMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param WildcardChildReferenceRequest $request      A request to house fields associated with the call.
+     * @param array                         $optionalArgs {
      *     Optional.
      *
-     *     @type string $parent
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardChildReferenceMethod(array $optionalArgs = [])
+    public function wildcardChildReferenceMethod(WildcardChildReferenceRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new WildcardChildReferenceRequest();
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-        }
-
         return $this->startApiCall('WildcardChildReferenceMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->wildcardMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param WildcardPatternRequest $request      A request to house fields associated with the call.
+     * @param array                  $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardMethod(array $optionalArgs = [])
+    public function wildcardMethod(WildcardPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new WildcardPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('WildcardMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->wildcardMultiMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param WildcardMultiPatternRequest $request      A request to house fields associated with the call.
+     * @param array                       $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardMultiMethod(array $optionalArgs = [])
+    public function wildcardMultiMethod(WildcardMultiPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new WildcardMultiPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('WildcardMultiMethod', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $resourceNamesClient = new ResourceNamesClient();
-     * try {
-     *     $response = $resourceNamesClient->wildcardReferenceMethod();
-     * } finally {
-     *     $resourceNamesClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param WildcardReferenceRequest $request      A request to house fields associated with the call.
+     * @param array                    $optionalArgs {
      *     Optional.
      *
-     *     @type string $name
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\ResourceNames\PlaceholderResponse
+     * @return PlaceholderResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardReferenceMethod(array $optionalArgs = [])
+    public function wildcardReferenceMethod(WildcardReferenceRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        $request = new WildcardReferenceRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-        }
-
         return $this->startApiCall('WildcardReferenceMethod', $request, $optionalArgs)->wait();
     }
 }

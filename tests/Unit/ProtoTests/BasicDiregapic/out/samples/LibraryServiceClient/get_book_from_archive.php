@@ -25,24 +25,30 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_GetBookFromArchive_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromArchiveResponse;
+use Testing\BasicDiregapic\GetBookFromArchiveRequest;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Gets a book from an archive.
  *
- * @param string $formattedName   The name of the book to retrieve. Please see
- *                                {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
- * @param string $formattedParent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
+ * @param string $name   The name of the book to retrieve. Please see
+ *                       {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
+ * @param string $parent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
  */
-function get_book_from_archive_sample(string $formattedName, string $formattedParent): void
+function get_book_from_archive_sample(string $name, string $parent): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookFromArchiveRequest())
+        ->setName($name)
+        ->setParent($parent);
+
     // Call the API and handle any network failures.
     try {
         /** @var BookFromArchiveResponse $response */
-        $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
+        $response = $libraryServiceClient->getBookFromArchive($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -60,9 +66,9 @@ function get_book_from_archive_sample(string $formattedName, string $formattedPa
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
-    $formattedParent = LibraryServiceClient::projectName('[PROJECT]');
+    $name = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
+    $parent = LibraryServiceClient::projectName('[PROJECT]');
 
-    get_book_from_archive_sample($formattedName, $formattedParent);
+    get_book_from_archive_sample($name, $parent);
 }
 // [END example_generated_LibraryService_GetBookFromArchive_sync]

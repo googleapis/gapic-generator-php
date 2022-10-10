@@ -25,30 +25,34 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_CreateBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
+use Testing\BasicDiregapic\CreateBookRequest;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Creates a book.
  *
- * @param string $formattedName The name of the shelf in which the book is created. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $bookName      The resource name of the book.
- *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                              Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $name     The name of the shelf in which the book is created. Please see
+ *                         {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $bookName The resource name of the book.
+ *                         BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                         Message field comment may include special characters: <>&"`'&#64;.
  */
-function create_book_sample(string $formattedName, string $bookName): void
+function create_book_sample(string $name, string $bookName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $book = (new BookResponse())
         ->setName($bookName);
+    $request = (new CreateBookRequest())
+        ->setName($name)
+        ->setBook($book);
 
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryServiceClient->createBook($formattedName, $book);
+        $response = $libraryServiceClient->createBook($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -66,9 +70,9 @@ function create_book_sample(string $formattedName, string $bookName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::shelfName('[SHELF]');
     $bookName = '[NAME]';
 
-    create_book_sample($formattedName, $bookName);
+    create_book_sample($name, $bookName);
 }
 // [END example_generated_LibraryService_CreateBook_sync]

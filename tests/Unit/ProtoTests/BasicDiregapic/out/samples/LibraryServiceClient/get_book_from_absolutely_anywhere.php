@@ -25,23 +25,28 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_GetBookFromAbsolutelyAnywhere_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
+use Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Test proper OneOf-Any resource name mapping
  *
- * @param string $formattedName The name of the book to retrieve. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $name The name of the book to retrieve. Please see
+ *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function get_book_from_absolutely_anywhere_sample(string $formattedName): void
+function get_book_from_absolutely_anywhere_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookFromAbsolutelyAnywhereRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
         /** @var BookFromAnywhereResponse $response */
-        $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere($formattedName);
+        $response = $libraryServiceClient->getBookFromAbsolutelyAnywhere($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -59,8 +64,8 @@ function get_book_from_absolutely_anywhere_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    get_book_from_absolutely_anywhere_sample($formattedName);
+    get_book_from_absolutely_anywhere_sample($name);
 }
 // [END example_generated_LibraryService_GetBookFromAbsolutelyAnywhere_sync]

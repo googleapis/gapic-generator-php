@@ -40,41 +40,7 @@ use Testing\BasicLro\Request;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $basicLroClient = new BasicLroClient();
- * try {
- *     $operationResponse = $basicLroClient->method1();
- *     $operationResponse->pollUntilComplete();
- *     if ($operationResponse->operationSucceeded()) {
- *         $result = $operationResponse->getResult();
- *     // doSomethingWith($result)
- *     } else {
- *         $error = $operationResponse->getError();
- *         // handleError($error)
- *     }
- *     // Alternatively:
- *     // start the operation, keep the operation name, and resume later
- *     $operationResponse = $basicLroClient->method1();
- *     $operationName = $operationResponse->getName();
- *     // ... do other work
- *     $newOperationResponse = $basicLroClient->resumeOperation($operationName, 'method1');
- *     while (!$newOperationResponse->isDone()) {
- *         // ... do other work
- *         $newOperationResponse->reload();
- *     }
- *     if ($newOperationResponse->operationSucceeded()) {
- *         $result = $newOperationResponse->getResult();
- *     // doSomethingWith($result)
- *     } else {
- *         $error = $newOperationResponse->getError();
- *         // handleError($error)
- *     }
- * } finally {
- *     $basicLroClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class BasicLroGapicClient
 {
@@ -214,42 +180,8 @@ class BasicLroGapicClient
      * file are always generated first; so this method will be emitted
      * before the above MethodNonLro1.
      *
-     * Sample code:
-     * ```
-     * $basicLroClient = new BasicLroClient();
-     * try {
-     *     $operationResponse = $basicLroClient->method1();
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         $result = $operationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $basicLroClient->method1();
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $basicLroClient->resumeOperation($operationName, 'method1');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         $result = $newOperationResponse->getResult();
-     *     // doSomethingWith($result)
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $basicLroClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -258,29 +190,18 @@ class BasicLroGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return OperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function method1(array $optionalArgs = [])
+    public function method1(Request $request, array $optionalArgs = []): OperationResponse
     {
-        $request = new Request();
         return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $basicLroClient = new BasicLroClient();
-     * try {
-     *     $response = $basicLroClient->methodNonLro1();
-     * } finally {
-     *     $basicLroClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -289,29 +210,18 @@ class BasicLroGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicLro\Request
+     * @return Request
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodNonLro1(array $optionalArgs = [])
+    public function methodNonLro1(Request $request, array $optionalArgs = []): Request
     {
-        $request = new Request();
         return $this->startApiCall('MethodNonLro1', $request, $optionalArgs)->wait();
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $basicLroClient = new BasicLroClient();
-     * try {
-     *     $response = $basicLroClient->methodNonLro2();
-     * } finally {
-     *     $basicLroClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param Request $request      A request to house fields associated with the call.
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -320,13 +230,12 @@ class BasicLroGapicClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Testing\BasicLro\Request
+     * @return Request
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodNonLro2(array $optionalArgs = [])
+    public function methodNonLro2(Request $request, array $optionalArgs = []): Request
     {
-        $request = new Request();
         return $this->startApiCall('MethodNonLro2', $request, $optionalArgs)->wait();
     }
 }

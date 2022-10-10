@@ -26,24 +26,30 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\MoveBookRequest;
 
 /**
  * Moves a book to another shelf, and returns the new book.
  *
- * @param string $formattedName           The name of the book to move. Please see
- *                                        {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedOtherShelfName The name of the destination shelf. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $name           The name of the book to move. Please see
+ *                               {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $otherShelfName The name of the destination shelf. Please see
+ *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function move_book_sample(string $formattedName, string $formattedOtherShelfName): void
+function move_book_sample(string $name, string $otherShelfName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new MoveBookRequest())
+        ->setName($name)
+        ->setOtherShelfName($otherShelfName);
+
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryServiceClient->moveBook($formattedName, $formattedOtherShelfName);
+        $response = $libraryServiceClient->moveBook($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -61,9 +67,9 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $otherShelfName = LibraryServiceClient::shelfName('[SHELF]');
 
-    move_book_sample($formattedName, $formattedOtherShelfName);
+    move_book_sample($name, $otherShelfName);
 }
 // [END example_generated_LibraryService_MoveBook_sync]

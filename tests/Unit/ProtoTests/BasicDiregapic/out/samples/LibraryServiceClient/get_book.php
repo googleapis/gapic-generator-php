@@ -25,23 +25,28 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_GetBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
+use Testing\BasicDiregapic\GetBookRequest;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Gets a book.
  *
- * @param string $formattedName The name of the book to retrieve. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $name The name of the book to retrieve. Please see
+ *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function get_book_sample(string $formattedName): void
+function get_book_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryServiceClient->getBook($formattedName);
+        $response = $libraryServiceClient->getBook($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -59,8 +64,8 @@ function get_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    get_book_sample($formattedName);
+    get_book_sample($name);
 }
 // [END example_generated_LibraryService_GetBook_sync]

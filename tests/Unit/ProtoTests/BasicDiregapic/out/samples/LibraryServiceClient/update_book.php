@@ -26,29 +26,33 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\UpdateBookRequest;
 
 /**
  * Updates a book.
  *
- * @param string $formattedName The name of the book to update. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $bookName      The resource name of the book.
- *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                              Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $name     The name of the book to update. Please see
+ *                         {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $bookName The resource name of the book.
+ *                         BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                         Message field comment may include special characters: <>&"`'&#64;.
  */
-function update_book_sample(string $formattedName, string $bookName): void
+function update_book_sample(string $name, string $bookName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $book = (new BookResponse())
         ->setName($bookName);
+    $request = (new UpdateBookRequest())
+        ->setName($name)
+        ->setBook($book);
 
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryServiceClient->updateBook($formattedName, $book);
+        $response = $libraryServiceClient->updateBook($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -66,9 +70,9 @@ function update_book_sample(string $formattedName, string $bookName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $bookName = '[NAME]';
 
-    update_book_sample($formattedName, $bookName);
+    update_book_sample($name, $bookName);
 }
 // [END example_generated_LibraryService_UpdateBook_sync]

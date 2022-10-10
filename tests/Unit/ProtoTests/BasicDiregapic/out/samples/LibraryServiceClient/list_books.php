@@ -27,22 +27,27 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\ListBooksRequest;
 
 /**
  * Lists books in a shelf.
  *
- * @param string $formattedName The name of the shelf whose books we'd like to list. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $name The name of the shelf whose books we'd like to list. Please see
+ *                     {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function list_books_sample(string $formattedName): void
+function list_books_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListBooksRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryServiceClient->listBooks($formattedName);
+        $response = $libraryServiceClient->listBooks($request);
 
         /** @var BookResponse $element */
         foreach ($response as $element) {
@@ -64,8 +69,8 @@ function list_books_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::shelfName('[SHELF]');
 
-    list_books_sample($formattedName);
+    list_books_sample($name);
 }
 // [END example_generated_LibraryService_ListBooks_sync]

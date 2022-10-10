@@ -26,23 +26,28 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
+use Testing\BasicDiregapic\GetBookRequest;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Test long-running operations with empty return type.
  *
- * @param string $formattedName The name of the book to retrieve. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $name The name of the book to retrieve. Please see
+ *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function get_big_nothing_sample(string $formattedName): void
+function get_big_nothing_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $libraryServiceClient->getBigNothing($formattedName);
+        $response = $libraryServiceClient->getBigNothing($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
@@ -68,8 +73,8 @@ function get_big_nothing_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    get_big_nothing_sample($formattedName);
+    get_big_nothing_sample($name);
 }
 // [END example_generated_LibraryService_GetBigNothing_sync]

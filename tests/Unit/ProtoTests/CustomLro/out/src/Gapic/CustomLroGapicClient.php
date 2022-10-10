@@ -39,41 +39,7 @@ use Testing\CustomLro\CustomLroOperationsClient;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $customLroClient = new CustomLroClient();
- * try {
- *     $project = 'project';
- *     $region = 'region';
- *     $operationResponse = $customLroClient->createFoo($project, $region);
- *     $operationResponse->pollUntilComplete();
- *     if ($operationResponse->operationSucceeded()) {
- *         // if creating/modifying, retrieve the target resource
- *     } else {
- *         $error = $operationResponse->getError();
- *         // handleError($error)
- *     }
- *     // Alternatively:
- *     // start the operation, keep the operation name, and resume later
- *     $operationResponse = $customLroClient->createFoo($project, $region);
- *     $operationName = $operationResponse->getName();
- *     // ... do other work
- *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
- *     while (!$newOperationResponse->isDone()) {
- *         // ... do other work
- *         $newOperationResponse->reload();
- *     }
- *     if ($newOperationResponse->operationSucceeded()) {
- *         // if creating/modifying, retrieve the target resource
- *     } else {
- *         $error = $newOperationResponse->getError();
- *         // handleError($error)
- *     }
- * } finally {
- *     $customLroClient->close();
- * }
- * ```
+ * calls that map to API methods.
  */
 class CustomLroGapicClient
 {
@@ -241,67 +207,22 @@ class CustomLroGapicClient
     }
 
     /**
-     *
-     * Sample code:
-     * ```
-     * $customLroClient = new CustomLroClient();
-     * try {
-     *     $project = 'project';
-     *     $region = 'region';
-     *     $operationResponse = $customLroClient->createFoo($project, $region);
-     *     $operationResponse->pollUntilComplete();
-     *     if ($operationResponse->operationSucceeded()) {
-     *         // if creating/modifying, retrieve the target resource
-     *     } else {
-     *         $error = $operationResponse->getError();
-     *         // handleError($error)
-     *     }
-     *     // Alternatively:
-     *     // start the operation, keep the operation name, and resume later
-     *     $operationResponse = $customLroClient->createFoo($project, $region);
-     *     $operationName = $operationResponse->getName();
-     *     // ... do other work
-     *     $newOperationResponse = $customLroClient->resumeOperation($operationName, 'createFoo');
-     *     while (!$newOperationResponse->isDone()) {
-     *         // ... do other work
-     *         $newOperationResponse->reload();
-     *     }
-     *     if ($newOperationResponse->operationSucceeded()) {
-     *         // if creating/modifying, retrieve the target resource
-     *     } else {
-     *         $error = $newOperationResponse->getError();
-     *         // handleError($error)
-     *     }
-     * } finally {
-     *     $customLroClient->close();
-     * }
-     * ```
-     *
-     * @param string $project
-     * @param string $region
-     * @param array  $optionalArgs {
+     * @param CreateFooRequest $request      A request to house fields associated with the call.
+     * @param array            $optionalArgs {
      *     Optional.
      *
-     *     @type string $foo
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return \Google\ApiCore\OperationResponse
+     * @return OperationResponse
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function createFoo($project, $region, array $optionalArgs = [])
+    public function createFoo(CreateFooRequest $request, array $optionalArgs = []): OperationResponse
     {
-        $request = new CreateFooRequest();
-        $request->setProject($project);
-        $request->setRegion($region);
-        if (isset($optionalArgs['foo'])) {
-            $request->setFoo($optionalArgs['foo']);
-        }
-
         return $this->startApiCall('CreateFoo', $request, $optionalArgs)->wait();
     }
 }
