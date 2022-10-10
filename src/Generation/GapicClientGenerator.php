@@ -108,10 +108,8 @@ class GapicClientGenerator
                     ->prepend('Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? ''))),
                 PhpDoc::preFormattedText(Vector::new([
                     'This class provides the ability to make remote calls to the backing service through method',
-                    'calls that map to API methods. Sample code to get started:'
+                    'calls that map to API methods.'
                 ])),
-                count($this->serviceDetails->methods) === 0 ? null :
-                    PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
                 count($this->serviceDetails->resourceParts) === 0 ? null :
                      PhpDoc::text(
                          'Many parameters require resource names to be formatted in a particular way. To assist ' .
@@ -510,9 +508,16 @@ class GapicClientGenerator
             PhpDoc::text(
                 'Configuration options that will be used to construct the transport. Options for',
                 'each supported transport type should be passed in a key for that transport. For example:',
-                PhpDoc::example(AST::block(
-                    AST::assign(AST::var('transportConfig'), AST::array($transportConfigSampleValues))
-                ), null, true),
+                PhpDoc::example(
+                    AST::block(
+                        AST::assign(
+                            AST::var('transportConfig'),
+                            AST::array($transportConfigSampleValues)
+                        )
+                    ),
+                    null,
+                    true
+                ),
                 'See the',
                 AST::call(
                     $ctx->type(
@@ -523,7 +528,13 @@ class GapicClientGenerator
                 )(),
                 $isGrpcRest ? 'and' : '',
                 $isGrpcRest
-                    ? AST::call($ctx->type(Type::fromName(RestTransport::class), true), AST::method('build'))()
+                    ? AST::call(
+                        $ctx->type(
+                            Type::fromName(RestTransport::class),
+                            true
+                        ),
+                        AST::method('build')
+                    )()
                     : '',
                 $isGrpcRest ? 'methods ' : 'method ',
                 'for the supported options.'
@@ -637,147 +648,82 @@ class GapicClientGenerator
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
     {
-        $docType = function ($field): ResolvedType {
-            if ($field->desc->desc->isRepeated()) {
-                if ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->typeSingular);
-                    return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
-                } elseif ($field->isMap) {
-                    return $this->ctx->type(Type::array());
-                } elseif ($field->isOneOf) {
-                    // Also adds a corresponding 'use' import.
-                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
-                } else {
-                    return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
-                }
-            } else {
-                // Affects type hinting for required oneofs.
-                // TODO(vNext) Handle optional oneofs here.
-                if ($field->isOneOf && $field->isRequired) {
-                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
-                } elseif ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->type);
-                    return $this->ctx->type(Type::int());
-                } else {
-                    return $this->ctx->type($field->type);
-                }
-            }
-        };
-        $docExtra = function ($field): Vector {
-            if ($field->isEnum) {
-                // TODO(vNext): Don't use a fully-qualified name here; and import correctly.
-                $enumType = $field->typeSingular->getFullname();
-                return Vector::new([
-                    "For allowed values, use constants defined on {@see {$enumType}}"
-                ]);
-            } else {
-                return Vector::new([]);
-            }
-        };
         $request = AST::var('request');
-        $required = $method->requiredFields
-                           ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
-                           ->map(fn ($f) => $this->toParam($f));
-        $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
+        $required = AST::param(
+            $this->ctx->type($method->requestType),
+            $request
+        );
+        $optionalArgs = AST::param(
+            $this->ctx->type(Type::array()),
+            AST::var('optionalArgs'),
+            AST::array([])
+        );
         $retrySettingsType = Type::fromName(RetrySettings::class);
-        $isStreamedRequest =
-            $method->methodType === MethodDetails::BIDI_STREAMING
-            || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        
+        $usesRequest = !$method->isClientStreaming()
+            && !$method->isBidiStreaming();
+
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
-                $isStreamedRequest ? null : $required,
+                $usesRequest ? $required : null,
                 $optionalArgs
             )
-            ->withBody(AST::block(
-                $isStreamedRequest ? null : Vector::new([
-                    AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                    Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
-                        $required,
-                        fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
-                    ),
-                    $method->optionalFields->map(
-                        fn ($x) =>
-                        AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                            ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName))),
-                    ),
-                ]),
-                AST::return($this->startCall($method, $optionalArgs, $request))
-            ))
-            ->withPhpDoc(PhpDoc::block(
-                PhpDoc::preFormattedText($method->docLines),
-                PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
-                $isStreamedRequest
-                    ? null
-                    : Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
-                        $required,
-                        fn ($field, $param) =>
-                        PhpDoc::param(
-                            $param,
-                            PhpDoc::preFormattedText(
-                                !$field->isOneOf
-                                    ? $field->docLines->concat($docExtra($field))
-                                    : Vector::new([
-                                        'An instance of the wrapper class for the required proto oneof '
-                                        . $field->getOneofDesc()->getName() . '.'
-                                      ])->concat($docExtra($field))
-                            ),
-                            $docType($field)
-                        )
-                    ),
-                $isStreamedRequest ?
+            ->withBody(
+                AST::block(
+                    AST::return(
+                        $this->startCall($method, $optionalArgs, $request)
+                    )
+                )
+            )
+            ->withReturnType(
+                $method->hasEmptyResponse
+                    ? $this->ctx->type(Type::void())
+                    : $this->ctx->type($method->methodReturnType)
+            )
+            ->withPhpDoc(
+                PhpDoc::block(
+                    count($method->docLines) > 0
+                        ? PhpDoc::preFormattedText($method->docLines)
+                        : null,
+                    $usesRequest
+                        ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
+                        : null,
                     PhpDoc::param($optionalArgs, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
-                        PhpDoc::type(
-                            Vector::new([$this->ctx->type(Type::int())]),
-                            'timeoutMillis',
-                            PhpDoc::text('Timeout to use for this call.')
-                        )
-                    )) :
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
-                        PhpDoc::Text('Optional.'),
-                        $method->optionalFields->map(
-                            fn ($field) =>
-                            PhpDoc::type(
-                                Vector::new([$docType($field)]),
-                                $field->camelName,
-                                PhpDoc::preFormattedText($field->docLines->concat($docExtra($field)))
-                            )
-                        ),
-                        $method->methodType === MethodDetails::SERVER_STREAMING ?
-                            PhpDoc::type(
+                        $method->isStreaming()
+                            ? PhpDoc::type(
                                 Vector::new([$this->ctx->type(Type::int())]),
                                 'timeoutMillis',
                                 PhpDoc::text('Timeout to use for this call.')
-                            ) :
-                            PhpDoc::type(
+                            )
+                            : PhpDoc::type(
                                 Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
                                 'retrySettings',
                                 PhpDoc::text(
-                                    // TODO(vNext): Don't use a fully-qualified type here.
                                     'Retry settings to use for this call. Can be a ',
-                                    $this->ctx->Type($retrySettingsType),
+                                    $this->ctx->type($retrySettingsType),
                                     ' object, or an associative array of retry settings parameters. See the documentation on ',
-                                    // TODO(vNext): Don't use a fully-qualified type here.
-                                    $this->ctx->Type($retrySettingsType),
+                                    $this->ctx->type($retrySettingsType),
                                     ' for example usage.'
                                 )
                             )
-                    )),
-                // TODO(vNext): Don't use a fully-qualified type here.
-                $method->hasEmptyResponse ? null : PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
-                PhpDoc::throws(
-                    $this->ctx->type(Type::fromName(ApiException::class)),
-                    PhpDoc::text('if the remote call fails')
-                ),
-                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                !$method->isDeprecated ? null : PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
-            ));
+                        )
+                    ),
+                    $method->hasEmptyResponse
+                        ? null
+                        : PhpDoc::return($this->ctx->type($method->methodReturnType)),
+                    PhpDoc::throws(
+                        $this->ctx->type(Type::fromName(ApiException::class)),
+                        PhpDoc::text('Thrown if the API call fails.')
+                    ),
+                    $this->serviceDetails->isGa()
+                        ? null
+                        : PhpDoc::experimental(),
+                    $method->isDeprecated
+                        ? PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
+                        : null
+                )
+            );
     }
 
     private function startCall($method, $optionalArgs, $request): AST
@@ -808,323 +754,5 @@ class GapicClientGenerator
       }
 
       return $call;
-    }
-
-    /**
-     * Turns a field into a parameter for RPC methods.
-     *
-     * The caller will be responsible for preventing duplicates by ensuring that this method
-     * is called only on the first field in a oneof group.
-     */
-    private function toParam(FieldDetails $field): PhpParam
-    {
-        if (!$field->isOneOf) {
-            return AST::param(null, AST::var($field->camelName));
-        }
-
-        return AST::param(null, AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName())));
-    }
-
-    /**
-     * Returns an expression that assigns a required field to a request.
-     * If this field is not part of a oneof, returns a plain assignment expression.
-     * If the field is a oneof, this method returns an if-else block that passes the chosen
-     * oneof field to the corresponding setter in the oneof.
-     *
-     * The caller will be responsible for preventing duplicates by ensuring that this method
-     * is called only on the first field in a oneof group.
-     *
-     *  @param $requestVarExpr The AST variable that represents the request.
-     *  @param $field A required proto field.
-     *  @param $param The input parameter into the RPC method that corresponnds to $field.
-     *    If $field is part of a oneof, $param should be a wrapper class generated by
-     *    OneofWrapperGenerator (and generated by $this->toParam()).
-     *  @returns An assignment Expression or an if-else block of type AST.
-     */
-    private function toRequestFieldSetter(Expression $requestVarExpr, FieldDetails $field, PhpParam $param)
-    {
-        if (!$field->isOneOf) {
-            return AST::call($requestVarExpr, $field->setter)($param);
-        }
-
-        if (!$field->isFirstFieldInOneof()) {
-            return null;
-        }
-
-        $containingMessage = $field->containingMessage;
-        $oneofFieldDescProtos = $containingMessage->getField();
-
-        $toMethodNameFn = function ($prefix, $fieldDescProto) {
-            return $prefix . Helpers::toUpperCamelCase($fieldDescProto->getName());
-        };
-
-        $ifBlock = null;
-        foreach ($containingMessage->getField() as $currFieldDescProto) {
-            if (!$currFieldDescProto->hasOneofIndex()
-                || $currFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
-                continue;
-            }
-
-            // Code: $fooOneof->isBar()
-            $condition = AST::call($param, AST::method($toMethodNameFn("is", $currFieldDescProto)))();
-            // Code: $request->setBar($fooOneof->getBar())
-            $then = AST::call(
-                $requestVarExpr,
-                AST::method($toMethodNameFn("set", $currFieldDescProto))
-            )(
-                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
-            );
-            // First field.
-            if ($ifBlock === null) {
-                $ifBlock = AST::if($condition)->then($then);
-            } else {
-                $ifBlock = $ifBlock->elseif($condition, $then);
-            }
-        }
-
-        // Add the throw-exception block, in case a oneof field is not set.
-        if ($ifBlock !== null) {
-            $ifBlock = $ifBlock->else(
-                AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                    AST::interpolatedString('A field for the oneof ' . $field->getOneofDesc()->getName()
-                    . ' must be set in param ' . $param->toCode())
-                ))
-            );
-        }
-
-        return AST::block($ifBlock);
-    }
-
-    /**
-     * Assembles the code for matching and injecting the explicitly configured request routing headers.
-     * A Vector containing code for required fields is keyed to 'required'. A Map containing code
-     * for each optional field is keyed to 'optional'. If there are no headers configured to be set, both
-     * are set to null.
-     *
-     * @param MethodDetails $method The method with the RoutingRule.
-     * @param Map $routingHeaders A mapping of RoutingParameter.field to all of the processed versions of it.
-     * @param Expression $paramsVar The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return array Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
-     */
-    private static function explicitRequestParams(MethodDetails $method, Map $routingHeaders, Expression $paramsVar)
-    {
-        // Has no request parameter headers.
-        if (count($routingHeaders) === 0) {
-            return ['required' => null, 'optional' => null];
-        }
-
-        // Map those root fields that are required by name to the routing header config.
-        $requiredRoutingHeadersByRoot = $routingHeaders
-            ->filter(fn ($k, $v) => $method->requiredFields->any(fn ($f) => $f->name === $v[0]['root']))
-            ->values()
-            ->toMap(fn ($v) => $v[0]['root']);
-        // Map those required fields that appear as routing headers by name to their own FieldDetails.
-        $requiredFieldsInHeaders = $method->requiredFields
-            ->filter(fn ($f) => isset($requiredRoutingHeadersByRoot[$f->name]))
-            ->toMap(fn ($f) => $f->name);
-        $requiredAssignments = static::explicitRequestParamsForFields(
-            $requiredRoutingHeadersByRoot,
-            $requiredFieldsInHeaders,
-            $paramsVar
-        );
-
-        // Map those root fields that are optional by name to the routing header config.
-        $optionalRoutingHeadersByRoot = $routingHeaders
-            ->filter(fn ($k, $v) => $method->optionalFields->any(fn ($f) => $f->name === $v[0]['root']))
-            ->values()
-            ->toMap(fn ($v) => $v[0]['root']);
-        // Map those optional fields that appear as routing headers by name to their own FieldDetails.
-        $optionalFieldsInHeaders = $method->optionalFields
-            ->filter(fn ($f) => isset($optionalRoutingHeadersByRoot[$f->name]))
-            ->toMap(fn ($f) => $f->name);
-        $optionalAssignments = static::explicitRequestParamsForFields(
-            $optionalRoutingHeadersByRoot,
-            $optionalFieldsInHeaders,
-            $paramsVar
-        );
-
-        return [
-            'required' => $requiredAssignments->values(),
-            'optional' => $optionalAssignments
-        ];
-    }
-
-    /**
-     * Given the header-to-field mappings, compiles the code for the value matching and/or header injection.
-     *
-     * @param Map $headersByRootField Mapping of routing parameter configs keyed by the root field name.
-     * @param Map $fieldDetailsByRootField Mapping of FieldDetails keyed by the root field name.
-     * @param Expression $paramsVar The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return Map The mapping of root field to header parsing/injection code related to it.
-     */
-    private static function explicitRequestParamsForFields(Map $headersByRootField, Map $fieldDetailsByRootField, Expression $paramsVar)
-    {
-        // $assignments maps a Vector of AST statements to the root field name.
-        $assignments = Map::new([]);
-        foreach ($headersByRootField as [$root, $routingConfigs]) {
-            // $keyToMatcher maps the field key strings to the matching chain that might set it.
-            $keyToMatcher = Map::new([]);
-            // Collect all of the statements for a $root field, including
-            // any regex matcher conditionals.
-            foreach ($routingConfigs as $routing) {
-                $field = $fieldDetailsByRootField[$root];
-                $param = $field->isRequired
-                    ? AST::param(null, AST::var($field->camelName))
-                    : AST::index(AST::var('optionalArgs'), $root);
-                $assignValue = $param;
-
-                // Construct the getter chain if the routing header uses a nested field.
-                $chain = $routing['getter'];
-                if (count($chain) > 1) {
-                    $assignValue = $chain->skip(1)->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))());
-                }
-                // Basic case, no regex matcher, just assign the required param to the header key.
-                if (is_null($routing['regex'])) {
-                    $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->append(AST::assign(
-                        AST::index($paramsVar, $routing['key']),
-                        $assignValue
-                    )));
-                    continue;
-                }
-
-                // Construct the preg_match expression using the routing header config's capture group regular expression.
-                $key = $routing['key'];
-                $matchesName = Helpers::toCamelCase($key) . "Matches";
-                $matches = AST::var($matchesName);
-                $matcher = null;
-
-                // Extend the if-elseif chain.
-                if (isset($keyToMatcher[$key])) {
-                    $if = $keyToMatcher[$key];
-                    $if = $if->elseif(
-                        /* condition */
-                        AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches),
-                        /* then */
-                        AST::assign(
-                            AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, $routing['key'])
-                        )
-                    );
-                    $matcher = $if;
-                } else {
-                    // Create the conditional chain that sets the header key-value pair using the capture group if
-                    // the preg_match finds a match.
-                    $matcher = AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
-                        AST::assign(
-                            AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, $routing['key'])
-                        )
-                    );
-                }
-                // Upsert the matcher chain for a header key.
-                $keyToMatcher = $keyToMatcher->set($key, $matcher);
-            }
-            $assignments = $assignments
-                ->set($root, $assignments
-                    ->get($root, Vector::new([]))
-                    ->concat($keyToMatcher
-                        // Initialize the a matching results array for the (root) field named in the routing header config.
-                        ->mapValues(
-                            fn ($key, $matcher) =>
-                            AST::block(
-                                // $fooMatches = []
-                                AST::assign(AST::var(Helpers::toCamelCase($key) . "Matches"), AST::array([])),
-                                // if (preg_match(..., $fooMatches))
-                                $matcher
-                            )
-                        )->values()));
-        }
-
-        return $assignments;
-    }
-
-    /**
-     * Compiles the code for implicit request header injection based on the configuration from
-     * google.api.http annotations for both required and optional fields. A Vector containing code
-     * for required fields is keyed to 'required'. A Map containing code for each optional field is
-     * keyed to 'optional' (does not support nested fields). If there are no headers configured to
-     * be set, both are set to null.
-     *
-     * @param MethodDetails $method The method with the HttpRule.
-     * @param Map $restRoutingHeaders Mapping of full header key name to getter/chain.
-     * @param Expression $requestParamHeaders The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return Map Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
-     */
-    private static function implicitRequestParams(MethodDetails $method, Map $restRoutingHeaders, Expression $requestParamHeaders)
-    {
-        // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
-        $requiredFieldNames =
-            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
-        // Contains full field names with parents, e.g. foo.bar.car.
-        $requiredRestRoutingKeys =
-            $restRoutingHeaders->keys()
-                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]));
-        $requiredFieldNamesInRoutingHeaders =
-            $requiredFieldNames->filter(
-                fn ($x) => !empty($x)
-                    && in_array(
-                        trim($x),
-                        array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())
-                    )
-            )
-                ->toArray();
-        // Maps field names to a set of the relevant field in the URL pattern.
-        // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
-        // This is needed for RPCs that may have multiple subfields under the same field in their
-        // HTTP bindings.
-        $requiredFieldToHeaderName = [];
-        foreach ($requiredFieldNamesInRoutingHeaders as $header) {
-            $requiredFieldToHeaderName[$header] =
-                $requiredRestRoutingKeys->filter(
-                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k
-                );
-        }
-
-        // Has no request parameter headers.
-        if (count($restRoutingHeaders) === 0) {
-            return ['required' => null, 'optional' => null];
-        }
-        $requiredRequestHeaders = Vector::new([]);
-        // TODO(v2): Handle request params for oneofs - this currently isn't used by anyone.
-        foreach ($method->requiredFields as $field) {
-            if (!isset($requiredFieldToHeaderName[$field->name])) {
-                continue;
-            }
-            $requiredParam = AST::param(null, AST::var($field->camelName));
-            foreach ($requiredFieldToHeaderName[$field->name] as $urlPatternHeaderName) {
-                $assignValue = $requiredParam;
-                if ($restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))->count() >= 2) {
-                    $assignValue =
-                        $restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))
-                            ->skip(1)
-                            // Chains getter methods together for nested names like foo.bar.car, which
-                            // becomes $foo->getBar()->getCar().
-                            ->reduce($requiredParam, fn ($acc, $g) => AST::call($acc, AST::method($g))());
-                }
-                $requiredRequestHeaders = $requiredRequestHeaders->append(
-                    AST::assign(
-                        AST::index($requestParamHeaders, $urlPatternHeaderName),
-                        $assignValue
-                    )
-                );
-            }
-        }
-
-        // TODO(noahdietz): Consider assigning nested fields on optional params,
-        // at the risk of errors if they're not set on the message itself.
-        $optionalAssignments = $method->optionalFields
-        ->filter(fn ($f) => isset($restRoutingHeaders[$f->name]))
-        ->toMap(
-            fn ($f) => $f->name,
-            fn ($f) => AST::assign(
-                AST::index($requestParamHeaders, $f->name),
-                AST::index(AST::var('optionalArgs'), $f->camelName)
-            )
-        );
-
-        return ['required' => $requiredRequestHeaders, 'optional' => $optionalAssignments];
     }
 }
