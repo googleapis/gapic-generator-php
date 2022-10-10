@@ -39,6 +39,7 @@ use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
 use Google\Cloud\VideoIntelligence\V1\Feature;
 use Google\Cloud\VideoIntelligence\V1\VideoContext;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service that implements the Video Intelligence API.
@@ -213,6 +214,33 @@ class VideoIntelligenceServiceGapicClient
     }
 
     /**
+     * ```
+     * $videoIntelligenceServiceClient = new VideoIntelligenceServiceClient();
+     * $request = new AnnotateVideoRequest();
+     * try {
+     *     $response = $videoIntelligenceServiceClient->sendAsync('annotateVideo', $request)->wait();
+     * } finally {
+     *     $videoIntelligenceServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Performs asynchronous video annotation. Progress and results can be
      * retrieved through the `google.longrunning.Operations` interface.
      * `Operation.metadata` contains `AnnotateVideoProgress` (progress).
@@ -252,6 +280,8 @@ class VideoIntelligenceServiceGapicClient
      *     $videoIntelligenceServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.

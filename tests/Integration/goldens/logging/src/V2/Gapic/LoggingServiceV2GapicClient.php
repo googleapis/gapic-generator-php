@@ -40,6 +40,7 @@ use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest;
 use Google\Cloud\Logging\V2\LogEntry;
 use Google\Cloud\Logging\V2\TailLogEntriesRequest;
 use Google\Cloud\Logging\V2\WriteLogEntriesRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for ingesting and querying logs.
@@ -481,6 +482,33 @@ class LoggingServiceV2GapicClient
     }
 
     /**
+     * ```
+     * $loggingServiceV2Client = new LoggingServiceV2Client();
+     * $request = new DeleteLogRequest();
+     * try {
+     *     $response = $loggingServiceV2Client->sendAsync('deleteLog', $request)->wait();
+     * } finally {
+     *     $loggingServiceV2Client->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Deletes all the log entries in a log. The log reappears if it receives new
      * entries. Log entries written shortly before the delete operation might not
      * be deleted. Entries received after the delete operation with a timestamp
@@ -496,6 +524,8 @@ class LoggingServiceV2GapicClient
      *     $loggingServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $logName      Required. The resource name of the log to delete:
      *
@@ -557,6 +587,8 @@ class LoggingServiceV2GapicClient
      *     $loggingServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string[] $resourceNames Required. Names of one or more parent resources from which to
      *                                retrieve log entries:
@@ -660,6 +692,8 @@ class LoggingServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name that owns the logs:
      *
      *                             "projects/[PROJECT_ID]"
@@ -743,6 +777,8 @@ class LoggingServiceV2GapicClient
      *     $loggingServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -861,6 +897,8 @@ class LoggingServiceV2GapicClient
      *     $loggingServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param LogEntry[] $entries      Required. The log entries to send to Logging. The order of log
      *                                 entries in this list does not matter. Values supplied in this method's

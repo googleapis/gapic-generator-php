@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
 use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service handles client event report.
@@ -281,6 +282,33 @@ class EventServiceGapicClient
     }
 
     /**
+     * ```
+     * $eventServiceClient = new EventServiceClient();
+     * $request = new CreateClientEventRequest();
+     * try {
+     *     $response = $eventServiceClient->sendAsync('createClientEvent', $request)->wait();
+     * } finally {
+     *     $eventServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Report events issued when end user interacts with customer's application
      * that uses Cloud Talent Solution. You may inspect the created events in
      * [self service
@@ -300,6 +328,8 @@ class EventServiceGapicClient
      *     $eventServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string      $parent       Required. Resource name of the tenant under which the event is created.
      *

@@ -38,6 +38,7 @@ use Google\Cloud\Logging\V2\GetLogMetricRequest;
 use Google\Cloud\Logging\V2\ListLogMetricsRequest;
 use Google\Cloud\Logging\V2\LogMetric;
 use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for configuring logs-based metrics.
@@ -276,6 +277,33 @@ class MetricsServiceV2GapicClient
     }
 
     /**
+     * ```
+     * $metricsServiceV2Client = new MetricsServiceV2Client();
+     * $request = new CreateLogMetricRequest();
+     * try {
+     *     $response = $metricsServiceV2Client->sendAsync('createLogMetric', $request)->wait();
+     * } finally {
+     *     $metricsServiceV2Client->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a logs-based metric.
      *
      * Sample code:
@@ -289,6 +317,8 @@ class MetricsServiceV2GapicClient
      *     $metricsServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $parent       Required. The resource name of the project in which to create the metric:
      *
@@ -332,6 +362,8 @@ class MetricsServiceV2GapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $metricName   Required. The resource name of the metric to delete:
      *
      *                             "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
@@ -366,6 +398,8 @@ class MetricsServiceV2GapicClient
      *     $metricsServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $metricName   Required. The resource name of the desired metric:
      *
@@ -415,6 +449,8 @@ class MetricsServiceV2GapicClient
      *     $metricsServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The name of the project containing the metrics:
      *
@@ -470,6 +506,8 @@ class MetricsServiceV2GapicClient
      *     $metricsServiceV2Client->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $metricName   Required. The resource name of the metric to update:
      *

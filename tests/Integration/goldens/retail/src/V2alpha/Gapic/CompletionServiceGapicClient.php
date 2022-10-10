@@ -40,6 +40,7 @@ use Google\Cloud\Retail\V2alpha\CompleteQueryRequest;
 use Google\Cloud\Retail\V2alpha\CompletionDataInputConfig;
 use Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Auto-completion service for retail.
@@ -296,6 +297,33 @@ class CompletionServiceGapicClient
     }
 
     /**
+     * ```
+     * $completionServiceClient = new CompletionServiceClient();
+     * $request = new CompleteQueryRequest();
+     * try {
+     *     $response = $completionServiceClient->sendAsync('completeQuery', $request)->wait();
+     * } finally {
+     *     $completionServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Completes the specified prefix with keyword suggestions.
      *
      * This feature is only available for users who have Retail Search enabled.
@@ -313,6 +341,8 @@ class CompletionServiceGapicClient
      *     $completionServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $catalog      Required. Catalog for which the completion is performed.
      *
@@ -461,6 +491,8 @@ class CompletionServiceGapicClient
      *     $completionServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string                    $parent       Required. The catalog which the suggestions dataset belongs to.
      *

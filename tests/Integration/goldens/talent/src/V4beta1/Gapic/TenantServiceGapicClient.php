@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\ListTenantsRequest;
 use Google\Cloud\Talent\V4beta1\Tenant;
 use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that handles tenant management, including CRUD and enumeration.
@@ -286,6 +287,33 @@ class TenantServiceGapicClient
     }
 
     /**
+     * ```
+     * $tenantServiceClient = new TenantServiceClient();
+     * $request = new CreateTenantRequest();
+     * try {
+     *     $response = $tenantServiceClient->sendAsync('createTenant', $request)->wait();
+     * } finally {
+     *     $tenantServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a new tenant entity.
      *
      * Sample code:
@@ -299,6 +327,8 @@ class TenantServiceGapicClient
      *     $tenantServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Resource name of the project under which the tenant is created.
      *
@@ -342,6 +372,8 @@ class TenantServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the tenant to be deleted.
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}", for example,
@@ -379,6 +411,8 @@ class TenantServiceGapicClient
      *     $tenantServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the tenant to be retrieved.
      *
@@ -431,6 +465,8 @@ class TenantServiceGapicClient
      *     $tenantServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Resource name of the project under which the tenant is created.
      *
@@ -488,6 +524,8 @@ class TenantServiceGapicClient
      *     $tenantServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Tenant $tenant       Required. The tenant resource to replace the current resource in the system.
      * @param array  $optionalArgs {

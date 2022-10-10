@@ -45,8 +45,10 @@ use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
 use Google\LongRunning\Operation;
+
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: The ClusterControllerService provides methods to manage clusters
@@ -225,6 +227,33 @@ class ClusterControllerGapicClient
     }
 
     /**
+     * ```
+     * $clusterControllerClient = new ClusterControllerClient();
+     * $request = new CreateClusterRequest();
+     * try {
+     *     $response = $clusterControllerClient->sendAsync('createCluster', $request)->wait();
+     * } finally {
+     *     $clusterControllerClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a cluster in a project. The returned
      * [Operation.metadata][google.longrunning.Operation.metadata] will be
      * [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
@@ -266,6 +295,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string  $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                              belongs to.
@@ -356,6 +387,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                             belongs to.
@@ -454,6 +487,8 @@ class ClusterControllerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
@@ -495,6 +530,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                             belongs to.
@@ -548,6 +585,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                             belongs to.
@@ -655,6 +694,8 @@ class ClusterControllerGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project the
      *                             cluster belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
@@ -745,6 +786,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $projectId    Required. The ID of the Google Cloud Platform project the
      *                             cluster belongs to.
@@ -842,6 +885,8 @@ class ClusterControllerGapicClient
      *     $clusterControllerClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $projectId    Required. The ID of the Google Cloud Platform project the
      *                                cluster belongs to.

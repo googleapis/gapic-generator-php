@@ -52,6 +52,7 @@ use Google\Cloud\Retail\V2alpha\SetInventoryRequest;
 use Google\Cloud\Retail\V2alpha\UpdateProductRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -372,6 +373,33 @@ class ProductServiceGapicClient
     }
 
     /**
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * $request = new AddFulfillmentPlacesRequest();
+     * try {
+     *     $response = $productServiceClient->sendAsync('addFulfillmentPlaces', $request)->wait();
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Incrementally adds place IDs to
      * [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
      *
@@ -425,6 +453,8 @@ class ProductServiceGapicClient
      *     $productServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string   $product      Required. Full resource name of
      *                               [Product][google.cloud.retail.v2alpha.Product], such as
@@ -526,6 +556,8 @@ class ProductServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string  $parent       Required. The parent catalog resource name, such as
      *                              `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch`.
      * @param Product $product      Required. The [Product][google.cloud.retail.v2alpha.Product] to create.
@@ -582,6 +614,8 @@ class ProductServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. Full resource name of
      *                             [Product][google.cloud.retail.v2alpha.Product], such as
      *                             `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
@@ -637,6 +671,8 @@ class ProductServiceGapicClient
      *     $productServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. Full resource name of
      *                             [Product][google.cloud.retail.v2alpha.Product], such as
@@ -715,6 +751,8 @@ class ProductServiceGapicClient
      *     $productServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string             $parent       Required.
      *                                         `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
@@ -820,6 +858,8 @@ class ProductServiceGapicClient
      *     $productServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The parent branch resource name, such as
      *                             `projects/&#42;/locations/global/catalogs/default_catalog/branches/0`. Use
@@ -992,6 +1032,8 @@ class ProductServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string   $product      Required. Full resource name of
      *                               [Product][google.cloud.retail.v2alpha.Product], such as
      *                               `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
@@ -1151,6 +1193,8 @@ class ProductServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param Product $inventory    Required. The inventory information to update. The allowable fields to
      *                              update are:
      *                              * [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
@@ -1251,6 +1295,8 @@ class ProductServiceGapicClient
      *     $productServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Product $product      Required. The product to update/create.
      *

@@ -52,10 +52,12 @@ use Google\Cloud\Asset\V1\OutputConfig;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\TimeWindow;
+
 use Google\Cloud\Asset\V1\UpdateFeedRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -384,6 +386,33 @@ class AssetServiceGapicClient
     }
 
     /**
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * $request = new AnalyzeIamPolicyRequest();
+     * try {
+     *     $response = $assetServiceClient->sendAsync('analyzeIamPolicy', $request)->wait();
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Analyzes IAM policies to answer which identities have what accesses on
      * which resources.
      *
@@ -397,6 +426,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param IamPolicyAnalysisQuery $analysisQuery Required. The request query.
      * @param array                  $optionalArgs  {
@@ -482,6 +513,8 @@ class AssetServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param IamPolicyAnalysisQuery        $analysisQuery Required. The request query.
      * @param IamPolicyAnalysisOutputConfig $outputConfig  Required. Output configuration indicating where the results will be output to.
      * @param array                         $optionalArgs  {
@@ -523,6 +556,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource          Required. Name of the resource to perform the analysis against.
      *                                  Only GCP Project are supported as of today. Hence, this can only be Project
@@ -583,6 +618,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string     $parent         Required. The relative name of the root asset. It can only be an
      *                                   organization number (such as "organizations/123"), a project ID (such as
@@ -668,6 +705,8 @@ class AssetServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The name of the project/folder/organization where this feed
      *                             should be created in. It can only be an organization number (such as
      *                             "organizations/123"), a folder number (such as "folders/123"), a project ID
@@ -715,6 +754,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The name of the feed and it must be in the format of:
      *                             projects/project_number/feeds/feed_id
@@ -786,6 +827,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string       $parent       Required. The relative name of the root asset. This can only be an
      *                                   organization number (such as "organizations/123"), a project ID (such as
@@ -888,6 +931,8 @@ class AssetServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The name of the Feed and it must be in the format of:
      *                             projects/project_number/feeds/feed_id
      *                             folders/folder_number/feeds/feed_id
@@ -938,6 +983,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Name of the organization or project the assets belong to. Format:
      *                             "organizations/[organization-number]" (such as "organizations/123"),
@@ -1055,6 +1102,8 @@ class AssetServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The parent project/folder/organization whose feeds are to be
      *                             listed. It can only be using project/folder/organization number (such as
      *                             "folders/12345")", or a project ID (such as "projects/my-project-id").
@@ -1106,6 +1155,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $scope        Required. A scope can be a project, a folder, or an organization. The search is
      *                             limited to the IAM policies within the `scope`. The caller must be granted
@@ -1267,6 +1318,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $scope        Required. A scope can be a project, a folder, or an organization. The search is
      *                             limited to the resources within the `scope`. The caller must be granted the
@@ -1454,6 +1507,8 @@ class AssetServiceGapicClient
      *     $assetServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Feed      $feed         Required. The new values of feed details. It must match an existing feed and the
      *                                field `name` must be in the format of:

@@ -38,6 +38,7 @@ use Google\Cloud\Dataproc\V1\DeleteAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\GetAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest;
 use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: The API interface for managing autoscaling policies in the
@@ -371,6 +372,33 @@ class AutoscalingPolicyServiceGapicClient
     }
 
     /**
+     * ```
+     * $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
+     * $request = new CreateAutoscalingPolicyRequest();
+     * try {
+     *     $response = $autoscalingPolicyServiceClient->sendAsync('createAutoscalingPolicy', $request)->wait();
+     * } finally {
+     *     $autoscalingPolicyServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates new autoscaling policy.
      *
      * Sample code:
@@ -384,6 +412,8 @@ class AutoscalingPolicyServiceGapicClient
      *     $autoscalingPolicyServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string            $parent       Required. The "resource name" of the region or location, as described
      *                                        in https://cloud.google.com/apis/design/resource_names.
@@ -432,6 +462,8 @@ class AutoscalingPolicyServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The "resource name" of the autoscaling policy, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
      *
@@ -473,6 +505,8 @@ class AutoscalingPolicyServiceGapicClient
      *     $autoscalingPolicyServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The "resource name" of the autoscaling policy, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
@@ -529,6 +563,8 @@ class AutoscalingPolicyServiceGapicClient
      *     $autoscalingPolicyServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The "resource name" of the region or location, as described
      *                             in https://cloud.google.com/apis/design/resource_names.
@@ -593,6 +629,8 @@ class AutoscalingPolicyServiceGapicClient
      *     $autoscalingPolicyServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param AutoscalingPolicy $policy       Required. The updated autoscaling policy.
      * @param array             $optionalArgs {

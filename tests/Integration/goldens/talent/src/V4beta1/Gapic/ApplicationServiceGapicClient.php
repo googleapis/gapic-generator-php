@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that handles application management, including CRUD and
@@ -495,6 +496,33 @@ class ApplicationServiceGapicClient
     }
 
     /**
+     * ```
+     * $applicationServiceClient = new ApplicationServiceClient();
+     * $request = new CreateApplicationRequest();
+     * try {
+     *     $response = $applicationServiceClient->sendAsync('createApplication', $request)->wait();
+     * } finally {
+     *     $applicationServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Creates a new application entity.
      *
      * Sample code:
@@ -508,6 +536,8 @@ class ApplicationServiceGapicClient
      *     $applicationServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string      $parent       Required. Resource name of the profile under which the application is created.
      *
@@ -552,6 +582,8 @@ class ApplicationServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the application to be deleted.
      *
      *                             The format is
@@ -590,6 +622,8 @@ class ApplicationServiceGapicClient
      *     $applicationServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the application to be retrieved.
      *
@@ -643,6 +677,8 @@ class ApplicationServiceGapicClient
      *     $applicationServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. Resource name of the profile under which the application is created.
      *
@@ -701,6 +737,8 @@ class ApplicationServiceGapicClient
      *     $applicationServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param Application $application  Required. The application resource to replace the current resource in the system.
      * @param array       $optionalArgs {

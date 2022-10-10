@@ -68,6 +68,8 @@ use Google\Cloud\Location\ListLocationsRequest;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\Int64Value;
 
+use Google\Protobuf\Internal\Message;
+
 /**
  * Service Description: Google Cloud Key Management Service
  *
@@ -421,6 +423,33 @@ class KeyManagementServiceGapicClient
     }
 
     /**
+     * ```
+     * $keyManagementServiceClient = new KeyManagementServiceClient();
+     * $request = new AsymmetricDecryptRequest();
+     * try {
+     *     $response = $keyManagementServiceClient->sendAsync('asymmetricDecrypt', $request)->wait();
+     * } finally {
+     *     $keyManagementServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
+    }
+
+    /**
      * Decrypts data that was encrypted with a public key retrieved from
      * [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
      * corresponding to a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
@@ -438,6 +467,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
@@ -510,6 +541,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
@@ -585,6 +618,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string    $parent       Required. The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
      *                                associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey].
      * @param string    $cryptoKeyId  Required. It must be unique within a KeyRing and match the regular
@@ -646,6 +681,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string           $parent           Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the
      *                                           [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with the
      *                                           [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
@@ -691,6 +728,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string    $parent       Required. The [name][google.cloud.kms.v1.KeyRing.name] of the
      *                                [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
@@ -738,6 +777,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string  $parent       Required. The resource name of the location associated with the
      *                              [KeyRings][google.cloud.kms.v1.KeyRing], in the format
      *                              `projects/&#42;/locations/*`.
@@ -784,6 +825,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for decryption. The
@@ -901,6 +944,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy.
      * @param array  $optionalArgs {
@@ -940,6 +985,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] or
@@ -1062,6 +1109,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.
      * @param array  $optionalArgs {
@@ -1098,6 +1147,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get.
@@ -1136,6 +1187,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
@@ -1180,6 +1233,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The [name][google.cloud.kms.v1.ImportJob.name] of the
      *                             [ImportJob][google.cloud.kms.v1.ImportJob] to get.
      * @param array  $optionalArgs {
@@ -1215,6 +1270,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.KeyRing.name] of the
      *                             [KeyRing][google.cloud.kms.v1.KeyRing] to get.
@@ -1256,6 +1313,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key to get.
@@ -1299,6 +1358,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to be imported into.
@@ -1386,6 +1447,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $parent       Required. The resource name of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
@@ -1478,6 +1541,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
      *                             to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
      * @param array  $optionalArgs {
@@ -1568,6 +1633,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
      *                             to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
      * @param array  $optionalArgs {
@@ -1651,6 +1718,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $parent       Required. The resource name of the location associated with the
      *                             [KeyRings][google.cloud.kms.v1.KeyRing], in the format
      *                             `projects/&#42;/locations/*`.
@@ -1731,6 +1800,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore.
      * @param array  $optionalArgs {
@@ -1767,6 +1838,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param CryptoKey $cryptoKey    Required. [CryptoKey][google.cloud.kms.v1.CryptoKey] with updated values.
      * @param FieldMask $updateMask   Required. List of fields to be updated in this request.
@@ -1809,6 +1882,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param string $name               Required. The resource name of the
      *                                   [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
@@ -1861,6 +1936,8 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
+     * To invoke this method asynchronously {@see sendAsync}.
+     *
      * @param CryptoKeyVersion $cryptoKeyVersion Required. [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
      *                                           updated values.
      * @param FieldMask        $updateMask       Required. List of fields to be updated in this request.
@@ -1897,6 +1974,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
@@ -1947,6 +2026,8 @@ class KeyManagementServiceGapicClient
      *     $keyManagementServiceClient->close();
      * }
      * ```
+     *
+     * To invoke this method asynchronously {@see sendAsync}.
      *
      * @param array $optionalArgs {
      *     Optional.
