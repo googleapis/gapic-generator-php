@@ -22,18 +22,17 @@
 
 namespace Testing\BasicOneof\Tests\Unit;
 
+use Testing\BasicOneof\BasicOneofClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use stdClass;
-use Testing\BasicOneof\BasicOneofClient;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Request\Other;
 use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
+use stdClass;
 
 /**
  * @group basiconeof
@@ -42,25 +41,19 @@ use Testing\BasicOneof\Response;
  */
 class BasicOneofClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return BasicOneofClient
-     */
+    /** @return BasicOneofClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -69,9 +62,7 @@ class BasicOneofClientTest extends GeneratedTest
         return new BasicOneofClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function aMethodTest()
     {
         $transport = $this->createTransport();
@@ -105,9 +96,7 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function aMethodExceptionTest()
     {
         $transport = $this->createTransport();

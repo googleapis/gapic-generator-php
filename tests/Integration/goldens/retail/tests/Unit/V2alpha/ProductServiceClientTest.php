@@ -22,20 +22,17 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
-
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesResponse;
 use Google\Cloud\Retail\V2alpha\ImportProductsResponse;
-
 use Google\Cloud\Retail\V2alpha\ListProductsResponse;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesResponse;
 use Google\Cloud\Retail\V2alpha\SetInventoryResponse;
 use Google\LongRunning\GetOperationRequest;
@@ -52,25 +49,19 @@ use stdClass;
  */
 class ProductServiceClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return ProductServiceClient
-     */
+    /** @return ProductServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -79,9 +70,7 @@ class ProductServiceClientTest extends GeneratedTest
         return new ProductServiceClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addFulfillmentPlacesTest()
     {
         $operationsTransport = $this->createTransport();
@@ -149,9 +138,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function addFulfillmentPlacesExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -208,9 +195,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createProductTest()
     {
         $transport = $this->createTransport();
@@ -259,9 +244,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createProductExceptionTest()
     {
         $transport = $this->createTransport();
@@ -298,9 +281,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteProductTest()
     {
         $transport = $this->createTransport();
@@ -324,9 +305,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteProductExceptionTest()
     {
         $transport = $this->createTransport();
@@ -359,9 +338,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getProductTest()
     {
         $transport = $this->createTransport();
@@ -402,9 +379,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getProductExceptionTest()
     {
         $transport = $this->createTransport();
@@ -437,9 +412,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function importProductsTest()
     {
         $operationsTransport = $this->createTransport();
@@ -504,9 +477,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function importProductsExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -562,9 +533,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listProductsTest()
     {
         $transport = $this->createTransport();
@@ -601,9 +570,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listProductsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -636,9 +603,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function removeFulfillmentPlacesTest()
     {
         $operationsTransport = $this->createTransport();
@@ -706,9 +671,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function removeFulfillmentPlacesExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -765,9 +728,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function setInventoryTest()
     {
         $operationsTransport = $this->createTransport();
@@ -831,9 +792,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function setInventoryExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -890,9 +849,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateProductTest()
     {
         $transport = $this->createTransport();
@@ -935,9 +892,7 @@ class ProductServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateProductExceptionTest()
     {
         $transport = $this->createTransport();

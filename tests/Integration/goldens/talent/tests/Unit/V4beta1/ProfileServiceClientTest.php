@@ -22,16 +22,14 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
+use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\ApiCore\ApiException;
-
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
-
 use Google\Cloud\Talent\V4beta1\HistogramQueryResult;
 use Google\Cloud\Talent\V4beta1\ListProfilesResponse;
 use Google\Cloud\Talent\V4beta1\Profile;
-use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchProfilesResponse;
 use Google\Protobuf\GPBEmpty;
@@ -45,25 +43,19 @@ use stdClass;
  */
 class ProfileServiceClientTest extends GeneratedTest
 {
-    /**
-     * @return TransportInterface
-     */
+    /** @return TransportInterface */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /**
-     * @return CredentialsWrapper
-     */
+    /** @return CredentialsWrapper */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @return ProfileServiceClient
-     */
+    /** @return ProfileServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
@@ -72,9 +64,7 @@ class ProfileServiceClientTest extends GeneratedTest
         return new ProfileServiceClient($options);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createProfileTest()
     {
         $transport = $this->createTransport();
@@ -116,9 +106,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function createProfileExceptionTest()
     {
         $transport = $this->createTransport();
@@ -152,9 +140,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteProfileTest()
     {
         $transport = $this->createTransport();
@@ -178,9 +164,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function deleteProfileExceptionTest()
     {
         $transport = $this->createTransport();
@@ -213,9 +197,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getProfileTest()
     {
         $transport = $this->createTransport();
@@ -254,9 +236,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function getProfileExceptionTest()
     {
         $transport = $this->createTransport();
@@ -289,9 +269,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listProfilesTest()
     {
         $transport = $this->createTransport();
@@ -326,9 +304,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function listProfilesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -361,9 +337,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function searchProfilesTest()
     {
         $transport = $this->createTransport();
@@ -405,9 +379,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function searchProfilesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -441,9 +413,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateProfileTest()
     {
         $transport = $this->createTransport();
@@ -482,9 +452,7 @@ class ProfileServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function updateProfileExceptionTest()
     {
         $transport = $this->createTransport();
