@@ -67,7 +67,6 @@ use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\Int64Value;
-
 use Google\Protobuf\Internal\Message;
 
 /**

@@ -45,7 +45,6 @@ use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
 use Google\LongRunning\Operation;
-
 use Google\Protobuf\Duration;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\Internal\Message;

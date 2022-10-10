@@ -52,7 +52,6 @@ use Google\Cloud\Asset\V1\OutputConfig;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\TimeWindow;
-
 use Google\Cloud\Asset\V1\UpdateFeedRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Duration;

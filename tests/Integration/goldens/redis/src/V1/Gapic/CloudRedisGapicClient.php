@@ -47,7 +47,6 @@ use Google\Cloud\Redis\V1\OutputConfig;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Operation;
-
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\Internal\Message;
 

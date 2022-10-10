@@ -46,7 +46,6 @@ use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
 use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 use Google\LongRunning\Operation;
-
 use Google\Protobuf\Internal\Message;
 
 /**
