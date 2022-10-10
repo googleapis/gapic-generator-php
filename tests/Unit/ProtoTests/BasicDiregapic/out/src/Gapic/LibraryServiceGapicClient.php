@@ -51,7 +51,6 @@ use Google\Protobuf\Struct;
 use Google\Protobuf\Timestamp;
 use Google\Protobuf\UInt32Value;
 use Google\Protobuf\UInt64Value;
-
 use Google\Protobuf\Value;
 use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
