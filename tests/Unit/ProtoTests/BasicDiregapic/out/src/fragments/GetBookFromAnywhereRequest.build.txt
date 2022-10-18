@@ -1,9 +1,11 @@
     /**
-     * @param string $name        The name of the book to retrieve.
+     * @param string $name        The name of the book to retrieve. Please see
+     *                            {@see LibraryServiceClient::bookName()} for help formatting this field.
      * @param string $altBookName An alternate book name, used to test restricting flattened field to a
-     *                            single resource name type in a oneof.
-     * @param string $place
-     * @param string $folder
+     *                            single resource name type in a oneof. Please see
+     *                            {@see LibraryServiceClient::bookName()} for help formatting this field.
+     * @param string $place       Please see {@see LibraryServiceClient::locationName()} for help formatting this field.
+     * @param string $folder      Please see {@see LibraryServiceClient::folderName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\GetBookFromAnywhereRequest
      */

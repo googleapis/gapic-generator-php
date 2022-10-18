@@ -1,6 +1,8 @@
     /**
-     * @param string $name           The name of the shelf we're adding books to.
-     * @param string $otherShelfName The name of the shelf we're removing books from and deleting.
+     * @param string $name           The name of the shelf we're adding books to. Please see
+     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     * @param string $otherShelfName The name of the shelf we're removing books from and deleting. Please see
+     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\MergeShelvesRequest
      */

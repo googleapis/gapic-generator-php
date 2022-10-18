@@ -491,8 +491,8 @@ abstract class MethodDetails
     /** @var HttpRule *Readonly* HttpRule for method, if given; null otherwise. */
     public ?HttpRule $httpRule;
 
-    /** @var string *Readonly* method signature, if specified in google.protobuf.method_signature proto option */
-    public ?string $methodSignature;
+    /** @var Vector *Readonly* method signature, if specified in google.protobuf.method_signature proto option */
+    public ?Vector $methodSignature;
 
     /** @var ?string *Readonly* REST method, if specified in a 'google.api.http' proto option. */
     public ?string $restMethod;
@@ -532,7 +532,7 @@ abstract class MethodDetails
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
         }
 
-        $this->methodSignature = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_METHODSIGNATURE);
+        $this->methodSignature = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_METHODSIGNATURE);
     }
 
     public function isStreaming(): bool

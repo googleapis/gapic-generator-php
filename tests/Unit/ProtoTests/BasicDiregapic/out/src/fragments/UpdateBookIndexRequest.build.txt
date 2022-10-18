@@ -1,5 +1,6 @@
     /**
-     * @param string $name      The name of the book to update.
+     * @param string $name      The name of the book to update. Please see
+     *                          {@see LibraryServiceClient::bookName()} for help formatting this field.
      * @param string $indexName The name of the index for the book
      * @param array  $indexMap  The index to update the book with
      *

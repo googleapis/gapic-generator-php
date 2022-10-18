@@ -26,6 +26,7 @@ use Google\Generator\Ast\PhpParam;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Formatter;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
@@ -52,19 +53,30 @@ class BuildMethodFragmentGenerator
 
     private function generateImpl(): Map
     {
-        $buildMethods = Map::new([]);
+        $buildMethodSnippets = Map::new([]);
         foreach ($this->serviceDetails->methods as $methodDetails) {
             if ($methodDetails->methodSignature) {
-                $buildMethods = $buildMethods->set(
-                    $methodDetails->requestType->name,
-                    $this->buildMethodSnippet($methodDetails)
-                );
+                $buildMethods = Vector::new();
+                foreach ($methodDetails->methodSignature as $i => $methodSignature) {
+                    if (empty($methodSignature)) {
+                        continue;
+                    }
+                    $buildMethods = $buildMethods->append(
+                        $this->buildMethodSnippet($methodDetails, $methodSignature, 0 === $i)
+                    );
+                }
+                if ($buildMethods->count() > 0) {
+                    $buildMethodSnippets = $buildMethodSnippets->set(
+                        $methodDetails->requestType->name,
+                        $buildMethods
+                    );
+                }
             }
         }
 
         $this->ctx->finalize(null);
 
-        return $buildMethods;
+        return $buildMethodSnippets;
     }
 
     private SourceFileContext $ctx;
@@ -76,7 +88,7 @@ class BuildMethodFragmentGenerator
         $this->serviceDetails = $serviceDetails;
     }
 
-    public function buildMethodSnippet(MethodDetails $methodDetails): PhpClassMember
+    public function buildMethodSnippet(MethodDetails $methodDetails, string $methodSignature, bool $isFirst): PhpClassMember
     {
         $docType = function ($field): ResolvedType {
             if ($field->desc->desc->isRepeated()) {
@@ -87,7 +99,9 @@ class BuildMethodFragmentGenerator
                 } elseif ($field->isMap) {
                     return $this->ctx->type(Type::array());
                 } else {
-                    return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), true, true);
+                    return $this->ctx->type(Type::arrayOf(
+                        Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)
+                    ), true, true);
                 }
             } else {
                 // Affects type hinting for required oneofs.
@@ -113,7 +127,7 @@ class BuildMethodFragmentGenerator
             }
         };
 
-        $methodSignatureArguments = explode(',', $methodDetails->methodSignature);
+        $methodSignatureArguments = array_filter(explode(',', $methodSignature));
         $requiredFields = $methodDetails->allFields
             ->filter(fn ($f) => in_array($f->name, $methodSignatureArguments))
             ->orderBy(fn ($f) => array_search($f->name, $methodSignatureArguments));
@@ -135,7 +149,12 @@ class BuildMethodFragmentGenerator
             $callingParam = AST::param(null, AST::var($requiredField->camelName));
             $newSelf = AST::call($newSelf, $requiredField->setter)($callingParam);
         }
-        return AST::method('build')
+
+        $methodName = $isFirst
+            ? 'build'
+            : 'buildFrom' . Helpers::toUpperCamelCase(str_replace(',', '_', $methodSignature));
+
+        return AST::method($methodName)
             ->withAccess(Access::PUBLIC, Access::STATIC)
             ->withParams(
                 $requiredParams,

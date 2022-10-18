@@ -1,0 +1,16 @@
+    /**
+     * @param string $name
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *     @type string $pageToken
+     * }
+     *
+     * @return \Testing\BasicDiregapic\ListStringsRequest
+     */
+    public static function buildFromName(string $name, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setName($name);
+    }

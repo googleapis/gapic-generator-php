@@ -1,5 +1,5 @@
     /**
-     * @param string                            $name
+     * @param string                            $name     Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\Comment[] $comments
      *
      * @return \Testing\BasicDiregapic\AddCommentsRequest

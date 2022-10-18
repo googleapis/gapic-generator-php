@@ -187,7 +187,7 @@ service LibraryService {
     };
     option (google.api.method_signature) = "name,book";
     option (google.api.method_signature) =
-        "name,optional_foo,book,update_mask,physical_mask";
+        "name,optional_foo,book,update_mask";
   }
 
   // Moves a book to another shelf, and returns the new book.

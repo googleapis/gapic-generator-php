@@ -1,5 +1,6 @@
     /**
-     * @param string $name The name of the book to retrieve.
+     * @param string $name The name of the book to retrieve. Please see
+     *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\GetBookRequest
      */

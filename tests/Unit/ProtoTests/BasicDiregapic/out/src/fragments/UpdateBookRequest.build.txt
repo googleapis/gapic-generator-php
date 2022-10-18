@@ -1,5 +1,6 @@
     /**
-     * @param string                               $name           The name of the book to update.
+     * @param string                               $name           The name of the book to update. Please see
+     *                                                             {@see LibraryServiceClient::bookName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\BookResponse $book           The book to update with.
      * @param mixed                                $optionalFields {
      *     Optional.
@@ -17,4 +18,22 @@
         return (new self($optionalFields))
             ->setName($name)
             ->setBook($book);
+    }
+
+    /**
+     * @param string                               $name        The name of the book to update. Please see
+     *                                                          {@see LibraryServiceClient::bookName()} for help formatting this field.
+     * @param string                               $optionalFoo An optional foo.
+     * @param \Testing\BasicDiregapic\BookResponse $book        The book to update with.
+     * @param \Google\Protobuf\FieldMask           $updateMask  A field mask to apply, rendered as an HTTP parameter.
+     *
+     * @return \Testing\BasicDiregapic\UpdateBookRequest
+     */
+    public static function buildFromNameOptionalFooBookUpdateMask(string $name, string $optionalFoo, \Testing\BasicDiregapic\BookResponse $book, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setOptionalFoo($optionalFoo)
+            ->setBook($book)
+            ->setUpdateMask($updateMask);
     }

@@ -1,6 +1,6 @@
     /**
-     * @param string[] $names
-     * @param string[] $shelves
+     * @param string[] $names          Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
+     * @param string[] $shelves        Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
      * @param mixed    $optionalFields {
      *     Optional.
      *

@@ -1,5 +1,6 @@
     /**
-     * @param string $name           The name of the shelf to retrieve.
+     * @param string $name           The name of the shelf to retrieve. Please see
+     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
      * @param mixed  $optionalFields {
      *     Optional.
      *
@@ -16,4 +17,47 @@
     {
         return (new self($optionalFields))
             ->setName($name);
+    }
+
+    /**
+     * @param string                              $name           The name of the shelf to retrieve. Please see
+     *                                                            {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     * @param \Testing\BasicDiregapic\SomeMessage $message        Field to verify that message-type query parameter gets flattened.
+     * @param mixed                               $optionalFields {
+     *     Optional.
+     *
+     *     @type \Testing\BasicDiregapic\StringBuilder $stringBuilder
+     *     @type string $options
+     *           To test 'options' parameter name conflict.
+     * }
+     *
+     * @return \Testing\BasicDiregapic\GetShelfRequest
+     */
+    public static function buildFromNameMessage(string $name, \Testing\BasicDiregapic\SomeMessage $message, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setName($name)
+            ->setMessage($message);
+    }
+
+    /**
+     * @param string                                $name           The name of the shelf to retrieve. Please see
+     *                                                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     * @param \Testing\BasicDiregapic\SomeMessage   $message        Field to verify that message-type query parameter gets flattened.
+     * @param \Testing\BasicDiregapic\StringBuilder $stringBuilder
+     * @param mixed                                 $optionalFields {
+     *     Optional.
+     *
+     *     @type string $options
+     *           To test 'options' parameter name conflict.
+     * }
+     *
+     * @return \Testing\BasicDiregapic\GetShelfRequest
+     */
+    public static function buildFromNameMessageStringBuilder(string $name, \Testing\BasicDiregapic\SomeMessage $message, \Testing\BasicDiregapic\StringBuilder $stringBuilder, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setName($name)
+            ->setMessage($message)
+            ->setStringBuilder($stringBuilder);
     }

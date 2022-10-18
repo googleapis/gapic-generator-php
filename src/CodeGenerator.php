@@ -333,8 +333,10 @@ class CodeGenerator
             // Resource: build_method.txt
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
             $buildMethodFragments = BuildMethodFragmentGenerator::generate($ctx, $service);
-            foreach ($buildMethodFragments as [$fragmentName, $buildMethodFragment]) {
-                $buildMethodFragmentCode = BuildMethodFragmentGenerator::format($buildMethodFragment->toCode());
+            foreach ($buildMethodFragments as [$fragmentName, $buildMethodFragments]) {
+                $buildMethodFragmentCode = BuildMethodFragmentGenerator::format(
+                    $buildMethodFragments->reduce('', fn ($v, $i) => $v . $i->toCode())
+                );
                 yield ["src/fragments/{$fragmentName}.build.txt", $buildMethodFragmentCode];
             }
         }
