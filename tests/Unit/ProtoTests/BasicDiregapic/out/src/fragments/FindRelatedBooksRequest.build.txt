@@ -10,7 +10,7 @@
      *
      * @return \Testing\BasicDiregapic\FindRelatedBooksRequest
      */
-    public static function build(string $names, string $shelves, array $optionalFields = []): self
+    public static function build(array $names, array $shelves, array $optionalFields = []): self
     {
         return (new self($optionalFields))
             ->setNames($names)

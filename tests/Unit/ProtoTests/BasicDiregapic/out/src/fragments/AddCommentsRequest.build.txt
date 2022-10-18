@@ -4,7 +4,7 @@
      *
      * @return \Testing\BasicDiregapic\AddCommentsRequest
      */
-    public static function build(string $name, \Testing\BasicDiregapic\Comment $comments): self
+    public static function build(string $name, array $comments): self
     {
         return (new self())
             ->setName($name)

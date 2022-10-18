@@ -13,7 +13,7 @@
      *
      * @return \Testing\BasicDiregapic\PublishSeriesRequest
      */
-    public static function build(\Testing\BasicDiregapic\ShelfResponse $shelf, \Testing\BasicDiregapic\BookResponse $books, int $edition, \Testing\BasicDiregapic\SeriesUuidResponse $seriesUuid, string $publisher, array $optionalFields = []): self
+    public static function build(\Testing\BasicDiregapic\ShelfResponse $shelf, array $books, int $edition, \Testing\BasicDiregapic\SeriesUuidResponse $seriesUuid, string $publisher, array $optionalFields = []): self
     {
         return (new self($optionalFields))
             ->setShelf($shelf)

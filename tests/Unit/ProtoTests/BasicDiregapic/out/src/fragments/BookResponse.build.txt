@@ -51,7 +51,7 @@
      *
      * @return \Testing\BasicDiregapic\BookResponse
      */
-    public static function build(string $name, string $author, string $title, \Testing\BasicDiregapic\BookResponse\Rating $rating, array $optionalFields = []): self
+    public static function build(string $name, string $author, string $title, int $rating, array $optionalFields = []): self
     {
         return (new self($optionalFields))
             ->setName($name)

@@ -93,8 +93,6 @@ class BuildMethodFragmentGenerator
         $docType = function ($field): ResolvedType {
             if ($field->desc->desc->isRepeated()) {
                 if ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->typeSingular, true);
                     return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
                 } elseif ($field->isMap) {
                     return $this->ctx->type(Type::array());
@@ -107,8 +105,6 @@ class BuildMethodFragmentGenerator
                 // Affects type hinting for required oneofs.
                 // TODO(vNext) Handle optional oneofs here.
                 if ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->type);
                     return $this->ctx->type(Type::int());
                 } else {
                     return $this->ctx->type($field->type, true);
@@ -140,7 +136,7 @@ class BuildMethodFragmentGenerator
             ->filter(fn ($f) => !in_array($f->name, $methodSignatureArguments));
 
         $requiredParams = $requiredFields
-            ->map(fn ($f) => $this->toParam($f));
+            ->map(fn ($f) => $this->toParam($f, $docType));
 
         $newSelf = AST::new($this->ctx->type(Type::self()));
         $newSelf = $optionalFields->count() ? $newSelf(AST::var('optionalFields')) : $newSelf();
@@ -198,8 +194,20 @@ class BuildMethodFragmentGenerator
      */
     private function toParam(FieldDetails $field): PhpParam
     {
+        $resolveType = function ($field): ResolvedType {
+            if ($field->desc->desc->isRepeated()) {
+                return $this->ctx->type(Type::array());
+            }
+            // Affects type hinting for required oneofs.
+            // TODO(vNext) Handle optional oneofs here.
+            if ($field->isEnum) {
+                return $this->ctx->type(Type::int());
+            } else {
+                return $this->ctx->type($field->typeSingular, true);
+            }
+        };
         return AST::param(
-            $this->ctx->type($field->typeSingular, true),
+            $resolveType($field),
             AST::var($field->camelName)
         );
     }

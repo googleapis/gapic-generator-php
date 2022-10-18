@@ -7,7 +7,7 @@
      *
      * @return \Testing\BasicDiregapic\CreateInventoryRequest
      */
-    public static function build(string $parent, \Testing\BasicDiregapic\InventoryResponse $inventory, string $asset, string $parentAsset, string $assets): self
+    public static function build(string $parent, \Testing\BasicDiregapic\InventoryResponse $inventory, string $asset, string $parentAsset, array $assets): self
     {
         return (new self())
             ->setParent($parent)
