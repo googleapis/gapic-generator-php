@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Traversable;
+
 /** A map of key->value; Keys can be of any type that supports equality. */
 class Map implements \IteratorAggregate, \Countable, \ArrayAccess
 {
@@ -115,7 +117,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     // IteratorAggregate methods
 
     /** @inheritDoc */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return (function () {
             foreach ($this->data as $kvs) {

@@ -16,9 +16,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "2d9084d3dd13b86ca2e811d2331f780eb86f6d7cb02b405426e3c80dcbfabf25",
-    strip_prefix = "protobuf-3.21.1",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.21.1.zip"],
+    sha256 = "8242327e5df8c80ba49e4165250b8f79a76bd11765facefaaecfca7747dc8da2",
+    strip_prefix = "protobuf-3.21.5",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.21.5.zip"],
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -42,11 +42,11 @@ grpc_extra_deps()
 
 http_archive(
     name = "rules_proto",
-    sha256 = "d31d04a8bb1912fbc122bcc7eea49964c9b75c6e091ac3f9deea2bb6a8025a4a",
-    strip_prefix = "rules_proto-dcf9e47b0df2218ca33e02a1a51803ab3134f42d",
+    sha256 = "f0827d1bbb4abd97f5ce73baed0bd774a86c6103aff2104caf70ba3b2218ec0a",
+    strip_prefix = "rules_proto-ea52a32ecd862c5317572cadecaa525c52124f9d",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/dcf9e47b0df2218ca33e02a1a51803ab3134f42d.tar.gz",
-        "https://github.com/bazelbuild/rules_proto/archive/dcf9e47b0df2218ca33e02a1a51803ab3134f42d.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/ea52a32ecd862c5317572cadecaa525c52124f9d.tar.gz",
+        "https://github.com/bazelbuild/rules_proto/archive/ea52a32ecd862c5317572cadecaa525c52124f9d.tar.gz",
     ],
 )
 

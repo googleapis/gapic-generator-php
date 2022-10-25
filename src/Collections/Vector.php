@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Traversable;
+
 /** A 1-dimensional, value-only array. */
 class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
 {
@@ -92,7 +94,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     // IteratorAggregate methods
 
     /** @inheritDoc */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return (function () {
             foreach ($this->data as $k => $v) {
