@@ -112,7 +112,7 @@ def php_gapic_library(
         service_yaml = None,
         grpc_service_config = None,
         transport = None,
-        rest_numeric_enums = False,
+        rest_numeric_enums = True,
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     srcjar_name = "%s_srcjar" % name
