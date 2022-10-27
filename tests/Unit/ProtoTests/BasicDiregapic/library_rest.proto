@@ -466,8 +466,16 @@ message PublishSeriesRequest {
   // Uniquely identifies the series to the publishing house.
   SeriesUuidResponse series_uuid = 5 [(google.api.field_behavior) = REQUIRED];
 
+  enum Genre {
+    UNSET = 0;
+    SCI_FI = 1;
+  }
+
+  // A set of enums containing genres the series falls into.
+  repeated Genre genres = 6 [(google.api.field_behavior) = REQUIRED];
+
   // The publisher of the series.
-  string publisher = 6 [(google.api.resource_reference).type =
+  string publisher = 7 [(google.api.resource_reference).type =
                             "library.googleapis.com/Publisher"];
 }
 
