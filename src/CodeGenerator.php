@@ -59,6 +59,7 @@ class CodeGenerator
      * @param ?string $serviceYaml Optional service configuration yaml string.
      * @param bool $numericEnums Whether to generate the numeric-enums JSON encoding system parameter.
      * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateSnippets Whether to generate snippets.
      *
      * @return string[]
      */
@@ -71,7 +72,8 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml,
         bool $numericEnums = false,
-        int $licenseYear = -1
+        int $licenseYear = -1,
+        bool $generateSnippets = true
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -79,7 +81,18 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $numericEnums, $licenseYear);
+        yield from static::generate(
+            $fileDescs,
+            $filesToGenerate,
+            $transport,
+            $generateGapicMetadata,
+            $grpcServiceConfigJson,
+            $gapicYaml,
+            $serviceYaml,
+            $numericEnums,
+            $licenseYear,
+            $generateSnippets
+        );
     }
 
     /**
@@ -97,6 +110,7 @@ class CodeGenerator
      * @param bool $numericEnums Optional whether to include in requests the system parameter enabling JSON-encoded
      *     responses to encode enum values as numbers.
      * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateSnippets Whether to generate snippets.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
@@ -109,7 +123,8 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml,
         bool $numericEnums = false,
-        int $licenseYear = -1
+        int $licenseYear = -1,
+        bool $generateSnippets = true
     ) {
         if ($licenseYear < 0) {
             $licenseYear = (int)date('Y');
@@ -228,7 +243,8 @@ class CodeGenerator
             $serviceYamlConfig,
             $generateGapicMetadata,
             $licenseYear,
-            $numericEnums
+            $numericEnums,
+            $generateSnippets
         ) as $file) {
             $result[] = $file;
         }
@@ -253,7 +269,8 @@ class CodeGenerator
         ?ServiceYamlConfig $serviceYamlConfig,
         bool $generateGapicMetadata,
         int $licenseYear,
-        bool $numericEnums = false
+        bool $numericEnums = false,
+        bool $generateSnippets = true
     ) {
         $versionToNamespace = [];
         foreach ($servicesToGenerate as $service) {
@@ -282,12 +299,14 @@ class CodeGenerator
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
 
             // Snippet Generator.
-            $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
+            if ($generateSnippets) {
+                $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
 
-            foreach ($snippetFiles as $methodName => $snippetFile) {
-                $code = $snippetFile->toCode();
-                $code = Formatter::format($code, 100);
-                yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
+                foreach ($snippetFiles as $methodName => $snippetFile) {
+                    $code = $snippetFile->toCode();
+                    $code = Formatter::format($code, 100);
+                    yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
+                }
             }
 
             // Oneof wrapper classes.

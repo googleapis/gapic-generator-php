@@ -20,6 +20,7 @@
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
+            "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"

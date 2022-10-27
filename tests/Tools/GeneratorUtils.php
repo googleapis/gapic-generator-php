@@ -25,14 +25,19 @@ class GeneratorUtils
     /**
      *  Runs the generator and returns the produced sources.
      *
-     *  @param string protoPath path to the proto under ProtoTests.
-     *  @param ?string package
-     *  @param ?string transport
+     *  @param string $protoPath path to the proto under ProtoTests.
+     *  @param ?string $package
+     *  @param ?string $transport
+     *  @param bool $generateSnippets
      *
      * @return string[] maps the relative file path to the string contents of the gtenerated code.
      */
-    public static function generateFromProto(string $protoPath, ?string $package = null, ?string $transport = null)
-    {
+    public static function generateFromProto(
+        string $protoPath,
+        ?string $package = null,
+        ?string $transport = null,
+        bool $generateSnippets = true
+    ) {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
         // * The expected file contents are based in the same directory as the proto file.
@@ -57,7 +62,8 @@ class GeneratorUtils
             $gapicYaml,
             $serviceYaml,
             $numericEnums,
-            $licenseYear
+            $licenseYear,
+            $generateSnippets
         );
         return $codeIterator;
     }
