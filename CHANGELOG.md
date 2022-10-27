@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/gapic-generator-php/compare/v1.5.0...v1.6.0) (2022-10-27)
+
+
+### Features
+
+* Add flag for whether snippets should be generated ([#530](https://github.com/googleapis/gapic-generator-php/issues/530)) ([bea12ba](https://github.com/googleapis/gapic-generator-php/commit/bea12ba9bed276cfd1e6b11684a97617f63a7fb6))
+* Introduce snippet gen support ([#483](https://github.com/googleapis/gapic-generator-php/issues/483)) ([0a52d7e](https://github.com/googleapis/gapic-generator-php/commit/0a52d7e00d41e2f1aaa165ad609878639fd5a4bc))
+
+
+### Bug Fixes
+
+* Continue to support php 7.4 ([#502](https://github.com/googleapis/gapic-generator-php/issues/502)) ([2bda6f2](https://github.com/googleapis/gapic-generator-php/commit/2bda6f298f7fcbe8f160e391b58e1ab26c045267))
+* Ensure example values for repeated enums use the singular type ([#529](https://github.com/googleapis/gapic-generator-php/issues/529)) ([1e63d04](https://github.com/googleapis/gapic-generator-php/commit/1e63d04d5e2f0eb905f8ae12d6013d1ce2d2d8fd))
+
 ## [1.5.0](https://github.com/googleapis/gapic-generator-php/compare/v1.4.8...v1.5.0) (2022-07-22)
 
 
