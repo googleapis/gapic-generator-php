@@ -322,7 +322,12 @@ class FieldDetails
                 return '...';
             case GPBType::ENUM: // 14
                 $enumValueName = $this->catalog->enumsByFullname[$this->desc->desc->getEnumType()]->getValue()[0]->getName();
-                return AST::access($ctx->type(Type::fromField($this->catalog, $this->desc->desc)), AST::property($enumValueName));
+                return AST::access(
+                    $ctx->type(
+                        Type::fromField($this->catalog, $this->desc->desc, false)
+                    ),
+                    AST::property($enumValueName)
+                );
             default:
                 throw new \Exception("No exampleValue for type: {$this->desc->getType()}");
         }
