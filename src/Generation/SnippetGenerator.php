@@ -519,7 +519,9 @@ class SnippetGenerator
      */
     private function generateRegionTag(string $methodName): string
     {
-        $version = strtolower(Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace)) ?: '_';
+        $versionAndSuffix = strtolower(Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace)) ?: '_';
+        $versionParts = explode('/', $versionAndSuffix);
+        $version = $versionParts[0];
         if ($version !== '_') {
             $version = '_' . $version . '_';
         }

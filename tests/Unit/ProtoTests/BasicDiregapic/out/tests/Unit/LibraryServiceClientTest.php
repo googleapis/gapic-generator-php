@@ -1891,7 +1891,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $shelf->setName($shelfName);
         $books = [];
         $seriesUuid = new SeriesUuidResponse();
-        $response = $gapicClient->publishSeries($shelf, $books, $seriesUuid);
+        $genres = [];
+        $response = $gapicClient->publishSeries($shelf, $books, $seriesUuid, $genres);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
@@ -1904,6 +1905,8 @@ class LibraryServiceClientTest extends GeneratedTest
         $this->assertProtobufEquals($books, $actualValue);
         $actualValue = $actualRequestObject->getSeriesUuid();
         $this->assertProtobufEquals($seriesUuid, $actualValue);
+        $actualValue = $actualRequestObject->getGenres();
+        $this->assertProtobufEquals($genres, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -1931,8 +1934,9 @@ class LibraryServiceClientTest extends GeneratedTest
         $shelf->setName($shelfName);
         $books = [];
         $seriesUuid = new SeriesUuidResponse();
+        $genres = [];
         try {
-            $gapicClient->publishSeries($shelf, $books, $seriesUuid);
+            $gapicClient->publishSeries($shelf, $books, $seriesUuid, $genres);
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
