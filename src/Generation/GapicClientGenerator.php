@@ -404,8 +404,7 @@ class GapicClientGenerator
         $descriptorConfigFilename = $this->serviceDetails->descriptorConfigFilename;
         $clientDefaultValues = [
             'serviceName' => AST::access(AST::SELF, $this->serviceName()),
-            // TODO: Understand if this should be named 'serviceAddress' or 'apiEndpoint'?
-            'serviceAddress' => AST::concat(
+            'apiEndpoint' => AST::concat(
                 AST::access(AST::SELF, $this->serviceAddress()),
                 ':',
                 AST::access(AST::SELF, $this->servicePort())
@@ -495,7 +494,7 @@ class GapicClientGenerator
                 '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
                 // TODO(vNext): Don't use a fully-qualified type here.
                 $ctx->type(Type::fromName(TransportInterface::class), true),
-                'object. Note that when this object is provided, any settings in $transportConfig, and any $serviceAddress',
+                'object. Note that when this object is provided, any settings in $transportConfig, and any $apiEndpoint',
                 'setting, will be ignored.'
             );
 
@@ -552,7 +551,7 @@ class GapicClientGenerator
                     // PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'apiEndpoint',
                     PhpDoc::type(
                         Vector::new([$ctx->type(Type::string())]),
-                        'serviceAddress',
+                        'apiEndpoint',
                         PhpDoc::text(
                             'The address of the API remote host. May optionally include the port, formatted',
                             "as \"<uri>:<port>\". Default '{$this->serviceDetails->defaultHost}:{$this->serviceDetails->defaultPort}'."
