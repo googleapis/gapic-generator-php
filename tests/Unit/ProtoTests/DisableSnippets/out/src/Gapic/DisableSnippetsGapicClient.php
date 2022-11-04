@@ -32,7 +32,6 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\DisableSnippets\Request;
-use Testing\DisableSnippets\Response;
 
 /**
  * Service Description:
@@ -179,6 +178,6 @@ class DisableSnippetsGapicClient
     {
         $request = new Request();
         $request->setTestField($testField);
-        return $this->startCall('Method1', Response::class, $optionalArgs, $request)->wait();
+        return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
     }
 }
