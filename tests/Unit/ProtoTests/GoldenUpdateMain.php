@@ -79,6 +79,12 @@ const UNIT_TESTS = [
     'package' => 'testing.customlro',
     'transport' => 'rest'
   ],
+  14 => [
+    'name' => 'DisableSnippets',
+    'protoPath' => 'DisableSnippets/disable_snippets.proto',
+    'package' => 'testing.disablesnippets',
+    'generateSnippets' => false
+  ],
 ];
 
 $optionString = implode("\n", array_map(
@@ -113,7 +119,8 @@ function updateGolden(int $testIndex)
     $goldenUpdater->update(
         $testData['protoPath'],
         array_key_exists('package', $testData) ? $testData['package'] : null,
-        array_key_exists('transport', $testData) ? $testData['transport'] : null
+        array_key_exists('transport', $testData) ? $testData['transport'] : null,
+        array_key_exists('generateSnippets', $testData) ? $testData['generateSnippets'] : true
     );
     print("\n");
 }

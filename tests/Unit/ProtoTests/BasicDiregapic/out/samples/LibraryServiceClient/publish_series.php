@@ -26,6 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\PublishSeriesRequest\Genre;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
 use Testing\BasicDiregapic\ShelfResponse;
@@ -34,13 +35,14 @@ use Testing\BasicDiregapic\ShelfResponse;
  * Creates a series of books.
  * Tests PHP required nested fields.
  *
- * @param string $shelfName The resource name of the shelf.
- *                          ShelfResponse names have the form `shelves/{shelf}`.
- * @param string $booksName The resource name of the book.
- *                          BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                          Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $shelfName     The resource name of the shelf.
+ *                              ShelfResponse names have the form `shelves/{shelf}`.
+ * @param string $booksName     The resource name of the book.
+ *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                              Message field comment may include special characters: <>&"`'&#64;.
+ * @param int    $genresElement A set of enums containing genres the series falls into.
  */
-function publish_series_sample(string $shelfName, string $booksName): void
+function publish_series_sample(string $shelfName, string $booksName, int $genresElement): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
@@ -52,11 +54,12 @@ function publish_series_sample(string $shelfName, string $booksName): void
         ->setName($booksName);
     $books = [$bookResponse,];
     $seriesUuid = new SeriesUuidResponse();
+    $genres = [$genresElement,];
 
     // Call the API and handle any network failures.
     try {
         /** @var PublishSeriesResponse $response */
-        $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
+        $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid, $genres);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -76,7 +79,8 @@ function callSample(): void
 {
     $shelfName = '[NAME]';
     $booksName = '[NAME]';
+    $genresElement = Genre::UNSET;
 
-    publish_series_sample($shelfName, $booksName);
+    publish_series_sample($shelfName, $booksName, $genresElement);
 }
 // [END example_generated_LibraryService_PublishSeries_sync]

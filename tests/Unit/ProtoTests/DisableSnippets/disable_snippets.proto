@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package testing.disablesnippets;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+option php_namespace = "Testing\\DisableSnippets";
+
+service DisableSnippets {
+  option (google.api.default_host) = "disablesnippets.example.com";
+
+  rpc Method1(Request) returns (Response) {
+    option (google.api.http) = {
+      post: "/path:method1"
+      body: "*"
+    };
+  }
+}
+
+message Request {
+  string test_field = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message Response {
+}

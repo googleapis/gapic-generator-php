@@ -1,0 +1,23 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.disablesnippets",
+    "libraryPackage": "Testing\\DisableSnippets",
+    "services": {
+        "DisableSnippets": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "DisableSnippetsGapicClient",
+                    "rpcs": {
+                        "Method1": {
+                            "methods": [
+                                "method1"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

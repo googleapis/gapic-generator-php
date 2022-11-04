@@ -2019,7 +2019,8 @@ class LibraryServiceGapicClient
      *     $shelf = new ShelfResponse();
      *     $books = [];
      *     $seriesUuid = new SeriesUuidResponse();
-     *     $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid);
+     *     $genres = [];
+     *     $response = $libraryServiceClient->publishSeries($shelf, $books, $seriesUuid, $genres);
      * } finally {
      *     $libraryServiceClient->close();
      * }
@@ -2028,6 +2029,8 @@ class LibraryServiceGapicClient
      * @param ShelfResponse      $shelf        The shelf in which the series is created.
      * @param BookResponse[]     $books        The books to publish in the series.
      * @param SeriesUuidResponse $seriesUuid   Uniquely identifies the series to the publishing house.
+     * @param int[]              $genres       A set of enums containing genres the series falls into.
+     *                                         For allowed values, use constants defined on {@see \Testing\BasicDiregapic\PublishSeriesRequest\Genre}
      * @param array              $optionalArgs {
      *     Optional.
      *
@@ -2047,12 +2050,13 @@ class LibraryServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function publishSeries($shelf, $books, $seriesUuid, array $optionalArgs = [])
+    public function publishSeries($shelf, $books, $seriesUuid, $genres, array $optionalArgs = [])
     {
         $request = new PublishSeriesRequest();
         $request->setShelf($shelf);
         $request->setBooks($books);
         $request->setSeriesUuid($seriesUuid);
+        $request->setGenres($genres);
         if (isset($optionalArgs['edition'])) {
             $request->setEdition($optionalArgs['edition']);
         }
