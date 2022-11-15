@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\SecurityCenter\Tests\Unit\V1;
 
-use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -44,6 +43,7 @@ use Google\Cloud\SecurityCenter\V1\ListSourcesResponse;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryResponse;
+use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
 use Google\Cloud\SecurityCenter\V1\SecurityMarks;
 use Google\Cloud\SecurityCenter\V1\Source;
 use Google\LongRunning\GetOperationRequest;

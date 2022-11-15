@@ -22,11 +22,11 @@
 
 namespace Google\Cloud\Iam\Tests\Unit\V1;
 
-use Google\Cloud\Iam\V1\IAMPolicyClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
+use Google\Cloud\Iam\V1\IAMPolicyClient;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\Rpc\Code;

@@ -22,12 +22,12 @@
 
 namespace Testing\DisableSnippets\Tests\Unit;
 
-use Testing\DisableSnippets\DisableSnippetsClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
+use Testing\DisableSnippets\DisableSnippetsClient;
 use Testing\DisableSnippets\Request;
 use Testing\DisableSnippets\Response;
 use stdClass;

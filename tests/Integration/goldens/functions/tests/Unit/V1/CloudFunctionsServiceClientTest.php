@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Functions\Tests\Unit\V1;
 
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -30,6 +29,7 @@ use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Functions\V1\CallFunctionResponse;
 use Google\Cloud\Functions\V1\CloudFunction;
+use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
 use Google\Cloud\Functions\V1\GenerateDownloadUrlResponse;
 use Google\Cloud\Functions\V1\GenerateUploadUrlResponse;
 use Google\Cloud\Functions\V1\ListFunctionsResponse;

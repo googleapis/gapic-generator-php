@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
-use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
@@ -30,6 +29,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Talent\V4beta1\HistogramQueryResult;
 use Google\Cloud\Talent\V4beta1\ListProfilesResponse;
 use Google\Cloud\Talent\V4beta1\Profile;
+use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchProfilesResponse;
 use Google\Protobuf\GPBEmpty;

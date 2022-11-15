@@ -22,13 +22,13 @@
 
 namespace Google\Cloud\Dataproc\Tests\Unit\V1;
 
-use Google\Cloud\Dataproc\V1\JobControllerClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\Job;
+use Google\Cloud\Dataproc\V1\JobControllerClient;
 use Google\Cloud\Dataproc\V1\JobPlacement;
 use Google\Cloud\Dataproc\V1\ListJobsResponse;
 use Google\LongRunning\GetOperationRequest;

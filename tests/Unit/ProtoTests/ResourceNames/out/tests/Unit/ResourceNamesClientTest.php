@@ -22,13 +22,13 @@
 
 namespace Testing\ResourceNames\Tests\Unit;
 
-use Testing\ResourceNames\ResourceNamesClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
 use Testing\ResourceNames\PlaceholderResponse;
+use Testing\ResourceNames\ResourceNamesClient;
 use stdClass;
 
 /**
