@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -33,6 +32,7 @@ use Google\Cloud\Retail\V2alpha\ImportProductsResponse;
 use Google\Cloud\Retail\V2alpha\ListProductsResponse;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesResponse;
 use Google\Cloud\Retail\V2alpha\SetInventoryResponse;
 use Google\LongRunning\GetOperationRequest;

@@ -22,7 +22,6 @@
 
 namespace Testing\BasicLro\Tests\Unit;
 
-use Testing\BasicLro\BasicLroClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -32,6 +31,7 @@ use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
+use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
 use stdClass;

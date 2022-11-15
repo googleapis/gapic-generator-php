@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Dataproc\Tests\Unit\V1;
 
-use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -31,6 +30,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\Cloud\Dataproc\V1\WorkflowTemplatePlacement;
+use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;

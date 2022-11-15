@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Compute\Tests\Unit\V1;
 
-use Google\Cloud\Compute\V1\RegionOperationsClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Compute\V1\Operation;
+use Google\Cloud\Compute\V1\RegionOperationsClient;
 use Google\Rpc\Code;
 use stdClass;
 

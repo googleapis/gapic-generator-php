@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Asset\Tests\Unit\V1;
 
-use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -32,6 +31,7 @@ use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse;
 use Google\Cloud\Asset\V1\AnalyzeMoveResponse;
 use Google\Cloud\Asset\V1\Asset;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
 use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\ExportAssetsResponse;
