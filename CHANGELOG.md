@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/gapic-generator-php/compare/v1.6.0...v1.6.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* Remove no longer required formatting of imports in tests ([#532](https://github.com/googleapis/gapic-generator-php/issues/532)) ([df2f4d6](https://github.com/googleapis/gapic-generator-php/commit/df2f4d67e32ae2c38531bcf94fabf11be455079c))
+
 ## [1.6.0](https://github.com/googleapis/gapic-generator-php/compare/v1.5.0...v1.6.0) (2022-10-27)
 
 
