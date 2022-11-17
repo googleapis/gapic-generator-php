@@ -66,7 +66,7 @@ class CustomLroClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new CustomLroOperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -128,7 +128,7 @@ class CustomLroClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new CustomLroOperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
