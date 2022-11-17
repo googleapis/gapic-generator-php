@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Logging\Tests\Unit\V2;
 
-use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
@@ -33,6 +32,7 @@ use Google\Cloud\Logging\V2\ListLogEntriesResponse;
 use Google\Cloud\Logging\V2\ListLogsResponse;
 use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsResponse;
 use Google\Cloud\Logging\V2\LogEntry;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\TailLogEntriesRequest;
 use Google\Cloud\Logging\V2\TailLogEntriesResponse;
 use Google\Cloud\Logging\V2\WriteLogEntriesResponse;

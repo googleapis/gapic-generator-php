@@ -332,9 +332,6 @@ class CodeGenerator
             $file = UnitTestsGenerator::generate($ctx, $service);
             $code = $file->toCode();
             $code = Formatter::format($code);
-            // TODO(vNext): Remove these non-standard 'use' ordering.
-            $code = Formatter::moveUseTo($code, $service->emptyClientType->getFullname(true), 0);
-            $code = Formatter::moveUseTo($code, 'stdClass', -1);
             yield ["tests/Unit/{$version}{$service->unitTestsType->name}.php", $code];
             // Resource: descriptor_config.php
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);

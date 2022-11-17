@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Talent\Tests\Unit\V4beta1;
 
-use Google\Cloud\Talent\V4beta1\EventServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
+use Google\Cloud\Talent\V4beta1\EventServiceClient;
 use Google\Protobuf\Timestamp;
 use Google\Rpc\Code;
 use stdClass;

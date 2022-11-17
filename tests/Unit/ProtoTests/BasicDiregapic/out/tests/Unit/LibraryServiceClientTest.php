@@ -22,7 +22,6 @@
 
 namespace Testing\BasicDiregapic\Tests\Unit;
 
-use Testing\BasicDiregapic\LibraryServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -40,6 +39,7 @@ use Testing\BasicDiregapic\BookFromArchiveResponse;
 use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\FindRelatedBooksResponse;
 use Testing\BasicDiregapic\InventoryResponse;
+use Testing\BasicDiregapic\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesResponse;
 use Testing\BasicDiregapic\ListBooksResponse;
 use Testing\BasicDiregapic\ListShelvesResponse;

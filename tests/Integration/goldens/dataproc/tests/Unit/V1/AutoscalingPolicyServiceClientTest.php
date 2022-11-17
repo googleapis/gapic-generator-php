@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Dataproc\Tests\Unit\V1;
 
-use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Dataproc\V1\AutoscalingPolicy;
+use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 use Google\Cloud\Dataproc\V1\BasicAutoscalingAlgorithm;
 use Google\Cloud\Dataproc\V1\BasicYarnAutoscalingConfig;
 use Google\Cloud\Dataproc\V1\InstanceGroupAutoscalingPolicyConfig;
