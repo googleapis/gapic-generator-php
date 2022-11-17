@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Compute\Tests\Unit\V1;
 
-use Google\Cloud\Compute\V1\AddressesClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
@@ -30,6 +29,7 @@ use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Compute\V1\Address;
 use Google\Cloud\Compute\V1\AddressAggregatedList;
 use Google\Cloud\Compute\V1\AddressList;
+use Google\Cloud\Compute\V1\AddressesClient;
 use Google\Cloud\Compute\V1\AddressesScopedList;
 use Google\Cloud\Compute\V1\GetRegionOperationRequest;
 use Google\Cloud\Compute\V1\Operation;

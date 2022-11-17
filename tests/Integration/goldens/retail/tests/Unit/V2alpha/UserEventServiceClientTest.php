@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
-use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -35,6 +34,7 @@ use Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInlineSource;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
+use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;

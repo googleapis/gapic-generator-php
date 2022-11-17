@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Logging\Tests\Unit\V2;
 
-use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Logging\V2\CmekSettings;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\ListBucketsResponse;
 use Google\Cloud\Logging\V2\ListExclusionsResponse;
 use Google\Cloud\Logging\V2\ListSinksResponse;

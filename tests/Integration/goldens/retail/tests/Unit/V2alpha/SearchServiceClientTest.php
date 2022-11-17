@@ -22,13 +22,13 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
-use Google\Cloud\Retail\V2alpha\SearchServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Retail\V2alpha\SearchResponse;
 use Google\Cloud\Retail\V2alpha\SearchResponse\SearchResult;
+use Google\Cloud\Retail\V2alpha\SearchServiceClient;
 use Google\Rpc\Code;
 use stdClass;
 

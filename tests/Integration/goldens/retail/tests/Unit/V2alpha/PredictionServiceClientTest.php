@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
-use Google\Cloud\Retail\V2alpha\PredictionServiceClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
+use Google\Cloud\Retail\V2alpha\PredictionServiceClient;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Rpc\Code;
 use stdClass;
