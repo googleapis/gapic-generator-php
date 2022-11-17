@@ -99,7 +99,7 @@ class MetricsServiceV2GapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/metrics_service_v2_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/metrics_service_v2_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/metrics_service_v2_grpc_config.json',

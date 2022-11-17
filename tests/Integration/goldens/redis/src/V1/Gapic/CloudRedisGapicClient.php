@@ -146,7 +146,7 @@ class CloudRedisGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/cloud_redis_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/cloud_redis_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/cloud_redis_grpc_config.json',

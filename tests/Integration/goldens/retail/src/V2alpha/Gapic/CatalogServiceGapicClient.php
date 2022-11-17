@@ -100,7 +100,7 @@ class CatalogServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/catalog_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/catalog_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/catalog_service_grpc_config.json',
