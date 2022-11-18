@@ -28,10 +28,6 @@ interface ResourcePart
 
     public function getNameSnakeCase(): string;
 
-    public function getTemplateProperty(): PhpProperty;
-
-    public function getTemplateGetterMethod(): PhpMethod;
-
     public function getPattern(): string;
 
     public function getFormatMethod(): PhpMethod;

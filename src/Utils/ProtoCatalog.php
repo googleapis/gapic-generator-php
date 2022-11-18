@@ -135,15 +135,15 @@ class ProtoCatalog
         }
 
         $messagesResourceDefs = $allMsgs
-            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class))
+            ->map(fn ($x) => ProtoHelpers::resourceDefinition($x))
             ->filter(fn ($x) => !is_null($x));
         $this->msgResourcesByFullname = $allMsgs
           ->toMap(
               fn ($x) => $x->desc->getFullName(),
-              fn ($x) =>  ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class)
+              fn ($x) =>  ProtoHelpers::resourceDefinition($x)
           )->filter(fn ($k, $v) => !is_null($v));
         $fileResourceDefs = $fileDescs
-            ->flatMap(fn ($x) => ProtoHelpers::getCustomOptionRepeated($x, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class));
+            ->flatMap(fn ($x) => ProtoHelpers::fileResourceDefinitions($x));
         $resourceDefs = $messagesResourceDefs->concat($fileResourceDefs);
         $this->resourcesByType = $resourceDefs->toMap(fn ($x) => $x->getType());
         // Use 'distinct()' here to keep just the first resource if there are multiple resources with the same pattern.
@@ -157,7 +157,7 @@ class ProtoCatalog
             ->toMap(fn ($x) => $x[1]->getType(), fn ($x) => $x[0]);
         $this->parentResourceByChildType = $allMsgs
             ->flatMap(fn ($x) => Vector::new($x->getField()))
-            ->map(fn ($x) => ProtoHelpers::getCustomOption($x, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+            ->map(fn ($x) => ProtoHelpers::resourceReference($x))
             ->filter(fn ($x) => !is_null($x) && $x->getChildType() !== '')
             ->map(fn ($x) => $x->getChildType())
             ->distinct()

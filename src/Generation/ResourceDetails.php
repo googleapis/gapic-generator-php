@@ -36,8 +36,6 @@ class ResourceDetails implements ResourcePart
         }
         $this->nameCamelCase = Helpers::toCamelCase($typeParts[1]);
         $this->nameSnakeCase = Helpers::toSnakeCase($typeParts[1]);
-        $this->templateProperty = Ast::property($this->nameCamelCase . 'NameTemplate');
-        $this->templateGetterMethod = AST::method(Helpers::toCamelCase('get_' . $typeParts[1]) . 'NameTemplate');
         $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
         $this->patterns = Vector::new($desc->getPattern())
             ->filter(fn ($x) => $x !== '*')
@@ -52,12 +50,6 @@ class ResourceDetails implements ResourcePart
 
     /** @var string The underlying name of this resource. */
     public string $nameSnakeCase;
-
-    /** @var string The PHP property of the resource template. */
-    public PhpProperty $templateProperty;
-
-    /** @var string The PHP getter method to get the resource template. */
-    public PhpMethod $templateGetterMethod;
 
     /** @var PhpMethod The PHP method of the public format method for this template. */
     public PhpMethod $formatMethod;
@@ -75,16 +67,6 @@ class ResourceDetails implements ResourcePart
     public function getNameSnakeCase(): string
     {
         return $this->nameSnakeCase;
-    }
-
-    public function getTemplateProperty(): PhpProperty
-    {
-        return $this->templateProperty;
-    }
-
-    public function getTemplateGetterMethod(): PhpMethod
-    {
-        return $this->templateGetterMethod;
     }
 
     public function getPattern(): string

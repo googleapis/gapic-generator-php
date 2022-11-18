@@ -27,13 +27,14 @@ namespace Testing\ResourceNames\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\PathTemplate;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
+use Testing\ResourceNames\FileLevelTypeRefRequest\Nested1;
 use Testing\ResourceNames\MultiPatternRequest;
 use Testing\ResourceNames\SinglePatternRequest;
 use Testing\ResourceNames\WildcardChildReferenceRequest;
@@ -69,6 +70,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
 class ResourceNamesGapicClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'testing.resourcenames.ResourceNames';
@@ -84,38 +86,6 @@ class ResourceNamesGapicClient
 
     /** The default scopes required by the service. */
     public static $serviceScopes = [];
-
-    private static $fileResDefNameTemplate;
-
-    private static $folderNameTemplate;
-
-    private static $folder1NameTemplate;
-
-    private static $folder2NameTemplate;
-
-    private static $item1IdNameTemplate;
-
-    private static $item1IdItem2IdNameTemplate;
-
-    private static $item2IdNameTemplate;
-
-    private static $item3IdNameTemplate;
-
-    private static $item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate;
-
-    private static $multiPatternNameTemplate;
-
-    private static $order1NameTemplate;
-
-    private static $order2NameTemplate;
-
-    private static $order3NameTemplate;
-
-    private static $singlePatternNameTemplate;
-
-    private static $wildcardMultiPatternNameTemplate;
-
-    private static $pathTemplateMap;
 
     private static function getClientDefaults()
     {
@@ -136,164 +106,19 @@ class ResourceNamesGapicClient
         ];
     }
 
-    private static function getFileResDefNameTemplate()
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * deeply_nested resource.
+     *
+     * @param string $foo
+     *
+     * @return string The formatted deeply_nested resource.
+     */
+    public static function deeplyNestedName($foo)
     {
-        if (self::$fileResDefNameTemplate == null) {
-            self::$fileResDefNameTemplate = new PathTemplate('items1/{item1_id}');
-        }
-
-        return self::$fileResDefNameTemplate;
-    }
-
-    private static function getFolderNameTemplate()
-    {
-        if (self::$folderNameTemplate == null) {
-            self::$folderNameTemplate = new PathTemplate('folders/{folder_id}');
-        }
-
-        return self::$folderNameTemplate;
-    }
-
-    private static function getFolder1NameTemplate()
-    {
-        if (self::$folder1NameTemplate == null) {
-            self::$folder1NameTemplate = new PathTemplate('folders1/{folder1_id}');
-        }
-
-        return self::$folder1NameTemplate;
-    }
-
-    private static function getFolder2NameTemplate()
-    {
-        if (self::$folder2NameTemplate == null) {
-            self::$folder2NameTemplate = new PathTemplate('folders2/{folder2_id}');
-        }
-
-        return self::$folder2NameTemplate;
-    }
-
-    private static function getItem1IdNameTemplate()
-    {
-        if (self::$item1IdNameTemplate == null) {
-            self::$item1IdNameTemplate = new PathTemplate('items1/{item1_id}');
-        }
-
-        return self::$item1IdNameTemplate;
-    }
-
-    private static function getItem1IdItem2IdNameTemplate()
-    {
-        if (self::$item1IdItem2IdNameTemplate == null) {
-            self::$item1IdItem2IdNameTemplate = new PathTemplate('items1/{item1_id}/items2/{item2_id}');
-        }
-
-        return self::$item1IdItem2IdNameTemplate;
-    }
-
-    private static function getItem2IdNameTemplate()
-    {
-        if (self::$item2IdNameTemplate == null) {
-            self::$item2IdNameTemplate = new PathTemplate('items2/{item2_id}');
-        }
-
-        return self::$item2IdNameTemplate;
-    }
-
-    private static function getItem3IdNameTemplate()
-    {
-        if (self::$item3IdNameTemplate == null) {
-            self::$item3IdNameTemplate = new PathTemplate('items3/{item3_id}');
-        }
-
-        return self::$item3IdNameTemplate;
-    }
-
-    private static function getItem4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate()
-    {
-        if (self::$item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate == null) {
-            self::$item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate = new PathTemplate('items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}');
-        }
-
-        return self::$item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate;
-    }
-
-    private static function getMultiPatternNameTemplate()
-    {
-        if (self::$multiPatternNameTemplate == null) {
-            self::$multiPatternNameTemplate = new PathTemplate('items1/{item1_id}/items2/{item2_id}');
-        }
-
-        return self::$multiPatternNameTemplate;
-    }
-
-    private static function getOrder1NameTemplate()
-    {
-        if (self::$order1NameTemplate == null) {
-            self::$order1NameTemplate = new PathTemplate('orders1/{order1_id}');
-        }
-
-        return self::$order1NameTemplate;
-    }
-
-    private static function getOrder2NameTemplate()
-    {
-        if (self::$order2NameTemplate == null) {
-            self::$order2NameTemplate = new PathTemplate('orders2/{order2_id}');
-        }
-
-        return self::$order2NameTemplate;
-    }
-
-    private static function getOrder3NameTemplate()
-    {
-        if (self::$order3NameTemplate == null) {
-            self::$order3NameTemplate = new PathTemplate('orders3/{order3_id}');
-        }
-
-        return self::$order3NameTemplate;
-    }
-
-    private static function getSinglePatternNameTemplate()
-    {
-        if (self::$singlePatternNameTemplate == null) {
-            self::$singlePatternNameTemplate = new PathTemplate('items1/{item1_id}/items2/{item2_id}');
-        }
-
-        return self::$singlePatternNameTemplate;
-    }
-
-    private static function getWildcardMultiPatternNameTemplate()
-    {
-        if (self::$wildcardMultiPatternNameTemplate == null) {
-            self::$wildcardMultiPatternNameTemplate = new PathTemplate('items1/{item1_id}');
-        }
-
-        return self::$wildcardMultiPatternNameTemplate;
-    }
-
-    private static function getPathTemplateMap()
-    {
-        if (self::$pathTemplateMap == null) {
-            self::$pathTemplateMap = [
-                'fileResDef' => self::getFileResDefNameTemplate(),
-                'folder' => self::getFolderNameTemplate(),
-                'folder1' => self::getFolder1NameTemplate(),
-                'folder2' => self::getFolder2NameTemplate(),
-                'item1Id' => self::getItem1IdNameTemplate(),
-                'item1IdItem2Id' => self::getItem1IdItem2IdNameTemplate(),
-                'item2Id' => self::getItem2IdNameTemplate(),
-                'item3Id' => self::getItem3IdNameTemplate(),
-                'item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id' => self::getItem4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate(),
-                'multiPattern' => self::getMultiPatternNameTemplate(),
-                'order1' => self::getOrder1NameTemplate(),
-                'order2' => self::getOrder2NameTemplate(),
-                'order3' => self::getOrder3NameTemplate(),
-                'singlePattern' => self::getSinglePatternNameTemplate(),
-                'wildcardMultiPattern' => self::getWildcardMultiPatternNameTemplate(),
-            ];
-        }
-
-        return self::$pathTemplateMap;
+        return self::getPathTemplate('deeplyNested')->render([
+            'foo' => $foo,
+        ]);
     }
 
     /**
@@ -306,7 +131,7 @@ class ResourceNamesGapicClient
      */
     public static function fileResDefName($item1Id)
     {
-        return self::getFileResDefNameTemplate()->render([
+        return self::getPathTemplate('fileResDef')->render([
             'item1_id' => $item1Id,
         ]);
     }
@@ -321,7 +146,7 @@ class ResourceNamesGapicClient
      */
     public static function folderName($folderId)
     {
-        return self::getFolderNameTemplate()->render([
+        return self::getPathTemplate('folder')->render([
             'folder_id' => $folderId,
         ]);
     }
@@ -336,7 +161,7 @@ class ResourceNamesGapicClient
      */
     public static function folder1Name($folder1Id)
     {
-        return self::getFolder1NameTemplate()->render([
+        return self::getPathTemplate('folder1')->render([
             'folder1_id' => $folder1Id,
         ]);
     }
@@ -351,7 +176,7 @@ class ResourceNamesGapicClient
      */
     public static function folder2Name($folder2Id)
     {
-        return self::getFolder2NameTemplate()->render([
+        return self::getPathTemplate('folder2')->render([
             'folder2_id' => $folder2Id,
         ]);
     }
@@ -366,7 +191,7 @@ class ResourceNamesGapicClient
      */
     public static function item1IdName($item1Id)
     {
-        return self::getItem1IdNameTemplate()->render([
+        return self::getPathTemplate('item1Id')->render([
             'item1_id' => $item1Id,
         ]);
     }
@@ -382,7 +207,7 @@ class ResourceNamesGapicClient
      */
     public static function item1IdItem2IdName($item1Id, $item2Id)
     {
-        return self::getItem1IdItem2IdNameTemplate()->render([
+        return self::getPathTemplate('item1IdItem2Id')->render([
             'item1_id' => $item1Id,
             'item2_id' => $item2Id,
         ]);
@@ -398,7 +223,7 @@ class ResourceNamesGapicClient
      */
     public static function item2IdName($item2Id)
     {
-        return self::getItem2IdNameTemplate()->render([
+        return self::getPathTemplate('item2Id')->render([
             'item2_id' => $item2Id,
         ]);
     }
@@ -413,7 +238,7 @@ class ResourceNamesGapicClient
      */
     public static function item3IdName($item3Id)
     {
-        return self::getItem3IdNameTemplate()->render([
+        return self::getPathTemplate('item3Id')->render([
             'item3_id' => $item3Id,
         ]);
     }
@@ -434,7 +259,7 @@ class ResourceNamesGapicClient
      */
     public static function item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdName($item4Id, $item5aId, $item5bId, $item5cId, $item5dId, $item5eId, $item6Id)
     {
-        return self::getItem4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate()->render([
+        return self::getPathTemplate('item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id')->render([
             'item4_id' => $item4Id,
             'item5a_id' => $item5aId,
             'item5b_id' => $item5bId,
@@ -456,7 +281,7 @@ class ResourceNamesGapicClient
      */
     public static function multiPatternName($item1Id, $item2Id)
     {
-        return self::getMultiPatternNameTemplate()->render([
+        return self::getPathTemplate('multiPattern')->render([
             'item1_id' => $item1Id,
             'item2_id' => $item2Id,
         ]);
@@ -472,7 +297,7 @@ class ResourceNamesGapicClient
      */
     public static function order1Name($order1Id)
     {
-        return self::getOrder1NameTemplate()->render([
+        return self::getPathTemplate('order1')->render([
             'order1_id' => $order1Id,
         ]);
     }
@@ -487,7 +312,7 @@ class ResourceNamesGapicClient
      */
     public static function order2Name($order2Id)
     {
-        return self::getOrder2NameTemplate()->render([
+        return self::getPathTemplate('order2')->render([
             'order2_id' => $order2Id,
         ]);
     }
@@ -502,7 +327,7 @@ class ResourceNamesGapicClient
      */
     public static function order3Name($order3Id)
     {
-        return self::getOrder3NameTemplate()->render([
+        return self::getPathTemplate('order3')->render([
             'order3_id' => $order3Id,
         ]);
     }
@@ -518,7 +343,7 @@ class ResourceNamesGapicClient
      */
     public static function singlePatternName($item1Id, $item2Id)
     {
-        return self::getSinglePatternNameTemplate()->render([
+        return self::getPathTemplate('singlePattern')->render([
             'item1_id' => $item1Id,
             'item2_id' => $item2Id,
         ]);
@@ -534,15 +359,21 @@ class ResourceNamesGapicClient
      */
     public static function wildcardMultiPatternName($item1Id)
     {
-        return self::getWildcardMultiPatternNameTemplate()->render([
+        return self::getPathTemplate('wildcardMultiPattern')->render([
             'item1_id' => $item1Id,
         ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../resources/resource_names_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - deeplyNested: foos/{foo}
      * - fileResDef: items1/{item1_id}
      * - folder: folders/{folder_id}
      * - folder1: folders1/{folder1_id}
@@ -574,24 +405,7 @@ class ResourceNamesGapicClient
      */
     public static function parseName($formattedName, $template = null)
     {
-        $templateMap = self::getPathTemplateMap();
-        if ($template) {
-            if (!isset($templateMap[$template])) {
-                throw new ValidationException("Template name $template does not exist");
-            }
-
-            return $templateMap[$template]->match($formattedName);
-        }
-
-        foreach ($templateMap as $templateName => $pathTemplate) {
-            try {
-                return $pathTemplate->match($formattedName);
-            } catch (ValidationException $ex) {
-                // Swallow the exception to continue trying other path templates
-            }
-        }
-
-        throw new ValidationException("Input did not match any known format. Input: $formattedName");
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**
@@ -731,6 +545,7 @@ class ResourceNamesGapicClient
      *     Optional.
      *
      *     @type string $fileName
+     *     @type Nested1 $nestedOne
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -746,6 +561,10 @@ class ResourceNamesGapicClient
         $request = new FileLevelTypeRefRequest();
         if (isset($optionalArgs['fileName'])) {
             $request->setFileName($optionalArgs['fileName']);
+        }
+
+        if (isset($optionalArgs['nestedOne'])) {
+            $request->setNestedOne($optionalArgs['nestedOne']);
         }
 
         return $this->startApiCall('FileLevelTypeRefMethod', $request, $optionalArgs)->wait();

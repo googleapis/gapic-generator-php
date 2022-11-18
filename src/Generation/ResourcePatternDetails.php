@@ -47,14 +47,13 @@ class ResourcePatternDetails implements ResourcePart
             ->map(fn ($x) => $x->getKey());
         // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
         $tokens = explode("/", $pattern);
-        $nameSegments = $varSegments;
+        $this->idSegments = $varSegments;
         if (substr(end($tokens), 0, 1) !== "{" && substr($pattern, strlen($pattern) - 1) !== "}") {
-            $nameSegments = $nameSegments->append(end($tokens));
+            $this->idSegments = $this->idSegments->append(end($tokens));
         }
-        $this->nameSnakeCase = $nameSegments->join('_');
+
+        $this->nameSnakeCase = $this->idSegments->join('_');
         $this->nameCamelCase = Helpers::toCamelCase($this->nameSnakeCase);
-        $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
-        $this->templateGetterMethod = AST::method(Helpers::toCamelCase("get_{$this->nameCamelCase}") . 'NameTemplate');
         $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
         $this->params = $varSegments->map(fn ($x) => [$x, AST::param(null, AST::var(Helpers::toCamelCase($x)))]);
     }
@@ -68,17 +67,14 @@ class ResourcePatternDetails implements ResourcePart
     /** @var string The underlying name of this resource. */
     public string $nameSnakeCase;
 
-    /** @var string The PHP property of the resource template. */
-    public PhpProperty $templateProperty;
-
-    /** @var string The PHP getter method to get the resource template. */
-    public PhpMethod $templateGetterMethod;
-
     /** @var PhpMethod The PHP method of the public format method for this template. */
     public PhpMethod $formatMethod;
 
     /** @var Vector Vector of [name, PhpParam] for each pattern variable segment. */
     public Vector $params;
+
+    /** @var Vector Vector of resource ID variable segments from the pattern. */
+    public Vector $idSegments;
 
     // ResourcePart implementation.
 
@@ -90,16 +86,6 @@ class ResourcePatternDetails implements ResourcePart
     public function getNameSnakeCase(): string
     {
         return $this->nameSnakeCase;
-    }
-
-    public function getTemplateProperty(): PhpProperty
-    {
-        return $this->templateProperty;
-    }
-
-    public function getTemplateGetterMethod(): PhpMethod
-    {
-        return $this->templateGetterMethod;
     }
 
     public function getPattern(): string
