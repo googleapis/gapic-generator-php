@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
@@ -1037,93 +1036,5 @@ class GapicClientGenerator
         }
 
         return $assignments;
-    }
-
-    /**
-     * Compiles the code for implicit request header injection based on the configuration from
-     * google.api.http annotations for both required and optional fields. A Vector containing code
-     * for required fields is keyed to 'required'. A Map containing code for each optional field is
-     * keyed to 'optional' (does not support nested fields). If there are no headers configured to
-     * be set, both are set to null.
-     *
-     * @param MethodDetails $method The method with the HttpRule.
-     * @param Map $restRoutingHeaders Mapping of full header key name to getter/chain.
-     * @param Expression $requestParamHeaders The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return Map Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
-     */
-    private static function implicitRequestParams(MethodDetails $method, Map $restRoutingHeaders, Expression $requestParamHeaders)
-    {
-        // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
-        $requiredFieldNames =
-            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
-        // Contains full field names with parents, e.g. foo.bar.car.
-        $requiredRestRoutingKeys =
-            $restRoutingHeaders->keys()
-                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]));
-        $requiredFieldNamesInRoutingHeaders =
-            $requiredFieldNames->filter(
-                fn ($x) => !empty($x)
-                    && in_array(
-                        trim($x),
-                        array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())
-                    )
-            )
-                ->toArray();
-        // Maps field names to a set of the relevant field in the URL pattern.
-        // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
-        // This is needed for RPCs that may have multiple subfields under the same field in their
-        // HTTP bindings.
-        $requiredFieldToHeaderName = [];
-        foreach ($requiredFieldNamesInRoutingHeaders as $header) {
-            $requiredFieldToHeaderName[$header] =
-                $requiredRestRoutingKeys->filter(
-                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k
-                );
-        }
-
-        // Has no request parameter headers.
-        if (count($restRoutingHeaders) === 0) {
-            return ['required' => null, 'optional' => null];
-        }
-        $requiredRequestHeaders = Vector::new([]);
-        // TODO(v2): Handle request params for oneofs - this currently isn't used by anyone.
-        foreach ($method->requiredFields as $field) {
-            if (!isset($requiredFieldToHeaderName[$field->name])) {
-                continue;
-            }
-            $requiredParam = AST::param(null, AST::var($field->camelName));
-            foreach ($requiredFieldToHeaderName[$field->name] as $urlPatternHeaderName) {
-                $assignValue = $requiredParam;
-                if ($restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))->count() >= 2) {
-                    $assignValue =
-                        $restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))
-                            ->skip(1)
-                            // Chains getter methods together for nested names like foo.bar.car, which
-                            // becomes $foo->getBar()->getCar().
-                            ->reduce($requiredParam, fn ($acc, $g) => AST::call($acc, AST::method($g))());
-                }
-                $requiredRequestHeaders = $requiredRequestHeaders->append(
-                    AST::assign(
-                        AST::index($requestParamHeaders, $urlPatternHeaderName),
-                        $assignValue
-                    )
-                );
-            }
-        }
-
-        // TODO(noahdietz): Consider assigning nested fields on optional params,
-        // at the risk of errors if they're not set on the message itself.
-        $optionalAssignments = $method->optionalFields
-        ->filter(fn ($f) => isset($restRoutingHeaders[$f->name]))
-        ->toMap(
-            fn ($f) => $f->name,
-            fn ($f) => AST::assign(
-                AST::index($requestParamHeaders, $f->name),
-                AST::index(AST::var('optionalArgs'), $f->camelName)
-            )
-        );
-
-        return ['required' => $requiredRequestHeaders, 'optional' => $optionalAssignments];
     }
 }
