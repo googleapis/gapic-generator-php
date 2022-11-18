@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Api\ResourceDescriptor;
-use Google\Api\ResourceReference;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;

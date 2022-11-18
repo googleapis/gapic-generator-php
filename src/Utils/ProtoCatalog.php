@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Api\ResourceDescriptor;
-use Google\Api\ResourceReference;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Collections\Map;
 use Google\Protobuf\Internal\DescriptorProto;
