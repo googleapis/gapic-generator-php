@@ -55,7 +55,7 @@ function diagnose_cluster_sample(string $projectId, string $region, string $clus
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var DiagnoseClusterResults $response */
+            /** @var DiagnoseClusterResults $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -77,7 +77,7 @@ function update_cluster_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var Cluster $response */
+            /** @var Cluster $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

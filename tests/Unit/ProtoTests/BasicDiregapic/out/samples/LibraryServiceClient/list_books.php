@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_ListBooks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\BookResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
@@ -44,7 +43,6 @@ function list_books_sample(string $formattedName): void
         /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listBooks($formattedName);
 
-        /** @var BookResponse $element */
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }

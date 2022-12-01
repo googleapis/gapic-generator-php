@@ -102,7 +102,7 @@ function remove_fulfillment_places_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var RemoveFulfillmentPlacesResponse $response */
+            /** @var RemoveFulfillmentPlacesResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
