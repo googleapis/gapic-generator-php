@@ -175,7 +175,7 @@ class SnippetGenerator
                             : Vector::new([
                                 AST::inlineVarDoc(
                                     $context->type($snippetDetails->methodDetails->lroResponseType),
-                                    $responseVar
+                                    $resultVar
                                 ),
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
