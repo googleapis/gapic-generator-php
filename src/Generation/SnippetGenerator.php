@@ -19,18 +19,14 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
-use Google\ApiCore\ClientStream;
-use Google\ApiCore\OperationResponse;
-use Google\ApiCore\ServerStream;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFunction;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Status;
 
 class SnippetGenerator
@@ -160,7 +156,6 @@ class SnippetGenerator
         $errorVar = AST::var('error');
         $isCustomOp = $snippetDetails->methodDetails->methodType === MethodDetails::CUSTOM_OP;
         $context = $snippetDetails->context;
-        $lroResponseType = $snippetDetails->methodDetails->lroResponseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -175,13 +170,13 @@ class SnippetGenerator
                             ? $this->buildPrintFCall('Operation completed successfully.')
                             : Vector::new([
                                 AST::inlineVarDoc(
-                                    $context->type($lroResponseType),
+                                    $context->type($snippetDetails->methodDetails->lroResponseType),
                                     $resultVar
                                 ),
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
                                     'Operation successful with response data: %s',
-                                    $lroResponseType->isClass()
+                                    $snippetDetails->methodDetails->lroResponseType->isClass()
                                         ? "{$resultVar->toCode()}->serializeToJsonString()"
                                         : $resultVar->toCode()
                                 )
@@ -217,10 +212,16 @@ class SnippetGenerator
             [
                 $this->buildClientMethodCall($snippetDetails, $responseVar),
                 PHP_EOL,
-                AST::inlineVarDoc(
-                    $context->type($resourceType),
-                    $elementVar
-                ),
+                // When transport is REST only, disabling this for now.
+                // Need to further investigate an issue causing the resourceType
+                // to render as ItemsEntry with a mapped entry, despite a
+                // different value being outlined in the proto.
+                $this->serviceDetails->transportType === Transport::REST
+                    ? null
+                    : AST::inlineVarDoc(
+                        $context->type($resourceType),
+                        $elementVar
+                    ),
                 AST::foreach($responseVar, $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
