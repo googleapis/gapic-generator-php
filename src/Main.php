@@ -150,6 +150,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $gapicYaml,
         $serviceYaml,
         $numericEnums,
+        -1,
         $generateSnippets
     );
 
