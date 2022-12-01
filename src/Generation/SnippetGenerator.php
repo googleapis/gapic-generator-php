@@ -160,6 +160,7 @@ class SnippetGenerator
         $errorVar = AST::var('error');
         $isCustomOp = $snippetDetails->methodDetails->methodType === MethodDetails::CUSTOM_OP;
         $context = $snippetDetails->context;
+        $lroResponseType = $snippetDetails->methodDetails->lroResponseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -174,13 +175,15 @@ class SnippetGenerator
                             ? $this->buildPrintFCall('Operation completed successfully.')
                             : Vector::new([
                                 AST::inlineVarDoc(
-                                    $context->type($snippetDetails->methodDetails->lroResponseType),
+                                    $context->type($lroResponseType),
                                     $resultVar
                                 ),
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
                                     'Operation successful with response data: %s',
-                                    "{$resultVar->toCode()}->serializeToJsonString()"
+                                    $lroResponseType->isClass()
+                                        ? "{$resultVar->toCode()}->serializeToJsonString()"
+                                        : $resultVar->toCode()
                                 )
                             ])
                     )->else(
@@ -207,6 +210,7 @@ class SnippetGenerator
         $responseVar = AST::var('response');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $resourceType = $snippetDetails->methodDetails->resourceType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -214,13 +218,15 @@ class SnippetGenerator
                 $this->buildClientMethodCall($snippetDetails, $responseVar),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->resourceType),
+                    $context->type($resourceType),
                     $elementVar
                 ),
                 AST::foreach($responseVar, $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $resourceType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -236,6 +242,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -244,13 +251,15 @@ class SnippetGenerator
                 $streamVar->writeAll($snippetDetails->rpcArguments),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $elementVar
                 ),
                 AST::foreach($streamVar->closeWriteAndReadAll(), $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $responseType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -266,6 +275,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -273,13 +283,15 @@ class SnippetGenerator
                 $this->buildClientMethodCall($snippetDetails, $streamVar),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $elementVar
                 ),
                 AST::foreach($streamVar->readAll(), $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $responseType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -295,6 +307,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $responseVar = AST::var('response');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -302,7 +315,7 @@ class SnippetGenerator
                 $this->buildClientMethodCall($snippetDetails, $streamVar),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $responseVar
                 ),
                 AST::assign(
@@ -311,7 +324,9 @@ class SnippetGenerator
                 ),
                 $this->buildPrintFCall(
                     'Response data: %s',
-                    "{$responseVar->toCode()}->serializeToJsonString()"
+                    $responseType->isClass()
+                        ? "{$responseVar->toCode()}->serializeToJsonString()"
+                        : $responseVar->toCode()
                 )
             ]
         );
