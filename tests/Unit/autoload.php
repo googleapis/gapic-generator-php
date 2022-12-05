@@ -37,7 +37,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         switch ($prefix) {
             case 'set':
                 $this->$suffix = $arguments[0];
-                return;
+                return $this;
             case 'get':
                 // Always return an empty string as by default. If a special case is necessary we
                 // can add (back) a default value function that switches on field name to handle it.
