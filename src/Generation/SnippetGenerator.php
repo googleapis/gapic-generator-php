@@ -176,9 +176,7 @@ class SnippetGenerator
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
                                     'Operation successful with response data: %s',
-                                    $snippetDetails->methodDetails->lroResponseType->isClass()
-                                        ? "{$resultVar->toCode()}->serializeToJsonString()"
-                                        : $resultVar->toCode()
+                                    "{$resultVar->toCode()}->serializeToJsonString()"
                                 )
                             ])
                     )->else(
