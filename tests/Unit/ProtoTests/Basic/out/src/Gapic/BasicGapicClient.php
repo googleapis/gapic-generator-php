@@ -36,6 +36,7 @@ use Testing\Basic\PartOfRequestB;
 use Testing\Basic\PartOfRequestC;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
+use Testing\Basic\Response;
 
 /**
  * Service Description: This is a basic service.
@@ -182,7 +183,7 @@ class BasicGapicClient
     public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -237,6 +238,6 @@ class BasicGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
+        return $this->startCall('MethodWithArgs', Response::class, $optionalArgs, $request)->wait();
     }
 }

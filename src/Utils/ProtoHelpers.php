@@ -79,6 +79,33 @@ class ProtoHelpers
         }
     }
 
+    /**
+     * Processes the RoutingParameters for generation and groups these processed configs by the `field`
+     * declared.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param DescriptorProto $msg The request message.
+     * @param RoutingRule $routingRule The RoutingRule annotation to process.
+     *
+     * @return Map A Map of `RoutingParameter.field` to all processed RoutingParameter configs related
+     *             to each field.
+     */
+    public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
+    {
+        return Vector::new($routingRule->getRoutingParameters())
+            ->groupBy(
+                // Key: The field (or field chain) referenced by the RoutingParamter.
+                fn ($x) => $x->getField(),
+                // Value: The routing header config the RoutingParameter defines.
+                fn ($x) => [
+                    'getter' => static::buildGetterChain($catalog, $msg, $x->getField()),
+                    'key' => static::fieldOrTemplateVariable($x),
+                    'regex' => static::compileRoutingRegex($x),
+                    'root' => explode('.', $x->getField())[0],
+                ],
+            );
+    }
+
     public static function headerParams(ProtoCatalog $catalog, MethodDescriptorProto $desc): array
     {
         $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
@@ -166,8 +193,17 @@ class ProtoHelpers
      */
     private static function compileRoutingRegex(RoutingParameter $routingParam)
     {
+        // No path_template in RoutingParameter.
+        if (empty($routingParam->getPathTemplate())) {
+            return null;
+        }
+        // The path_template only overrides the header key, doesn't define
+        // segment matcher.
+        if (!str_contains($routingParam->getPathTemplate(), '=')) {
+            return null;
+        }
         if (!static::hasMatcher($routingParam)) {
-            return '';
+            return null;
         }
         $template = $routingParam->getPathTemplate();
 
@@ -175,13 +211,13 @@ class ProtoHelpers
         // Example: /v1/{key_override=projects/*}/foos -> projects/*
         $matches = [];
         if (!preg_match('/\{.+=([^\}]*)\}/', $template, $matches)) {
-            return '';
+            return null;
         }
         $match = $matches[1];
         // These mean "accept anything and everything", essentially the same as
         // not including a pattern following the '=' separator.
         if ($match === '*' || $match === '**') {
-            return '';
+            return null;
         }
 
         $key = static::fieldOrTemplateVariable($routingParam);

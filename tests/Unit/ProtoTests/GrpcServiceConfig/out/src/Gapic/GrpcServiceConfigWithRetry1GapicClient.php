@@ -25,6 +25,7 @@
 namespace Testing\GrpcServiceConfig\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -35,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
 use Testing\GrpcServiceConfig\Request1;
+use Testing\GrpcServiceConfig\Response1;
 
 /**
  * Service Description:
@@ -209,7 +211,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1A(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1A', $request, $optionalArgs)->wait();
+        return $this->startCall('Method1A', Response1::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -265,7 +267,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1BLro(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1BLro', $request, $optionalArgs)->wait();
+        return $this->startOperationsCall('Method1BLro', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -323,7 +325,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      */
     public function method1BidiStreaming(array $optionalArgs = [])
     {
-        return $this->startApiCall('Method1BidiStreaming', null, $optionalArgs);
+        return $this->startCall('Method1BidiStreaming', Response1::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -354,7 +356,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1CServiceLevelRetry(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1CServiceLevelRetry', $request, $optionalArgs)->wait();
+        return $this->startCall('Method1CServiceLevelRetry', Response1::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -385,7 +387,7 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1DTimeoutOnlyRetry', $request, $optionalArgs)->wait();
+        return $this->startCall('Method1DTimeoutOnlyRetry', Response1::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -418,6 +420,6 @@ class GrpcServiceConfigWithRetry1GapicClient
     public function method1ServerStreaming(array $optionalArgs = [])
     {
         $request = new Request1();
-        return $this->startApiCall('Method1ServerStreaming', $request, $optionalArgs);
+        return $this->startCall('Method1ServerStreaming', Response1::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }
