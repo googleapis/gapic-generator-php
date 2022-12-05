@@ -48,7 +48,7 @@ function long_running_archive_books_sample(): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var ArchiveBooksResponse $response */
+            /** @var ArchiveBooksResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

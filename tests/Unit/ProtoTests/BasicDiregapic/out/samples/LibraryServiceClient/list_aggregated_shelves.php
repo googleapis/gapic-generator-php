@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\LibraryServiceClient;
-use Testing\BasicDiregapic\ShelfResponse;
 
 /**
  * Lists shelves.
@@ -47,7 +46,6 @@ function list_aggregated_shelves_sample(): void
         /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listAggregatedShelves();
 
-        /** @var ShelfResponse $element */
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }

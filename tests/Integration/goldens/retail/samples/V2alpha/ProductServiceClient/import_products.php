@@ -61,7 +61,7 @@ function import_products_sample(string $formattedParent): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var ImportProductsResponse $response */
+            /** @var ImportProductsResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

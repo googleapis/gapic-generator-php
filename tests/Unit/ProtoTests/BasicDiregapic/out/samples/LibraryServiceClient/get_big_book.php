@@ -47,7 +47,7 @@ function get_big_book_sample(string $formattedName): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var BookResponse $response */
+            /** @var BookResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -2175,8 +2175,8 @@ class LibraryServiceGapicClient
      * ```
      * $libraryServiceClient = new LibraryServiceClient();
      * try {
-     *     $name = 'name';
-     *     $libraryServiceClient->saveBook($name);
+     *     $formattedName = $libraryServiceClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+     *     $libraryServiceClient->saveBook($formattedName);
      * } finally {
      *     $libraryServiceClient->close();
      * }

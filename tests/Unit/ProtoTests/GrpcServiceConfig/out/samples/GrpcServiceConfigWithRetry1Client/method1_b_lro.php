@@ -48,7 +48,7 @@ function method1_b_lro_sample(): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var LroResponse $response */
+            /** @var LroResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
