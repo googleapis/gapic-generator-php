@@ -49,14 +49,23 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
 
+    /** @var Type *Readonly* The type of the service client V2 class. */
+    public Type $gapicClientV2Type;
+
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
+
+    /** @var Type *Readonly* The type of the empty client V2 class. */
+    public Type $emptyClientV2Type;
 
     /** @var Type *Readonly* The type of the gRPC client. */
     public Type $grpcClientType;
 
     /** @var Type *Readonly* The type of the unit-tests class. */
     public Type $unitTestsType;
+
+    /** @var Type *Readonly* The type of the unit-tests class for V2 clients. */
+    public Type $unitTestsV2Type;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
@@ -147,12 +156,15 @@ class ServiceDetails
         $this->transportType = $transportType;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
+        $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\BaseClient\\{$desc->getName()}BaseClient");
+        $this->emptyClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?
             "{$namespace}\\Tests\\Unit" :
             substr($namespace, 0, -strlen($nsVersionAndSuffix)) . 'Tests\\Unit\\' . str_replace('/', '\\', $nsVersionAndSuffix);
         $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
+        $this->unitTestsV2Type = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->shortName = $desc->getName();

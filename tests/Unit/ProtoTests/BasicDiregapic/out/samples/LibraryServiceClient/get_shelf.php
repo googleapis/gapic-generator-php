@@ -24,25 +24,31 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_GetShelf_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\GetShelfRequest;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
  * Gets a shelf.
  *
- * @param string $formattedName The name of the shelf to retrieve. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $options       To test 'options' parameter name conflict.
+ * @param string $name    The name of the shelf to retrieve. Please see
+ *                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $options To test 'options' parameter name conflict.
  */
-function get_shelf_sample(string $formattedName, string $options): void
+function get_shelf_sample(string $name, string $options): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetShelfRequest())
+        ->setName($name)
+        ->setOptions($options);
+
     // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
-        $response = $libraryServiceClient->getShelf($formattedName, $options);
+        $response = $libraryServiceClient->getShelf($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -60,9 +66,9 @@ function get_shelf_sample(string $formattedName, string $options): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::shelfName('[SHELF]');
     $options = '[OPTIONS]';
 
-    get_shelf_sample($formattedName, $options);
+    get_shelf_sample($name, $options);
 }
 // [END example_generated_LibraryService_GetShelf_sync]

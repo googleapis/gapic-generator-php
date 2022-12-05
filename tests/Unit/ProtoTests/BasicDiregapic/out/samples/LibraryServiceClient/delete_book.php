@@ -24,22 +24,27 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_DeleteBook_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\DeleteBookRequest;
 
 /**
  * Deletes a book.
  *
- * @param string $formattedName The name of the book to delete. Please see
- *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $name The name of the book to delete. Please see
+ *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function delete_book_sample(string $formattedName): void
+function delete_book_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteBookRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
-        $libraryServiceClient->deleteBook($formattedName);
+        $libraryServiceClient->deleteBook($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -57,8 +62,8 @@ function delete_book_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    delete_book_sample($formattedName);
+    delete_book_sample($name);
 }
 // [END example_generated_LibraryService_DeleteBook_sync]

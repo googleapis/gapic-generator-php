@@ -24,10 +24,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START routingheaders_generated_RoutingHeaders_RoutingRuleWithOutParameters_sync]
 use Google\ApiCore\ApiException;
+use Testing\RoutingHeaders\Client\RoutingHeadersClient;
+use Testing\RoutingHeaders\NestedRequest;
 use Testing\RoutingHeaders\NestedRequest\Inner1;
 use Testing\RoutingHeaders\NestedRequest\Inner1\Inner2;
 use Testing\RoutingHeaders\Response;
-use Testing\RoutingHeaders\RoutingHeadersClient;
 
 /**
  * @param string $nest1Nest2Name
@@ -40,16 +41,19 @@ function routing_rule_with_out_parameters_sample(
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $nest1Nest2 = (new Inner2())
         ->setName($nest1Nest2Name);
     $nest1 = (new Inner1())
         ->setNest2($nest1Nest2);
+    $request = (new NestedRequest())
+        ->setNest1($nest1)
+        ->setAnotherName($anotherName);
 
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $routingHeadersClient->routingRuleWithOutParameters($nest1, $anotherName);
+        $response = $routingHeadersClient->routingRuleWithOutParameters($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

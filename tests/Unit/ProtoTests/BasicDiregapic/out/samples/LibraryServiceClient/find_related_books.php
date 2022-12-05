@@ -25,27 +25,29 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_FindRelatedBooks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\FindRelatedBooksRequest;
 
 /**
- * @param string $formattedNamesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $formattedShelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $namesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $shelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function find_related_books_sample(
-    string $formattedNamesElement,
-    string $formattedShelvesElement
-): void {
+function find_related_books_sample(string $namesElement, string $shelvesElement): void
+{
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
-    $formattedNames = [$formattedNamesElement,];
-    $formattedShelves = [$formattedShelvesElement,];
+    // Prepare the request message.
+    $names = [$namesElement,];
+    $shelves = [$shelvesElement,];
+    $request = (new FindRelatedBooksRequest())
+        ->setNames($names)
+        ->setShelves($shelves);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
+        $response = $libraryServiceClient->findRelatedBooks($request);
 
         /** @var string $element */
         foreach ($response as $element) {
@@ -67,9 +69,9 @@ function find_related_books_sample(
  */
 function callSample(): void
 {
-    $formattedNamesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $formattedShelvesElement = LibraryServiceClient::shelfName('[SHELF]');
+    $namesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $shelvesElement = LibraryServiceClient::shelfName('[SHELF]');
 
-    find_related_books_sample($formattedNamesElement, $formattedShelvesElement);
+    find_related_books_sample($namesElement, $shelvesElement);
 }
 // [END example_generated_LibraryService_FindRelatedBooks_sync]

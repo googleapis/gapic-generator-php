@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_MergeShelves_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\MergeShelvesRequest;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
@@ -32,20 +33,25 @@ use Testing\BasicDiregapic\ShelfResponse;
  * `other_shelf_name` to shelf `name`, and deletes
  * `other_shelf_name`. Returns the updated shelf.
  *
- * @param string $formattedName           The name of the shelf we're adding books to. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. Please see
- *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $name           The name of the shelf we're adding books to. Please see
+ *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $otherShelfName The name of the shelf we're removing books from and deleting. Please see
+ *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function merge_shelves_sample(string $formattedName, string $formattedOtherShelfName): void
+function merge_shelves_sample(string $name, string $otherShelfName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new MergeShelvesRequest())
+        ->setName($name)
+        ->setOtherShelfName($otherShelfName);
+
     // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
-        $response = $libraryServiceClient->mergeShelves($formattedName, $formattedOtherShelfName);
+        $response = $libraryServiceClient->mergeShelves($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -63,9 +69,9 @@ function merge_shelves_sample(string $formattedName, string $formattedOtherShelf
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
-    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::shelfName('[SHELF]');
+    $otherShelfName = LibraryServiceClient::shelfName('[SHELF]');
 
-    merge_shelves_sample($formattedName, $formattedOtherShelfName);
+    merge_shelves_sample($name, $otherShelfName);
 }
 // [END example_generated_LibraryService_MergeShelves_sync]

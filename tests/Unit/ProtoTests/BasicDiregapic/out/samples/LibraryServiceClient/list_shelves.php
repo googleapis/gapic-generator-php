@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_ListShelves_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\ListShelvesRequest;
 use Testing\BasicDiregapic\ListShelvesResponse;
 
 /**
@@ -41,10 +42,13 @@ function list_shelves_sample(): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = new ListShelvesRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var ListShelvesResponse $response */
-        $response = $libraryServiceClient->listShelves();
+        $response = $libraryServiceClient->listShelves($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

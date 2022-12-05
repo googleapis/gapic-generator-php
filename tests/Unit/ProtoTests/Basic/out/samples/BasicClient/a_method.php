@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START basic_generated_Basic_AMethod_sync]
 use Google\ApiCore\ApiException;
-use Testing\Basic\BasicClient;
+use Testing\Basic\Client\BasicClient;
+use Testing\Basic\Request;
 use Testing\Basic\Response;
 
 /**
@@ -41,10 +42,13 @@ function a_method_sample(): void
     // Create a client.
     $basicClient = new BasicClient();
 
+    // Prepare the request message.
+    $request = new Request();
+
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $basicClient->aMethod();
+        $response = $basicClient->aMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

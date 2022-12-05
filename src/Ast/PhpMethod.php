@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Ast;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 
 /** A method within a class. */
 final class PhpMethod extends PhpClassMember
@@ -31,6 +32,9 @@ final class PhpMethod extends PhpClassMember
 
     /** @var string *Readonly* The name of this method. */
     public string $name;
+
+    /** @var string The return type of the function. */
+    private ?ResolvedType $returnType = null;
 
     /**
      * Create a method with the specified parameters.
@@ -57,6 +61,18 @@ final class PhpMethod extends PhpClassMember
         return $this->clone(fn ($clone) => $clone->body = $body);
     }
 
+    /**
+     * Create a function with the specified return type.
+     *
+     * @param ResolvedType $returnType The return type of the function.
+     *
+     * @return PhpMethod
+     */
+    public function withReturnType(ResolvedType $returnType): PhpMethod
+    {
+        return $this->clone(fn ($clone) => $clone->returnType = $returnType);
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -64,12 +80,16 @@ final class PhpMethod extends PhpClassMember
 
     public function toCode(): string
     {
+        $fnSignatureDeclaration =
+            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
+            ($this->returnType ? ': ' . static::toPhp($this->returnType) : null);
+
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
-            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
-            "{\n" .
+            $fnSignatureDeclaration .
+            '{' . PHP_EOL .
             static::toPhp($this->body) .
-            "}\n";
+            PHP_EOL . '}' . PHP_EOL;
     }
 }

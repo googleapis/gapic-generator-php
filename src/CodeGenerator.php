@@ -22,12 +22,15 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\SnippetGenerator;
 use Google\Generator\Generation\EmptyClientGenerator;
+use Google\Generator\Generation\EmptyClientV2Generator;
 use Google\Generator\Generation\EnumConstantGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\GapicClientV2Generator;
 use Google\Generator\Generation\OneofWrapperGenerator;
 use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
+use Google\Generator\Generation\UnitTestsV2Generator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
@@ -298,6 +301,13 @@ class CodeGenerator
             $code = Formatter::format($code);
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
 
+            // V2 Gapic
+            $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
+            $file = GapicClientV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["src/{$version}Client/BaseClient/{$service->gapicClientV2Type->name}.php", $code];
+
             // Snippet Generator.
             if ($generateSnippets) {
                 $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
@@ -327,12 +337,24 @@ class CodeGenerator
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}{$service->emptyClientType->name}.php", $code];
+            // Very thin service client V2 wrapper, for manual code additions if required.
+            $ctx = new SourceFileContext($service->emptyClientV2Type->getNamespace(), $licenseYear);
+            $file = EmptyClientV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["src/{$version}Client/{$service->emptyClientV2Type->name}.php", $code];
             // Unit tests.
             $ctx = new SourceFileContext($service->unitTestsType->getNamespace(), $licenseYear);
             $file = UnitTestsGenerator::generate($ctx, $service);
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["tests/Unit/{$version}{$service->unitTestsType->name}.php", $code];
+            // V2 Unit tests.
+            $ctx = new SourceFileContext($service->unitTestsV2Type->getNamespace(), $licenseYear);
+            $file = UnitTestsV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["tests/Unit/{$version}Client/{$service->unitTestsV2Type->name}.php", $code];
             // Resource: descriptor_config.php
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);
             $code = Formatter::format($code);

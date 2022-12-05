@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_CreateShelf_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\CreateShelfRequest;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
@@ -39,14 +40,16 @@ function create_shelf_sample(string $shelfName): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $shelf = (new ShelfResponse())
         ->setName($shelfName);
+    $request = (new CreateShelfRequest())
+        ->setShelf($shelf);
 
     // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
-        $response = $libraryServiceClient->createShelf($shelf);
+        $response = $libraryServiceClient->createShelf($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

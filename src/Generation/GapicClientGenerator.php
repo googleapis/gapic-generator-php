@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
@@ -526,6 +527,7 @@ class GapicClientGenerator
                 $isGrpcRest ? 'methods ' : 'method ',
                 'for the supported options.'
             );
+
         return AST::method('__construct')
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
@@ -675,15 +677,34 @@ class GapicClientGenerator
             }
         };
         $request = AST::var('request');
+        $requestParamHeaders = AST::var('requestParamHeaders');
         $required = $method->requiredFields
                            ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
                            ->map(fn ($f) => $this->toParam($f));
         $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
+        $requestParams = AST::var('requestParams');
         $isStreamedRequest =
             $method->methodType === MethodDetails::BIDI_STREAMING
             || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        
+        // Request parameter handling.
+        $restRoutingHeaders =
+            is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
+            ? Map::new([])
+            : $method->restRoutingHeaders;
+        // The presence of google.api.routing explicit headers overrides google.api.http-based implicit headers.
+        $hasRoutingParams = !is_null($method->routingParameters);
+        if ($hasRoutingParams) {
+            $restRoutingHeaders = $method->routingParameters;
+        }
+
+        // An associative array containing 'required' and 'optional' keys for statements that inject required
+        // and optional fields in request headers.
+        $requestHeaderAssignments = $hasRoutingParams
+            ? static::explicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders)
+            : static::implicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders);
+
+        $hasRequestParams = count($restRoutingHeaders) > 0;
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
@@ -693,16 +714,39 @@ class GapicClientGenerator
             ->withBody(AST::block(
                 $isStreamedRequest ? null : Vector::new([
                     AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
+                    !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
                     Vector::zip(
                         $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
                         $required,
                         fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
                     ),
+                    // Request header assignments for required fields.
+                    $requestHeaderAssignments['required'],
                     $method->optionalFields->map(
                         fn ($x) =>
                         AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                            ->then(AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName))),
+                            ->then(
+                                AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
+                                // Request header assignment/parsing for optional fields.
+                                !is_null($requestHeaderAssignments['optional'])
+                                    ? $requestHeaderAssignments['optional']->get($x->name, null)
+                                    : null
+                            ),
                     ),
+                    !$hasRequestParams ? null : AST::assign(
+                        $requestParams,
+                        AST::new($this->ctx->type(
+                            Type::fromName(RequestParamsHeaderDescriptor::class)
+                        ))($requestParamHeaders)
+                    ),
+                    !$hasRequestParams ? null : AST::assign(
+                        $optionalArgs->var['headers'],
+                        AST::ternary(
+                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
+                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                            $requestParams->getHeader()
+                        )
+                    )
                 ]),
                 AST::return($this->startCall($method, $optionalArgs, $request))
             ))
@@ -780,32 +824,79 @@ class GapicClientGenerator
 
     private function startCall($method, $optionalArgs, $request): AST
     {
-        $startApiCallArgs = Map::new([
-            'methodName' => $method->name,
-            'request' => $request,
-            'optionalArgs' => $optionalArgs->var
-        ]);
-        $wait = true;
+        $startCallArgs = [
+        $method->name,
+        AST::access($this->ctx->type($method->responseType), AST::CLS),
+        $optionalArgs->var
+      ];
         switch ($method->methodType) {
-            case MethodDetails::BIDI_STREAMING:
-                // Fall through to CLIENT_STREAMING.
-            case MethodDetails::CLIENT_STREAMING:
-                $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
-                // Fall through to SERVER_STREAMING.
-            case MethodDetails::SERVER_STREAMING:
-                // Fall through to PAGINATED.
-            case MethodDetails::PAGINATED:
-                $wait = false;
-                break;
-            default:
+      case MethodDetails::CUSTOM_OP:
+        $startCallArgs = [
+            $method->name,
+            $optionalArgs->var,
+            $request,
+            AST::call(AST::THIS, AST::method('getOperationsClient'))(),
+            AST::NULL,
+            AST::access($this->ctx->type($method->responseType), AST::CLS),
+        ];
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+      case MethodDetails::NORMAL:
+        $startCallArgs[] = $request;
+        if ($method->isMixin()) {
+            $startCallArgs[] =
+                AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
+      case MethodDetails::LRO:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          $request,
+          AST::call(AST::THIS, AST::method('getOperationsClient'))()
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+      case MethodDetails::PAGINATED:
+        $startCallArgs = [
+          $method->name,
+          $optionalArgs->var,
+          AST::access($this->ctx->type($method->responseType), AST::CLS),
+          $request
+        ];
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
+      case MethodDetails::BIDI_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::SERVER_STREAMING:
+        $startCallArgs[] = $request;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      case MethodDetails::CLIENT_STREAMING:
+        $startCallArgs[] = AST::NULL;
+        $startCallArgs[] =
+          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
+        if ($method->isMixin()) {
+            $startCallArgs[] = $method->mixinServiceFullname;
+        }
+        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+      default:
+        throw new \Exception("Cannot handle method type: '{$method->methodType}'");
       }
-
-      $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
-      if ($wait) {
-        $call = $call->wait();
-      }
-
-      return $call;
     }
 
     /**
@@ -1036,5 +1127,93 @@ class GapicClientGenerator
         }
 
         return $assignments;
+    }
+
+    /**
+     * Compiles the code for implicit request header injection based on the configuration from
+     * google.api.http annotations for both required and optional fields. A Vector containing code
+     * for required fields is keyed to 'required'. A Map containing code for each optional field is
+     * keyed to 'optional' (does not support nested fields). If there are no headers configured to
+     * be set, both are set to null.
+     *
+     * @param MethodDetails $method The method with the HttpRule.
+     * @param Map $restRoutingHeaders Mapping of full header key name to getter/chain.
+     * @param Expression $requestParamHeaders The PHP variable used to collect the header key-value-pairs.
+     *
+     * @return Map Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
+     */
+    private static function implicitRequestParams(MethodDetails $method, Map $restRoutingHeaders, Expression $requestParamHeaders)
+    {
+        // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
+        $requiredFieldNames =
+            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
+        // Contains full field names with parents, e.g. foo.bar.car.
+        $requiredRestRoutingKeys =
+            $restRoutingHeaders->keys()
+                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]));
+        $requiredFieldNamesInRoutingHeaders =
+            $requiredFieldNames->filter(
+                fn ($x) => !empty($x)
+                    && in_array(
+                        trim($x),
+                        array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())
+                    )
+            )
+                ->toArray();
+        // Maps field names to a set of the relevant field in the URL pattern.
+        // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
+        // This is needed for RPCs that may have multiple subfields under the same field in their
+        // HTTP bindings.
+        $requiredFieldToHeaderName = [];
+        foreach ($requiredFieldNamesInRoutingHeaders as $header) {
+            $requiredFieldToHeaderName[$header] =
+                $requiredRestRoutingKeys->filter(
+                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k
+                );
+        }
+
+        // Has no request parameter headers.
+        if (count($restRoutingHeaders) === 0) {
+            return ['required' => null, 'optional' => null];
+        }
+        $requiredRequestHeaders = Vector::new([]);
+        // TODO(v2): Handle request params for oneofs - this currently isn't used by anyone.
+        foreach ($method->requiredFields as $field) {
+            if (!isset($requiredFieldToHeaderName[$field->name])) {
+                continue;
+            }
+            $requiredParam = AST::param(null, AST::var($field->camelName));
+            foreach ($requiredFieldToHeaderName[$field->name] as $urlPatternHeaderName) {
+                $assignValue = $requiredParam;
+                if ($restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))->count() >= 2) {
+                    $assignValue =
+                        $restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))
+                            ->skip(1)
+                            // Chains getter methods together for nested names like foo.bar.car, which
+                            // becomes $foo->getBar()->getCar().
+                            ->reduce($requiredParam, fn ($acc, $g) => AST::call($acc, AST::method($g))());
+                }
+                $requiredRequestHeaders = $requiredRequestHeaders->append(
+                    AST::assign(
+                        AST::index($requestParamHeaders, $urlPatternHeaderName),
+                        $assignValue
+                    )
+                );
+            }
+        }
+
+        // TODO(noahdietz): Consider assigning nested fields on optional params,
+        // at the risk of errors if they're not set on the message itself.
+        $optionalAssignments = $method->optionalFields
+        ->filter(fn ($f) => isset($restRoutingHeaders[$f->name]))
+        ->toMap(
+            fn ($f) => $f->name,
+            fn ($f) => AST::assign(
+                AST::index($requestParamHeaders, $f->name),
+                AST::index(AST::var('optionalArgs'), $f->camelName)
+            )
+        );
+
+        return ['required' => $requiredRequestHeaders, 'optional' => $optionalAssignments];
     }
 }

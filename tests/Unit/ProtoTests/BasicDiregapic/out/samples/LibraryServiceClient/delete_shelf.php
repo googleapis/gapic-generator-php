@@ -24,22 +24,27 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_DeleteShelf_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\DeleteShelfRequest;
 
 /**
  * Deletes a shelf.
  *
- * @param string $formattedName The name of the shelf to delete. Please see
- *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $name The name of the shelf to delete. Please see
+ *                     {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function delete_shelf_sample(string $formattedName): void
+function delete_shelf_sample(string $name): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteShelfRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
-        $libraryServiceClient->deleteShelf($formattedName);
+        $libraryServiceClient->deleteShelf($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -57,8 +62,8 @@ function delete_shelf_sample(string $formattedName): void
  */
 function callSample(): void
 {
-    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $name = LibraryServiceClient::shelfName('[SHELF]');
 
-    delete_shelf_sample($formattedName);
+    delete_shelf_sample($name);
 }
 // [END example_generated_LibraryService_DeleteShelf_sync]
