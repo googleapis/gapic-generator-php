@@ -31,20 +31,20 @@ use Testing\BasicDiregapic\MoveBookRequest;
 /**
  * Moves a book to another shelf, and returns the new book.
  *
- * @param string $name           The name of the book to move. Please see
- *                               {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $otherShelfName The name of the destination shelf. Please see
- *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedName           The name of the book to move. Please see
+ *                                        {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedOtherShelfName The name of the destination shelf. Please see
+ *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function move_book_sample(string $name, string $otherShelfName): void
+function move_book_sample(string $formattedName, string $formattedOtherShelfName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new MoveBookRequest())
-        ->setName($name)
-        ->setOtherShelfName($otherShelfName);
+        ->setName($formattedName)
+        ->setOtherShelfName($formattedOtherShelfName);
 
     // Call the API and handle any network failures.
     try {
@@ -67,9 +67,9 @@ function move_book_sample(string $name, string $otherShelfName): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $otherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
 
-    move_book_sample($name, $otherShelfName);
+    move_book_sample($formattedName, $formattedOtherShelfName);
 }
 // [END example_generated_LibraryService_MoveBook_sync]

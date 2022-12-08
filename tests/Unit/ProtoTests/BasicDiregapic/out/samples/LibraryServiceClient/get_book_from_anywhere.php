@@ -31,29 +31,29 @@ use Testing\BasicDiregapic\GetBookFromAnywhereRequest;
 /**
  * Gets a book from a shelf or archive.
  *
- * @param string $name        The name of the book to retrieve. Please see
- *                            {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $altBookName An alternate book name, used to test restricting flattened field to a
- *                            single resource name type in a oneof. Please see
- *                            {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $place       Please see {@see LibraryServiceClient::locationName()} for help formatting this field.
- * @param string $folder      Please see {@see LibraryServiceClient::folderName()} for help formatting this field.
+ * @param string $formattedName        The name of the book to retrieve. Please see
+ *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedAltBookName An alternate book name, used to test restricting flattened field to a
+ *                                     single resource name type in a oneof. Please see
+ *                                     {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedPlace       Please see {@see LibraryServiceClient::locationName()} for help formatting this field.
+ * @param string $formattedFolder      Please see {@see LibraryServiceClient::folderName()} for help formatting this field.
  */
 function get_book_from_anywhere_sample(
-    string $name,
-    string $altBookName,
-    string $place,
-    string $folder
+    string $formattedName,
+    string $formattedAltBookName,
+    string $formattedPlace,
+    string $formattedFolder
 ): void {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new GetBookFromAnywhereRequest())
-        ->setName($name)
-        ->setAltBookName($altBookName)
-        ->setPlace($place)
-        ->setFolder($folder);
+        ->setName($formattedName)
+        ->setAltBookName($formattedAltBookName)
+        ->setPlace($formattedPlace)
+        ->setFolder($formattedFolder);
 
     // Call the API and handle any network failures.
     try {
@@ -76,11 +76,16 @@ function get_book_from_anywhere_sample(
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $altBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $place = LibraryServiceClient::locationName('[PROJECT]', '[LOCATION]');
-    $folder = LibraryServiceClient::folderName('[FOLDER]');
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedAltBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedPlace = LibraryServiceClient::locationName('[PROJECT]', '[LOCATION]');
+    $formattedFolder = LibraryServiceClient::folderName('[FOLDER]');
 
-    get_book_from_anywhere_sample($name, $altBookName, $place, $folder);
+    get_book_from_anywhere_sample(
+        $formattedName,
+        $formattedAltBookName,
+        $formattedPlace,
+        $formattedFolder
+    );
 }
 // [END example_generated_LibraryService_GetBookFromAnywhere_sync]

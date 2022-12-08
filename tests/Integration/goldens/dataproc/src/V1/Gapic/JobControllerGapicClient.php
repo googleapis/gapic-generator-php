@@ -29,6 +29,7 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -39,10 +40,12 @@ use Google\Cloud\Dataproc\V1\GetJobRequest;
 use Google\Cloud\Dataproc\V1\Job;
 use Google\Cloud\Dataproc\V1\ListJobsRequest;
 use Google\Cloud\Dataproc\V1\ListJobsRequest\JobStateMatcher;
+use Google\Cloud\Dataproc\V1\ListJobsResponse;
 use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Cloud\Dataproc\V1\UpdateJobRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: The JobController provides methods to manage jobs.
@@ -234,10 +237,16 @@ class JobControllerGapicClient
     public function cancelJob($projectId, $region, $jobId, array $optionalArgs = [])
     {
         $request = new CancelJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('CancelJob', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['job_id'] = $jobId;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CancelJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -275,10 +284,16 @@ class JobControllerGapicClient
     public function deleteJob($projectId, $region, $jobId, array $optionalArgs = [])
     {
         $request = new DeleteJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('DeleteJob', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['job_id'] = $jobId;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteJob', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -317,10 +332,16 @@ class JobControllerGapicClient
     public function getJob($projectId, $region, $jobId, array $optionalArgs = [])
     {
         $request = new GetJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
-        return $this->startApiCall('GetJob', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['job_id'] = $jobId;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -402,8 +423,11 @@ class JobControllerGapicClient
     public function listJobs($projectId, $region, array $optionalArgs = [])
     {
         $request = new ListJobsRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -424,7 +448,9 @@ class JobControllerGapicClient
             $request->setFilter($optionalArgs['filter']);
         }
 
-        return $this->startApiCall('ListJobs', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListJobs', $optionalArgs, ListJobsResponse::class, $request);
     }
 
     /**
@@ -476,14 +502,19 @@ class JobControllerGapicClient
     public function submitJob($projectId, $region, $job, array $optionalArgs = [])
     {
         $request = new SubmitJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJob($job);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('SubmitJob', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SubmitJob', Job::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -560,14 +591,19 @@ class JobControllerGapicClient
     public function submitJobAsOperation($projectId, $region, $job, array $optionalArgs = [])
     {
         $request = new SubmitJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJob($job);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('SubmitJobAsOperation', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('SubmitJobAsOperation', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -615,11 +651,17 @@ class JobControllerGapicClient
     public function updateJob($projectId, $region, $jobId, $job, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateJobRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setJobId($jobId);
         $request->setJob($job);
         $request->setUpdateMask($updateMask);
-        return $this->startApiCall('UpdateJob', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['job_id'] = $jobId;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
     }
 }

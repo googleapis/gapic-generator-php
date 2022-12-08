@@ -32,11 +32,13 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\CompleteQueryRequest;
+use Google\Cloud\Retail\V2alpha\CompleteQueryResponse;
 use Google\Cloud\Retail\V2alpha\CompletionDataInputConfig;
 use Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest;
 use Google\LongRunning\Operation;
@@ -391,8 +393,10 @@ class CompletionServiceGapicClient
     public function completeQuery($catalog, $query, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
+        $requestParamHeaders = [];
         $request->setCatalog($catalog);
         $request->setQuery($query);
+        $requestParamHeaders['catalog'] = $catalog;
         if (isset($optionalArgs['visitorId'])) {
             $request->setVisitorId($optionalArgs['visitorId']);
         }
@@ -413,7 +417,9 @@ class CompletionServiceGapicClient
             $request->setMaxSuggestions($optionalArgs['maxSuggestions']);
         }
 
-        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -490,12 +496,16 @@ class CompletionServiceGapicClient
     public function importCompletionData($parent, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportCompletionDataRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['notificationPubsubTopic'])) {
             $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
-        return $this->startApiCall('ImportCompletionData', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportCompletionData', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

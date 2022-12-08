@@ -30,17 +30,17 @@ use Testing\BasicDiregapic\DeleteBookRequest;
 /**
  * Deletes a book.
  *
- * @param string $name The name of the book to delete. Please see
- *                     {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedName The name of the book to delete. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function delete_book_sample(string $name): void
+function delete_book_sample(string $formattedName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new DeleteBookRequest())
-        ->setName($name);
+        ->setName($formattedName);
 
     // Call the API and handle any network failures.
     try {
@@ -62,8 +62,8 @@ function delete_book_sample(string $name): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    delete_book_sample($name);
+    delete_book_sample($formattedName);
 }
 // [END example_generated_LibraryService_DeleteBook_sync]

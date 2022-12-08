@@ -31,19 +31,19 @@ use Testing\BasicDiregapic\GetBookFromArchiveRequest;
 /**
  * Gets a book from an archive.
  *
- * @param string $name   The name of the book to retrieve. Please see
- *                       {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
- * @param string $parent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
+ * @param string $formattedName   The name of the book to retrieve. Please see
+ *                                {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
+ * @param string $formattedParent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
  */
-function get_book_from_archive_sample(string $name, string $parent): void
+function get_book_from_archive_sample(string $formattedName, string $formattedParent): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new GetBookFromArchiveRequest())
-        ->setName($name)
-        ->setParent($parent);
+        ->setName($formattedName)
+        ->setParent($formattedParent);
 
     // Call the API and handle any network failures.
     try {
@@ -66,9 +66,9 @@ function get_book_from_archive_sample(string $name, string $parent): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
-    $parent = LibraryServiceClient::projectName('[PROJECT]');
+    $formattedName = LibraryServiceClient::archivedBookName('[ARCHIVE]', '[BOOK]');
+    $formattedParent = LibraryServiceClient::projectName('[PROJECT]');
 
-    get_book_from_archive_sample($name, $parent);
+    get_book_from_archive_sample($formattedName, $formattedParent);
 }
 // [END example_generated_LibraryService_GetBookFromArchive_sync]

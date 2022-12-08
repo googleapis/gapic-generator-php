@@ -31,22 +31,23 @@ use Testing\BasicDiregapic\CreateBookRequest;
 /**
  * Creates a book.
  *
- * @param string $name     The name of the shelf in which the book is created. Please see
- *                         {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $bookName The resource name of the book.
- *                         BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                         Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $formattedName     The name of the shelf in which the book is created. Please see
+ *                                  {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedBookName The resource name of the book.
+ *                                  BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                                  Message field comment may include special characters: <>&"`'&#64;. Please see
+ *                                  {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function create_book_sample(string $name, string $bookName): void
+function create_book_sample(string $formattedName, string $formattedBookName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $book = (new BookResponse())
-        ->setName($bookName);
+        ->setName($formattedBookName);
     $request = (new CreateBookRequest())
-        ->setName($name)
+        ->setName($formattedName)
         ->setBook($book);
 
     // Call the API and handle any network failures.
@@ -70,9 +71,9 @@ function create_book_sample(string $name, string $bookName): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::shelfName('[SHELF]');
-    $bookName = '[NAME]';
+    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    create_book_sample($name, $bookName);
+    create_book_sample($formattedName, $formattedBookName);
 }
 // [END example_generated_LibraryService_CreateBook_sync]

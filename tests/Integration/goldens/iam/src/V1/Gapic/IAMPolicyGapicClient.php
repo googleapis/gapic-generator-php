@@ -27,6 +27,7 @@ namespace Google\Cloud\Iam\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -36,6 +37,7 @@ use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
+use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 
 /**
  * Service Description: ## API Overview
@@ -212,12 +214,16 @@ class IAMPolicyGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -258,9 +264,13 @@ class IAMPolicyGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -306,8 +316,12 @@ class IAMPolicyGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
 }

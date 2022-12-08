@@ -31,18 +31,18 @@ use Testing\BasicDiregapic\ShelfResponse;
 /**
  * Gets a shelf.
  *
- * @param string $name    The name of the shelf to retrieve. Please see
- *                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $options To test 'options' parameter name conflict.
+ * @param string $formattedName The name of the shelf to retrieve. Please see
+ *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $options       To test 'options' parameter name conflict.
  */
-function get_shelf_sample(string $name, string $options): void
+function get_shelf_sample(string $formattedName, string $options): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new GetShelfRequest())
-        ->setName($name)
+        ->setName($formattedName)
         ->setOptions($options);
 
     // Call the API and handle any network failures.
@@ -66,9 +66,9 @@ function get_shelf_sample(string $name, string $options): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
     $options = '[OPTIONS]';
 
-    get_shelf_sample($name, $options);
+    get_shelf_sample($formattedName, $options);
 }
 // [END example_generated_LibraryService_GetShelf_sync]

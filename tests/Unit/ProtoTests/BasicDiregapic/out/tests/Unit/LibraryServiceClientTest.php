@@ -279,7 +279,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $gapicClient->shelfName('[SHELF]');
         $book = new BookResponse();
-        $bookName = 'bookName2004454676';
+        $bookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book->setName($bookName);
         $response = $gapicClient->createBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
@@ -316,7 +316,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $gapicClient->shelfName('[SHELF]');
         $book = new BookResponse();
-        $bookName = 'bookName2004454676';
+        $bookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book->setName($bookName);
         try {
             $gapicClient->createBook($formattedName, $book);
@@ -1960,15 +1960,15 @@ class LibraryServiceClientTest extends GeneratedTest
         $expectedResponse = new GPBEmpty();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $name = 'name3373707';
-        $gapicClient->saveBook($name);
+        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $gapicClient->saveBook($formattedName);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
         $this->assertSame('/google.example.library.v1.LibraryService/SaveBook', $actualFuncCall);
         $actualValue = $actualRequestObject->getName();
-        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -1991,9 +1991,9 @@ class LibraryServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $name = 'name3373707';
+        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         try {
-            $gapicClient->saveBook($name);
+            $gapicClient->saveBook($formattedName);
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -2029,7 +2029,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
-        $bookName = 'bookName2004454676';
+        $bookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book->setName($bookName);
         $response = $gapicClient->updateBook($formattedName, $book);
         $this->assertEquals($expectedResponse, $response);
@@ -2066,7 +2066,7 @@ class LibraryServiceClientTest extends GeneratedTest
         // Mock request
         $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book = new BookResponse();
-        $bookName = 'bookName2004454676';
+        $bookName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
         $book->setName($bookName);
         try {
             $gapicClient->updateBook($formattedName, $book);

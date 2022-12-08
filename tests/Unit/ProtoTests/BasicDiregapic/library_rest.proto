@@ -889,7 +889,12 @@ message BookResponse {
   // The resource name of the book.
   // BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
   // Message field comment may include special characters: <>&"`'@.
-  string name = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "library.googleapis.com/Book"
+    }
+  ];
 
   // The name of the book author.
   string author = 2;

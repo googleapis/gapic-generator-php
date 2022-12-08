@@ -71,7 +71,7 @@ function import_completion_data_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var ImportCompletionDataResponse $response */
+            /** @var ImportCompletionDataResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

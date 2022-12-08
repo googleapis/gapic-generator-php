@@ -28,15 +28,19 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Compute\V1\Address;
+use Google\Cloud\Compute\V1\AddressAggregatedList;
+use Google\Cloud\Compute\V1\AddressList;
 use Google\Cloud\Compute\V1\AggregatedListAddressesRequest;
 use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Cloud\Compute\V1\InsertAddressRequest;
 use Google\Cloud\Compute\V1\ListAddressesRequest;
+use Google\Cloud\Compute\V1\Operation;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
 
 /**
@@ -300,7 +304,9 @@ class AddressesGapicClient
     public function aggregatedList($project, array $optionalArgs = [])
     {
         $request = new AggregatedListAddressesRequest();
+        $requestParamHeaders = [];
         $request->setProject($project);
+        $requestParamHeaders['project'] = $project;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -321,7 +327,9 @@ class AddressesGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('AggregatedList', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('AggregatedList', $optionalArgs, AddressAggregatedList::class, $request);
     }
 
     /**
@@ -388,14 +396,20 @@ class AddressesGapicClient
     public function delete($address, $project, $region, array $optionalArgs = [])
     {
         $request = new DeleteAddressRequest();
+        $requestParamHeaders = [];
         $request->setAddress($address);
         $request->setProject($project);
         $request->setRegion($region);
+        $requestParamHeaders['address'] = $address;
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('Delete', $optionalArgs, $request, $this->getOperationsClient(), null, Operation::class)->wait();
     }
 
     /**
@@ -462,14 +476,19 @@ class AddressesGapicClient
     public function insert($addressResource, $project, $region, array $optionalArgs = [])
     {
         $request = new InsertAddressRequest();
+        $requestParamHeaders = [];
         $request->setAddressResource($addressResource);
         $request->setProject($project);
         $request->setRegion($region);
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('Insert', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('Insert', $optionalArgs, $request, $this->getOperationsClient(), null, Operation::class)->wait();
     }
 
     /**
@@ -538,9 +557,12 @@ class AddressesGapicClient
     public function list($orderBy, $project, $region, array $optionalArgs = [])
     {
         $request = new ListAddressesRequest();
+        $requestParamHeaders = [];
         $request->setOrderBy($orderBy);
         $request->setProject($project);
         $request->setRegion($region);
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -553,6 +575,8 @@ class AddressesGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('List', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('List', $optionalArgs, AddressList::class, $request);
     }
 }

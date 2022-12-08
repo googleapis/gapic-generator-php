@@ -30,17 +30,17 @@ use Testing\BasicDiregapic\DeleteShelfRequest;
 /**
  * Deletes a shelf.
  *
- * @param string $name The name of the shelf to delete. Please see
- *                     {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedName The name of the shelf to delete. Please see
+ *                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function delete_shelf_sample(string $name): void
+function delete_shelf_sample(string $formattedName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new DeleteShelfRequest())
-        ->setName($name);
+        ->setName($formattedName);
 
     // Call the API and handle any network failures.
     try {
@@ -62,8 +62,8 @@ function delete_shelf_sample(string $name): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
 
-    delete_shelf_sample($name);
+    delete_shelf_sample($formattedName);
 }
 // [END example_generated_LibraryService_DeleteShelf_sync]

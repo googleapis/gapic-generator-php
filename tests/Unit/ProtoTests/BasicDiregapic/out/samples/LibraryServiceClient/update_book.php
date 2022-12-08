@@ -31,22 +31,23 @@ use Testing\BasicDiregapic\UpdateBookRequest;
 /**
  * Updates a book.
  *
- * @param string $name     The name of the book to update. Please see
- *                         {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $bookName The resource name of the book.
- *                         BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                         Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $formattedName     The name of the book to update. Please see
+ *                                  {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedBookName The resource name of the book.
+ *                                  BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                                  Message field comment may include special characters: <>&"`'&#64;. Please see
+ *                                  {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function update_book_sample(string $name, string $bookName): void
+function update_book_sample(string $formattedName, string $formattedBookName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $book = (new BookResponse())
-        ->setName($bookName);
+        ->setName($formattedBookName);
     $request = (new UpdateBookRequest())
-        ->setName($name)
+        ->setName($formattedName)
         ->setBook($book);
 
     // Call the API and handle any network failures.
@@ -70,9 +71,9 @@ function update_book_sample(string $name, string $bookName): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $bookName = '[NAME]';
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedBookName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    update_book_sample($name, $bookName);
+    update_book_sample($formattedName, $formattedBookName);
 }
 // [END example_generated_LibraryService_UpdateBook_sync]

@@ -29,29 +29,30 @@ use Testing\BasicDiregapic\Client\LibraryServiceClient;
 use Testing\BasicDiregapic\FindRelatedBooksRequest;
 
 /**
- * @param string $namesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $shelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedNamesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedShelvesElement Please see {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function find_related_books_sample(string $namesElement, string $shelvesElement): void
-{
+function find_related_books_sample(
+    string $formattedNamesElement,
+    string $formattedShelvesElement
+): void {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
-    $names = [$namesElement,];
-    $shelves = [$shelvesElement,];
+    $formattedNames = [$formattedNamesElement,];
+    $formattedShelves = [$formattedShelvesElement,];
     $request = (new FindRelatedBooksRequest())
-        ->setNames($names)
-        ->setShelves($shelves);
+        ->setNames($formattedNames)
+        ->setShelves($formattedShelves);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
         $response = $libraryServiceClient->findRelatedBooks($request);
 
-        /** @var string $element */
         foreach ($response as $element) {
-            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+            printf('Element data: %s' . PHP_EOL, $element);
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -69,9 +70,9 @@ function find_related_books_sample(string $namesElement, string $shelvesElement)
  */
 function callSample(): void
 {
-    $namesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
-    $shelvesElement = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedNamesElement = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedShelvesElement = LibraryServiceClient::shelfName('[SHELF]');
 
-    find_related_books_sample($namesElement, $shelvesElement);
+    find_related_books_sample($formattedNamesElement, $formattedShelvesElement);
 }
 // [END example_generated_LibraryService_FindRelatedBooks_sync]

@@ -36,15 +36,19 @@ use Testing\BasicDiregapic\ShelfResponse;
  * Creates a series of books.
  * Tests PHP required nested fields.
  *
- * @param string $shelfName     The resource name of the shelf.
- *                              ShelfResponse names have the form `shelves/{shelf}`.
- * @param string $booksName     The resource name of the book.
- *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                              Message field comment may include special characters: <>&"`'&#64;.
- * @param int    $genresElement A set of enums containing genres the series falls into.
+ * @param string $shelfName          The resource name of the shelf.
+ *                                   ShelfResponse names have the form `shelves/{shelf}`.
+ * @param string $formattedBooksName The resource name of the book.
+ *                                   BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                                   Message field comment may include special characters: <>&"`'&#64;. Please see
+ *                                   {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param int    $genresElement      A set of enums containing genres the series falls into.
  */
-function publish_series_sample(string $shelfName, string $booksName, int $genresElement): void
-{
+function publish_series_sample(
+    string $shelfName,
+    string $formattedBooksName,
+    int $genresElement
+): void {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
@@ -52,7 +56,7 @@ function publish_series_sample(string $shelfName, string $booksName, int $genres
     $shelf = (new ShelfResponse())
         ->setName($shelfName);
     $bookResponse = (new BookResponse())
-        ->setName($booksName);
+        ->setName($formattedBooksName);
     $books = [$bookResponse,];
     $seriesUuid = new SeriesUuidResponse();
     $genres = [$genresElement,];
@@ -84,9 +88,9 @@ function publish_series_sample(string $shelfName, string $booksName, int $genres
 function callSample(): void
 {
     $shelfName = '[NAME]';
-    $booksName = '[NAME]';
+    $formattedBooksName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $genresElement = Genre::UNSET;
 
-    publish_series_sample($shelfName, $booksName, $genresElement);
+    publish_series_sample($shelfName, $formattedBooksName, $genresElement);
 }
 // [END example_generated_LibraryService_PublishSeries_sync]

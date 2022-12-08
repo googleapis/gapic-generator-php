@@ -31,9 +31,9 @@ use Testing\BasicDiregapic\Comment;
 /**
  * Adds comments to a book
  *
- * @param string $name Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $formattedName Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function add_comments_sample(string $name): void
+function add_comments_sample(string $formattedName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
@@ -41,7 +41,7 @@ function add_comments_sample(string $name): void
     // Prepare the request message.
     $comments = [new Comment()];
     $request = (new AddCommentsRequest())
-        ->setName($name)
+        ->setName($formattedName)
         ->setComments($comments);
 
     // Call the API and handle any network failures.
@@ -64,8 +64,8 @@ function add_comments_sample(string $name): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    add_comments_sample($name);
+    add_comments_sample($formattedName);
 }
 // [END example_generated_LibraryService_AddComments_sync]

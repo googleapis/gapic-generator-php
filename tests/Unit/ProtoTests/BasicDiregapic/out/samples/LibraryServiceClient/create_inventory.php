@@ -31,13 +31,13 @@ use Testing\BasicDiregapic\InventoryResponse;
 /**
  * Creates an inventory. Tests singleton resources.
  *
- * @param string $parent        Please see {@see LibraryServiceClient::publisherName()} for help formatting this field.
+ * @param string $formattedParent Please see {@see LibraryServiceClient::publisherName()} for help formatting this field.
  * @param string $asset
  * @param string $parentAsset
  * @param string $assetsElement
  */
 function create_inventory_sample(
-    string $parent,
+    string $formattedParent,
     string $asset,
     string $parentAsset,
     string $assetsElement
@@ -48,7 +48,7 @@ function create_inventory_sample(
     // Prepare the request message.
     $assets = [$assetsElement,];
     $request = (new CreateInventoryRequest())
-        ->setParent($parent)
+        ->setParent($formattedParent)
         ->setAsset($asset)
         ->setParentAsset($parentAsset)
         ->setAssets($assets);
@@ -74,11 +74,11 @@ function create_inventory_sample(
  */
 function callSample(): void
 {
-    $parent = LibraryServiceClient::publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
+    $formattedParent = LibraryServiceClient::publisherName('[PROJECT]', '[LOCATION]', '[PUBLISHER]');
     $asset = '[ASSET]';
     $parentAsset = '[PARENT_ASSET]';
     $assetsElement = '[ASSETS]';
 
-    create_inventory_sample($parent, $asset, $parentAsset, $assetsElement);
+    create_inventory_sample($formattedParent, $asset, $parentAsset, $assetsElement);
 }
 // [END example_generated_LibraryService_CreateInventory_sync]

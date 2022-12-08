@@ -85,8 +85,15 @@ class SnippetDetails
             }
             $this->handleField($field, '');
             $setter = $field->setter->getName();
+            $prefix = $field->useResourceTestValue
+                ? 'formatted_'
+                : '';
             $value = $value->$setter(
-                AST::var(Helpers::toCamelCase($field->camelName))
+                AST::var(
+                    Helpers::toCamelCase(
+                        $prefix . $field->camelName
+                    )
+                )
             );
         }
         $this->sampleAssignments = $this->sampleAssignments->append(
@@ -109,7 +116,7 @@ class SnippetDetails
     {
         // resource based format fields
         if ($field->useResourceTestValue) {
-            $this->handleFormattedResource($field);
+            $this->handleFormattedResource($field, $parentFieldName);
             return;
         }
 
@@ -164,8 +171,15 @@ class SnippetDetails
 
             $this->handleField($subField, $fieldVar->name);
             $setter = $subField->setter->getName();
+            $prefix = $subField->useResourceTestValue
+                ? 'formatted_'
+                : '';
             $value = $value->$setter(
-                AST::var(Helpers::toCamelCase($fieldVar->name . '_' . $subField->camelName))
+                AST::var(
+                    Helpers::toCamelCase(
+                        $prefix . $fieldVar->name . '_' . $subField->camelName
+                    )
+                )
             );
         }
 
@@ -208,10 +222,13 @@ class SnippetDetails
 
     /**
      * @param FieldDetails $field
+     * @param string|null $parentFieldName
      */
-    private function handleFormattedResource(FieldDetails $field): void
-    {
-        $fieldName = $field->camelName;
+    private function handleFormattedResource(
+        FieldDetails $field,
+        string $parentFieldName = null
+    ): void {
+        $fieldName = Helpers::toCamelCase("formatted_{$parentFieldName}_{$field->name}");
         $var = AST::var($fieldName);
         $arrayElementVar = null;
         $formatMethodArgs = $field->resourceDetails
@@ -264,6 +281,13 @@ class SnippetDetails
                 $this->filterDocLines($field->docLines)
             )
         );
+
+        // Don't append to rpcArguments if a parent exists.
+        if ($parentFieldName !== null) {
+            return;
+        }
+
+        $this->rpcArguments = $this->rpcArguments->append($var);
     }
 
     /**

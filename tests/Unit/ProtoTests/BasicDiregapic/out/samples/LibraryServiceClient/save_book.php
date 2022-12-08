@@ -32,18 +32,19 @@ use Testing\BasicDiregapic\Client\LibraryServiceClient;
  * (CreateSubscription) for historical reasons. New APIs should always create
  * a separate message for a request.
  *
- * @param string $name The resource name of the book.
- *                     BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
- *                     Message field comment may include special characters: <>&"`'&#64;.
+ * @param string $formattedName The resource name of the book.
+ *                              BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
+ *                              Message field comment may include special characters: <>&"`'&#64;. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
  */
-function save_book_sample(string $name): void
+function save_book_sample(string $formattedName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new BookResponse())
-        ->setName($name);
+        ->setName($formattedName);
 
     // Call the API and handle any network failures.
     try {
@@ -65,8 +66,8 @@ function save_book_sample(string $name): void
  */
 function callSample(): void
 {
-    $name = '[NAME]';
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
 
-    save_book_sample($name);
+    save_book_sample($formattedName);
 }
 // [END example_generated_LibraryService_SaveBook_sync]

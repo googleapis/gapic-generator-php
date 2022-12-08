@@ -30,11 +30,11 @@ use Testing\BasicDiregapic\UpdateBookIndexRequest;
 /**
  * Updates the index of a book.
  *
- * @param string $name      The name of the book to update. Please see
- *                          {@see LibraryServiceClient::bookName()} for help formatting this field.
- * @param string $indexName The name of the index for the book
+ * @param string $formattedName The name of the book to update. Please see
+ *                              {@see LibraryServiceClient::bookName()} for help formatting this field.
+ * @param string $indexName     The name of the index for the book
  */
-function update_book_index_sample(string $name, string $indexName): void
+function update_book_index_sample(string $formattedName, string $indexName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
@@ -42,7 +42,7 @@ function update_book_index_sample(string $name, string $indexName): void
     // Prepare the request message.
     $indexMap = [];
     $request = (new UpdateBookIndexRequest())
-        ->setName($name)
+        ->setName($formattedName)
         ->setIndexName($indexName)
         ->setIndexMap($indexMap);
 
@@ -66,9 +66,9 @@ function update_book_index_sample(string $name, string $indexName): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+    $formattedName = LibraryServiceClient::bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
     $indexName = '[INDEX_NAME]';
 
-    update_book_index_sample($name, $indexName);
+    update_book_index_sample($formattedName, $indexName);
 }
 // [END example_generated_LibraryService_UpdateBookIndex_sync]

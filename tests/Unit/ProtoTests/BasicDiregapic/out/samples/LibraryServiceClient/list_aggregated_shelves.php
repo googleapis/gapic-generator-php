@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicDiregapic\Client\LibraryServiceClient;
 use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
-use Testing\BasicDiregapic\ShelfResponse;
 
 /**
  * Lists shelves.
@@ -51,7 +50,6 @@ function list_aggregated_shelves_sample(): void
         /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listAggregatedShelves($request);
 
-        /** @var ShelfResponse $element */
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }

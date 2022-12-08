@@ -28,6 +28,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -36,8 +37,10 @@ use Google\Cloud\Logging\V2\CreateLogMetricRequest;
 use Google\Cloud\Logging\V2\DeleteLogMetricRequest;
 use Google\Cloud\Logging\V2\GetLogMetricRequest;
 use Google\Cloud\Logging\V2\ListLogMetricsRequest;
+use Google\Cloud\Logging\V2\ListLogMetricsResponse;
 use Google\Cloud\Logging\V2\LogMetric;
 use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: Service for configuring logs-based metrics.
@@ -313,9 +316,13 @@ class MetricsServiceV2GapicClient
     public function createLogMetric($parent, $metric, array $optionalArgs = [])
     {
         $request = new CreateLogMetricRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setMetric($metric);
-        return $this->startApiCall('CreateLogMetric', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -349,8 +356,12 @@ class MetricsServiceV2GapicClient
     public function deleteLogMetric($metricName, array $optionalArgs = [])
     {
         $request = new DeleteLogMetricRequest();
+        $requestParamHeaders = [];
         $request->setMetricName($metricName);
-        return $this->startApiCall('DeleteLogMetric', $request, $optionalArgs)->wait();
+        $requestParamHeaders['metric_name'] = $metricName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteLogMetric', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -386,8 +397,12 @@ class MetricsServiceV2GapicClient
     public function getLogMetric($metricName, array $optionalArgs = [])
     {
         $request = new GetLogMetricRequest();
+        $requestParamHeaders = [];
         $request->setMetricName($metricName);
-        return $this->startApiCall('GetLogMetric', $request, $optionalArgs)->wait();
+        $requestParamHeaders['metric_name'] = $metricName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -444,7 +459,9 @@ class MetricsServiceV2GapicClient
     public function listLogMetrics($parent, array $optionalArgs = [])
     {
         $request = new ListLogMetricsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -453,7 +470,9 @@ class MetricsServiceV2GapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListLogMetrics', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLogMetrics', $optionalArgs, ListLogMetricsResponse::class, $request);
     }
 
     /**
@@ -495,8 +514,12 @@ class MetricsServiceV2GapicClient
     public function updateLogMetric($metricName, $metric, array $optionalArgs = [])
     {
         $request = new UpdateLogMetricRequest();
+        $requestParamHeaders = [];
         $request->setMetricName($metricName);
         $request->setMetric($metric);
-        return $this->startApiCall('UpdateLogMetric', $request, $optionalArgs)->wait();
+        $requestParamHeaders['metric_name'] = $metricName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 }

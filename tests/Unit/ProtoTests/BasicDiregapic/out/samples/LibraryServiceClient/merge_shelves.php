@@ -33,20 +33,20 @@ use Testing\BasicDiregapic\ShelfResponse;
  * `other_shelf_name` to shelf `name`, and deletes
  * `other_shelf_name`. Returns the updated shelf.
  *
- * @param string $name           The name of the shelf we're adding books to. Please see
- *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
- * @param string $otherShelfName The name of the shelf we're removing books from and deleting. Please see
- *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedName           The name of the shelf we're adding books to. Please see
+ *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
+ * @param string $formattedOtherShelfName The name of the shelf we're removing books from and deleting. Please see
+ *                                        {@see LibraryServiceClient::shelfName()} for help formatting this field.
  */
-function merge_shelves_sample(string $name, string $otherShelfName): void
+function merge_shelves_sample(string $formattedName, string $formattedOtherShelfName): void
 {
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
     // Prepare the request message.
     $request = (new MergeShelvesRequest())
-        ->setName($name)
-        ->setOtherShelfName($otherShelfName);
+        ->setName($formattedName)
+        ->setOtherShelfName($formattedOtherShelfName);
 
     // Call the API and handle any network failures.
     try {
@@ -69,9 +69,9 @@ function merge_shelves_sample(string $name, string $otherShelfName): void
  */
 function callSample(): void
 {
-    $name = LibraryServiceClient::shelfName('[SHELF]');
-    $otherShelfName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedName = LibraryServiceClient::shelfName('[SHELF]');
+    $formattedOtherShelfName = LibraryServiceClient::shelfName('[SHELF]');
 
-    merge_shelves_sample($name, $otherShelfName);
+    merge_shelves_sample($formattedName, $formattedOtherShelfName);
 }
 // [END example_generated_LibraryService_MergeShelves_sync]
