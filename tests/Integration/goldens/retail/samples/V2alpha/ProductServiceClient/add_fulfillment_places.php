@@ -107,7 +107,7 @@ function add_fulfillment_places_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var AddFulfillmentPlacesResponse $response */
+            /** @var AddFulfillmentPlacesResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -53,7 +53,7 @@ function rejoin_user_events_sample(string $parent): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var RejoinUserEventsResponse $response */
+            /** @var RejoinUserEventsResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

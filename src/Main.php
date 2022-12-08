@@ -138,6 +138,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
+    $defaultLicenseYear = -1;
     [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets] = readOptions($opts);
 
     // Generate PHP code.
@@ -150,6 +151,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $gapicYaml,
         $serviceYaml,
         $numericEnums,
+        $defaultLicenseYear,
         $generateSnippets
     );
 

@@ -46,9 +46,8 @@ function list_strings_sample(): void
         /** @var PagedListResponse $response */
         $response = $libraryServiceClient->listStrings();
 
-        /** @var string $element */
         foreach ($response as $element) {
-            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+            printf('Element data: %s' . PHP_EOL, $element);
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

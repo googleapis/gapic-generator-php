@@ -53,7 +53,7 @@ function annotate_video_sample(): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var AnnotateVideoResponse $response */
+            /** @var AnnotateVideoResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

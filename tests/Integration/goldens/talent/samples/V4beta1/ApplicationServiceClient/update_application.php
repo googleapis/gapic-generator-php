@@ -32,24 +32,24 @@ use Google\Protobuf\Timestamp;
 /**
  * Updates specified application.
  *
- * @param string $applicationExternalId Client side application identifier, used to uniquely identify the
- *                                      application.
+ * @param string $applicationExternalId   Client side application identifier, used to uniquely identify the
+ *                                        application.
  *
- *                                      The maximum number of allowed characters is 255.
- * @param string $formattedJob          Resource name of the job which the candidate applied for.
+ *                                        The maximum number of allowed characters is 255.
+ * @param string $formattedApplicationJob Resource name of the job which the candidate applied for.
  *
- *                                      The format is
- *                                      "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
- *                                      "projects/foo/tenants/bar/jobs/baz". Please see
- *                                      {@see ApplicationServiceClient::jobName()} for help formatting this field.
- * @param int    $applicationStage      What is the most recent stage of the application (that is, new,
- *                                      screen, send cv, hired, finished work)?  This field is intentionally not
- *                                      comprehensive of every possible status, but instead, represents statuses
- *                                      that would be used to indicate to the ML models good / bad matches.
+ *                                        The format is
+ *                                        "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
+ *                                        "projects/foo/tenants/bar/jobs/baz". Please see
+ *                                        {@see ApplicationServiceClient::jobName()} for help formatting this field.
+ * @param int    $applicationStage        What is the most recent stage of the application (that is, new,
+ *                                        screen, send cv, hired, finished work)?  This field is intentionally not
+ *                                        comprehensive of every possible status, but instead, represents statuses
+ *                                        that would be used to indicate to the ML models good / bad matches.
  */
 function update_application_sample(
     string $applicationExternalId,
-    string $formattedJob,
+    string $formattedApplicationJob,
     int $applicationStage
 ): void {
     // Create a client.
@@ -59,14 +59,14 @@ function update_application_sample(
     $applicationCreateTime = new Timestamp();
     $application = (new Application())
         ->setExternalId($applicationExternalId)
-        ->setJob($applicationJob)
+        ->setJob($formattedApplicationJob)
         ->setStage($applicationStage)
         ->setCreateTime($applicationCreateTime);
 
     // Call the API and handle any network failures.
     try {
         /** @var Application $response */
-        $response = $applicationServiceClient->updateApplication($application, $formattedJob);
+        $response = $applicationServiceClient->updateApplication($application);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
@@ -85,9 +85,9 @@ function update_application_sample(
 function callSample(): void
 {
     $applicationExternalId = '[EXTERNAL_ID]';
-    $formattedJob = ApplicationServiceClient::jobName('[PROJECT]', '[TENANT]', '[JOB]');
+    $formattedApplicationJob = ApplicationServiceClient::jobName('[PROJECT]', '[TENANT]', '[JOB]');
     $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
 
-    update_application_sample($applicationExternalId, $formattedJob, $applicationStage);
+    update_application_sample($applicationExternalId, $formattedApplicationJob, $applicationStage);
 }
 // [END jobs_v4beta1_generated_ApplicationService_UpdateApplication_sync]
