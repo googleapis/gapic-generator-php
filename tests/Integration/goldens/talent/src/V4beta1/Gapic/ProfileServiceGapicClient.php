@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -39,12 +40,15 @@ use Google\Cloud\Talent\V4beta1\DeleteProfileRequest;
 use Google\Cloud\Talent\V4beta1\GetProfileRequest;
 use Google\Cloud\Talent\V4beta1\HistogramQuery;
 use Google\Cloud\Talent\V4beta1\ListProfilesRequest;
+use Google\Cloud\Talent\V4beta1\ListProfilesResponse;
 use Google\Cloud\Talent\V4beta1\Profile;
 use Google\Cloud\Talent\V4beta1\ProfileQuery;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchProfilesRequest;
+use Google\Cloud\Talent\V4beta1\SearchProfilesResponse;
 use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: A service that handles profile management, including profile CRUD,
@@ -332,9 +336,13 @@ class ProfileServiceGapicClient
     public function createProfile($parent, $profile, array $optionalArgs = [])
     {
         $request = new CreateProfileRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setProfile($profile);
-        return $this->startApiCall('CreateProfile', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -374,8 +382,12 @@ class ProfileServiceGapicClient
     public function deleteProfile($name, array $optionalArgs = [])
     {
         $request = new DeleteProfileRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('DeleteProfile', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteProfile', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -415,8 +427,12 @@ class ProfileServiceGapicClient
     public function getProfile($name, array $optionalArgs = [])
     {
         $request = new GetProfileRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('GetProfile', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -501,7 +517,9 @@ class ProfileServiceGapicClient
     public function listProfiles($parent, array $optionalArgs = [])
     {
         $request = new ListProfilesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -518,7 +536,9 @@ class ProfileServiceGapicClient
             $request->setReadMask($optionalArgs['readMask']);
         }
 
-        return $this->startApiCall('ListProfiles', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListProfiles', $optionalArgs, ListProfilesResponse::class, $request);
     }
 
     /**
@@ -737,8 +757,10 @@ class ProfileServiceGapicClient
     public function searchProfiles($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchProfilesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['profileQuery'])) {
             $request->setProfileQuery($optionalArgs['profileQuery']);
         }
@@ -779,7 +801,9 @@ class ProfileServiceGapicClient
             $request->setStrictKeywordsSearch($optionalArgs['strictKeywordsSearch']);
         }
 
-        return $this->startApiCall('SearchProfiles', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchProfiles', $optionalArgs, SearchProfilesResponse::class, $request);
     }
 
     /**
@@ -819,11 +843,15 @@ class ProfileServiceGapicClient
     public function updateProfile($profile, array $optionalArgs = [])
     {
         $request = new UpdateProfileRequest();
+        $requestParamHeaders = [];
         $request->setProfile($profile);
+        $requestParamHeaders['profile.name'] = $profile->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateProfile', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 }

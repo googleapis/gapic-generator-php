@@ -27,11 +27,13 @@ namespace Google\Cloud\Compute\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Compute\V1\GetRegionOperationRequest;
+use Google\Cloud\Compute\V1\Operation;
 
 /**
  * Service Description: The RegionOperations API.
@@ -199,9 +201,15 @@ class RegionOperationsGapicClient
     public function get($operation, $project, $region, array $optionalArgs = [])
     {
         $request = new GetRegionOperationRequest();
+        $requestParamHeaders = [];
         $request->setOperation($operation);
         $request->setProject($project);
         $request->setRegion($region);
-        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
+        $requestParamHeaders['operation'] = $operation;
+        $requestParamHeaders['project'] = $project;
+        $requestParamHeaders['region'] = $region;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('Get', Operation::class, $optionalArgs, $request)->wait();
     }
 }

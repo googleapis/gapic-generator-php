@@ -30,6 +30,7 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -43,6 +44,7 @@ use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\ListInstancesRequest;
+use Google\Cloud\Redis\V1\ListInstancesResponse;
 use Google\Cloud\Redis\V1\OutputConfig;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
@@ -437,10 +439,14 @@ class CloudRedisGapicClient
     public function createInstance($parent, $instanceId, $instance, array $optionalArgs = [])
     {
         $request = new CreateInstanceRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInstanceId($instanceId);
         $request->setInstance($instance);
-        return $this->startApiCall('CreateInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -500,8 +506,12 @@ class CloudRedisGapicClient
     public function deleteInstance($name, array $optionalArgs = [])
     {
         $request = new DeleteInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('DeleteInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -569,9 +579,13 @@ class CloudRedisGapicClient
     public function exportInstance($name, $outputConfig, array $optionalArgs = [])
     {
         $request = new ExportInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setOutputConfig($outputConfig);
-        return $this->startApiCall('ExportInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -637,12 +651,16 @@ class CloudRedisGapicClient
     public function failoverInstance($name, array $optionalArgs = [])
     {
         $request = new FailoverInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['dataProtectionMode'])) {
             $request->setDataProtectionMode($optionalArgs['dataProtectionMode']);
         }
 
-        return $this->startApiCall('FailoverInstance', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('FailoverInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -678,8 +696,12 @@ class CloudRedisGapicClient
     public function getInstance($name, array $optionalArgs = [])
     {
         $request = new GetInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('GetInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetInstance', Instance::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -749,9 +771,13 @@ class CloudRedisGapicClient
     public function importInstance($name, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setInputConfig($inputConfig);
-        return $this->startApiCall('ImportInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -816,7 +842,9 @@ class CloudRedisGapicClient
     public function listInstances($parent, array $optionalArgs = [])
     {
         $request = new ListInstancesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -825,7 +853,9 @@ class CloudRedisGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListInstances', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListInstances', $optionalArgs, ListInstancesResponse::class, $request);
     }
 
     /**
@@ -898,9 +928,13 @@ class CloudRedisGapicClient
     public function updateInstance($updateMask, $instance, array $optionalArgs = [])
     {
         $request = new UpdateInstanceRequest();
+        $requestParamHeaders = [];
         $request->setUpdateMask($updateMask);
         $request->setInstance($instance);
-        return $this->startApiCall('UpdateInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['instance.name'] = $instance->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -964,8 +998,12 @@ class CloudRedisGapicClient
     public function upgradeInstance($name, $redisVersion, array $optionalArgs = [])
     {
         $request = new UpgradeInstanceRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setRedisVersion($redisVersion);
-        return $this->startApiCall('UpgradeInstance', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpgradeInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

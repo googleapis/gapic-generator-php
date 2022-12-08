@@ -30,16 +30,20 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\Catalog;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest;
+use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
+use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: Service for managing catalog configuration.
@@ -361,11 +365,15 @@ class CatalogServiceGapicClient
     public function getDefaultBranch(array $optionalArgs = [])
     {
         $request = new GetDefaultBranchRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['catalog'])) {
             $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
-        return $this->startApiCall('GetDefaultBranch', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetDefaultBranch', GetDefaultBranchResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -428,7 +436,9 @@ class CatalogServiceGapicClient
     public function listCatalogs($parent, array $optionalArgs = [])
     {
         $request = new ListCatalogsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -437,7 +447,9 @@ class CatalogServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListCatalogs', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCatalogs', $optionalArgs, ListCatalogsResponse::class, $request);
     }
 
     /**
@@ -520,8 +532,10 @@ class CatalogServiceGapicClient
     public function setDefaultBranch(array $optionalArgs = [])
     {
         $request = new SetDefaultBranchRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['catalog'])) {
             $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
         if (isset($optionalArgs['branchId'])) {
@@ -532,7 +546,9 @@ class CatalogServiceGapicClient
             $request->setNote($optionalArgs['note']);
         }
 
-        return $this->startApiCall('SetDefaultBranch', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetDefaultBranch', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -581,11 +597,15 @@ class CatalogServiceGapicClient
     public function updateCatalog($catalog, array $optionalArgs = [])
     {
         $request = new UpdateCatalogRequest();
+        $requestParamHeaders = [];
         $request->setCatalog($catalog);
+        $requestParamHeaders['catalog.name'] = $catalog->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateCatalog', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCatalog', Catalog::class, $optionalArgs, $request)->wait();
     }
 }

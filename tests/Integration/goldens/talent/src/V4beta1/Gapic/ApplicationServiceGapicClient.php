@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -39,8 +40,10 @@ use Google\Cloud\Talent\V4beta1\CreateApplicationRequest;
 use Google\Cloud\Talent\V4beta1\DeleteApplicationRequest;
 use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
+use Google\Cloud\Talent\V4beta1\ListApplicationsResponse;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: A service that handles application management, including CRUD and
@@ -533,9 +536,13 @@ class ApplicationServiceGapicClient
     public function createApplication($parent, $application, array $optionalArgs = [])
     {
         $request = new CreateApplicationRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setApplication($application);
-        return $this->startApiCall('CreateApplication', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateApplication', Application::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -573,8 +580,12 @@ class ApplicationServiceGapicClient
     public function deleteApplication($name, array $optionalArgs = [])
     {
         $request = new DeleteApplicationRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('DeleteApplication', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteApplication', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -614,8 +625,12 @@ class ApplicationServiceGapicClient
     public function getApplication($name, array $optionalArgs = [])
     {
         $request = new GetApplicationRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('GetApplication', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetApplication', Application::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -676,7 +691,9 @@ class ApplicationServiceGapicClient
     public function listApplications($parent, array $optionalArgs = [])
     {
         $request = new ListApplicationsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageToken'])) {
             $request->setPageToken($optionalArgs['pageToken']);
         }
@@ -685,7 +702,9 @@ class ApplicationServiceGapicClient
             $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        return $this->startApiCall('ListApplications', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListApplications', $optionalArgs, ListApplicationsResponse::class, $request);
     }
 
     /**
@@ -729,11 +748,15 @@ class ApplicationServiceGapicClient
     public function updateApplication($application, array $optionalArgs = [])
     {
         $request = new UpdateApplicationRequest();
+        $requestParamHeaders = [];
         $request->setApplication($application);
+        $requestParamHeaders['application.name'] = $application->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateApplication', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateApplication', Application::class, $optionalArgs, $request)->wait();
     }
 }

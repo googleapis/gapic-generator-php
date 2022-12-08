@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -326,8 +327,12 @@ class EventServiceGapicClient
     public function createClientEvent($parent, $clientEvent, array $optionalArgs = [])
     {
         $request = new CreateClientEventRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setClientEvent($clientEvent);
-        return $this->startApiCall('CreateClientEvent', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateClientEvent', ClientEvent::class, $optionalArgs, $request)->wait();
     }
 }
