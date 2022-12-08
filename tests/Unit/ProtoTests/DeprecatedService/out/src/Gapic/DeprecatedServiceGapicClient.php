@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\GPBEmpty;
 use Testing\Deprecated\FibonacciRequest;
 
 /**
@@ -184,7 +185,7 @@ class DeprecatedServiceGapicClient
             $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
+        return $this->startCall('FastFibonacci', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -222,6 +223,6 @@ class DeprecatedServiceGapicClient
             $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
+        return $this->startCall('SlowFibonacci', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 }
