@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.3](https://github.com/googleapis/gapic-generator-php/compare/v1.6.2...v1.6.3) (2022-12-14)
+
+
+### Bug Fixes
+
+* **snippetgen:** Fix field name typo ([#548](https://github.com/googleapis/gapic-generator-php/issues/548)) ([b94c362](https://github.com/googleapis/gapic-generator-php/commit/b94c36297d4f1cf82af223321b5229785eb0a8cc))
+
 ## [1.6.2](https://github.com/googleapis/gapic-generator-php/compare/v1.6.1...v1.6.2) (2022-12-05)
 
 
