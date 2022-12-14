@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_ProfileService_CreateProfile_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
+use Google\Cloud\Talent\V4beta1\CreateProfileRequest;
 use Google\Cloud\Talent\V4beta1\Profile;
-use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 
 /**
  * Creates and returns a new profile.
@@ -41,13 +42,16 @@ function create_profile_sample(string $formattedParent): void
     // Create a client.
     $profileServiceClient = new ProfileServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $profile = new Profile();
+    $request = (new CreateProfileRequest())
+        ->setParent($formattedParent)
+        ->setProfile($profile);
 
     // Call the API and handle any network failures.
     try {
         /** @var Profile $response */
-        $response = $profileServiceClient->createProfile($formattedParent, $profile);
+        $response = $profileServiceClient->createProfile($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

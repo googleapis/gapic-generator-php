@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START routingheaders_generated_RoutingHeaders_GetNoPlaceholdersMethod_sync]
 use Google\ApiCore\ApiException;
+use Testing\RoutingHeaders\Client\RoutingHeadersClient;
 use Testing\RoutingHeaders\Response;
-use Testing\RoutingHeaders\RoutingHeadersClient;
+use Testing\RoutingHeaders\SimpleRequest;
 
 /**
  * This sample has been automatically generated and should be regarded as a code
@@ -39,10 +40,13 @@ function get_no_placeholders_method_sample(): void
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 
+    // Prepare the request message.
+    $request = new SimpleRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $routingHeadersClient->getNoPlaceholdersMethod();
+        $response = $routingHeadersClient->getNoPlaceholdersMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

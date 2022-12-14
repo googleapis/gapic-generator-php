@@ -26,7 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\GetBookRequest;
 
 /**
  * Test long-running operations with empty return type.
@@ -39,10 +40,14 @@ function get_big_nothing_sample(string $formattedName): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $libraryServiceClient->getBigNothing($formattedName);
+        $response = $libraryServiceClient->getBigNothing($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

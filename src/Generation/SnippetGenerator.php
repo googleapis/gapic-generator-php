@@ -385,12 +385,12 @@ class SnippetGenerator
                         $snippetDetails->serviceClientVar,
                         AST::new(
                             $snippetDetails->context->type(
-                                $this->serviceDetails->emptyClientType
+                                $this->serviceDetails->emptyClientV2Type
                             )
                         )()
                     ),
                     $hasSampleAssignments ? PHP_EOL : null,
-                    $hasSampleAssignments ? '// Prepare any non-scalar elements to be passed along with the request.' : null,
+                    $hasSampleAssignments ? '// Prepare the request message.' : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',

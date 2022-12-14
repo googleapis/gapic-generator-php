@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_AddComments_sync]
 use Google\ApiCore\ApiException;
+use Testing\BasicDiregapic\AddCommentsRequest;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
 use Testing\BasicDiregapic\Comment;
-use Testing\BasicDiregapic\LibraryServiceClient;
 
 /**
  * Adds comments to a book
@@ -37,12 +38,15 @@ function add_comments_sample(string $formattedName): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $comments = [new Comment()];
+    $request = (new AddCommentsRequest())
+        ->setName($formattedName)
+        ->setComments($comments);
 
     // Call the API and handle any network failures.
     try {
-        $libraryServiceClient->addComments($formattedName, $comments);
+        $libraryServiceClient->addComments($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

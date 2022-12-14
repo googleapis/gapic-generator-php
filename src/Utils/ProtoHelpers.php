@@ -202,6 +202,7 @@ class ProtoHelpers
         if (!str_contains($routingParam->getPathTemplate(), '=')) {
             return null;
         }
+
         if (!static::hasMatcher($routingParam)) {
             return null;
         }

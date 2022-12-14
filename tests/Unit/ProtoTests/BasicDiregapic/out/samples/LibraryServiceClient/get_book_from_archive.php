@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_GetBookFromArchive_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromArchiveResponse;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\GetBookFromArchiveRequest;
 
 /**
  * Gets a book from an archive.
@@ -39,10 +40,15 @@ function get_book_from_archive_sample(string $formattedName, string $formattedPa
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetBookFromArchiveRequest())
+        ->setName($formattedName)
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var BookFromArchiveResponse $response */
-        $response = $libraryServiceClient->getBookFromArchive($formattedName, $formattedParent);
+        $response = $libraryServiceClient->getBookFromArchive($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

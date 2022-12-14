@@ -24,10 +24,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Speech_Recognize_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Speech\V1\Client\SpeechClient;
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
+use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
-use Google\Cloud\Speech\V1\SpeechClient;
 
 /**
  * Performs synchronous speech recognition: receive results after all audio
@@ -45,15 +46,18 @@ function recognize_sample(string $configLanguageCode): void
     // Create a client.
     $speechClient = new SpeechClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $config = (new RecognitionConfig())
         ->setLanguageCode($configLanguageCode);
     $audio = new RecognitionAudio();
+    $request = (new RecognizeRequest())
+        ->setConfig($config)
+        ->setAudio($audio);
 
     // Call the API and handle any network failures.
     try {
         /** @var RecognizeResponse $response */
-        $response = $speechClient->recognize($config, $audio);
+        $response = $speechClient->recognize($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_LibraryService_FindRelatedBooks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\FindRelatedBooksRequest;
 
 /**
  * @param string $formattedNamesElement   Please see {@see LibraryServiceClient::bookName()} for help formatting this field.
@@ -38,14 +39,17 @@ function find_related_books_sample(
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $formattedNames = [$formattedNamesElement,];
     $formattedShelves = [$formattedShelvesElement,];
+    $request = (new FindRelatedBooksRequest())
+        ->setNames($formattedNames)
+        ->setShelves($formattedShelves);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryServiceClient->findRelatedBooks($formattedNames, $formattedShelves);
+        $response = $libraryServiceClient->findRelatedBooks($request);
 
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element);

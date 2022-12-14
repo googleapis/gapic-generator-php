@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_LibraryService_DeleteBook_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryServiceClient;
+use Testing\BasicDiregapic\Client\LibraryServiceClient;
+use Testing\BasicDiregapic\DeleteBookRequest;
 
 /**
  * Deletes a book.
@@ -37,9 +38,13 @@ function delete_book_sample(string $formattedName): void
     // Create a client.
     $libraryServiceClient = new LibraryServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteBookRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $libraryServiceClient->deleteBook($formattedName);
+        $libraryServiceClient->deleteBook($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
