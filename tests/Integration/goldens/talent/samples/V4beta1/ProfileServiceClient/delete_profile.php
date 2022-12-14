@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_ProfileService_DeleteProfile_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
+use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
+use Google\Cloud\Talent\V4beta1\DeleteProfileRequest;
 
 /**
  * Deletes the specified profile.
@@ -43,9 +44,13 @@ function delete_profile_sample(string $formattedName): void
     // Create a client.
     $profileServiceClient = new ProfileServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteProfileRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $profileServiceClient->deleteProfile($formattedName);
+        $profileServiceClient->deleteProfile($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

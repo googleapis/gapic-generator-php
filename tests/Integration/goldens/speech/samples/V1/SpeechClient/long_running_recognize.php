@@ -25,10 +25,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START speech_v1_generated_Speech_LongRunningRecognize_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Speech\V1\Client\SpeechClient;
+use Google\Cloud\Speech\V1\LongRunningRecognizeRequest;
 use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
-use Google\Cloud\Speech\V1\SpeechClient;
 use Google\Rpc\Status;
 
 /**
@@ -51,15 +52,18 @@ function long_running_recognize_sample(string $configLanguageCode): void
     // Create a client.
     $speechClient = new SpeechClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $config = (new RecognitionConfig())
         ->setLanguageCode($configLanguageCode);
     $audio = new RecognitionAudio();
+    $request = (new LongRunningRecognizeRequest())
+        ->setConfig($config)
+        ->setAudio($audio);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $speechClient->longRunningRecognize($config, $audio);
+        $response = $speechClient->longRunningRecognize($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

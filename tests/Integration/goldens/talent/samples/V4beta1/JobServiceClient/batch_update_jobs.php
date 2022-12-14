@@ -25,9 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_JobService_BatchUpdateJobs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Talent\V4beta1\BatchUpdateJobsRequest;
+use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\Job;
 use Google\Cloud\Talent\V4beta1\JobOperationResult;
-use Google\Cloud\Talent\V4beta1\JobServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -79,18 +80,21 @@ function batch_update_jobs_sample(
     // Create a client.
     $jobServiceClient = new JobServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $job = (new Job())
         ->setCompany($formattedJobsCompany)
         ->setRequisitionId($jobsRequisitionId)
         ->setTitle($jobsTitle)
         ->setDescription($jobsDescription);
     $jobs = [$job,];
+    $request = (new BatchUpdateJobsRequest())
+        ->setParent($formattedParent)
+        ->setJobs($jobs);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $jobServiceClient->batchUpdateJobs($formattedParent, $jobs);
+        $response = $jobServiceClient->batchUpdateJobs($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

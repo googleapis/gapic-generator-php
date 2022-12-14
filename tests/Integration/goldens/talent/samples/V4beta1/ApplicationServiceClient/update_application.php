@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ApplicationService_UpdateApplication_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Application;
-use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\Application\ApplicationStage;
+use Google\Cloud\Talent\V4beta1\Client\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -55,18 +56,20 @@ function update_application_sample(
     // Create a client.
     $applicationServiceClient = new ApplicationServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $applicationCreateTime = new Timestamp();
     $application = (new Application())
         ->setExternalId($applicationExternalId)
         ->setJob($formattedApplicationJob)
         ->setStage($applicationStage)
         ->setCreateTime($applicationCreateTime);
+    $request = (new UpdateApplicationRequest())
+        ->setApplication($application);
 
     // Call the API and handle any network failures.
     try {
         /** @var Application $response */
-        $response = $applicationServiceClient->updateApplication($application);
+        $response = $applicationServiceClient->updateApplication($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
