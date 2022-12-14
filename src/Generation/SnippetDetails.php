@@ -343,7 +343,7 @@ class SnippetDetails
                         ->append($lastItem . substr($formatString, 0, $pos))
                         ->append(substr($formatString, $pos));
                 } else {
-                    $field->docLines = $field->docLine->append($lastItem . $formatString);
+                    $field->docLines = $field->docLines->append($lastItem . $formatString);
                 }
             }
         } else {
