@@ -200,6 +200,12 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'feed' => 'projects/{project}/feeds/{feed}',
+                'folderFeed' => 'folders/{folder}/feeds/{feed}',
+                'organizationFeed' => 'organizations/{organization}/feeds/{feed}',
+                'projectFeed' => 'projects/{project}/feeds/{feed}',
+            ],
         ],
     ],
 ];

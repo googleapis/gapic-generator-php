@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -58,6 +59,7 @@ use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 class ApplicationServiceBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.talent.v4beta1.ApplicationService';
@@ -94,6 +96,210 @@ class ApplicationServiceBaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a application
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $profile
+     * @param string $application
+     *
+     * @return string The formatted application resource.
+     *
+     * @experimental
+     */
+    public static function applicationName($project, $tenant, $profile, $application)
+    {
+        return self::getPathTemplate('application')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'profile' => $profile,
+            'application' => $application,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a company
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $company
+     *
+     * @return string The formatted company resource.
+     *
+     * @experimental
+     */
+    public static function companyName($project, $tenant, $company)
+    {
+        return self::getPathTemplate('company')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'company' => $company,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a job
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $job
+     *
+     * @return string The formatted job resource.
+     *
+     * @experimental
+     */
+    public static function jobName($project, $tenant, $job)
+    {
+        return self::getPathTemplate('job')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'job' => $job,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a profile
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $profile
+     *
+     * @return string The formatted profile resource.
+     *
+     * @experimental
+     */
+    public static function profileName($project, $tenant, $profile)
+    {
+        return self::getPathTemplate('profile')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'profile' => $profile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_company resource.
+     *
+     * @param string $project
+     * @param string $company
+     *
+     * @return string The formatted project_company resource.
+     *
+     * @experimental
+     */
+    public static function projectCompanyName($project, $company)
+    {
+        return self::getPathTemplate('projectCompany')->render([
+            'project' => $project,
+            'company' => $company,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project_job
+     * resource.
+     *
+     * @param string $project
+     * @param string $job
+     *
+     * @return string The formatted project_job resource.
+     *
+     * @experimental
+     */
+    public static function projectJobName($project, $job)
+    {
+        return self::getPathTemplate('projectJob')->render([
+            'project' => $project,
+            'job' => $job,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_tenant_company resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $company
+     *
+     * @return string The formatted project_tenant_company resource.
+     *
+     * @experimental
+     */
+    public static function projectTenantCompanyName($project, $tenant, $company)
+    {
+        return self::getPathTemplate('projectTenantCompany')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'company' => $company,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_tenant_job resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $job
+     *
+     * @return string The formatted project_tenant_job resource.
+     *
+     * @experimental
+     */
+    public static function projectTenantJobName($project, $tenant, $job)
+    {
+        return self::getPathTemplate('projectTenantJob')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'job' => $job,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/application_service_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - application: projects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}
+     * - company: projects/{project}/tenants/{tenant}/companies/{company}
+     * - job: projects/{project}/tenants/{tenant}/jobs/{job}
+     * - profile: projects/{project}/tenants/{tenant}/profiles/{profile}
+     * - projectCompany: projects/{project}/companies/{company}
+     * - projectJob: projects/{project}/jobs/{job}
+     * - projectTenantCompany: projects/{project}/tenants/{tenant}/companies/{company}
+     * - projectTenantJob: projects/{project}/tenants/{tenant}/jobs/{job}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

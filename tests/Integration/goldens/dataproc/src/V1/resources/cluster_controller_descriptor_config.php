@@ -233,6 +233,10 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'cluster' => 'projects/{project}/locations/{location}/clusters/{cluster}',
+                'service' => 'projects/{project}/locations/{location}/services/{service}',
+            ],
         ],
     ],
 ];

@@ -96,6 +96,8 @@ class UserEventServiceGapicClient
 
     private static $catalogNameTemplate;
 
+    private static $productNameTemplate;
+
     private static $pathTemplateMap;
 
     private $operationsClient;
@@ -128,11 +130,21 @@ class UserEventServiceGapicClient
         return self::$catalogNameTemplate;
     }
 
+    private static function getProductNameTemplate()
+    {
+        if (self::$productNameTemplate == null) {
+            self::$productNameTemplate = new PathTemplate('projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}');
+        }
+
+        return self::$productNameTemplate;
+    }
+
     private static function getPathTemplateMap()
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
                 'catalog' => self::getCatalogNameTemplate(),
+                'product' => self::getProductNameTemplate(),
             ];
         }
 
@@ -161,10 +173,36 @@ class UserEventServiceGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a product
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     * @param string $branch
+     * @param string $product
+     *
+     * @return string The formatted product resource.
+     *
+     * @experimental
+     */
+    public static function productName($project, $location, $catalog, $branch, $product)
+    {
+        return self::getProductNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+            'branch' => $branch,
+            'product' => $product,
+        ]);
+    }
+
+    /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
      * - catalog: projects/{project}/locations/{location}/catalogs/{catalog}
+     * - product: projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
      * and must match one of the templates listed above. If no $template argument is

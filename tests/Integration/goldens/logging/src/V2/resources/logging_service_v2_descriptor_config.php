@@ -70,6 +70,17 @@ return [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\Logging\V2\WriteLogEntriesResponse',
             ],
+            'templateMap' => [
+                'billingAccount' => 'billingAccounts/{billing_account}',
+                'billingAccountLog' => 'billingAccounts/{billing_account}/logs/{log}',
+                'folder' => 'folders/{folder}',
+                'folderLog' => 'folders/{folder}/logs/{log}',
+                'log' => 'projects/{project}/logs/{log}',
+                'organization' => 'organizations/{organization}',
+                'organizationLog' => 'organizations/{organization}/logs/{log}',
+                'project' => 'projects/{project}',
+                'projectLog' => 'projects/{project}/logs/{log}',
+            ],
         ],
     ],
 ];

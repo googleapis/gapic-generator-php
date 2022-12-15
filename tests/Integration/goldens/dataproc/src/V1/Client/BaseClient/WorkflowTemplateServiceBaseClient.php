@@ -30,6 +30,7 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -60,6 +61,7 @@ use Google\LongRunning\Operation;
 class WorkflowTemplateServiceBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.dataproc.v1.WorkflowTemplateService';
@@ -126,6 +128,170 @@ class WorkflowTemplateServiceBaseClient
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a cluster
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $cluster
+     *
+     * @return string The formatted cluster resource.
+     */
+    public static function clusterName($project, $location, $cluster)
+    {
+        return self::getPathTemplate('cluster')->render([
+            'project' => $project,
+            'location' => $location,
+            'cluster' => $cluster,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a location
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     *
+     * @return string The formatted location resource.
+     */
+    public static function locationName($project, $location)
+    {
+        return self::getPathTemplate('location')->render([
+            'project' => $project,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_workflow_template resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $workflowTemplate
+     *
+     * @return string The formatted project_location_workflow_template resource.
+     */
+    public static function projectLocationWorkflowTemplateName($project, $location, $workflowTemplate)
+    {
+        return self::getPathTemplate('projectLocationWorkflowTemplate')->render([
+            'project' => $project,
+            'location' => $location,
+            'workflow_template' => $workflowTemplate,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_region_workflow_template resource.
+     *
+     * @param string $project
+     * @param string $region
+     * @param string $workflowTemplate
+     *
+     * @return string The formatted project_region_workflow_template resource.
+     */
+    public static function projectRegionWorkflowTemplateName($project, $region, $workflowTemplate)
+    {
+        return self::getPathTemplate('projectRegionWorkflowTemplate')->render([
+            'project' => $project,
+            'region' => $region,
+            'workflow_template' => $workflowTemplate,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a region
+     * resource.
+     *
+     * @param string $project
+     * @param string $region
+     *
+     * @return string The formatted region resource.
+     */
+    public static function regionName($project, $region)
+    {
+        return self::getPathTemplate('region')->render([
+            'project' => $project,
+            'region' => $region,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a service
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $service
+     *
+     * @return string The formatted service resource.
+     */
+    public static function serviceName($project, $location, $service)
+    {
+        return self::getPathTemplate('service')->render([
+            'project' => $project,
+            'location' => $location,
+            'service' => $service,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * workflow_template resource.
+     *
+     * @param string $project
+     * @param string $region
+     * @param string $workflowTemplate
+     *
+     * @return string The formatted workflow_template resource.
+     */
+    public static function workflowTemplateName($project, $region, $workflowTemplate)
+    {
+        return self::getPathTemplate('workflowTemplate')->render([
+            'project' => $project,
+            'region' => $region,
+            'workflow_template' => $workflowTemplate,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/workflow_template_service_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
+     * - location: projects/{project}/locations/{location}
+     * - projectLocationWorkflowTemplate: projects/{project}/locations/{location}/workflowTemplates/{workflow_template}
+     * - projectRegionWorkflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
+     * - region: projects/{project}/regions/{region}
+     * - service: projects/{project}/locations/{location}/services/{service}
+     * - workflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**
