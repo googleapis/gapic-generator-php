@@ -140,16 +140,21 @@ class ResourcesGenerator
             return Map::new($descriptor);
         };
 
+        $serviceDescriptor = $serviceDetails->methods
+            ->map(fn ($x) => [$x->name, $perMethod($x)])
+            ->filter(fn ($x) => count($x[1]) > 0)
+            ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
+            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]));
+
+        if ($serviceDetails->hasResources) {
+            $serviceDescriptor['templateMap'] = $serviceDetails->resourceParts
+                ->toArray(fn($x) => $x->getNameCamelCase(), fn($x) => $x->getPattern());
+        }
+
         $return = AST::return(
             AST::array([
                 'interfaces' => AST::array([
-                    $serviceDetails->serviceName => AST::array(
-                        $serviceDetails->methods
-                            ->map(fn ($x) => [$x->name, $perMethod($x)])
-                            ->filter(fn ($x) => count($x[1]) > 0)
-                            ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
-                            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]))
-                    )
+                    $serviceDetails->serviceName => AST::array($serviceDescriptor)
                 ])
             ])
         );
