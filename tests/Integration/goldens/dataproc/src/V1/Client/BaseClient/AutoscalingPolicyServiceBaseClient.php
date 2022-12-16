@@ -186,7 +186,10 @@ class AutoscalingPolicyServiceBaseClient
 
     private static function registerPathTemplates()
     {
-        self::loadPathTemplates(__DIR__ . '/../../resources/autoscaling_policy_service_descriptor_config.php', self::SERVICE_NAME);
+        self::loadPathTemplates(
+            __DIR__ . '/../../resources/autoscaling_policy_service_descriptor_config.php',
+            self::SERVICE_NAME
+        );
     }
 
     /**
