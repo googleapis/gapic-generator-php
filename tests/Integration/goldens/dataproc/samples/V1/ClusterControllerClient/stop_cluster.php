@@ -49,7 +49,7 @@ function stop_cluster_sample(string $projectId, string $region, string $clusterN
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var Cluster $response */
+            /** @var Cluster $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

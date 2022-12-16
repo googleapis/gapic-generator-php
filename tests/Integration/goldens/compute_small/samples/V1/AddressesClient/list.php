@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START compute_v1_generated_Addresses_List_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Compute\V1\Address;
 use Google\Cloud\Compute\V1\AddressesClient;
 
 /**
@@ -49,7 +48,6 @@ function list_sample(string $orderBy, string $project, string $region): void
         /** @var PagedListResponse $response */
         $response = $addressesClient->list($orderBy, $project, $region);
 
-        /** @var Address $element */
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }

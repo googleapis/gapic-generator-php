@@ -447,7 +447,7 @@ class UnitTestsGenerator
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
             AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName(OperationsClient::class)))(AST::array([
-                'serviceAddress' => '',
+                'apiEndpoint' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),
@@ -908,7 +908,7 @@ class UnitTestsGenerator
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
             AST::assign($operationsClient, AST::new($this->ctx->type($method->serviceDetails->customOperationServiceClientType))(AST::array([
-                'serviceAddress' => '',
+                'apiEndpoint' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),

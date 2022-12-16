@@ -22,7 +22,6 @@
 
 namespace Google\Cloud\Speech\Tests\Unit\V1;
 
-use Google\Cloud\Speech\V1\SpeechClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
@@ -33,6 +32,7 @@ use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
 use Google\Cloud\Speech\V1\RecognizeResponse;
+use Google\Cloud\Speech\V1\SpeechClient;
 use Google\Cloud\Speech\V1\StreamingRecognizeRequest;
 use Google\Cloud\Speech\V1\StreamingRecognizeResponse;
 use Google\LongRunning\GetOperationRequest;
@@ -74,7 +74,7 @@ class SpeechClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -141,7 +141,7 @@ class SpeechClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);

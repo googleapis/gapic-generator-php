@@ -22,13 +22,13 @@
 
 namespace Google\Cloud\Logging\Tests\Unit\V2;
 
-use Google\Cloud\Logging\V2\MetricsServiceV2Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Logging\V2\ListLogMetricsResponse;
 use Google\Cloud\Logging\V2\LogMetric;
+use Google\Cloud\Logging\V2\MetricsServiceV2Client;
 use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Code;
 use stdClass;

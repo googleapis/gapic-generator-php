@@ -99,7 +99,7 @@ function set_inventory_sample(string $inventoryTitle): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var SetInventoryResponse $response */
+            /** @var SetInventoryResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

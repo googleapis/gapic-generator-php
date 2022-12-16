@@ -22,12 +22,12 @@
 
 namespace Google\Cloud\Redis\Tests\Unit\V1;
 
-use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\Instance\Tier;
@@ -74,7 +74,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -174,7 +174,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -237,7 +237,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -299,7 +299,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -354,7 +354,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -445,7 +445,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -501,7 +501,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -589,7 +589,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -728,7 +728,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -819,7 +819,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -943,7 +943,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -1040,7 +1040,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -1102,7 +1102,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -1193,7 +1193,7 @@ class CloudRedisClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);

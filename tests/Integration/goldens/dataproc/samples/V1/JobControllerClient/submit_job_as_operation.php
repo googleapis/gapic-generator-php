@@ -59,7 +59,7 @@ function submit_job_as_operation_sample(
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var Job $response */
+            /** @var Job $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {
