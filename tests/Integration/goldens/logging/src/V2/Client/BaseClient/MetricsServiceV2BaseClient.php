@@ -28,6 +28,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -53,6 +54,7 @@ use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
 class MetricsServiceV2BaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.logging.v2.MetricsServiceV2';
@@ -92,6 +94,68 @@ class MetricsServiceV2BaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a log_metric
+     * resource.
+     *
+     * @param string $project
+     * @param string $metric
+     *
+     * @return string The formatted log_metric resource.
+     */
+    public static function logMetricName($project, $metric)
+    {
+        return self::getPathTemplate('logMetric')->render([
+            'project' => $project,
+            'metric' => $metric,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project
+     * resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project resource.
+     */
+    public static function projectName($project)
+    {
+        return self::getPathTemplate('project')->render([
+            'project' => $project,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/metrics_service_v2_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - logMetric: projects/{project}/metrics/{metric}
+     * - project: projects/{project}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

@@ -71,6 +71,10 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'logMetric' => 'projects/{project}/metrics/{metric}',
+                'project' => 'projects/{project}',
+            ],
         ],
     ],
 ];

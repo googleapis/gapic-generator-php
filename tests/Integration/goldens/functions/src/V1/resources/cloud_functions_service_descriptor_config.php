@@ -165,6 +165,10 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'cloudFunction' => 'projects/{project}/locations/{location}/functions/{function}',
+                'location' => 'projects/{project}/locations/{location}',
+            ],
         ],
     ],
 ];

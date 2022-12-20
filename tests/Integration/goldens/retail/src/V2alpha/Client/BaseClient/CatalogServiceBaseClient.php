@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -57,6 +58,7 @@ use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
 class CatalogServiceBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.retail.v2alpha.CatalogService';
@@ -92,6 +94,102 @@ class CatalogServiceBaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a branch
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     * @param string $branch
+     *
+     * @return string The formatted branch resource.
+     *
+     * @experimental
+     */
+    public static function branchName($project, $location, $catalog, $branch)
+    {
+        return self::getPathTemplate('branch')->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+            'branch' => $branch,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a catalog
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     *
+     * @return string The formatted catalog resource.
+     *
+     * @experimental
+     */
+    public static function catalogName($project, $location, $catalog)
+    {
+        return self::getPathTemplate('catalog')->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a location
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     *
+     * @return string The formatted location resource.
+     *
+     * @experimental
+     */
+    public static function locationName($project, $location)
+    {
+        return self::getPathTemplate('location')->render([
+            'project' => $project,
+            'location' => $location,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/catalog_service_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - branch: projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}
+     * - catalog: projects/{project}/locations/{location}/catalogs/{catalog}
+     * - location: projects/{project}/locations/{location}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

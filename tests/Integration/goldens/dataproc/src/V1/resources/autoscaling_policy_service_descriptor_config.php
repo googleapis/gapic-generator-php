@@ -72,6 +72,13 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'autoscalingPolicy' => 'projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}',
+                'location' => 'projects/{project}/locations/{location}',
+                'projectLocationAutoscalingPolicy' => 'projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}',
+                'projectRegionAutoscalingPolicy' => 'projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}',
+                'region' => 'projects/{project}/regions/{region}',
+            ],
         ],
     ],
 ];

@@ -28,6 +28,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -54,6 +55,7 @@ use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
 class AutoscalingPolicyServiceBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.dataproc.v1.AutoscalingPolicyService';
@@ -89,6 +91,130 @@ class AutoscalingPolicyServiceBaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * autoscaling_policy resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $autoscalingPolicy
+     *
+     * @return string The formatted autoscaling_policy resource.
+     */
+    public static function autoscalingPolicyName($project, $location, $autoscalingPolicy)
+    {
+        return self::getPathTemplate('autoscalingPolicy')->render([
+            'project' => $project,
+            'location' => $location,
+            'autoscaling_policy' => $autoscalingPolicy,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a location
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     *
+     * @return string The formatted location resource.
+     */
+    public static function locationName($project, $location)
+    {
+        return self::getPathTemplate('location')->render([
+            'project' => $project,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_autoscaling_policy resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $autoscalingPolicy
+     *
+     * @return string The formatted project_location_autoscaling_policy resource.
+     */
+    public static function projectLocationAutoscalingPolicyName($project, $location, $autoscalingPolicy)
+    {
+        return self::getPathTemplate('projectLocationAutoscalingPolicy')->render([
+            'project' => $project,
+            'location' => $location,
+            'autoscaling_policy' => $autoscalingPolicy,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_region_autoscaling_policy resource.
+     *
+     * @param string $project
+     * @param string $region
+     * @param string $autoscalingPolicy
+     *
+     * @return string The formatted project_region_autoscaling_policy resource.
+     */
+    public static function projectRegionAutoscalingPolicyName($project, $region, $autoscalingPolicy)
+    {
+        return self::getPathTemplate('projectRegionAutoscalingPolicy')->render([
+            'project' => $project,
+            'region' => $region,
+            'autoscaling_policy' => $autoscalingPolicy,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a region
+     * resource.
+     *
+     * @param string $project
+     * @param string $region
+     *
+     * @return string The formatted region resource.
+     */
+    public static function regionName($project, $region)
+    {
+        return self::getPathTemplate('region')->render([
+            'project' => $project,
+            'region' => $region,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/autoscaling_policy_service_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - autoscalingPolicy: projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}
+     * - location: projects/{project}/locations/{location}
+     * - projectLocationAutoscalingPolicy: projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}
+     * - projectRegionAutoscalingPolicy: projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}
+     * - region: projects/{project}/regions/{region}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

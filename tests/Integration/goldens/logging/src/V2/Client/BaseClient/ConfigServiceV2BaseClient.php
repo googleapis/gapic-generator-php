@@ -28,6 +28,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -75,6 +76,7 @@ use Google\Cloud\Logging\V2\UpdateViewRequest;
 class ConfigServiceV2BaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.logging.v2.ConfigServiceV2';
@@ -113,6 +115,640 @@ class ConfigServiceV2BaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account resource.
+     *
+     * @param string $billingAccount
+     *
+     * @return string The formatted billing_account resource.
+     */
+    public static function billingAccountName($billingAccount)
+    {
+        return self::getPathTemplate('billingAccount')->render([
+            'billing_account' => $billingAccount,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_cmekSettings resource.
+     *
+     * @param string $billingAccount
+     *
+     * @return string The formatted billing_account_cmekSettings resource.
+     */
+    public static function billingAccountCmekSettingsName($billingAccount)
+    {
+        return self::getPathTemplate('billingAccountCmekSettings')->render([
+            'billing_account' => $billingAccount,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_exclusion resource.
+     *
+     * @param string $billingAccount
+     * @param string $exclusion
+     *
+     * @return string The formatted billing_account_exclusion resource.
+     */
+    public static function billingAccountExclusionName($billingAccount, $exclusion)
+    {
+        return self::getPathTemplate('billingAccountExclusion')->render([
+            'billing_account' => $billingAccount,
+            'exclusion' => $exclusion,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_location resource.
+     *
+     * @param string $billingAccount
+     * @param string $location
+     *
+     * @return string The formatted billing_account_location resource.
+     */
+    public static function billingAccountLocationName($billingAccount, $location)
+    {
+        return self::getPathTemplate('billingAccountLocation')->render([
+            'billing_account' => $billingAccount,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_location_bucket resource.
+     *
+     * @param string $billingAccount
+     * @param string $location
+     * @param string $bucket
+     *
+     * @return string The formatted billing_account_location_bucket resource.
+     */
+    public static function billingAccountLocationBucketName($billingAccount, $location, $bucket)
+    {
+        return self::getPathTemplate('billingAccountLocationBucket')->render([
+            'billing_account' => $billingAccount,
+            'location' => $location,
+            'bucket' => $bucket,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_location_bucket_view resource.
+     *
+     * @param string $billingAccount
+     * @param string $location
+     * @param string $bucket
+     * @param string $view
+     *
+     * @return string The formatted billing_account_location_bucket_view resource.
+     */
+    public static function billingAccountLocationBucketViewName($billingAccount, $location, $bucket, $view)
+    {
+        return self::getPathTemplate('billingAccountLocationBucketView')->render([
+            'billing_account' => $billingAccount,
+            'location' => $location,
+            'bucket' => $bucket,
+            'view' => $view,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_sink resource.
+     *
+     * @param string $billingAccount
+     * @param string $sink
+     *
+     * @return string The formatted billing_account_sink resource.
+     */
+    public static function billingAccountSinkName($billingAccount, $sink)
+    {
+        return self::getPathTemplate('billingAccountSink')->render([
+            'billing_account' => $billingAccount,
+            'sink' => $sink,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * cmek_settings resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted cmek_settings resource.
+     */
+    public static function cmekSettingsName($project)
+    {
+        return self::getPathTemplate('cmekSettings')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder
+     * resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder resource.
+     */
+    public static function folderName($folder)
+    {
+        return self::getPathTemplate('folder')->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_cmekSettings resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder_cmekSettings resource.
+     */
+    public static function folderCmekSettingsName($folder)
+    {
+        return self::getPathTemplate('folderCmekSettings')->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_exclusion resource.
+     *
+     * @param string $folder
+     * @param string $exclusion
+     *
+     * @return string The formatted folder_exclusion resource.
+     */
+    public static function folderExclusionName($folder, $exclusion)
+    {
+        return self::getPathTemplate('folderExclusion')->render([
+            'folder' => $folder,
+            'exclusion' => $exclusion,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_location resource.
+     *
+     * @param string $folder
+     * @param string $location
+     *
+     * @return string The formatted folder_location resource.
+     */
+    public static function folderLocationName($folder, $location)
+    {
+        return self::getPathTemplate('folderLocation')->render([
+            'folder' => $folder,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_location_bucket resource.
+     *
+     * @param string $folder
+     * @param string $location
+     * @param string $bucket
+     *
+     * @return string The formatted folder_location_bucket resource.
+     */
+    public static function folderLocationBucketName($folder, $location, $bucket)
+    {
+        return self::getPathTemplate('folderLocationBucket')->render([
+            'folder' => $folder,
+            'location' => $location,
+            'bucket' => $bucket,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_location_bucket_view resource.
+     *
+     * @param string $folder
+     * @param string $location
+     * @param string $bucket
+     * @param string $view
+     *
+     * @return string The formatted folder_location_bucket_view resource.
+     */
+    public static function folderLocationBucketViewName($folder, $location, $bucket, $view)
+    {
+        return self::getPathTemplate('folderLocationBucketView')->render([
+            'folder' => $folder,
+            'location' => $location,
+            'bucket' => $bucket,
+            'view' => $view,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder_sink
+     * resource.
+     *
+     * @param string $folder
+     * @param string $sink
+     *
+     * @return string The formatted folder_sink resource.
+     */
+    public static function folderSinkName($folder, $sink)
+    {
+        return self::getPathTemplate('folderSink')->render([
+            'folder' => $folder,
+            'sink' => $sink,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a location
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     *
+     * @return string The formatted location resource.
+     */
+    public static function locationName($project, $location)
+    {
+        return self::getPathTemplate('location')->render([
+            'project' => $project,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a log_bucket
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $bucket
+     *
+     * @return string The formatted log_bucket resource.
+     */
+    public static function logBucketName($project, $location, $bucket)
+    {
+        return self::getPathTemplate('logBucket')->render([
+            'project' => $project,
+            'location' => $location,
+            'bucket' => $bucket,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * log_exclusion resource.
+     *
+     * @param string $project
+     * @param string $exclusion
+     *
+     * @return string The formatted log_exclusion resource.
+     */
+    public static function logExclusionName($project, $exclusion)
+    {
+        return self::getPathTemplate('logExclusion')->render([
+            'project' => $project,
+            'exclusion' => $exclusion,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a log_sink
+     * resource.
+     *
+     * @param string $project
+     * @param string $sink
+     *
+     * @return string The formatted log_sink resource.
+     */
+    public static function logSinkName($project, $sink)
+    {
+        return self::getPathTemplate('logSink')->render([
+            'project' => $project,
+            'sink' => $sink,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a log_view
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $bucket
+     * @param string $view
+     *
+     * @return string The formatted log_view resource.
+     */
+    public static function logViewName($project, $location, $bucket, $view)
+    {
+        return self::getPathTemplate('logView')->render([
+            'project' => $project,
+            'location' => $location,
+            'bucket' => $bucket,
+            'view' => $view,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a organization
+     * resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization resource.
+     */
+    public static function organizationName($organization)
+    {
+        return self::getPathTemplate('organization')->render([
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_cmekSettings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization_cmekSettings resource.
+     */
+    public static function organizationCmekSettingsName($organization)
+    {
+        return self::getPathTemplate('organizationCmekSettings')->render([
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_exclusion resource.
+     *
+     * @param string $organization
+     * @param string $exclusion
+     *
+     * @return string The formatted organization_exclusion resource.
+     */
+    public static function organizationExclusionName($organization, $exclusion)
+    {
+        return self::getPathTemplate('organizationExclusion')->render([
+            'organization' => $organization,
+            'exclusion' => $exclusion,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_location resource.
+     *
+     * @param string $organization
+     * @param string $location
+     *
+     * @return string The formatted organization_location resource.
+     */
+    public static function organizationLocationName($organization, $location)
+    {
+        return self::getPathTemplate('organizationLocation')->render([
+            'organization' => $organization,
+            'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_location_bucket resource.
+     *
+     * @param string $organization
+     * @param string $location
+     * @param string $bucket
+     *
+     * @return string The formatted organization_location_bucket resource.
+     */
+    public static function organizationLocationBucketName($organization, $location, $bucket)
+    {
+        return self::getPathTemplate('organizationLocationBucket')->render([
+            'organization' => $organization,
+            'location' => $location,
+            'bucket' => $bucket,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_location_bucket_view resource.
+     *
+     * @param string $organization
+     * @param string $location
+     * @param string $bucket
+     * @param string $view
+     *
+     * @return string The formatted organization_location_bucket_view resource.
+     */
+    public static function organizationLocationBucketViewName($organization, $location, $bucket, $view)
+    {
+        return self::getPathTemplate('organizationLocationBucketView')->render([
+            'organization' => $organization,
+            'location' => $location,
+            'bucket' => $bucket,
+            'view' => $view,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_sink resource.
+     *
+     * @param string $organization
+     * @param string $sink
+     *
+     * @return string The formatted organization_sink resource.
+     */
+    public static function organizationSinkName($organization, $sink)
+    {
+        return self::getPathTemplate('organizationSink')->render([
+            'organization' => $organization,
+            'sink' => $sink,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project
+     * resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project resource.
+     */
+    public static function projectName($project)
+    {
+        return self::getPathTemplate('project')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_cmekSettings resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project_cmekSettings resource.
+     */
+    public static function projectCmekSettingsName($project)
+    {
+        return self::getPathTemplate('projectCmekSettings')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_exclusion resource.
+     *
+     * @param string $project
+     * @param string $exclusion
+     *
+     * @return string The formatted project_exclusion resource.
+     */
+    public static function projectExclusionName($project, $exclusion)
+    {
+        return self::getPathTemplate('projectExclusion')->render([
+            'project' => $project,
+            'exclusion' => $exclusion,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_bucket resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $bucket
+     *
+     * @return string The formatted project_location_bucket resource.
+     */
+    public static function projectLocationBucketName($project, $location, $bucket)
+    {
+        return self::getPathTemplate('projectLocationBucket')->render([
+            'project' => $project,
+            'location' => $location,
+            'bucket' => $bucket,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_bucket_view resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $bucket
+     * @param string $view
+     *
+     * @return string The formatted project_location_bucket_view resource.
+     */
+    public static function projectLocationBucketViewName($project, $location, $bucket, $view)
+    {
+        return self::getPathTemplate('projectLocationBucketView')->render([
+            'project' => $project,
+            'location' => $location,
+            'bucket' => $bucket,
+            'view' => $view,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project_sink
+     * resource.
+     *
+     * @param string $project
+     * @param string $sink
+     *
+     * @return string The formatted project_sink resource.
+     */
+    public static function projectSinkName($project, $sink)
+    {
+        return self::getPathTemplate('projectSink')->render([
+            'project' => $project,
+            'sink' => $sink,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/config_service_v2_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - billingAccount: billingAccounts/{billing_account}
+     * - billingAccountCmekSettings: billingAccounts/{billing_account}/cmekSettings
+     * - billingAccountExclusion: billingAccounts/{billing_account}/exclusions/{exclusion}
+     * - billingAccountLocation: billingAccounts/{billing_account}/locations/{location}
+     * - billingAccountLocationBucket: billingAccounts/{billing_account}/locations/{location}/buckets/{bucket}
+     * - billingAccountLocationBucketView: billingAccounts/{billing_account}/locations/{location}/buckets/{bucket}/views/{view}
+     * - billingAccountSink: billingAccounts/{billing_account}/sinks/{sink}
+     * - cmekSettings: projects/{project}/cmekSettings
+     * - folder: folders/{folder}
+     * - folderCmekSettings: folders/{folder}/cmekSettings
+     * - folderExclusion: folders/{folder}/exclusions/{exclusion}
+     * - folderLocation: folders/{folder}/locations/{location}
+     * - folderLocationBucket: folders/{folder}/locations/{location}/buckets/{bucket}
+     * - folderLocationBucketView: folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}
+     * - folderSink: folders/{folder}/sinks/{sink}
+     * - location: projects/{project}/locations/{location}
+     * - logBucket: projects/{project}/locations/{location}/buckets/{bucket}
+     * - logExclusion: projects/{project}/exclusions/{exclusion}
+     * - logSink: projects/{project}/sinks/{sink}
+     * - logView: projects/{project}/locations/{location}/buckets/{bucket}/views/{view}
+     * - organization: organizations/{organization}
+     * - organizationCmekSettings: organizations/{organization}/cmekSettings
+     * - organizationExclusion: organizations/{organization}/exclusions/{exclusion}
+     * - organizationLocation: organizations/{organization}/locations/{location}
+     * - organizationLocationBucket: organizations/{organization}/locations/{location}/buckets/{bucket}
+     * - organizationLocationBucketView: organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}
+     * - organizationSink: organizations/{organization}/sinks/{sink}
+     * - project: projects/{project}
+     * - projectCmekSettings: projects/{project}/cmekSettings
+     * - projectExclusion: projects/{project}/exclusions/{exclusion}
+     * - projectLocationBucket: projects/{project}/locations/{location}/buckets/{bucket}
+     * - projectLocationBucketView: projects/{project}/locations/{location}/buckets/{bucket}/views/{view}
+     * - projectSink: projects/{project}/sinks/{sink}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

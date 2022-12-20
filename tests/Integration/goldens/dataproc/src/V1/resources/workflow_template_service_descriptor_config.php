@@ -110,6 +110,15 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'cluster' => 'projects/{project}/locations/{location}/clusters/{cluster}',
+                'location' => 'projects/{project}/locations/{location}',
+                'projectLocationWorkflowTemplate' => 'projects/{project}/locations/{location}/workflowTemplates/{workflow_template}',
+                'projectRegionWorkflowTemplate' => 'projects/{project}/regions/{region}/workflowTemplates/{workflow_template}',
+                'region' => 'projects/{project}/regions/{region}',
+                'service' => 'projects/{project}/locations/{location}/services/{service}',
+                'workflowTemplate' => 'projects/{project}/regions/{region}/workflowTemplates/{workflow_template}',
+            ],
         ],
     ],
 ];
