@@ -126,9 +126,22 @@ option (google.api.resource_definition) = {
   pattern: "items1/{item1_id}"
 };
 
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/DeeplyNested"
+  pattern: "foos/{foo}"
+};
+
 message FileLevelTypeRefRequest {
   string file_name = 1 [(google.api.resource_reference).type =
                             "resourcenames.example.com/FileResDef"];
+  message Nested1 {
+    message Nested2 {
+      string nested = 1 [(google.api.resource_reference).type =
+                            "resourcenames.example.com/DeeplyNested"];
+    }
+    Nested2 nested_two = 1;
+  }
+  Nested1 nested_one = 2;
 }
 
 option (google.api.resource_definition) = {

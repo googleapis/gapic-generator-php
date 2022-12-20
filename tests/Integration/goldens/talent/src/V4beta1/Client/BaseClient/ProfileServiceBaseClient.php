@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -59,6 +60,7 @@ use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
 class ProfileServiceBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.talent.v4beta1.ProfileService';
@@ -95,6 +97,78 @@ class ProfileServiceBaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a profile
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     * @param string $profile
+     *
+     * @return string The formatted profile resource.
+     *
+     * @experimental
+     */
+    public static function profileName($project, $tenant, $profile)
+    {
+        return self::getPathTemplate('profile')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+            'profile' => $profile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a tenant
+     * resource.
+     *
+     * @param string $project
+     * @param string $tenant
+     *
+     * @return string The formatted tenant resource.
+     *
+     * @experimental
+     */
+    public static function tenantName($project, $tenant)
+    {
+        return self::getPathTemplate('tenant')->render([
+            'project' => $project,
+            'tenant' => $tenant,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/profile_service_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - profile: projects/{project}/tenants/{tenant}/profiles/{profile}
+     * - tenant: projects/{project}/tenants/{tenant}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     *
+     * @experimental
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

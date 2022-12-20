@@ -29,6 +29,7 @@ use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -54,6 +55,7 @@ use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
 class LoggingServiceV2BaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.logging.v2.LoggingServiceV2';
@@ -93,6 +95,188 @@ class LoggingServiceV2BaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account resource.
+     *
+     * @param string $billingAccount
+     *
+     * @return string The formatted billing_account resource.
+     */
+    public static function billingAccountName($billingAccount)
+    {
+        return self::getPathTemplate('billingAccount')->render([
+            'billing_account' => $billingAccount,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * billing_account_log resource.
+     *
+     * @param string $billingAccount
+     * @param string $log
+     *
+     * @return string The formatted billing_account_log resource.
+     */
+    public static function billingAccountLogName($billingAccount, $log)
+    {
+        return self::getPathTemplate('billingAccountLog')->render([
+            'billing_account' => $billingAccount,
+            'log' => $log,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder
+     * resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder resource.
+     */
+    public static function folderName($folder)
+    {
+        return self::getPathTemplate('folder')->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder_log
+     * resource.
+     *
+     * @param string $folder
+     * @param string $log
+     *
+     * @return string The formatted folder_log resource.
+     */
+    public static function folderLogName($folder, $log)
+    {
+        return self::getPathTemplate('folderLog')->render([
+            'folder' => $folder,
+            'log' => $log,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a log
+     * resource.
+     *
+     * @param string $project
+     * @param string $log
+     *
+     * @return string The formatted log resource.
+     */
+    public static function logName($project, $log)
+    {
+        return self::getPathTemplate('log')->render([
+            'project' => $project,
+            'log' => $log,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a organization
+     * resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization resource.
+     */
+    public static function organizationName($organization)
+    {
+        return self::getPathTemplate('organization')->render([
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_log resource.
+     *
+     * @param string $organization
+     * @param string $log
+     *
+     * @return string The formatted organization_log resource.
+     */
+    public static function organizationLogName($organization, $log)
+    {
+        return self::getPathTemplate('organizationLog')->render([
+            'organization' => $organization,
+            'log' => $log,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project
+     * resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project resource.
+     */
+    public static function projectName($project)
+    {
+        return self::getPathTemplate('project')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project_log
+     * resource.
+     *
+     * @param string $project
+     * @param string $log
+     *
+     * @return string The formatted project_log resource.
+     */
+    public static function projectLogName($project, $log)
+    {
+        return self::getPathTemplate('projectLog')->render([
+            'project' => $project,
+            'log' => $log,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/logging_service_v2_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - billingAccount: billingAccounts/{billing_account}
+     * - billingAccountLog: billingAccounts/{billing_account}/logs/{log}
+     * - folder: folders/{folder}
+     * - folderLog: folders/{folder}/logs/{log}
+     * - log: projects/{project}/logs/{log}
+     * - organization: organizations/{organization}
+     * - organizationLog: organizations/{organization}/logs/{log}
+     * - project: projects/{project}
+     * - projectLog: projects/{project}/logs/{log}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

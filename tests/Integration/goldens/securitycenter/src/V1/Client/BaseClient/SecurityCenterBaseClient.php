@@ -30,6 +30,7 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -80,6 +81,7 @@ use Google\LongRunning\Operation;
 class SecurityCenterBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'google.cloud.securitycenter.v1.SecurityCenter';
@@ -146,6 +148,418 @@ class SecurityCenterBaseClient
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a finding
+     * resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted finding resource.
+     */
+    public static function findingName($organization, $source, $finding)
+    {
+        return self::getPathTemplate('finding')->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder
+     * resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder resource.
+     */
+    public static function folderName($folder)
+    {
+        return self::getPathTemplate('folder')->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_asset_securityMarks resource.
+     *
+     * @param string $folder
+     * @param string $asset
+     *
+     * @return string The formatted folder_asset_securityMarks resource.
+     */
+    public static function folderAssetSecurityMarksName($folder, $asset)
+    {
+        return self::getPathTemplate('folderAssetSecurityMarks')->render([
+            'folder' => $folder,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source resource.
+     *
+     * @param string $folder
+     * @param string $source
+     *
+     * @return string The formatted folder_source resource.
+     */
+    public static function folderSourceName($folder, $source)
+    {
+        return self::getPathTemplate('folderSource')->render([
+            'folder' => $folder,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted folder_source_finding resource.
+     */
+    public static function folderSourceFindingName($folder, $source, $finding)
+    {
+        return self::getPathTemplate('folderSourceFinding')->render([
+            'folder' => $folder,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding_securityMarks resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted folder_source_finding_securityMarks resource.
+     */
+    public static function folderSourceFindingSecurityMarksName($folder, $source, $finding)
+    {
+        return self::getPathTemplate('folderSourceFindingSecurityMarks')->render([
+            'folder' => $folder,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * notification_config resource.
+     *
+     * @param string $organization
+     * @param string $notificationConfig
+     *
+     * @return string The formatted notification_config resource.
+     */
+    public static function notificationConfigName($organization, $notificationConfig)
+    {
+        return self::getPathTemplate('notificationConfig')->render([
+            'organization' => $organization,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a organization
+     * resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization resource.
+     */
+    public static function organizationName($organization)
+    {
+        return self::getPathTemplate('organization')->render([
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_asset_securityMarks resource.
+     *
+     * @param string $organization
+     * @param string $asset
+     *
+     * @return string The formatted organization_asset_securityMarks resource.
+     */
+    public static function organizationAssetSecurityMarksName($organization, $asset)
+    {
+        return self::getPathTemplate('organizationAssetSecurityMarks')->render([
+            'organization' => $organization,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_settings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization_settings resource.
+     */
+    public static function organizationSettingsName($organization)
+    {
+        return self::getPathTemplate('organizationSettings')->render([
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_source resource.
+     *
+     * @param string $organization
+     * @param string $source
+     *
+     * @return string The formatted organization_source resource.
+     */
+    public static function organizationSourceName($organization, $source)
+    {
+        return self::getPathTemplate('organizationSource')->render([
+            'organization' => $organization,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted organization_source_finding resource.
+     */
+    public static function organizationSourceFindingName($organization, $source, $finding)
+    {
+        return self::getPathTemplate('organizationSourceFinding')->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding_securityMarks resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted organization_source_finding_securityMarks resource.
+     */
+    public static function organizationSourceFindingSecurityMarksName($organization, $source, $finding)
+    {
+        return self::getPathTemplate('organizationSourceFindingSecurityMarks')->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a project
+     * resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project resource.
+     */
+    public static function projectName($project)
+    {
+        return self::getPathTemplate('project')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_asset_securityMarks resource.
+     *
+     * @param string $project
+     * @param string $asset
+     *
+     * @return string The formatted project_asset_securityMarks resource.
+     */
+    public static function projectAssetSecurityMarksName($project, $asset)
+    {
+        return self::getPathTemplate('projectAssetSecurityMarks')->render([
+            'project' => $project,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source resource.
+     *
+     * @param string $project
+     * @param string $source
+     *
+     * @return string The formatted project_source resource.
+     */
+    public static function projectSourceName($project, $source)
+    {
+        return self::getPathTemplate('projectSource')->render([
+            'project' => $project,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted project_source_finding resource.
+     */
+    public static function projectSourceFindingName($project, $source, $finding)
+    {
+        return self::getPathTemplate('projectSourceFinding')->render([
+            'project' => $project,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding_securityMarks resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     *
+     * @return string The formatted project_source_finding_securityMarks resource.
+     */
+    public static function projectSourceFindingSecurityMarksName($project, $source, $finding)
+    {
+        return self::getPathTemplate('projectSourceFindingSecurityMarks')->render([
+            'project' => $project,
+            'source' => $source,
+            'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_marks resource.
+     *
+     * @param string $organization
+     * @param string $asset
+     *
+     * @return string The formatted security_marks resource.
+     */
+    public static function securityMarksName($organization, $asset)
+    {
+        return self::getPathTemplate('securityMarks')->render([
+            'organization' => $organization,
+            'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a source
+     * resource.
+     *
+     * @param string $organization
+     * @param string $source
+     *
+     * @return string The formatted source resource.
+     */
+    public static function sourceName($organization, $source)
+    {
+        return self::getPathTemplate('source')->render([
+            'organization' => $organization,
+            'source' => $source,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a topic
+     * resource.
+     *
+     * @param string $project
+     * @param string $topic
+     *
+     * @return string The formatted topic resource.
+     */
+    public static function topicName($project, $topic)
+    {
+        return self::getPathTemplate('topic')->render([
+            'project' => $project,
+            'topic' => $topic,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/security_center_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - finding: organizations/{organization}/sources/{source}/findings/{finding}
+     * - folder: folders/{folder}
+     * - folderAssetSecurityMarks: folders/{folder}/assets/{asset}/securityMarks
+     * - folderSource: folders/{folder}/sources/{source}
+     * - folderSourceFinding: folders/{folder}/sources/{source}/findings/{finding}
+     * - folderSourceFindingSecurityMarks: folders/{folder}/sources/{source}/findings/{finding}/securityMarks
+     * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
+     * - organization: organizations/{organization}
+     * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
+     * - organizationSettings: organizations/{organization}/organizationSettings
+     * - organizationSource: organizations/{organization}/sources/{source}
+     * - organizationSourceFinding: organizations/{organization}/sources/{source}/findings/{finding}
+     * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
+     * - project: projects/{project}
+     * - projectAssetSecurityMarks: projects/{project}/assets/{asset}/securityMarks
+     * - projectSource: projects/{project}/sources/{source}
+     * - projectSourceFinding: projects/{project}/sources/{source}/findings/{finding}
+     * - projectSourceFindingSecurityMarks: projects/{project}/sources/{source}/findings/{finding}/securityMarks
+     * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
+     * - source: organizations/{organization}/sources/{source}
+     * - topic: projects/{project}/topics/{topic}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

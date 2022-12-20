@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\HttpRule;
+use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
 use Google\Api\RoutingParameter;
 use Google\Api\RoutingRule;
 use Google\ApiCore\ResourceTemplate\Parser;
@@ -494,6 +496,21 @@ class ProtoHelpers
     public static function operationField(FieldDescriptorProto $field)
     {
         return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
+    }
+
+    public static function resourceReference(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+    }
+
+    public static function resourceDefinition(DescriptorProto $message)
+    {
+        return static::getCustomOption($message, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
+    }
+
+    public static function fileResourceDefinitions(FileDescriptorProto $file)
+    {
+        return static::getCustomOptionRepeated($file, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
     }
 
     // Use of lookupOperationService assumes that isOperationService has already been called and returned true.

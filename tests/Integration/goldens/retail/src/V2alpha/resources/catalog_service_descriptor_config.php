@@ -60,6 +60,11 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'branch' => 'projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}',
+                'catalog' => 'projects/{project}/locations/{location}/catalogs/{catalog}',
+                'location' => 'projects/{project}/locations/{location}',
+            ],
         ],
     ],
 ];

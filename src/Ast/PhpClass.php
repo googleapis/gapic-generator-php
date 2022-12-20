@@ -48,12 +48,16 @@ final class PhpClass extends AST
     /**
      * Create a class with an additional trait.
      *
-     * @param ResolvedType $trait Trait to add. Must be a type which is a trait.
+     * @param ?ResolvedType $trait Trait to add. Must be a type which is a trait.
      *
      * @return PhpClass
      */
-    public function withTrait(ResolvedType $trait): PhpClass
+    public function withTrait(?ResolvedType $trait): PhpClass
     {
+        // No-op, just return the same class.
+        if (is_null($trait)) {
+            return $this;
+        }
         if (!$trait->type->isClass()) {
             throw new \Exception('Only classes (traits) may be used as a trait.');
         }

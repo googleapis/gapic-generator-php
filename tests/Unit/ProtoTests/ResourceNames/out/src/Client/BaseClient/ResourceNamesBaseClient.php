@@ -27,6 +27,7 @@ namespace Testing\ResourceNames\Client\BaseClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -55,6 +56,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
 class ResourceNamesBaseClient
 {
     use GapicClientTrait;
+    use ResourceHelperTrait;
 
     /** The name of the service. */
     const SERVICE_NAME = 'testing.resourcenames.ResourceNames';
@@ -88,6 +90,308 @@ class ResourceNamesBaseClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * deeply_nested resource.
+     *
+     * @param string $foo
+     *
+     * @return string The formatted deeply_nested resource.
+     */
+    public static function deeplyNestedName($foo)
+    {
+        return self::getPathTemplate('deeplyNested')->render([
+            'foo' => $foo,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a file_res_def
+     * resource.
+     *
+     * @param string $item1Id
+     *
+     * @return string The formatted file_res_def resource.
+     */
+    public static function fileResDefName($item1Id)
+    {
+        return self::getPathTemplate('fileResDef')->render([
+            'item1_id' => $item1Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder
+     * resource.
+     *
+     * @param string $folderId
+     *
+     * @return string The formatted folder resource.
+     */
+    public static function folderName($folderId)
+    {
+        return self::getPathTemplate('folder')->render([
+            'folder_id' => $folderId,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder1
+     * resource.
+     *
+     * @param string $folder1Id
+     *
+     * @return string The formatted folder1 resource.
+     */
+    public static function folder1Name($folder1Id)
+    {
+        return self::getPathTemplate('folder1')->render([
+            'folder1_id' => $folder1Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a folder2
+     * resource.
+     *
+     * @param string $folder2Id
+     *
+     * @return string The formatted folder2 resource.
+     */
+    public static function folder2Name($folder2Id)
+    {
+        return self::getPathTemplate('folder2')->render([
+            'folder2_id' => $folder2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a item1_id
+     * resource.
+     *
+     * @param string $item1Id
+     *
+     * @return string The formatted item1_id resource.
+     */
+    public static function item1IdName($item1Id)
+    {
+        return self::getPathTemplate('item1Id')->render([
+            'item1_id' => $item1Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * item1_id_item2_id resource.
+     *
+     * @param string $item1Id
+     * @param string $item2Id
+     *
+     * @return string The formatted item1_id_item2_id resource.
+     */
+    public static function item1IdItem2IdName($item1Id, $item2Id)
+    {
+        return self::getPathTemplate('item1IdItem2Id')->render([
+            'item1_id' => $item1Id,
+            'item2_id' => $item2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a item2_id
+     * resource.
+     *
+     * @param string $item2Id
+     *
+     * @return string The formatted item2_id resource.
+     */
+    public static function item2IdName($item2Id)
+    {
+        return self::getPathTemplate('item2Id')->render([
+            'item2_id' => $item2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a item3_id
+     * resource.
+     *
+     * @param string $item3Id
+     *
+     * @return string The formatted item3_id resource.
+     */
+    public static function item3IdName($item3Id)
+    {
+        return self::getPathTemplate('item3Id')->render([
+            'item3_id' => $item3Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * item4_id_item5a_id_item5b_id_item5c_id_item5d_id_item5e_id_item6_id resource.
+     *
+     * @param string $item4Id
+     * @param string $item5aId
+     * @param string $item5bId
+     * @param string $item5cId
+     * @param string $item5dId
+     * @param string $item5eId
+     * @param string $item6Id
+     *
+     * @return string The formatted item4_id_item5a_id_item5b_id_item5c_id_item5d_id_item5e_id_item6_id resource.
+     */
+    public static function item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdName($item4Id, $item5aId, $item5bId, $item5cId, $item5dId, $item5eId, $item6Id)
+    {
+        return self::getPathTemplate('item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id')->render([
+            'item4_id' => $item4Id,
+            'item5a_id' => $item5aId,
+            'item5b_id' => $item5bId,
+            'item5c_id' => $item5cId,
+            'item5d_id' => $item5dId,
+            'item5e_id' => $item5eId,
+            'item6_id' => $item6Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * multi_pattern resource.
+     *
+     * @param string $item1Id
+     * @param string $item2Id
+     *
+     * @return string The formatted multi_pattern resource.
+     */
+    public static function multiPatternName($item1Id, $item2Id)
+    {
+        return self::getPathTemplate('multiPattern')->render([
+            'item1_id' => $item1Id,
+            'item2_id' => $item2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a order1
+     * resource.
+     *
+     * @param string $order1Id
+     *
+     * @return string The formatted order1 resource.
+     */
+    public static function order1Name($order1Id)
+    {
+        return self::getPathTemplate('order1')->render([
+            'order1_id' => $order1Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a order2
+     * resource.
+     *
+     * @param string $order2Id
+     *
+     * @return string The formatted order2 resource.
+     */
+    public static function order2Name($order2Id)
+    {
+        return self::getPathTemplate('order2')->render([
+            'order2_id' => $order2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a order3
+     * resource.
+     *
+     * @param string $order3Id
+     *
+     * @return string The formatted order3 resource.
+     */
+    public static function order3Name($order3Id)
+    {
+        return self::getPathTemplate('order3')->render([
+            'order3_id' => $order3Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * single_pattern resource.
+     *
+     * @param string $item1Id
+     * @param string $item2Id
+     *
+     * @return string The formatted single_pattern resource.
+     */
+    public static function singlePatternName($item1Id, $item2Id)
+    {
+        return self::getPathTemplate('singlePattern')->render([
+            'item1_id' => $item1Id,
+            'item2_id' => $item2Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * wildcard_multi_pattern resource.
+     *
+     * @param string $item1Id
+     *
+     * @return string The formatted wildcard_multi_pattern resource.
+     */
+    public static function wildcardMultiPatternName($item1Id)
+    {
+        return self::getPathTemplate('wildcardMultiPattern')->render([
+            'item1_id' => $item1Id,
+        ]);
+    }
+
+    private static function registerPathTemplates()
+    {
+        self::loadPathTemplates(__DIR__ . '/../../resources/resource_names_descriptor_config.php', self::SERVICE_NAME);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - deeplyNested: foos/{foo}
+     * - fileResDef: items1/{item1_id}
+     * - folder: folders/{folder_id}
+     * - folder1: folders1/{folder1_id}
+     * - folder2: folders2/{folder2_id}
+     * - item1Id: items1/{item1_id}
+     * - item1IdItem2Id: items1/{item1_id}/items2/{item2_id}
+     * - item2Id: items2/{item2_id}
+     * - item3Id: items3/{item3_id}
+     * - item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id: items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}
+     * - multiPattern: items1/{item1_id}/items2/{item2_id}
+     * - order1: orders1/{order1_id}
+     * - order2: orders2/{order2_id}
+     * - order3: orders3/{order3_id}
+     * - singlePattern: items1/{item1_id}/items2/{item2_id}
+     * - wildcardMultiPattern: items1/{item1_id}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        return self::parseFormattedName($formattedName, $template);
     }
 
     /**

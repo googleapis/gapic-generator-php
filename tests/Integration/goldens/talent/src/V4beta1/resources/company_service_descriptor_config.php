@@ -72,6 +72,13 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'company' => 'projects/{project}/tenants/{tenant}/companies/{company}',
+                'project' => 'projects/{project}',
+                'projectCompany' => 'projects/{project}/companies/{company}',
+                'projectTenantCompany' => 'projects/{project}/tenants/{tenant}/companies/{company}',
+                'tenant' => 'projects/{project}/tenants/{tenant}',
+            ],
         ],
     ],
 ];

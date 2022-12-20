@@ -107,7 +107,7 @@ class GapicClientV2Generator
                         'calls that map to API methods.'
                     ])
                 ),
-                count($this->serviceDetails->resourceParts) === 0
+                !$this->serviceDetails->hasResources
                     ? null
                     : PhpDoc::text(
                         'Many parameters require resource names to be formatted in a particular way. To assist ' .
@@ -119,6 +119,8 @@ class GapicClientV2Generator
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
+            ->withTrait(
+                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null)
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->servicePort())
@@ -129,6 +131,7 @@ class GapicClientV2Generator
             ->withMember($this->defaultTransport())
             ->withMember($this->getSupportedTransports())
             ->withMembers($this->operationMethods())
+            ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
     }
@@ -269,6 +272,68 @@ class GapicClientV2Generator
         $methods = $methods->append($resumeOperation);
 
         return $methods;
+    }
+
+    private function resourceMethods(): Vector
+    {
+        if (!$this->serviceDetails->hasResources) {
+            return Vector::new();
+        }
+        $descriptorConfigFilename = $this->serviceDetails->descriptorConfigFilename;
+        $formattedName = AST::param(null, AST::var('formattedName'));
+        $template = AST::param(null, AST::var('template'), AST::NULL);
+
+        return $this->serviceDetails->resourceParts
+            ->map(fn ($x) => $x->getFormatMethod()
+                ->withAccess(Access::PUBLIC, Access::STATIC)
+                ->withParams($x->getParams()->map(fn ($x) => $x[1]))
+                ->withBody(AST::block(
+                    AST::return(AST::call(AST::SELF, AST::method('getPathTemplate'))($x->nameCamelCase)->render(
+                        AST::array($x->getParams()->toArray(fn ($x) => $x[0], fn ($x) => $x[1]))
+                    ))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text(
+                        'Formats a string containing the fully-qualified path to represent a',
+                        $x->getNameSnakeCase(),
+                        'resource.'
+                    ),
+                    $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
+                    PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                )))
+            ->append(AST::method('registerPathTemplates')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::call(AST::SELF, AST::method('loadPathTemplates'))(
+                        AST::concat(AST::__DIR__, "/../../resources/$descriptorConfigFilename"),
+                        AST::access(AST::SELF, AST::constant('SERVICE_NAME')))
+                ))
+            )->append(AST::method('parseName')
+                ->withAccess(Access::PUBLIC, Access::STATIC)
+                ->withParams($formattedName, $template)
+                ->withBody(AST::block(
+                    AST::return(AST::call(AST::SELF, AST::method('parseFormattedName'))($formattedName->var, $template->var))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::preFormattedText(Vector::new([
+                        'Parses a formatted name string and returns an associative array of the components in the name.',
+                        'The following name formats are supported:',
+                        'Template: Pattern',
+                    ])->concat($this->serviceDetails->resourceParts->map(fn ($x) => "- {$x->getNameCamelCase()}: {$x->getPattern()}"))),
+                    PhpDoc::text(
+                        'The optional $template argument can be supplied to specify a particular pattern, and must',
+                        'match one of the templates listed above. If no $template argument is provided, or if the',
+                        '$template argument does not match one of the templates listed, then parseName will check',
+                        'each of the supported templates, and return the first match.'
+                    ),
+                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
+                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
+                    PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
+                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                ))
+            );
     }
 
     private function getClientDefaults(): PhpClassMember
