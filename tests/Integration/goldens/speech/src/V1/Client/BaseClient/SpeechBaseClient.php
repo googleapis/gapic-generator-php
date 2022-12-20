@@ -39,6 +39,7 @@ use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service that implements Google Cloud Speech API.
@@ -176,6 +177,33 @@ class SpeechBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $speechClient = new SpeechClient();
+     * $request = new LongRunningRecognizeRequest();
+     * try {
+     *     $response = $speechClient->sendAsync('longRunningRecognize', $request)->wait();
+     * } finally {
+     *     $speechClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

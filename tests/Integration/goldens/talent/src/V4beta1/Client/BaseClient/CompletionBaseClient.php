@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service handles auto completion.
@@ -284,6 +285,33 @@ class CompletionBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $completionClient = new CompletionClient();
+     * $request = new CompleteQueryRequest();
+     * try {
+     *     $response = $completionClient->sendAsync('completeQuery', $request)->wait();
+     * } finally {
+     *     $completionClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

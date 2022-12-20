@@ -45,6 +45,7 @@ use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for ingesting end user actions on the customer website.
@@ -274,6 +275,33 @@ class UserEventServiceBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $userEventServiceClient = new UserEventServiceClient();
+     * $request = new CollectUserEventRequest();
+     * try {
+     *     $response = $userEventServiceClient->sendAsync('collectUserEvent', $request)->wait();
+     * } finally {
+     *     $userEventServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

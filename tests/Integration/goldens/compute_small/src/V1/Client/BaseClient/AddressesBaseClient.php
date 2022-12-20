@@ -38,6 +38,7 @@ use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Cloud\Compute\V1\InsertAddressRequest;
 use Google\Cloud\Compute\V1\ListAddressesRequest;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description:
@@ -210,6 +211,33 @@ class AddressesBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $addressesClient = new AddressesClient();
+     * $request = new AggregatedListAddressesRequest();
+     * try {
+     *     $response = $addressesClient->sendAsync('aggregatedList', $request)->wait();
+     * } finally {
+     *     $addressesClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
@@ -582,6 +583,33 @@ class LibraryServiceBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $libraryServiceClient = new LibraryServiceClient();
+     * $request = new AddCommentsRequest();
+     * try {
+     *     $response = $libraryServiceClient->sendAsync('addComments', $request)->wait();
+     * } finally {
+     *     $libraryServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

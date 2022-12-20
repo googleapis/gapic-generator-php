@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\DeleteApplicationRequest;
 use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that handles application management, including CRUD and
@@ -362,6 +363,33 @@ class ApplicationServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $applicationServiceClient = new ApplicationServiceClient();
+     * $request = new CreateApplicationRequest();
+     * try {
+     *     $response = $applicationServiceClient->sendAsync('createApplication', $request)->wait();
+     * } finally {
+     *     $applicationServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

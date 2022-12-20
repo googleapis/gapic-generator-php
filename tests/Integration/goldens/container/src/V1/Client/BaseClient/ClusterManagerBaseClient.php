@@ -72,6 +72,7 @@ use Google\Cloud\Container\V1\StartIPRotationRequest;
 use Google\Cloud\Container\V1\UpdateClusterRequest;
 use Google\Cloud\Container\V1\UpdateMasterRequest;
 use Google\Cloud\Container\V1\UpdateNodePoolRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Google Kubernetes Engine Cluster Manager v1
@@ -177,6 +178,33 @@ class ClusterManagerBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $clusterManagerClient = new ClusterManagerClient();
+     * $request = new CancelOperationRequest();
+     * try {
+     *     $response = $clusterManagerClient->sendAsync('cancelOperation', $request)->wait();
+     * } finally {
+     *     $clusterManagerClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

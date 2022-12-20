@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for making recommendation prediction.
@@ -207,6 +208,33 @@ class PredictionServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $predictionServiceClient = new PredictionServiceClient();
+     * $request = new PredictRequest();
+     * try {
+     *     $response = $predictionServiceClient->sendAsync('predict', $request)->wait();
+     * } finally {
+     *     $predictionServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

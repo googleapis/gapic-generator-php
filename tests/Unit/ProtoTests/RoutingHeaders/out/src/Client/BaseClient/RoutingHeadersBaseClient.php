@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\Internal\Message;
 use Testing\RoutingHeaders\NestedRequest;
 use Testing\RoutingHeaders\OrderRequest;
 use Testing\RoutingHeaders\Response;
@@ -138,6 +139,33 @@ class RoutingHeadersBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $routingHeadersClient = new RoutingHeadersClient();
+     * $request = new SimpleRequest();
+     * try {
+     *     $response = $routingHeadersClient->sendAsync('deleteMethod', $request)->wait();
+     * } finally {
+     *     $routingHeadersClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

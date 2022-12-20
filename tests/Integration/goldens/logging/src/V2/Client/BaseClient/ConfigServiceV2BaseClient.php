@@ -61,6 +61,7 @@ use Google\Cloud\Logging\V2\UpdateCmekSettingsRequest;
 use Google\Cloud\Logging\V2\UpdateExclusionRequest;
 use Google\Cloud\Logging\V2\UpdateSinkRequest;
 use Google\Cloud\Logging\V2\UpdateViewRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for configuring sinks used to route log entries.
@@ -809,6 +810,33 @@ class ConfigServiceV2BaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $configServiceV2Client = new ConfigServiceV2Client();
+     * $request = new CreateBucketRequest();
+     * try {
+     *     $response = $configServiceV2Client->sendAsync('createBucket', $request)->wait();
+     * } finally {
+     *     $configServiceV2Client->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
 use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service handles client event report.
@@ -220,6 +221,33 @@ class EventServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $eventServiceClient = new EventServiceClient();
+     * $request = new CreateClientEventRequest();
+     * try {
+     *     $response = $eventServiceClient->sendAsync('createClientEvent', $request)->wait();
+     * } finally {
+     *     $eventServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\DeleteCompanyRequest;
 use Google\Cloud\Talent\V4beta1\GetCompanyRequest;
 use Google\Cloud\Talent\V4beta1\ListCompaniesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service that handles company management, including CRUD and enumeration.
@@ -289,6 +290,33 @@ class CompanyServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $companyServiceClient = new CompanyServiceClient();
+     * $request = new CreateCompanyRequest();
+     * try {
+     *     $response = $companyServiceClient->sendAsync('createCompany', $request)->wait();
+     * } finally {
+     *     $companyServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

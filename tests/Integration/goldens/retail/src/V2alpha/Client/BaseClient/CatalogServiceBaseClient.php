@@ -41,6 +41,7 @@ use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Service for managing catalog configuration.
@@ -252,6 +253,33 @@ class CatalogServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * $request = new GetDefaultBranchRequest();
+     * try {
+     *     $response = $catalogServiceClient->sendAsync('getDefaultBranch', $request)->wait();
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

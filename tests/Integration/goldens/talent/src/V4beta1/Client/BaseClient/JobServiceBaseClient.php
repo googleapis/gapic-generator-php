@@ -48,6 +48,7 @@ use Google\Cloud\Talent\V4beta1\ListJobsRequest;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: A service handles job management, including job CRUD, enumeration and search.
@@ -396,6 +397,33 @@ class JobServiceBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $jobServiceClient = new JobServiceClient();
+     * $request = new BatchCreateJobsRequest();
+     * try {
+     *     $response = $jobServiceClient->sendAsync('batchCreateJobs', $request)->wait();
+     * } finally {
+     *     $jobServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

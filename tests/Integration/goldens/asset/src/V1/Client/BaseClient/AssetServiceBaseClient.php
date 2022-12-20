@@ -54,6 +54,7 @@ use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\UpdateFeedRequest;
 use Google\LongRunning\Operation;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Asset service definition.
@@ -297,6 +298,33 @@ class AssetServiceBaseClient
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
+    }
+
+    /**
+     * ```
+     * $assetServiceClient = new AssetServiceClient();
+     * $request = new AnalyzeIamPolicyRequest();
+     * try {
+     *     $response = $assetServiceClient->sendAsync('analyzeIamPolicy', $request)->wait();
+     * } finally {
+     *     $assetServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**

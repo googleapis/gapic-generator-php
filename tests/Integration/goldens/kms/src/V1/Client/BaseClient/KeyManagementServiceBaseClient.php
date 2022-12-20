@@ -70,6 +70,7 @@ use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
 use Google\Cloud\Location\Location;
+use Google\Protobuf\Internal\Message;
 
 /**
  * Service Description: Google Cloud Key Management Service
@@ -327,6 +328,33 @@ class KeyManagementServiceBaseClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+    }
+
+    /**
+     * ```
+     * $keyManagementServiceClient = new KeyManagementServiceClient();
+     * $request = new AsymmetricDecryptRequest();
+     * try {
+     *     $response = $keyManagementServiceClient->sendAsync('asymmetricDecrypt', $request)->wait();
+     * } finally {
+     *     $keyManagementServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string  $methodName   Name of the client method to be executed.
+     * @param Message $request      Request message payload.
+     * @param array   $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     */
+    public function sendAsync(string $methodName, Message $request, array $optionalArgs = [])
+    {
+        return $this->startAsyncCall($methodName, $request, $optionalArgs);
     }
 
     /**
