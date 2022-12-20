@@ -37,8 +37,10 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
+use Google\Protobuf\Internal\Message;
 
 class GapicClientV2Generator
 {
@@ -133,6 +135,7 @@ class GapicClientV2Generator
             ->withMembers($this->operationMethods())
             ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
+            ->withMember($this->sendAsync())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
     }
 
@@ -272,6 +275,67 @@ class GapicClientV2Generator
         $methods = $methods->append($resumeOperation);
 
         return $methods;
+    }
+
+    private function sendAsync(): ?PhpClassMember
+    {
+        // No point in adding sendAsync to a client that only has streaming RPCs
+        // that aren't supported by startAsyncCall.
+        $streamingOnly = !$this->serviceDetails->methods->any(fn($m) => !$m->isStreaming());
+
+        // Only has streaming RPCs, so exclude sendAsync from surface.
+        if ($streamingOnly) {
+            return null;
+        }
+
+        // types
+        $messageType = $this->ctx->type(Type::fromName(Message::class));
+        $retrySettingsType = Type::fromName(RetrySettings::class);
+
+        // params
+        $methodName = AST::var('methodName');
+        $methodParam = AST::param(ResolvedType::string(), $methodName);
+        $request = AST::var('request');
+        $requestParam = AST::param($messageType, $request);
+        $optionalArgs = AST::var('optionalArgs');
+        $optionalArgsParam = AST::param(ResolvedType::array(), $optionalArgs, AST::array([]));
+        
+        return AST::method('sendAsync')
+            ->withAccess(Access::PUBLIC)
+            ->withParams($methodParam, $requestParam, $optionalArgsParam)
+            ->withBody(AST::block(
+                AST::return(
+                    AST::call(AST::THIS, AST::method('startAsyncCall'))($methodName, $request, $optionalArgs))))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::example(GapicClientExamplesGenerator::sendAsyncExample($this->serviceDetails, $this->ctx)),
+                PhpDoc::param(
+                    $methodParam, 
+                    PhpDoc::text('Name of the client method to be executed.'),
+                    ResolvedType::string()),
+                PhpDoc::param(
+                    $requestParam, 
+                    PhpDoc::text('Request message payload.'),
+                    $messageType),
+                PhpDoc::param(
+                    $optionalArgsParam, 
+                    PhpDoc::block(
+                        PhpDoc::Text('Optional.'),
+                        PhpDoc::type(
+                            Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
+                            'retrySettings',
+                            PhpDoc::text(
+                                // TODO(vNext): Don't use a fully-qualified type here.
+                                'Retry settings to use for this call. Can be a ',
+                                $this->ctx->type($retrySettingsType),
+                                ' object, or an associative array of retry settings parameters. See the documentation on ',
+                                // TODO(vNext): Don't use a fully-qualified type here.
+                                $this->ctx->type($retrySettingsType),
+                                ' for example usage.'
+                            )
+                        )
+                    ),
+                    ResolvedType::array()),
+            ));
     }
 
     private function resourceMethods(): Vector
