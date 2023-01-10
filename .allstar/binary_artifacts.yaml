@@ -1,0 +1,4 @@
+# Ignore reason: These artifacts are used in tests to both run the test and
+# generate baseline files.
+ignorePaths:
+- tools/protoc
