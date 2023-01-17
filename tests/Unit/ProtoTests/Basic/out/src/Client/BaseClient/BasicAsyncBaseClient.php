@@ -41,9 +41,46 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  */
-class BasicBaseClient
+class BasicAsyncBaseClient
 {
-    private BasicAsyncBaseClient $asyncClient;
+    use GapicClientTrait;
+
+    /** The name of the service. */
+    const SERVICE_NAME = 'testing.basic.Basic';
+
+    /** The default address of the service. */
+    const SERVICE_ADDRESS = 'basic.example.com';
+
+    /** The default port of the service. */
+    const DEFAULT_SERVICE_PORT = 443;
+
+    /** The name of the code generator, to be included in the agent header. */
+    const CODEGEN_NAME = 'gapic';
+
+    /** The default scopes required by the service. */
+    public static $serviceScopes = [
+        'scope1',
+        'scope2',
+    ];
+
+    private static function getClientDefaults()
+    {
+        return [
+            'serviceName' => self::SERVICE_NAME,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'clientConfig' => __DIR__ . '/../../resources/basic_client_config.json',
+            'descriptorsConfigPath' => __DIR__ . '/../../resources/basic_descriptor_config.php',
+            'gcpApiConfigPath' => __DIR__ . '/../../resources/basic_grpc_config.json',
+            'credentialsConfig' => [
+                'defaultScopes' => self::$serviceScopes,
+            ],
+            'transportConfig' => [
+                'rest' => [
+                    'restClientConfigPath' => __DIR__ . '/../../resources/basic_rest_client_config.php',
+                ],
+            ],
+        ];
+    }
 
     /**
      * Constructor.
@@ -101,18 +138,8 @@ class BasicBaseClient
      */
     public function __construct(array $options = [])
     {
-        $this->asyncClient = new BasicAsyncBaseClient($options);
-    }
-
-    // This is here to backfill the public GapicClientTrait->close() method.
-    public function close()
-    {
-        $this->asyncClient->close();
-    }
-
-    public function async()
-    {
-        return $this->asyncClient;
+        $clientOptions = $this->buildClientOptions($options);
+        $this->setClientOptions($clientOptions);
     }
 
     /**
@@ -128,13 +155,13 @@ class BasicBaseClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return Response
+     * @return PromiseInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod(Request $request, array $optionalArgs = []): Response
+    public function aMethod(Request $request, array $optionalArgs = []): PromiseInterface
     {
-        return $this->asyncClient->aMethod($request, $optionalArgs)->wait();
+        return $this->startApiCall('AMethod', $request, $optionalArgs);
     }
 
     /**
@@ -150,12 +177,12 @@ class BasicBaseClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return Response
+     * @return PromiseInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodWithArgs(RequestWithArgs $request, array $optionalArgs = []): Response
+    public function methodWithArgs(RequestWithArgs $request, array $optionalArgs = []): PromiseInterface
     {
-        return $this->asyncClient->methodWithArgs($request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs);
     }
 }
