@@ -530,4 +530,47 @@ class ResourceNamesClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function fileLevelChildTypeRefMethodAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new PlaceholderResponse();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedReqFolderName = $gapicClient->folderName('[FOLDER_ID]');
+        $formattedReqFolderMultiName = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqFolderMultiNameHistory = $gapicClient->folder1Name('[FOLDER1_ID]');
+        $formattedReqOrderTest1 = $gapicClient->order2Name('[ORDER2_ID]');
+        $formattedReqOrderTest2 = $gapicClient->order2Name('[ORDER2_ID]');
+        $request = (new FileLevelChildTypeRefRequest())
+            ->setReqFolderName($formattedReqFolderName)
+            ->setReqFolderMultiName($formattedReqFolderMultiName)
+            ->setReqFolderMultiNameHistory($formattedReqFolderMultiNameHistory)
+            ->setReqOrderTest1($formattedReqOrderTest1)
+            ->setReqOrderTest2($formattedReqOrderTest2);
+        $response = $gapicClient->fileLevelChildTypeRefMethodAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.resourcenames.ResourceNames/FileLevelChildTypeRefMethod', $actualFuncCall);
+        $actualValue = $actualRequestObject->getReqFolderName();
+        $this->assertProtobufEquals($formattedReqFolderName, $actualValue);
+        $actualValue = $actualRequestObject->getReqFolderMultiName();
+        $this->assertProtobufEquals($formattedReqFolderMultiName, $actualValue);
+        $actualValue = $actualRequestObject->getReqFolderMultiNameHistory();
+        $this->assertProtobufEquals($formattedReqFolderMultiNameHistory, $actualValue);
+        $actualValue = $actualRequestObject->getReqOrderTest1();
+        $this->assertProtobufEquals($formattedReqOrderTest1, $actualValue);
+        $actualValue = $actualRequestObject->getReqOrderTest2();
+        $this->assertProtobufEquals($formattedReqOrderTest2, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

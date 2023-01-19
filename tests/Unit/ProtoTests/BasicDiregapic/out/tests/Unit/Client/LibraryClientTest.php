@@ -2317,4 +2317,34 @@ class LibraryClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function addCommentsAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $gapicClient->bookName('[SHELF]', '[BOOK_ONE]', '[BOOK_TWO]');
+        $comments = [];
+        $request = (new AddCommentsRequest())
+            ->setName($formattedName)
+            ->setComments($comments);
+        $gapicClient->addCommentsAsync($request)->wait();
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.example.library.v1.Library/AddComments', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getComments();
+        $this->assertProtobufEquals($comments, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

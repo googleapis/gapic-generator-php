@@ -41,6 +41,12 @@ use Testing\CustomLro\GetOperationRequest;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface cancelAsync(\Testing\CustomLro\CancelOperationRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteAsync(\Testing\CustomLro\DeleteOperationRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getAsync(\Testing\CustomLro\GetOperationRequest $request, array $optionalArgs = [])
  */
 class CustomLroOperationsBaseClient
 {
@@ -154,7 +160,25 @@ class CustomLroOperationsBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
+     * The async variant is {@see self::cancelAsync()} .
+     *
      * @param CancelOperationRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -173,6 +197,8 @@ class CustomLroOperationsBaseClient
     }
 
     /**
+     * The async variant is {@see self::deleteAsync()} .
+     *
      * @param DeleteOperationRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -191,6 +217,8 @@ class CustomLroOperationsBaseClient
     }
 
     /**
+     * The async variant is {@see self::getAsync()} .
+     *
      * @param GetOperationRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.

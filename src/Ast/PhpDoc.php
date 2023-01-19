@@ -428,6 +428,23 @@ abstract class PhpDoc
         };
     }
 
+    public static function method(string $name, string $response, string $request): PhpDoc
+    { 
+        return new class($name, $response, $request) extends PhpDoc {
+            public function __construct($name, $response, $request)
+            {
+                $this->name = $name;
+                $this->response = $response;
+                $this->request = $request;
+            }
+            protected function toLines(Map $info): Vector
+            {
+                // @method [[static] return type] [name]([[type] [parameter]<, ...>]) [<description>]
+                return Vector::new(["@method {$this->response} {$this->name}({$this->request} \$request, array \$optionalArgs = [])"]);
+            }
+        };
+    }
+
     public static function group(string $groupName): PhpDoc
     {
         return new class($groupName) extends PhpDoc {

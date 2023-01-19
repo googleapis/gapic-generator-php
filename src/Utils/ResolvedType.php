@@ -35,6 +35,16 @@ class ResolvedType
     }
 
     /**
+     * The 'self' built-in identifier.
+     *
+     * @return ResolvedType
+     */
+    public static function self(): ResolvedType
+    {
+        return new ResolvedType(Type::self(), fn () => 'self');
+    }
+
+    /**
      * Construct a ResolvedType.
      *
      * @param string $typeName The resolved name of the type.

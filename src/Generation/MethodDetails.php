@@ -455,6 +455,9 @@ abstract class MethodDetails
     /** @var string *Readonly* The name of the test method testing the success case. */
     public string $testSuccessMethodName;
 
+    /** @var string *Readonly* The name of the test method testing the async variant. */
+    public string $testAsyncMethodName;
+
     /** @var string *Readonly* The name of the test method testing the exceptional case. */
     public string $testExceptionMethodName;
 
@@ -516,6 +519,7 @@ abstract class MethodDetails
         $this->methodName = Helpers::toCamelCase($this->name);
         $this->mixinServiceFullname = null;
         $this->testSuccessMethodName = $this->methodName . 'Test';
+        $this->testAsyncMethodName = $this->methodName . 'AsyncTest';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
 
         $this->requestType = Type::fromMessage($this->inputMsg->desc);

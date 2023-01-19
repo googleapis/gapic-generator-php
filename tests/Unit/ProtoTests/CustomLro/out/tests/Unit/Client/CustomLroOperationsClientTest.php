@@ -269,4 +269,30 @@ class CustomLroOperationsClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function cancelAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $operation = 'operation1662702951';
+        $request = (new CancelOperationRequest())
+            ->setOperation($operation);
+        $gapicClient->cancelAsync($request)->wait();
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.customlro.CustomLroOperations/Cancel', $actualFuncCall);
+        $actualValue = $actualRequestObject->getOperation();
+        $this->assertProtobufEquals($operation, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

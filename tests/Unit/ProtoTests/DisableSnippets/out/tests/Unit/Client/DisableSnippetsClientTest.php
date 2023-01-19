@@ -121,4 +121,31 @@ class DisableSnippetsClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function method1AsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $testField = 'testField2058097421';
+        $request = (new Request())
+            ->setTestField($testField);
+        $response = $gapicClient->method1Async($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.disablesnippets.DisableSnippets/Method1', $actualFuncCall);
+        $actualValue = $actualRequestObject->getTestField();
+        $this->assertProtobufEquals($testField, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

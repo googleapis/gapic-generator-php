@@ -52,6 +52,22 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface fileLevelChildTypeRefMethodAsync(\Testing\ResourceNames\FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface fileLevelTypeRefMethodAsync(\Testing\ResourceNames\FileLevelTypeRefRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface multiPatternMethodAsync(\Testing\ResourceNames\MultiPatternRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface singlePatternMethodAsync(\Testing\ResourceNames\SinglePatternRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface wildcardChildReferenceMethodAsync(\Testing\ResourceNames\WildcardChildReferenceRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface wildcardMethodAsync(\Testing\ResourceNames\WildcardPatternRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface wildcardMultiMethodAsync(\Testing\ResourceNames\WildcardMultiPatternRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface wildcardReferenceMethodAsync(\Testing\ResourceNames\WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 class ResourceNamesBaseClient
 {
@@ -454,7 +470,25 @@ class ResourceNamesBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
+     * The async variant is {@see self::fileLevelChildTypeRefMethodAsync()} .
+     *
      * @param FileLevelChildTypeRefRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
      *     Optional.
@@ -475,6 +509,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::fileLevelTypeRefMethodAsync()} .
+     *
      * @param FileLevelTypeRefRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -495,6 +531,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::multiPatternMethodAsync()} .
+     *
      * @param MultiPatternRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -515,6 +553,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::singlePatternMethodAsync()} .
+     *
      * @param SinglePatternRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -535,6 +575,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::wildcardChildReferenceMethodAsync()} .
+     *
      * @param WildcardChildReferenceRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
      *     Optional.
@@ -555,6 +597,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::wildcardMethodAsync()} .
+     *
      * @param WildcardPatternRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -575,6 +619,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::wildcardMultiMethodAsync()} .
+     *
      * @param WildcardMultiPatternRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {
      *     Optional.
@@ -595,6 +641,8 @@ class ResourceNamesBaseClient
     }
 
     /**
+     * The async variant is {@see self::wildcardReferenceMethodAsync()} .
+     *
      * @param WildcardReferenceRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
      *     Optional.

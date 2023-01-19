@@ -41,6 +41,10 @@ use Testing\Deprecated\FibonacciRequest;
  * calls that map to API methods.
  *
  * @deprecated This class will be removed in the next major version update.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface fastFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface slowFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
  */
 class DeprecatedServiceBaseClient
 {
@@ -142,8 +146,26 @@ class DeprecatedServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Calculates Fibonacci on the provided value, quickly.
+     *
+     * The async variant is {@see self::fastFibonacciAsync()} .
      *
      * @param FibonacciRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -164,6 +186,8 @@ class DeprecatedServiceBaseClient
 
     /**
      * Calculates Fibonacci on the provided value, slowly.
+     *
+     * The async variant is {@see self::slowFibonacciAsync()} .
      *
      * @param FibonacciRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

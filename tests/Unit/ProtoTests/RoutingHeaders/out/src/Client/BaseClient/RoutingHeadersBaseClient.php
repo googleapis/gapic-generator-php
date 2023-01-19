@@ -41,6 +41,30 @@ use Testing\RoutingHeaders\SimpleRequest;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getNoPlaceholdersMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getNoTemplateMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface nestedMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface nestedMultiMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface orderingMethodAsync(\Testing\RoutingHeaders\OrderRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface patchMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface postMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface putMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithOutParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
  */
 class RoutingHeadersBaseClient
 {
@@ -140,7 +164,25 @@ class RoutingHeadersBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
+     * The async variant is {@see self::deleteMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -161,6 +203,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::getMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -181,6 +225,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::getNoPlaceholdersMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -201,6 +247,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::getNoTemplateMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -221,6 +269,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::nestedMethodAsync()} .
+     *
      * @param NestedRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -241,6 +291,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::nestedMultiMethodAsync()} .
+     *
      * @param NestedRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -261,6 +313,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::orderingMethodAsync()} .
+     *
      * @param OrderRequest $request      A request to house fields associated with the call.
      * @param array        $optionalArgs {
      *     Optional.
@@ -281,6 +335,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::patchMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -301,6 +357,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::postMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -321,6 +379,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::putMethodAsync()} .
+     *
      * @param SimpleRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -341,6 +401,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::routingRuleWithOutParametersAsync()} .
+     *
      * @param NestedRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -361,6 +423,8 @@ class RoutingHeadersBaseClient
     }
 
     /**
+     * The async variant is {@see self::routingRuleWithParametersAsync()} .
+     *
      * @param NestedRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.

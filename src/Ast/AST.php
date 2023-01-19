@@ -62,6 +62,9 @@ abstract class AST
     /** @var string Constant to reference `printf`. */
     public const PRINT_F = "\0printf";
 
+    /** @var string Constant to reference `substr`. */
+    public const SUBSTR = "\0substr";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
@@ -724,6 +727,30 @@ abstract class AST
                 return static::toPhp($this->expr) .
                     ' ? ' . static::toPhp($this->true) .
                     ' : ' . static::toPhp($this->false);
+            }
+        };
+    }
+
+    /**
+     * Create a '??' expression.
+     * 
+     * @param Expression $expr The expression to check \isset and !\is_null, as well as the value to return if true.
+     * @param Expression $false The expresion to return if $expr is not set or is null.
+     * 
+     * @return Expression
+     */
+    public static function nullCoalescing(Expression $expr, Expression $false): Expression
+    {
+        return new class($expr, $false) extends Expression {
+            public function __construct($expr, $false)
+            {
+                $this->expr = $expr;
+                $this->false = $false;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->expr) .
+                    ' ?? ' . static::toPhp($this->false);
             }
         };
     }

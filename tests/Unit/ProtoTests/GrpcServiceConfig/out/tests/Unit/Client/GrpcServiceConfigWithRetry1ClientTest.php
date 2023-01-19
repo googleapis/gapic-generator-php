@@ -497,4 +497,26 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function method1AAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response1();
+        $transport->addResponse($expectedResponse);
+        $request = new Request1();
+        $response = $gapicClient->method1AAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.grpcserviceconfig.GrpcServiceConfigWithRetry1/Method1A', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

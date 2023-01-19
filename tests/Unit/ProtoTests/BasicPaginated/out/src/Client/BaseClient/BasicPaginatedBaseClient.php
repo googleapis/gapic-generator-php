@@ -39,6 +39,8 @@ use Testing\BasicPaginated\Request;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface methodPaginatedAsync(\Testing\BasicPaginated\Request $request, array $optionalArgs = [])
  */
 class BasicPaginatedBaseClient
 {
@@ -141,7 +143,25 @@ class BasicPaginatedBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
+     * The async variant is {@see self::methodPaginatedAsync()} .
+     *
      * @param Request $request      A request to house fields associated with the call.
      * @param array   $optionalArgs {
      *     Optional.
