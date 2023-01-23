@@ -22,12 +22,12 @@
 
 namespace Testing\CustomLro\Tests\Unit;
 
-use Testing\CustomLro\CustomLroClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
+use Testing\CustomLro\CustomLroClient;
 use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\CustomOperationResponse\Status;
@@ -66,7 +66,7 @@ class CustomLroClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new CustomLroOperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -128,7 +128,7 @@ class CustomLroClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new CustomLroOperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);

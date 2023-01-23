@@ -22,7 +22,6 @@
 
 namespace Testing\GrpcServiceConfig\Tests\Unit;
 
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
@@ -34,6 +33,7 @@ use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
 use Google\Rpc\Code;
+use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\LroResponse;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
@@ -124,7 +124,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);
@@ -182,7 +182,7 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
     {
         $operationsTransport = $this->createTransport();
         $operationsClient = new OperationsClient([
-            'serviceAddress' => '',
+            'apiEndpoint' => '',
             'transport' => $operationsTransport,
             'credentials' => $this->createCredentials(),
         ]);

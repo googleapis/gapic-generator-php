@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ function annotate_video_sample(): void
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var AnnotateVideoResponse $response */
+            /** @var AnnotateVideoResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -19,20 +19,34 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
 use PHPUnit\Framework\TestCase;
+use FilesystemIterator;
 use Google\Generator\Tests\Tools\GeneratorUtils;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 final class ProtoTest extends TestCase
 {
-    private function runProtoTest(string $protoPath, ?string $package = null, ?string $transport = null): void
-    {
-        $codeIterator = GeneratorUtils::generateFromProto($protoPath, $package, $transport);
-        $expectedGeneratedFilenameEndings  =  array(
-          'Client.php',
-          'ClientTest.php',
-          '_descriptor_config.php',
-          '_rest_client_config.php',
-          '_client_config.json'
+    private function runProtoTest(
+        string $protoPath,
+        ?string $package = null,
+        ?string $transport = null,
+        bool $generateSnippets = true
+    ): void {
+        $codeIterator = GeneratorUtils::generateFromProto(
+            $protoPath,
+            $package,
+            $transport,
+            $generateSnippets
         );
+        $files = iterator_to_array(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    __DIR__ . '/' . dirname($protoPath) . '/out/',
+                    FilesystemIterator::SKIP_DOTS
+                )
+            )
+        );
+
         foreach ($codeIterator as [$relativeFilename, $code]) {
             $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;
             // Check "expected-code" file exists, then compare generated code against expected code.
@@ -42,21 +56,13 @@ final class ProtoTest extends TestCase
             if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {
                 $this->assertEquals($expectedCode, $code);
             }
-            $actualFileEnding = '';
-            foreach ($expectedGeneratedFilenameEndings as $fileEnding) {
-                if (substr($relativeFilename, -strlen($fileEnding)) === $fileEnding) {
-                    $actualFileEnding = $fileEnding;
-                }
-            }
-            if (($key = array_search($actualFileEnding, $expectedGeneratedFilenameEndings)) !== false) {
-                unset($expectedGeneratedFilenameEndings[$key]);
-            }
+            unset($files[$filename]);
         }
 
-        // Ensure all files ahve been generated.
-        $this->assertTrue(
-            empty($expectedGeneratedFilenameEndings),
-            "Expected files not generated for files ending in " . implode(",", $expectedGeneratedFilenameEndings)
+        $this->assertEmpty(
+            $files,
+            'The following expected files were not generated: ' .
+            print_r(array_keys($files), true)
         );
     }
 
@@ -122,5 +128,15 @@ final class ProtoTest extends TestCase
     public function testCustomLro(): void
     {
         $this->runProtoTest('CustomLro/custom_lro.proto', 'testing.customlro', 'rest');
+    }
+
+    public function testDisableSnippetGeneration(): void
+    {
+        $this->runProtoTest(
+            'DisableSnippets/disable_snippets.proto',
+            'testing.disablesnippets',
+            null,
+            false
+        );
     }
 }

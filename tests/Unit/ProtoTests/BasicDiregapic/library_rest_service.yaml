@@ -5,7 +5,7 @@ title: Google Example Library API
 
 # Included protobuf APIs
 apis:
-- name: google.example.library.v1.LibraryService
+- name: google.example.library.v1.Library
 
 # Documentation section
 documentation:
@@ -23,5 +23,5 @@ authentication:
 # Backend section
 backend:
   rules:
-    - selector: google.example.library.v1.LibraryService.CreateShelf
+    - selector: google.example.library.v1.Library.CreateShelf
       deadline: 1.0

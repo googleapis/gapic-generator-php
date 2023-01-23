@@ -56,6 +56,7 @@ function showUsageAndExit()
 // file loading.
 $opts = getopt('', ['side_loaded_root_dir:']);
 $sideLoadedRootDir = isset($opts['side_loaded_root_dir']) ? rtrim($opts['side_loaded_root_dir'], '/') : null;
+$defaultLicenseYear = -1;
 
 // argc <= 3 to allow both "--side_loaded_root_dir=path" and "--side_loaded_root_dir path"
 if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
@@ -104,8 +105,14 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         if (array_key_exists('metadata', $opts)) {
             $opts['metadata'] = false;
         }
+        if (array_key_exists('rest-numeric-enums', $opts)) {
+            $opts['rest-numeric-enums'] = false;
+        }
+        if (array_key_exists('generate-snippets', $opts)) {
+            $opts['generate-snippets'] = false;
+        }
 
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata] =
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets] =
             readOptions($opts, $sideLoadedRootDir);
 
         $files = CodeGenerator::generate(
@@ -115,7 +122,10 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             $generateGapicMetadata,
             $grpcServiceConfig,
             $gapicYaml,
-            $serviceYaml
+            $serviceYaml,
+            $numericEnums,
+            $defaultLicenseYear,
+            $generateSnippets
         );
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
@@ -138,7 +148,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
-    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums] = readOptions($opts);
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets] = readOptions($opts);
 
     // Generate PHP code.
     $files = CodeGenerator::generateFromDescriptor(
@@ -149,7 +159,9 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $grpcServiceConfig,
         $gapicYaml,
         $serviceYaml,
-        $numericEnums
+        $numericEnums,
+        $defaultLicenseYear,
+        $generateSnippets
     );
 
     if (is_null($outputDir)) {
@@ -220,6 +232,15 @@ function readOptions($opts, $sideLoadedRootDir = null)
     // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.
     $generateGapicMetadata =  (isset($opts['metadata']) && !$opts['metadata']);
     $numericEnums =  (isset($opts['rest-numeric-enums']) && !$opts['rest-numeric-enums']);
+    $generateSnippets =  (isset($opts['generate-snippets']) && !$opts['generate-snippets']);
 
-    return [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums];
+    return [
+        $grpcServiceConfig,
+        $gapicYaml,
+        $serviceYaml,
+        $transport,
+        $generateGapicMetadata,
+        $numericEnums,
+        $generateSnippets
+    ];
 }
