@@ -5,10 +5,10 @@
     "protoPackage": "google.example.library.v1",
     "libraryPackage": "Testing\\BasicDiregapic",
     "services": {
-        "LibraryService": {
+        "Library": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "LibraryServiceGapicClient",
+                    "libraryClient": "LibraryGapicClient",
                     "rpcs": {
                         "AddComments": {
                             "methods": [

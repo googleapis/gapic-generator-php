@@ -52,7 +52,7 @@ option (google.api.resource_definition) = {
 //
 // Service comment may include special characters: <>&"`'@.
 //
-service LibraryService {
+service Library {
   option (google.api.default_host) = "library-example.googleapis.com:1234";
   option (google.api.oauth_scopes) =
       "https://www.googleapis.com/auth/library,"
@@ -350,7 +350,7 @@ service LibraryService {
   }
 }
 
-// Request message for LibraryService.ListShelves.
+// Request message for Library.ListShelves.
 message ListShelvesRequest {
   // A token identifying a page of results the server should return.
   // Typically, this is the value of
@@ -362,7 +362,7 @@ message ListShelvesRequest {
   // not be treated as a paged method unless there is a GAPIC config override.
 }
 
-// Response message for LibraryService.ListShelves.
+// Response message for Library.ListShelves.
 message ListShelvesResponse {
   // The list of shelves.
   repeated ShelfResponse shelves = 1;
@@ -375,7 +375,7 @@ message ListShelvesResponse {
   string next_page_token = 2;
 }
 
-// Request message for LibraryService.ListAggregatedShelves.
+// Request message for Library.ListAggregatedShelves.
 message ListAggregatedShelvesRequest {
   // Requested page size.
   uint32 max_results = 1;
@@ -384,7 +384,7 @@ message ListAggregatedShelvesRequest {
   string page_token = 2;
 }
 
-// Response message for LibraryService.ListAggregatedShelves.
+// Response message for Library.ListAggregatedShelves.
 message ListAggregatedShelvesResponse {
   // The aggregated shelves of shelves.
   // Do not use a map here, the unit test framework does not yet support good
@@ -395,7 +395,7 @@ message ListAggregatedShelvesResponse {
   string next_page_token = 2;
 }
 
-// Request message for LibraryService.StreamShelves.
+// Request message for Library.StreamShelves.
 message StreamShelvesRequest {
   // The name of the shelf to stream.
   string name = 1 [
@@ -404,13 +404,13 @@ message StreamShelvesRequest {
   ];
 }
 
-// Response message for LibraryService.StreamShelves.
+// Response message for Library.StreamShelves.
 message StreamShelvesResponse {
   // The list of shelves.
   repeated ShelfResponse shelves = 1;
 }
 
-// Request message for LibraryService.DeleteShelf.
+// Request message for Library.DeleteShelf.
 message DeleteShelfRequest {
   // The name of the shelf to delete.
   string name = 1 [
@@ -435,9 +435,10 @@ message MergeShelvesRequest {
   ];
 }
 
-// Request message for LibraryService.CreateBook.
+// Request message for Library.CreateBook.
 message CreateBookRequest {
-  // The name of the shelf in which the book is created.
+  // Parent shelf
+  // id.
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "library.googleapis.com/Shelf"
@@ -447,7 +448,7 @@ message CreateBookRequest {
   BookResponse book = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Request message for LibraryService.PublishSeries.
+// Request message for Library.PublishSeries.
 message PublishSeriesRequest {
   // The shelf in which the series is created.
   ShelfResponse shelf = 1 [(google.api.field_behavior) = REQUIRED];
@@ -486,7 +487,7 @@ message SeriesUuidResponse {
   }
 }
 
-// Response message for LibraryService.PublishSeries.
+// Response message for Library.PublishSeries.
 message PublishSeriesResponse {
   // The names of the books in the series that were published
   repeated string book_names = 1 [(google.api.field_behavior) = REQUIRED];
@@ -497,7 +498,7 @@ message PublishSeriesResponse {
   SeriesUuidResponse series_uuid = 3;
 }
 
-// Request message for LibraryService.GetBook.
+// Request message for Library.GetBook.
 message GetBookRequest {
   // The name of the book to retrieve.
   string name = 1 [
@@ -506,7 +507,7 @@ message GetBookRequest {
   ];
 }
 
-// Request message for LibraryService.ListBooks.
+// Request message for Library.ListBooks.
 message ListBooksRequest {
   // The name of the shelf whose books we'd like to list.
   string name = 1 [
@@ -528,7 +529,7 @@ message ListBooksRequest {
   string filter = 4;
 }
 
-// Response message for LibraryService.ListBooks.
+// Response message for Library.ListBooks.
 message ListBooksResponse {
   // The list of books.
   repeated BookResponse books = 1;
@@ -541,13 +542,13 @@ message ListBooksResponse {
   string next_page_token = 2;
 }
 
-// Request message for LibraryService.StreamBooks.
+// Request message for Library.StreamBooks.
 message StreamBooksRequest {
   // The name of the shelf whose books we'd like to list.
   string name = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Request message for LibraryService.UpdateBook.
+// Request message for Library.UpdateBook.
 message UpdateBookRequest {
   // The name of the book to update.
   string name = 1 [
@@ -565,7 +566,7 @@ message UpdateBookRequest {
   google.protobuf.FieldMask update_mask = 4;
 }
 
-// Request message for LibraryService.DeleteBook.
+// Request message for Library.DeleteBook.
 message DeleteBookRequest {
   // The name of the book to delete.
   string name = 1 [
@@ -656,7 +657,7 @@ message Comment {
   SomeMessage2.SomeMessage3.Alignment alignment = 6;
 }
 
-// Request message for LibraryService.GetBookFromArchive.
+// Request message for Library.GetBookFromArchive.
 message GetBookFromArchiveRequest {
   // The name of the book to retrieve.
   string name = 1 [
@@ -671,7 +672,7 @@ message GetBookFromArchiveRequest {
   ];
 }
 
-// Request message for LibraryService.GetBookFromAnywhere.
+// Request message for Library.GetBookFromAnywhere.
 message GetBookFromAnywhereRequest {
   // The name of the book to retrieve.
   string name = 1 [
@@ -698,7 +699,7 @@ message GetBookFromAnywhereRequest {
   ];
 }
 
-// Request message for LibraryService.GetBookFromAbsolutelyAnywhere.
+// Request message for Library.GetBookFromAbsolutelyAnywhere.
 message GetBookFromAbsolutelyAnywhereRequest {
   // The name of the book to retrieve.
   string name = 1 [
@@ -711,7 +712,7 @@ message GetBookFromAbsolutelyAnywhereRequest {
   string alt_book_name = 2;
 }
 
-// Request message for LibraryService.UpdateBookIndex.
+// Request message for Library.UpdateBookIndex.
 message UpdateBookIndexRequest {
   // The name of the book to update.
   string name = 1 [
@@ -1056,13 +1057,13 @@ message Reader {
   google.protobuf.Timestamp join_time = 2;
 }
 
-// Request message for LibraryService.CreateShelf.
+// Request message for Library.CreateShelf.
 message CreateShelfRequest {
   // The shelf to create.
   ShelfResponse shelf = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Request message for LibraryService.GetShelf.
+// Request message for Library.GetShelf.
 message GetShelfRequest {
   // The name of the shelf to retrieve.
   string name = 1 [
