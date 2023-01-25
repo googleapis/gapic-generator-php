@@ -48,6 +48,20 @@ use Google\LongRunning\Operation;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface cancelJobAsync(\Google\Cloud\Dataproc\V1\CancelJobRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteJobAsync(\Google\Cloud\Dataproc\V1\DeleteJobRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getJobAsync(\Google\Cloud\Dataproc\V1\GetJobRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listJobsAsync(\Google\Cloud\Dataproc\V1\ListJobsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface submitJobAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface submitJobAsOperationAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateJobAsync(\Google\Cloud\Dataproc\V1\UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobControllerBaseClient
 {
@@ -181,12 +195,30 @@ class JobControllerBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Starts a job cancellation request. To access the job resource
      * after cancellation, call
      * [regions/{region}/jobs.list](https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list)
      * or
      * [regions/{region}/jobs.get](https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get).
+     *
+     * The async variant is {@see self::cancelJobAsync()} .
      *
      * @param CancelJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -211,6 +243,8 @@ class JobControllerBaseClient
      * Deletes the job from the project. If the job is active, the delete fails,
      * and the response returns `FAILED_PRECONDITION`.
      *
+     * The async variant is {@see self::deleteJobAsync()} .
+     *
      * @param DeleteJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -230,6 +264,8 @@ class JobControllerBaseClient
 
     /**
      * Gets the resource representation for a job in a project.
+     *
+     * The async variant is {@see self::getJobAsync()} .
      *
      * @param GetJobRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
@@ -253,6 +289,8 @@ class JobControllerBaseClient
     /**
      * Lists regions/{region}/jobs in a project.
      *
+     * The async variant is {@see self::listJobsAsync()} .
+     *
      * @param ListJobsRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
      *     Optional.
@@ -274,6 +312,8 @@ class JobControllerBaseClient
 
     /**
      * Submits a job to a cluster.
+     *
+     * The async variant is {@see self::submitJobAsync()} .
      *
      * @param SubmitJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -297,6 +337,8 @@ class JobControllerBaseClient
     /**
      * Submits job to a cluster.
      *
+     * The async variant is {@see self::submitJobAsOperationAsync()} .
+     *
      * @param SubmitJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -318,6 +360,8 @@ class JobControllerBaseClient
 
     /**
      * Updates a job in a project.
+     *
+     * The async variant is {@see self::updateJobAsync()} .
      *
      * @param UpdateJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

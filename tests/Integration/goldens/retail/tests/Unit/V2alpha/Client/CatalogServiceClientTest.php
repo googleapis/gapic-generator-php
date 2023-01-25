@@ -327,4 +327,30 @@ class CatalogServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function getDefaultBranchAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $branch = 'branch-1381030494';
+        $note = 'note3387378';
+        $expectedResponse = new GetDefaultBranchResponse();
+        $expectedResponse->setBranch($branch);
+        $expectedResponse->setNote($note);
+        $transport->addResponse($expectedResponse);
+        $request = new GetDefaultBranchRequest();
+        $response = $gapicClient->getDefaultBranchAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/GetDefaultBranch', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

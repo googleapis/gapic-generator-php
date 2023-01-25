@@ -632,4 +632,39 @@ class UserEventServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function collectUserEventAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $contentType = 'contentType831846208';
+        $data = '-86';
+        $expectedResponse = new HttpBody();
+        $expectedResponse->setContentType($contentType);
+        $expectedResponse->setData($data);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $parent = 'parent-995424086';
+        $userEvent = 'userEvent1921940774';
+        $request = (new CollectUserEventRequest())
+            ->setParent($parent)
+            ->setUserEvent($userEvent);
+        $response = $gapicClient->collectUserEventAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.UserEventService/CollectUserEvent', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($parent, $actualValue);
+        $actualValue = $actualRequestObject->getUserEvent();
+        $this->assertProtobufEquals($userEvent, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -54,6 +54,16 @@ use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createCompanyAsync(\Google\Cloud\Talent\V4beta1\CreateCompanyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteCompanyAsync(\Google\Cloud\Talent\V4beta1\DeleteCompanyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getCompanyAsync(\Google\Cloud\Talent\V4beta1\GetCompanyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listCompaniesAsync(\Google\Cloud\Talent\V4beta1\ListCompaniesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateCompanyAsync(\Google\Cloud\Talent\V4beta1\UpdateCompanyRequest $request, array $optionalArgs = [])
  */
 class CompanyServiceBaseClient
 {
@@ -291,8 +301,26 @@ class CompanyServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Creates a new company entity.
+     *
+     * The async variant is {@see self::createCompanyAsync()} .
      *
      * @param CreateCompanyRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -319,6 +347,8 @@ class CompanyServiceBaseClient
      * Deletes specified company.
      * Prerequisite: The company has no jobs associated with it.
      *
+     * The async variant is {@see self::deleteCompanyAsync()} .
+     *
      * @param DeleteCompanyRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -340,6 +370,8 @@ class CompanyServiceBaseClient
 
     /**
      * Retrieves specified company.
+     *
+     * The async variant is {@see self::getCompanyAsync()} .
      *
      * @param GetCompanyRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -365,6 +397,8 @@ class CompanyServiceBaseClient
     /**
      * Lists all companies associated with the project.
      *
+     * The async variant is {@see self::listCompaniesAsync()} .
+     *
      * @param ListCompaniesRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -388,6 +422,8 @@ class CompanyServiceBaseClient
 
     /**
      * Updates specified company.
+     *
+     * The async variant is {@see self::updateCompanyAsync()} .
      *
      * @param UpdateCompanyRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

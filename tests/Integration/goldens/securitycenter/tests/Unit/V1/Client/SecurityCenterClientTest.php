@@ -1826,4 +1826,51 @@ class SecurityCenterClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createFindingAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $parent2 = 'parent21175163357';
+        $resourceName = 'resourceName979421212';
+        $category = 'category50511102';
+        $externalUri = 'externalUri-1385596168';
+        $canonicalName = 'canonicalName1385400054';
+        $expectedResponse = new Finding();
+        $expectedResponse->setName($name);
+        $expectedResponse->setParent($parent2);
+        $expectedResponse->setResourceName($resourceName);
+        $expectedResponse->setCategory($category);
+        $expectedResponse->setExternalUri($externalUri);
+        $expectedResponse->setCanonicalName($canonicalName);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->sourceName('[ORGANIZATION]', '[SOURCE]');
+        $findingId = 'findingId728776081';
+        $finding = new Finding();
+        $request = (new CreateFindingRequest())
+            ->setParent($formattedParent)
+            ->setFindingId($findingId)
+            ->setFinding($finding);
+        $response = $gapicClient->createFindingAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.securitycenter.v1.SecurityCenter/CreateFinding', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getFindingId();
+        $this->assertProtobufEquals($findingId, $actualValue);
+        $actualValue = $actualRequestObject->getFinding();
+        $this->assertProtobufEquals($finding, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -62,6 +62,24 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface addFulfillmentPlacesAsync(\Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createProductAsync(\Google\Cloud\Retail\V2alpha\CreateProductRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteProductAsync(\Google\Cloud\Retail\V2alpha\DeleteProductRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getProductAsync(\Google\Cloud\Retail\V2alpha\GetProductRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface importProductsAsync(\Google\Cloud\Retail\V2alpha\ImportProductsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listProductsAsync(\Google\Cloud\Retail\V2alpha\ListProductsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface removeFulfillmentPlacesAsync(\Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setInventoryAsync(\Google\Cloud\Retail\V2alpha\SetInventoryRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateProductAsync(\Google\Cloud\Retail\V2alpha\UpdateProductRequest $request, array $optionalArgs = [])
  */
 class ProductServiceBaseClient
 {
@@ -282,6 +300,22 @@ class ProductServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Incrementally adds place IDs to
      * [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
@@ -298,6 +332,8 @@ class ProductServiceBaseClient
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::addFulfillmentPlacesAsync()} .
      *
      * @param AddFulfillmentPlacesRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {
@@ -323,6 +359,8 @@ class ProductServiceBaseClient
     /**
      * Creates a [Product][google.cloud.retail.v2alpha.Product].
      *
+     * The async variant is {@see self::createProductAsync()} .
+     *
      * @param CreateProductRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -347,6 +385,8 @@ class ProductServiceBaseClient
     /**
      * Deletes a [Product][google.cloud.retail.v2alpha.Product].
      *
+     * The async variant is {@see self::deleteProductAsync()} .
+     *
      * @param DeleteProductRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -368,6 +408,8 @@ class ProductServiceBaseClient
 
     /**
      * Gets a [Product][google.cloud.retail.v2alpha.Product].
+     *
+     * The async variant is {@see self::getProductAsync()} .
      *
      * @param GetProductRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -399,6 +441,8 @@ class ProductServiceBaseClient
      * Note that it is possible for a subset of the
      * [Product][google.cloud.retail.v2alpha.Product]s to be successfully updated.
      *
+     * The async variant is {@see self::importProductsAsync()} .
+     *
      * @param ImportProductsRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -422,6 +466,8 @@ class ProductServiceBaseClient
 
     /**
      * Gets a list of [Product][google.cloud.retail.v2alpha.Product]s.
+     *
+     * The async variant is {@see self::listProductsAsync()} .
      *
      * @param ListProductsRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -460,6 +506,8 @@ class ProductServiceBaseClient
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::removeFulfillmentPlacesAsync()} .
      *
      * @param RemoveFulfillmentPlacesRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
@@ -526,6 +574,8 @@ class ProductServiceBaseClient
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
      *
+     * The async variant is {@see self::setInventoryAsync()} .
+     *
      * @param SetInventoryRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -549,6 +599,8 @@ class ProductServiceBaseClient
 
     /**
      * Updates a [Product][google.cloud.retail.v2alpha.Product].
+     *
+     * The async variant is {@see self::updateProductAsync()} .
      *
      * @param UpdateProductRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

@@ -64,6 +64,28 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface callFunctionAsync(\Google\Cloud\Functions\V1\CallFunctionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createFunctionAsync(\Google\Cloud\Functions\V1\CreateFunctionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteFunctionAsync(\Google\Cloud\Functions\V1\DeleteFunctionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface generateDownloadUrlAsync(\Google\Cloud\Functions\V1\GenerateDownloadUrlRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface generateUploadUrlAsync(\Google\Cloud\Functions\V1\GenerateUploadUrlRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getFunctionAsync(\Google\Cloud\Functions\V1\GetFunctionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listFunctionsAsync(\Google\Cloud\Functions\V1\ListFunctionsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateFunctionAsync(\Google\Cloud\Functions\V1\UpdateFunctionRequest $request, array $optionalArgs = [])
  */
 class CloudFunctionsServiceBaseClient
 {
@@ -264,11 +286,29 @@ class CloudFunctionsServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Synchronously invokes a deployed Cloud Function. To be used for testing
      * purposes as very limited traffic is allowed. For more information on
      * the actual limits, refer to
      * [Rate Limits](https://cloud.google.com/functions/quotas#rate_limits).
+     *
+     * The async variant is {@see self::callFunctionAsync()} .
      *
      * @param CallFunctionRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -294,6 +334,8 @@ class CloudFunctionsServiceBaseClient
      * the specified project, the long running operation will return
      * `ALREADY_EXISTS` error.
      *
+     * The async variant is {@see self::createFunctionAsync()} .
+     *
      * @param CreateFunctionRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -317,6 +359,8 @@ class CloudFunctionsServiceBaseClient
      * Deletes a function with the given name from the specified project. If the
      * given function is used by some trigger, the trigger will be updated to
      * remove this function.
+     *
+     * The async variant is {@see self::deleteFunctionAsync()} .
      *
      * @param DeleteFunctionRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -343,6 +387,8 @@ class CloudFunctionsServiceBaseClient
      * minutes after generation.
      * For more information about the signed URL usage see:
      * https://cloud.google.com/storage/docs/access-control/signed-urls
+     *
+     * The async variant is {@see self::generateDownloadUrlAsync()} .
      *
      * @param GenerateDownloadUrlRequest $request      A request to house fields associated with the call.
      * @param array                      $optionalArgs {
@@ -390,6 +436,8 @@ class CloudFunctionsServiceBaseClient
      *
      * * `Authorization: Bearer YOUR_TOKEN`
      *
+     * The async variant is {@see self::generateUploadUrlAsync()} .
+     *
      * @param GenerateUploadUrlRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
      *     Optional.
@@ -411,6 +459,8 @@ class CloudFunctionsServiceBaseClient
 
     /**
      * Returns a function with the given name from the requested project.
+     *
+     * The async variant is {@see self::getFunctionAsync()} .
      *
      * @param GetFunctionRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -436,6 +486,8 @@ class CloudFunctionsServiceBaseClient
      * Returns an empty policy if the function exists and does not have a policy
      * set.
      *
+     * The async variant is {@see self::getIamPolicyAsync()} .
+     *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -457,6 +509,8 @@ class CloudFunctionsServiceBaseClient
 
     /**
      * Returns a list of functions that belong to the requested project.
+     *
+     * The async variant is {@see self::listFunctionsAsync()} .
      *
      * @param ListFunctionsRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -480,6 +534,8 @@ class CloudFunctionsServiceBaseClient
     /**
      * Sets the IAM access control policy on the specified function.
      * Replaces any existing policy.
+     *
+     * The async variant is {@see self::setIamPolicyAsync()} .
      *
      * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -506,6 +562,8 @@ class CloudFunctionsServiceBaseClient
      * If the function does not exist, this will return an empty set of
      * permissions, not a NOT_FOUND error.
      *
+     * The async variant is {@see self::testIamPermissionsAsync()} .
+     *
      * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {
      *     Optional.
@@ -527,6 +585,8 @@ class CloudFunctionsServiceBaseClient
 
     /**
      * Updates existing function.
+     *
+     * The async variant is {@see self::updateFunctionAsync()} .
      *
      * @param UpdateFunctionRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {

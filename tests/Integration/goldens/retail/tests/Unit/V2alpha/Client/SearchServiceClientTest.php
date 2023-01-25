@@ -146,4 +146,53 @@ class SearchServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function searchAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $totalSize = 705419236;
+        $correctedQuery = 'correctedQuery107869074';
+        $attributionToken = 'attributionToken-729411015';
+        $nextPageToken = '';
+        $redirectUri = 'redirectUri951230089';
+        $resultsElement = new SearchResult();
+        $results = [
+            $resultsElement,
+        ];
+        $expectedResponse = new SearchResponse();
+        $expectedResponse->setTotalSize($totalSize);
+        $expectedResponse->setCorrectedQuery($correctedQuery);
+        $expectedResponse->setAttributionToken($attributionToken);
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setRedirectUri($redirectUri);
+        $expectedResponse->setResults($results);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $placement = 'placement1792938725';
+        $visitorId = 'visitorId-1832599924';
+        $request = (new SearchRequest())
+            ->setPlacement($placement)
+            ->setVisitorId($visitorId);
+        $response = $gapicClient->searchAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getResults()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.SearchService/Search', $actualFuncCall);
+        $actualValue = $actualRequestObject->getPlacement();
+        $this->assertProtobufEquals($placement, $actualValue);
+        $actualValue = $actualRequestObject->getVisitorId();
+        $this->assertProtobufEquals($visitorId, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

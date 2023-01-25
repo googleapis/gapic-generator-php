@@ -58,6 +58,16 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface collectUserEventAsync(\Google\Cloud\Retail\V2alpha\CollectUserEventRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface importUserEventsAsync(\Google\Cloud\Retail\V2alpha\ImportUserEventsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface purgeUserEventsAsync(\Google\Cloud\Retail\V2alpha\PurgeUserEventsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface rejoinUserEventsAsync(\Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface writeUserEventAsync(\Google\Cloud\Retail\V2alpha\WriteUserEventRequest $request, array $optionalArgs = [])
  */
 class UserEventServiceBaseClient
 {
@@ -276,12 +286,30 @@ class UserEventServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Writes a single user event from the browser. This uses a GET request to
      * due to browser restriction of POST-ing to a 3rd party domain.
      *
      * This method is used only by the Retail API JavaScript pixel and Google Tag
      * Manager. Users should not call this method directly.
+     *
+     * The async variant is {@see self::collectUserEventAsync()} .
      *
      * @param CollectUserEventRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
@@ -313,6 +341,8 @@ class UserEventServiceBaseClient
      * possible for a subset of the items to be successfully inserted.
      * Operation.metadata is of type ImportMetadata.
      *
+     * The async variant is {@see self::importUserEventsAsync()} .
+     *
      * @param ImportUserEventsRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -339,6 +369,8 @@ class UserEventServiceBaseClient
      * Depending on the number of events specified by the filter, this operation
      * could take hours or days to complete. To test a filter, use the list
      * command first.
+     *
+     * The async variant is {@see self::purgeUserEventsAsync()} .
      *
      * @param PurgeUserEventsRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -370,6 +402,8 @@ class UserEventServiceBaseClient
      * events with latest version of product catalog. It can also be used to
      * correct events joined with wrong product catalog.
      *
+     * The async variant is {@see self::rejoinUserEventsAsync()} .
+     *
      * @param RejoinUserEventsRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -393,6 +427,8 @@ class UserEventServiceBaseClient
 
     /**
      * Writes a single user event.
+     *
+     * The async variant is {@see self::writeUserEventAsync()} .
      *
      * @param WriteUserEventRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {

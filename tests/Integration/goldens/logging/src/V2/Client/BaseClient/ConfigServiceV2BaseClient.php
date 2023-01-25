@@ -72,6 +72,52 @@ use Google\Cloud\Logging\V2\UpdateViewRequest;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createBucketAsync(\Google\Cloud\Logging\V2\CreateBucketRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createExclusionAsync(\Google\Cloud\Logging\V2\CreateExclusionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createSinkAsync(\Google\Cloud\Logging\V2\CreateSinkRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createViewAsync(\Google\Cloud\Logging\V2\CreateViewRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteBucketAsync(\Google\Cloud\Logging\V2\DeleteBucketRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteExclusionAsync(\Google\Cloud\Logging\V2\DeleteExclusionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteSinkAsync(\Google\Cloud\Logging\V2\DeleteSinkRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteViewAsync(\Google\Cloud\Logging\V2\DeleteViewRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getBucketAsync(\Google\Cloud\Logging\V2\GetBucketRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getCmekSettingsAsync(\Google\Cloud\Logging\V2\GetCmekSettingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getExclusionAsync(\Google\Cloud\Logging\V2\GetExclusionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getSinkAsync(\Google\Cloud\Logging\V2\GetSinkRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getViewAsync(\Google\Cloud\Logging\V2\GetViewRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listBucketsAsync(\Google\Cloud\Logging\V2\ListBucketsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listExclusionsAsync(\Google\Cloud\Logging\V2\ListExclusionsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listSinksAsync(\Google\Cloud\Logging\V2\ListSinksRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listViewsAsync(\Google\Cloud\Logging\V2\ListViewsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface undeleteBucketAsync(\Google\Cloud\Logging\V2\UndeleteBucketRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateBucketAsync(\Google\Cloud\Logging\V2\UpdateBucketRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateCmekSettingsAsync(\Google\Cloud\Logging\V2\UpdateCmekSettingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateExclusionAsync(\Google\Cloud\Logging\V2\UpdateExclusionRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateSinkAsync(\Google\Cloud\Logging\V2\UpdateSinkRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateViewAsync(\Google\Cloud\Logging\V2\UpdateViewRequest $request, array $optionalArgs = [])
  */
 class ConfigServiceV2BaseClient
 {
@@ -811,9 +857,27 @@ class ConfigServiceV2BaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Creates a bucket that can be used to store log entries. Once a bucket has
      * been created, the region cannot be changed.
+     *
+     * The async variant is {@see self::createBucketAsync()} .
      *
      * @param CreateBucketRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -838,6 +902,8 @@ class ConfigServiceV2BaseClient
      * Creates a new exclusion in a specified parent resource.
      * Only log entries belonging to that resource can be excluded.
      * You can have up to 10 exclusions in a resource.
+     *
+     * The async variant is {@see self::createExclusionAsync()} .
      *
      * @param CreateExclusionRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -864,6 +930,8 @@ class ConfigServiceV2BaseClient
      * `writer_identity` is not permitted to write to the destination. A sink can
      * export log entries only from the resource owning the sink.
      *
+     * The async variant is {@see self::createSinkAsync()} .
+     *
      * @param CreateSinkRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -886,6 +954,8 @@ class ConfigServiceV2BaseClient
     /**
      * Creates a view over logs in a bucket. A bucket may contain a maximum of
      * 50 views.
+     *
+     * The async variant is {@see self::createViewAsync()} .
      *
      * @param CreateViewRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -912,6 +982,8 @@ class ConfigServiceV2BaseClient
      * bucket will be purged and all logs in the bucket will be permanently
      * deleted.
      *
+     * The async variant is {@see self::deleteBucketAsync()} .
+     *
      * @param DeleteBucketRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -931,6 +1003,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Deletes an exclusion.
+     *
+     * The async variant is {@see self::deleteExclusionAsync()} .
      *
      * @param DeleteExclusionRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -953,6 +1027,8 @@ class ConfigServiceV2BaseClient
      * Deletes a sink. If the sink has a unique `writer_identity`, then that
      * service account is also deleted.
      *
+     * The async variant is {@see self::deleteSinkAsync()} .
+     *
      * @param DeleteSinkRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -973,6 +1049,8 @@ class ConfigServiceV2BaseClient
     /**
      * Deletes a view from a bucket.
      *
+     * The async variant is {@see self::deleteViewAsync()} .
+     *
      * @param DeleteViewRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -992,6 +1070,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Gets a bucket.
+     *
+     * The async variant is {@see self::getBucketAsync()} .
      *
      * @param GetBucketRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -1023,6 +1103,8 @@ class ConfigServiceV2BaseClient
      * Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
      * for more information.
      *
+     * The async variant is {@see self::getCmekSettingsAsync()} .
+     *
      * @param GetCmekSettingsRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -1044,6 +1126,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Gets the description of an exclusion.
+     *
+     * The async variant is {@see self::getExclusionAsync()} .
      *
      * @param GetExclusionRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -1067,6 +1151,8 @@ class ConfigServiceV2BaseClient
     /**
      * Gets a sink.
      *
+     * The async variant is {@see self::getSinkAsync()} .
+     *
      * @param GetSinkRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
      *     Optional.
@@ -1088,6 +1174,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Gets a view.
+     *
+     * The async variant is {@see self::getViewAsync()} .
      *
      * @param GetViewRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
@@ -1111,6 +1199,8 @@ class ConfigServiceV2BaseClient
     /**
      * Lists buckets.
      *
+     * The async variant is {@see self::listBucketsAsync()} .
+     *
      * @param ListBucketsRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -1132,6 +1222,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Lists all the exclusions in a parent resource.
+     *
+     * The async variant is {@see self::listExclusionsAsync()} .
      *
      * @param ListExclusionsRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -1155,6 +1247,8 @@ class ConfigServiceV2BaseClient
     /**
      * Lists sinks.
      *
+     * The async variant is {@see self::listSinksAsync()} .
+     *
      * @param ListSinksRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -1176,6 +1270,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Lists views on a bucket.
+     *
+     * The async variant is {@see self::listViewsAsync()} .
      *
      * @param ListViewsRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -1199,6 +1295,8 @@ class ConfigServiceV2BaseClient
     /**
      * Undeletes a bucket. A bucket that has been deleted may be undeleted within
      * the grace period of 7 days.
+     *
+     * The async variant is {@see self::undeleteBucketAsync()} .
      *
      * @param UndeleteBucketRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -1228,6 +1326,8 @@ class ConfigServiceV2BaseClient
      * will be returned.
      *
      * A buckets region may not be modified after it is created.
+     *
+     * The async variant is {@see self::updateBucketAsync()} .
      *
      * @param UpdateBucketRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -1265,6 +1365,8 @@ class ConfigServiceV2BaseClient
      * Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
      * for more information.
      *
+     * The async variant is {@see self::updateCmekSettingsAsync()} .
+     *
      * @param UpdateCmekSettingsRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {
      *     Optional.
@@ -1286,6 +1388,8 @@ class ConfigServiceV2BaseClient
 
     /**
      * Changes one or more properties of an existing exclusion.
+     *
+     * The async variant is {@see self::updateExclusionAsync()} .
      *
      * @param UpdateExclusionRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -1313,6 +1417,8 @@ class ConfigServiceV2BaseClient
      * The updated sink might also have a new `writer_identity`; see the
      * `unique_writer_identity` field.
      *
+     * The async variant is {@see self::updateSinkAsync()} .
+     *
      * @param UpdateSinkRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -1335,6 +1441,8 @@ class ConfigServiceV2BaseClient
     /**
      * Updates a view. This method replaces the following fields in the existing
      * view with values from the new view: `filter`.
+     *
+     * The async variant is {@see self::updateViewAsync()} .
      *
      * @param UpdateViewRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {

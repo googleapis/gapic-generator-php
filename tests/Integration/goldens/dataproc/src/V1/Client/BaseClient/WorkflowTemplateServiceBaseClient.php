@@ -57,6 +57,20 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\GetWorkflowTemplateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface instantiateInlineWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface instantiateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listWorkflowTemplatesAsync(\Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
  */
 class WorkflowTemplateServiceBaseClient
 {
@@ -355,8 +369,26 @@ class WorkflowTemplateServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Creates new workflow template.
+     *
+     * The async variant is {@see self::createWorkflowTemplateAsync()} .
      *
      * @param CreateWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
@@ -380,6 +412,8 @@ class WorkflowTemplateServiceBaseClient
     /**
      * Deletes a workflow template. It does not cancel in-progress workflows.
      *
+     * The async variant is {@see self::deleteWorkflowTemplateAsync()} .
+     *
      * @param DeleteWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
      *     Optional.
@@ -402,6 +436,8 @@ class WorkflowTemplateServiceBaseClient
      *
      * Can retrieve previously instantiated template by specifying optional
      * version parameter.
+     *
+     * The async variant is {@see self::getWorkflowTemplateAsync()} .
      *
      * @param GetWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                      $optionalArgs {
@@ -448,6 +484,8 @@ class WorkflowTemplateServiceBaseClient
      * [Operation.response][google.longrunning.Operation.response] will be
      * [Empty][google.protobuf.Empty].
      *
+     * The async variant is {@see self::instantiateInlineWorkflowTemplateAsync()} .
+     *
      * @param InstantiateInlineWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                                    $optionalArgs {
      *     Optional.
@@ -489,6 +527,8 @@ class WorkflowTemplateServiceBaseClient
      * [Operation.response][google.longrunning.Operation.response] will be
      * [Empty][google.protobuf.Empty].
      *
+     * The async variant is {@see self::instantiateWorkflowTemplateAsync()} .
+     *
      * @param InstantiateWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                              $optionalArgs {
      *     Optional.
@@ -510,6 +550,8 @@ class WorkflowTemplateServiceBaseClient
 
     /**
      * Lists workflows that match the specified filter in the request.
+     *
+     * The async variant is {@see self::listWorkflowTemplatesAsync()} .
      *
      * @param ListWorkflowTemplatesRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
@@ -533,6 +575,8 @@ class WorkflowTemplateServiceBaseClient
     /**
      * Updates (replaces) workflow template. The updated template
      * must contain version that matches the current server version.
+     *
+     * The async variant is {@see self::updateWorkflowTemplateAsync()} .
      *
      * @param UpdateWorkflowTemplateRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {

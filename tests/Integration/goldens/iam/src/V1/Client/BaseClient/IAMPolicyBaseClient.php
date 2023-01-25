@@ -66,6 +66,12 @@ use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
 class IAMPolicyBaseClient
 {
@@ -165,10 +171,28 @@ class IAMPolicyBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Gets the access control policy for a resource.
      * Returns an empty policy if the resource exists and does not have a policy
      * set.
+     *
+     * The async variant is {@see self::getIamPolicyAsync()} .
      *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -192,6 +216,8 @@ class IAMPolicyBaseClient
     /**
      * Sets the access control policy on the specified resource. Replaces any
      * existing policy.
+     *
+     * The async variant is {@see self::setIamPolicyAsync()} .
      *
      * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -220,6 +246,8 @@ class IAMPolicyBaseClient
      * Note: This operation is designed to be used for building permission-aware
      * UIs and command-line tools, not for authorization checking. This operation
      * may "fail open" without warning.
+     *
+     * The async variant is {@see self::testIamPermissionsAsync()} .
      *
      * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {

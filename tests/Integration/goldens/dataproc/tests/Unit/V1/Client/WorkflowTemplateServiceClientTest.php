@@ -699,4 +699,47 @@ class WorkflowTemplateServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createWorkflowTemplateAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $id = 'id3355';
+        $name = 'name3373707';
+        $version = 351608024;
+        $expectedResponse = new WorkflowTemplate();
+        $expectedResponse->setId($id);
+        $expectedResponse->setName($name);
+        $expectedResponse->setVersion($version);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
+        $template = new WorkflowTemplate();
+        $templateId = 'templateId1304010549';
+        $template->setId($templateId);
+        $templatePlacement = new WorkflowTemplatePlacement();
+        $template->setPlacement($templatePlacement);
+        $templateJobs = [];
+        $template->setJobs($templateJobs);
+        $request = (new CreateWorkflowTemplateRequest())
+            ->setParent($formattedParent)
+            ->setTemplate($template);
+        $response = $gapicClient->createWorkflowTemplateAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.dataproc.v1.WorkflowTemplateService/CreateWorkflowTemplate', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getTemplate();
+        $this->assertProtobufEquals($template, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

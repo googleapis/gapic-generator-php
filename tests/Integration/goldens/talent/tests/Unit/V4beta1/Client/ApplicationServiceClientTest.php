@@ -466,4 +466,57 @@ class ApplicationServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createApplicationAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $externalId = 'externalId-1153075697';
+        $profile = 'profile-309425751';
+        $job = 'job105405';
+        $company = 'company950484093';
+        $outcomeNotes = 'outcomeNotes-355961964';
+        $jobTitleSnippet = 'jobTitleSnippet-1100512972';
+        $expectedResponse = new Application();
+        $expectedResponse->setName($name);
+        $expectedResponse->setExternalId($externalId);
+        $expectedResponse->setProfile($profile);
+        $expectedResponse->setJob($job);
+        $expectedResponse->setCompany($company);
+        $expectedResponse->setOutcomeNotes($outcomeNotes);
+        $expectedResponse->setJobTitleSnippet($jobTitleSnippet);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->profileName('[PROJECT]', '[TENANT]', '[PROFILE]');
+        $application = new Application();
+        $applicationExternalId = 'applicationExternalId-266656842';
+        $application->setExternalId($applicationExternalId);
+        $applicationJob = $gapicClient->jobName('[PROJECT]', '[TENANT]', '[JOB]');
+        $application->setJob($applicationJob);
+        $applicationStage = ApplicationStage::APPLICATION_STAGE_UNSPECIFIED;
+        $application->setStage($applicationStage);
+        $applicationCreateTime = new Timestamp();
+        $application->setCreateTime($applicationCreateTime);
+        $request = (new CreateApplicationRequest())
+            ->setParent($formattedParent)
+            ->setApplication($application);
+        $response = $gapicClient->createApplicationAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.talent.v4beta1.ApplicationService/CreateApplication', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getApplication();
+        $this->assertProtobufEquals($application, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -49,6 +49,8 @@ use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface completeQueryAsync(\Google\Cloud\Talent\V4beta1\CompleteQueryRequest $request, array $optionalArgs = [])
  */
 class CompletionBaseClient
 {
@@ -286,9 +288,27 @@ class CompletionBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Completes the specified prefix with keyword suggestions.
      * Intended for use by a job search auto-complete search box.
+     *
+     * The async variant is {@see self::completeQueryAsync()} .
      *
      * @param CompleteQueryRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

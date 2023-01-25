@@ -51,6 +51,16 @@ use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteLogAsync(\Google\Cloud\Logging\V2\DeleteLogRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listLogEntriesAsync(\Google\Cloud\Logging\V2\ListLogEntriesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listLogsAsync(\Google\Cloud\Logging\V2\ListLogsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listMonitoredResourceDescriptorsAsync(\Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface writeLogEntriesAsync(\Google\Cloud\Logging\V2\WriteLogEntriesRequest $request, array $optionalArgs = [])
  */
 class LoggingServiceV2BaseClient
 {
@@ -339,11 +349,29 @@ class LoggingServiceV2BaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Deletes all the log entries in a log. The log reappears if it receives new
      * entries. Log entries written shortly before the delete operation might not
      * be deleted. Entries received after the delete operation with a timestamp
      * before the operation will be deleted.
+     *
+     * The async variant is {@see self::deleteLogAsync()} .
      *
      * @param DeleteLogRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -368,6 +396,8 @@ class LoggingServiceV2BaseClient
      * entries, see [Exporting
      * Logs](https://cloud.google.com/logging/docs/export).
      *
+     * The async variant is {@see self::listLogEntriesAsync()} .
+     *
      * @param ListLogEntriesRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -391,6 +421,8 @@ class LoggingServiceV2BaseClient
      * Lists the logs in projects, organizations, folders, or billing accounts.
      * Only logs that have entries are listed.
      *
+     * The async variant is {@see self::listLogsAsync()} .
+     *
      * @param ListLogsRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
      *     Optional.
@@ -412,6 +444,8 @@ class LoggingServiceV2BaseClient
 
     /**
      * Lists the descriptors for monitored resource types used by Logging.
+     *
+     * The async variant is {@see self::listMonitoredResourceDescriptorsAsync()} .
      *
      * @param ListMonitoredResourceDescriptorsRequest $request      A request to house fields associated with the call.
      * @param array                                   $optionalArgs {
@@ -460,6 +494,8 @@ class LoggingServiceV2BaseClient
      * A single request may contain log entries for a maximum of 1000
      * different resources (projects, organizations, billing accounts or
      * folders)
+     *
+     * The async variant is {@see self::writeLogEntriesAsync()} .
      *
      * @param WriteLogEntriesRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {

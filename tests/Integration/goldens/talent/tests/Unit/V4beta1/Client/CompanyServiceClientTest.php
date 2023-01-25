@@ -466,4 +466,59 @@ class CompanyServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createCompanyAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $displayName = 'displayName1615086568';
+        $externalId = 'externalId-1153075697';
+        $headquartersAddress = 'headquartersAddress-1879520036';
+        $hiringAgency = false;
+        $eeoText = 'eeoText-1652097123';
+        $websiteUri = 'websiteUri-2118185016';
+        $careerSiteUri = 'careerSiteUri1223331861';
+        $imageUri = 'imageUri-877823864';
+        $suspended = false;
+        $expectedResponse = new Company();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDisplayName($displayName);
+        $expectedResponse->setExternalId($externalId);
+        $expectedResponse->setHeadquartersAddress($headquartersAddress);
+        $expectedResponse->setHiringAgency($hiringAgency);
+        $expectedResponse->setEeoText($eeoText);
+        $expectedResponse->setWebsiteUri($websiteUri);
+        $expectedResponse->setCareerSiteUri($careerSiteUri);
+        $expectedResponse->setImageUri($imageUri);
+        $expectedResponse->setSuspended($suspended);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $company = new Company();
+        $companyDisplayName = 'companyDisplayName-686915152';
+        $company->setDisplayName($companyDisplayName);
+        $companyExternalId = 'companyExternalId855180963';
+        $company->setExternalId($companyExternalId);
+        $request = (new CreateCompanyRequest())
+            ->setParent($formattedParent)
+            ->setCompany($company);
+        $response = $gapicClient->createCompanyAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.talent.v4beta1.CompanyService/CreateCompany', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getCompany();
+        $this->assertProtobufEquals($company, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

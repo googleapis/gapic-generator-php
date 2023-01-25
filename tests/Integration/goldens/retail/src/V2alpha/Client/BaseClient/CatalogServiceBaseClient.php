@@ -54,6 +54,14 @@ use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listCatalogsAsync(\Google\Cloud\Retail\V2alpha\ListCatalogsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateCatalogAsync(\Google\Cloud\Retail\V2alpha\UpdateCatalogRequest $request, array $optionalArgs = [])
  */
 class CatalogServiceBaseClient
 {
@@ -254,6 +262,22 @@ class CatalogServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Get which branch is currently default branch set by
      * [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
@@ -262,6 +286,8 @@ class CatalogServiceBaseClient
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::getDefaultBranchAsync()} .
      *
      * @param GetDefaultBranchRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
@@ -287,6 +313,8 @@ class CatalogServiceBaseClient
     /**
      * Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s associated
      * with the project.
+     *
+     * The async variant is {@see self::listCatalogsAsync()} .
      *
      * @param ListCatalogsRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -348,6 +376,8 @@ class CatalogServiceBaseClient
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
      *
+     * The async variant is {@see self::setDefaultBranchAsync()} .
+     *
      * @param SetDefaultBranchRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -369,6 +399,8 @@ class CatalogServiceBaseClient
 
     /**
      * Updates the [Catalog][google.cloud.retail.v2alpha.Catalog]s.
+     *
+     * The async variant is {@see self::updateCatalogAsync()} .
      *
      * @param UpdateCatalogRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

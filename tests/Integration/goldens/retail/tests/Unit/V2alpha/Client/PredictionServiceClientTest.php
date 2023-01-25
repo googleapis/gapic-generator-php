@@ -140,4 +140,43 @@ class PredictionServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function predictAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $attributionToken = 'attributionToken-729411015';
+        $validateOnly2 = true;
+        $expectedResponse = new PredictResponse();
+        $expectedResponse->setAttributionToken($attributionToken);
+        $expectedResponse->setValidateOnly($validateOnly2);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $placement = 'placement1792938725';
+        $userEvent = new UserEvent();
+        $userEventEventType = 'userEventEventType341658661';
+        $userEvent->setEventType($userEventEventType);
+        $userEventVisitorId = 'userEventVisitorId-2104193702';
+        $userEvent->setVisitorId($userEventVisitorId);
+        $request = (new PredictRequest())
+            ->setPlacement($placement)
+            ->setUserEvent($userEvent);
+        $response = $gapicClient->predictAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.PredictionService/Predict', $actualFuncCall);
+        $actualValue = $actualRequestObject->getPlacement();
+        $this->assertProtobufEquals($placement, $actualValue);
+        $actualValue = $actualRequestObject->getUserEvent();
+        $this->assertProtobufEquals($userEvent, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

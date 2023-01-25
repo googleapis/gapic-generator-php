@@ -1948,4 +1948,39 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function asymmetricDecryptAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $plaintext = '-9';
+        $verifiedCiphertextCrc32c = true;
+        $expectedResponse = new AsymmetricDecryptResponse();
+        $expectedResponse->setPlaintext($plaintext);
+        $expectedResponse->setVerifiedCiphertextCrc32c($verifiedCiphertextCrc32c);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $gapicClient->cryptoKeyVersionName('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]');
+        $ciphertext = '-72';
+        $request = (new AsymmetricDecryptRequest())
+            ->setName($formattedName)
+            ->setCiphertext($ciphertext);
+        $response = $gapicClient->asymmetricDecryptAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.kms.v1.KeyManagementService/AsymmetricDecrypt', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getCiphertext();
+        $this->assertProtobufEquals($ciphertext, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

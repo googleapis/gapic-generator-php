@@ -462,4 +462,53 @@ class AutoscalingPolicyServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createAutoscalingPolicyAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $id = 'id3355';
+        $name = 'name3373707';
+        $expectedResponse = new AutoscalingPolicy();
+        $expectedResponse->setId($id);
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->regionName('[PROJECT]', '[REGION]');
+        $policy = new AutoscalingPolicy();
+        $policyWorkerConfig = new InstanceGroupAutoscalingPolicyConfig();
+        $workerConfigMaxInstances = 339756550;
+        $policyWorkerConfig->setMaxInstances($workerConfigMaxInstances);
+        $policy->setWorkerConfig($policyWorkerConfig);
+        $policyBasicAlgorithm = new BasicAutoscalingAlgorithm();
+        $basicAlgorithmYarnConfig = new BasicYarnAutoscalingConfig();
+        $yarnConfigGracefulDecommissionTimeout = new Duration();
+        $basicAlgorithmYarnConfig->setGracefulDecommissionTimeout($yarnConfigGracefulDecommissionTimeout);
+        $yarnConfigScaleUpFactor = -4.1551534E7;
+        $basicAlgorithmYarnConfig->setScaleUpFactor($yarnConfigScaleUpFactor);
+        $yarnConfigScaleDownFactor = -1.72221005E8;
+        $basicAlgorithmYarnConfig->setScaleDownFactor($yarnConfigScaleDownFactor);
+        $policyBasicAlgorithm->setYarnConfig($basicAlgorithmYarnConfig);
+        $policy->setBasicAlgorithm($policyBasicAlgorithm);
+        $request = (new CreateAutoscalingPolicyRequest())
+            ->setParent($formattedParent)
+            ->setPolicy($policy);
+        $response = $gapicClient->createAutoscalingPolicyAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.dataproc.v1.AutoscalingPolicyService/CreateAutoscalingPolicy', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getPolicy();
+        $this->assertProtobufEquals($policy, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

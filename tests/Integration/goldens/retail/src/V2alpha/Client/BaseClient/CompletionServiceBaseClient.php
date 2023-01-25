@@ -57,6 +57,10 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface completeQueryAsync(\Google\Cloud\Retail\V2alpha\CompleteQueryRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface importCompletionDataAsync(\Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest $request, array $optionalArgs = [])
  */
 class CompletionServiceBaseClient
 {
@@ -249,12 +253,30 @@ class CompletionServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Completes the specified prefix with keyword suggestions.
      *
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::completeQueryAsync()} .
      *
      * @param CompleteQueryRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -285,6 +307,8 @@ class CompletionServiceBaseClient
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::importCompletionDataAsync()} .
      *
      * @param ImportCompletionDataRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {

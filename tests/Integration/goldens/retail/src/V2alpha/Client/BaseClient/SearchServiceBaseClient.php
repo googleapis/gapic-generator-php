@@ -53,6 +53,8 @@ use Google\Cloud\Retail\V2alpha\SearchRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface searchAsync(\Google\Cloud\Retail\V2alpha\SearchRequest $request, array $optionalArgs = [])
  */
 class SearchServiceBaseClient
 {
@@ -211,12 +213,30 @@ class SearchServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Performs a search.
      *
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::searchAsync()} .
      *
      * @param SearchRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {

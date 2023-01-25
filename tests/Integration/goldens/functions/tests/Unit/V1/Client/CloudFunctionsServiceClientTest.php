@@ -1039,4 +1039,41 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         $this->assertTrue($operationsTransport->isExhausted());
     }
+
+    /** @test */
+    public function callFunctionAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $executionId = 'executionId-1217171550';
+        $result = 'result-934426595';
+        $error = 'error96784904';
+        $expectedResponse = new CallFunctionResponse();
+        $expectedResponse->setExecutionId($executionId);
+        $expectedResponse->setResult($result);
+        $expectedResponse->setError($error);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
+        $data = 'data3076010';
+        $request = (new CallFunctionRequest())
+            ->setName($formattedName)
+            ->setData($data);
+        $response = $gapicClient->callFunctionAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.functions.v1.CloudFunctionsService/CallFunction', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $actualValue = $actualRequestObject->getData();
+        $this->assertProtobufEquals($data, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -43,6 +43,8 @@ use Google\LongRunning\Operation;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface annotateVideoAsync(\Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest $request, array $optionalArgs = [])
  */
 class VideoIntelligenceServiceBaseClient
 {
@@ -176,11 +178,29 @@ class VideoIntelligenceServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Performs asynchronous video annotation. Progress and results can be
      * retrieved through the `google.longrunning.Operations` interface.
      * `Operation.metadata` contains `AnnotateVideoProgress` (progress).
      * `Operation.response` contains `AnnotateVideoResponse` (results).
+     *
+     * The async variant is {@see self::annotateVideoAsync()} .
      *
      * @param AnnotateVideoRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

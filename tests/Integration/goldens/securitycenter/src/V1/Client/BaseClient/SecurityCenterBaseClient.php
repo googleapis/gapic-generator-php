@@ -77,6 +77,52 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createFindingAsync(\Google\Cloud\SecurityCenter\V1\CreateFindingRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface createSourceAsync(\Google\Cloud\SecurityCenter\V1\CreateSourceRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface deleteNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\DeleteNotificationConfigRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getOrganizationSettingsAsync(\Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface getSourceAsync(\Google\Cloud\SecurityCenter\V1\GetSourceRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface groupAssetsAsync(\Google\Cloud\SecurityCenter\V1\GroupAssetsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface groupFindingsAsync(\Google\Cloud\SecurityCenter\V1\GroupFindingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listAssetsAsync(\Google\Cloud\SecurityCenter\V1\ListAssetsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listFindingsAsync(\Google\Cloud\SecurityCenter\V1\ListFindingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listNotificationConfigsAsync(\Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface listSourcesAsync(\Google\Cloud\SecurityCenter\V1\ListSourcesRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface runAssetDiscoveryAsync(\Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setFindingStateAsync(\Google\Cloud\SecurityCenter\V1\SetFindingStateRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateFindingAsync(\Google\Cloud\SecurityCenter\V1\UpdateFindingRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateOrganizationSettingsAsync(\Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateSecurityMarksAsync(\Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest $request, array $optionalArgs = [])
+ *
+ * @method GuzzleHttp\Promise\PromiseInterface updateSourceAsync(\Google\Cloud\SecurityCenter\V1\UpdateSourceRequest $request, array $optionalArgs = [])
  */
 class SecurityCenterBaseClient
 {
@@ -623,9 +669,27 @@ class SecurityCenterBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            throw new ValidationException("Method name $method does not exist");
+        }
+
+        if (count($args) < 1) {
+            throw new ValidationException("Async methods require a request message");
+        }
+
+        $rpcName = substr($method, 0, -5);
+        $request = $args[0];
+        $optionalArgs = $args[1] ?? [];
+        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+    }
+
     /**
      * Creates a finding. The corresponding source must exist for finding creation
      * to succeed.
+     *
+     * The async variant is {@see self::createFindingAsync()} .
      *
      * @param CreateFindingRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -649,6 +713,8 @@ class SecurityCenterBaseClient
     /**
      * Creates a notification config.
      *
+     * The async variant is {@see self::createNotificationConfigAsync()} .
+     *
      * @param CreateNotificationConfigRequest $request      A request to house fields associated with the call.
      * @param array                           $optionalArgs {
      *     Optional.
@@ -670,6 +736,8 @@ class SecurityCenterBaseClient
 
     /**
      * Creates a source.
+     *
+     * The async variant is {@see self::createSourceAsync()} .
      *
      * @param CreateSourceRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -693,6 +761,8 @@ class SecurityCenterBaseClient
     /**
      * Deletes a notification config.
      *
+     * The async variant is {@see self::deleteNotificationConfigAsync()} .
+     *
      * @param DeleteNotificationConfigRequest $request      A request to house fields associated with the call.
      * @param array                           $optionalArgs {
      *     Optional.
@@ -712,6 +782,8 @@ class SecurityCenterBaseClient
 
     /**
      * Gets the access control policy on the specified Source.
+     *
+     * The async variant is {@see self::getIamPolicyAsync()} .
      *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -735,6 +807,8 @@ class SecurityCenterBaseClient
     /**
      * Gets a notification config.
      *
+     * The async variant is {@see self::getNotificationConfigAsync()} .
+     *
      * @param GetNotificationConfigRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
      *     Optional.
@@ -756,6 +830,8 @@ class SecurityCenterBaseClient
 
     /**
      * Gets the settings for an organization.
+     *
+     * The async variant is {@see self::getOrganizationSettingsAsync()} .
      *
      * @param GetOrganizationSettingsRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
@@ -779,6 +855,8 @@ class SecurityCenterBaseClient
     /**
      * Gets a source.
      *
+     * The async variant is {@see self::getSourceAsync()} .
+     *
      * @param GetSourceRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -801,6 +879,8 @@ class SecurityCenterBaseClient
     /**
      * Filters an organization's assets and  groups them by their specified
      * properties.
+     *
+     * The async variant is {@see self::groupAssetsAsync()} .
      *
      * @param GroupAssetsRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -830,6 +910,8 @@ class SecurityCenterBaseClient
      * /v1/folders/{folder_id}/sources/-/findings,
      * /v1/projects/{project_id}/sources/-/findings
      *
+     * The async variant is {@see self::groupFindingsAsync()} .
+     *
      * @param GroupFindingsRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -851,6 +933,8 @@ class SecurityCenterBaseClient
 
     /**
      * Lists an organization's assets.
+     *
+     * The async variant is {@see self::listAssetsAsync()} .
      *
      * @param ListAssetsRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -877,6 +961,8 @@ class SecurityCenterBaseClient
      * To list across all sources provide a `-` as the source id.
      * Example: /v1/organizations/{organization_id}/sources/-/findings
      *
+     * The async variant is {@see self::listFindingsAsync()} .
+     *
      * @param ListFindingsRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -899,6 +985,8 @@ class SecurityCenterBaseClient
     /**
      * Lists notification configs.
      *
+     * The async variant is {@see self::listNotificationConfigsAsync()} .
+     *
      * @param ListNotificationConfigsRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
      *     Optional.
@@ -920,6 +1008,8 @@ class SecurityCenterBaseClient
 
     /**
      * Lists all sources belonging to an organization.
+     *
+     * The async variant is {@see self::listSourcesAsync()} .
      *
      * @param ListSourcesRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -948,6 +1038,8 @@ class SecurityCenterBaseClient
      * it is called too frequently the caller will receive a TOO_MANY_REQUESTS
      * error.
      *
+     * The async variant is {@see self::runAssetDiscoveryAsync()} .
+     *
      * @param RunAssetDiscoveryRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
      *     Optional.
@@ -969,6 +1061,8 @@ class SecurityCenterBaseClient
 
     /**
      * Updates the state of a finding.
+     *
+     * The async variant is {@see self::setFindingStateAsync()} .
      *
      * @param SetFindingStateRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -992,6 +1086,8 @@ class SecurityCenterBaseClient
     /**
      * Sets the access control policy on the specified Source.
      *
+     * The async variant is {@see self::setIamPolicyAsync()} .
+     *
      * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -1013,6 +1109,8 @@ class SecurityCenterBaseClient
 
     /**
      * Returns the permissions that a caller has on the specified source.
+     *
+     * The async variant is {@see self::testIamPermissionsAsync()} .
      *
      * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {
@@ -1036,6 +1134,8 @@ class SecurityCenterBaseClient
     /**
      * Creates or updates a finding. The corresponding source must exist for a
      * finding creation to succeed.
+     *
+     * The async variant is {@see self::updateFindingAsync()} .
      *
      * @param UpdateFindingRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -1061,6 +1161,8 @@ class SecurityCenterBaseClient
      * Updates a notification config. The following update
      * fields are allowed: description, pubsub_topic, streaming_config.filter
      *
+     * The async variant is {@see self::updateNotificationConfigAsync()} .
+     *
      * @param UpdateNotificationConfigRequest $request      A request to house fields associated with the call.
      * @param array                           $optionalArgs {
      *     Optional.
@@ -1082,6 +1184,8 @@ class SecurityCenterBaseClient
 
     /**
      * Updates an organization's settings.
+     *
+     * The async variant is {@see self::updateOrganizationSettingsAsync()} .
      *
      * @param UpdateOrganizationSettingsRequest $request      A request to house fields associated with the call.
      * @param array                             $optionalArgs {
@@ -1105,6 +1209,8 @@ class SecurityCenterBaseClient
     /**
      * Updates security marks.
      *
+     * The async variant is {@see self::updateSecurityMarksAsync()} .
+     *
      * @param UpdateSecurityMarksRequest $request      A request to house fields associated with the call.
      * @param array                      $optionalArgs {
      *     Optional.
@@ -1126,6 +1232,8 @@ class SecurityCenterBaseClient
 
     /**
      * Updates a source.
+     *
+     * The async variant is {@see self::updateSourceAsync()} .
      *
      * @param UpdateSourceRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {

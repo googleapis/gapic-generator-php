@@ -142,4 +142,45 @@ class EventServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createClientEventAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $requestId = 'requestId37109963';
+        $eventId = 'eventId278118624';
+        $eventNotes = 'eventNotes445073628';
+        $expectedResponse = new ClientEvent();
+        $expectedResponse->setRequestId($requestId);
+        $expectedResponse->setEventId($eventId);
+        $expectedResponse->setEventNotes($eventNotes);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $clientEvent = new ClientEvent();
+        $clientEventEventId = 'clientEventEventId319230150';
+        $clientEvent->setEventId($clientEventEventId);
+        $clientEventCreateTime = new Timestamp();
+        $clientEvent->setCreateTime($clientEventCreateTime);
+        $request = (new CreateClientEventRequest())
+            ->setParent($formattedParent)
+            ->setClientEvent($clientEvent);
+        $response = $gapicClient->createClientEventAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.talent.v4beta1.EventService/CreateClientEvent', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getClientEvent();
+        $this->assertProtobufEquals($clientEvent, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

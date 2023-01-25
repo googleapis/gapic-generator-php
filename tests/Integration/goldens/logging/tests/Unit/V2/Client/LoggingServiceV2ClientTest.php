@@ -501,4 +501,30 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function deleteLogAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedLogName = $gapicClient->logName('[PROJECT]', '[LOG]');
+        $request = (new DeleteLogRequest())
+            ->setLogName($formattedLogName);
+        $gapicClient->deleteLogAsync($request)->wait();
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.logging.v2.LoggingServiceV2/DeleteLog', $actualFuncCall);
+        $actualValue = $actualRequestObject->getLogName();
+        $this->assertProtobufEquals($formattedLogName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

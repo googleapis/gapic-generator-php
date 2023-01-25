@@ -436,4 +436,47 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createLogMetricAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $description = 'description-1724546052';
+        $filter = 'filter-1274492040';
+        $valueExtractor = 'valueExtractor2047672534';
+        $expectedResponse = new LogMetric();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDescription($description);
+        $expectedResponse->setFilter($filter);
+        $expectedResponse->setValueExtractor($valueExtractor);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $metric = new LogMetric();
+        $metricName = 'metricName-610759589';
+        $metric->setName($metricName);
+        $metricFilter = 'metricFilter1248897352';
+        $metric->setFilter($metricFilter);
+        $request = (new CreateLogMetricRequest())
+            ->setParent($formattedParent)
+            ->setMetric($metric);
+        $response = $gapicClient->createLogMetricAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.logging.v2.MetricsServiceV2/CreateLogMetric', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getMetric();
+        $this->assertProtobufEquals($metric, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }
