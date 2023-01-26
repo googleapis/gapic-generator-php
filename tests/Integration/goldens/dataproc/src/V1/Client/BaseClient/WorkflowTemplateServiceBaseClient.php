@@ -59,17 +59,11 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface createWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\GetWorkflowTemplateRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface instantiateInlineWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface instantiateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listWorkflowTemplatesAsync(\Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
  */
 class WorkflowTemplateServiceBaseClient

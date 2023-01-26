@@ -43,27 +43,16 @@ use Testing\RoutingHeaders\SimpleRequest;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface deleteMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getNoPlaceholdersMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getNoTemplateMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface nestedMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface nestedMultiMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface orderingMethodAsync(\Testing\RoutingHeaders\OrderRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface patchMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface postMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface putMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithOutParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
  */
 class RoutingHeadersBaseClient

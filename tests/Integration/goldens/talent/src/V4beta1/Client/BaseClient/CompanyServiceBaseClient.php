@@ -56,13 +56,9 @@ use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface createCompanyAsync(\Google\Cloud\Talent\V4beta1\CreateCompanyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteCompanyAsync(\Google\Cloud\Talent\V4beta1\DeleteCompanyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getCompanyAsync(\Google\Cloud\Talent\V4beta1\GetCompanyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listCompaniesAsync(\Google\Cloud\Talent\V4beta1\ListCompaniesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateCompanyAsync(\Google\Cloud\Talent\V4beta1\UpdateCompanyRequest $request, array $optionalArgs = [])
  */
 class CompanyServiceBaseClient

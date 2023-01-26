@@ -63,23 +63,14 @@ use Google\LongRunning\Operation;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface batchCreateJobsAsync(\Google\Cloud\Talent\V4beta1\BatchCreateJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface batchDeleteJobsAsync(\Google\Cloud\Talent\V4beta1\BatchDeleteJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface batchUpdateJobsAsync(\Google\Cloud\Talent\V4beta1\BatchUpdateJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createJobAsync(\Google\Cloud\Talent\V4beta1\CreateJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteJobAsync(\Google\Cloud\Talent\V4beta1\DeleteJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getJobAsync(\Google\Cloud\Talent\V4beta1\GetJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listJobsAsync(\Google\Cloud\Talent\V4beta1\ListJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface searchJobsAsync(\Google\Cloud\Talent\V4beta1\SearchJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface searchJobsForAlertAsync(\Google\Cloud\Talent\V4beta1\SearchJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateJobAsync(\Google\Cloud\Talent\V4beta1\UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobServiceBaseClient

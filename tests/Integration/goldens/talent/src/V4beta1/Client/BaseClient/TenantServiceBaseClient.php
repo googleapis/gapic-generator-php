@@ -56,13 +56,9 @@ use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface createTenantAsync(\Google\Cloud\Talent\V4beta1\CreateTenantRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteTenantAsync(\Google\Cloud\Talent\V4beta1\DeleteTenantRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getTenantAsync(\Google\Cloud\Talent\V4beta1\GetTenantRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listTenantsAsync(\Google\Cloud\Talent\V4beta1\ListTenantsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateTenantAsync(\Google\Cloud\Talent\V4beta1\UpdateTenantRequest $request, array $optionalArgs = [])
  */
 class TenantServiceBaseClient

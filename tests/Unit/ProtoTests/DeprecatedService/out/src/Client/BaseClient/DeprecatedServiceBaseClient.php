@@ -43,7 +43,6 @@ use Testing\Deprecated\FibonacciRequest;
  * @deprecated This class will be removed in the next major version update.
  *
  * @method GuzzleHttp\Promise\PromiseInterface fastFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface slowFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
  */
 class DeprecatedServiceBaseClient

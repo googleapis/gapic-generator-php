@@ -66,25 +66,15 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface callFunctionAsync(\Google\Cloud\Functions\V1\CallFunctionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createFunctionAsync(\Google\Cloud\Functions\V1\CreateFunctionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteFunctionAsync(\Google\Cloud\Functions\V1\DeleteFunctionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface generateDownloadUrlAsync(\Google\Cloud\Functions\V1\GenerateDownloadUrlRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface generateUploadUrlAsync(\Google\Cloud\Functions\V1\GenerateUploadUrlRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getFunctionAsync(\Google\Cloud\Functions\V1\GetFunctionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listFunctionsAsync(\Google\Cloud\Functions\V1\ListFunctionsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateFunctionAsync(\Google\Cloud\Functions\V1\UpdateFunctionRequest $request, array $optionalArgs = [])
  */
 class CloudFunctionsServiceBaseClient

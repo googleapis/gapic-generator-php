@@ -42,7 +42,6 @@ use Testing\Basic\Response;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface aMethodAsync(\Testing\Basic\Request $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface methodWithArgsAsync(\Testing\Basic\RequestWithArgs $request, array $optionalArgs = [])
  */
 class BasicBaseClient

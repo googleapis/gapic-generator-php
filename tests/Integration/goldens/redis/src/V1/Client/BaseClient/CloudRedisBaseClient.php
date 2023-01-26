@@ -73,21 +73,13 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface createInstanceAsync(\Google\Cloud\Redis\V1\CreateInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteInstanceAsync(\Google\Cloud\Redis\V1\DeleteInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface exportInstanceAsync(\Google\Cloud\Redis\V1\ExportInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface failoverInstanceAsync(\Google\Cloud\Redis\V1\FailoverInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getInstanceAsync(\Google\Cloud\Redis\V1\GetInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface importInstanceAsync(\Google\Cloud\Redis\V1\ImportInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listInstancesAsync(\Google\Cloud\Redis\V1\ListInstancesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateInstanceAsync(\Google\Cloud\Redis\V1\UpdateInstanceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface upgradeInstanceAsync(\Google\Cloud\Redis\V1\UpgradeInstanceRequest $request, array $optionalArgs = [])
  */
 class CloudRedisBaseClient

@@ -80,67 +80,36 @@ use Google\Cloud\Container\V1\UpdateNodePoolRequest;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface cancelOperationAsync(\Google\Cloud\Container\V1\CancelOperationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface completeIPRotationAsync(\Google\Cloud\Container\V1\CompleteIPRotationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createClusterAsync(\Google\Cloud\Container\V1\CreateClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createNodePoolAsync(\Google\Cloud\Container\V1\CreateNodePoolRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteClusterAsync(\Google\Cloud\Container\V1\DeleteClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteNodePoolAsync(\Google\Cloud\Container\V1\DeleteNodePoolRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getClusterAsync(\Google\Cloud\Container\V1\GetClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getJSONWebKeysAsync(\Google\Cloud\Container\V1\GetJSONWebKeysRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getNodePoolAsync(\Google\Cloud\Container\V1\GetNodePoolRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getOperationAsync(\Google\Cloud\Container\V1\GetOperationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getServerConfigAsync(\Google\Cloud\Container\V1\GetServerConfigRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listClustersAsync(\Google\Cloud\Container\V1\ListClustersRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listNodePoolsAsync(\Google\Cloud\Container\V1\ListNodePoolsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listOperationsAsync(\Google\Cloud\Container\V1\ListOperationsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listUsableSubnetworksAsync(\Google\Cloud\Container\V1\ListUsableSubnetworksRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface rollbackNodePoolUpgradeAsync(\Google\Cloud\Container\V1\RollbackNodePoolUpgradeRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setAddonsConfigAsync(\Google\Cloud\Container\V1\SetAddonsConfigRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setLabelsAsync(\Google\Cloud\Container\V1\SetLabelsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setLegacyAbacAsync(\Google\Cloud\Container\V1\SetLegacyAbacRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setLocationsAsync(\Google\Cloud\Container\V1\SetLocationsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setLoggingServiceAsync(\Google\Cloud\Container\V1\SetLoggingServiceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setMaintenancePolicyAsync(\Google\Cloud\Container\V1\SetMaintenancePolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setMasterAuthAsync(\Google\Cloud\Container\V1\SetMasterAuthRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setMonitoringServiceAsync(\Google\Cloud\Container\V1\SetMonitoringServiceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setNetworkPolicyAsync(\Google\Cloud\Container\V1\SetNetworkPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setNodePoolAutoscalingAsync(\Google\Cloud\Container\V1\SetNodePoolAutoscalingRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setNodePoolManagementAsync(\Google\Cloud\Container\V1\SetNodePoolManagementRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setNodePoolSizeAsync(\Google\Cloud\Container\V1\SetNodePoolSizeRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface startIPRotationAsync(\Google\Cloud\Container\V1\StartIPRotationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateClusterAsync(\Google\Cloud\Container\V1\UpdateClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateMasterAsync(\Google\Cloud\Container\V1\UpdateMasterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateNodePoolAsync(\Google\Cloud\Container\V1\UpdateNodePoolRequest $request, array $optionalArgs = [])
  */
 class ClusterManagerBaseClient

@@ -54,19 +54,12 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface fileLevelChildTypeRefMethodAsync(\Testing\ResourceNames\FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface fileLevelTypeRefMethodAsync(\Testing\ResourceNames\FileLevelTypeRefRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface multiPatternMethodAsync(\Testing\ResourceNames\MultiPatternRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface singlePatternMethodAsync(\Testing\ResourceNames\SinglePatternRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface wildcardChildReferenceMethodAsync(\Testing\ResourceNames\WildcardChildReferenceRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface wildcardMethodAsync(\Testing\ResourceNames\WildcardPatternRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface wildcardMultiMethodAsync(\Testing\ResourceNames\WildcardMultiPatternRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface wildcardReferenceMethodAsync(\Testing\ResourceNames\WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 class ResourceNamesBaseClient

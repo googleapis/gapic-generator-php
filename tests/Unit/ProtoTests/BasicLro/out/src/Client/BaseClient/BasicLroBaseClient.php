@@ -43,9 +43,7 @@ use Testing\BasicLro\Request;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface method1Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface methodNonLro1Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface methodNonLro2Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
  */
 class BasicLroBaseClient

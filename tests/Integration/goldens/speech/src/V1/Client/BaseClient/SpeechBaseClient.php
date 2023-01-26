@@ -47,7 +47,6 @@ use Google\LongRunning\Operation;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface longRunningRecognizeAsync(\Google\Cloud\Speech\V1\LongRunningRecognizeRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface recognizeAsync(\Google\Cloud\Speech\V1\RecognizeRequest $request, array $optionalArgs = [])
  */
 class SpeechBaseClient

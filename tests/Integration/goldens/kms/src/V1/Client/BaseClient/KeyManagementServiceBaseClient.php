@@ -94,55 +94,30 @@ use Google\Cloud\Location\Location;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface asymmetricDecryptAsync(\Google\Cloud\Kms\V1\AsymmetricDecryptRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface asymmetricSignAsync(\Google\Cloud\Kms\V1\AsymmetricSignRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createCryptoKeyAsync(\Google\Cloud\Kms\V1\CreateCryptoKeyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\CreateCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createImportJobAsync(\Google\Cloud\Kms\V1\CreateImportJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface createKeyRingAsync(\Google\Cloud\Kms\V1\CreateKeyRingRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface decryptAsync(\Google\Cloud\Kms\V1\DecryptRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface destroyCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\DestroyCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface encryptAsync(\Google\Cloud\Kms\V1\EncryptRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getCryptoKeyAsync(\Google\Cloud\Kms\V1\GetCryptoKeyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\GetCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getImportJobAsync(\Google\Cloud\Kms\V1\GetImportJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getKeyRingAsync(\Google\Cloud\Kms\V1\GetKeyRingRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getPublicKeyAsync(\Google\Cloud\Kms\V1\GetPublicKeyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface importCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\ImportCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listCryptoKeyVersionsAsync(\Google\Cloud\Kms\V1\ListCryptoKeyVersionsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listCryptoKeysAsync(\Google\Cloud\Kms\V1\ListCryptoKeysRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listImportJobsAsync(\Google\Cloud\Kms\V1\ListImportJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listKeyRingsAsync(\Google\Cloud\Kms\V1\ListKeyRingsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface restoreCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\RestoreCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateCryptoKeyAsync(\Google\Cloud\Kms\V1\UpdateCryptoKeyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateCryptoKeyPrimaryVersionAsync(\Google\Cloud\Kms\V1\UpdateCryptoKeyPrimaryVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateCryptoKeyVersionAsync(\Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getLocationAsync(\Google\Cloud\Location\GetLocationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listLocationsAsync(\Google\Cloud\Location\ListLocationsRequest $request, array $optionalArgs = [])
  */
 class KeyManagementServiceBaseClient

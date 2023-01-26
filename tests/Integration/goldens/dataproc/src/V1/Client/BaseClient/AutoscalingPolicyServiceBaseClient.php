@@ -53,13 +53,9 @@ use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface createAutoscalingPolicyAsync(\Google\Cloud\Dataproc\V1\CreateAutoscalingPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteAutoscalingPolicyAsync(\Google\Cloud\Dataproc\V1\DeleteAutoscalingPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getAutoscalingPolicyAsync(\Google\Cloud\Dataproc\V1\GetAutoscalingPolicyRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listAutoscalingPoliciesAsync(\Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateAutoscalingPolicyAsync(\Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest $request, array $optionalArgs = [])
  */
 class AutoscalingPolicyServiceBaseClient

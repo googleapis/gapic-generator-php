@@ -52,13 +52,9 @@ use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface createLogMetricAsync(\Google\Cloud\Logging\V2\CreateLogMetricRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteLogMetricAsync(\Google\Cloud\Logging\V2\DeleteLogMetricRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getLogMetricAsync(\Google\Cloud\Logging\V2\GetLogMetricRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listLogMetricsAsync(\Google\Cloud\Logging\V2\ListLogMetricsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateLogMetricAsync(\Google\Cloud\Logging\V2\UpdateLogMetricRequest $request, array $optionalArgs = [])
  */
 class MetricsServiceV2BaseClient

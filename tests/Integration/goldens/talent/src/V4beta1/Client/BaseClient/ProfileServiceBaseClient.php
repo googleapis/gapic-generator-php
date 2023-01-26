@@ -58,15 +58,10 @@ use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface createProfileAsync(\Google\Cloud\Talent\V4beta1\CreateProfileRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteProfileAsync(\Google\Cloud\Talent\V4beta1\DeleteProfileRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getProfileAsync(\Google\Cloud\Talent\V4beta1\GetProfileRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listProfilesAsync(\Google\Cloud\Talent\V4beta1\ListProfilesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface searchProfilesAsync(\Google\Cloud\Talent\V4beta1\SearchProfilesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateProfileAsync(\Google\Cloud\Talent\V4beta1\UpdateProfileRequest $request, array $optionalArgs = [])
  */
 class ProfileServiceBaseClient

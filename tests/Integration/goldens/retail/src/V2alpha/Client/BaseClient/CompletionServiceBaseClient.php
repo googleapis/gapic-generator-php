@@ -59,7 +59,6 @@ use Google\LongRunning\Operation;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface completeQueryAsync(\Google\Cloud\Retail\V2alpha\CompleteQueryRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface importCompletionDataAsync(\Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest $request, array $optionalArgs = [])
  */
 class CompletionServiceBaseClient

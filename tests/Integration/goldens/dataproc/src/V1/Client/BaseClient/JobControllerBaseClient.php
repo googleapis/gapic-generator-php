@@ -50,17 +50,11 @@ use Google\LongRunning\Operation;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface cancelJobAsync(\Google\Cloud\Dataproc\V1\CancelJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteJobAsync(\Google\Cloud\Dataproc\V1\DeleteJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getJobAsync(\Google\Cloud\Dataproc\V1\GetJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listJobsAsync(\Google\Cloud\Dataproc\V1\ListJobsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface submitJobAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface submitJobAsOperationAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateJobAsync(\Google\Cloud\Dataproc\V1\UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobControllerBaseClient

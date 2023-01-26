@@ -49,11 +49,8 @@ use Google\Cloud\Compute\V1\RegionOperationsClient;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface aggregatedListAsync(\Google\Cloud\Compute\V1\AggregatedListAddressesRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteAsync(\Google\Cloud\Compute\V1\DeleteAddressRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface insertAsync(\Google\Cloud\Compute\V1\InsertAddressRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listAsync(\Google\Cloud\Compute\V1\ListAddressesRequest $request, array $optionalArgs = [])
  */
 class AddressesBaseClient

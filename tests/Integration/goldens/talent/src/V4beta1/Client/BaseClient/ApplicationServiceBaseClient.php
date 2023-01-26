@@ -57,13 +57,9 @@ use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface createApplicationAsync(\Google\Cloud\Talent\V4beta1\CreateApplicationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteApplicationAsync(\Google\Cloud\Talent\V4beta1\DeleteApplicationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getApplicationAsync(\Google\Cloud\Talent\V4beta1\GetApplicationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listApplicationsAsync(\Google\Cloud\Talent\V4beta1\ListApplicationsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateApplicationAsync(\Google\Cloud\Talent\V4beta1\UpdateApplicationRequest $request, array $optionalArgs = [])
  */
 class ApplicationServiceBaseClient

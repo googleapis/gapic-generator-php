@@ -43,9 +43,7 @@ use Testing\CustomLro\GetOperationRequest;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface cancelAsync(\Testing\CustomLro\CancelOperationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteAsync(\Testing\CustomLro\DeleteOperationRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getAsync(\Testing\CustomLro\GetOperationRequest $request, array $optionalArgs = [])
  */
 class CustomLroOperationsBaseClient

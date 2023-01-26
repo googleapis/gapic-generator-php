@@ -56,11 +56,8 @@ use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
  * @experimental
  *
  * @method GuzzleHttp\Promise\PromiseInterface getDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listCatalogsAsync(\Google\Cloud\Retail\V2alpha\ListCatalogsRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface setDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateCatalogAsync(\Google\Cloud\Retail\V2alpha\UpdateCatalogRequest $request, array $optionalArgs = [])
  */
 class CatalogServiceBaseClient

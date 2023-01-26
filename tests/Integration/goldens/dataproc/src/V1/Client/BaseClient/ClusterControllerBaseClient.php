@@ -61,19 +61,12 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @method GuzzleHttp\Promise\PromiseInterface createClusterAsync(\Google\Cloud\Dataproc\V1\CreateClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface deleteClusterAsync(\Google\Cloud\Dataproc\V1\DeleteClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface diagnoseClusterAsync(\Google\Cloud\Dataproc\V1\DiagnoseClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface getClusterAsync(\Google\Cloud\Dataproc\V1\GetClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface listClustersAsync(\Google\Cloud\Dataproc\V1\ListClustersRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface startClusterAsync(\Google\Cloud\Dataproc\V1\StartClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface stopClusterAsync(\Google\Cloud\Dataproc\V1\StopClusterRequest $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface updateClusterAsync(\Google\Cloud\Dataproc\V1\UpdateClusterRequest $request, array $optionalArgs = [])
  */
 class ClusterControllerBaseClient

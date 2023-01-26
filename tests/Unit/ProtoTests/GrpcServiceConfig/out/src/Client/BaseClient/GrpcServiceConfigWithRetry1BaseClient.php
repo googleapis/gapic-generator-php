@@ -46,11 +46,8 @@ use Testing\GrpcServiceConfig\Response1;
  * calls that map to API methods.
  *
  * @method GuzzleHttp\Promise\PromiseInterface method1AAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface method1BLroAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface method1CServiceLevelRetryAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- *
  * @method GuzzleHttp\Promise\PromiseInterface method1DTimeoutOnlyRetryAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
  */
 class GrpcServiceConfigWithRetry1BaseClient
