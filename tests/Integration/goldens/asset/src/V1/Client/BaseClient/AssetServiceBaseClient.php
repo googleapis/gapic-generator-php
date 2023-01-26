@@ -331,11 +331,8 @@ class AssetServiceBaseClient
             trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
         }
 
-        if (count($args) < 1) {
-            throw new ValidationException("Async methods require a request message");
-        }
-
-        return $this->startAsyncCall(substr($method, 0, -5), $args[0], $args[1] ?? []);
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
     }
 
     /**

@@ -202,11 +202,6 @@ class GapicClientV2Generator
         $methodParam = AST::param(null, $methodVar);
         $argsVar = AST::var('args');
         $argsParam = AST::param(null, $argsVar);
-
-        // startAsyncCall arguments
-        $rpcName = AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'));
-        $request = AST::index($argsVar, AST::literal('0'));
-        $optionalArgs = AST::nullCoalescing(AST::index($argsVar, AST::literal('1')), AST::array([]));
         $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
 
         return AST::method('__call')
@@ -215,12 +210,9 @@ class GapicClientV2Generator
             ->withBody(AST::block(
                 AST::if(AST::binaryOp(AST::call(AST::SUBSTR)($methodVar, AST::literal('-5')), '!==', AST::literal("'Async'")))
                     ->then($triggerError),
-                AST::if(AST::binaryOp(AST::call(AST::COUNT)($argsVar), '<', AST::literal('1')))
-                    ->then(AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                        AST::interpolatedString('Async methods require a request message')
-                    ))),
+                AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
                 AST::return(
-                    AST::call(AST::THIS, AST::method('startAsyncCall'))($rpcName, $request, $optionalArgs))));
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))));
     }
 
     private function operationsClient(): ?PhpClassMember
