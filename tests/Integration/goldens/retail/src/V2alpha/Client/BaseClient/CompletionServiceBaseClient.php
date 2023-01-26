@@ -40,6 +40,7 @@ use Google\Cloud\Retail\V2alpha\CompleteQueryRequest;
 use Google\Cloud\Retail\V2alpha\CompleteQueryResponse;
 use Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Auto-completion service for retail.
@@ -58,8 +59,8 @@ use Google\LongRunning\Operation;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface completeQueryAsync(\Google\Cloud\Retail\V2alpha\CompleteQueryRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface importCompletionDataAsync(\Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importCompletionDataAsync(ImportCompletionDataRequest $request, array $optionalArgs = [])
  */
 class CompletionServiceBaseClient
 {

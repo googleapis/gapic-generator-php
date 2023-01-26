@@ -37,6 +37,7 @@ use Google\Cloud\VideoIntelligence\V1\AnnotateVideoProgress;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service that implements the Video Intelligence API.
@@ -44,7 +45,7 @@ use Google\LongRunning\Operation;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface annotateVideoAsync(\Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface annotateVideoAsync(AnnotateVideoRequest $request, array $optionalArgs = [])
  */
 class VideoIntelligenceServiceBaseClient
 {

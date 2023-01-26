@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\RoutingHeaders\NestedRequest;
 use Testing\RoutingHeaders\OrderRequest;
 use Testing\RoutingHeaders\Response;
@@ -42,18 +43,18 @@ use Testing\RoutingHeaders\SimpleRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface deleteMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getNoPlaceholdersMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getNoTemplateMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface nestedMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface nestedMultiMethodAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface orderingMethodAsync(\Testing\RoutingHeaders\OrderRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface patchMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface postMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface putMethodAsync(\Testing\RoutingHeaders\SimpleRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithOutParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface routingRuleWithParametersAsync(\Testing\RoutingHeaders\NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getNoTemplateMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface nestedMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface nestedMultiMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface orderingMethodAsync(OrderRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface patchMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface postMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface putMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
  */
 class RoutingHeadersBaseClient
 {

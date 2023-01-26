@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service handles auto completion.
@@ -50,7 +51,7 @@ use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface completeQueryAsync(\Google\Cloud\Talent\V4beta1\CompleteQueryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  */
 class CompletionBaseClient
 {

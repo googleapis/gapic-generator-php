@@ -47,6 +47,7 @@ use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The ClusterControllerService provides methods to manage clusters
@@ -60,14 +61,14 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createClusterAsync(\Google\Cloud\Dataproc\V1\CreateClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteClusterAsync(\Google\Cloud\Dataproc\V1\DeleteClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface diagnoseClusterAsync(\Google\Cloud\Dataproc\V1\DiagnoseClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getClusterAsync(\Google\Cloud\Dataproc\V1\GetClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listClustersAsync(\Google\Cloud\Dataproc\V1\ListClustersRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface startClusterAsync(\Google\Cloud\Dataproc\V1\StartClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface stopClusterAsync(\Google\Cloud\Dataproc\V1\StopClusterRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateClusterAsync(\Google\Cloud\Dataproc\V1\UpdateClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createClusterAsync(CreateClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteClusterAsync(DeleteClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface diagnoseClusterAsync(DiagnoseClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getClusterAsync(GetClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listClustersAsync(ListClustersRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface startClusterAsync(StartClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface stopClusterAsync(StopClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateClusterAsync(UpdateClusterRequest $request, array $optionalArgs = [])
  */
 class ClusterControllerBaseClient
 {

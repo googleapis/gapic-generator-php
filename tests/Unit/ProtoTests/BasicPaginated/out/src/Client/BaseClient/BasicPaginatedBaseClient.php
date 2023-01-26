@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicPaginated\Request;
 
 /**
@@ -40,7 +41,7 @@ use Testing\BasicPaginated\Request;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface methodPaginatedAsync(\Testing\BasicPaginated\Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodPaginatedAsync(Request $request, array $optionalArgs = [])
  */
 class BasicPaginatedBaseClient
 {

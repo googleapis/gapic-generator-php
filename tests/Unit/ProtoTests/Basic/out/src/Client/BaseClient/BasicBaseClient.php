@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -41,8 +42,8 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface aMethodAsync(\Testing\Basic\Request $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface methodWithArgsAsync(\Testing\Basic\RequestWithArgs $request, array $optionalArgs = [])
+ * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */
 class BasicBaseClient
 {

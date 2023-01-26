@@ -46,6 +46,7 @@ use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -72,15 +73,15 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createInstanceAsync(\Google\Cloud\Redis\V1\CreateInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteInstanceAsync(\Google\Cloud\Redis\V1\DeleteInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface exportInstanceAsync(\Google\Cloud\Redis\V1\ExportInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface failoverInstanceAsync(\Google\Cloud\Redis\V1\FailoverInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getInstanceAsync(\Google\Cloud\Redis\V1\GetInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface importInstanceAsync(\Google\Cloud\Redis\V1\ImportInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listInstancesAsync(\Google\Cloud\Redis\V1\ListInstancesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateInstanceAsync(\Google\Cloud\Redis\V1\UpdateInstanceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface upgradeInstanceAsync(\Google\Cloud\Redis\V1\UpgradeInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createInstanceAsync(CreateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteInstanceAsync(DeleteInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface exportInstanceAsync(ExportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface failoverInstanceAsync(FailoverInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getInstanceAsync(GetInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importInstanceAsync(ImportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listInstancesAsync(ListInstancesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateInstanceAsync(UpdateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface upgradeInstanceAsync(UpgradeInstanceRequest $request, array $optionalArgs = [])
  */
 class CloudRedisBaseClient
 {

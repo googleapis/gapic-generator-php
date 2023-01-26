@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\DeleteCompanyRequest;
 use Google\Cloud\Talent\V4beta1\GetCompanyRequest;
 use Google\Cloud\Talent\V4beta1\ListCompaniesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles company management, including CRUD and enumeration.
@@ -55,11 +56,11 @@ use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface createCompanyAsync(\Google\Cloud\Talent\V4beta1\CreateCompanyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteCompanyAsync(\Google\Cloud\Talent\V4beta1\DeleteCompanyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getCompanyAsync(\Google\Cloud\Talent\V4beta1\GetCompanyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listCompaniesAsync(\Google\Cloud\Talent\V4beta1\ListCompaniesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateCompanyAsync(\Google\Cloud\Talent\V4beta1\UpdateCompanyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createCompanyAsync(CreateCompanyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteCompanyAsync(DeleteCompanyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getCompanyAsync(GetCompanyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listCompaniesAsync(ListCompaniesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCompanyAsync(UpdateCompanyRequest $request, array $optionalArgs = [])
  */
 class CompanyServiceBaseClient
 {

@@ -38,6 +38,7 @@ use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Cloud\Compute\V1\InsertAddressRequest;
 use Google\Cloud\Compute\V1\ListAddressesRequest;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description:
@@ -48,10 +49,10 @@ use Google\Cloud\Compute\V1\RegionOperationsClient;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface aggregatedListAsync(\Google\Cloud\Compute\V1\AggregatedListAddressesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteAsync(\Google\Cloud\Compute\V1\DeleteAddressRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface insertAsync(\Google\Cloud\Compute\V1\InsertAddressRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listAsync(\Google\Cloud\Compute\V1\ListAddressesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAsync(ListAddressesRequest $request, array $optionalArgs = [])
  */
 class AddressesBaseClient
 {

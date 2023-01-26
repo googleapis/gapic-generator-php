@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
 use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service handles client event report.
@@ -50,7 +51,7 @@ use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface createClientEventAsync(\Google\Cloud\Talent\V4beta1\CreateClientEventRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
 class EventServiceBaseClient
 {

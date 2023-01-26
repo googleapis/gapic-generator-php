@@ -39,6 +39,7 @@ use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service that implements Google Cloud Speech API.
@@ -46,8 +47,8 @@ use Google\LongRunning\Operation;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface longRunningRecognizeAsync(\Google\Cloud\Speech\V1\LongRunningRecognizeRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface recognizeAsync(\Google\Cloud\Speech\V1\RecognizeRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */
 class SpeechBaseClient
 {

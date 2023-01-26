@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\DisableSnippets\Request;
 use Testing\DisableSnippets\Response;
 
@@ -40,7 +41,7 @@ use Testing\DisableSnippets\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface method1Async(\Testing\DisableSnippets\Request $request, array $optionalArgs = [])
+ * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
  */
 class DisableSnippetsBaseClient
 {

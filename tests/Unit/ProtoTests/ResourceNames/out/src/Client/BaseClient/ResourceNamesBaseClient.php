@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\MultiPatternRequest;
@@ -53,14 +54,14 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface fileLevelChildTypeRefMethodAsync(\Testing\ResourceNames\FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface fileLevelTypeRefMethodAsync(\Testing\ResourceNames\FileLevelTypeRefRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface multiPatternMethodAsync(\Testing\ResourceNames\MultiPatternRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface singlePatternMethodAsync(\Testing\ResourceNames\SinglePatternRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface wildcardChildReferenceMethodAsync(\Testing\ResourceNames\WildcardChildReferenceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface wildcardMethodAsync(\Testing\ResourceNames\WildcardPatternRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface wildcardMultiMethodAsync(\Testing\ResourceNames\WildcardMultiPatternRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface wildcardReferenceMethodAsync(\Testing\ResourceNames\WildcardReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 class ResourceNamesBaseClient
 {

@@ -33,6 +33,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Compute\V1\GetRegionOperationRequest;
 use Google\Cloud\Compute\V1\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The RegionOperations API.
@@ -40,7 +41,7 @@ use Google\Cloud\Compute\V1\Operation;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface getAsync(\Google\Cloud\Compute\V1\GetRegionOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getAsync(GetRegionOperationRequest $request, array $optionalArgs = [])
  */
 class RegionOperationsBaseClient
 {

@@ -42,6 +42,7 @@ use Google\Cloud\Talent\V4beta1\ListProfilesRequest;
 use Google\Cloud\Talent\V4beta1\Profile;
 use Google\Cloud\Talent\V4beta1\SearchProfilesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles profile management, including profile CRUD,
@@ -57,12 +58,12 @@ use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface createProfileAsync(\Google\Cloud\Talent\V4beta1\CreateProfileRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteProfileAsync(\Google\Cloud\Talent\V4beta1\DeleteProfileRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getProfileAsync(\Google\Cloud\Talent\V4beta1\GetProfileRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listProfilesAsync(\Google\Cloud\Talent\V4beta1\ListProfilesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface searchProfilesAsync(\Google\Cloud\Talent\V4beta1\SearchProfilesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateProfileAsync(\Google\Cloud\Talent\V4beta1\UpdateProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteProfileAsync(DeleteProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getProfileAsync(GetProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listProfilesAsync(ListProfilesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchProfilesAsync(SearchProfilesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateProfileAsync(UpdateProfileRequest $request, array $optionalArgs = [])
  */
 class ProfileServiceBaseClient
 {

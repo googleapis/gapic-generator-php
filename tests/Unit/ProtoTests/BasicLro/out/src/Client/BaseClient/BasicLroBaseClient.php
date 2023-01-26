@@ -34,6 +34,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicLro\Request;
 
 /**
@@ -42,9 +43,9 @@ use Testing\BasicLro\Request;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface method1Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface methodNonLro1Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface methodNonLro2Async(\Testing\BasicLro\Request $request, array $optionalArgs = [])
+ * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodNonLro1Async(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodNonLro2Async(Request $request, array $optionalArgs = [])
  */
 class BasicLroBaseClient
 {

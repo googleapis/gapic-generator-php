@@ -42,6 +42,7 @@ use Google\Cloud\Dataproc\V1\ListJobsRequest;
 use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Cloud\Dataproc\V1\UpdateJobRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The JobController provides methods to manage jobs.
@@ -49,13 +50,13 @@ use Google\LongRunning\Operation;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface cancelJobAsync(\Google\Cloud\Dataproc\V1\CancelJobRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteJobAsync(\Google\Cloud\Dataproc\V1\DeleteJobRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getJobAsync(\Google\Cloud\Dataproc\V1\GetJobRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listJobsAsync(\Google\Cloud\Dataproc\V1\ListJobsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface submitJobAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface submitJobAsOperationAsync(\Google\Cloud\Dataproc\V1\SubmitJobRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateJobAsync(\Google\Cloud\Dataproc\V1\UpdateJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface cancelJobAsync(CancelJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getJobAsync(GetJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listJobsAsync(ListJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface submitJobAsync(SubmitJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface submitJobAsOperationAsync(SubmitJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobControllerBaseClient
 {

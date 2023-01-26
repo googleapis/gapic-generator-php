@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\CustomLro\CreateFooRequest;
 use Testing\CustomLro\CustomLroOperationsClient;
 
@@ -41,7 +42,7 @@ use Testing\CustomLro\CustomLroOperationsClient;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createFooAsync(\Testing\CustomLro\CreateFooRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
 class CustomLroBaseClient
 {

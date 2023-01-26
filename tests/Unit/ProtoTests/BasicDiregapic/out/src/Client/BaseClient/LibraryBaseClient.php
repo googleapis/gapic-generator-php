@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
@@ -99,35 +100,35 @@ use Testing\BasicDiregapic\UpdateBookRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface addCommentsAsync(\Testing\BasicDiregapic\AddCommentsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface addTagAsync(\Testing\BasicDiregapic\AddTagRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface archiveBooksAsync(\Testing\BasicDiregapic\ArchiveBooksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createBookAsync(\Testing\BasicDiregapic\CreateBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createInventoryAsync(\Testing\BasicDiregapic\CreateInventoryRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createShelfAsync(\Testing\BasicDiregapic\CreateShelfRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteBookAsync(\Testing\BasicDiregapic\DeleteBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteShelfAsync(\Testing\BasicDiregapic\DeleteShelfRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface findRelatedBooksAsync(\Testing\BasicDiregapic\FindRelatedBooksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBigBookAsync(\Testing\BasicDiregapic\GetBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBigNothingAsync(\Testing\BasicDiregapic\GetBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBookAsync(\Testing\BasicDiregapic\GetBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBookFromAbsolutelyAnywhereAsync(\Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBookFromAnywhereAsync(\Testing\BasicDiregapic\GetBookFromAnywhereRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBookFromArchiveAsync(\Testing\BasicDiregapic\GetBookFromArchiveRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getShelfAsync(\Testing\BasicDiregapic\GetShelfRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listAggregatedShelvesAsync(\Testing\BasicDiregapic\ListAggregatedShelvesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listBooksAsync(\Testing\BasicDiregapic\ListBooksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listShelvesAsync(\Testing\BasicDiregapic\ListShelvesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listStringsAsync(\Testing\BasicDiregapic\ListStringsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface longRunningArchiveBooksAsync(\Testing\BasicDiregapic\ArchiveBooksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface mergeShelvesAsync(\Testing\BasicDiregapic\MergeShelvesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface moveBookAsync(\Testing\BasicDiregapic\MoveBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface moveBooksAsync(\Testing\BasicDiregapic\MoveBooksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface privateListShelvesAsync(\Testing\BasicDiregapic\ListShelvesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface publishSeriesAsync(\Testing\BasicDiregapic\PublishSeriesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface saveBookAsync(\Testing\BasicDiregapic\BookResponse $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateBookAsync(\Testing\BasicDiregapic\UpdateBookRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateBookIndexAsync(\Testing\BasicDiregapic\UpdateBookIndexRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface addCommentsAsync(AddCommentsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface addTagAsync(AddTagRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface archiveBooksAsync(ArchiveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createBookAsync(CreateBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createInventoryAsync(CreateInventoryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createShelfAsync(CreateShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteBookAsync(DeleteBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteShelfAsync(DeleteShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface findRelatedBooksAsync(FindRelatedBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBigBookAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBigNothingAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromAbsolutelyAnywhereAsync(GetBookFromAbsolutelyAnywhereRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromAnywhereAsync(GetBookFromAnywhereRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromArchiveAsync(GetBookFromArchiveRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getShelfAsync(GetShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAggregatedShelvesAsync(ListAggregatedShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listBooksAsync(ListBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listShelvesAsync(ListShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listStringsAsync(ListStringsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface longRunningArchiveBooksAsync(ArchiveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface mergeShelvesAsync(MergeShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface moveBookAsync(MoveBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface moveBooksAsync(MoveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface privateListShelvesAsync(ListShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface publishSeriesAsync(PublishSeriesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface saveBookAsync(BookResponse $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBookAsync(UpdateBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBookIndexAsync(UpdateBookIndexRequest $request, array $optionalArgs = [])
  */
 class LibraryBaseClient
 {

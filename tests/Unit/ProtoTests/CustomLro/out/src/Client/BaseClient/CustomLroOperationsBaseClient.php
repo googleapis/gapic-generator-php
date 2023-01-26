@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\CustomLro\CancelOperationRequest;
 use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\DeleteOperationRequest;
@@ -42,9 +43,9 @@ use Testing\CustomLro\GetOperationRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface cancelAsync(\Testing\CustomLro\CancelOperationRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteAsync(\Testing\CustomLro\DeleteOperationRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getAsync(\Testing\CustomLro\GetOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface cancelAsync(CancelOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getAsync(GetOperationRequest $request, array $optionalArgs = [])
  */
 class CustomLroOperationsBaseClient
 {

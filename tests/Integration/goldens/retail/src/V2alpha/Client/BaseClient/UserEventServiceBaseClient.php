@@ -45,6 +45,7 @@ use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for ingesting end user actions on the customer website.
@@ -59,11 +60,11 @@ use Google\LongRunning\Operation;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface collectUserEventAsync(\Google\Cloud\Retail\V2alpha\CollectUserEventRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface importUserEventsAsync(\Google\Cloud\Retail\V2alpha\ImportUserEventsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface purgeUserEventsAsync(\Google\Cloud\Retail\V2alpha\PurgeUserEventsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface rejoinUserEventsAsync(\Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface writeUserEventAsync(\Google\Cloud\Retail\V2alpha\WriteUserEventRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface collectUserEventAsync(CollectUserEventRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importUserEventsAsync(ImportUserEventsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface purgeUserEventsAsync(PurgeUserEventsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface rejoinUserEventsAsync(RejoinUserEventsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface writeUserEventAsync(WriteUserEventRequest $request, array $optionalArgs = [])
  */
 class UserEventServiceBaseClient
 {

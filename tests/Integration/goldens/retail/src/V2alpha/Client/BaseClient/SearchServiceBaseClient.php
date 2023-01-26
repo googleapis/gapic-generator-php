@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\SearchRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for search.
@@ -54,7 +55,7 @@ use Google\Cloud\Retail\V2alpha\SearchRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface searchAsync(\Google\Cloud\Retail\V2alpha\SearchRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchAsync(SearchRequest $request, array $optionalArgs = [])
  */
 class SearchServiceBaseClient
 {

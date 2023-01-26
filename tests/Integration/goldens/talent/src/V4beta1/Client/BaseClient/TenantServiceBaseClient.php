@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\GetTenantRequest;
 use Google\Cloud\Talent\V4beta1\ListTenantsRequest;
 use Google\Cloud\Talent\V4beta1\Tenant;
 use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles tenant management, including CRUD and enumeration.
@@ -55,11 +56,11 @@ use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface createTenantAsync(\Google\Cloud\Talent\V4beta1\CreateTenantRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteTenantAsync(\Google\Cloud\Talent\V4beta1\DeleteTenantRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getTenantAsync(\Google\Cloud\Talent\V4beta1\GetTenantRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listTenantsAsync(\Google\Cloud\Talent\V4beta1\ListTenantsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateTenantAsync(\Google\Cloud\Talent\V4beta1\UpdateTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createTenantAsync(CreateTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteTenantAsync(DeleteTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getTenantAsync(GetTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listTenantsAsync(ListTenantsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateTenantAsync(UpdateTenantRequest $request, array $optionalArgs = [])
  */
 class TenantServiceBaseClient
 {

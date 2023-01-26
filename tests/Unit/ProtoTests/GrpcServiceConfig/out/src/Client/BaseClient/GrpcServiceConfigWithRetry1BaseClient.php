@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
@@ -45,10 +46,10 @@ use Testing\GrpcServiceConfig\Response1;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface method1AAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface method1BLroAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface method1CServiceLevelRetryAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface method1DTimeoutOnlyRetryAsync(\Testing\GrpcServiceConfig\Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1AAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1BLroAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1CServiceLevelRetryAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1DTimeoutOnlyRetryAsync(Request1 $request, array $optionalArgs = [])
  */
 class GrpcServiceConfigWithRetry1BaseClient
 {

@@ -54,6 +54,7 @@ use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\UpdateFeedRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Asset service definition.
@@ -66,19 +67,19 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface analyzeIamPolicyAsync(\Google\Cloud\Asset\V1\AnalyzeIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface analyzeIamPolicyLongrunningAsync(\Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface analyzeMoveAsync(\Google\Cloud\Asset\V1\AnalyzeMoveRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface batchGetAssetsHistoryAsync(\Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createFeedAsync(\Google\Cloud\Asset\V1\CreateFeedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteFeedAsync(\Google\Cloud\Asset\V1\DeleteFeedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface exportAssetsAsync(\Google\Cloud\Asset\V1\ExportAssetsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getFeedAsync(\Google\Cloud\Asset\V1\GetFeedRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listAssetsAsync(\Google\Cloud\Asset\V1\ListAssetsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listFeedsAsync(\Google\Cloud\Asset\V1\ListFeedsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface searchAllIamPoliciesAsync(\Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface searchAllResourcesAsync(\Google\Cloud\Asset\V1\SearchAllResourcesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateFeedAsync(\Google\Cloud\Asset\V1\UpdateFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface analyzeIamPolicyAsync(AnalyzeIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface analyzeIamPolicyLongrunningAsync(AnalyzeIamPolicyLongrunningRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface analyzeMoveAsync(AnalyzeMoveRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchGetAssetsHistoryAsync(BatchGetAssetsHistoryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFeedAsync(CreateFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteFeedAsync(DeleteFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface exportAssetsAsync(ExportAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getFeedAsync(GetFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFeedsAsync(ListFeedsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchAllIamPoliciesAsync(SearchAllIamPoliciesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchAllResourcesAsync(SearchAllResourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFeedAsync(UpdateFeedRequest $request, array $optionalArgs = [])
  */
 class AssetServiceBaseClient
 {

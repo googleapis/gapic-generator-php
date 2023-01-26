@@ -40,6 +40,7 @@ use Google\Cloud\Logging\V2\ListLogsRequest;
 use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest;
 use Google\Cloud\Logging\V2\WriteLogEntriesRequest;
 use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for ingesting and querying logs.
@@ -52,11 +53,11 @@ use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface deleteLogAsync(\Google\Cloud\Logging\V2\DeleteLogRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listLogEntriesAsync(\Google\Cloud\Logging\V2\ListLogEntriesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listLogsAsync(\Google\Cloud\Logging\V2\ListLogsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listMonitoredResourceDescriptorsAsync(\Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface writeLogEntriesAsync(\Google\Cloud\Logging\V2\WriteLogEntriesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteLogAsync(DeleteLogRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLogEntriesAsync(ListLogEntriesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLogsAsync(ListLogsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listMonitoredResourceDescriptorsAsync(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface writeLogEntriesAsync(WriteLogEntriesRequest $request, array $optionalArgs = [])
  */
 class LoggingServiceV2BaseClient
 {

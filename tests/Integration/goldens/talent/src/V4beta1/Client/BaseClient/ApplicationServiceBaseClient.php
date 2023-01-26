@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\DeleteApplicationRequest;
 use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles application management, including CRUD and
@@ -56,11 +57,11 @@ use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface createApplicationAsync(\Google\Cloud\Talent\V4beta1\CreateApplicationRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteApplicationAsync(\Google\Cloud\Talent\V4beta1\DeleteApplicationRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getApplicationAsync(\Google\Cloud\Talent\V4beta1\GetApplicationRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listApplicationsAsync(\Google\Cloud\Talent\V4beta1\ListApplicationsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateApplicationAsync(\Google\Cloud\Talent\V4beta1\UpdateApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createApplicationAsync(CreateApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteApplicationAsync(DeleteApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getApplicationAsync(GetApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listApplicationsAsync(ListApplicationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateApplicationAsync(UpdateApplicationRequest $request, array $optionalArgs = [])
  */
 class ApplicationServiceBaseClient
 {

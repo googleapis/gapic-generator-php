@@ -183,8 +183,8 @@ class GapicClientV2Generator
             ->filter(fn($m) => !$m->isStreaming())
             ->map(fn($m) => PhpDoc::method(
                 $m->methodName . "Async",
-                PromiseInterface::class,
-                $m->requestType->getFullname()
+                $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name,
+                $m->requestType->name, // the request type will already be imported for the sync variants
             ));
         return PhpDoc::block($methodDocs);
     }

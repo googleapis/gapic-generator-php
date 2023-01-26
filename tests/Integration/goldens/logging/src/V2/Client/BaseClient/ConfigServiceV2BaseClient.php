@@ -61,6 +61,7 @@ use Google\Cloud\Logging\V2\UpdateCmekSettingsRequest;
 use Google\Cloud\Logging\V2\UpdateExclusionRequest;
 use Google\Cloud\Logging\V2\UpdateSinkRequest;
 use Google\Cloud\Logging\V2\UpdateViewRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for configuring sinks used to route log entries.
@@ -73,29 +74,29 @@ use Google\Cloud\Logging\V2\UpdateViewRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createBucketAsync(\Google\Cloud\Logging\V2\CreateBucketRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createExclusionAsync(\Google\Cloud\Logging\V2\CreateExclusionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createSinkAsync(\Google\Cloud\Logging\V2\CreateSinkRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createViewAsync(\Google\Cloud\Logging\V2\CreateViewRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteBucketAsync(\Google\Cloud\Logging\V2\DeleteBucketRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteExclusionAsync(\Google\Cloud\Logging\V2\DeleteExclusionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteSinkAsync(\Google\Cloud\Logging\V2\DeleteSinkRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteViewAsync(\Google\Cloud\Logging\V2\DeleteViewRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getBucketAsync(\Google\Cloud\Logging\V2\GetBucketRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getCmekSettingsAsync(\Google\Cloud\Logging\V2\GetCmekSettingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getExclusionAsync(\Google\Cloud\Logging\V2\GetExclusionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getSinkAsync(\Google\Cloud\Logging\V2\GetSinkRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getViewAsync(\Google\Cloud\Logging\V2\GetViewRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listBucketsAsync(\Google\Cloud\Logging\V2\ListBucketsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listExclusionsAsync(\Google\Cloud\Logging\V2\ListExclusionsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listSinksAsync(\Google\Cloud\Logging\V2\ListSinksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listViewsAsync(\Google\Cloud\Logging\V2\ListViewsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface undeleteBucketAsync(\Google\Cloud\Logging\V2\UndeleteBucketRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateBucketAsync(\Google\Cloud\Logging\V2\UpdateBucketRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateCmekSettingsAsync(\Google\Cloud\Logging\V2\UpdateCmekSettingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateExclusionAsync(\Google\Cloud\Logging\V2\UpdateExclusionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateSinkAsync(\Google\Cloud\Logging\V2\UpdateSinkRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateViewAsync(\Google\Cloud\Logging\V2\UpdateViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createBucketAsync(CreateBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createExclusionAsync(CreateExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createSinkAsync(CreateSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createViewAsync(CreateViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteBucketAsync(DeleteBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteExclusionAsync(DeleteExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteSinkAsync(DeleteSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteViewAsync(DeleteViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBucketAsync(GetBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getCmekSettingsAsync(GetCmekSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getExclusionAsync(GetExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getSinkAsync(GetSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getViewAsync(GetViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listBucketsAsync(ListBucketsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listExclusionsAsync(ListExclusionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listSinksAsync(ListSinksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listViewsAsync(ListViewsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface undeleteBucketAsync(UndeleteBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBucketAsync(UpdateBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCmekSettingsAsync(UpdateCmekSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateExclusionAsync(UpdateExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSinkAsync(UpdateSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateViewAsync(UpdateViewRequest $request, array $optionalArgs = [])
  */
 class ConfigServiceV2BaseClient
 {

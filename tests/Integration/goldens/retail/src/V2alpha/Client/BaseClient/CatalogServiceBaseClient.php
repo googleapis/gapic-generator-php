@@ -41,6 +41,7 @@ use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for managing catalog configuration.
@@ -55,10 +56,10 @@ use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface getDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listCatalogsAsync(\Google\Cloud\Retail\V2alpha\ListCatalogsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setDefaultBranchAsync(\Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateCatalogAsync(\Google\Cloud\Retail\V2alpha\UpdateCatalogRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getDefaultBranchAsync(GetDefaultBranchRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listCatalogsAsync(ListCatalogsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setDefaultBranchAsync(SetDefaultBranchRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCatalogAsync(UpdateCatalogRequest $request, array $optionalArgs = [])
  */
 class CatalogServiceBaseClient
 {

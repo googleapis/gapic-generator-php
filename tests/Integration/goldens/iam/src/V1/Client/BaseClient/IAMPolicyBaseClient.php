@@ -36,6 +36,7 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: ## API Overview
@@ -67,9 +68,9 @@ use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
 class IAMPolicyBaseClient
 {

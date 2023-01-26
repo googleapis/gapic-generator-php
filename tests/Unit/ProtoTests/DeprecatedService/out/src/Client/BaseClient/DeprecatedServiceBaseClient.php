@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Deprecated\FibonacciRequest;
 
 /**
@@ -42,8 +43,8 @@ use Testing\Deprecated\FibonacciRequest;
  *
  * @deprecated This class will be removed in the next major version update.
  *
- * @method GuzzleHttp\Promise\PromiseInterface fastFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface slowFibonacciAsync(\Testing\Deprecated\FibonacciRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface slowFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  */
 class DeprecatedServiceBaseClient
 {

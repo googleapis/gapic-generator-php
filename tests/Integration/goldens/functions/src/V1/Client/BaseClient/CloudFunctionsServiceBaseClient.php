@@ -53,6 +53,7 @@ use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that application uses to manipulate triggers and functions.
@@ -65,17 +66,17 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface callFunctionAsync(\Google\Cloud\Functions\V1\CallFunctionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createFunctionAsync(\Google\Cloud\Functions\V1\CreateFunctionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteFunctionAsync(\Google\Cloud\Functions\V1\DeleteFunctionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface generateDownloadUrlAsync(\Google\Cloud\Functions\V1\GenerateDownloadUrlRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface generateUploadUrlAsync(\Google\Cloud\Functions\V1\GenerateUploadUrlRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getFunctionAsync(\Google\Cloud\Functions\V1\GetFunctionRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listFunctionsAsync(\Google\Cloud\Functions\V1\ListFunctionsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateFunctionAsync(\Google\Cloud\Functions\V1\UpdateFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface callFunctionAsync(CallFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFunctionAsync(CreateFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteFunctionAsync(DeleteFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface generateDownloadUrlAsync(GenerateDownloadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface generateUploadUrlAsync(GenerateUploadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getFunctionAsync(GetFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFunctionsAsync(ListFunctionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
  */
 class CloudFunctionsServiceBaseClient
 {

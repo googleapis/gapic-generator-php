@@ -45,6 +45,7 @@ use Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\WorkflowMetadata;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The API interface for managing Workflow Templates in the
@@ -58,13 +59,13 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\GetWorkflowTemplateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface instantiateInlineWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface instantiateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listWorkflowTemplatesAsync(\Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateWorkflowTemplateAsync(\Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createWorkflowTemplateAsync(CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteWorkflowTemplateAsync(DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getWorkflowTemplateAsync(GetWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface instantiateInlineWorkflowTemplateAsync(InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface instantiateWorkflowTemplateAsync(InstantiateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listWorkflowTemplatesAsync(ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateWorkflowTemplateAsync(UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
  */
 class WorkflowTemplateServiceBaseClient
 {

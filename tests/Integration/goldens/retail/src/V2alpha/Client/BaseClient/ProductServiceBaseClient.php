@@ -48,6 +48,7 @@ use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\SetInventoryRequest;
 use Google\Cloud\Retail\V2alpha\UpdateProductRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for ingesting [Product][google.cloud.retail.v2alpha.Product]
@@ -63,15 +64,15 @@ use Google\LongRunning\Operation;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface addFulfillmentPlacesAsync(\Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createProductAsync(\Google\Cloud\Retail\V2alpha\CreateProductRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteProductAsync(\Google\Cloud\Retail\V2alpha\DeleteProductRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getProductAsync(\Google\Cloud\Retail\V2alpha\GetProductRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface importProductsAsync(\Google\Cloud\Retail\V2alpha\ImportProductsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listProductsAsync(\Google\Cloud\Retail\V2alpha\ListProductsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface removeFulfillmentPlacesAsync(\Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setInventoryAsync(\Google\Cloud\Retail\V2alpha\SetInventoryRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateProductAsync(\Google\Cloud\Retail\V2alpha\UpdateProductRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface addFulfillmentPlacesAsync(AddFulfillmentPlacesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createProductAsync(CreateProductRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteProductAsync(DeleteProductRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getProductAsync(GetProductRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importProductsAsync(ImportProductsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listProductsAsync(ListProductsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface removeFulfillmentPlacesAsync(RemoveFulfillmentPlacesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setInventoryAsync(SetInventoryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateProductAsync(UpdateProductRequest $request, array $optionalArgs = [])
  */
 class ProductServiceBaseClient
 {

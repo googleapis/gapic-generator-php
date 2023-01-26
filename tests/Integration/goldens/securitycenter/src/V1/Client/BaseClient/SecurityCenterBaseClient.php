@@ -66,6 +66,7 @@ use Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: V1 APIs for Security Center service.
@@ -78,29 +79,29 @@ use Google\LongRunning\Operation;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method GuzzleHttp\Promise\PromiseInterface createFindingAsync(\Google\Cloud\SecurityCenter\V1\CreateFindingRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface createSourceAsync(\Google\Cloud\SecurityCenter\V1\CreateSourceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface deleteNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\DeleteNotificationConfigRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getIamPolicyAsync(\Google\Cloud\Iam\V1\GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getOrganizationSettingsAsync(\Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface getSourceAsync(\Google\Cloud\SecurityCenter\V1\GetSourceRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface groupAssetsAsync(\Google\Cloud\SecurityCenter\V1\GroupAssetsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface groupFindingsAsync(\Google\Cloud\SecurityCenter\V1\GroupFindingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listAssetsAsync(\Google\Cloud\SecurityCenter\V1\ListAssetsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listFindingsAsync(\Google\Cloud\SecurityCenter\V1\ListFindingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listNotificationConfigsAsync(\Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface listSourcesAsync(\Google\Cloud\SecurityCenter\V1\ListSourcesRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface runAssetDiscoveryAsync(\Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setFindingStateAsync(\Google\Cloud\SecurityCenter\V1\SetFindingStateRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface setIamPolicyAsync(\Google\Cloud\Iam\V1\SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface testIamPermissionsAsync(\Google\Cloud\Iam\V1\TestIamPermissionsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateFindingAsync(\Google\Cloud\SecurityCenter\V1\UpdateFindingRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateNotificationConfigAsync(\Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateOrganizationSettingsAsync(\Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateSecurityMarksAsync(\Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest $request, array $optionalArgs = [])
- * @method GuzzleHttp\Promise\PromiseInterface updateSourceAsync(\Google\Cloud\SecurityCenter\V1\UpdateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
 class SecurityCenterBaseClient
 {

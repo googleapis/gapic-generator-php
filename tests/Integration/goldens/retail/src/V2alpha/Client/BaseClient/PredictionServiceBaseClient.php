@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for making recommendation prediction.
@@ -50,7 +51,7 @@ use Google\Cloud\Retail\V2alpha\PredictResponse;
  *
  * @experimental
  *
- * @method GuzzleHttp\Promise\PromiseInterface predictAsync(\Google\Cloud\Retail\V2alpha\PredictRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
 class PredictionServiceBaseClient
 {
