@@ -203,26 +203,22 @@ class GapicClientV2Generator
         $argsVar = AST::var('args');
         $argsParam = AST::param(null, $argsVar);
 
-        // local vars
-        $rpcName = AST::var('rpcName');
-        $request = AST::var('request');
-        $optionalArgs = AST::var('optionalArgs');
+        // startAsyncCall arguments
+        $rpcName = AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'));
+        $request = AST::index($argsVar, AST::literal('0'));
+        $optionalArgs = AST::nullCoalescing(AST::index($argsVar, AST::literal('1')), AST::array([]));
+        $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
 
         return AST::method('__call')
             ->withAccess(Access::PUBLIC)
             ->withParams($methodParam, $argsParam)
             ->withBody(AST::block(
                 AST::if(AST::binaryOp(AST::call(AST::SUBSTR)($methodVar, AST::literal('-5')), '!==', AST::literal("'Async'")))
-                    ->then(AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                        AST::interpolatedString('Method name $method does not exist')
-                    ))),
+                    ->then($triggerError),
                 AST::if(AST::binaryOp(AST::call(AST::COUNT)($argsVar), '<', AST::literal('1')))
                     ->then(AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
                         AST::interpolatedString('Async methods require a request message')
                     ))),
-                AST::assign($rpcName, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
-                AST::assign($request, AST::index($argsVar, AST::literal('0'))),
-                AST::assign($optionalArgs, AST::nullCoalescing(AST::index($argsVar, AST::literal('1')), AST::array([]))),
                 AST::return(
                     AST::call(AST::THIS, AST::method('startAsyncCall'))($rpcName, $request, $optionalArgs))));
     }

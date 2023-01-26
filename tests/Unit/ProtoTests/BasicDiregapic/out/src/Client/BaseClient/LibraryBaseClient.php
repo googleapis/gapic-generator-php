@@ -645,17 +645,14 @@ class LibraryBaseClient
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {
-            throw new ValidationException("Method name $method does not exist");
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
         }
 
         if (count($args) < 1) {
             throw new ValidationException("Async methods require a request message");
         }
 
-        $rpcName = substr($method, 0, -5);
-        $request = $args[0];
-        $optionalArgs = $args[1] ?? [];
-        return $this->startAsyncCall($rpcName, $request, $optionalArgs);
+        return $this->startAsyncCall(substr($method, 0, -5), $args[0], $args[1] ?? []);
     }
 
     /**

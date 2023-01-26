@@ -38,6 +38,9 @@ abstract class AST
     /** @var string Constant to reference `__DIR__`. */
     public const __DIR__ = "\0__DIR__";
 
+    /** @var string Constant to reference `__CLASS__`. */
+    public const __CLASS__ = "\0__CLASS__";
+
     /** @var string Constant to reference `isset`. */
     public const ISSET = "\0isset";
 
@@ -64,6 +67,12 @@ abstract class AST
 
     /** @var string Constant to reference `substr`. */
     public const SUBSTR = "\0substr";
+
+    /** @var string Constant to reference `trigger_error`. */
+    public const TRIGGER_ERROR = "\0trigger_error";
+
+    /** @var string Constant to reference `E_USER_ERROR`. */
+    public const E_USER_ERROR = "\0E_USER_ERROR";
 
     protected static function deref($obj): string
     {
