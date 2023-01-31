@@ -140,6 +140,8 @@ class FieldDetails
         'google.firestore.v1.BatchWriteRequest' => ['database'],
         'google.firestore.v1.PartitionQueryRequest' => ['parent'],
         'google.spanner.v1.CreateSessionRequest' => ['session'],
+        'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
+        'google.devtools.artifactregistry.v1beta2.GetFileRequest' => ['name'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
