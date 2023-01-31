@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.5](https://github.com/googleapis/gapic-generator-php/compare/v1.6.4...v1.6.5) (2023-01-31)
+
+
+### Bug Fixes
+
+* Protect artifact registry fields from bc ([#566](https://github.com/googleapis/gapic-generator-php/issues/566)) ([4747c98](https://github.com/googleapis/gapic-generator-php/commit/4747c984ba0cef8b2eacbd26900fbe34c2f6c543))
+
 ## [1.6.4](https://github.com/googleapis/gapic-generator-php/compare/v1.6.3...v1.6.4) (2023-01-05)
 
 
