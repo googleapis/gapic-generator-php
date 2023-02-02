@@ -141,4 +141,42 @@ class BasicOneofClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function aMethodAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new Response();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $supplementaryData = new SupplementaryDataOneof();
+        $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $other = new Other();
+        $otherFirst = 'otherFirst-205632128';
+        $other->setFirst($otherFirst);
+        $requiredOptional = 'requiredOptional987493376';
+        $request = (new Request())
+            ->setExtraDescription($supplementaryData)
+            ->setOther($other)
+            ->setRequiredOptional($requiredOptional);
+        $response = $gapicClient->aMethodAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basiconeof.BasicOneof/AMethod', $actualFuncCall);
+        $actualValue = $actualRequestObject->getExtraDescription();
+        $this->assertTrue($supplementaryData->isExtraDescription());
+        $actualValue = $actualRequestObject->getOther();
+        $this->assertProtobufEquals($other, $actualValue);
+        $actualValue = $actualRequestObject->getRequiredOptional();
+        $this->assertProtobufEquals($requiredOptional, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

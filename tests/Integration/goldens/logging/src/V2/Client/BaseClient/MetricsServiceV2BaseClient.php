@@ -39,6 +39,7 @@ use Google\Cloud\Logging\V2\GetLogMetricRequest;
 use Google\Cloud\Logging\V2\ListLogMetricsRequest;
 use Google\Cloud\Logging\V2\LogMetric;
 use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for configuring logs-based metrics.
@@ -50,6 +51,12 @@ use Google\Cloud\Logging\V2\UpdateLogMetricRequest;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface createLogMetricAsync(CreateLogMetricRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteLogMetricAsync(DeleteLogMetricRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getLogMetricAsync(GetLogMetricRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLogMetricsAsync(ListLogMetricsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateLogMetricAsync(UpdateLogMetricRequest $request, array $optionalArgs = [])
  */
 class MetricsServiceV2BaseClient
 {
@@ -218,8 +225,20 @@ class MetricsServiceV2BaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates a logs-based metric.
+     *
+     * The async variant is {@see self::createLogMetricAsync()} .
      *
      * @param CreateLogMetricRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -243,6 +262,8 @@ class MetricsServiceV2BaseClient
     /**
      * Deletes a logs-based metric.
      *
+     * The async variant is {@see self::deleteLogMetricAsync()} .
+     *
      * @param DeleteLogMetricRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -262,6 +283,8 @@ class MetricsServiceV2BaseClient
 
     /**
      * Gets a logs-based metric.
+     *
+     * The async variant is {@see self::getLogMetricAsync()} .
      *
      * @param GetLogMetricRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -285,6 +308,8 @@ class MetricsServiceV2BaseClient
     /**
      * Lists logs-based metrics.
      *
+     * The async variant is {@see self::listLogMetricsAsync()} .
+     *
      * @param ListLogMetricsRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -306,6 +331,8 @@ class MetricsServiceV2BaseClient
 
     /**
      * Creates or updates a logs-based metric.
+     *
+     * The async variant is {@see self::updateLogMetricAsync()} .
      *
      * @param UpdateLogMetricRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {

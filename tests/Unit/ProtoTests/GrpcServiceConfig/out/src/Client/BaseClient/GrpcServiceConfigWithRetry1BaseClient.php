@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
@@ -44,6 +45,11 @@ use Testing\GrpcServiceConfig\Response1;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface method1AAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1BLroAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1CServiceLevelRetryAsync(Request1 $request, array $optionalArgs = [])
+ * @method PromiseInterface method1DTimeoutOnlyRetryAsync(Request1 $request, array $optionalArgs = [])
  */
 class GrpcServiceConfigWithRetry1BaseClient
 {
@@ -175,7 +181,19 @@ class GrpcServiceConfigWithRetry1BaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
+     * The async variant is {@see self::method1AAsync()} .
+     *
      * @param Request1 $request      A request to house fields associated with the call.
      * @param array    $optionalArgs {
      *     Optional.
@@ -196,6 +214,8 @@ class GrpcServiceConfigWithRetry1BaseClient
     }
 
     /**
+     * The async variant is {@see self::method1BLroAsync()} .
+     *
      * @param Request1 $request      A request to house fields associated with the call.
      * @param array    $optionalArgs {
      *     Optional.
@@ -233,6 +253,8 @@ class GrpcServiceConfigWithRetry1BaseClient
     }
 
     /**
+     * The async variant is {@see self::method1CServiceLevelRetryAsync()} .
+     *
      * @param Request1 $request      A request to house fields associated with the call.
      * @param array    $optionalArgs {
      *     Optional.
@@ -253,6 +275,8 @@ class GrpcServiceConfigWithRetry1BaseClient
     }
 
     /**
+     * The async variant is {@see self::method1DTimeoutOnlyRetryAsync()} .
+     *
      * @param Request1 $request      A request to house fields associated with the call.
      * @param array    $optionalArgs {
      *     Optional.

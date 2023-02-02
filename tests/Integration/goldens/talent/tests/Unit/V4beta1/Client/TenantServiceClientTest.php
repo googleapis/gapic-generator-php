@@ -410,4 +410,41 @@ class TenantServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createTenantAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $externalId = 'externalId-1153075697';
+        $expectedResponse = new Tenant();
+        $expectedResponse->setName($name);
+        $expectedResponse->setExternalId($externalId);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->projectName('[PROJECT]');
+        $tenant = new Tenant();
+        $tenantExternalId = 'tenantExternalId-300736880';
+        $tenant->setExternalId($tenantExternalId);
+        $request = (new CreateTenantRequest())
+            ->setParent($formattedParent)
+            ->setTenant($tenant);
+        $response = $gapicClient->createTenantAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.talent.v4beta1.TenantService/CreateTenant', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getTenant();
+        $this->assertProtobufEquals($tenant, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

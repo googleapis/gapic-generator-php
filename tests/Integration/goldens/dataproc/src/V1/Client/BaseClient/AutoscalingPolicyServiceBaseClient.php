@@ -39,6 +39,7 @@ use Google\Cloud\Dataproc\V1\DeleteAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\GetAutoscalingPolicyRequest;
 use Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest;
 use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The API interface for managing autoscaling policies in the
@@ -51,6 +52,12 @@ use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface createAutoscalingPolicyAsync(CreateAutoscalingPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAutoscalingPolicyAsync(DeleteAutoscalingPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getAutoscalingPolicyAsync(GetAutoscalingPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAutoscalingPoliciesAsync(ListAutoscalingPoliciesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateAutoscalingPolicyAsync(UpdateAutoscalingPolicyRequest $request, array $optionalArgs = [])
  */
 class AutoscalingPolicyServiceBaseClient
 {
@@ -277,8 +284,20 @@ class AutoscalingPolicyServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates new autoscaling policy.
+     *
+     * The async variant is {@see self::createAutoscalingPolicyAsync()} .
      *
      * @param CreateAutoscalingPolicyRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
@@ -303,6 +322,8 @@ class AutoscalingPolicyServiceBaseClient
      * Deletes an autoscaling policy. It is an error to delete an autoscaling
      * policy that is in use by one or more clusters.
      *
+     * The async variant is {@see self::deleteAutoscalingPolicyAsync()} .
+     *
      * @param DeleteAutoscalingPolicyRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
      *     Optional.
@@ -322,6 +343,8 @@ class AutoscalingPolicyServiceBaseClient
 
     /**
      * Retrieves autoscaling policy.
+     *
+     * The async variant is {@see self::getAutoscalingPolicyAsync()} .
      *
      * @param GetAutoscalingPolicyRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {
@@ -344,6 +367,8 @@ class AutoscalingPolicyServiceBaseClient
 
     /**
      * Lists autoscaling policies in the project.
+     *
+     * The async variant is {@see self::listAutoscalingPoliciesAsync()} .
      *
      * @param ListAutoscalingPoliciesRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
@@ -369,6 +394,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * Disabled check for update_mask, because all updates will be full
      * replacements.
+     *
+     * The async variant is {@see self::updateAutoscalingPolicyAsync()} .
      *
      * @param UpdateAutoscalingPolicyRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {

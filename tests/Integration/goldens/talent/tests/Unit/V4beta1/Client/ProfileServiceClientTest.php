@@ -518,4 +518,49 @@ class ProfileServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createProfileAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $externalId = 'externalId-1153075697';
+        $source = 'source-896505829';
+        $uri = 'uri116076';
+        $groupId = 'groupId506361563';
+        $processed = true;
+        $keywordSnippet = 'keywordSnippet1325317319';
+        $expectedResponse = new Profile();
+        $expectedResponse->setName($name);
+        $expectedResponse->setExternalId($externalId);
+        $expectedResponse->setSource($source);
+        $expectedResponse->setUri($uri);
+        $expectedResponse->setGroupId($groupId);
+        $expectedResponse->setProcessed($processed);
+        $expectedResponse->setKeywordSnippet($keywordSnippet);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->tenantName('[PROJECT]', '[TENANT]');
+        $profile = new Profile();
+        $request = (new CreateProfileRequest())
+            ->setParent($formattedParent)
+            ->setProfile($profile);
+        $response = $gapicClient->createProfileAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.talent.v4beta1.ProfileService/CreateProfile', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getProfile();
+        $this->assertProtobufEquals($profile, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -276,4 +276,37 @@ class CompletionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         $this->assertTrue($operationsTransport->isExhausted());
     }
+
+    /** @test */
+    public function completeQueryAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $attributionToken = 'attributionToken-729411015';
+        $expectedResponse = new CompleteQueryResponse();
+        $expectedResponse->setAttributionToken($attributionToken);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedCatalog = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $query = 'query107944136';
+        $request = (new CompleteQueryRequest())
+            ->setCatalog($formattedCatalog)
+            ->setQuery($query);
+        $response = $gapicClient->completeQueryAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CompletionService/CompleteQuery', $actualFuncCall);
+        $actualValue = $actualRequestObject->getCatalog();
+        $this->assertProtobufEquals($formattedCatalog, $actualValue);
+        $actualValue = $actualRequestObject->getQuery();
+        $this->assertProtobufEquals($query, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

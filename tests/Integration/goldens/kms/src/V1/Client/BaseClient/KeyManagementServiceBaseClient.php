@@ -70,6 +70,7 @@ use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
 use Google\Cloud\Location\Location;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Google Cloud Key Management Service
@@ -92,6 +93,33 @@ use Google\Cloud\Location\Location;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface asymmetricDecryptAsync(AsymmetricDecryptRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface asymmetricSignAsync(AsymmetricSignRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createCryptoKeyAsync(CreateCryptoKeyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createCryptoKeyVersionAsync(CreateCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createImportJobAsync(CreateImportJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createKeyRingAsync(CreateKeyRingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface decryptAsync(DecryptRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface destroyCryptoKeyVersionAsync(DestroyCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface encryptAsync(EncryptRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getCryptoKeyAsync(GetCryptoKeyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getCryptoKeyVersionAsync(GetCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getImportJobAsync(GetImportJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getKeyRingAsync(GetKeyRingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getPublicKeyAsync(GetPublicKeyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importCryptoKeyVersionAsync(ImportCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listCryptoKeyVersionsAsync(ListCryptoKeyVersionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listCryptoKeysAsync(ListCryptoKeysRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listImportJobsAsync(ListImportJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listKeyRingsAsync(ListKeyRingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface restoreCryptoKeyVersionAsync(RestoreCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCryptoKeyAsync(UpdateCryptoKeyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCryptoKeyPrimaryVersionAsync(UpdateCryptoKeyPrimaryVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCryptoKeyVersionAsync(UpdateCryptoKeyVersionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
 class KeyManagementServiceBaseClient
 {
@@ -329,12 +357,24 @@ class KeyManagementServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Decrypts data that was encrypted with a public key retrieved from
      * [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
      * corresponding to a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
      * with [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
      * ASYMMETRIC_DECRYPT.
+     *
+     * The async variant is {@see self::asymmetricDecryptAsync()} .
      *
      * @param AsymmetricDecryptRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
@@ -361,6 +401,8 @@ class KeyManagementServiceBaseClient
      * ASYMMETRIC_SIGN, producing a signature that can be verified with the public
      * key retrieved from
      * [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+     *
+     * The async variant is {@see self::asymmetricSignAsync()} .
      *
      * @param AsymmetricSignRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -389,6 +431,8 @@ class KeyManagementServiceBaseClient
      * [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
      * are required.
      *
+     * The async variant is {@see self::createCryptoKeyAsync()} .
+     *
      * @param CreateCryptoKeyRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -416,6 +460,8 @@ class KeyManagementServiceBaseClient
      * [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set to
      * [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
      *
+     * The async variant is {@see self::createCryptoKeyVersionAsync()} .
+     *
      * @param CreateCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
      *     Optional.
@@ -442,6 +488,8 @@ class KeyManagementServiceBaseClient
      * [ImportJob.import_method][google.cloud.kms.v1.ImportJob.import_method] is
      * required.
      *
+     * The async variant is {@see self::createImportJobAsync()} .
+     *
      * @param CreateImportJobRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -464,6 +512,8 @@ class KeyManagementServiceBaseClient
     /**
      * Create a new [KeyRing][google.cloud.kms.v1.KeyRing] in a given Project and
      * Location.
+     *
+     * The async variant is {@see self::createKeyRingAsync()} .
      *
      * @param CreateKeyRingRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -489,6 +539,8 @@ class KeyManagementServiceBaseClient
      * [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt]. The
      * [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
      * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+     *
+     * The async variant is {@see self::decryptAsync()} .
      *
      * @param DecryptRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
@@ -529,6 +581,8 @@ class KeyManagementServiceBaseClient
      * [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
      * may be called to reverse the process.
      *
+     * The async variant is {@see self::destroyCryptoKeyVersionAsync()} .
+     *
      * @param DestroyCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
      *     Optional.
@@ -554,6 +608,8 @@ class KeyManagementServiceBaseClient
      * [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
      * [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
      *
+     * The async variant is {@see self::encryptAsync()} .
+     *
      * @param EncryptRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
      *     Optional.
@@ -578,6 +634,8 @@ class KeyManagementServiceBaseClient
      * well as its [primary][google.cloud.kms.v1.CryptoKey.primary]
      * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
      *
+     * The async variant is {@see self::getCryptoKeyAsync()} .
+     *
      * @param GetCryptoKeyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -600,6 +658,8 @@ class KeyManagementServiceBaseClient
     /**
      * Returns metadata for a given
      * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+     *
+     * The async variant is {@see self::getCryptoKeyVersionAsync()} .
      *
      * @param GetCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                      $optionalArgs {
@@ -625,6 +685,8 @@ class KeyManagementServiceBaseClient
      * Returns an empty policy if the resource exists and does not have a policy
      * set.
      *
+     * The async variant is {@see self::getIamPolicyAsync()} .
+     *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -647,6 +709,8 @@ class KeyManagementServiceBaseClient
     /**
      * Returns metadata for a given [ImportJob][google.cloud.kms.v1.ImportJob].
      *
+     * The async variant is {@see self::getImportJobAsync()} .
+     *
      * @param GetImportJobRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -668,6 +732,8 @@ class KeyManagementServiceBaseClient
 
     /**
      * Returns metadata for a given [KeyRing][google.cloud.kms.v1.KeyRing].
+     *
+     * The async variant is {@see self::getKeyRingAsync()} .
      *
      * @param GetKeyRingRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -696,6 +762,8 @@ class KeyManagementServiceBaseClient
      * or
      * [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
      *
+     * The async variant is {@see self::getPublicKeyAsync()} .
+     *
      * @param GetPublicKeyRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -723,6 +791,8 @@ class KeyManagementServiceBaseClient
      * The version ID will be assigned the next sequential id within the
      * [CryptoKey][google.cloud.kms.v1.CryptoKey].
      *
+     * The async variant is {@see self::importCryptoKeyVersionAsync()} .
+     *
      * @param ImportCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
      *     Optional.
@@ -744,6 +814,8 @@ class KeyManagementServiceBaseClient
 
     /**
      * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
+     *
+     * The async variant is {@see self::listCryptoKeyVersionsAsync()} .
      *
      * @param ListCryptoKeyVersionsRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
@@ -767,6 +839,8 @@ class KeyManagementServiceBaseClient
     /**
      * Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
      *
+     * The async variant is {@see self::listCryptoKeysAsync()} .
+     *
      * @param ListCryptoKeysRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -789,6 +863,8 @@ class KeyManagementServiceBaseClient
     /**
      * Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
      *
+     * The async variant is {@see self::listImportJobsAsync()} .
+     *
      * @param ListImportJobsRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -810,6 +886,8 @@ class KeyManagementServiceBaseClient
 
     /**
      * Lists [KeyRings][google.cloud.kms.v1.KeyRing].
+     *
+     * The async variant is {@see self::listKeyRingsAsync()} .
      *
      * @param ListKeyRingsRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -841,6 +919,8 @@ class KeyManagementServiceBaseClient
      * and [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time] will
      * be cleared.
      *
+     * The async variant is {@see self::restoreCryptoKeyVersionAsync()} .
+     *
      * @param RestoreCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
      *     Optional.
@@ -862,6 +942,8 @@ class KeyManagementServiceBaseClient
 
     /**
      * Update a [CryptoKey][google.cloud.kms.v1.CryptoKey].
+     *
+     * The async variant is {@see self::updateCryptoKeyAsync()} .
      *
      * @param UpdateCryptoKeyRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -888,6 +970,8 @@ class KeyManagementServiceBaseClient
      * [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
      *
      * Returns an error if called on an asymmetric key.
+     *
+     * The async variant is {@see self::updateCryptoKeyPrimaryVersionAsync()} .
      *
      * @param UpdateCryptoKeyPrimaryVersionRequest $request      A request to house fields associated with the call.
      * @param array                                $optionalArgs {
@@ -922,6 +1006,8 @@ class KeyManagementServiceBaseClient
      * [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
      * to move between other states.
      *
+     * The async variant is {@see self::updateCryptoKeyVersionAsync()} .
+     *
      * @param UpdateCryptoKeyVersionRequest $request      A request to house fields associated with the call.
      * @param array                         $optionalArgs {
      *     Optional.
@@ -944,6 +1030,8 @@ class KeyManagementServiceBaseClient
     /**
      * Gets information about a location.
      *
+     * The async variant is {@see self::getLocationAsync()} .
+     *
      * @param GetLocationRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -965,6 +1053,8 @@ class KeyManagementServiceBaseClient
 
     /**
      * This is a different comment for ListLocations in the yaml file that should clobber the protobuf's documentation.
+     *
+     * The async variant is {@see self::listLocationsAsync()} .
      *
      * @param ListLocationsRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

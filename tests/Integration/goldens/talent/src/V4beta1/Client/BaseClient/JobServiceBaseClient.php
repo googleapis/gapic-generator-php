@@ -48,6 +48,7 @@ use Google\Cloud\Talent\V4beta1\ListJobsRequest;
 use Google\Cloud\Talent\V4beta1\SearchJobsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service handles job management, including job CRUD, enumeration and search.
@@ -61,6 +62,17 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface batchCreateJobsAsync(BatchCreateJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchDeleteJobsAsync(BatchDeleteJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchUpdateJobsAsync(BatchUpdateJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createJobAsync(CreateJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getJobAsync(GetJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listJobsAsync(ListJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchJobsAsync(SearchJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchJobsForAlertAsync(SearchJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobServiceBaseClient
 {
@@ -398,8 +410,20 @@ class JobServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Begins executing a batch create jobs operation.
+     *
+     * The async variant is {@see self::batchCreateJobsAsync()} .
      *
      * @param BatchCreateJobsRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -425,6 +449,8 @@ class JobServiceBaseClient
     /**
      * Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
      *
+     * The async variant is {@see self::batchDeleteJobsAsync()} .
+     *
      * @param BatchDeleteJobsRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -446,6 +472,8 @@ class JobServiceBaseClient
 
     /**
      * Begins executing a batch update jobs operation.
+     *
+     * The async variant is {@see self::batchUpdateJobsAsync()} .
      *
      * @param BatchUpdateJobsRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -474,6 +502,8 @@ class JobServiceBaseClient
      * Typically, the job becomes searchable within 10 seconds, but it may take
      * up to 5 minutes.
      *
+     * The async variant is {@see self::createJobAsync()} .
+     *
      * @param CreateJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -501,6 +531,8 @@ class JobServiceBaseClient
      * Typically, the job becomes unsearchable within 10 seconds, but it may take
      * up to 5 minutes.
      *
+     * The async variant is {@see self::deleteJobAsync()} .
+     *
      * @param DeleteJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -523,6 +555,8 @@ class JobServiceBaseClient
     /**
      * Retrieves the specified job, whose status is OPEN or recently EXPIRED
      * within the last 90 days.
+     *
+     * The async variant is {@see self::getJobAsync()} .
      *
      * @param GetJobRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
@@ -547,6 +581,8 @@ class JobServiceBaseClient
 
     /**
      * Lists jobs by filter.
+     *
+     * The async variant is {@see self::listJobsAsync()} .
      *
      * @param ListJobsRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
@@ -575,6 +611,8 @@ class JobServiceBaseClient
      * This call constrains the [visibility][google.cloud.talent.v4beta1.Job.visibility] of jobs
      * present in the database, and only returns jobs that the caller has
      * permission to search against.
+     *
+     * The async variant is {@see self::searchJobsAsync()} .
      *
      * @param SearchJobsRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -609,6 +647,8 @@ class JobServiceBaseClient
      * present in the database, and only returns jobs the caller has
      * permission to search against.
      *
+     * The async variant is {@see self::searchJobsForAlertAsync()} .
+     *
      * @param SearchJobsRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -635,6 +675,8 @@ class JobServiceBaseClient
      *
      * Typically, updated contents become visible in search results within 10
      * seconds, but it may take up to 5 minutes.
+     *
+     * The async variant is {@see self::updateJobAsync()} .
      *
      * @param UpdateJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

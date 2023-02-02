@@ -46,6 +46,7 @@ use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -71,6 +72,16 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface createInstanceAsync(CreateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteInstanceAsync(DeleteInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface exportInstanceAsync(ExportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface failoverInstanceAsync(FailoverInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getInstanceAsync(GetInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface importInstanceAsync(ImportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listInstancesAsync(ListInstancesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateInstanceAsync(UpdateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface upgradeInstanceAsync(UpgradeInstanceRequest $request, array $optionalArgs = [])
  */
 class CloudRedisBaseClient
 {
@@ -271,6 +282,16 @@ class CloudRedisBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates a Redis instance based on the specified tier and memory size.
      *
@@ -284,6 +305,8 @@ class CloudRedisBaseClient
      *
      * The returned operation is automatically deleted after a few hours, so there
      * is no need to call DeleteOperation.
+     *
+     * The async variant is {@see self::createInstanceAsync()} .
      *
      * @param CreateInstanceRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -307,6 +330,8 @@ class CloudRedisBaseClient
     /**
      * Deletes a specific Redis instance.  Instance stops serving and data is
      * deleted.
+     *
+     * The async variant is {@see self::deleteInstanceAsync()} .
      *
      * @param DeleteInstanceRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -335,6 +360,8 @@ class CloudRedisBaseClient
      * The returned operation is automatically deleted after a few hours, so
      * there is no need to call DeleteOperation.
      *
+     * The async variant is {@see self::exportInstanceAsync()} .
+     *
      * @param ExportInstanceRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -358,6 +385,8 @@ class CloudRedisBaseClient
      * Initiates a failover of the master node to current replica node for a
      * specific STANDARD tier Cloud Memorystore for Redis instance.
      *
+     * The async variant is {@see self::failoverInstanceAsync()} .
+     *
      * @param FailoverInstanceRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -379,6 +408,8 @@ class CloudRedisBaseClient
 
     /**
      * Gets the details of a specific Redis instance.
+     *
+     * The async variant is {@see self::getInstanceAsync()} .
      *
      * @param GetInstanceRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -408,6 +439,8 @@ class CloudRedisBaseClient
      *
      * The returned operation is automatically deleted after a few hours, so
      * there is no need to call DeleteOperation.
+     *
+     * The async variant is {@see self::importInstanceAsync()} .
      *
      * @param ImportInstanceRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -439,6 +472,8 @@ class CloudRedisBaseClient
      * If `location_id` is specified as `-` (wildcard), then all regions
      * available to the project are queried, and the results are aggregated.
      *
+     * The async variant is {@see self::listInstancesAsync()} .
+     *
      * @param ListInstancesRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -465,6 +500,8 @@ class CloudRedisBaseClient
      * in the response field. The returned operation is automatically deleted
      * after a few hours, so there is no need to call DeleteOperation.
      *
+     * The async variant is {@see self::updateInstanceAsync()} .
+     *
      * @param UpdateInstanceRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -487,6 +524,8 @@ class CloudRedisBaseClient
     /**
      * Upgrades Redis instance to the newer Redis version specified in the
      * request.
+     *
+     * The async variant is {@see self::upgradeInstanceAsync()} .
      *
      * @param UpgradeInstanceRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {

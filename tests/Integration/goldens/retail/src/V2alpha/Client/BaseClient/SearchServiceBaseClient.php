@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\SearchRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for search.
@@ -53,6 +54,8 @@ use Google\Cloud\Retail\V2alpha\SearchRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface searchAsync(SearchRequest $request, array $optionalArgs = [])
  */
 class SearchServiceBaseClient
 {
@@ -211,12 +214,24 @@ class SearchServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Performs a search.
      *
      * This feature is only available for users who have Retail Search enabled.
      * Please submit a form [here](https://cloud.google.com/contact) to contact
      * cloud sales if you are interested in using Retail Search.
+     *
+     * The async variant is {@see self::searchAsync()} .
      *
      * @param SearchRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {

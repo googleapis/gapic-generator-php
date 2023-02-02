@@ -38,6 +38,7 @@ use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Cloud\Compute\V1\InsertAddressRequest;
 use Google\Cloud\Compute\V1\ListAddressesRequest;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description:
@@ -47,6 +48,11 @@ use Google\Cloud\Compute\V1\RegionOperationsClient;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAsync(ListAddressesRequest $request, array $optionalArgs = [])
  */
 class AddressesBaseClient
 {
@@ -212,8 +218,20 @@ class AddressesBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Retrieves an aggregated list of addresses.
+     *
+     * The async variant is {@see self::aggregatedListAsync()} .
      *
      * @param AggregatedListAddressesRequest $request      A request to house fields associated with the call.
      * @param array                          $optionalArgs {
@@ -237,6 +255,8 @@ class AddressesBaseClient
     /**
      * Deletes the specified address resource.
      *
+     * The async variant is {@see self::deleteAsync()} .
+     *
      * @param DeleteAddressRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -259,6 +279,8 @@ class AddressesBaseClient
     /**
      * Creates an address resource in the specified project by using the data included in the request.
      *
+     * The async variant is {@see self::insertAsync()} .
+     *
      * @param InsertAddressRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -280,6 +302,8 @@ class AddressesBaseClient
 
     /**
      * Retrieves a list of addresses contained within the specified region.
+     *
+     * The async variant is {@see self::listAsync()} .
      *
      * @param ListAddressesRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

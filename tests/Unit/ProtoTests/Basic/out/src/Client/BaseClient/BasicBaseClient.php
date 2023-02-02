@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -40,6 +41,9 @@ use Testing\Basic\Response;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */
 class BasicBaseClient
 {
@@ -142,8 +146,20 @@ class BasicBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Test summary text for AMethod
+     *
+     * The async variant is {@see self::aMethodAsync()} .
      *
      * @param Request $request      A request to house fields associated with the call.
      * @param array   $optionalArgs {
@@ -166,6 +182,8 @@ class BasicBaseClient
 
     /**
      * Test including method args.
+     *
+     * The async variant is {@see self::methodWithArgsAsync()} .
      *
      * @param RequestWithArgs $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {

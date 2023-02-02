@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service handles auto completion.
@@ -49,6 +50,8 @@ use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  */
 class CompletionBaseClient
 {
@@ -286,9 +289,21 @@ class CompletionBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Completes the specified prefix with keyword suggestions.
      * Intended for use by a job search auto-complete search box.
+     *
+     * The async variant is {@see self::completeQueryAsync()} .
      *
      * @param CompleteQueryRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

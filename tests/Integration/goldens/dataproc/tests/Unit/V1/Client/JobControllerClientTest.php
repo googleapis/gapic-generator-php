@@ -728,4 +728,47 @@ class JobControllerClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function cancelJobAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $driverOutputResourceUri = 'driverOutputResourceUri-542229086';
+        $driverControlFilesUri = 'driverControlFilesUri207057643';
+        $jobUuid = 'jobUuid-1615012099';
+        $done = true;
+        $expectedResponse = new Job();
+        $expectedResponse->setDriverOutputResourceUri($driverOutputResourceUri);
+        $expectedResponse->setDriverControlFilesUri($driverControlFilesUri);
+        $expectedResponse->setJobUuid($jobUuid);
+        $expectedResponse->setDone($done);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $projectId = 'projectId-1969970175';
+        $region = 'region-934795532';
+        $jobId = 'jobId-1154752291';
+        $request = (new CancelJobRequest())
+            ->setProjectId($projectId)
+            ->setRegion($region)
+            ->setJobId($jobId);
+        $response = $gapicClient->cancelJobAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.dataproc.v1.JobController/CancelJob', $actualFuncCall);
+        $actualValue = $actualRequestObject->getProjectId();
+        $this->assertProtobufEquals($projectId, $actualValue);
+        $actualValue = $actualRequestObject->getRegion();
+        $this->assertProtobufEquals($region, $actualValue);
+        $actualValue = $actualRequestObject->getJobId();
+        $this->assertProtobufEquals($jobId, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

@@ -1760,4 +1760,47 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function createBucketAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $description = 'description-1724546052';
+        $retentionDays = 1544391896;
+        $locked = true;
+        $expectedResponse = new LogBucket();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDescription($description);
+        $expectedResponse->setRetentionDays($retentionDays);
+        $expectedResponse->setLocked($locked);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $gapicClient->organizationLocationName('[ORGANIZATION]', '[LOCATION]');
+        $bucketId = 'bucketId1837164432';
+        $bucket = new LogBucket();
+        $request = (new CreateBucketRequest())
+            ->setParent($formattedParent)
+            ->setBucketId($bucketId)
+            ->setBucket($bucket);
+        $response = $gapicClient->createBucketAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.logging.v2.ConfigServiceV2/CreateBucket', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getBucketId();
+        $this->assertProtobufEquals($bucketId, $actualValue);
+        $actualValue = $actualRequestObject->getBucket();
+        $this->assertProtobufEquals($bucket, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

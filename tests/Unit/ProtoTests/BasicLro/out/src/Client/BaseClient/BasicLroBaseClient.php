@@ -34,6 +34,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicLro\Request;
 
 /**
@@ -41,6 +42,10 @@ use Testing\BasicLro\Request;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodNonLro1Async(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodNonLro2Async(Request $request, array $optionalArgs = [])
  */
 class BasicLroBaseClient
 {
@@ -175,10 +180,22 @@ class BasicLroBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * To test method ordering; LRO methods referenced in gapic.yaml
      * file are always generated first; so this method will be emitted
      * before the above MethodNonLro1.
+     *
+     * The async variant is {@see self::method1Async()} .
      *
      * @param Request $request      A request to house fields associated with the call.
      * @param array   $optionalArgs {
@@ -200,6 +217,8 @@ class BasicLroBaseClient
     }
 
     /**
+     * The async variant is {@see self::methodNonLro1Async()} .
+     *
      * @param Request $request      A request to house fields associated with the call.
      * @param array   $optionalArgs {
      *     Optional.
@@ -220,6 +239,8 @@ class BasicLroBaseClient
     }
 
     /**
+     * The async variant is {@see self::methodNonLro2Async()} .
+     *
      * @param Request $request      A request to house fields associated with the call.
      * @param array   $optionalArgs {
      *     Optional.

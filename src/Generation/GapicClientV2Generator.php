@@ -22,6 +22,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
@@ -37,8 +38,10 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
+use GuzzleHttp\Promise\PromiseInterface;
 
 class GapicClientV2Generator
 {
@@ -116,7 +119,8 @@ class GapicClientV2Generator
                         'that are returned by the API.'
                     ),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
+                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
+                $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withTrait(
@@ -133,6 +137,7 @@ class GapicClientV2Generator
             ->withMembers($this->operationMethods())
             ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
+            ->withMember($this->magicMethod())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
     }
 
@@ -170,6 +175,44 @@ class GapicClientV2Generator
             ->withAccess(Access::PUBLIC, Access::STATIC)
             ->withPhpDocText('The default scopes required by the service.')
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
+    }
+
+    private function magicAsyncDocs(): PhpDoc
+    {
+        $methodDocs = $this->serviceDetails->methods
+            ->filter(fn($m) => !$m->isStreaming())
+            ->map(fn($m) => PhpDoc::method(
+                $m->methodName . "Async",
+                $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name,
+                $m->requestType->name, // the request type will already be imported for the sync variants
+            ));
+        return PhpDoc::block($methodDocs);
+    }
+
+    private function magicMethod(): ?PhpClassMember
+    {
+        // Only has streaming RPCs, so exclude __call from implementation, since
+        // the magic method is only for async support at the moment.
+        if ($this->serviceDetails->streamingOnly) {
+            return null;
+        }
+
+        // params
+        $methodVar = AST::var('method');
+        $methodParam = AST::param(null, $methodVar);
+        $argsVar = AST::var('args');
+        $argsParam = AST::param(null, $argsVar);
+        $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
+
+        return AST::method('__call')
+            ->withAccess(Access::PUBLIC)
+            ->withParams($methodParam, $argsParam)
+            ->withBody(AST::block(
+                AST::if(AST::binaryOp(AST::call(AST::SUBSTR)($methodVar, AST::literal('-5')), '!==', AST::literal("'Async'")))
+                    ->then($triggerError),
+                AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
+                AST::return(
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))));
     }
 
     private function operationsClient(): ?PhpClassMember
@@ -619,6 +662,14 @@ class GapicClientV2Generator
                 PhpDoc::block(
                     count($method->docLines) > 0
                         ? PhpDoc::preFormattedText($method->docLines)
+                        : null,
+                    !$method->isStreaming()
+                        ? PhpDoc::text(
+                            'The async variant is',
+                            AST::staticCall( // use staticCall for PHP Doc :: syntax
+                                ResolvedType::self(),
+                                AST::method($method->methodName . 'Async'))(),
+                            '.')
                         : null,
                     $usesRequest
                         ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))

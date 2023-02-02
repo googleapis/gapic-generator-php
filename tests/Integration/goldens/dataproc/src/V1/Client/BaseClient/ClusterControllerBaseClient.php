@@ -47,6 +47,7 @@ use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The ClusterControllerService provides methods to manage clusters
@@ -59,6 +60,15 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface createClusterAsync(CreateClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteClusterAsync(DeleteClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface diagnoseClusterAsync(DiagnoseClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getClusterAsync(GetClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listClustersAsync(ListClustersRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface startClusterAsync(StartClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface stopClusterAsync(StopClusterRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateClusterAsync(UpdateClusterRequest $request, array $optionalArgs = [])
  */
 class ClusterControllerBaseClient
 {
@@ -261,10 +271,22 @@ class ClusterControllerBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates a cluster in a project. The returned
      * [Operation.metadata][google.longrunning.Operation.metadata] will be
      * [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
+     *
+     * The async variant is {@see self::createClusterAsync()} .
      *
      * @param CreateClusterRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -289,6 +311,8 @@ class ClusterControllerBaseClient
      * Deletes a cluster in a project. The returned
      * [Operation.metadata][google.longrunning.Operation.metadata] will be
      * [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
+     *
+     * The async variant is {@see self::deleteClusterAsync()} .
      *
      * @param DeleteClusterRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -318,6 +342,8 @@ class ClusterControllerBaseClient
      * contains
      * [DiagnoseClusterResults](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults).
      *
+     * The async variant is {@see self::diagnoseClusterAsync()} .
+     *
      * @param DiagnoseClusterRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
      *     Optional.
@@ -339,6 +365,8 @@ class ClusterControllerBaseClient
 
     /**
      * Gets the resource representation for a cluster in a project.
+     *
+     * The async variant is {@see self::getClusterAsync()} .
      *
      * @param GetClusterRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -362,6 +390,8 @@ class ClusterControllerBaseClient
     /**
      * Lists all regions/{region}/clusters in a project alphabetically.
      *
+     * The async variant is {@see self::listClustersAsync()} .
+     *
      * @param ListClustersRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -384,6 +414,8 @@ class ClusterControllerBaseClient
     /**
      * Starts a cluster in a project.
      *
+     * The async variant is {@see self::startClusterAsync()} .
+     *
      * @param StartClusterRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -405,6 +437,8 @@ class ClusterControllerBaseClient
 
     /**
      * Stops a cluster in a project.
+     *
+     * The async variant is {@see self::stopClusterAsync()} .
      *
      * @param StopClusterRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -431,6 +465,8 @@ class ClusterControllerBaseClient
      * [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
      * The cluster must be in a [`RUNNING`][google.cloud.dataproc.v1.ClusterStatus.State] state or an error
      * is returned.
+     *
+     * The async variant is {@see self::updateClusterAsync()} .
      *
      * @param UpdateClusterRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\DeleteApplicationRequest;
 use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles application management, including CRUD and
@@ -55,6 +56,12 @@ use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface createApplicationAsync(CreateApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteApplicationAsync(DeleteApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getApplicationAsync(GetApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listApplicationsAsync(ListApplicationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateApplicationAsync(UpdateApplicationRequest $request, array $optionalArgs = [])
  */
 class ApplicationServiceBaseClient
 {
@@ -364,8 +371,20 @@ class ApplicationServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates a new application entity.
+     *
+     * The async variant is {@see self::createApplicationAsync()} .
      *
      * @param CreateApplicationRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
@@ -391,6 +410,8 @@ class ApplicationServiceBaseClient
     /**
      * Deletes specified application.
      *
+     * The async variant is {@see self::deleteApplicationAsync()} .
+     *
      * @param DeleteApplicationRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {
      *     Optional.
@@ -412,6 +433,8 @@ class ApplicationServiceBaseClient
 
     /**
      * Retrieves specified application.
+     *
+     * The async variant is {@see self::getApplicationAsync()} .
      *
      * @param GetApplicationRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
@@ -437,6 +460,8 @@ class ApplicationServiceBaseClient
     /**
      * Lists all applications associated with the profile.
      *
+     * The async variant is {@see self::listApplicationsAsync()} .
+     *
      * @param ListApplicationsRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -460,6 +485,8 @@ class ApplicationServiceBaseClient
 
     /**
      * Updates specified application.
+     *
+     * The async variant is {@see self::updateApplicationAsync()} .
      *
      * @param UpdateApplicationRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {

@@ -42,12 +42,21 @@ use Google\Cloud\Dataproc\V1\ListJobsRequest;
 use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Cloud\Dataproc\V1\UpdateJobRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: The JobController provides methods to manage jobs.
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface cancelJobAsync(CancelJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getJobAsync(GetJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listJobsAsync(ListJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface submitJobAsync(SubmitJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface submitJobAsOperationAsync(SubmitJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobControllerBaseClient
 {
@@ -181,12 +190,24 @@ class JobControllerBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Starts a job cancellation request. To access the job resource
      * after cancellation, call
      * [regions/{region}/jobs.list](https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list)
      * or
      * [regions/{region}/jobs.get](https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get).
+     *
+     * The async variant is {@see self::cancelJobAsync()} .
      *
      * @param CancelJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -211,6 +232,8 @@ class JobControllerBaseClient
      * Deletes the job from the project. If the job is active, the delete fails,
      * and the response returns `FAILED_PRECONDITION`.
      *
+     * The async variant is {@see self::deleteJobAsync()} .
+     *
      * @param DeleteJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -230,6 +253,8 @@ class JobControllerBaseClient
 
     /**
      * Gets the resource representation for a job in a project.
+     *
+     * The async variant is {@see self::getJobAsync()} .
      *
      * @param GetJobRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
@@ -253,6 +278,8 @@ class JobControllerBaseClient
     /**
      * Lists regions/{region}/jobs in a project.
      *
+     * The async variant is {@see self::listJobsAsync()} .
+     *
      * @param ListJobsRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
      *     Optional.
@@ -274,6 +301,8 @@ class JobControllerBaseClient
 
     /**
      * Submits a job to a cluster.
+     *
+     * The async variant is {@see self::submitJobAsync()} .
      *
      * @param SubmitJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -297,6 +326,8 @@ class JobControllerBaseClient
     /**
      * Submits job to a cluster.
      *
+     * The async variant is {@see self::submitJobAsOperationAsync()} .
+     *
      * @param SubmitJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -318,6 +349,8 @@ class JobControllerBaseClient
 
     /**
      * Updates a job in a project.
+     *
+     * The async variant is {@see self::updateJobAsync()} .
      *
      * @param UpdateJobRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

@@ -41,6 +41,7 @@ use Google\Cloud\Talent\V4beta1\GetTenantRequest;
 use Google\Cloud\Talent\V4beta1\ListTenantsRequest;
 use Google\Cloud\Talent\V4beta1\Tenant;
 use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles tenant management, including CRUD and enumeration.
@@ -54,6 +55,12 @@ use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface createTenantAsync(CreateTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteTenantAsync(DeleteTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getTenantAsync(GetTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listTenantsAsync(ListTenantsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateTenantAsync(UpdateTenantRequest $request, array $optionalArgs = [])
  */
 class TenantServiceBaseClient
 {
@@ -227,8 +234,20 @@ class TenantServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates a new tenant entity.
+     *
+     * The async variant is {@see self::createTenantAsync()} .
      *
      * @param CreateTenantRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -254,6 +273,8 @@ class TenantServiceBaseClient
     /**
      * Deletes specified tenant.
      *
+     * The async variant is {@see self::deleteTenantAsync()} .
+     *
      * @param DeleteTenantRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -275,6 +296,8 @@ class TenantServiceBaseClient
 
     /**
      * Retrieves specified tenant.
+     *
+     * The async variant is {@see self::getTenantAsync()} .
      *
      * @param GetTenantRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -300,6 +323,8 @@ class TenantServiceBaseClient
     /**
      * Lists all tenants associated with the project.
      *
+     * The async variant is {@see self::listTenantsAsync()} .
+     *
      * @param ListTenantsRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -323,6 +348,8 @@ class TenantServiceBaseClient
 
     /**
      * Updates specified tenant.
+     *
+     * The async variant is {@see self::updateTenantAsync()} .
      *
      * @param UpdateTenantRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {

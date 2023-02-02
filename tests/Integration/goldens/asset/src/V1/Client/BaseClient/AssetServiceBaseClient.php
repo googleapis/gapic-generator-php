@@ -54,6 +54,7 @@ use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 use Google\Cloud\Asset\V1\SearchAllResourcesRequest;
 use Google\Cloud\Asset\V1\UpdateFeedRequest;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Asset service definition.
@@ -65,6 +66,20 @@ use Google\LongRunning\Operation;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface analyzeIamPolicyAsync(AnalyzeIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface analyzeIamPolicyLongrunningAsync(AnalyzeIamPolicyLongrunningRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface analyzeMoveAsync(AnalyzeMoveRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchGetAssetsHistoryAsync(BatchGetAssetsHistoryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFeedAsync(CreateFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteFeedAsync(DeleteFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface exportAssetsAsync(ExportAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getFeedAsync(GetFeedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFeedsAsync(ListFeedsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchAllIamPoliciesAsync(SearchAllIamPoliciesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchAllResourcesAsync(SearchAllResourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFeedAsync(UpdateFeedRequest $request, array $optionalArgs = [])
  */
 class AssetServiceBaseClient
 {
@@ -299,9 +314,21 @@ class AssetServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Analyzes IAM policies to answer which identities have what accesses on
      * which resources.
+     *
+     * The async variant is {@see self::analyzeIamPolicyAsync()} .
      *
      * @param AnalyzeIamPolicyRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
@@ -333,6 +360,8 @@ class AssetServiceBaseClient
      * backoff retry to poll the operation result. The metadata contains the
      * metadata for the long-running operation.
      *
+     * The async variant is {@see self::analyzeIamPolicyLongrunningAsync()} .
+     *
      * @param AnalyzeIamPolicyLongrunningRequest $request      A request to house fields associated with the call.
      * @param array                              $optionalArgs {
      *     Optional.
@@ -358,6 +387,8 @@ class AssetServiceBaseClient
      * permissions of viewing different hierarchical policies and configurations.
      * The policies and configuration are subject to change before the actual
      * resource migration takes place.
+     *
+     * The async variant is {@see self::analyzeMoveAsync()} .
      *
      * @param AnalyzeMoveRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -387,6 +418,8 @@ class AssetServiceBaseClient
      * If a specified asset does not exist, this API returns an INVALID_ARGUMENT
      * error.
      *
+     * The async variant is {@see self::batchGetAssetsHistoryAsync()} .
+     *
      * @param BatchGetAssetsHistoryRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
      *     Optional.
@@ -410,6 +443,8 @@ class AssetServiceBaseClient
      * Creates a feed in a parent project/folder/organization to listen to its
      * asset updates.
      *
+     * The async variant is {@see self::createFeedAsync()} .
+     *
      * @param CreateFeedRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -431,6 +466,8 @@ class AssetServiceBaseClient
 
     /**
      * Deletes an asset feed.
+     *
+     * The async variant is {@see self::deleteFeedAsync()} .
      *
      * @param DeleteFeedRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -461,6 +498,8 @@ class AssetServiceBaseClient
      * result. For regular-size resource parent, the export operation usually
      * finishes within 5 minutes.
      *
+     * The async variant is {@see self::exportAssetsAsync()} .
+     *
      * @param ExportAssetsRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -482,6 +521,8 @@ class AssetServiceBaseClient
 
     /**
      * Gets details about an asset feed.
+     *
+     * The async variant is {@see self::getFeedAsync()} .
      *
      * @param GetFeedRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
@@ -506,6 +547,8 @@ class AssetServiceBaseClient
      * Lists assets with time and resource types and returns paged results in
      * response.
      *
+     * The async variant is {@see self::listAssetsAsync()} .
+     *
      * @param ListAssetsRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -527,6 +570,8 @@ class AssetServiceBaseClient
 
     /**
      * Lists all asset feeds in a parent project/folder/organization.
+     *
+     * The async variant is {@see self::listFeedsAsync()} .
      *
      * @param ListFeedsRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -553,6 +598,8 @@ class AssetServiceBaseClient
      * `cloudasset.assets.searchAllIamPolicies` permission on the desired scope,
      * otherwise the request will be rejected.
      *
+     * The async variant is {@see self::searchAllIamPoliciesAsync()} .
+     *
      * @param SearchAllIamPoliciesRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {
      *     Optional.
@@ -578,6 +625,8 @@ class AssetServiceBaseClient
      * `cloudasset.assets.searchAllResources` permission on the desired scope,
      * otherwise the request will be rejected.
      *
+     * The async variant is {@see self::searchAllResourcesAsync()} .
+     *
      * @param SearchAllResourcesRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {
      *     Optional.
@@ -599,6 +648,8 @@ class AssetServiceBaseClient
 
     /**
      * Updates an asset feed configuration.
+     *
+     * The async variant is {@see self::updateFeedAsync()} .
      *
      * @param UpdateFeedRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {

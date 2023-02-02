@@ -32,6 +32,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\CustomLro\CreateFooRequest;
 use Testing\CustomLro\CustomLroOperationsClient;
 
@@ -40,6 +41,8 @@ use Testing\CustomLro\CustomLroOperationsClient;
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
 class CustomLroBaseClient
 {
@@ -206,7 +209,19 @@ class CustomLroBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
+     * The async variant is {@see self::createFooAsync()} .
+     *
      * @param CreateFooRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.

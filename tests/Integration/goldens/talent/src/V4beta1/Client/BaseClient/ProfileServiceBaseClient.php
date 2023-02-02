@@ -42,6 +42,7 @@ use Google\Cloud\Talent\V4beta1\ListProfilesRequest;
 use Google\Cloud\Talent\V4beta1\Profile;
 use Google\Cloud\Talent\V4beta1\SearchProfilesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service that handles profile management, including profile CRUD,
@@ -56,6 +57,13 @@ use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteProfileAsync(DeleteProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getProfileAsync(GetProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listProfilesAsync(ListProfilesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchProfilesAsync(SearchProfilesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateProfileAsync(UpdateProfileRequest $request, array $optionalArgs = [])
  */
 class ProfileServiceBaseClient
 {
@@ -233,8 +241,20 @@ class ProfileServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Creates and returns a new profile.
+     *
+     * The async variant is {@see self::createProfileAsync()} .
      *
      * @param CreateProfileRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -262,6 +282,8 @@ class ProfileServiceBaseClient
      * Prerequisite: The profile has no associated applications or assignments
      * associated.
      *
+     * The async variant is {@see self::deleteProfileAsync()} .
+     *
      * @param DeleteProfileRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
      *     Optional.
@@ -283,6 +305,8 @@ class ProfileServiceBaseClient
 
     /**
      * Gets the specified profile.
+     *
+     * The async variant is {@see self::getProfileAsync()} .
      *
      * @param GetProfileRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -307,6 +331,8 @@ class ProfileServiceBaseClient
 
     /**
      * Lists profiles by filter. The order is unspecified.
+     *
+     * The async variant is {@see self::listProfilesAsync()} .
      *
      * @param ListProfilesRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
@@ -337,6 +363,8 @@ class ProfileServiceBaseClient
      *
      * See [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest] for more information.
      *
+     * The async variant is {@see self::searchProfilesAsync()} .
+     *
      * @param SearchProfilesRequest $request      A request to house fields associated with the call.
      * @param array                 $optionalArgs {
      *     Optional.
@@ -360,6 +388,8 @@ class ProfileServiceBaseClient
 
     /**
      * Updates the specified profile and returns the updated result.
+     *
+     * The async variant is {@see self::updateProfileAsync()} .
      *
      * @param UpdateProfileRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {

@@ -1128,4 +1128,35 @@ class AssetServiceClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function analyzeIamPolicyAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $fullyExplored = true;
+        $expectedResponse = new AnalyzeIamPolicyResponse();
+        $expectedResponse->setFullyExplored($fullyExplored);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $analysisQuery = new IamPolicyAnalysisQuery();
+        $analysisQueryScope = 'analysisQueryScope-495018392';
+        $analysisQuery->setScope($analysisQueryScope);
+        $request = (new AnalyzeIamPolicyRequest())
+            ->setAnalysisQuery($analysisQuery);
+        $response = $gapicClient->analyzeIamPolicyAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/AnalyzeIamPolicy', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAnalysisQuery();
+        $this->assertProtobufEquals($analysisQuery, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }

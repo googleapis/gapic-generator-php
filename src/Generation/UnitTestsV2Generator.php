@@ -113,6 +113,10 @@ class UnitTestsV2Generator
 
     private function generateClass(): PhpClass
     {
+        // Just pick one non-streaming method to generate an async unit test for.
+        // This is more of a sanity check than a coverage thing.
+        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
+
         return AST::class($this->serviceDetails->unitTestsV2Type, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
                 is_null($this->serviceDetails->unitTestGroupName) ? null : PhpDoc::group($this->serviceDetails->unitTestGroupName),
@@ -121,7 +125,8 @@ class UnitTestsV2Generator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))));
+            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))))
+            ->withMember(is_null($nonStreamingMethod) ? null : $this->testAsync($nonStreamingMethod));
     }
 
     private function createTransport(): PhpClassMember
@@ -213,7 +218,27 @@ class UnitTestsV2Generator
         }
     }
 
-    private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
+    private function testAsync(MethodDetails $method)
+    {
+        switch ($method->methodType) {
+            case MethodDetails::CUSTOM_OP:
+                return $this->testSuccessCaseCustomOp($method, true);
+                break;
+            case MethodDetails::NORMAL:
+                return $this->testSuccessCaseNormal($method, true);
+                break;
+            case MethodDetails::LRO:
+                return $this->testSuccessCaseLro($method, true);
+                break;
+            case MethodDetails::PAGINATED:
+                return $this->testSuccessCasePaginated($method, true);
+                break;
+            default:
+                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+        }
+    }
+
+    private function testSuccessCaseNormal(MethodDetails $method, $async = false): PhpMethod
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
@@ -230,7 +255,12 @@ class UnitTestsV2Generator
         $actualValue = AST::var('actualValue');
         $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
         list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
-        return AST::method($method->testSuccessMethodName)
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+        
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
@@ -246,9 +276,9 @@ class UnitTestsV2Generator
                 $initializedFields,
                 $requestAssignment,
                 $method->hasEmptyResponse ?
-                    $client->instanceCall(AST::method($method->methodName))($requestAssignment->to) :
+                    $invocation :
                     Vector::new([
-                        AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
+                        AST::assign($response, $invocation),
                         ($this->assertEquals)($expectedResponse, $response)
                     ]),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
@@ -318,7 +348,7 @@ class UnitTestsV2Generator
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function testSuccessCaseLro(MethodDetails $method): PhpMethod
+    private function testSuccessCaseLro(MethodDetails $method, $async = false): PhpMethod
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $expectedResponse = AST::var('expectedResponse');
@@ -340,7 +370,12 @@ class UnitTestsV2Generator
         $actualOperationsRequestObject = AST::var('actualOperationsRequestObject');
         [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testSuccessMethodName);
         list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
-        return AST::method($method->testSuccessMethodName)
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
@@ -358,7 +393,7 @@ class UnitTestsV2Generator
                 $method->requiredFields->any() ? '// Mock request' : null,
                 $initializedFields,
                 $requestAssignment,
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
+                AST::assign($response, $invocation),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
                 AST::assign($apiRequests, $transport->popReceivedCalls()),
@@ -476,7 +511,7 @@ class UnitTestsV2Generator
         return [$initCode, $operationsTransport, $client, $transport];
     }
 
-    private function testSuccessCasePaginated(MethodDetails $method): PhpMethod
+    private function testSuccessCasePaginated(MethodDetails $method, $async = false): PhpMethod
     {
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
@@ -508,7 +543,12 @@ class UnitTestsV2Generator
             ? Helpers::toCamelCase($method->resourcesField->camelName . '_key')
             : 0;
 
-        return AST::method($method->testSuccessMethodName)
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
@@ -530,7 +570,7 @@ class UnitTestsV2Generator
                 $method->requiredFields->any() ? '// Mock request' : null,
                 $initializedFields,
                 $requestAssignment,
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
+                AST::assign($response, $invocation),
                 ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
                 AST::assign($resources, AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($resources)),
@@ -782,9 +822,9 @@ class UnitTestsV2Generator
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function testSuccessCaseCustomOp(MethodDetails $method): PhpMethod
+    private function testSuccessCaseCustomOp(MethodDetails $method, $async = false): PhpMethod
     {
-        $testMethodName = $method->testSuccessMethodName;
+        $testMethodName = $async ? $method->testAsyncMethodName : $method->testSuccessMethodName;
         $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $completeOperation = AST::var('completeOperation');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);

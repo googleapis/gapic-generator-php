@@ -39,12 +39,16 @@ use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service that implements Google Cloud Speech API.
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
+ *
+ * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */
 class SpeechBaseClient
 {
@@ -178,6 +182,16 @@ class SpeechBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Performs asynchronous speech recognition: receive results via the
      * google.longrunning.Operations interface. Returns either an
@@ -185,6 +199,8 @@ class SpeechBaseClient
      * a `LongRunningRecognizeResponse` message.
      * For more information on asynchronous speech recognition, see the
      * [how-to](https://cloud.google.com/speech-to-text/docs/async-recognize).
+     *
+     * The async variant is {@see self::longRunningRecognizeAsync()} .
      *
      * @param LongRunningRecognizeRequest $request      A request to house fields associated with the call.
      * @param array                       $optionalArgs {
@@ -208,6 +224,8 @@ class SpeechBaseClient
     /**
      * Performs synchronous speech recognition: receive results after all audio
      * has been sent and processed.
+     *
+     * The async variant is {@see self::recognizeAsync()} .
      *
      * @param RecognizeRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

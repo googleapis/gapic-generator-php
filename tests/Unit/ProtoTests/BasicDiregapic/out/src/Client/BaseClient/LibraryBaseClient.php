@@ -36,6 +36,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\LongRunning\Operation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicDiregapic\AddCommentsRequest;
 use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
@@ -98,6 +99,36 @@ use Testing\BasicDiregapic\UpdateBookRequest;
  * assist with these names, this class includes a format method for each type of
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
+ *
+ * @method PromiseInterface addCommentsAsync(AddCommentsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface addTagAsync(AddTagRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface archiveBooksAsync(ArchiveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createBookAsync(CreateBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createInventoryAsync(CreateInventoryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createShelfAsync(CreateShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteBookAsync(DeleteBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteShelfAsync(DeleteShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface findRelatedBooksAsync(FindRelatedBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBigBookAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBigNothingAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookAsync(GetBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromAbsolutelyAnywhereAsync(GetBookFromAbsolutelyAnywhereRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromAnywhereAsync(GetBookFromAnywhereRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBookFromArchiveAsync(GetBookFromArchiveRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getShelfAsync(GetShelfRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAggregatedShelvesAsync(ListAggregatedShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listBooksAsync(ListBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listShelvesAsync(ListShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listStringsAsync(ListStringsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface longRunningArchiveBooksAsync(ArchiveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface mergeShelvesAsync(MergeShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface moveBookAsync(MoveBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface moveBooksAsync(MoveBooksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface privateListShelvesAsync(ListShelvesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface publishSeriesAsync(PublishSeriesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface saveBookAsync(BookResponse $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBookAsync(UpdateBookRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBookIndexAsync(UpdateBookIndexRequest $request, array $optionalArgs = [])
  */
 class LibraryBaseClient
 {
@@ -584,8 +615,20 @@ class LibraryBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Adds comments to a book
+     *
+     * The async variant is {@see self::addCommentsAsync()} .
      *
      * @param AddCommentsRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -607,6 +650,8 @@ class LibraryBaseClient
     /**
      * Adds a tag to the book. This RPC is a mixin.
      *
+     * The async variant is {@see self::addTagAsync()} .
+     *
      * @param AddTagRequest $request      A request to house fields associated with the call.
      * @param array         $optionalArgs {
      *     Optional.
@@ -627,6 +672,8 @@ class LibraryBaseClient
     }
 
     /**
+     * The async variant is {@see self::archiveBooksAsync()} .
+     *
      * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -649,6 +696,8 @@ class LibraryBaseClient
     /**
      * Creates a book.
      *
+     * The async variant is {@see self::createBookAsync()} .
+     *
      * @param CreateBookRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -670,6 +719,8 @@ class LibraryBaseClient
 
     /**
      * Creates an inventory. Tests singleton resources.
+     *
+     * The async variant is {@see self::createInventoryAsync()} .
      *
      * @param CreateInventoryRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {
@@ -694,6 +745,8 @@ class LibraryBaseClient
      * Creates a shelf, and returns the new Shelf.
      * RPC method comment may include special characters: <>&"`'&#64;.
      *
+     * The async variant is {@see self::createShelfAsync()} .
+     *
      * @param CreateShelfRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -716,6 +769,8 @@ class LibraryBaseClient
     /**
      * Deletes a book.
      *
+     * The async variant is {@see self::deleteBookAsync()} .
+     *
      * @param DeleteBookRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
      *     Optional.
@@ -736,6 +791,8 @@ class LibraryBaseClient
     /**
      * Deletes a shelf.
      *
+     * The async variant is {@see self::deleteShelfAsync()} .
+     *
      * @param DeleteShelfRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -754,6 +811,8 @@ class LibraryBaseClient
     }
 
     /**
+     * The async variant is {@see self::findRelatedBooksAsync()} .
+     *
      * @param FindRelatedBooksRequest $request      A request to house fields associated with the call.
      * @param array                   $optionalArgs {
      *     Optional.
@@ -775,6 +834,8 @@ class LibraryBaseClient
 
     /**
      * Test long-running operations
+     *
+     * The async variant is {@see self::getBigBookAsync()} .
      *
      * @param GetBookRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
@@ -798,6 +859,8 @@ class LibraryBaseClient
     /**
      * Test long-running operations with empty return type.
      *
+     * The async variant is {@see self::getBigNothingAsync()} .
+     *
      * @param GetBookRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
      *     Optional.
@@ -819,6 +882,8 @@ class LibraryBaseClient
 
     /**
      * Gets a book.
+     *
+     * The async variant is {@see self::getBookAsync()} .
      *
      * @param GetBookRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {
@@ -842,6 +907,8 @@ class LibraryBaseClient
     /**
      * Test proper OneOf-Any resource name mapping
      *
+     * The async variant is {@see self::getBookFromAbsolutelyAnywhereAsync()} .
+     *
      * @param GetBookFromAbsolutelyAnywhereRequest $request      A request to house fields associated with the call.
      * @param array                                $optionalArgs {
      *     Optional.
@@ -863,6 +930,8 @@ class LibraryBaseClient
 
     /**
      * Gets a book from a shelf or archive.
+     *
+     * The async variant is {@see self::getBookFromAnywhereAsync()} .
      *
      * @param GetBookFromAnywhereRequest $request      A request to house fields associated with the call.
      * @param array                      $optionalArgs {
@@ -886,6 +955,8 @@ class LibraryBaseClient
     /**
      * Gets a book from an archive.
      *
+     * The async variant is {@see self::getBookFromArchiveAsync()} .
+     *
      * @param GetBookFromArchiveRequest $request      A request to house fields associated with the call.
      * @param array                     $optionalArgs {
      *     Optional.
@@ -907,6 +978,8 @@ class LibraryBaseClient
 
     /**
      * Gets a shelf.
+     *
+     * The async variant is {@see self::getShelfAsync()} .
      *
      * @param GetShelfRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
@@ -930,6 +1003,8 @@ class LibraryBaseClient
     /**
      * Lists shelves.
      *
+     * The async variant is {@see self::listAggregatedShelvesAsync()} .
+     *
      * @param ListAggregatedShelvesRequest $request      A request to house fields associated with the call.
      * @param array                        $optionalArgs {
      *     Optional.
@@ -951,6 +1026,8 @@ class LibraryBaseClient
 
     /**
      * Lists books in a shelf.
+     *
+     * The async variant is {@see self::listBooksAsync()} .
      *
      * @param ListBooksRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -974,6 +1051,8 @@ class LibraryBaseClient
     /**
      * Lists shelves.
      *
+     * The async variant is {@see self::listShelvesAsync()} .
+     *
      * @param ListShelvesRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -996,6 +1075,8 @@ class LibraryBaseClient
     /**
      * Lists a primitive resource. To test go page streaming.
      *
+     * The async variant is {@see self::listStringsAsync()} .
+     *
      * @param ListStringsRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
      *     Optional.
@@ -1016,6 +1097,8 @@ class LibraryBaseClient
     }
 
     /**
+     * The async variant is {@see self::longRunningArchiveBooksAsync()} .
+     *
      * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -1040,6 +1123,8 @@ class LibraryBaseClient
      * `other_shelf_name` to shelf `name`, and deletes
      * `other_shelf_name`. Returns the updated shelf.
      *
+     * The async variant is {@see self::mergeShelvesAsync()} .
+     *
      * @param MergeShelvesRequest $request      A request to house fields associated with the call.
      * @param array               $optionalArgs {
      *     Optional.
@@ -1062,6 +1147,8 @@ class LibraryBaseClient
     /**
      * Moves a book to another shelf, and returns the new book.
      *
+     * The async variant is {@see self::moveBookAsync()} .
+     *
      * @param MoveBookRequest $request      A request to house fields associated with the call.
      * @param array           $optionalArgs {
      *     Optional.
@@ -1082,6 +1169,8 @@ class LibraryBaseClient
     }
 
     /**
+     * The async variant is {@see self::moveBooksAsync()} .
+     *
      * @param MoveBooksRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
      *     Optional.
@@ -1103,6 +1192,8 @@ class LibraryBaseClient
 
     /**
      * This method is not exposed in the GAPIC config. It should be generated.
+     *
+     * The async variant is {@see self::privateListShelvesAsync()} .
      *
      * @param ListShelvesRequest $request      A request to house fields associated with the call.
      * @param array              $optionalArgs {
@@ -1126,6 +1217,8 @@ class LibraryBaseClient
     /**
      * Creates a series of books.
      * Tests PHP required nested fields.
+     *
+     * The async variant is {@see self::publishSeriesAsync()} .
      *
      * @param PublishSeriesRequest $request      A request to house fields associated with the call.
      * @param array                $optionalArgs {
@@ -1151,6 +1244,8 @@ class LibraryBaseClient
      * (CreateSubscription) for historical reasons. New APIs should always create
      * a separate message for a request.
      *
+     * The async variant is {@see self::saveBookAsync()} .
+     *
      * @param BookResponse $request      A request to house fields associated with the call.
      * @param array        $optionalArgs {
      *     Optional.
@@ -1170,6 +1265,8 @@ class LibraryBaseClient
 
     /**
      * Updates a book.
+     *
+     * The async variant is {@see self::updateBookAsync()} .
      *
      * @param UpdateBookRequest $request      A request to house fields associated with the call.
      * @param array             $optionalArgs {
@@ -1192,6 +1289,8 @@ class LibraryBaseClient
 
     /**
      * Updates the index of a book.
+     *
+     * The async variant is {@see self::updateBookIndexAsync()} .
      *
      * @param UpdateBookIndexRequest $request      A request to house fields associated with the call.
      * @param array                  $optionalArgs {

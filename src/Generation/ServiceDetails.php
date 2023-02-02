@@ -143,6 +143,9 @@ class ServiceDetails
      */
     public int $transportType;
 
+    /** @var bool *Readonly* Whether the service only has streaming RPCs or not. */
+    public bool $streamingOnly;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
@@ -181,6 +184,7 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
+        $this->streamingOnly = !$this->methods->any(fn($m) => !$m->isStreaming());
         $customOperations = $this->methods->filter(fn ($x) => $x->methodType === MethodDetails::CUSTOM_OP);
         $this->hasCustomOp = $customOperations->count() > 0;
         if ($this->hasCustomOp) {

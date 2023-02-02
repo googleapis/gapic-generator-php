@@ -31,6 +31,7 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Deprecated\FibonacciRequest;
 
 /**
@@ -41,6 +42,9 @@ use Testing\Deprecated\FibonacciRequest;
  * calls that map to API methods.
  *
  * @deprecated This class will be removed in the next major version update.
+ *
+ * @method PromiseInterface fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface slowFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  */
 class DeprecatedServiceBaseClient
 {
@@ -142,8 +146,20 @@ class DeprecatedServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Calculates Fibonacci on the provided value, quickly.
+     *
+     * The async variant is {@see self::fastFibonacciAsync()} .
      *
      * @param FibonacciRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {
@@ -164,6 +180,8 @@ class DeprecatedServiceBaseClient
 
     /**
      * Calculates Fibonacci on the provided value, slowly.
+     *
+     * The async variant is {@see self::slowFibonacciAsync()} .
      *
      * @param FibonacciRequest $request      A request to house fields associated with the call.
      * @param array            $optionalArgs {

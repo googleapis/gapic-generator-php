@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
 use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: A service handles client event report.
@@ -49,6 +50,8 @@ use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
 class EventServiceBaseClient
 {
@@ -222,6 +225,16 @@ class EventServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Report events issued when end user interacts with customer's application
      * that uses Cloud Talent Solution. You may inspect the created events in
@@ -230,6 +243,8 @@ class EventServiceBaseClient
      * [Learn
      * more](https://cloud.google.com/talent-solution/docs/management-tools)
      * about self service tools.
+     *
+     * The async variant is {@see self::createClientEventAsync()} .
      *
      * @param CreateClientEventRequest $request      A request to house fields associated with the call.
      * @param array                    $optionalArgs {

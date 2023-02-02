@@ -36,6 +36,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
+use GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Service Description: Service for making recommendation prediction.
@@ -49,6 +50,8 @@ use Google\Cloud\Retail\V2alpha\PredictResponse;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @method PromiseInterface predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
 class PredictionServiceBaseClient
 {
@@ -209,8 +212,20 @@ class PredictionServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    public function __call($method, $args)
+    {
+        if (substr($method, -5) !== 'Async') {
+            trigger_error('Call to undefined method' . __CLASS__ . "::$method()", E_USER_ERROR);
+        }
+
+        array_unshift($args, substr($method, 0, -5));
+        return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
     /**
      * Makes a recommendation prediction.
+     *
+     * The async variant is {@see self::predictAsync()} .
      *
      * @param PredictRequest $request      A request to house fields associated with the call.
      * @param array          $optionalArgs {

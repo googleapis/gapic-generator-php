@@ -1300,4 +1300,108 @@ class CloudRedisClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         $this->assertTrue($operationsTransport->isExhausted());
     }
+
+    /** @test */
+    public function createInstanceAsyncTest()
+    {
+        $operationsTransport = $this->createTransport();
+        $operationsClient = new OperationsClient([
+            'apiEndpoint' => '',
+            'transport' => $operationsTransport,
+            'credentials' => $this->createCredentials(),
+        ]);
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+            'operationsClient' => $operationsClient,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+        // Mock response
+        $incompleteOperation = new Operation();
+        $incompleteOperation->setName('operations/createInstanceTest');
+        $incompleteOperation->setDone(false);
+        $transport->addResponse($incompleteOperation);
+        $name = 'name3373707';
+        $displayName = 'displayName1615086568';
+        $locationId = 'locationId552319461';
+        $alternativeLocationId = 'alternativeLocationId-718920621';
+        $redisVersion = 'redisVersion-685310444';
+        $reservedIpRange = 'reservedIpRange-1082940580';
+        $host = 'host3208616';
+        $port = 3446913;
+        $currentLocationId = 'currentLocationId1312712735';
+        $statusMessage = 'statusMessage-239442758';
+        $memorySizeGb = 34199707;
+        $authorizedNetwork = 'authorizedNetwork-1733809270';
+        $persistenceIamIdentity = 'persistenceIamIdentity1061944584';
+        $expectedResponse = new Instance();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDisplayName($displayName);
+        $expectedResponse->setLocationId($locationId);
+        $expectedResponse->setAlternativeLocationId($alternativeLocationId);
+        $expectedResponse->setRedisVersion($redisVersion);
+        $expectedResponse->setReservedIpRange($reservedIpRange);
+        $expectedResponse->setHost($host);
+        $expectedResponse->setPort($port);
+        $expectedResponse->setCurrentLocationId($currentLocationId);
+        $expectedResponse->setStatusMessage($statusMessage);
+        $expectedResponse->setMemorySizeGb($memorySizeGb);
+        $expectedResponse->setAuthorizedNetwork($authorizedNetwork);
+        $expectedResponse->setPersistenceIamIdentity($persistenceIamIdentity);
+        $anyResponse = new Any();
+        $anyResponse->setValue($expectedResponse->serializeToString());
+        $completeOperation = new Operation();
+        $completeOperation->setName('operations/createInstanceTest');
+        $completeOperation->setDone(true);
+        $completeOperation->setResponse($anyResponse);
+        $operationsTransport->addResponse($completeOperation);
+        // Mock request
+        $formattedParent = $gapicClient->locationName('[PROJECT]', '[LOCATION]');
+        $instanceId = 'instanceId-2101995259';
+        $instance = new Instance();
+        $instanceName = 'instanceName-737857344';
+        $instance->setName($instanceName);
+        $instanceTier = Tier::TIER_UNSPECIFIED;
+        $instance->setTier($instanceTier);
+        $instanceMemorySizeGb = 193936814;
+        $instance->setMemorySizeGb($instanceMemorySizeGb);
+        $request = (new CreateInstanceRequest())
+            ->setParent($formattedParent)
+            ->setInstanceId($instanceId)
+            ->setInstance($instance);
+        $response = $gapicClient->createInstanceAsync($request)->wait();
+        $this->assertFalse($response->isDone());
+        $this->assertNull($response->getResult());
+        $apiRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($apiRequests));
+        $operationsRequestsEmpty = $operationsTransport->popReceivedCalls();
+        $this->assertSame(0, count($operationsRequestsEmpty));
+        $actualApiFuncCall = $apiRequests[0]->getFuncCall();
+        $actualApiRequestObject = $apiRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.redis.v1.CloudRedis/CreateInstance', $actualApiFuncCall);
+        $actualValue = $actualApiRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualApiRequestObject->getInstanceId();
+        $this->assertProtobufEquals($instanceId, $actualValue);
+        $actualValue = $actualApiRequestObject->getInstance();
+        $this->assertProtobufEquals($instance, $actualValue);
+        $expectedOperationsRequestObject = new GetOperationRequest();
+        $expectedOperationsRequestObject->setName('operations/createInstanceTest');
+        $response->pollUntilComplete([
+            'initialPollDelayMillis' => 1,
+        ]);
+        $this->assertTrue($response->isDone());
+        $this->assertEquals($expectedResponse, $response->getResult());
+        $apiRequestsEmpty = $transport->popReceivedCalls();
+        $this->assertSame(0, count($apiRequestsEmpty));
+        $operationsRequests = $operationsTransport->popReceivedCalls();
+        $this->assertSame(1, count($operationsRequests));
+        $actualOperationsFuncCall = $operationsRequests[0]->getFuncCall();
+        $actualOperationsRequestObject = $operationsRequests[0]->getRequestObject();
+        $this->assertSame('/google.longrunning.Operations/GetOperation', $actualOperationsFuncCall);
+        $this->assertEquals($expectedOperationsRequestObject, $actualOperationsRequestObject);
+        $this->assertTrue($transport->isExhausted());
+        $this->assertTrue($operationsTransport->isExhausted());
+    }
 }

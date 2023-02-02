@@ -151,4 +151,57 @@ class BasicPaginatedClientTest extends GeneratedTest
         $transport->popReceivedCalls();
         $this->assertTrue($transport->isExhausted());
     }
+
+    /** @test */
+    public function methodPaginatedAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $pageSize2 = 1024500956;
+        $nextPageToken = '';
+        $pageToken2 = 649316932;
+        $aField2 = false;
+        $anotherField = 'anotherField1551924414';
+        $theResultsElement = 'theResultsElement-1546403867';
+        $theResults = [
+            $theResultsElement,
+        ];
+        $expectedResponse = new Response();
+        $expectedResponse->setPageSize($pageSize2);
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setPageToken($pageToken2);
+        $expectedResponse->setAField($aField2);
+        $expectedResponse->setAnotherField($anotherField);
+        $expectedResponse->setTheResults($theResults);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $aField = 'aField-1289259108';
+        $pageToken = 'pageToken1630607433';
+        $partOfRequestA = [];
+        $request = (new Request())
+            ->setAField($aField)
+            ->setPageToken($pageToken)
+            ->setPartOfRequestA($partOfRequestA);
+        $response = $gapicClient->methodPaginatedAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getTheResults()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basicpaginated.BasicPaginated/MethodPaginated', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAField();
+        $this->assertProtobufEquals($aField, $actualValue);
+        $actualValue = $actualRequestObject->getPageToken();
+        $this->assertProtobufEquals($pageToken, $actualValue);
+        $actualValue = $actualRequestObject->getPartOfRequestA();
+        $this->assertProtobufEquals($partOfRequestA, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
 }
