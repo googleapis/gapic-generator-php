@@ -202,7 +202,7 @@ class GapicClientV2Generator
         $methodParam = AST::param(null, $methodVar);
         $argsVar = AST::var('args');
         $argsParam = AST::param(null, $argsVar);
-        $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
+        $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method ', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
 
         return AST::method('__call')
             ->withAccess(Access::PUBLIC)
