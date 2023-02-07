@@ -118,7 +118,7 @@ EOL;
         file_put_contents($fragmentFile, $methodFragment);
         file_put_contents($classFile, $classContents);
 
-        exec(sprintf('php %s/../../../scripts/write_method_to_class.php %s %s 2>&1',
+        exec(sprintf('php %s/../../../scripts/write_fragment_to_class.php %s %s 2>&1',
             __DIR__,
             escapeshellarg($fragmentFile),
             escapeshellarg($classFile)

@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Google\Generator\Utils\AddFragmentToClass;
 
 if ($argc !== 3) {
-    print("Usage: write_method_to_class.php path/to/method_fragment.txt path/to/ClassFile.php\n");
+    print("Usage: write_fragment_to_class.php path/to/fragment.txt path/to/ClassFile.php\n");
     exit(1);
 }
 
