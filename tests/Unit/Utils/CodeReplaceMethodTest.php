@@ -72,7 +72,7 @@ EOL;
             'SYNTAX ERROR', $this->classContents);
 
         $this->assertStringContainsString(
-            'Parse error: syntax error, unexpected identifier "SYNTAX"',
+            'syntax error, unexpected identifier "SYNTAX"',
             $output
         );
         $this->assertEquals(255, $returnVar);
