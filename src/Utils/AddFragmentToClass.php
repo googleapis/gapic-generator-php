@@ -36,19 +36,33 @@ class AddFragmentToClass
         throw new LogicException('Provided contents does not contain a PHP class');
     }
 
-    private function getInsertLineBeforeMethod($insertBeforeMethodName): int
+    /**
+     * @throws LogicException
+     * @throws ParseError
+     */
+    public function insert(string $newContent, ?string $insertBeforeMethod = null): void
     {
-        foreach ($this->classNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof MethodDeclaration) {
-                if ($childNode->getName() === $insertBeforeMethodName) {
-                    return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
-                }
-            }
-        }
+        $insertLine = $insertBeforeMethod
+            ? $this->getInsertLineBeforeMethod($insertBeforeMethod)
+            : $this->getInsertLineBeforeFirstMethod();
 
-        throw new LogicException(
-            'Provided contents does not contain method ' . $insertBeforeMethodName
-        );
+        $lines = explode(PHP_EOL, $this->classNode->getFileContents());
+        array_splice($lines, $insertLine, 0, $newContent);
+        $contents = implode(PHP_EOL, $lines);
+        $this->classNode = self::fromCode($contents);
+    }
+
+    public function getContents(): string
+    {
+        return $this->classNode->getFileContents();
+    }
+
+    private function getLineNumberFromPosition(int $startPosition): int
+    {
+        return PositionUtilities::getLineCharacterPositionFromPosition(
+            $startPosition,
+            $this->classNode->getFileContents()
+        )->line;
     }
 
     private function getInsertLineBeforeFirstMethod(): int
@@ -62,28 +76,18 @@ class AddFragmentToClass
         return $this->getLineNumberFromPosition($this->classNode->getEndPosition());
     }
 
-    private function getLineNumberFromPosition(int $startPosition): int
+    private function getInsertLineBeforeMethod(string $insertBeforeMethod): int
     {
-        return PositionUtilities::getLineCharacterPositionFromPosition(
-            $startPosition,
-            $this->classNode->getFileContents()
-        )->line;
-    }
+        foreach ($this->classNode->getDescendantNodes() as $childNode) {
+            if ($childNode instanceof MethodDeclaration) {
+                if ($childNode->getName() === $insertBeforeMethod) {
+                    return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
+                }
+            }
+        }
 
-    public function insert(string $newContent, ?string $insertBeforeMethodName = null): void
-    {
-        $insertLine = $insertBeforeMethodName
-            ? $this->getInsertLineBeforeMethod($insertBeforeMethodName)
-            : $this->getInsertLineBeforeFirstMethod();
-
-        $lines = explode(PHP_EOL, $this->classNode->getFileContents());
-        array_splice($lines, $insertLine, 0, $newContent);
-        $contents = implode(PHP_EOL, $lines);
-        $this->classNode = self::fromCode($contents);
-    }
-
-    public function getContents(): string
-    {
-        return $this->classNode->getFileContents();
+        throw new LogicException(
+            'Provided contents does not contain method ' . $insertBeforeMethod
+        );
     }
 }
