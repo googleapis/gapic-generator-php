@@ -28,7 +28,6 @@ class CustomOptions
     public const GOOGLE_API_RESOURCEREFERENCE = 1055;
     public const GOOGLE_API_RESOURCEDEFINITION = 1053;
 
-
     public const GOOGLE_API_FIELDBEHAVIOR_REQUIRED = 2;
 
     // Protobuf extension numbers from https://github.com/googleapis/googleapis/blob/master/google/cloud/extended_operations.proto.
