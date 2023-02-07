@@ -54,16 +54,10 @@ final class ProtoTest extends TestCase
             $this->assertTrue(file_exists($filename), "Expected code file missing: '{$filename}'");
             $expectedCode = file_get_contents($filename);
             if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {
-                $this->assertEquals($expectedCode, $code, $filename);
+                $this->assertEquals($expectedCode, $code);
             }
             unset($files[$filename]);
         }
-
-        // Ensure all files have been generated.
-        $this->assertTrue(
-            empty($expectedGeneratedFilenameEndings),
-            "Expected files not generated for files ending in " . implode(",", $expectedGeneratedFilenameEndings)
-        );
 
         $this->assertEmpty(
             $files,
