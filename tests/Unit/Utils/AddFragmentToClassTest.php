@@ -19,9 +19,9 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\Utils;
 
 use PHPUnit\Framework\TestCase;
-use Google\Generator\Utils\CodeReplaceMethod;
+use Google\Generator\Utils\AddFragmentToClass;
 
-final class CodeReplaceMethodTest extends TestCase
+final class AddFragmentToClassTest extends TestCase
 {
     private $methodFragment = <<<EOL
     public function methodOne(): string
@@ -30,7 +30,7 @@ final class CodeReplaceMethodTest extends TestCase
     }
 EOL;
 
-    private $classContents = <<<EOL
+    private $classContents1 = <<<EOL
 <?php
 class Bar
 {
@@ -40,14 +40,26 @@ class Bar
 }
 EOL;
 
-    public function testAstMethodReplacer()
+    private $classContents2 = <<<'EOL'
+<?php
+class Bar
+{
+    private $foo = 'bar';
+}
+EOL;
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider provideAstMethodReplacer
+     */
+    public function testAstMethodReplacer(string $classContents, string $insertBeforeMethod = null)
     {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)
-        $insertBeforeMethod = new CodeReplaceMethod($this->classContents);
+        $insertBeforeMethod = new AddFragmentToClass($classContents, $insertBeforeMethod);
 
         // Insert the function before this one
-        $insertBeforeMethod->insertBefore($this->methodFragment);
+        $insertBeforeMethod->insert($this->methodFragment);
         $newClassContents = $insertBeforeMethod->getContents();
 
         eval(ltrim($newClassContents, '<?php'));
@@ -57,13 +69,39 @@ EOL;
         $this->assertEquals('bar', $b->methodOne());
     }
 
+    public function provideAstMethodReplacer()
+    {
+        return [
+            [$this->classContents1],
+            [$this->classContents1, '__construct'],
+            [$this->classContents2],
+        ];
+    }
+
+    public function testAstMethodReplacerWithNoClass()
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Provided contents does not contain a PHP class');
+
+        $insertBeforeMethod = new AddFragmentToClass('<?php echo "foo";');
+    }
+
+    public function testAstMethodReplacerWithNoMethod()
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Provided contents does not contain method __construct');
+
+        $insertBeforeMethod = new AddFragmentToClass($this->classContents2);
+        $insertBeforeMethod->insert('private $foo;', '__construct');
+    }
+
     public function testAstMethodReplacerWithSyntaxError()
     {
         $this->expectException(\ParseError::class);
-        $this->expectExceptionMessage('Insertion caused a syntax error');
+        $this->expectExceptionMessage('Provided contents contains a PHP syntax error');
 
-        $insertBeforeMethod = new CodeReplaceMethod($this->classContents);
-        $insertBeforeMethod->insertBefore('SYNTAX ERROR');
+        $insertBeforeMethod = new AddFragmentToClass($this->classContents1);
+        $insertBeforeMethod->insert('SYNTAX ERROR');
     }
 
     /**
@@ -93,8 +131,8 @@ EOL;
     public function provideWriteMethodToClassScript()
     {
         return [
-            [$this->methodFragment, $this->classContents],
-            ['SYNTAX ERROR', $this->classContents, 'syntax error', 255]
+            [$this->methodFragment, $this->classContents1],
+            ['SYNTAX ERROR', $this->classContents1, 'syntax error', 255]
         ];
     }
 }

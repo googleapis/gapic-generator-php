@@ -3,7 +3,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Google\Generator\Utils\CodeReplaceMethod;
+use Google\Generator\Utils\AddFragmentToClass;
 
 if ($argc !== 3) {
     print("Usage: write_method_to_class.php path/to/method_fragment.txt path/to/ClassFile.php\n");
@@ -17,12 +17,13 @@ $methodContent = file_get_contents($methodFragmentFile);
 $classContent = file_get_contents($classFile);
 
 // the class / method to insert into
-// if no method is defined, the first method is used ("__construct", for instance)
-$insertBeforeMethod = new CodeReplaceMethod($classContent);
+$addFragmentUtil = new AddFragmentToClass($classContent);
 
 // Insert the fragment before the method
-$insertBeforeMethod->insertBefore($methodContent);
-$contents = $insertBeforeMethod->getContents();
+// if no method is provided, the fragment is inserted before the first method
+// ("__construct", for instance)
+$addFragmentUtil->insert($methodContent);
+$contents = $addFragmentUtil->getContents();
 
 // write the new contents to the file
 file_put_contents($classFile, $contents);
