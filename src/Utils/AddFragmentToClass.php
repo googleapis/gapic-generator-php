@@ -4,7 +4,6 @@ namespace Google\Generator\Utils;
 
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\LineCharacterPosition;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\PositionUtilities;
 use Microsoft\PhpParser\DiagnosticsProvider;
@@ -37,12 +36,12 @@ class AddFragmentToClass
         throw new LogicException('Provided contents does not contain a PHP class');
     }
 
-    private function getMethodStartBeforeMethod($insertBeforeMethodName): LineCharacterPosition
+    private function getInsertLineBeforeMethod($insertBeforeMethodName): int
     {
         foreach ($this->classNode->getDescendantNodes() as $childNode) {
             if ($childNode instanceof MethodDeclaration) {
                 if ($childNode->getName() === $insertBeforeMethodName) {
-                    return $this->getLineCharacterFromStartPosition($childNode->getStartPosition());
+                    return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
                 }
             }
         }
@@ -52,35 +51,33 @@ class AddFragmentToClass
         );
     }
 
-    private function getMethodStartBeforeFirstMethod(): LineCharacterPosition
+    private function getInsertLineBeforeFirstMethod(): int
     {
         foreach ($this->classNode->getDescendantNodes() as $childNode) {
             if ($childNode instanceof MethodDeclaration) {
-                return $this->getLineCharacterFromStartPosition($childNode->getStartPosition());
+                return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
             }
         }
-
-        return $this->getLineCharacterFromStartPosition(
-            $this->classNode->getEndPosition()
-        );
+        // if there are no methods in the file, insert fragment before the end of the class
+        return $this->getLineNumberFromPosition($this->classNode->getEndPosition());
     }
 
-    private function getLineCharacterFromStartPosition(int $startPosition): LineCharacterPosition
+    private function getLineNumberFromPosition(int $startPosition): int
     {
         return PositionUtilities::getLineCharacterPositionFromPosition(
             $startPosition,
             $this->classNode->getFileContents()
-        );
+        )->line;
     }
 
     public function insert(string $newContent, ?string $insertBeforeMethodName = null): void
     {
-        $methodStart = $insertBeforeMethodName
-            ? $this->getMethodStartBeforeMethod($insertBeforeMethodName)
-            : $this->getMethodStartBeforeFirstMethod();
+        $insertLine = $insertBeforeMethodName
+            ? $this->getInsertLineBeforeMethod($insertBeforeMethodName)
+            : $this->getInsertLineBeforeFirstMethod();
 
         $lines = explode(PHP_EOL, $this->classNode->getFileContents());
-        array_splice($lines, $methodStart->line, 0, $newContent);
+        array_splice($lines, $insertLine, 0, $newContent);
         $contents = implode(PHP_EOL, $lines);
         $this->classNode = self::fromCode($contents);
     }

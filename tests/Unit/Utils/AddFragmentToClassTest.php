@@ -24,6 +24,9 @@ use Google\Generator\Utils\AddFragmentToClass;
 final class AddFragmentToClassTest extends TestCase
 {
     private $methodFragment = <<<EOL
+    /**
+     * The fragment
+     */
     public function methodOne(): string
     {
         return \$this->foo;
@@ -34,7 +37,16 @@ EOL;
 <?php
 class Bar
 {
+    /**
+     * The constructor
+     */
     public function __construct(private string \$foo)
+    {
+    }
+    /**
+     * Empty method
+     */
+    public function bar()
     {
     }
 }
@@ -56,11 +68,11 @@ EOL;
     {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)
-        $insertBeforeMethod = new AddFragmentToClass($classContents, $insertBeforeMethod);
+        $addFragmentUtil = new AddFragmentToClass($classContents, $insertBeforeMethod);
 
         // Insert the function before this one
-        $insertBeforeMethod->insert($this->methodFragment);
-        $newClassContents = $insertBeforeMethod->getContents();
+        $addFragmentUtil->insert($this->methodFragment, $insertBeforeMethod);
+        $newClassContents = $addFragmentUtil->getContents();
 
         eval(ltrim($newClassContents, '<?php'));
 
@@ -73,7 +85,7 @@ EOL;
     {
         return [
             [$this->classContents1],
-            [$this->classContents1, '__construct'],
+            [$this->classContents1, 'bar'],
             [$this->classContents2],
         ];
     }
@@ -83,7 +95,7 @@ EOL;
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Provided contents does not contain a PHP class');
 
-        $insertBeforeMethod = new AddFragmentToClass('<?php echo "foo";');
+        $addFragmentUtil = new AddFragmentToClass('<?php echo "foo";');
     }
 
     public function testAstMethodReplacerWithNoMethod()
@@ -91,8 +103,8 @@ EOL;
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Provided contents does not contain method __construct');
 
-        $insertBeforeMethod = new AddFragmentToClass($this->classContents2);
-        $insertBeforeMethod->insert('private $foo;', '__construct');
+        $addFragmentUtil = new AddFragmentToClass($this->classContents2);
+        $addFragmentUtil->insert('private $foo;', '__construct');
     }
 
     public function testAstMethodReplacerWithSyntaxError()
@@ -100,8 +112,8 @@ EOL;
         $this->expectException(\ParseError::class);
         $this->expectExceptionMessage('Provided contents contains a PHP syntax error');
 
-        $insertBeforeMethod = new AddFragmentToClass($this->classContents1);
-        $insertBeforeMethod->insert('SYNTAX ERROR');
+        $addFragmentUtil = new AddFragmentToClass($this->classContents1);
+        $addFragmentUtil->insert('SYNTAX ERROR');
     }
 
     /**
@@ -110,7 +122,7 @@ EOL;
     public function testWriteMethodToClassScript(
         string $methodFragment,
         string $classContents,
-        string $expectedOutput = 'New method content written to',
+        string $expectedOutput = 'Fragment written to ',
         int $expectedReturnVar = 0,
     ) {
         $fragmentFile = tempnam(sys_get_temp_dir(), 'test-snippet-');
