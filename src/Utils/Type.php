@@ -88,12 +88,6 @@ class Type implements Equality
         return new Type(Vector::new([]), 'stdClass');
     }
 
-    /** The built-in 'self' type. */
-    public static function self(): Type
-    {
-        return new Type(Vector::new([]), 'self');
-    }
-
     /** An array of the specified type, for PhpDoc use only. */
     public static function arrayOf(Type $elementType): Type
     {
