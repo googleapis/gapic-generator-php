@@ -92,9 +92,4 @@ final class PhpMethod extends PhpClassMember
             static::toPhp($this->body) .
             PHP_EOL . '}' . PHP_EOL;
     }
-
-    private function returnTypeToCode(): string
-    {
-        return isset($this->returnType) ? ': ' . $this->returnType->toCode() : '';
-    }
 }
