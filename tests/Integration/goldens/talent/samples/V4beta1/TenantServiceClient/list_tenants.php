@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_TenantService_ListTenants_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Talent\V4beta1\Client\TenantServiceClient;
+use Google\Cloud\Talent\V4beta1\ListTenantsRequest;
 use Google\Cloud\Talent\V4beta1\Tenant;
-use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 
 /**
  * Lists all tenants associated with the project.
@@ -42,10 +43,14 @@ function list_tenants_sample(string $formattedParent): void
     // Create a client.
     $tenantServiceClient = new TenantServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListTenantsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $tenantServiceClient->listTenants($formattedParent);
+        $response = $tenantServiceClient->listTenants($request);
 
         /** @var Tenant $element */
         foreach ($response as $element) {

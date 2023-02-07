@@ -20,13 +20,14 @@
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
+            "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
         }
     },
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "google/protobuf": "^3.18",
         "friendsofphp/php-cs-fixer": "^3",
         "symfony/yaml": "^5.2",
@@ -34,6 +35,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "^1.17"
+        "google/gax": "^1.18"
     }
 }

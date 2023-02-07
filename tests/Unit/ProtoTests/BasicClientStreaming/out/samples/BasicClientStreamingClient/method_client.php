@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START clientstreaming_generated_BasicClientStreaming_MethodClient_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ClientStream;
-use Testing\BasicClientStreaming\BasicClientStreamingClient;
+use Testing\BasicClientStreaming\Client\BasicClientStreamingClient;
 use Testing\BasicClientStreaming\Request;
 use Testing\BasicClientStreaming\Response;
 
@@ -35,7 +35,7 @@ function method_client_sample(int $aNumber): void
     // Create a client.
     $basicClientStreamingClient = new BasicClientStreamingClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = (new Request())
         ->setANumber($aNumber);
 

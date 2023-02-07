@@ -70,6 +70,12 @@ class Type implements Equality
         return new Type(null, 'mixed');
     }
 
+    /** The built-in 'self' identifier. */
+    public static function self(): Type
+    {
+        return new Type(null, 'self');
+    }
+
     /** The built-in 'void' type. */
     public static function void(): Type
     {

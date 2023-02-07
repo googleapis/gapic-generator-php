@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,20 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\Catalog;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest;
+use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
+use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: Service for managing catalog configuration.
@@ -96,7 +100,7 @@ class CatalogServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/catalog_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/catalog_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/catalog_service_grpc_config.json',
@@ -265,7 +269,7 @@ class CatalogServiceGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'retail.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -294,7 +298,7 @@ class CatalogServiceGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -361,11 +365,15 @@ class CatalogServiceGapicClient
     public function getDefaultBranch(array $optionalArgs = [])
     {
         $request = new GetDefaultBranchRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['catalog'])) {
             $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
-        return $this->startApiCall('GetDefaultBranch', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetDefaultBranch', GetDefaultBranchResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -428,7 +436,9 @@ class CatalogServiceGapicClient
     public function listCatalogs($parent, array $optionalArgs = [])
     {
         $request = new ListCatalogsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -437,7 +447,9 @@ class CatalogServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListCatalogs', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCatalogs', $optionalArgs, ListCatalogsResponse::class, $request);
     }
 
     /**
@@ -520,8 +532,10 @@ class CatalogServiceGapicClient
     public function setDefaultBranch(array $optionalArgs = [])
     {
         $request = new SetDefaultBranchRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['catalog'])) {
             $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
         if (isset($optionalArgs['branchId'])) {
@@ -532,7 +546,9 @@ class CatalogServiceGapicClient
             $request->setNote($optionalArgs['note']);
         }
 
-        return $this->startApiCall('SetDefaultBranch', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetDefaultBranch', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -581,11 +597,15 @@ class CatalogServiceGapicClient
     public function updateCatalog($catalog, array $optionalArgs = [])
     {
         $request = new UpdateCatalogRequest();
+        $requestParamHeaders = [];
         $request->setCatalog($catalog);
+        $requestParamHeaders['catalog.name'] = $catalog->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateCatalog', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCatalog', Catalog::class, $optionalArgs, $request)->wait();
     }
 }

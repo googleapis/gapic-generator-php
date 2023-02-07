@@ -19,18 +19,14 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\BidiStream;
-use Google\ApiCore\ClientStream;
-use Google\ApiCore\OperationResponse;
-use Google\ApiCore\ServerStream;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFunction;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\GPBEmpty;
 use Google\Rpc\Status;
 
 class SnippetGenerator
@@ -175,7 +171,7 @@ class SnippetGenerator
                             : Vector::new([
                                 AST::inlineVarDoc(
                                     $context->type($snippetDetails->methodDetails->lroResponseType),
-                                    $responseVar
+                                    $resultVar
                                 ),
                                 AST::assign($resultVar, $responseVar->getResult()),
                                 $this->buildPrintFCall(
@@ -207,20 +203,29 @@ class SnippetGenerator
         $responseVar = AST::var('response');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $resourceType = $snippetDetails->methodDetails->resourceType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
             [
                 $this->buildClientMethodCall($snippetDetails, $responseVar),
                 PHP_EOL,
-                AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->resourceType),
-                    $elementVar
-                ),
+                // When transport is REST only, disabling this for now.
+                // Need to further investigate an issue causing the resourceType
+                // to render as ItemsEntry with a mapped entry, despite a
+                // different value being outlined in the proto.
+                $this->serviceDetails->transportType === Transport::REST
+                    ? null
+                    : AST::inlineVarDoc(
+                        $context->type($resourceType),
+                        $elementVar
+                    ),
                 AST::foreach($responseVar, $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $resourceType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -236,6 +241,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -244,13 +250,15 @@ class SnippetGenerator
                 $streamVar->writeAll($snippetDetails->rpcArguments),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $elementVar
                 ),
                 AST::foreach($streamVar->closeWriteAndReadAll(), $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $responseType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -266,6 +274,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $elementVar = AST::var('element');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -273,13 +282,15 @@ class SnippetGenerator
                 $this->buildClientMethodCall($snippetDetails, $streamVar),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $elementVar
                 ),
                 AST::foreach($streamVar->readAll(), $elementVar)(
                     $this->buildPrintFCall(
                         'Element data: %s',
-                        "{$elementVar->toCode()}->serializeToJsonString()"
+                        $responseType->isClass()
+                            ? "{$elementVar->toCode()}->serializeToJsonString()"
+                            : $elementVar->toCode()
                     )
                 )
             ]
@@ -295,6 +306,7 @@ class SnippetGenerator
         $streamVar = AST::var('stream');
         $responseVar = AST::var('response');
         $context = $snippetDetails->context;
+        $responseType = $snippetDetails->methodDetails->responseType;
 
         return $this->buildSnippetFunctions(
             $snippetDetails,
@@ -302,7 +314,7 @@ class SnippetGenerator
                 $this->buildClientMethodCall($snippetDetails, $streamVar),
                 PHP_EOL,
                 AST::inlineVarDoc(
-                    $context->type($snippetDetails->methodDetails->responseType),
+                    $context->type($responseType),
                     $responseVar
                 ),
                 AST::assign(
@@ -311,7 +323,9 @@ class SnippetGenerator
                 ),
                 $this->buildPrintFCall(
                     'Response data: %s',
-                    "{$responseVar->toCode()}->serializeToJsonString()"
+                    $responseType->isClass()
+                        ? "{$responseVar->toCode()}->serializeToJsonString()"
+                        : $responseVar->toCode()
                 )
             ]
         );
@@ -371,12 +385,12 @@ class SnippetGenerator
                         $snippetDetails->serviceClientVar,
                         AST::new(
                             $snippetDetails->context->type(
-                                $this->serviceDetails->emptyClientType
+                                $this->serviceDetails->emptyClientV2Type
                             )
                         )()
                     ),
                     $hasSampleAssignments ? PHP_EOL : null,
-                    $hasSampleAssignments ? '// Prepare any non-scalar elements to be passed along with the request.' : null,
+                    $hasSampleAssignments ? '// Prepare the request message.' : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',
@@ -519,7 +533,9 @@ class SnippetGenerator
      */
     private function generateRegionTag(string $methodName): string
     {
-        $version = strtolower(Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace)) ?: '_';
+        $versionAndSuffix = strtolower(Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace)) ?: '_';
+        $versionParts = explode('/', $versionAndSuffix);
+        $version = $versionParts[0];
         if ($version !== '_') {
             $version = '_' . $version . '_';
         }

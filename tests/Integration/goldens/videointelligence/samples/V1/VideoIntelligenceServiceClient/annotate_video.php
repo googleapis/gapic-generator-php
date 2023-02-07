@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START videointelligence_v1_generated_VideoIntelligenceService_AnnotateVideo_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
-use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
+use Google\Cloud\VideoIntelligence\V1\Client\VideoIntelligenceServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -46,14 +47,17 @@ function annotate_video_sample(): void
     // Create a client.
     $videoIntelligenceServiceClient = new VideoIntelligenceServiceClient();
 
+    // Prepare the request message.
+    $request = new AnnotateVideoRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $videoIntelligenceServiceClient->annotateVideo();
+        $response = $videoIntelligenceServiceClient->annotateVideo($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var AnnotateVideoResponse $response */
+            /** @var AnnotateVideoResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,13 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\CompleteQueryRequest;
+use Google\Cloud\Retail\V2alpha\CompleteQueryResponse;
 use Google\Cloud\Retail\V2alpha\CompletionDataInputConfig;
 use Google\Cloud\Retail\V2alpha\ImportCompletionDataRequest;
 use Google\LongRunning\Operation;
@@ -100,7 +102,7 @@ class CompletionServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/completion_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/completion_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/completion_service_grpc_config.json',
@@ -238,7 +240,7 @@ class CompletionServiceGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'retail.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -267,7 +269,7 @@ class CompletionServiceGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -391,8 +393,10 @@ class CompletionServiceGapicClient
     public function completeQuery($catalog, $query, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
+        $requestParamHeaders = [];
         $request->setCatalog($catalog);
         $request->setQuery($query);
+        $requestParamHeaders['catalog'] = $catalog;
         if (isset($optionalArgs['visitorId'])) {
             $request->setVisitorId($optionalArgs['visitorId']);
         }
@@ -413,7 +417,9 @@ class CompletionServiceGapicClient
             $request->setMaxSuggestions($optionalArgs['maxSuggestions']);
         }
 
-        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -490,12 +496,16 @@ class CompletionServiceGapicClient
     public function importCompletionData($parent, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportCompletionDataRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['notificationPubsubTopic'])) {
             $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
-        return $this->startApiCall('ImportCompletionData', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportCompletionData', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

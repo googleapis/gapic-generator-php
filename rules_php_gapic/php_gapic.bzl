@@ -53,6 +53,7 @@ def php_gapic_srcjar(
         grpc_service_config = None,
         transport = None,
         rest_numeric_enums = False,
+        generate_snippets = True,
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     plugin_file_args = {}
@@ -71,7 +72,6 @@ def php_gapic_srcjar(
     if transport != "grpc+rest" and transport != "rest":
         fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
 
-
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
@@ -79,6 +79,10 @@ def php_gapic_srcjar(
     # Generate REGAPIC param for requesting response enums be JSON-encoded as numbers, not strings.
     if rest_numeric_enums:
         plugin_args.append("rest-numeric-enums")
+
+    # Dictates whether snippets should be generated.
+    if generate_snippets:
+        plugin_args.append("generate-snippets")
 
     proto_custom_library(
         name = name,
@@ -113,6 +117,7 @@ def php_gapic_library(
         grpc_service_config = None,
         transport = None,
         rest_numeric_enums = False,
+        generate_snippets = True,
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     srcjar_name = "%s_srcjar" % name
@@ -125,6 +130,7 @@ def php_gapic_library(
         grpc_service_config = grpc_service_config,
         transport = transport,
         rest_numeric_enums = rest_numeric_enums,
+        generate_snippets = generate_snippets,
         generator_binary = generator_binary,
         **kwargs
     )

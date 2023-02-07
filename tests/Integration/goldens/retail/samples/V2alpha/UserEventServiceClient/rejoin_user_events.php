@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_RejoinUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
+use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse;
-use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -46,14 +47,18 @@ function rejoin_user_events_sample(string $parent): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
+    // Prepare the request message.
+    $request = (new RejoinUserEventsRequest())
+        ->setParent($parent);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->rejoinUserEvents($parent);
+        $response = $userEventServiceClient->rejoinUserEvents($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var RejoinUserEventsResponse $response */
+            /** @var RejoinUserEventsResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

@@ -36,6 +36,7 @@ use Testing\Basic\PartOfRequestB;
 use Testing\Basic\PartOfRequestC;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
+use Testing\Basic\Response;
 
 /**
  * Service Description: This is a basic service.
@@ -78,7 +79,7 @@ class BasicGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_grpc_config.json',
@@ -99,7 +100,7 @@ class BasicGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'basic.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -128,7 +129,7 @@ class BasicGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -182,7 +183,7 @@ class BasicGapicClient
     public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -237,6 +238,6 @@ class BasicGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
+        return $this->startCall('MethodWithArgs', Response::class, $optionalArgs, $request)->wait();
     }
 }

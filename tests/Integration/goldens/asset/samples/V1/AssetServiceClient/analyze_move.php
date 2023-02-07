@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_AnalyzeMove_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Asset\V1\AnalyzeMoveRequest;
 use Google\Cloud\Asset\V1\AnalyzeMoveResponse;
-use Google\Cloud\Asset\V1\AssetServiceClient;
+use Google\Cloud\Asset\V1\Client\AssetServiceClient;
 
 /**
  * Analyze moving a resource to a specified destination without kicking off
@@ -49,10 +50,15 @@ function analyze_move_sample(string $resource, string $destinationParent): void
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 
+    // Prepare the request message.
+    $request = (new AnalyzeMoveRequest())
+        ->setResource($resource)
+        ->setDestinationParent($destinationParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var AnalyzeMoveResponse $response */
-        $response = $assetServiceClient->analyzeMove($resource, $destinationParent);
+        $response = $assetServiceClient->analyzeMove($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

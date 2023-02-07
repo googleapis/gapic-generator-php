@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_ListProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\ListProductsRequest;
 use Google\Cloud\Retail\V2alpha\Product;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 
 /**
  * Gets a list of [Product][google.cloud.retail.v2alpha.Product]s.
@@ -47,10 +48,14 @@ function list_products_sample(string $formattedParent): void
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListProductsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $productServiceClient->listProducts($formattedParent);
+        $response = $productServiceClient->listProducts($request);
 
         /** @var Product $element */
         foreach ($response as $element) {

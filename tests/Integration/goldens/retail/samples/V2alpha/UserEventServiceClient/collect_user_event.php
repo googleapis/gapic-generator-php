@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_CollectUserEvent_sync]
 use Google\ApiCore\ApiException;
 use Google\Api\HttpBody;
-use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
+use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
 
 /**
  * Writes a single user event from the browser. This uses a GET request to
@@ -44,10 +45,15 @@ function collect_user_event_sample(string $parent, string $userEvent): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
+    // Prepare the request message.
+    $request = (new CollectUserEventRequest())
+        ->setParent($parent)
+        ->setUserEvent($userEvent);
+
     // Call the API and handle any network failures.
     try {
         /** @var HttpBody $response */
-        $response = $userEventServiceClient->collectUserEvent($parent, $userEvent);
+        $response = $userEventServiceClient->collectUserEvent($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

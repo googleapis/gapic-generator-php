@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_ListLogs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Logging\V2\LoggingServiceV2Client;
+use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
+use Google\Cloud\Logging\V2\ListLogsRequest;
 
 /**
  * Lists the logs in projects, organizations, folders, or billing accounts.
@@ -44,14 +45,18 @@ function list_logs_sample(string $formattedParent): void
     // Create a client.
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
+    // Prepare the request message.
+    $request = (new ListLogsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $loggingServiceV2Client->listLogs($formattedParent);
+        $response = $loggingServiceV2Client->listLogs($request);
 
         /** @var string $element */
         foreach ($response as $element) {
-            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+            printf('Element data: %s' . PHP_EOL, $element);
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

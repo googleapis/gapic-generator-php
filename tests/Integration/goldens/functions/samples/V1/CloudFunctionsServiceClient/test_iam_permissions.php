@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
+use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 
 /**
@@ -45,13 +46,16 @@ function test_iam_permissions_sample(string $resource, string $permissionsElemen
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $permissions = [$permissionsElement,];
+    $request = (new TestIamPermissionsRequest())
+        ->setResource($resource)
+        ->setPermissions($permissions);
 
     // Call the API and handle any network failures.
     try {
         /** @var TestIamPermissionsResponse $response */
-        $response = $cloudFunctionsServiceClient->testIamPermissions($resource, $permissions);
+        $response = $cloudFunctionsServiceClient->testIamPermissions($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

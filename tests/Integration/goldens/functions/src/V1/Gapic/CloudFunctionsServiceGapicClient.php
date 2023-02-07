@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,24 +30,30 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Functions\V1\CallFunctionRequest;
+use Google\Cloud\Functions\V1\CallFunctionResponse;
 use Google\Cloud\Functions\V1\CloudFunction;
 use Google\Cloud\Functions\V1\CreateFunctionRequest;
 use Google\Cloud\Functions\V1\DeleteFunctionRequest;
 use Google\Cloud\Functions\V1\GenerateDownloadUrlRequest;
+use Google\Cloud\Functions\V1\GenerateDownloadUrlResponse;
 use Google\Cloud\Functions\V1\GenerateUploadUrlRequest;
+use Google\Cloud\Functions\V1\GenerateUploadUrlResponse;
 use Google\Cloud\Functions\V1\GetFunctionRequest;
 use Google\Cloud\Functions\V1\ListFunctionsRequest;
+use Google\Cloud\Functions\V1\ListFunctionsResponse;
 use Google\Cloud\Functions\V1\UpdateFunctionRequest;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\GetPolicyOptions;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
+use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
 
@@ -106,7 +112,7 @@ class CloudFunctionsServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/cloud_functions_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/cloud_functions_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/cloud_functions_service_grpc_config.json',
@@ -264,7 +270,7 @@ class CloudFunctionsServiceGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'cloudfunctions.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -293,7 +299,7 @@ class CloudFunctionsServiceGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -355,9 +361,13 @@ class CloudFunctionsServiceGapicClient
     public function callFunction($name, $data, array $optionalArgs = [])
     {
         $request = new CallFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
         $request->setData($data);
-        return $this->startApiCall('CallFunction', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CallFunction', CallFunctionResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -421,9 +431,13 @@ class CloudFunctionsServiceGapicClient
     public function createFunction($location, $function, array $optionalArgs = [])
     {
         $request = new CreateFunctionRequest();
+        $requestParamHeaders = [];
         $request->setLocation($location);
         $request->setFunction($function);
-        return $this->startApiCall('CreateFunction', $request, $optionalArgs)->wait();
+        $requestParamHeaders['location'] = $location;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -482,8 +496,12 @@ class CloudFunctionsServiceGapicClient
     public function deleteFunction($name, array $optionalArgs = [])
     {
         $request = new DeleteFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('DeleteFunction', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -525,15 +543,19 @@ class CloudFunctionsServiceGapicClient
     public function generateDownloadUrl(array $optionalArgs = [])
     {
         $request = new GenerateDownloadUrlRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['name'])) {
             $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
         if (isset($optionalArgs['versionId'])) {
             $request->setVersionId($optionalArgs['versionId']);
         }
 
-        return $this->startApiCall('GenerateDownloadUrl', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GenerateDownloadUrl', GenerateDownloadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -592,11 +614,15 @@ class CloudFunctionsServiceGapicClient
     public function generateUploadUrl(array $optionalArgs = [])
     {
         $request = new GenerateUploadUrlRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['parent'])) {
             $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
-        return $this->startApiCall('GenerateUploadUrl', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GenerateUploadUrl', GenerateUploadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -630,8 +656,12 @@ class CloudFunctionsServiceGapicClient
     public function getFunction($name, array $optionalArgs = [])
     {
         $request = new GetFunctionRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
-        return $this->startApiCall('GetFunction', $request, $optionalArgs)->wait();
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetFunction', CloudFunction::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -671,12 +701,16 @@ class CloudFunctionsServiceGapicClient
     public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
         if (isset($optionalArgs['options'])) {
             $request->setOptions($optionalArgs['options']);
         }
 
-        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -736,8 +770,10 @@ class CloudFunctionsServiceGapicClient
     public function listFunctions(array $optionalArgs = [])
     {
         $request = new ListFunctionsRequest();
+        $requestParamHeaders = [];
         if (isset($optionalArgs['parent'])) {
             $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
         if (isset($optionalArgs['pageSize'])) {
@@ -748,7 +784,9 @@ class CloudFunctionsServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListFunctions', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListFunctions', $optionalArgs, ListFunctionsResponse::class, $request);
     }
 
     /**
@@ -789,9 +827,13 @@ class CloudFunctionsServiceGapicClient
     public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPolicy($policy);
-        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -834,9 +876,13 @@ class CloudFunctionsServiceGapicClient
     public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setPermissions($permissions);
-        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -897,11 +943,15 @@ class CloudFunctionsServiceGapicClient
     public function updateFunction($function, array $optionalArgs = [])
     {
         $request = new UpdateFunctionRequest();
+        $requestParamHeaders = [];
         $request->setFunction($function);
+        $requestParamHeaders['function.name'] = $function->getName();
         if (isset($optionalArgs['updateMask'])) {
             $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        return $this->startApiCall('UpdateFunction', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

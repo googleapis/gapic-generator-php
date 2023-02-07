@@ -23,12 +23,15 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\SnippetGenerator;
 use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\EmptyClientGenerator;
+use Google\Generator\Generation\EmptyClientV2Generator;
 use Google\Generator\Generation\EnumConstantGenerator;
 use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
+use Google\Generator\Generation\GapicClientV2Generator;
 use Google\Generator\Generation\OneofWrapperGenerator;
 use Google\Generator\Generation\ResourcesGenerator;
 use Google\Generator\Generation\UnitTestsGenerator;
+use Google\Generator\Generation\UnitTestsV2Generator;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
@@ -60,6 +63,7 @@ class CodeGenerator
      * @param ?string $serviceYaml Optional service configuration yaml string.
      * @param bool $numericEnums Whether to generate the numeric-enums JSON encoding system parameter.
      * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateSnippets Whether to generate snippets.
      *
      * @return string[]
      */
@@ -72,7 +76,8 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml,
         bool $numericEnums = false,
-        int $licenseYear = -1
+        int $licenseYear = -1,
+        bool $generateSnippets = true
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -80,7 +85,18 @@ class CodeGenerator
         $filesToGenerate = $fileDescs
             ->filter(fn ($x) => substr($x->getPackage(), 0, strlen($package)) === $package)
             ->map(fn ($x) => $x->getName());
-        yield from static::generate($fileDescs, $filesToGenerate, $transport, $generateGapicMetadata, $grpcServiceConfigJson, $gapicYaml, $serviceYaml, $numericEnums, $licenseYear);
+        yield from static::generate(
+            $fileDescs,
+            $filesToGenerate,
+            $transport,
+            $generateGapicMetadata,
+            $grpcServiceConfigJson,
+            $gapicYaml,
+            $serviceYaml,
+            $numericEnums,
+            $licenseYear,
+            $generateSnippets
+        );
     }
 
     /**
@@ -98,6 +114,7 @@ class CodeGenerator
      * @param bool $numericEnums Optional whether to include in requests the system parameter enabling JSON-encoded
      *     responses to encode enum values as numbers.
      * @param int $licenseYear The year to use in license headers.
+     * @param bool $generateSnippets Whether to generate snippets.
      *
      * @return array[] [0] (string) is relative path; [1] (string) is file content.
      */
@@ -110,7 +127,8 @@ class CodeGenerator
         ?string $gapicYaml,
         ?string $serviceYaml,
         bool $numericEnums = false,
-        int $licenseYear = -1
+        int $licenseYear = -1,
+        bool $generateSnippets = true
     ) {
         if ($licenseYear < 0) {
             $licenseYear = (int)date('Y');
@@ -229,7 +247,8 @@ class CodeGenerator
             $serviceYamlConfig,
             $generateGapicMetadata,
             $licenseYear,
-            $numericEnums
+            $numericEnums,
+            $generateSnippets
         ) as $file) {
             $result[] = $file;
         }
@@ -254,7 +273,8 @@ class CodeGenerator
         ?ServiceYamlConfig $serviceYamlConfig,
         bool $generateGapicMetadata,
         int $licenseYear,
-        bool $numericEnums = false
+        bool $numericEnums = false,
+        bool $generateSnippets = true
     ) {
         $versionToNamespace = [];
         foreach ($servicesToGenerate as $service) {
@@ -282,13 +302,22 @@ class CodeGenerator
             $code = Formatter::format($code);
             yield ["src/{$version}Gapic/{$service->gapicClientType->name}.php", $code];
 
-            // Snippet Generator.
-            $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
+            // V2 Gapic
+            $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
+            $file = GapicClientV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["src/{$version}Client/BaseClient/{$service->gapicClientV2Type->name}.php", $code];
 
-            foreach ($snippetFiles as $methodName => $snippetFile) {
-                $code = $snippetFile->toCode();
-                $code = Formatter::format($code, 100);
-                yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
+            // Snippet Generator.
+            if ($generateSnippets) {
+                $snippetFiles = SnippetGenerator::generate($licenseYear, $service);
+
+                foreach ($snippetFiles as $methodName => $snippetFile) {
+                    $code = $snippetFile->toCode();
+                    $code = Formatter::format($code, 100);
+                    yield ["samples/{$version}{$service->emptyClientType->name}/{$methodName}.php", $code];
+                }
             }
 
             // Oneof wrapper classes.
@@ -309,15 +338,24 @@ class CodeGenerator
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}{$service->emptyClientType->name}.php", $code];
+            // Very thin service client V2 wrapper, for manual code additions if required.
+            $ctx = new SourceFileContext($service->emptyClientV2Type->getNamespace(), $licenseYear);
+            $file = EmptyClientV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["src/{$version}Client/{$service->emptyClientV2Type->name}.php", $code];
             // Unit tests.
             $ctx = new SourceFileContext($service->unitTestsType->getNamespace(), $licenseYear);
             $file = UnitTestsGenerator::generate($ctx, $service);
             $code = $file->toCode();
             $code = Formatter::format($code);
-            // TODO(vNext): Remove these non-standard 'use' ordering.
-            $code = Formatter::moveUseTo($code, $service->emptyClientType->getFullname(true), 0);
-            $code = Formatter::moveUseTo($code, 'stdClass', -1);
             yield ["tests/Unit/{$version}{$service->unitTestsType->name}.php", $code];
+            // V2 Unit tests.
+            $ctx = new SourceFileContext($service->unitTestsV2Type->getNamespace(), $licenseYear);
+            $file = UnitTestsV2Generator::generate($ctx, $service);
+            $code = $file->toCode();
+            $code = Formatter::format($code);
+            yield ["tests/Unit/{$version}Client/{$service->unitTestsV2Type->name}.php", $code];
             // Resource: descriptor_config.php
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);
             $code = Formatter::format($code);

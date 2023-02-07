@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\GenerateDownloadUrlRequest;
 use Google\Cloud\Functions\V1\GenerateDownloadUrlResponse;
 
 /**
@@ -45,10 +46,13 @@ function generate_download_url_sample(): void
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
+    // Prepare the request message.
+    $request = new GenerateDownloadUrlRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var GenerateDownloadUrlResponse $response */
-        $response = $cloudFunctionsServiceClient->generateDownloadUrl();
+        $response = $cloudFunctionsServiceClient->generateDownloadUrl($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

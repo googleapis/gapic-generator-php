@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ApplicationService_GetApplication_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Application;
-use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\Client\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\GetApplicationRequest;
 
 /**
  * Retrieves specified application.
@@ -42,10 +43,14 @@ function get_application_sample(string $formattedName): void
     // Create a client.
     $applicationServiceClient = new ApplicationServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetApplicationRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var Application $response */
-        $response = $applicationServiceClient->getApplication($formattedName);
+        $response = $applicationServiceClient->getApplication($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

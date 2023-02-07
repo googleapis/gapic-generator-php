@@ -66,6 +66,7 @@ php_gapic_library(
     name = "asset_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/asset/v1:cloudasset_grpc_service_config.json",
+    rest_numeric_enums = True,
     deps = [
         ":asset_php_grpc",
         ":asset_php_proto",

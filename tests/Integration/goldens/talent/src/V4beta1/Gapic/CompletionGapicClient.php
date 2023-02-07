@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -37,6 +38,7 @@ use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest\CompletionScope;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest\CompletionType;
+use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
 
 /**
  * Service Description: A service handles auto completion.
@@ -101,7 +103,7 @@ class CompletionGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/completion_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/completion_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/completion_grpc_config.json',
@@ -326,7 +328,7 @@ class CompletionGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'jobs.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -355,7 +357,7 @@ class CompletionGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -452,9 +454,11 @@ class CompletionGapicClient
     public function completeQuery($parent, $query, $pageSize, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setQuery($query);
         $request->setPageSize($pageSize);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['languageCodes'])) {
             $request->setLanguageCodes($optionalArgs['languageCodes']);
         }
@@ -471,6 +475,8 @@ class CompletionGapicClient
             $request->setType($optionalArgs['type']);
         }
 
-        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
 }

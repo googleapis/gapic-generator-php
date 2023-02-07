@@ -34,7 +34,9 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
+use Testing\ResourceNames\FileLevelTypeRefRequest\Nested1;
 use Testing\ResourceNames\MultiPatternRequest;
+use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\SinglePatternRequest;
 use Testing\ResourceNames\WildcardChildReferenceRequest;
 use Testing\ResourceNames\WildcardMultiPatternRequest;
@@ -85,6 +87,8 @@ class ResourceNamesGapicClient
     /** The default scopes required by the service. */
     public static $serviceScopes = [];
 
+    private static $deeplyNestedNameTemplate;
+
     private static $fileResDefNameTemplate;
 
     private static $folderNameTemplate;
@@ -121,7 +125,7 @@ class ResourceNamesGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/resource_names_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/resource_names_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/resource_names_grpc_config.json',
@@ -134,6 +138,15 @@ class ResourceNamesGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getDeeplyNestedNameTemplate()
+    {
+        if (self::$deeplyNestedNameTemplate == null) {
+            self::$deeplyNestedNameTemplate = new PathTemplate('foos/{foo}');
+        }
+
+        return self::$deeplyNestedNameTemplate;
     }
 
     private static function getFileResDefNameTemplate()
@@ -275,6 +288,7 @@ class ResourceNamesGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
+                'deeplyNested' => self::getDeeplyNestedNameTemplate(),
                 'fileResDef' => self::getFileResDefNameTemplate(),
                 'folder' => self::getFolderNameTemplate(),
                 'folder1' => self::getFolder1NameTemplate(),
@@ -294,6 +308,21 @@ class ResourceNamesGapicClient
         }
 
         return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * deeply_nested resource.
+     *
+     * @param string $foo
+     *
+     * @return string The formatted deeply_nested resource.
+     */
+    public static function deeplyNestedName($foo)
+    {
+        return self::getDeeplyNestedNameTemplate()->render([
+            'foo' => $foo,
+        ]);
     }
 
     /**
@@ -543,6 +572,7 @@ class ResourceNamesGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - deeplyNested: foos/{foo}
      * - fileResDef: items1/{item1_id}
      * - folder: folders/{folder_id}
      * - folder1: folders1/{folder1_id}
@@ -600,7 +630,7 @@ class ResourceNamesGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'resourcenames.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -629,7 +659,7 @@ class ResourceNamesGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -712,7 +742,7 @@ class ResourceNamesGapicClient
             $request->setFolderMultiWildcardName($optionalArgs['folderMultiWildcardName']);
         }
 
-        return $this->startApiCall('FileLevelChildTypeRefMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('FileLevelChildTypeRefMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -731,6 +761,7 @@ class ResourceNamesGapicClient
      *     Optional.
      *
      *     @type string $fileName
+     *     @type Nested1 $nestedOne
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -748,7 +779,11 @@ class ResourceNamesGapicClient
             $request->setFileName($optionalArgs['fileName']);
         }
 
-        return $this->startApiCall('FileLevelTypeRefMethod', $request, $optionalArgs)->wait();
+        if (isset($optionalArgs['nestedOne'])) {
+            $request->setNestedOne($optionalArgs['nestedOne']);
+        }
+
+        return $this->startCall('FileLevelTypeRefMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -784,7 +819,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('MultiPatternMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('MultiPatternMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -821,7 +856,7 @@ class ResourceNamesGapicClient
             $request->setRealName($optionalArgs['realName']);
         }
 
-        return $this->startApiCall('SinglePatternMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('SinglePatternMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -857,7 +892,7 @@ class ResourceNamesGapicClient
             $request->setParent($optionalArgs['parent']);
         }
 
-        return $this->startApiCall('WildcardChildReferenceMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('WildcardChildReferenceMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -893,7 +928,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('WildcardMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -929,7 +964,7 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardMultiMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('WildcardMultiMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -965,6 +1000,6 @@ class ResourceNamesGapicClient
             $request->setName($optionalArgs['name']);
         }
 
-        return $this->startApiCall('WildcardReferenceMethod', $request, $optionalArgs)->wait();
+        return $this->startCall('WildcardReferenceMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 }

@@ -31,7 +31,9 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Protobuf\GPBEmpty;
 use Testing\CustomLro\CancelOperationRequest;
+use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\DeleteOperationRequest;
 use Testing\CustomLro\GetOperationRequest;
 
@@ -77,7 +79,7 @@ class CustomLroOperationsGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/custom_lro_operations_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/custom_lro_operations_descriptor_config.php',
             'credentialsConfig' => [
@@ -112,7 +114,7 @@ class CustomLroOperationsGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'customlro.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -140,7 +142,7 @@ class CustomLroOperationsGapicClient
      *           `rest`. *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -192,7 +194,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new CancelOperationRequest();
         $request->setOperation($operation);
-        return $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
+        return $this->startCall('Cancel', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -224,7 +226,7 @@ class CustomLroOperationsGapicClient
     {
         $request = new DeleteOperationRequest();
         $request->setOperation($operation);
-        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
+        return $this->startCall('Delete', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -267,6 +269,6 @@ class CustomLroOperationsGapicClient
         $request->setProject($project);
         $request->setRegion($region);
         $request->setFoo($foo);
-        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
+        return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
     }
 }

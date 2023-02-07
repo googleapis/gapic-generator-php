@@ -71,7 +71,7 @@
     If you do not have `protoc` installed, run with `USE_TOOLS_PROTOC=true`.
 
     ```
-    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --bootstrap tests/unit/autoload.php tests/Unit
+    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
     ```
 
     This uses the Linux-only `protoc` binary checked into the repository.

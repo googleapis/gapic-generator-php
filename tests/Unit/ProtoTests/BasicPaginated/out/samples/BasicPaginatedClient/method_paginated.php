@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START paginated_generated_BasicPaginated_MethodPaginated_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicPaginated\BasicPaginatedClient;
+use Testing\BasicPaginated\Client\BasicPaginatedClient;
 use Testing\BasicPaginated\PartOfRequestA;
+use Testing\BasicPaginated\Request;
 
 /**
  * @param string $aField
@@ -40,17 +41,21 @@ function method_paginated_sample(string $aField, string $pageToken): void
     // Create a client.
     $basicPaginatedClient = new BasicPaginatedClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $partOfRequestA = [new PartOfRequestA()];
+    $request = (new Request())
+        ->setAField($aField)
+        ->setPageToken($pageToken)
+        ->setPartOfRequestA($partOfRequestA);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
+        $response = $basicPaginatedClient->methodPaginated($request);
 
         /** @var string $element */
         foreach ($response as $element) {
-            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+            printf('Element data: %s' . PHP_EOL, $element);
         }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

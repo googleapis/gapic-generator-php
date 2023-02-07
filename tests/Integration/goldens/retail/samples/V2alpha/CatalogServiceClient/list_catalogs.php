@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Retail\V2alpha\Catalog;
-use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 
 /**
  * Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s associated
@@ -45,10 +46,14 @@ function list_catalogs_sample(string $formattedParent): void
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListCatalogsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $catalogServiceClient->listCatalogs($formattedParent);
+        $response = $catalogServiceClient->listCatalogs($request);
 
         /** @var Catalog $element */
         foreach ($response as $element) {

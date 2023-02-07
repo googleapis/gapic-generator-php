@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
 use Google\Cloud\Functions\V1\CloudFunction;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\GetFunctionRequest;
 
 /**
  * Returns a function with the given name from the requested project.
@@ -38,10 +39,14 @@ function get_function_sample(string $formattedName): void
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetFunctionRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var CloudFunction $response */
-        $response = $cloudFunctionsServiceClient->getFunction($formattedName);
+        $response = $cloudFunctionsServiceClient->getFunction($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

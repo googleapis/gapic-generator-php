@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Talent\V4beta1\Application;
-use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\Client\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 
 /**
  * Lists all applications associated with the profile.
@@ -43,10 +44,14 @@ function list_applications_sample(string $formattedParent): void
     // Create a client.
     $applicationServiceClient = new ApplicationServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListApplicationsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $applicationServiceClient->listApplications($formattedParent);
+        $response = $applicationServiceClient->listApplications($request);
 
         /** @var Application $element */
         foreach ($response as $element) {

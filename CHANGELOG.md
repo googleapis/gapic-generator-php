@@ -1,5 +1,47 @@
 # Changelog
 
+## [1.6.4](https://github.com/googleapis/gapic-generator-php/compare/v1.6.3...v1.6.4) (2023-01-05)
+
+
+### Bug Fixes
+
+* Properly parse recently added flags in bazel ([#556](https://github.com/googleapis/gapic-generator-php/issues/556)) ([d4469b2](https://github.com/googleapis/gapic-generator-php/commit/d4469b250a737e7ceadc9fe9e2e740364b4ceff8))
+
+## [1.6.3](https://github.com/googleapis/gapic-generator-php/compare/v1.6.2...v1.6.3) (2022-12-14)
+
+
+### Bug Fixes
+
+* **snippetgen:** Fix field name typo ([#548](https://github.com/googleapis/gapic-generator-php/issues/548)) ([b94c362](https://github.com/googleapis/gapic-generator-php/commit/b94c36297d4f1cf82af223321b5229785eb0a8cc))
+
+## [1.6.2](https://github.com/googleapis/gapic-generator-php/compare/v1.6.1...v1.6.2) (2022-12-05)
+
+
+### Bug Fixes
+
+* Miscellaneous snippet gen fixes ([#540](https://github.com/googleapis/gapic-generator-php/issues/540)) ([456557a](https://github.com/googleapis/gapic-generator-php/commit/456557ab8341a9e3b83df4bc13bd44f9ca6676d6))
+
+## [1.6.1](https://github.com/googleapis/gapic-generator-php/compare/v1.6.0...v1.6.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* Remove no longer required formatting of imports in tests ([#532](https://github.com/googleapis/gapic-generator-php/issues/532)) ([df2f4d6](https://github.com/googleapis/gapic-generator-php/commit/df2f4d67e32ae2c38531bcf94fabf11be455079c))
+
+## [1.6.0](https://github.com/googleapis/gapic-generator-php/compare/v1.5.0...v1.6.0) (2022-10-27)
+
+
+### Features
+
+* Add flag for whether snippets should be generated ([#530](https://github.com/googleapis/gapic-generator-php/issues/530)) ([bea12ba](https://github.com/googleapis/gapic-generator-php/commit/bea12ba9bed276cfd1e6b11684a97617f63a7fb6))
+* Introduce snippet gen support ([#483](https://github.com/googleapis/gapic-generator-php/issues/483)) ([0a52d7e](https://github.com/googleapis/gapic-generator-php/commit/0a52d7e00d41e2f1aaa165ad609878639fd5a4bc))
+
+
+### Bug Fixes
+
+* Continue to support php 7.4 ([#502](https://github.com/googleapis/gapic-generator-php/issues/502)) ([2bda6f2](https://github.com/googleapis/gapic-generator-php/commit/2bda6f298f7fcbe8f160e391b58e1ab26c045267))
+* Ensure example values for repeated enums use the singular type ([#529](https://github.com/googleapis/gapic-generator-php/issues/529)) ([1e63d04](https://github.com/googleapis/gapic-generator-php/commit/1e63d04d5e2f0eb905f8ae12d6013d1ce2d2d8fd))
+
 ## [1.5.0](https://github.com/googleapis/gapic-generator-php/compare/v1.4.8...v1.5.0) (2022-07-22)
 
 

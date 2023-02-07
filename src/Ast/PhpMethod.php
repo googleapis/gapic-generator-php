@@ -33,8 +33,8 @@ final class PhpMethod extends PhpClassMember
     /** @var string *Readonly* The name of this method. */
     public string $name;
 
-    /** @var ResolvedType *Readonly* The return type of this method. */
-    public ?ResolvedType $returnType;
+    /** @var string The return type of the function. */
+    private ?ResolvedType $returnType = null;
 
     /**
      * Create a method with the specified parameters.
@@ -62,9 +62,9 @@ final class PhpMethod extends PhpClassMember
     }
 
     /**
-     * Create a method with the specified body.
+     * Create a function with the specified return type.
      *
-     * @param ResolvedType $returnType The return type of the method.
+     * @param ResolvedType $returnType The return type of the function.
      *
      * @return PhpMethod
      */
@@ -80,14 +80,17 @@ final class PhpMethod extends PhpClassMember
 
     public function toCode(): string
     {
+        $fnSignatureDeclaration =
+            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
+            ($this->returnType ? ': ' . static::toPhp($this->returnType) : null);
+
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
-            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
-            $this->returnTypeToCode() .
-            "{\n" .
+            $fnSignatureDeclaration .
+            '{' . PHP_EOL .
             static::toPhp($this->body) .
-            "}\n";
+            PHP_EOL . '}' . PHP_EOL;
     }
 
     private function returnTypeToCode(): string

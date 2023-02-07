@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_TailLogEntries_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Google\Cloud\Logging\V2\LoggingServiceV2Client;
+use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\TailLogEntriesRequest;
 use Google\Cloud\Logging\V2\TailLogEntriesResponse;
 
@@ -51,7 +51,7 @@ function tail_log_entries_sample(string $resourceNamesElement): void
     // Create a client.
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $resourceNames = [$resourceNamesElement,];
     $request = (new TailLogEntriesRequest())
         ->setResourceNames($resourceNames);

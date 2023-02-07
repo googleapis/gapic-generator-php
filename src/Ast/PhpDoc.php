@@ -64,7 +64,7 @@ abstract class PhpDoc
                 return Vector::zip($this->items, $this->items->skip(1)->append(null))->flatMap(function ($x) use ($info) {
                     [$item, $next] = $x;
                     $result = $item->toLines($info);
-                    if (!is_null($next) && !(isset($item->isParam) && isset($next->isParam))) {
+                    if (!is_null($next) && !(isset($item->isParam) && isset($next->isParam)) && !isset($item->isMethodDoc)) {
                         $result = $result->append('');
                     }
                     return $result;
@@ -424,6 +424,24 @@ abstract class PhpDoc
                 return
                     (is_null($this->intro) ? Vector::new() : $this->intro->toLines(Map::new()))
                     ->concat($code);
+            }
+        };
+    }
+
+    public static function method(string $name, string $response, string $request): PhpDoc
+    { 
+        return new class($name, $response, $request) extends PhpDoc {
+            public function __construct($name, $response, $request)
+            {
+                $this->name = $name;
+                $this->response = $response;
+                $this->request = $request;
+                $this->isMethodDoc = true;
+            }
+            protected function toLines(Map $info = null): Vector
+            {
+                // @method [[static] return type] [name]([[type] [parameter]<, ...>]) [<description>]
+                return Vector::new(["@method {$this->response} {$this->name}({$this->request} \$request, array \$optionalArgs = [])"]);
             }
         };
     }

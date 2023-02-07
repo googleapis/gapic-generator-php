@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -41,6 +43,7 @@ use Google\Cloud\Dataproc\V1\DiagnoseClusterRequest;
 use Google\Cloud\Dataproc\V1\DiagnoseClusterResults;
 use Google\Cloud\Dataproc\V1\GetClusterRequest;
 use Google\Cloud\Dataproc\V1\ListClustersRequest;
+use Google\Cloud\Dataproc\V1\ListClustersResponse;
 use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
@@ -91,6 +94,11 @@ use Google\Protobuf\FieldMask;
  *     $clusterControllerClient->close();
  * }
  * ```
+ *
+ * Many parameters require resource names to be formatted in a particular way. To
+ * assist with these names, this class includes a format method for each type of
+ * name, and additionally a parseName method to extract the individual identifiers
+ * contained within formatted names that are returned by the API.
  */
 class ClusterControllerGapicClient
 {
@@ -113,13 +121,19 @@ class ClusterControllerGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $clusterNameTemplate;
+
+    private static $serviceNameTemplate;
+
+    private static $pathTemplateMap;
+
     private $operationsClient;
 
     private static function getClientDefaults()
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/cluster_controller_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/cluster_controller_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/cluster_controller_grpc_config.json',
@@ -132,6 +146,116 @@ class ClusterControllerGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getClusterNameTemplate()
+    {
+        if (self::$clusterNameTemplate == null) {
+            self::$clusterNameTemplate = new PathTemplate('projects/{project}/locations/{location}/clusters/{cluster}');
+        }
+
+        return self::$clusterNameTemplate;
+    }
+
+    private static function getServiceNameTemplate()
+    {
+        if (self::$serviceNameTemplate == null) {
+            self::$serviceNameTemplate = new PathTemplate('projects/{project}/locations/{location}/services/{service}');
+        }
+
+        return self::$serviceNameTemplate;
+    }
+
+    private static function getPathTemplateMap()
+    {
+        if (self::$pathTemplateMap == null) {
+            self::$pathTemplateMap = [
+                'cluster' => self::getClusterNameTemplate(),
+                'service' => self::getServiceNameTemplate(),
+            ];
+        }
+
+        return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a cluster
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $cluster
+     *
+     * @return string The formatted cluster resource.
+     */
+    public static function clusterName($project, $location, $cluster)
+    {
+        return self::getClusterNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'cluster' => $cluster,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a service
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $service
+     *
+     * @return string The formatted service resource.
+     */
+    public static function serviceName($project, $location, $service)
+    {
+        return self::getServiceNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'service' => $service,
+        ]);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
+     * - service: projects/{project}/locations/{location}/services/{service}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        $templateMap = self::getPathTemplateMap();
+        if ($template) {
+            if (!isset($templateMap[$template])) {
+                throw new ValidationException("Template name $template does not exist");
+            }
+
+            return $templateMap[$template]->match($formattedName);
+        }
+
+        foreach ($templateMap as $templateName => $pathTemplate) {
+            try {
+                return $pathTemplate->match($formattedName);
+            } catch (ValidationException $ex) {
+                // Swallow the exception to continue trying other path templates
+            }
+        }
+
+        throw new ValidationException("Input did not match any known format. Input: $formattedName");
     }
 
     /**
@@ -169,7 +293,7 @@ class ClusterControllerGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'dataproc.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -198,7 +322,7 @@ class ClusterControllerGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -302,9 +426,12 @@ class ClusterControllerGapicClient
     public function createCluster($projectId, $region, $cluster, array $optionalArgs = [])
     {
         $request = new CreateClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setCluster($cluster);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
@@ -313,7 +440,9 @@ class ClusterControllerGapicClient
             $request->setActionOnFailedPrimaryWorkers($optionalArgs['actionOnFailedPrimaryWorkers']);
         }
 
-        return $this->startApiCall('CreateCluster', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -393,9 +522,13 @@ class ClusterControllerGapicClient
     public function deleteCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new DeleteClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['clusterUuid'])) {
             $request->setClusterUuid($optionalArgs['clusterUuid']);
         }
@@ -404,7 +537,9 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('DeleteCluster', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -474,10 +609,16 @@ class ClusterControllerGapicClient
     public function diagnoseCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new DiagnoseClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        return $this->startApiCall('DiagnoseCluster', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DiagnoseCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -516,10 +657,16 @@ class ClusterControllerGapicClient
     public function getCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new GetClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
-        return $this->startApiCall('GetCluster', $request, $optionalArgs)->wait();
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCluster', Cluster::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -597,8 +744,11 @@ class ClusterControllerGapicClient
     public function listClusters($projectId, $region, array $optionalArgs = [])
     {
         $request = new ListClustersRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
         if (isset($optionalArgs['filter'])) {
             $request->setFilter($optionalArgs['filter']);
         }
@@ -611,7 +761,9 @@ class ClusterControllerGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListClusters', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListClusters', $optionalArgs, ListClustersResponse::class, $request);
     }
 
     /**
@@ -691,9 +843,13 @@ class ClusterControllerGapicClient
     public function startCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new StartClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['clusterUuid'])) {
             $request->setClusterUuid($optionalArgs['clusterUuid']);
         }
@@ -702,7 +858,9 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('StartCluster', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('StartCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -782,9 +940,13 @@ class ClusterControllerGapicClient
     public function stopCluster($projectId, $region, $clusterName, array $optionalArgs = [])
     {
         $request = new StopClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['clusterUuid'])) {
             $request->setClusterUuid($optionalArgs['clusterUuid']);
         }
@@ -793,7 +955,9 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('StopCluster', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('StopCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -938,11 +1102,15 @@ class ClusterControllerGapicClient
     public function updateCluster($projectId, $region, $clusterName, $cluster, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateClusterRequest();
+        $requestParamHeaders = [];
         $request->setProjectId($projectId);
         $request->setRegion($region);
         $request->setClusterName($clusterName);
         $request->setCluster($cluster);
         $request->setUpdateMask($updateMask);
+        $requestParamHeaders['project_id'] = $projectId;
+        $requestParamHeaders['region'] = $region;
+        $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['gracefulDecommissionTimeout'])) {
             $request->setGracefulDecommissionTimeout($optionalArgs['gracefulDecommissionTimeout']);
         }
@@ -951,6 +1119,8 @@ class ClusterControllerGapicClient
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('UpdateCluster', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

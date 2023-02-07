@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,11 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
+use Google\Api\HttpBody;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
 use Google\Cloud\Retail\V2alpha\ImportErrorsConfig;
@@ -94,6 +96,8 @@ class UserEventServiceGapicClient
 
     private static $catalogNameTemplate;
 
+    private static $productNameTemplate;
+
     private static $pathTemplateMap;
 
     private $operationsClient;
@@ -102,7 +106,7 @@ class UserEventServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/user_event_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/user_event_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/user_event_service_grpc_config.json',
@@ -126,11 +130,21 @@ class UserEventServiceGapicClient
         return self::$catalogNameTemplate;
     }
 
+    private static function getProductNameTemplate()
+    {
+        if (self::$productNameTemplate == null) {
+            self::$productNameTemplate = new PathTemplate('projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}');
+        }
+
+        return self::$productNameTemplate;
+    }
+
     private static function getPathTemplateMap()
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
                 'catalog' => self::getCatalogNameTemplate(),
+                'product' => self::getProductNameTemplate(),
             ];
         }
 
@@ -159,10 +173,36 @@ class UserEventServiceGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a product
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     * @param string $branch
+     * @param string $product
+     *
+     * @return string The formatted product resource.
+     *
+     * @experimental
+     */
+    public static function productName($project, $location, $catalog, $branch, $product)
+    {
+        return self::getProductNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+            'branch' => $branch,
+            'product' => $product,
+        ]);
+    }
+
+    /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
      * - catalog: projects/{project}/locations/{location}/catalogs/{catalog}
+     * - product: projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
      * and must match one of the templates listed above. If no $template argument is
@@ -240,7 +280,7 @@ class UserEventServiceGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'retail.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -269,7 +309,7 @@ class UserEventServiceGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -347,8 +387,10 @@ class UserEventServiceGapicClient
     public function collectUserEvent($parent, $userEvent, array $optionalArgs = [])
     {
         $request = new CollectUserEventRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setUserEvent($userEvent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['uri'])) {
             $request->setUri($optionalArgs['uri']);
         }
@@ -357,7 +399,9 @@ class UserEventServiceGapicClient
             $request->setEts($optionalArgs['ets']);
         }
 
-        return $this->startApiCall('CollectUserEvent', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CollectUserEvent', HttpBody::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -429,13 +473,17 @@ class UserEventServiceGapicClient
     public function importUserEvents($parent, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportUserEventsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['errorsConfig'])) {
             $request->setErrorsConfig($optionalArgs['errorsConfig']);
         }
 
-        return $this->startApiCall('ImportUserEvents', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -530,13 +578,17 @@ class UserEventServiceGapicClient
     public function purgeUserEvents($parent, $filter, array $optionalArgs = [])
     {
         $request = new PurgeUserEventsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['force'])) {
             $request->setForce($optionalArgs['force']);
         }
 
-        return $this->startApiCall('PurgeUserEvents', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('PurgeUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -610,12 +662,16 @@ class UserEventServiceGapicClient
     public function rejoinUserEvents($parent, array $optionalArgs = [])
     {
         $request = new RejoinUserEventsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['userEventRejoinScope'])) {
             $request->setUserEventRejoinScope($optionalArgs['userEventRejoinScope']);
         }
 
-        return $this->startApiCall('RejoinUserEvents', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('RejoinUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -654,8 +710,12 @@ class UserEventServiceGapicClient
     public function writeUserEvent($parent, $userEvent, array $optionalArgs = [])
     {
         $request = new WriteUserEventRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setUserEvent($userEvent);
-        return $this->startApiCall('WriteUserEvent', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('WriteUserEvent', UserEvent::class, $optionalArgs, $request)->wait();
     }
 }

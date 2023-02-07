@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 namespace Google\Cloud\Speech\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -38,7 +39,9 @@ use Google\Cloud\Speech\V1\LongRunningRecognizeResponse;
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
 use Google\Cloud\Speech\V1\RecognizeRequest;
+use Google\Cloud\Speech\V1\RecognizeResponse;
 use Google\Cloud\Speech\V1\StreamingRecognizeRequest;
+use Google\Cloud\Speech\V1\StreamingRecognizeResponse;
 use Google\Cloud\Speech\V1\TranscriptOutputConfig;
 use Google\LongRunning\Operation;
 
@@ -111,7 +114,7 @@ class SpeechGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/speech_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/speech_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/speech_grpc_config.json',
@@ -161,7 +164,7 @@ class SpeechGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'speech.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -190,7 +193,7 @@ class SpeechGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -288,7 +291,7 @@ class SpeechGapicClient
             $request->setOutputConfig($optionalArgs['outputConfig']);
         }
 
-        return $this->startApiCall('LongRunningRecognize', $request, $optionalArgs)->wait();
+        return $this->startOperationsCall('LongRunningRecognize', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -328,7 +331,7 @@ class SpeechGapicClient
         $request = new RecognizeRequest();
         $request->setConfig($config);
         $request->setAudio($audio);
-        return $this->startApiCall('Recognize', $request, $optionalArgs)->wait();
+        return $this->startCall('Recognize', RecognizeResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -388,6 +391,6 @@ class SpeechGapicClient
      */
     public function streamingRecognize(array $optionalArgs = [])
     {
-        return $this->startApiCall('StreamingRecognize', null, $optionalArgs);
+        return $this->startCall('StreamingRecognize', StreamingRecognizeResponse::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }

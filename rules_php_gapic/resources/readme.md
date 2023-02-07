@@ -15,15 +15,15 @@ The recommended (tested) way of doing it is as follows:
    ```
 3. Download the specific PHP distribution sources from https://www.php.net/distributions:
     ```
-    curl https://www.php.net/distributions/php-7.4.15.tar.gz -o php-7.4.15.tar.gz
+    curl https://www.php.net/distributions/php-8.1.13.tar.gz -o php-8.1.13.tar.gz
     ```
 4. Unpack the downloaded archive:
     ```
-    tar -xzpf php-7.4.15.tar.gz
+    tar -xzpf php-8.1.13.tar.gz
     ```
 5. Go to the unpacked directory:
     ```
-    cd php-7.4.15
+    cd php-8.1.13
     ```
 6. Run the build config:
     ```
@@ -44,9 +44,9 @@ The recommended (tested) way of doing it is as follows:
         --disable-mbregex \
         --with-openssl \
         --enable-bcmath \
-        --prefix=/tmp/php-7.4.15
+        --prefix=/tmp/php-8.1.13
     ```
-    Please make sure that the `--prefix` destination folder has the same name as the root folder of your unpacked archive (i.e. the one you `cd` in step 3; it is usually `php-<version>`, e.g. `php-7.4.15`).
+    Please make sure that the `--prefix` destination folder has the same name as the root folder of your unpacked archive (i.e. the one you `cd` in step 3; it is usually `php-<version>`, e.g. `php-8.1.13`).
 7. Run the build:
     ```
     make -j10
@@ -60,9 +60,9 @@ The recommended (tested) way of doing it is as follows:
     ```
     cd /tmp
     ```
-10. Pack the relevant binaries in the archive, using `php-<version>_platform.tar.gz` name format:
+10. Pack the relevant binaries in the archive, using `php-<version>_<platform>.tar.gz` name format:
     ```
-    tar -zchpf php-7.4.15_linux_x86_64.tar.gz php-7.4.15/bin php-7.4.15/lib
+    tar -zchpf php-8.1.13_linux_x86_64.tar.gz php-8.1.13/bin php-8.1.13/lib
     ```
 11. Copy the created archive to the `rules_gapic/php/resources` folder in this repository and post a PR.
 

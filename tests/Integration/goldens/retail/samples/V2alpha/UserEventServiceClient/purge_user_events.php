@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_PurgeUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
+use Google\Cloud\Retail\V2alpha\PurgeUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\PurgeUserEventsResponse;
-use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -68,14 +69,19 @@ function purge_user_events_sample(string $parent, string $filter): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
+    // Prepare the request message.
+    $request = (new PurgeUserEventsRequest())
+        ->setParent($parent)
+        ->setFilter($filter);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->purgeUserEvents($parent, $filter);
+        $response = $userEventServiceClient->purgeUserEvents($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var PurgeUserEventsResponse $response */
+            /** @var PurgeUserEventsResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

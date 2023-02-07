@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_ConfigServiceV2_GetSink_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\ConfigServiceV2Client;
+use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
+use Google\Cloud\Logging\V2\GetSinkRequest;
 use Google\Cloud\Logging\V2\LogSink;
 
 /**
@@ -45,10 +46,14 @@ function get_sink_sample(string $formattedSinkName): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
+    // Prepare the request message.
+    $request = (new GetSinkRequest())
+        ->setSinkName($formattedSinkName);
+
     // Call the API and handle any network failures.
     try {
         /** @var LogSink $response */
-        $response = $configServiceV2Client->getSink($formattedSinkName);
+        $response = $configServiceV2Client->getSink($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

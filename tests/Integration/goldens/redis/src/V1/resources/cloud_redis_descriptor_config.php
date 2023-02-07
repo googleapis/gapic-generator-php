@@ -169,6 +169,10 @@ return [
                     ],
                 ],
             ],
+            'templateMap' => [
+                'instance' => 'projects/{project}/locations/{location}/instances/{instance}',
+                'location' => 'projects/{project}/locations/{location}',
+            ],
         ],
     ],
 ];

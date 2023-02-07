@@ -455,6 +455,9 @@ abstract class MethodDetails
     /** @var string *Readonly* The name of the test method testing the success case. */
     public string $testSuccessMethodName;
 
+    /** @var string *Readonly* The name of the test method testing the async variant. */
+    public string $testAsyncMethodName;
+
     /** @var string *Readonly* The name of the test method testing the exceptional case. */
     public string $testExceptionMethodName;
 
@@ -497,6 +500,12 @@ abstract class MethodDetails
     /** @var ?string *Readonly* REST method, if specified in a 'google.api.http' proto option. */
     public ?string $restMethod;
 
+    /** @var ?Map *Readonly* Map of string to Vector of strings; placeholder name -> list of property getters. */
+    public ?Map $restRoutingHeaders;
+
+    /** @var Map *Readonly* Vector of RoutingParameters; parsed from the google.api.routing annotation. */
+    public ?Map $routingParameters = null;
+
     public ?array $headerParams;
 
     /** @var bool *Readonly* Whether the service is deprecated. */
@@ -513,6 +522,7 @@ abstract class MethodDetails
         $this->methodName = Helpers::toCamelCase($this->name);
         $this->mixinServiceFullname = null;
         $this->testSuccessMethodName = $this->methodName . 'Test';
+        $this->testAsyncMethodName = $this->methodName . 'AsyncTest';
         $this->testExceptionMethodName = $this->methodName . 'ExceptionTest';
 
         $this->requestType = Type::fromMessage($this->inputMsg->desc);
@@ -526,6 +536,8 @@ abstract class MethodDetails
         $this->docLines = $desc->leadingComments;
         $this->httpRule = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
         $this->restMethod = is_null($this->httpRule) ? null : $this->httpRule->getPattern();
+        // DO NOT SORT - currently in reverse order of the first-seen variables.
+        $this->restRoutingHeaders = is_null($this->httpRule) ? null : ProtoHelpers::restPlaceholders($this->catalog, $this->httpRule, $this->inputMsg);
         $this->headerParams = ProtoHelpers::headerParams($this->catalog, $desc);
 
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
@@ -533,6 +545,10 @@ abstract class MethodDetails
         }
 
         $this->methodSignature = ProtoHelpers::getCustomOptionRepeated($desc, CustomOptions::GOOGLE_API_METHODSIGNATURE);
+        $routingRule = ProtoHelpers::routingRule($desc);
+        if (!is_null($routingRule)) {
+            $this->routingParameters = ProtoHelpers::routingParameters($this->catalog, $this->inputMsg, $routingRule);
+        }
     }
 
     public function isStreaming(): bool

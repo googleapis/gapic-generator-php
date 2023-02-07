@@ -25,6 +25,7 @@
 namespace Testing\BasicBidiStreaming\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\Transport\TransportInterface;
@@ -32,6 +33,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Request;
+use Testing\BasicBidiStreaming\Response;
 
 /**
  * Service Description:
@@ -103,7 +105,7 @@ class BasicBidiStreamingGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_bidi_streaming_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_bidi_streaming_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_bidi_streaming_grpc_config.json',
@@ -124,7 +126,7 @@ class BasicBidiStreamingGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'bidi.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -153,7 +155,7 @@ class BasicBidiStreamingGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -235,7 +237,7 @@ class BasicBidiStreamingGapicClient
      */
     public function methodBidi(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodBidi', null, $optionalArgs);
+        return $this->startCall('MethodBidi', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -293,6 +295,6 @@ class BasicBidiStreamingGapicClient
      */
     public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }

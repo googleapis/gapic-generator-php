@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -40,10 +41,12 @@ use Google\Cloud\Dataproc\V1\GetWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\InstantiateInlineWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest;
+use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse;
 use Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\WorkflowMetadata;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\LongRunning\Operation;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: The API interface for managing Workflow Templates in the
@@ -89,6 +92,8 @@ class WorkflowTemplateServiceGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $clusterNameTemplate;
+
     private static $locationNameTemplate;
 
     private static $projectLocationWorkflowTemplateNameTemplate;
@@ -96,6 +101,8 @@ class WorkflowTemplateServiceGapicClient
     private static $projectRegionWorkflowTemplateNameTemplate;
 
     private static $regionNameTemplate;
+
+    private static $serviceNameTemplate;
 
     private static $workflowTemplateNameTemplate;
 
@@ -107,7 +114,7 @@ class WorkflowTemplateServiceGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/workflow_template_service_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/workflow_template_service_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/workflow_template_service_grpc_config.json',
@@ -120,6 +127,15 @@ class WorkflowTemplateServiceGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getClusterNameTemplate()
+    {
+        if (self::$clusterNameTemplate == null) {
+            self::$clusterNameTemplate = new PathTemplate('projects/{project}/locations/{location}/clusters/{cluster}');
+        }
+
+        return self::$clusterNameTemplate;
     }
 
     private static function getLocationNameTemplate()
@@ -158,6 +174,15 @@ class WorkflowTemplateServiceGapicClient
         return self::$regionNameTemplate;
     }
 
+    private static function getServiceNameTemplate()
+    {
+        if (self::$serviceNameTemplate == null) {
+            self::$serviceNameTemplate = new PathTemplate('projects/{project}/locations/{location}/services/{service}');
+        }
+
+        return self::$serviceNameTemplate;
+    }
+
     private static function getWorkflowTemplateNameTemplate()
     {
         if (self::$workflowTemplateNameTemplate == null) {
@@ -171,15 +196,36 @@ class WorkflowTemplateServiceGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
+                'cluster' => self::getClusterNameTemplate(),
                 'location' => self::getLocationNameTemplate(),
                 'projectLocationWorkflowTemplate' => self::getProjectLocationWorkflowTemplateNameTemplate(),
                 'projectRegionWorkflowTemplate' => self::getProjectRegionWorkflowTemplateNameTemplate(),
                 'region' => self::getRegionNameTemplate(),
+                'service' => self::getServiceNameTemplate(),
                 'workflowTemplate' => self::getWorkflowTemplateNameTemplate(),
             ];
         }
 
         return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a cluster
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $cluster
+     *
+     * @return string The formatted cluster resource.
+     */
+    public static function clusterName($project, $location, $cluster)
+    {
+        return self::getClusterNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'cluster' => $cluster,
+        ]);
     }
 
     /**
@@ -255,6 +301,25 @@ class WorkflowTemplateServiceGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a service
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $service
+     *
+     * @return string The formatted service resource.
+     */
+    public static function serviceName($project, $location, $service)
+    {
+        return self::getServiceNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'service' => $service,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a
      * workflow_template resource.
      *
@@ -277,10 +342,12 @@ class WorkflowTemplateServiceGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
      * - location: projects/{project}/locations/{location}
      * - projectLocationWorkflowTemplate: projects/{project}/locations/{location}/workflowTemplates/{workflow_template}
      * - projectRegionWorkflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
      * - region: projects/{project}/regions/{region}
+     * - service: projects/{project}/locations/{location}/services/{service}
      * - workflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
@@ -353,7 +420,7 @@ class WorkflowTemplateServiceGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'dataproc.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -382,7 +449,7 @@ class WorkflowTemplateServiceGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -450,9 +517,13 @@ class WorkflowTemplateServiceGapicClient
     public function createWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new CreateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTemplate($template);
-        return $this->startApiCall('CreateWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -497,12 +568,16 @@ class WorkflowTemplateServiceGapicClient
     public function deleteWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new DeleteWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
 
-        return $this->startApiCall('DeleteWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteWorkflowTemplate', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -553,12 +628,16 @@ class WorkflowTemplateServiceGapicClient
     public function getWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new GetWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
 
-        return $this->startApiCall('GetWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -659,13 +738,17 @@ class WorkflowTemplateServiceGapicClient
     public function instantiateInlineWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new InstantiateInlineWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTemplate($template);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['requestId'])) {
             $request->setRequestId($optionalArgs['requestId']);
         }
 
-        return $this->startApiCall('InstantiateInlineWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('InstantiateInlineWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -770,7 +853,9 @@ class WorkflowTemplateServiceGapicClient
     public function instantiateWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new InstantiateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setName($name);
+        $requestParamHeaders['name'] = $name;
         if (isset($optionalArgs['version'])) {
             $request->setVersion($optionalArgs['version']);
         }
@@ -783,7 +868,9 @@ class WorkflowTemplateServiceGapicClient
             $request->setParameters($optionalArgs['parameters']);
         }
 
-        return $this->startApiCall('InstantiateWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('InstantiateWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -847,7 +934,9 @@ class WorkflowTemplateServiceGapicClient
     public function listWorkflowTemplates($parent, array $optionalArgs = [])
     {
         $request = new ListWorkflowTemplatesRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -856,7 +945,9 @@ class WorkflowTemplateServiceGapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListWorkflowTemplates', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListWorkflowTemplates', $optionalArgs, ListWorkflowTemplatesResponse::class, $request);
     }
 
     /**
@@ -893,7 +984,11 @@ class WorkflowTemplateServiceGapicClient
     public function updateWorkflowTemplate($template, array $optionalArgs = [])
     {
         $request = new UpdateWorkflowTemplateRequest();
+        $requestParamHeaders = [];
         $request->setTemplate($template);
-        return $this->startApiCall('UpdateWorkflowTemplate', $request, $optionalArgs)->wait();
+        $requestParamHeaders['template.name'] = $template->getName();
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 }

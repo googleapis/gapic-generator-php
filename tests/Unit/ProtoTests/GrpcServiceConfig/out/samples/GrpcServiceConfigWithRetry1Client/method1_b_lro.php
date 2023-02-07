@@ -26,8 +26,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\Client\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\LroResponse;
+use Testing\GrpcServiceConfig\Request1;
 
 /**
  * This sample has been automatically generated and should be regarded as a code
@@ -41,14 +42,17 @@ function method1_b_lro_sample(): void
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
 
+    // Prepare the request message.
+    $request = new Request1();
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $grpcServiceConfigWithRetry1Client->method1BLro();
+        $response = $grpcServiceConfigWithRetry1Client->method1BLro($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var LroResponse $response */
+            /** @var LroResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

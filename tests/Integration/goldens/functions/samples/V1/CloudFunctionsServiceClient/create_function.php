@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
 use Google\Cloud\Functions\V1\CloudFunction;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\CreateFunctionRequest;
 use Google\Rpc\Status;
 
 /**
@@ -43,17 +44,20 @@ function create_function_sample(string $formattedLocation): void
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $function = new CloudFunction();
+    $request = (new CreateFunctionRequest())
+        ->setLocation($formattedLocation)
+        ->setFunction($function);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudFunctionsServiceClient->createFunction($formattedLocation, $function);
+        $response = $cloudFunctionsServiceClient->createFunction($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var CloudFunction $response */
+            /** @var CloudFunction $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

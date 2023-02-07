@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_JobController_SubmitJobAsOperation_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Dataproc\V1\Client\JobControllerClient;
 use Google\Cloud\Dataproc\V1\Job;
-use Google\Cloud\Dataproc\V1\JobControllerClient;
 use Google\Cloud\Dataproc\V1\JobPlacement;
+use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Rpc\Status;
 
 /**
@@ -46,20 +47,24 @@ function submit_job_as_operation_sample(
     // Create a client.
     $jobControllerClient = new JobControllerClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $jobPlacement = (new JobPlacement())
         ->setClusterName($jobPlacementClusterName);
     $job = (new Job())
         ->setPlacement($jobPlacement);
+    $request = (new SubmitJobRequest())
+        ->setProjectId($projectId)
+        ->setRegion($region)
+        ->setJob($job);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $jobControllerClient->submitJobAsOperation($projectId, $region, $job);
+        $response = $jobControllerClient->submitJobAsOperation($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var Job $response */
+            /** @var Job $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

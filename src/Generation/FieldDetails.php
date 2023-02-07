@@ -165,7 +165,7 @@ class FieldDetails
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
         $this->requiredSubFields = Vector::new();
         // Load resource details, if relevant.
-        $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+        $resRef = ProtoHelpers::resourceReference($field);
         if (!is_null($resRef)) {
             if ($resRef->getType() === '' && $resRef->getChildType() === '') {
                 throw new \Exception('type of child_type must be set to a value.');
@@ -322,7 +322,12 @@ class FieldDetails
                 return '...';
             case GPBType::ENUM: // 14
                 $enumValueName = $this->catalog->enumsByFullname[$this->desc->desc->getEnumType()]->getValue()[0]->getName();
-                return AST::access($ctx->type(Type::fromField($this->catalog, $this->desc->desc)), AST::property($enumValueName));
+                return AST::access(
+                    $ctx->type(
+                        Type::fromField($this->catalog, $this->desc->desc, false)
+                    ),
+                    AST::property($enumValueName)
+                );
             default:
                 throw new \Exception("No exampleValue for type: {$this->desc->getType()}");
         }

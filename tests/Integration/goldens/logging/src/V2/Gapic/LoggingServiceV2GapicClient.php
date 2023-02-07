@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@
 namespace Google\Cloud\Logging\V2\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\PathTemplate;
+use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -35,11 +37,17 @@ use Google\Api\MonitoredResource;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Logging\V2\DeleteLogRequest;
 use Google\Cloud\Logging\V2\ListLogEntriesRequest;
+use Google\Cloud\Logging\V2\ListLogEntriesResponse;
 use Google\Cloud\Logging\V2\ListLogsRequest;
+use Google\Cloud\Logging\V2\ListLogsResponse;
 use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest;
+use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsResponse;
 use Google\Cloud\Logging\V2\LogEntry;
 use Google\Cloud\Logging\V2\TailLogEntriesRequest;
+use Google\Cloud\Logging\V2\TailLogEntriesResponse;
 use Google\Cloud\Logging\V2\WriteLogEntriesRequest;
+use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
+use Google\Protobuf\GPBEmpty;
 
 /**
  * Service Description: Service for ingesting and querying logs.
@@ -111,7 +119,7 @@ class LoggingServiceV2GapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/logging_service_v2_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/logging_service_v2_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/logging_service_v2_grpc_config.json',
@@ -426,7 +434,7 @@ class LoggingServiceV2GapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'logging.googleapis.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -455,7 +463,7 @@ class LoggingServiceV2GapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -523,8 +531,12 @@ class LoggingServiceV2GapicClient
     public function deleteLog($logName, array $optionalArgs = [])
     {
         $request = new DeleteLogRequest();
+        $requestParamHeaders = [];
         $request->setLogName($logName);
-        return $this->startApiCall('DeleteLog', $request, $optionalArgs)->wait();
+        $requestParamHeaders['log_name'] = $logName;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteLog', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -630,7 +642,7 @@ class LoggingServiceV2GapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListLogEntries', $request, $optionalArgs);
+        return $this->getPagedListResponse('ListLogEntries', $optionalArgs, ListLogEntriesResponse::class, $request);
     }
 
     /**
@@ -703,7 +715,9 @@ class LoggingServiceV2GapicClient
     public function listLogs($parent, array $optionalArgs = [])
     {
         $request = new ListLogsRequest();
+        $requestParamHeaders = [];
         $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
         if (isset($optionalArgs['pageSize'])) {
             $request->setPageSize($optionalArgs['pageSize']);
         }
@@ -716,7 +730,9 @@ class LoggingServiceV2GapicClient
             $request->setResourceNames($optionalArgs['resourceNames']);
         }
 
-        return $this->startApiCall('ListLogs', $request, $optionalArgs);
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLogs', $optionalArgs, ListLogsResponse::class, $request);
     }
 
     /**
@@ -777,7 +793,7 @@ class LoggingServiceV2GapicClient
             $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $optionalArgs);
+        return $this->getPagedListResponse('ListMonitoredResourceDescriptors', $optionalArgs, ListMonitoredResourceDescriptorsResponse::class, $request);
     }
 
     /**
@@ -839,7 +855,7 @@ class LoggingServiceV2GapicClient
      */
     public function tailLogEntries(array $optionalArgs = [])
     {
-        return $this->startApiCall('TailLogEntries', null, $optionalArgs);
+        return $this->startCall('TailLogEntries', TailLogEntriesResponse::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -965,6 +981,6 @@ class LoggingServiceV2GapicClient
             $request->setDryRun($optionalArgs['dryRun']);
         }
 
-        return $this->startApiCall('WriteLogEntries', $request, $optionalArgs)->wait();
+        return $this->startCall('WriteLogEntries', WriteLogEntriesResponse::class, $optionalArgs, $request)->wait();
     }
 }

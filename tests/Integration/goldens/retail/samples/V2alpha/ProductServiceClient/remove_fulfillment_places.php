@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_RemoveFulfillmentPlaces_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesResponse;
 use Google\Rpc\Status;
 
@@ -92,17 +93,21 @@ function remove_fulfillment_places_sample(
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $placeIds = [$placeIdsElement,];
+    $request = (new RemoveFulfillmentPlacesRequest())
+        ->setProduct($formattedProduct)
+        ->setType($type)
+        ->setPlaceIds($placeIds);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
+        $response = $productServiceClient->removeFulfillmentPlaces($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
-            /** @var RemoveFulfillmentPlacesResponse $response */
+            /** @var RemoveFulfillmentPlacesResponse $result */
             $result = $response->getResult();
             printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
         } else {

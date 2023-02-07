@@ -25,6 +25,7 @@
 namespace Testing\BasicServerStreaming\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\Transport\TransportInterface;
@@ -32,6 +33,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Request;
+use Testing\BasicServerStreaming\Response;
 
 /**
  * Service Description:
@@ -75,7 +77,7 @@ class BasicServerStreamingGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_server_streaming_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_server_streaming_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_server_streaming_grpc_config.json',
@@ -96,7 +98,7 @@ class BasicServerStreamingGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'serverstreaming.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -125,7 +127,7 @@ class BasicServerStreamingGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -180,7 +182,7 @@ class BasicServerStreamingGapicClient
     public function methodEmpty(array $optionalArgs = [])
     {
         $request = new EmptyRequest();
-        return $this->startApiCall('MethodEmpty', $request, $optionalArgs);
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 
     /**
@@ -221,6 +223,6 @@ class BasicServerStreamingGapicClient
             $request->setAString($optionalArgs['aString']);
         }
 
-        return $this->startApiCall('MethodServer', $request, $optionalArgs);
+        return $this->startCall('MethodServer', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }

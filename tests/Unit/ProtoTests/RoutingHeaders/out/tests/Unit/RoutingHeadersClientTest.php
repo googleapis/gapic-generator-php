@@ -22,7 +22,6 @@
 
 namespace Testing\RoutingHeaders\Tests\Unit;
 
-use Testing\RoutingHeaders\RoutingHeadersClient;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
@@ -31,6 +30,7 @@ use Google\Rpc\Code;
 use Testing\RoutingHeaders\NestedRequest\Inner1;
 use Testing\RoutingHeaders\NestedRequest\Inner1\Inner2;
 use Testing\RoutingHeaders\Response;
+use Testing\RoutingHeaders\RoutingHeadersClient;
 use stdClass;
 
 /**

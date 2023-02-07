@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START compute_v1_generated_Addresses_List_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Compute\V1\Address;
-use Google\Cloud\Compute\V1\AddressesClient;
+use Google\Cloud\Compute\V1\Client\AddressesClient;
+use Google\Cloud\Compute\V1\ListAddressesRequest;
 
 /**
  * Retrieves a list of addresses contained within the specified region.
@@ -44,12 +44,17 @@ function list_sample(string $orderBy, string $project, string $region): void
     // Create a client.
     $addressesClient = new AddressesClient();
 
+    // Prepare the request message.
+    $request = (new ListAddressesRequest())
+        ->setOrderBy($orderBy)
+        ->setProject($project)
+        ->setRegion($region);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $addressesClient->list($orderBy, $project, $region);
+        $response = $addressesClient->list($request);
 
-        /** @var Address $element */
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
         }

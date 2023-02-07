@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\HttpRule;
+use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
 use Google\Api\RoutingParameter;
 use Google\Api\RoutingRule;
 use Google\ApiCore\ResourceTemplate\Parser;
@@ -77,6 +79,33 @@ class ProtoHelpers
             $msg = $catalog->msgsByFullname[$desc->getMessageType()];
             return !is_null($msg->getOptions()) && $msg->getOptions()->getMapEntry();
         }
+    }
+
+    /**
+     * Processes the RoutingParameters for generation and groups these processed configs by the `field`
+     * declared.
+     *
+     * @param ProtoCatalog $catalog The proto catalog.
+     * @param DescriptorProto $msg The request message.
+     * @param RoutingRule $routingRule The RoutingRule annotation to process.
+     *
+     * @return Map A Map of `RoutingParameter.field` to all processed RoutingParameter configs related
+     *             to each field.
+     */
+    public static function routingParameters(ProtoCatalog $catalog, ?DescriptorProto $msg, RoutingRule $routingRule): Map
+    {
+        return Vector::new($routingRule->getRoutingParameters())
+            ->groupBy(
+                // Key: The field (or field chain) referenced by the RoutingParamter.
+                fn ($x) => $x->getField(),
+                // Value: The routing header config the RoutingParameter defines.
+                fn ($x) => [
+                    'getter' => static::buildGetterChain($catalog, $msg, $x->getField()),
+                    'key' => static::fieldOrTemplateVariable($x),
+                    'regex' => static::compileRoutingRegex($x),
+                    'root' => explode('.', $x->getField())[0],
+                ],
+            );
     }
 
     public static function headerParams(ProtoCatalog $catalog, MethodDescriptorProto $desc): array
@@ -166,8 +195,18 @@ class ProtoHelpers
      */
     private static function compileRoutingRegex(RoutingParameter $routingParam)
     {
+        // No path_template in RoutingParameter.
+        if (empty($routingParam->getPathTemplate())) {
+            return null;
+        }
+        // The path_template only overrides the header key, doesn't define
+        // segment matcher.
+        if (!str_contains($routingParam->getPathTemplate(), '=')) {
+            return null;
+        }
+
         if (!static::hasMatcher($routingParam)) {
-            return '';
+            return null;
         }
         $template = $routingParam->getPathTemplate();
 
@@ -175,13 +214,13 @@ class ProtoHelpers
         // Example: /v1/{key_override=projects/*}/foos -> projects/*
         $matches = [];
         if (!preg_match('/\{.+=([^\}]*)\}/', $template, $matches)) {
-            return '';
+            return null;
         }
         $match = $matches[1];
         // These mean "accept anything and everything", essentially the same as
         // not including a pattern following the '=' separator.
         if ($match === '*' || $match === '**') {
-            return '';
+            return null;
         }
 
         $key = static::fieldOrTemplateVariable($routingParam);
@@ -457,6 +496,21 @@ class ProtoHelpers
     public static function operationField(FieldDescriptorProto $field)
     {
         return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
+    }
+
+    public static function resourceReference(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+    }
+
+    public static function resourceDefinition(DescriptorProto $message)
+    {
+        return static::getCustomOption($message, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
+    }
+
+    public static function fileResourceDefinitions(FileDescriptorProto $file)
+    {
+        return static::getCustomOptionRepeated($file, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
     }
 
     // Use of lookupOperationService assumes that isOperationService has already been called and returned true.

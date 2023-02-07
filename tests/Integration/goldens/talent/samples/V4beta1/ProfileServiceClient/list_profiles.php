@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ProfileService_ListProfiles_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
+use Google\Cloud\Talent\V4beta1\ListProfilesRequest;
 use Google\Cloud\Talent\V4beta1\Profile;
-use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 
 /**
  * Lists profiles by filter. The order is unspecified.
@@ -42,10 +43,14 @@ function list_profiles_sample(string $formattedParent): void
     // Create a client.
     $profileServiceClient = new ProfileServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListProfilesRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $profileServiceClient->listProfiles($formattedParent);
+        $response = $profileServiceClient->listProfiles($request);
 
         /** @var Profile $element */
         foreach ($response as $element) {

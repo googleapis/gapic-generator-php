@@ -104,7 +104,7 @@ class BasicLroGapicClient
     {
         return [
             'serviceName' => self::SERVICE_NAME,
-            'serviceAddress' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
+            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_lro_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_lro_descriptor_config.php',
             'gcpApiConfigPath' => __DIR__ . '/../resources/basic_lro_grpc_config.json',
@@ -154,7 +154,7 @@ class BasicLroGapicClient
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
-     *     @type string $serviceAddress
+     *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'lro.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
@@ -183,7 +183,7 @@ class BasicLroGapicClient
      *           *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
-     *           $serviceAddress setting, will be ignored.
+     *           $apiEndpoint setting, will be ignored.
      *     @type array $transportConfig
      *           Configuration options that will be used to construct the transport. Options for
      *           each supported transport type should be passed in a key for that transport. For
@@ -265,7 +265,7 @@ class BasicLroGapicClient
     public function method1(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
+        return $this->startOperationsCall('Method1', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -296,7 +296,7 @@ class BasicLroGapicClient
     public function methodNonLro1(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('MethodNonLro1', $request, $optionalArgs)->wait();
+        return $this->startCall('MethodNonLro1', Request::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -327,6 +327,6 @@ class BasicLroGapicClient
     public function methodNonLro2(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startApiCall('MethodNonLro2', $request, $optionalArgs)->wait();
+        return $this->startCall('MethodNonLro2', Request::class, $optionalArgs, $request)->wait();
     }
 }

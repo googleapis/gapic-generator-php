@@ -359,6 +359,13 @@ return [
                 ],
                 'interfaceOverride' => 'google.cloud.location.Locations',
             ],
+            'templateMap' => [
+                'cryptoKey' => 'projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}',
+                'cryptoKeyVersion' => 'projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}',
+                'importJob' => 'projects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}',
+                'keyRing' => 'projects/{project}/locations/{location}/keyRings/{key_ring}',
+                'location' => 'projects/{project}/locations/{location}',
+            ],
         ],
     ],
 ];

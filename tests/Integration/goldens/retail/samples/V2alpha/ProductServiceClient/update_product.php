@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProductService_UpdateProduct_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\Product;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\UpdateProductRequest;
 
 /**
  * Updates a [Product][google.cloud.retail.v2alpha.Product].
@@ -44,14 +45,16 @@ function update_product_sample(string $productTitle): void
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $product = (new Product())
         ->setTitle($productTitle);
+    $request = (new UpdateProductRequest())
+        ->setProduct($product);
 
     // Call the API and handle any network failures.
     try {
         /** @var Product $response */
-        $response = $productServiceClient->updateProduct($product);
+        $response = $productServiceClient->updateProduct($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
