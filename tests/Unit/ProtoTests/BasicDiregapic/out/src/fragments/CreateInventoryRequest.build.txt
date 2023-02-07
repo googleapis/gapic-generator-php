@@ -1,5 +1,5 @@
     /**
-     * @param string                                    $parent      Please see {@see LibraryServiceClient::publisherName()} for help formatting this field.
+     * @param string                                    $parent      Please see {@see LibraryClient::publisherName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\InventoryResponse $inventory
      * @param string                                    $asset
      * @param string                                    $parentAsset

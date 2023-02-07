@@ -1,6 +1,6 @@
     /**
      * @param string $name           The name of the shelf whose books we'd like to list. Please see
-     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     *                               {@see LibraryClient::shelfName()} for help formatting this field.
      * @param string $filter         To test python built-in wrapping.
      * @param mixed  $optionalFields {
      *     Optional.

@@ -1,6 +1,6 @@
     /**
-     * @param string                               $name The name of the shelf in which the book is created. Please see
-     *                                                   {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     * @param string                               $name Parent shelf
+     *                                                   id. Please see {@see LibraryClient::shelfName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\BookResponse $book The book to create.
      *
      * @return \Testing\BasicDiregapic\CreateBookRequest

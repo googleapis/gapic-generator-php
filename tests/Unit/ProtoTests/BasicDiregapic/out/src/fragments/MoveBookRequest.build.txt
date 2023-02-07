@@ -1,8 +1,8 @@
     /**
      * @param string $name           The name of the book to move. Please see
-     *                               {@see LibraryServiceClient::bookName()} for help formatting this field.
+     *                               {@see LibraryClient::bookName()} for help formatting this field.
      * @param string $otherShelfName The name of the destination shelf. Please see
-     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     *                               {@see LibraryClient::shelfName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\MoveBookRequest
      */

@@ -1,7 +1,7 @@
     /**
      * @param string $name   The name of the book to retrieve. Please see
-     *                       {@see LibraryServiceClient::archivedBookName()} for help formatting this field.
-     * @param string $parent Please see {@see LibraryServiceClient::projectName()} for help formatting this field.
+     *                       {@see LibraryClient::archivedBookName()} for help formatting this field.
+     * @param string $parent Please see {@see LibraryClient::projectName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\GetBookFromArchiveRequest
      */

@@ -9,6 +9,9 @@
      *
      *     @type bool $reviewCopy
      *           If the book is in a pre-publish state
+     *     @type int[] $genres
+     *           A set of enums containing genres the series falls into.
+     *           For allowed values, use constants defined on {@see \Testing\BasicDiregapic\PublishSeriesRequest\Genre}
      * }
      *
      * @return \Testing\BasicDiregapic\PublishSeriesRequest

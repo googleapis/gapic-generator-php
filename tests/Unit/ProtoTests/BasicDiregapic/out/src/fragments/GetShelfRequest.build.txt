@@ -1,6 +1,6 @@
     /**
      * @param string $name           The name of the shelf to retrieve. Please see
-     *                               {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     *                               {@see LibraryClient::shelfName()} for help formatting this field.
      * @param mixed  $optionalFields {
      *     Optional.
      *
@@ -21,7 +21,7 @@
 
     /**
      * @param string                              $name           The name of the shelf to retrieve. Please see
-     *                                                            {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     *                                                            {@see LibraryClient::shelfName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\SomeMessage $message        Field to verify that message-type query parameter gets flattened.
      * @param mixed                               $optionalFields {
      *     Optional.
@@ -42,7 +42,7 @@
 
     /**
      * @param string                                $name           The name of the shelf to retrieve. Please see
-     *                                                              {@see LibraryServiceClient::shelfName()} for help formatting this field.
+     *                                                              {@see LibraryClient::shelfName()} for help formatting this field.
      * @param \Testing\BasicDiregapic\SomeMessage   $message        Field to verify that message-type query parameter gets flattened.
      * @param \Testing\BasicDiregapic\StringBuilder $stringBuilder
      * @param mixed                                 $optionalFields {
