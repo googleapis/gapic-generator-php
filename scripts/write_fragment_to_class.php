@@ -12,19 +12,18 @@ if ($argc !== 3) {
 
 list($_, $methodFragmentFile, $classFile) = $argv;
 
-// the method to insert into another class
+// The fragment to insert into another class.
 $methodContent = file_get_contents($methodFragmentFile);
-$classContent = file_get_contents($classFile);
 
-// the class / method to insert into
+// The class to insert the fragment into.
+$classContent = file_get_contents($classFile);
 $addFragmentUtil = new AddFragmentToClass($classContent);
 
-// Insert the fragment before the method
-// if no method is provided, the fragment is inserted before the first method
-// ("__construct", for instance)
+// Insert the fragment into the class.
+// If no method is provided, the fragment is inserted before the first method
+// ("__construct", for instance), or before the end of the class.
 $addFragmentUtil->insert($methodContent);
-$contents = $addFragmentUtil->getContents();
 
-// write the new contents to the file
-file_put_contents($classFile, $contents);
+// Write the new contents to the class file.
+file_put_contents($classFile, $addFragmentUtil->getContents());
 print("New method content written to $classFile\n");
