@@ -375,7 +375,7 @@ class CodeGenerator
                 $buildMethodFragmentCode = BuildMethodFragmentGenerator::format(
                     $buildMethodFragments->reduce('', fn ($v, $i) => $v . $i->toCode())
                 );
-                yield ["fragments/{$version}{$fragmentName}.build.txt", $buildMethodFragmentCode];
+                yield ["fragments/{$fragmentName}.build.txt", $buildMethodFragmentCode];
             }
         }
         if ($generateGapicMetadata) {

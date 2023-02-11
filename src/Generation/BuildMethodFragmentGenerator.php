@@ -67,7 +67,7 @@ class BuildMethodFragmentGenerator
                 }
                 if ($buildMethods->count() > 0) {
                     $buildMethodSnippets = $buildMethodSnippets->set(
-                        $methodDetails->requestType->name,
+                        str_replace('\\', '/', $methodDetails->requestType->getFullname(true)),
                         $buildMethods
                     );
                 }
