@@ -1,6 +1,7 @@
 {
     "autoload": {
         "psr-4": {
+            "Google\\PostProcessor\\": "src/PostProcessor",
             "Google\\Generator\\": "src",
             "Google\\Generator\\Tests\\": "tests",
             "Google\\": "generated/Google",
