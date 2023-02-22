@@ -21,3 +21,11 @@ php_binary(
     visibility = ["//visibility:public"],
     working_directory_flag_name = "side_loaded_root_dir",
 )
+
+php_binary(
+    name = "php_post_processor_binary",
+    entry_point = "src/PostProcessor/Main.php",
+    php_composer_install = "@php_gapic_generator_composer_install//:install",
+    visibility = ["//visibility:public"],
+    working_directory_flag_name = "base_dir",
+)
