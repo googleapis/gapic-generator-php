@@ -16,12 +16,13 @@
  */
 declare(strict_types=1);
 
-namespace Google\Generator\Tests\Unit\Utils;
+namespace Google\Generator\Tests\Unit\PostProcessor;
 
 use PHPUnit\Framework\TestCase;
-use Google\Generator\Utils\AddFragmentToClass;
+use Google\PostProcessor\FragmentInjectionProcessor;
+use ParseError;
 
-final class AddFragmentToClassTest extends TestCase
+final class FragmentInjectionProcessorTest extends TestCase
 {
     private $methodFragment = <<<EOL
     /**
@@ -68,7 +69,7 @@ EOL;
     {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)
-        $addFragmentUtil = new AddFragmentToClass($classContents, $insertBeforeMethod);
+        $addFragmentUtil = new FragmentInjectionProcessor($classContents);
 
         // Insert the function before this one
         $addFragmentUtil->insert($this->methodFragment, $insertBeforeMethod);
@@ -95,7 +96,7 @@ EOL;
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Provided contents does not contain a PHP class');
 
-        $addFragmentUtil = new AddFragmentToClass('<?php echo "foo";');
+        $addFragmentUtil = new FragmentInjectionProcessor('<?php echo "foo";');
     }
 
     public function testAstMethodReplacerWithNoMethod()
@@ -103,7 +104,7 @@ EOL;
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Provided contents does not contain method __construct');
 
-        $addFragmentUtil = new AddFragmentToClass($this->classContents2);
+        $addFragmentUtil = new FragmentInjectionProcessor($this->classContents2);
         $addFragmentUtil->insert('private $foo;', '__construct');
     }
 
@@ -112,39 +113,43 @@ EOL;
         $this->expectException(\ParseError::class);
         $this->expectExceptionMessage('Provided contents contains a PHP syntax error');
 
-        $addFragmentUtil = new AddFragmentToClass($this->classContents1);
+        $addFragmentUtil = new FragmentInjectionProcessor($this->classContents1);
         $addFragmentUtil->insert('SYNTAX ERROR');
     }
 
     /**
      * @dataProvider provideWriteMethodToClassScript
      */
-    public function testWriteMethodToClassScript(
+    public function testFragmentInjectionProcessor(
         string $methodFragment,
         string $classContents,
-        string $expectedOutput = 'Fragment written to ',
-        int $expectedReturnVar = 0,
+        \Throwable $expectedException = null
     ) {
-        $fragmentFile = tempnam(sys_get_temp_dir(), 'test-snippet-');
-        $classFile = tempnam(sys_get_temp_dir(), 'test-class-');
-        file_put_contents($fragmentFile, $methodFragment);
-        file_put_contents($classFile, $classContents);
+        if ($expectedException) {
+            $this->expectException(get_class($expectedException));
+            $this->expectExceptionMessage($expectedException->getMessage());
+        }
+        $tmpDir = sys_get_temp_dir() . '/test-fragment-injection-processor-' . rand();
+        mkdir($tmpDir . '/fragments', 0777, true);
+        mkdir($tmpDir . '/proto/src', 0777, true);
+        file_put_contents($tmpDir . '/fragments/Bar.build.txt', $methodFragment);
+        file_put_contents($toFile = $tmpDir . '/proto/src/Bar.php', $classContents);
 
-        exec(sprintf('php %s/../../../scripts/write_fragment_to_class.php %s %s 2>&1',
-            __DIR__,
-            escapeshellarg($fragmentFile),
-            escapeshellarg($classFile)
-        ), $output, $returnVar);
+        FragmentInjectionProcessor::run($tmpDir);
 
-        $this->assertStringContainsString($expectedOutput, implode("\n", $output));
-        $this->assertEquals($expectedReturnVar, $returnVar);
+        // If we've gotten here, the PHP code is valid. Just assert that the contents have changed.
+        $this->expectOutputString('Fragment written to ' . $toFile . PHP_EOL);
     }
 
     public function provideWriteMethodToClassScript()
     {
         return [
             [$this->methodFragment, $this->classContents1],
-            ['SYNTAX ERROR', $this->classContents1, 'syntax error', 255]
+            [
+                'SYNTAX ERROR',
+                $this->classContents1,
+                new ParseError('Provided contents contains a PHP syntax error')
+            ]
         ];
     }
 }
