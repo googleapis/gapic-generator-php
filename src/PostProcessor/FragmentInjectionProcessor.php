@@ -37,8 +37,7 @@ class FragmentInjectionProcessor implements Processor
         $fragmentItr = new \RegexIterator($fragDirItr, '/^.+\.build\.txt$/i', \RecursiveRegexIterator::GET_MATCH);
         foreach($fragmentItr as $finding) {
             $fragmentPath = $finding[0];
-            $protoPath = str_replace('fragments', 'proto/src', $fragmentPath);
-            $protoPath = str_replace('.build.txt', '.php', $protoPath);
+            $protoPath = str_replace(['fragments', '.build.txt'], ['proto/src', '.php'], $fragmentPath);
             
             self::inject($fragmentPath, $protoPath);
         }
