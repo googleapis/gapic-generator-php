@@ -120,6 +120,7 @@ class FieldDetails
         'google.firestore.v1.CommitRequest' => ['writes'],
         'google.firestore.v1.BatchGetDocumentsRequest' => ['documents'],
         'google.firestore.v1.CreateDocumentRequest' => ['document_id'],
+        'google.firestore.v1.ListDocumentsRequest'  => ['collection_id'],
         'google.firestore.v1.UpdateDocumentRequest' => ['update_mask'],
         'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
         'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation'],
