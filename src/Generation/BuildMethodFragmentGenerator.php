@@ -129,7 +129,11 @@ class BuildMethodFragmentGenerator
             ->orderBy(fn ($f) => array_search($f->name, $methodSignatureArguments));
 
         if (count($methodSignatureArguments) !== $requiredFields->count()) {
-            throw new \LogicException('missing method signature arguments');
+            throw new \LogicException(sprintf(
+                'missing method signature arguments (Expected %s, found %s)',
+                $methodSignature,
+                implode(', ', $requiredFields->map(fn ($f) => $f->name)->toArray()) ?: 'none'
+            ));
         }
 
         $optionalFields = $methodDetails->allFields
