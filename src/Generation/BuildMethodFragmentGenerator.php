@@ -123,16 +123,16 @@ class BuildMethodFragmentGenerator
             }
         };
 
-        $methodSignatureArguments = array_filter(explode(',', $methodSignature));
+        $methodSignatureArguments = array_map('trim', array_filter(explode(',', $methodSignature)));
         $requiredFields = $methodDetails->allFields
             ->filter(fn ($f) => in_array($f->name, $methodSignatureArguments))
             ->orderBy(fn ($f) => array_search($f->name, $methodSignatureArguments));
 
         if (count($methodSignatureArguments) !== $requiredFields->count()) {
             throw new \LogicException(sprintf(
-                'missing method signature arguments (Expected %s, found %s)',
+                'missing method signature arguments (Expected "%s", found %s)',
                 $methodSignature,
-                implode(', ', $requiredFields->map(fn ($f) => $f->name)->toArray()) ?: 'none'
+                implode(',', $requiredFields->map(fn ($f) => $f->name)->toArray()) ?: 'none'
             ));
         }
 
