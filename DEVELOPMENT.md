@@ -88,13 +88,6 @@
 
     If a new unit test case is added, make sure to add it to the `UNIT_TESTS` list in [GoldenUpdateMain.php](tests/Unit/ProtoTests/GoldenUpdateMain.php).
 
--   Monolith integration tests. These may take 5 minutes or so to run.
-
-    ```
-    cd tests/Integration
-    php Main.php
-    ```
-
 -   Bazel integration tests.
 
     -   Running:
@@ -103,11 +96,53 @@
     bazel test tests/Integration:asset
     ```
 
+    -   Running all tests:
+
+    ```
+    bazel test //tests/Integration:asset && \
+        bazel test //tests/Integration:compute_small && \
+        bazel test //tests/Integration:container && \
+        bazel test //tests/Integration:dataproc && \
+        bazel test //tests/Integration:functions && \
+        bazel test //tests/Integration:kms && \
+        bazel test //tests/Integration:iam && \
+        bazel test //tests/Integration:logging && \
+        bazel test //tests/Integration:redis && \
+        bazel test //tests/Integration:retail && \
+        bazel test //tests/Integration:speech && \
+        bazel test //tests/Integration:securitycenter && \
+        bazel test //tests/Integration:talent && \
+        bazel test //tests/Integration:videointelligence
+    ```
+
     -   Updating goldens:
 
     ```
     bazel run tests/Integration:asset_update
     ```
+
+    -   Update all goldens:
+
+    ```
+    bazel clean --expunge && \
+        bazel run //tests/Integration:asset_update && \
+        bazel run //tests/Integration:compute_small_update && \
+        bazel run //tests/Integration:container_update && \
+        bazel run //tests/Integration:dataproc_update && \
+        bazel run //tests/Integration:functions_update && \
+        bazel run //tests/Integration:kms_update && \
+        bazel run //tests/Integration:iam_update && \
+        bazel run //tests/Integration:logging_update && \
+        bazel run //tests/Integration:redis_update && \
+        bazel run //tests/Integration:retail_update && \
+        bazel run //tests/Integration:speech_update && \
+        bazel run //tests/Integration:securitycenter_update && \
+        bazel run //tests/Integration:talent_update && \
+        bazel run //tests/Integration:videointelligence_update
+    ```
+
+    _Note: Running `bazel` commands may require removing the `composer.lock` and
+    `vendor/` directory._
 
 ## Updating the `googleapis` submodule
 
