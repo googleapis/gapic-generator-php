@@ -1,0 +1,41 @@
+    /**
+     * @param string $parent         Required. The resource name that owns the logs:
+     *
+     *                               "projects/[PROJECT_ID]"
+     *                               "organizations/[ORGANIZATION_ID]"
+     *                               "billingAccounts/[BILLING_ACCOUNT_ID]"
+     *                               "folders/[FOLDER_ID]"
+     *                               Please see {@see LoggingServiceV2Client::projectName()} for help formatting this field.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           Optional. The maximum number of results to return from this request.
+     *           Non-positive values are ignored.  The presence of `nextPageToken` in the
+     *           response indicates that more results might be available.
+     *     @type string $pageToken
+     *           Optional. If present, then retrieve the next batch of results from the
+     *           preceding call to this method.  `pageToken` must be the value of
+     *           `nextPageToken` from the previous response.  The values of other method
+     *           parameters should be identical to those in the previous call.
+     *     @type string[] $resourceNames
+     *           Optional. The resource name that owns the logs:
+     *           projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+     *           organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+     *           billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+     *           folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+     *
+     *           To support legacy queries, it could also be:
+     *           "projects/[PROJECT_ID]"
+     *           "organizations/[ORGANIZATION_ID]"
+     *           "billingAccounts/[BILLING_ACCOUNT_ID]"
+     *           "folders/[FOLDER_ID]"
+     * }
+     *
+     * @return \Google\Cloud\Logging\V2\ListLogsRequest
+     */
+    public static function build(string $parent, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setParent($parent);
+    }

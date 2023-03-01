@@ -1,0 +1,27 @@
+    /**
+     * @param string $catalog        Full resource name of the catalog, such as
+     *                               `projects/&#42;/locations/global/catalogs/default_catalog`.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type string $branchId
+     *           The final component of the resource name of a branch.
+     *
+     *           This field must be one of "0", "1" or "2". Otherwise, an INVALID_ARGUMENT
+     *           error is returned.
+     *     @type string $note
+     *           Some note on this request, this can be retrieved by
+     *           [CatalogService.GetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.GetDefaultBranch]
+     *           before next valid default branch set occurs.
+     *
+     *           This field must be a UTF-8 encoded string with a length limit of 1,000
+     *           characters. Otherwise, an INVALID_ARGUMENT error is returned.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest
+     */
+    public static function build(string $catalog, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setCatalog($catalog);
+    }

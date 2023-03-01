@@ -1,0 +1,18 @@
+    /**
+     * @param \Google\Cloud\SecurityCenter\V1\Source $source         Required. The source resource to update.
+     * @param mixed                                  $optionalFields {
+     *     Optional.
+     *
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           The FieldMask to use when updating the source resource.
+     *
+     *           If empty all mutable fields will be updated.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\UpdateSourceRequest
+     */
+    public static function build(\Google\Cloud\SecurityCenter\V1\Source $source, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setSource($source);
+    }

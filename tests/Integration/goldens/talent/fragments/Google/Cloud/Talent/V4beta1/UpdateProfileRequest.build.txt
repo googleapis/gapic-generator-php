@@ -1,0 +1,18 @@
+    /**
+     * @param \Google\Cloud\Talent\V4beta1\Profile $profile        Required. Profile to be updated.
+     * @param mixed                                $optionalFields {
+     *     Optional.
+     *
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           A field mask to specify the profile fields to update.
+     *
+     *           A full update is performed if it is unset.
+     * }
+     *
+     * @return \Google\Cloud\Talent\V4beta1\UpdateProfileRequest
+     */
+    public static function build(\Google\Cloud\Talent\V4beta1\Profile $profile, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setProfile($profile);
+    }

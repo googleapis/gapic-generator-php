@@ -1,0 +1,15 @@
+    /**
+     * @param string $name Required. Resource name of the profile to get.
+     *
+     *                     The format is
+     *                     "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
+     *                     example, "projects/foo/tenants/bar/profiles/baz". Please see
+     *                     {@see ProfileServiceClient::profileName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Talent\V4beta1\GetProfileRequest
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

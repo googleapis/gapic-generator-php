@@ -1,0 +1,55 @@
+    /**
+     * @param string $projectId      Deprecated. The Google Developers Console [project ID or project
+     *                               number](https://support.google.com/cloud/answer/6158840).
+     *                               This field has been deprecated and replaced by the name field.
+     * @param string $zone           Deprecated. The name of the Google Compute Engine
+     *                               [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+     *                               cluster resides. This field has been deprecated and replaced by the name
+     *                               field.
+     * @param string $operationId    Deprecated. The server-assigned `name` of the operation.
+     *                               This field has been deprecated and replaced by the name field.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type string $name
+     *           The name (project, location, operation id) of the operation to get.
+     *           Specified in the format `projects/&#42;/locations/&#42;/operations/*`.
+     * }
+     *
+     * @return \Google\Cloud\Container\V1\GetOperationRequest
+     */
+    public static function build(string $projectId, string $zone, string $operationId, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setProjectId($projectId)
+            ->setZone($zone)
+            ->setOperationId($operationId);
+    }
+
+    /**
+     * @param string $name           The name (project, location, operation id) of the operation to get.
+     *                               Specified in the format `projects/&#42;/locations/&#42;/operations/*`.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type string $projectId
+     *           Deprecated. The Google Developers Console [project ID or project
+     *           number](https://support.google.com/cloud/answer/6158840).
+     *           This field has been deprecated and replaced by the name field.
+     *     @type string $zone
+     *           Deprecated. The name of the Google Compute Engine
+     *           [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+     *           cluster resides. This field has been deprecated and replaced by the name
+     *           field.
+     *     @type string $operationId
+     *           Deprecated. The server-assigned `name` of the operation.
+     *           This field has been deprecated and replaced by the name field.
+     * }
+     *
+     * @return \Google\Cloud\Container\V1\GetOperationRequest
+     */
+    public static function buildFromName(string $name, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setName($name);
+    }

@@ -1,0 +1,18 @@
+    /**
+     * @param string $resource       REQUIRED: The resource for which the policy is being requested.
+     *                               See the operation documentation for the appropriate value for this field.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type \Google\Cloud\Iam\V1\GetPolicyOptions $options
+     *           OPTIONAL: A `GetPolicyOptions` object for specifying options to
+     *           `GetIamPolicy`. This field is only used by Cloud IAM.
+     * }
+     *
+     * @return \Google\Cloud\Iam\V1\GetIamPolicyRequest
+     */
+    public static function build(string $resource, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setResource($resource);
+    }

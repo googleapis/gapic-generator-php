@@ -1,0 +1,16 @@
+    /**
+     * @param \Google\Cloud\Functions\V1\CloudFunction $function       Required. New version of the function.
+     * @param mixed                                    $optionalFields {
+     *     Optional.
+     *
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           Required list of fields to be updated in this request.
+     * }
+     *
+     * @return \Google\Cloud\Functions\V1\UpdateFunctionRequest
+     */
+    public static function build(\Google\Cloud\Functions\V1\CloudFunction $function, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setFunction($function);
+    }
