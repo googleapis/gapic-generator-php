@@ -1,29 +1,20 @@
     /**
-     * @param string $name           Required. The resource name of the workflow template, as described
-     *                               in https://cloud.google.com/apis/design/resource_names.
+     * @param string $name Required. The resource name of the workflow template, as described
+     *                     in https://cloud.google.com/apis/design/resource_names.
      *
-     *                               * For `projects.regions.workflowTemplates.get`, the resource name of the
-     *                               template has the following format:
-     *                               `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
+     *                     * For `projects.regions.workflowTemplates.get`, the resource name of the
+     *                     template has the following format:
+     *                     `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
      *
-     *                               * For `projects.locations.workflowTemplates.get`, the resource name of the
-     *                               template has the following format:
-     *                               `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     *                               Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $version
-     *           Optional. The version of workflow template to retrieve. Only previously
-     *           instantiated versions can be retrieved.
-     *
-     *           If unspecified, retrieves the current version.
-     * }
+     *                     * For `projects.locations.workflowTemplates.get`, the resource name of the
+     *                     template has the following format:
+     *                     `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+     *                     Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
      *
      * @return \Google\Cloud\Dataproc\V1\GetWorkflowTemplateRequest
      */
-    public static function build(string $name, array $optionalFields = []): self
+    public static function build(string $name): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setName($name);
     }

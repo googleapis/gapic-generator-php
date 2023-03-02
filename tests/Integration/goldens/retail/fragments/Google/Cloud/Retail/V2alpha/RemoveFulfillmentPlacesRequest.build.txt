@@ -1,63 +1,17 @@
     /**
-     * @param string $product        Required. Full resource name of
-     *                               [Product][google.cloud.retail.v2alpha.Product], such as
-     *                               `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
+     * @param string $product Required. Full resource name of
+     *                        [Product][google.cloud.retail.v2alpha.Product], such as
+     *                        `projects/&#42;/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`.
      *
-     *                               If the caller does not have permission to access the
-     *                               [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
-     *                               not it exists, a PERMISSION_DENIED error is returned. Please see
-     *                               {@see ProductServiceClient::productName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type string $type
-     *           Required. The fulfillment type, including commonly used types (such as
-     *           pickup in store and same day delivery), and custom types.
-     *
-     *           Supported values:
-     *
-     *           * "pickup-in-store"
-     *           * "ship-to-store"
-     *           * "same-day-delivery"
-     *           * "next-day-delivery"
-     *           * "custom-type-1"
-     *           * "custom-type-2"
-     *           * "custom-type-3"
-     *           * "custom-type-4"
-     *           * "custom-type-5"
-     *
-     *           If this field is set to an invalid value other than these, an
-     *           INVALID_ARGUMENT error is returned.
-     *
-     *           This field directly corresponds to [Product.fulfillment_info.type][].
-     *     @type string[] $placeIds
-     *           Required. The IDs for this
-     *           [type][google.cloud.retail.v2alpha.RemoveFulfillmentPlacesRequest.type],
-     *           such as the store IDs for "pickup-in-store" or the region IDs for
-     *           "same-day-delivery", to be removed for this
-     *           [type][google.cloud.retail.v2alpha.RemoveFulfillmentPlacesRequest.type].
-     *
-     *           At least 1 value is required, and a maximum of 2000 values are allowed.
-     *           Each value must be a string with a length limit of 10 characters, matching
-     *           the pattern [a-zA-Z0-9_-]+, such as "store1" or "REGION-2". Otherwise, an
-     *           INVALID_ARGUMENT error is returned.
-     *     @type \Google\Protobuf\Timestamp $removeTime
-     *           The time when the fulfillment updates are issued, used to prevent
-     *           out-of-order updates on fulfillment information. If not provided, the
-     *           internal system time will be used.
-     *     @type bool $allowMissing
-     *           If set to true, and the [Product][google.cloud.retail.v2alpha.Product] is
-     *           not found, the fulfillment information will still be processed and retained
-     *           for at most 1 day and processed once the
-     *           [Product][google.cloud.retail.v2alpha.Product] is created. If set to false,
-     *           an INVALID_ARGUMENT error is returned if the
-     *           [Product][google.cloud.retail.v2alpha.Product] is not found.
-     * }
+     *                        If the caller does not have permission to access the
+     *                        [Product][google.cloud.retail.v2alpha.Product], regardless of whether or
+     *                        not it exists, a PERMISSION_DENIED error is returned. Please see
+     *                        {@see ProductServiceClient::productName()} for help formatting this field.
      *
      * @return \Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest
      */
-    public static function build(string $product, array $optionalFields = []): self
+    public static function build(string $product): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setProduct($product);
     }

@@ -1,18 +1,11 @@
     /**
-     * @param string $name           The name of the book to retrieve. Please see
-     *                               {@see LibraryClient::bookName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type string $altBookName
-     *           An alternate book name, used to test proper processing of placeholders
-     *           within additional bindings.
-     * }
+     * @param string $name The name of the book to retrieve. Please see
+     *                     {@see LibraryClient::bookName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest
      */
-    public static function build(string $name, array $optionalFields = []): self
+    public static function build(string $name): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setName($name);
     }

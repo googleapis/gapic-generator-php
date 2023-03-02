@@ -1,24 +1,13 @@
     /**
-     * @param string $parent         Required. Resource name of the parent of sources to list. Its format should be
-     *                               "organizations/[organization_id], folders/[folder_id], or
-     *                               projects/[project_id]". Please see
-     *                               {@see SecurityCenterClient::projectName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type string $pageToken
-     *           The value returned by the last `ListSourcesResponse`; indicates
-     *           that this is a continuation of a prior `ListSources` call, and
-     *           that the system should return the next page of data.
-     *     @type int $pageSize
-     *           The maximum number of results to return in a single response. Default is
-     *           10, minimum is 1, maximum is 1000.
-     * }
+     * @param string $parent Required. Resource name of the parent of sources to list. Its format should be
+     *                       "organizations/[organization_id], folders/[folder_id], or
+     *                       projects/[project_id]". Please see
+     *                       {@see SecurityCenterClient::projectName()} for help formatting this field.
      *
      * @return \Google\Cloud\SecurityCenter\V1\ListSourcesRequest
      */
-    public static function build(string $parent, array $optionalFields = []): self
+    public static function build(string $parent): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setParent($parent);
     }

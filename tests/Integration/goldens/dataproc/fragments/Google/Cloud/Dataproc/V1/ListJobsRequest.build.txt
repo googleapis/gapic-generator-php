@@ -1,92 +1,41 @@
     /**
-     * @param string $projectId      Required. The ID of the Google Cloud Platform project that the job
-     *                               belongs to.
-     * @param string $region         Required. The Dataproc region in which to handle the request.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $pageSize
-     *           Optional. The number of results to return in each response.
-     *     @type string $pageToken
-     *           Optional. The page token, returned by a previous call, to request the
-     *           next page of results.
-     *     @type string $clusterName
-     *           Optional. If set, the returned jobs list includes only jobs that were
-     *           submitted to the named cluster.
-     *     @type int $jobStateMatcher
-     *           Optional. Specifies enumerated categories of jobs to list.
-     *           (default = match ALL jobs).
-     *
-     *           If `filter` is provided, `jobStateMatcher` will be ignored.
-     *           For allowed values, use constants defined on {@see \Google\Cloud\Dataproc\V1\ListJobsRequest\JobStateMatcher}
-     *     @type string $filter
-     *           Optional. A filter constraining the jobs to list. Filters are
-     *           case-sensitive and have the following syntax:
-     *
-     *           [field = value] AND [field [= value]] ...
-     *
-     *           where **field** is `status.state` or `labels.[KEY]`, and `[KEY]` is a label
-     *           key. **value** can be `*` to match all values.
-     *           `status.state` can be either `ACTIVE` or `NON_ACTIVE`.
-     *           Only the logical `AND` operator is supported; space-separated items are
-     *           treated as having an implicit `AND` operator.
-     *
-     *           Example filter:
-     *
-     *           status.state = ACTIVE AND labels.env = staging AND labels.starred = *
-     * }
+     * @param string $projectId Required. The ID of the Google Cloud Platform project that the job
+     *                          belongs to.
+     * @param string $region    Required. The Dataproc region in which to handle the request.
      *
      * @return \Google\Cloud\Dataproc\V1\ListJobsRequest
      */
-    public static function build(string $projectId, string $region, array $optionalFields = []): self
+    public static function build(string $projectId, string $region): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setProjectId($projectId)
             ->setRegion($region);
     }
 
     /**
-     * @param string $projectId      Required. The ID of the Google Cloud Platform project that the job
-     *                               belongs to.
-     * @param string $region         Required. The Dataproc region in which to handle the request.
-     * @param string $filter         Optional. A filter constraining the jobs to list. Filters are
-     *                               case-sensitive and have the following syntax:
+     * @param string $projectId Required. The ID of the Google Cloud Platform project that the job
+     *                          belongs to.
+     * @param string $region    Required. The Dataproc region in which to handle the request.
+     * @param string $filter    Optional. A filter constraining the jobs to list. Filters are
+     *                          case-sensitive and have the following syntax:
      *
-     *                               [field = value] AND [field [= value]] ...
+     *                          [field = value] AND [field [= value]] ...
      *
-     *                               where **field** is `status.state` or `labels.[KEY]`, and `[KEY]` is a label
-     *                               key. **value** can be `*` to match all values.
-     *                               `status.state` can be either `ACTIVE` or `NON_ACTIVE`.
-     *                               Only the logical `AND` operator is supported; space-separated items are
-     *                               treated as having an implicit `AND` operator.
+     *                          where **field** is `status.state` or `labels.[KEY]`, and `[KEY]` is a label
+     *                          key. **value** can be `*` to match all values.
+     *                          `status.state` can be either `ACTIVE` or `NON_ACTIVE`.
+     *                          Only the logical `AND` operator is supported; space-separated items are
+     *                          treated as having an implicit `AND` operator.
      *
-     *                               Example filter:
+     *                          Example filter:
      *
-     *                               status.state = ACTIVE AND labels.env = staging AND labels.starred = *
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $pageSize
-     *           Optional. The number of results to return in each response.
-     *     @type string $pageToken
-     *           Optional. The page token, returned by a previous call, to request the
-     *           next page of results.
-     *     @type string $clusterName
-     *           Optional. If set, the returned jobs list includes only jobs that were
-     *           submitted to the named cluster.
-     *     @type int $jobStateMatcher
-     *           Optional. Specifies enumerated categories of jobs to list.
-     *           (default = match ALL jobs).
-     *
-     *           If `filter` is provided, `jobStateMatcher` will be ignored.
-     *           For allowed values, use constants defined on {@see \Google\Cloud\Dataproc\V1\ListJobsRequest\JobStateMatcher}
-     * }
+     *                          status.state = ACTIVE AND labels.env = staging AND labels.starred = *
      *
      * @return \Google\Cloud\Dataproc\V1\ListJobsRequest
      */
-    public static function buildFromProjectIdRegionFilter(string $projectId, string $region, string $filter, array $optionalFields = []): self
+    public static function buildFromProjectIdRegionFilter(string $projectId, string $region, string $filter): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setProjectId($projectId)
             ->setRegion($region)
             ->setFilter($filter);

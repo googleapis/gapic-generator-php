@@ -1,30 +1,20 @@
     /**
-     * @param string $parent         Required. The "resource name" of the region or location, as described
-     *                               in https://cloud.google.com/apis/design/resource_names.
+     * @param string $parent Required. The "resource name" of the region or location, as described
+     *                       in https://cloud.google.com/apis/design/resource_names.
      *
-     *                               * For `projects.regions.autoscalingPolicies.list`, the resource name
-     *                               of the region has the following format:
-     *                               `projects/{project_id}/regions/{region}`
+     *                       * For `projects.regions.autoscalingPolicies.list`, the resource name
+     *                       of the region has the following format:
+     *                       `projects/{project_id}/regions/{region}`
      *
-     *                               * For `projects.locations.autoscalingPolicies.list`, the resource name
-     *                               of the location has the following format:
-     *                               `projects/{project_id}/locations/{location}`
-     *                               Please see {@see AutoscalingPolicyServiceClient::regionName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $pageSize
-     *           Optional. The maximum number of results to return in each response.
-     *           Must be less than or equal to 1000. Defaults to 100.
-     *     @type string $pageToken
-     *           Optional. The page token, returned by a previous call, to request the
-     *           next page of results.
-     * }
+     *                       * For `projects.locations.autoscalingPolicies.list`, the resource name
+     *                       of the location has the following format:
+     *                       `projects/{project_id}/locations/{location}`
+     *                       Please see {@see AutoscalingPolicyServiceClient::regionName()} for help formatting this field.
      *
      * @return \Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest
      */
-    public static function build(string $parent, array $optionalFields = []): self
+    public static function build(string $parent): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setParent($parent);
     }

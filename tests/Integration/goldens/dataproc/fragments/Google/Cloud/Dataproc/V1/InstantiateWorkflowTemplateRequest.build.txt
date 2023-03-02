@@ -1,89 +1,44 @@
     /**
-     * @param string $name           Required. The resource name of the workflow template, as described
-     *                               in https://cloud.google.com/apis/design/resource_names.
+     * @param string $name Required. The resource name of the workflow template, as described
+     *                     in https://cloud.google.com/apis/design/resource_names.
      *
-     *                               * For `projects.regions.workflowTemplates.instantiate`, the resource name
-     *                               of the template has the following format:
-     *                               `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
+     *                     * For `projects.regions.workflowTemplates.instantiate`, the resource name
+     *                     of the template has the following format:
+     *                     `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
      *
-     *                               * For `projects.locations.workflowTemplates.instantiate`, the resource name
-     *                               of the template has the following format:
-     *                               `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     *                               Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $version
-     *           Optional. The version of workflow template to instantiate. If specified,
-     *           the workflow will be instantiated only if the current version of
-     *           the workflow template has the supplied version.
-     *
-     *           This option cannot be used to instantiate a previous version of
-     *           workflow template.
-     *     @type string $requestId
-     *           Optional. A tag that prevents multiple concurrent workflow
-     *           instances with the same tag from running. This mitigates risk of
-     *           concurrent instances started due to retries.
-     *
-     *           It is recommended to always set this value to a
-     *           [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
-     *
-     *           The tag must contain only letters (a-z, A-Z), numbers (0-9),
-     *           underscores (_), and hyphens (-). The maximum length is 40 characters.
-     *     @type array $parameters
-     *           Optional. Map from parameter names to values that should be used for those
-     *           parameters. Values may not exceed 1000 characters.
-     * }
+     *                     * For `projects.locations.workflowTemplates.instantiate`, the resource name
+     *                     of the template has the following format:
+     *                     `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+     *                     Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
      *
      * @return \Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest
      */
-    public static function build(string $name, array $optionalFields = []): self
+    public static function build(string $name): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setName($name);
     }
 
     /**
-     * @param string $name           Required. The resource name of the workflow template, as described
-     *                               in https://cloud.google.com/apis/design/resource_names.
+     * @param string $name       Required. The resource name of the workflow template, as described
+     *                           in https://cloud.google.com/apis/design/resource_names.
      *
-     *                               * For `projects.regions.workflowTemplates.instantiate`, the resource name
-     *                               of the template has the following format:
-     *                               `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
+     *                           * For `projects.regions.workflowTemplates.instantiate`, the resource name
+     *                           of the template has the following format:
+     *                           `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
      *
-     *                               * For `projects.locations.workflowTemplates.instantiate`, the resource name
-     *                               of the template has the following format:
-     *                               `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     *                               Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
-     * @param array  $parameters     Optional. Map from parameter names to values that should be used for those
-     *                               parameters. Values may not exceed 1000 characters.
-     * @param mixed  $optionalFields {
-     *     Optional.
-     *
-     *     @type int $version
-     *           Optional. The version of workflow template to instantiate. If specified,
-     *           the workflow will be instantiated only if the current version of
-     *           the workflow template has the supplied version.
-     *
-     *           This option cannot be used to instantiate a previous version of
-     *           workflow template.
-     *     @type string $requestId
-     *           Optional. A tag that prevents multiple concurrent workflow
-     *           instances with the same tag from running. This mitigates risk of
-     *           concurrent instances started due to retries.
-     *
-     *           It is recommended to always set this value to a
-     *           [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
-     *
-     *           The tag must contain only letters (a-z, A-Z), numbers (0-9),
-     *           underscores (_), and hyphens (-). The maximum length is 40 characters.
-     * }
+     *                           * For `projects.locations.workflowTemplates.instantiate`, the resource name
+     *                           of the template has the following format:
+     *                           `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
+     *                           Please see {@see WorkflowTemplateServiceClient::workflowTemplateName()} for help formatting this field.
+     * @param array  $parameters Optional. Map from parameter names to values that should be used for those
+     *                           parameters. Values may not exceed 1000 characters.
      *
      * @return \Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest
      */
-    public static function buildFromNameParameters(string $name, array $parameters, array $optionalFields = []): self
+    public static function buildFromNameParameters(string $name, array $parameters): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setName($name)
             ->setParameters($parameters);
     }

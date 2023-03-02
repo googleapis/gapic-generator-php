@@ -25,21 +25,12 @@
      *                                                                               {@see SecurityCenterClient::organizationName()} for help formatting this field.
      * @param \Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig Required. The notification config being created. The name and the service account
      *                                                                               will be ignored as they are both output only fields on this resource.
-     * @param mixed                                              $optionalFields     {
-     *     Optional.
-     *
-     *     @type string $configId
-     *           Required.
-     *           Unique identifier provided by the client within the parent scope.
-     *           It must be between 1 and 128 characters, and contains alphanumeric
-     *           characters, underscores or hyphens only.
-     * }
      *
      * @return \Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest
      */
-    public static function buildFromParentNotificationConfig(string $parent, \Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig, array $optionalFields = []): self
+    public static function buildFromParentNotificationConfig(string $parent, \Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setParent($parent)
             ->setNotificationConfig($notificationConfig);
     }

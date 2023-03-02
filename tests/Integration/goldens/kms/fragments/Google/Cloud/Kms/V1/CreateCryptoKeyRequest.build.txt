@@ -1,30 +1,17 @@
     /**
-     * @param string                         $parent         Required. The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
-     *                                                       associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey]. Please see
-     *                                                       {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
-     * @param string                         $cryptoKeyId    Required. It must be unique within a KeyRing and match the regular
-     *                                                       expression `[a-zA-Z0-9_-]{1,63}`
-     * @param \Google\Cloud\Kms\V1\CryptoKey $cryptoKey      Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey] with initial field
-     *                                                       values.
-     * @param mixed                          $optionalFields {
-     *     Optional.
-     *
-     *     @type bool $skipInitialVersionCreation
-     *           If set to true, the request will create a
-     *           [CryptoKey][google.cloud.kms.v1.CryptoKey] without any
-     *           [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]. You must
-     *           manually call
-     *           [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
-     *           or
-     *           [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion]
-     *           before you can use this [CryptoKey][google.cloud.kms.v1.CryptoKey].
-     * }
+     * @param string                         $parent      Required. The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing
+     *                                                    associated with the [CryptoKeys][google.cloud.kms.v1.CryptoKey]. Please see
+     *                                                    {@see KeyManagementServiceClient::keyRingName()} for help formatting this field.
+     * @param string                         $cryptoKeyId Required. It must be unique within a KeyRing and match the regular
+     *                                                    expression `[a-zA-Z0-9_-]{1,63}`
+     * @param \Google\Cloud\Kms\V1\CryptoKey $cryptoKey   Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey] with initial field
+     *                                                    values.
      *
      * @return \Google\Cloud\Kms\V1\CreateCryptoKeyRequest
      */
-    public static function build(string $parent, string $cryptoKeyId, \Google\Cloud\Kms\V1\CryptoKey $cryptoKey, array $optionalFields = []): self
+    public static function build(string $parent, string $cryptoKeyId, \Google\Cloud\Kms\V1\CryptoKey $cryptoKey): self
     {
-        return (new self($optionalFields))
+        return (new self())
             ->setParent($parent)
             ->setCryptoKeyId($cryptoKeyId)
             ->setCryptoKey($cryptoKey);
