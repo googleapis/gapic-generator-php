@@ -136,14 +136,10 @@ class BuildMethodFragmentGenerator
             ));
         }
 
-        $optionalFields = $methodDetails->allFields
-            ->filter(fn ($f) => !in_array($f->name, $methodSignatureArguments));
-
         $requiredParams = $requiredFields
             ->map(fn ($f) => $this->toParam($f, $docType));
 
-        $newSelf = AST::new($this->ctx->type(Type::self()));
-        $newSelf = $optionalFields->count() ? $newSelf(AST::var('optionalFields')) : $newSelf();
+        $newSelf = AST::new($this->ctx->type(Type::self()))();
 
         foreach ($requiredFields as $requiredField) {
             $callingParam = AST::param(null, AST::var($requiredField->camelName));
@@ -156,14 +152,7 @@ class BuildMethodFragmentGenerator
 
         return AST::method($methodName)
             ->withAccess(Access::PUBLIC, Access::STATIC)
-            ->withParams(
-                $requiredParams,
-                $optionalFields->count() ? AST::param(
-                    $this->ctx->type(Type::array()),
-                    AST::var('optionalFields'),
-                    AST::array([])
-                ) : null
-            )
+            ->withParams($requiredParams)
             ->withReturnType($this->ctx->type(Type::self()))
             ->withBody(AST::block(AST::return($newSelf)))
             ->withPhpDoc(PhpDoc::block(
@@ -178,17 +167,6 @@ class BuildMethodFragmentGenerator
                         $docType($field)
                     )
                 ),
-                $optionalFields->count() ? PhpDoc::param(AST::param(null, AST::var('optionalFields')), PhpDoc::block(
-                    PhpDoc::Text('Optional.'),
-                    $optionalFields->map(
-                        fn ($field) =>
-                        PhpDoc::type(
-                            Vector::new([$docType($field)]),
-                            $field->camelName,
-                            PhpDoc::preFormattedText($field->docLines->concat($docExtra($field)))
-                        )
-                    )
-                )) : null,
                 PhpDoc::return($this->ctx->type($methodDetails->requestType, true))
             ));
     }
