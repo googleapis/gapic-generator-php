@@ -1,0 +1,16 @@
+    /**
+     * @param string $parent Required. The account resource name with an associated location.
+     *
+     *                       If the caller does not have permission to list
+     *                       [Catalog][google.cloud.retail.v2alpha.Catalog]s under this location,
+     *                       regardless of whether or not this location exists, a PERMISSION_DENIED
+     *                       error is returned. Please see
+     *                       {@see CatalogServiceClient::locationName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\ListCatalogsRequest
+     */
+    public static function build(string $parent): self
+    {
+        return (new self())
+            ->setParent($parent);
+    }

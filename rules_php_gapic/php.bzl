@@ -13,8 +13,9 @@
 # limitations under the License.
 
 def _php_binary_impl(ctx):
+    run_name = "{}_run.sh".format(ctx.attr.name)
     out_dir = ctx.actions.declare_directory("out")
-    out_run_sh = ctx.actions.declare_file("run.sh")
+    out_run_sh = ctx.actions.declare_file(run_name)
     entry_point_relative = ctx.file.entry_point.path[len(ctx.attr.entry_point.label.workspace_root):].strip("/")
 
     # I don't understand why this is required:
@@ -59,14 +60,15 @@ tar cf - --dereference src/ generated/ googleapis/ tools/ vendor/ composer.json 
         working_directory_flag = ""
     run_sh = """#!/bin/bash
 WD="$(pwd)"
-PHP="$WD/$(dirname $0)/run.sh.runfiles/$(basename $WD)/{php_short_path}"
-cd "$(dirname $0)/run.sh.runfiles/$(basename $WD)/{out_short_path}/install"
-"$PHP" -n -d memory_limit=512M './{entry_point}' {working_directory_flag}
+PHP="$WD/$(dirname $0)/{run_name}.runfiles/$(basename $WD)/{php_short_path}"
+cd "$(dirname $0)/{run_name}.runfiles/$(basename $WD)/{out_short_path}/install"
+"$PHP" -n -d memory_limit=512M './{entry_point}' {working_directory_flag} $@
     """.format(
         php_short_path = ctx.file.php.short_path,
         out_short_path = out_dir.short_path,
         entry_point = entry_point_relative,
         working_directory_flag = working_directory_flag,
+        run_name = run_name,
     )
     ctx.actions.write(out_run_sh, run_sh, is_executable = True)
     return [DefaultInfo(

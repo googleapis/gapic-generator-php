@@ -1,0 +1,10 @@
+    /**
+     * @param \Google\Cloud\Dataproc\V1\AutoscalingPolicy $policy Required. The updated autoscaling policy.
+     *
+     * @return \Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest
+     */
+    public static function build(\Google\Cloud\Dataproc\V1\AutoscalingPolicy $policy): self
+    {
+        return (new self())
+            ->setPolicy($policy);
+    }

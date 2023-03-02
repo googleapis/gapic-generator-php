@@ -1,0 +1,13 @@
+    /**
+     * @param string $name   The name of the shelf whose books we'd like to list. Please see
+     *                       {@see LibraryClient::shelfName()} for help formatting this field.
+     * @param string $filter To test python built-in wrapping.
+     *
+     * @return \Testing\BasicDiregapic\ListBooksRequest
+     */
+    public static function build(string $name, string $filter): self
+    {
+        return (new self())
+            ->setName($name)
+            ->setFilter($filter);
+    }

@@ -1,0 +1,10 @@
+    /**
+     * @param \Google\Cloud\Talent\V4beta1\Job $job Required. The Job to be updated.
+     *
+     * @return \Google\Cloud\Talent\V4beta1\UpdateJobRequest
+     */
+    public static function build(\Google\Cloud\Talent\V4beta1\Job $job): self
+    {
+        return (new self())
+            ->setJob($job);
+    }

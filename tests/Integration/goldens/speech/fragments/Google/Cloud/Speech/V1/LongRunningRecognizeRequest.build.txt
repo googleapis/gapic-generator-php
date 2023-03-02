@@ -1,0 +1,13 @@
+    /**
+     * @param \Google\Cloud\Speech\V1\RecognitionConfig $config Required. Provides information to the recognizer that specifies how to
+     *                                                          process the request.
+     * @param \Google\Cloud\Speech\V1\RecognitionAudio  $audio  Required. The audio data to be recognized.
+     *
+     * @return \Google\Cloud\Speech\V1\LongRunningRecognizeRequest
+     */
+    public static function build(\Google\Cloud\Speech\V1\RecognitionConfig $config, \Google\Cloud\Speech\V1\RecognitionAudio $audio): self
+    {
+        return (new self())
+            ->setConfig($config)
+            ->setAudio($audio);
+    }

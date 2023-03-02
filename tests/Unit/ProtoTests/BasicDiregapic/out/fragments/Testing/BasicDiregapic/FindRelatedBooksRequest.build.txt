@@ -1,0 +1,12 @@
+    /**
+     * @param string[] $names   Please see {@see LibraryClient::bookName()} for help formatting this field.
+     * @param string[] $shelves Please see {@see LibraryClient::shelfName()} for help formatting this field.
+     *
+     * @return \Testing\BasicDiregapic\FindRelatedBooksRequest
+     */
+    public static function build(array $names, array $shelves): self
+    {
+        return (new self())
+            ->setNames($names)
+            ->setShelves($shelves);
+    }

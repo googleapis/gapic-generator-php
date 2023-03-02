@@ -1,0 +1,10 @@
+    /**
+     * @param \Google\Cloud\Talent\V4beta1\Application $application Required. The application resource to replace the current resource in the system.
+     *
+     * @return \Google\Cloud\Talent\V4beta1\UpdateApplicationRequest
+     */
+    public static function build(\Google\Cloud\Talent\V4beta1\Application $application): self
+    {
+        return (new self())
+            ->setApplication($application);
+    }

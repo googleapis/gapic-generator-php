@@ -1,0 +1,11 @@
+    /**
+     * @param string $resource REQUIRED: The resource for which the policy is being requested.
+     *                         See the operation documentation for the appropriate value for this field.
+     *
+     * @return \Google\Cloud\Iam\V1\GetIamPolicyRequest
+     */
+    public static function build(string $resource): self
+    {
+        return (new self())
+            ->setResource($resource);
+    }

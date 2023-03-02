@@ -1,0 +1,10 @@
+    /**
+     * @param string $name
+     *
+     * @return \Testing\BasicDiregapic\ListStringsRequest
+     */
+    public static function buildFromName(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

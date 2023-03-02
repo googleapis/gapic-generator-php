@@ -1,0 +1,18 @@
+    /**
+     * @param string $project Project ID for this request.
+     * @param string $region  Name of the region for this request.
+     * @param string $orderBy Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+     *
+     *                        You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+     *
+     *                        Currently, only sorting by name or creationTimestamp desc is supported.
+     *
+     * @return \Google\Cloud\Compute\V1\ListAddressesRequest
+     */
+    public static function build(string $project, string $region, string $orderBy): self
+    {
+        return (new self())
+            ->setProject($project)
+            ->setRegion($region)
+            ->setOrderBy($orderBy);
+    }
