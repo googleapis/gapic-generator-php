@@ -1,0 +1,24 @@
+    /**
+     * @param string $parent         Required. Resource name of the profile under which the application is created.
+     *
+     *                               The format is
+     *                               "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}", for
+     *                               example, "projects/foo/tenants/bar/profiles/baz". Please see
+     *                               {@see ApplicationServiceClient::profileName()} for help formatting this field.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type string $pageToken
+     *           The starting indicator from which to return results.
+     *     @type int $pageSize
+     *           The maximum number of applications to be returned, at most 100.
+     *           Default is 100 if a non-positive number is provided.
+     * }
+     *
+     * @return \Google\Cloud\Talent\V4beta1\ListApplicationsRequest
+     */
+    public static function build(string $parent, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setParent($parent);
+    }

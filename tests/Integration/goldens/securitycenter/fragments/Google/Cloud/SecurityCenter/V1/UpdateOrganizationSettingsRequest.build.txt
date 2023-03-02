@@ -1,0 +1,18 @@
+    /**
+     * @param \Google\Cloud\SecurityCenter\V1\OrganizationSettings $organizationSettings Required. The organization settings resource to update.
+     * @param mixed                                                $optionalFields       {
+     *     Optional.
+     *
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           The FieldMask to use when updating the settings resource.
+     *
+     *           If empty all mutable fields will be updated.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest
+     */
+    public static function build(\Google\Cloud\SecurityCenter\V1\OrganizationSettings $organizationSettings, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setOrganizationSettings($organizationSettings);
+    }

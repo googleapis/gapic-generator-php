@@ -1,0 +1,41 @@
+    /**
+     * @param string $parent         Required. The resource name of the
+     *                               [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
+     *                               `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`. Please see
+     *                               {@see KeyManagementServiceClient::cryptoKeyName()} for help formatting this field.
+     * @param mixed  $optionalFields {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           Optional. Optional limit on the number of
+     *           [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] to include in the
+     *           response. Further [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+     *           can subsequently be obtained by including the
+     *           [ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token]
+     *           in a subsequent request. If unspecified, the server will pick an
+     *           appropriate default.
+     *     @type string $pageToken
+     *           Optional. Optional pagination token, returned earlier via
+     *           [ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token].
+     *     @type int $view
+     *           The fields to include in the response.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Kms\V1\CryptoKeyVersion\CryptoKeyVersionView}
+     *     @type string $filter
+     *           Optional. Only include resources that match the filter in the response. For
+     *           more information, see
+     *           [Sorting and filtering list
+     *           results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+     *     @type string $orderBy
+     *           Optional. Specify how the results should be sorted. If not specified, the
+     *           results will be sorted in the default order. For more information, see
+     *           [Sorting and filtering list
+     *           results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+     * }
+     *
+     * @return \Google\Cloud\Kms\V1\ListCryptoKeyVersionsRequest
+     */
+    public static function build(string $parent, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setParent($parent);
+    }

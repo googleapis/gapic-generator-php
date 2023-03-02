@@ -1,0 +1,24 @@
+    /**
+     * @param \Google\Cloud\SecurityCenter\V1\SecurityMarks $securityMarks  Required. The security marks resource to update.
+     * @param mixed                                         $optionalFields {
+     *     Optional.
+     *
+     *     @type \Google\Protobuf\FieldMask $updateMask
+     *           The FieldMask to use when updating the security marks resource.
+     *
+     *           The field mask must not contain duplicate fields.
+     *           If empty or set to "marks", all marks will be replaced.  Individual
+     *           marks can be updated using "marks.<mark_key>".
+     *     @type \Google\Protobuf\Timestamp $startTime
+     *           The time at which the updated SecurityMarks take effect.
+     *           If not set uses current server time.  Updates will be applied to the
+     *           SecurityMarks that are active immediately preceding this time.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest
+     */
+    public static function build(\Google\Cloud\SecurityCenter\V1\SecurityMarks $securityMarks, array $optionalFields = []): self
+    {
+        return (new self($optionalFields))
+            ->setSecurityMarks($securityMarks);
+    }
