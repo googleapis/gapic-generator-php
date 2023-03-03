@@ -197,7 +197,7 @@ class TestNameValueProducer
 
             $msg = $this->catalog->msgsByFullname[$field->desc->desc->getMessageType()];
             $allSubFields = Vector::new($msg->getField())->map(fn ($x) => new FieldDetails($this->catalog, $msg, $x));
-            
+
             // Only init required subfields that are either not in a oneof or they are the first field in a oneof.
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired && !$x->isOneOf)
                 ->concat($allSubFields->filter(fn ($f) => $f->isRequired && $f->isFirstFieldInOneof()));
@@ -285,7 +285,7 @@ class TestNameValueProducer
                 $v = (float)(int)($javaHashCode() / 10);
                 // See: https://docs.oracle.com/javase/7/docs/api/java/lang/Double.html#toString(double)
                 $vAbs = abs($v);
-                if ($vAbs >= 1e-3  && $vAbs < 1e7) {
+                if ($vAbs >= 1e-3 && $vAbs < 1e7) {
                     $s = sprintf('%.1F', $v);
                 } else {
                     $s = sprintf('%.8E', $v);
@@ -294,6 +294,8 @@ class TestNameValueProducer
                         $s = str_replace('0E', 'E', $s);
                     }
                 }
+                // protobuf only has 24 bits of precision
+                $s = $s % pow(2, 24);
                 return strval($s);
             case GPBType::INT64: // 3
             case GPBType::UINT64: // 4
