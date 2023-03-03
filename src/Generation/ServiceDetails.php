@@ -174,11 +174,11 @@ class ServiceDetails
             // Technically there could be multiple different named operation services,
             // but for simplicity we will assume they are all the same and use the first.
             $this->customOperationService = $customOperations[0]->operationService;
-            
+
             // Determine if the operation service implements the Cancel and/or the Delete RPCs.
             $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Cancel');
             $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Delete');
-            
+
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';
             $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\{$cname}");
@@ -285,7 +285,10 @@ class ServiceDetails
     {
         // Less elegant because  PHP 7.2 doesn't support multiline lambdas.
         $mixinMethods = $mixinService->methods
+          // remove methods specified by the blocklist
           ->filter(fn ($m) => !in_array($m->name, $rpcNameBlocklist))
+          // remove methods that are already defined in this service.
+          ->filter(fn ($m) => !in_array($m->name, $this->methods->map(fn ($m) => $m->name)->toArray()))
           ->orderBy(fn ($m) => $m->name);
         foreach ($mixinMethods as $method) {
             $method->mixinServiceFullname = $mixinService->serviceName;
