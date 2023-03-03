@@ -33,7 +33,8 @@ final class TestNameValueProducerTest extends TestCase
     {
         $file = ProtoLoader::loadDescriptor('Utils/example.proto');
         // ProtoCatalog depends on the FileDescriptorProtos already being augmented.
-        ProtoAugmenter::Augment(Vector::new([$file]));
+        $files = Vector::new([$file]);
+        ProtoAugmenter::Augment($files);
         $catalog = new ProtoCatalog($files);
 
         // Get "analysys_percentage" field for testing
