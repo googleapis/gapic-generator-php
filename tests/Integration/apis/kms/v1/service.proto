@@ -350,23 +350,6 @@ service KeyManagementService {
       body: "*"
     };
   }
-
-  // Gets the access control policy for a contentitem resource. A `NOT_FOUND`
-  // error is returned if the resource does not exist. An empty policy is
-  // returned if the resource exists but does not have a policy set on it.
-  //
-  // Caller must have Google IAM `dataplex.content.getIamPolicy` permission
-  // on the resource.
-  rpc GetIamPolicy(google.iam.v1.GetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
-    option (google.api.http) = {
-      get: "/v1/{resource=projects/*/locations/*/lakes/*/contentitems/**}:getIamPolicy"
-      additional_bindings {
-        get: "/v1/{resource=projects/*/locations/*/lakes/*/content/**}:getIamPolicy"
-      }
-    };
-    option (google.api.method_signature) = "resource";
-  }
 }
 
 // Request message for

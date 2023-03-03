@@ -6,8 +6,7 @@ title: Cloud Key Management Service (KMS) API
 apis:
 - name: google.cloud.kms.v1.KeyManagementService
 - name: google.cloud.location.Locations
-# - name: google.iam.v1.IAMPolicy
-# Commented-out to ensure unlisted mixin methods with Bazel deps aren't generated.
+- name: google.iam.v1.IAMPolicy
 
 types:
 - name: google.cloud.kms.v1.LocationMetadata
