@@ -285,7 +285,9 @@ class ServiceDetails
     {
         // Less elegant because  PHP 7.2 doesn't support multiline lambdas.
         $mixinMethods = $mixinService->methods
+          // remove methods specified by the blocklist
           ->filter(fn ($m) => !in_array($m->name, $rpcNameBlocklist))
+          // remove methods that are already defined in this service.
           ->filter(fn ($m) => !in_array($m->name, $this->methods->map(fn ($m) => $m->name)->toArray()))
           ->orderBy(fn ($m) => $m->name);
         foreach ($mixinMethods as $method) {
