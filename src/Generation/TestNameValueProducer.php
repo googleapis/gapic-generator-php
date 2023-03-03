@@ -294,8 +294,10 @@ class TestNameValueProducer
                         $s = str_replace('0E', 'E', $s);
                     }
                 }
-                // protobuf only has 24 bits of precision
-                $s = $s % pow(2, 24);
+                if ($field->desc->getType() === GPBType::FLOAT) {
+                    // protobuf PHP only has 24 bits of precision for floats
+                    $s = $s % pow(2, 24);
+                }
                 return strval($s);
             case GPBType::INT64: // 3
             case GPBType::UINT64: // 4
