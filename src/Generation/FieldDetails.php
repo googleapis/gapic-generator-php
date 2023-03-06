@@ -130,6 +130,7 @@ class FieldDetails
         'google.longrunning.GetOperationRequest'    => ['name'],
         'google.longrunning.ListOperationsRequest'  => ['name', 'filter'],
         'google.pubsub.v1.DeleteSchemaRevisionRequest' => ['revision_id'],
+        'google.spanner.v1.CommitRequest' => ['mutations'],
     ];
 
     /**
