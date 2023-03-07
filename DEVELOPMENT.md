@@ -144,6 +144,36 @@
     _Note: Running `bazel` commands may require removing the `composer.lock` and
     `vendor/` directory._
 
+    -  Debugging in `googleapis`:
+
+    In [`googleapis/WORKSPACE`](https://github.com/googleapis/googleapis/blob/86fa44cc5ee2136e87c312f153113d4dd8e9c4de/WORKSPACE#L397-L401),
+    replace the `http_archive` downloading the generator with a
+    `local_repository` target pointing to the locally modified version of the
+    generator:
+
+    ```
+    local_repository(
+        name = "gapic_generator_php",
+        path = "/absolute/path/to/local/generator",
+    )
+    ```
+
+## Rotating the bazel cache key
+
+The GitHub Actions that run the `bazel`-based integration tests hold a cache of
+the build in order to speed up testing pull requests that do not impact
+generated surface. If proposing a change that modifies the integration test
+golden files, one must also rotate the cache key using the
+[`gh` CLI](https://cli.github.com/). Use the following command before opening
+your pull request:
+
+```
+uuidgen | gh secret set CACHE_VERSION -r https://github.com/googleapis/gapic-generator-php
+```
+
+If you don't have the proper permissions to rotate the cache key, request that
+the reviewers do so and rerun the Action checks.
+
 ## Updating the `googleapis` submodule
 
 To update the `googleapis` submodule, change into the directory and pull:
