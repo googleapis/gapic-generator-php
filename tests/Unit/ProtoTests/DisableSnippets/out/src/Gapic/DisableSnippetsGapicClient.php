@@ -162,7 +162,7 @@ class DisableSnippetsGapicClient
      * ```
      *
      * @param string $testField
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -175,10 +175,10 @@ class DisableSnippetsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1($testField, array $optionalArgs = [])
+    public function method1($testField, array $callOptions = [])
     {
         $request = new Request();
         $request->setTestField($testField);
-        return $this->startCall('Method1', Response::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Method1', Response::class, $callOptions, $request)->wait();
     }
 }

@@ -47,8 +47,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
- * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $callOptions = [])
+ * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $callOptions = [])
  */
 class SpeechBaseClient
 {
@@ -203,7 +203,7 @@ class SpeechBaseClient
      * The async variant is {@see self::longRunningRecognizeAsync()} .
      *
      * @param LongRunningRecognizeRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -216,9 +216,9 @@ class SpeechBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function longRunningRecognize(LongRunningRecognizeRequest $request, array $optionalArgs = []): OperationResponse
+    public function longRunningRecognize(LongRunningRecognizeRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('LongRunningRecognize', $request, $optionalArgs)->wait();
+        return $this->startApiCall('LongRunningRecognize', $request, $callOptions)->wait();
     }
 
     /**
@@ -228,7 +228,7 @@ class SpeechBaseClient
      * The async variant is {@see self::recognizeAsync()} .
      *
      * @param RecognizeRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -241,16 +241,16 @@ class SpeechBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function recognize(RecognizeRequest $request, array $optionalArgs = []): RecognizeResponse
+    public function recognize(RecognizeRequest $request, array $callOptions = []): RecognizeResponse
     {
-        return $this->startApiCall('Recognize', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Recognize', $request, $callOptions)->wait();
     }
 
     /**
      * Performs bidirectional streaming speech recognition: receive results while
      * sending audio. This method is only available via the gRPC API (not REST).
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -261,8 +261,8 @@ class SpeechBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function streamingRecognize(array $optionalArgs = []): BidiStream
+    public function streamingRecognize(array $callOptions = []): BidiStream
     {
-        return $this->startApiCall('StreamingRecognize', null, $optionalArgs);
+        return $this->startApiCall('StreamingRecognize', null, $callOptions);
     }
 }

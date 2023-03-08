@@ -137,7 +137,7 @@ class BasicBidiStreamingBaseClient
     }
 
     /**
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -148,13 +148,13 @@ class BasicBidiStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodBidi(array $optionalArgs = []): BidiStream
+    public function methodBidi(array $callOptions = []): BidiStream
     {
-        return $this->startApiCall('MethodBidi', null, $optionalArgs);
+        return $this->startApiCall('MethodBidi', null, $callOptions);
     }
 
     /**
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -165,8 +165,8 @@ class BasicBidiStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodEmpty(array $optionalArgs = []): BidiStream
+    public function methodEmpty(array $callOptions = []): BidiStream
     {
-        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', null, $callOptions);
     }
 }

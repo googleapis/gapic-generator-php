@@ -611,7 +611,7 @@ class JobServiceGapicClient
      *                             "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
      *                             is created. For example, "projects/foo".
      * @param Job[]  $jobs         Required. The jobs to be created.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -626,7 +626,7 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function batchCreateJobs($parent, $jobs, array $optionalArgs = [])
+    public function batchCreateJobs($parent, $jobs, array $callOptions = [])
     {
         $request = new BatchCreateJobsRequest();
         $requestParamHeaders = [];
@@ -634,8 +634,8 @@ class JobServiceGapicClient
         $request->setJobs($jobs);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('BatchCreateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('BatchCreateJobs', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -669,7 +669,7 @@ class JobServiceGapicClient
      *
      *                             Sample Query: companyName = "projects/foo/companies/bar" AND
      *                             requisitionId = "req-1"
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -682,7 +682,7 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function batchDeleteJobs($parent, $filter, array $optionalArgs = [])
+    public function batchDeleteJobs($parent, $filter, array $callOptions = [])
     {
         $request = new BatchDeleteJobsRequest();
         $requestParamHeaders = [];
@@ -690,8 +690,8 @@ class JobServiceGapicClient
         $request->setFilter($filter);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('BatchDeleteJobs', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('BatchDeleteJobs', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -740,7 +740,7 @@ class JobServiceGapicClient
      *                             "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
      *                             is created. For example, "projects/foo".
      * @param Job[]  $jobs         Required. The jobs to be updated.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -770,20 +770,20 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function batchUpdateJobs($parent, $jobs, array $optionalArgs = [])
+    public function batchUpdateJobs($parent, $jobs, array $callOptions = [])
     {
         $request = new BatchUpdateJobsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setJobs($jobs);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
+        if (isset($callOptions['updateMask'])) {
+            $request->setUpdateMask($callOptions['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('BatchUpdateJobs', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('BatchUpdateJobs', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -810,7 +810,7 @@ class JobServiceGapicClient
      *                             "projects/foo/tenant/bar". If tenant id is unspecified a default tenant
      *                             is created. For example, "projects/foo".
      * @param Job    $job          Required. The Job to be created.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -825,7 +825,7 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function createJob($parent, $job, array $optionalArgs = [])
+    public function createJob($parent, $job, array $callOptions = [])
     {
         $request = new CreateJobRequest();
         $requestParamHeaders = [];
@@ -833,8 +833,8 @@ class JobServiceGapicClient
         $request->setJob($job);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateJob', Job::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -862,7 +862,7 @@ class JobServiceGapicClient
      *
      *                             If tenant id is unspecified, the default tenant is used. For
      *                             example, "projects/foo/jobs/bar".
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -875,15 +875,15 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function deleteJob($name, array $optionalArgs = [])
+    public function deleteJob($name, array $callOptions = [])
     {
         $request = new DeleteJobRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteJob', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteJob', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -909,7 +909,7 @@ class JobServiceGapicClient
      *
      *                             If tenant id is unspecified, the default tenant is used. For
      *                             example, "projects/foo/jobs/bar".
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -924,15 +924,15 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function getJob($name, array $optionalArgs = [])
+    public function getJob($name, array $callOptions = [])
     {
         $request = new GetJobRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetJob', Job::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -985,7 +985,7 @@ class JobServiceGapicClient
      *                             requisitionId = "req-1"
      *                             * companyName = "projects/foo/tenants/bar/companies/baz" AND
      *                             status = "EXPIRED"
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $pageToken
@@ -1014,28 +1014,28 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function listJobs($parent, $filter, array $optionalArgs = [])
+    public function listJobs($parent, $filter, array $callOptions = [])
     {
         $request = new ListJobsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['jobView'])) {
-            $request->setJobView($optionalArgs['jobView']);
+        if (isset($callOptions['jobView'])) {
+            $request->setJobView($callOptions['jobView']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListJobs', $optionalArgs, ListJobsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListJobs', $callOptions, ListJobsResponse::class, $request);
     }
 
     /**
@@ -1077,7 +1077,7 @@ class JobServiceGapicClient
      * @param RequestMetadata $requestMetadata Required. The meta information collected about the job searcher, used to improve the
      *                                         search quality of the service. The identifiers (such as `user_id`) are
      *                                         provided by users, and must be unique and consistent.
-     * @param array           $optionalArgs    {
+     * @param array           $callOptions    {
      *     Optional.
      *
      *     @type int $searchMode
@@ -1316,68 +1316,68 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function searchJobs($parent, $requestMetadata, array $optionalArgs = [])
+    public function searchJobs($parent, $requestMetadata, array $callOptions = [])
     {
         $request = new SearchJobsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['searchMode'])) {
-            $request->setSearchMode($optionalArgs['searchMode']);
+        if (isset($callOptions['searchMode'])) {
+            $request->setSearchMode($callOptions['searchMode']);
         }
 
-        if (isset($optionalArgs['jobQuery'])) {
-            $request->setJobQuery($optionalArgs['jobQuery']);
+        if (isset($callOptions['jobQuery'])) {
+            $request->setJobQuery($callOptions['jobQuery']);
         }
 
-        if (isset($optionalArgs['enableBroadening'])) {
-            $request->setEnableBroadening($optionalArgs['enableBroadening']);
+        if (isset($callOptions['enableBroadening'])) {
+            $request->setEnableBroadening($callOptions['enableBroadening']);
         }
 
-        if (isset($optionalArgs['requirePreciseResultSize'])) {
-            $request->setRequirePreciseResultSize($optionalArgs['requirePreciseResultSize']);
+        if (isset($callOptions['requirePreciseResultSize'])) {
+            $request->setRequirePreciseResultSize($callOptions['requirePreciseResultSize']);
         }
 
-        if (isset($optionalArgs['histogramQueries'])) {
-            $request->setHistogramQueries($optionalArgs['histogramQueries']);
+        if (isset($callOptions['histogramQueries'])) {
+            $request->setHistogramQueries($callOptions['histogramQueries']);
         }
 
-        if (isset($optionalArgs['jobView'])) {
-            $request->setJobView($optionalArgs['jobView']);
+        if (isset($callOptions['jobView'])) {
+            $request->setJobView($callOptions['jobView']);
         }
 
-        if (isset($optionalArgs['offset'])) {
-            $request->setOffset($optionalArgs['offset']);
+        if (isset($callOptions['offset'])) {
+            $request->setOffset($callOptions['offset']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
-        if (isset($optionalArgs['diversificationLevel'])) {
-            $request->setDiversificationLevel($optionalArgs['diversificationLevel']);
+        if (isset($callOptions['diversificationLevel'])) {
+            $request->setDiversificationLevel($callOptions['diversificationLevel']);
         }
 
-        if (isset($optionalArgs['customRankingInfo'])) {
-            $request->setCustomRankingInfo($optionalArgs['customRankingInfo']);
+        if (isset($callOptions['customRankingInfo'])) {
+            $request->setCustomRankingInfo($callOptions['customRankingInfo']);
         }
 
-        if (isset($optionalArgs['disableKeywordMatch'])) {
-            $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
+        if (isset($callOptions['disableKeywordMatch'])) {
+            $request->setDisableKeywordMatch($callOptions['disableKeywordMatch']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchJobs', $optionalArgs, SearchJobsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchJobs', $callOptions, SearchJobsResponse::class, $request);
     }
 
     /**
@@ -1424,7 +1424,7 @@ class JobServiceGapicClient
      * @param RequestMetadata $requestMetadata Required. The meta information collected about the job searcher, used to improve the
      *                                         search quality of the service. The identifiers (such as `user_id`) are
      *                                         provided by users, and must be unique and consistent.
-     * @param array           $optionalArgs    {
+     * @param array           $callOptions    {
      *     Optional.
      *
      *     @type int $searchMode
@@ -1663,68 +1663,68 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function searchJobsForAlert($parent, $requestMetadata, array $optionalArgs = [])
+    public function searchJobsForAlert($parent, $requestMetadata, array $callOptions = [])
     {
         $request = new SearchJobsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['searchMode'])) {
-            $request->setSearchMode($optionalArgs['searchMode']);
+        if (isset($callOptions['searchMode'])) {
+            $request->setSearchMode($callOptions['searchMode']);
         }
 
-        if (isset($optionalArgs['jobQuery'])) {
-            $request->setJobQuery($optionalArgs['jobQuery']);
+        if (isset($callOptions['jobQuery'])) {
+            $request->setJobQuery($callOptions['jobQuery']);
         }
 
-        if (isset($optionalArgs['enableBroadening'])) {
-            $request->setEnableBroadening($optionalArgs['enableBroadening']);
+        if (isset($callOptions['enableBroadening'])) {
+            $request->setEnableBroadening($callOptions['enableBroadening']);
         }
 
-        if (isset($optionalArgs['requirePreciseResultSize'])) {
-            $request->setRequirePreciseResultSize($optionalArgs['requirePreciseResultSize']);
+        if (isset($callOptions['requirePreciseResultSize'])) {
+            $request->setRequirePreciseResultSize($callOptions['requirePreciseResultSize']);
         }
 
-        if (isset($optionalArgs['histogramQueries'])) {
-            $request->setHistogramQueries($optionalArgs['histogramQueries']);
+        if (isset($callOptions['histogramQueries'])) {
+            $request->setHistogramQueries($callOptions['histogramQueries']);
         }
 
-        if (isset($optionalArgs['jobView'])) {
-            $request->setJobView($optionalArgs['jobView']);
+        if (isset($callOptions['jobView'])) {
+            $request->setJobView($callOptions['jobView']);
         }
 
-        if (isset($optionalArgs['offset'])) {
-            $request->setOffset($optionalArgs['offset']);
+        if (isset($callOptions['offset'])) {
+            $request->setOffset($callOptions['offset']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
-        if (isset($optionalArgs['diversificationLevel'])) {
-            $request->setDiversificationLevel($optionalArgs['diversificationLevel']);
+        if (isset($callOptions['diversificationLevel'])) {
+            $request->setDiversificationLevel($callOptions['diversificationLevel']);
         }
 
-        if (isset($optionalArgs['customRankingInfo'])) {
-            $request->setCustomRankingInfo($optionalArgs['customRankingInfo']);
+        if (isset($callOptions['customRankingInfo'])) {
+            $request->setCustomRankingInfo($callOptions['customRankingInfo']);
         }
 
-        if (isset($optionalArgs['disableKeywordMatch'])) {
-            $request->setDisableKeywordMatch($optionalArgs['disableKeywordMatch']);
+        if (isset($callOptions['disableKeywordMatch'])) {
+            $request->setDisableKeywordMatch($callOptions['disableKeywordMatch']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchJobsForAlert', $optionalArgs, SearchJobsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchJobsForAlert', $callOptions, SearchJobsResponse::class, $request);
     }
 
     /**
@@ -1745,7 +1745,7 @@ class JobServiceGapicClient
      * ```
      *
      * @param Job   $job          Required. The Job to be updated.
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -1768,18 +1768,18 @@ class JobServiceGapicClient
      *
      * @experimental
      */
-    public function updateJob($job, array $optionalArgs = [])
+    public function updateJob($job, array $callOptions = [])
     {
         $request = new UpdateJobRequest();
         $requestParamHeaders = [];
         $request->setJob($job);
         $requestParamHeaders['job.name'] = $job->getName();
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
+        if (isset($callOptions['updateMask'])) {
+            $request->setUpdateMask($callOptions['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateJob', Job::class, $callOptions, $request)->wait();
     }
 }

@@ -408,7 +408,7 @@ class AssetServiceGapicClient
      * ```
      *
      * @param IamPolicyAnalysisQuery $analysisQuery Required. The request query.
-     * @param array                  $optionalArgs  {
+     * @param array                  $callOptions  {
      *     Optional.
      *
      *     @type Duration $executionTimeout
@@ -432,19 +432,19 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function analyzeIamPolicy($analysisQuery, array $optionalArgs = [])
+    public function analyzeIamPolicy($analysisQuery, array $callOptions = [])
     {
         $request = new AnalyzeIamPolicyRequest();
         $requestParamHeaders = [];
         $request->setAnalysisQuery($analysisQuery);
         $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
-        if (isset($optionalArgs['executionTimeout'])) {
-            $request->setExecutionTimeout($optionalArgs['executionTimeout']);
+        if (isset($callOptions['executionTimeout'])) {
+            $request->setExecutionTimeout($callOptions['executionTimeout']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('AnalyzeIamPolicy', AnalyzeIamPolicyResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('AnalyzeIamPolicy', AnalyzeIamPolicyResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -497,7 +497,7 @@ class AssetServiceGapicClient
      *
      * @param IamPolicyAnalysisQuery        $analysisQuery Required. The request query.
      * @param IamPolicyAnalysisOutputConfig $outputConfig  Required. Output configuration indicating where the results will be output to.
-     * @param array                         $optionalArgs  {
+     * @param array                         $callOptions  {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -510,7 +510,7 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $optionalArgs = [])
+    public function analyzeIamPolicyLongrunning($analysisQuery, $outputConfig, array $callOptions = [])
     {
         $request = new AnalyzeIamPolicyLongrunningRequest();
         $requestParamHeaders = [];
@@ -518,8 +518,8 @@ class AssetServiceGapicClient
         $request->setOutputConfig($outputConfig);
         $requestParamHeaders['analysis_query.scope'] = $analysisQuery->getScope();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('AnalyzeIamPolicyLongrunning', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('AnalyzeIamPolicyLongrunning', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -550,7 +550,7 @@ class AssetServiceGapicClient
      *                                  resource to this specified desitination parent. This can only be a Folder
      *                                  number (such as "folders/123") or an Organization number (such as
      *                                  "organizations/123").
-     * @param array  $optionalArgs      {
+     * @param array  $callOptions      {
      *     Optional.
      *
      *     @type int $view
@@ -567,20 +567,20 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function analyzeMove($resource, $destinationParent, array $optionalArgs = [])
+    public function analyzeMove($resource, $destinationParent, array $callOptions = [])
     {
         $request = new AnalyzeMoveRequest();
         $requestParamHeaders = [];
         $request->setResource($resource);
         $request->setDestinationParent($destinationParent);
         $requestParamHeaders['resource'] = $resource;
-        if (isset($optionalArgs['view'])) {
-            $request->setView($optionalArgs['view']);
+        if (isset($callOptions['view'])) {
+            $request->setView($callOptions['view']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('AnalyzeMove', AnalyzeMoveResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('AnalyzeMove', AnalyzeMoveResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -616,7 +616,7 @@ class AssetServiceGapicClient
      *                                   If start_time is not set, the snapshot of the assets at end_time will be
      *                                   returned. The returned results contain all temporal assets whose time
      *                                   window overlap with read_time_window.
-     * @param array      $optionalArgs   {
+     * @param array      $callOptions   {
      *     Optional.
      *
      *     @type string[] $assetNames
@@ -655,7 +655,7 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function batchGetAssetsHistory($parent, $contentType, $readTimeWindow, array $optionalArgs = [])
+    public function batchGetAssetsHistory($parent, $contentType, $readTimeWindow, array $callOptions = [])
     {
         $request = new BatchGetAssetsHistoryRequest();
         $requestParamHeaders = [];
@@ -663,17 +663,17 @@ class AssetServiceGapicClient
         $request->setContentType($contentType);
         $request->setReadTimeWindow($readTimeWindow);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['assetNames'])) {
-            $request->setAssetNames($optionalArgs['assetNames']);
+        if (isset($callOptions['assetNames'])) {
+            $request->setAssetNames($callOptions['assetNames']);
         }
 
-        if (isset($optionalArgs['relationshipTypes'])) {
-            $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
+        if (isset($callOptions['relationshipTypes'])) {
+            $request->setRelationshipTypes($callOptions['relationshipTypes']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('BatchGetAssetsHistory', BatchGetAssetsHistoryResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('BatchGetAssetsHistory', BatchGetAssetsHistoryResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -705,7 +705,7 @@ class AssetServiceGapicClient
      *                             projects/project_number/feeds/feed_id
      *                             folders/folder_number/feeds/feed_id
      *                             organizations/organization_number/feeds/feed_id
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -718,7 +718,7 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createFeed($parent, $feedId, $feed, array $optionalArgs = [])
+    public function createFeed($parent, $feedId, $feed, array $callOptions = [])
     {
         $request = new CreateFeedRequest();
         $requestParamHeaders = [];
@@ -727,8 +727,8 @@ class AssetServiceGapicClient
         $request->setFeed($feed);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateFeed', Feed::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateFeed', Feed::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -749,7 +749,7 @@ class AssetServiceGapicClient
      *                             projects/project_number/feeds/feed_id
      *                             folders/folder_number/feeds/feed_id
      *                             organizations/organization_number/feeds/feed_id
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -760,15 +760,15 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteFeed($name, array $optionalArgs = [])
+    public function deleteFeed($name, array $callOptions = [])
     {
         $request = new DeleteFeedRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteFeed', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteFeed', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -825,7 +825,7 @@ class AssetServiceGapicClient
      *                                   "projects/my-project-id"), or a project number (such as "projects/12345"),
      *                                   or a folder number (such as "folders/123").
      * @param OutputConfig $outputConfig Required. Output configuration indicating where the results will be output to.
-     * @param array        $optionalArgs {
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type Timestamp $readTime
@@ -883,32 +883,32 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function exportAssets($parent, $outputConfig, array $optionalArgs = [])
+    public function exportAssets($parent, $outputConfig, array $callOptions = [])
     {
         $request = new ExportAssetsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setOutputConfig($outputConfig);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['readTime'])) {
-            $request->setReadTime($optionalArgs['readTime']);
+        if (isset($callOptions['readTime'])) {
+            $request->setReadTime($callOptions['readTime']);
         }
 
-        if (isset($optionalArgs['assetTypes'])) {
-            $request->setAssetTypes($optionalArgs['assetTypes']);
+        if (isset($callOptions['assetTypes'])) {
+            $request->setAssetTypes($callOptions['assetTypes']);
         }
 
-        if (isset($optionalArgs['contentType'])) {
-            $request->setContentType($optionalArgs['contentType']);
+        if (isset($callOptions['contentType'])) {
+            $request->setContentType($callOptions['contentType']);
         }
 
-        if (isset($optionalArgs['relationshipTypes'])) {
-            $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
+        if (isset($callOptions['relationshipTypes'])) {
+            $request->setRelationshipTypes($callOptions['relationshipTypes']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ExportAssets', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportAssets', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -929,7 +929,7 @@ class AssetServiceGapicClient
      *                             projects/project_number/feeds/feed_id
      *                             folders/folder_number/feeds/feed_id
      *                             organizations/organization_number/feeds/feed_id
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -942,15 +942,15 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getFeed($name, array $optionalArgs = [])
+    public function getFeed($name, array $callOptions = [])
     {
         $request = new GetFeedRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetFeed', Feed::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetFeed', Feed::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -984,7 +984,7 @@ class AssetServiceGapicClient
      *                             "organizations/[organization-number]" (such as "organizations/123"),
      *                             "projects/[project-id]" (such as "projects/my-project-id"), or
      *                             "projects/[project-number]" (such as "projects/12345").
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type Timestamp $readTime
@@ -1051,39 +1051,39 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listAssets($parent, array $optionalArgs = [])
+    public function listAssets($parent, array $callOptions = [])
     {
         $request = new ListAssetsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['readTime'])) {
-            $request->setReadTime($optionalArgs['readTime']);
+        if (isset($callOptions['readTime'])) {
+            $request->setReadTime($callOptions['readTime']);
         }
 
-        if (isset($optionalArgs['assetTypes'])) {
-            $request->setAssetTypes($optionalArgs['assetTypes']);
+        if (isset($callOptions['assetTypes'])) {
+            $request->setAssetTypes($callOptions['assetTypes']);
         }
 
-        if (isset($optionalArgs['contentType'])) {
-            $request->setContentType($optionalArgs['contentType']);
+        if (isset($callOptions['contentType'])) {
+            $request->setContentType($callOptions['contentType']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['relationshipTypes'])) {
-            $request->setRelationshipTypes($optionalArgs['relationshipTypes']);
+        if (isset($callOptions['relationshipTypes'])) {
+            $request->setRelationshipTypes($callOptions['relationshipTypes']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListAssets', $optionalArgs, ListAssetsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListAssets', $callOptions, ListAssetsResponse::class, $request);
     }
 
     /**
@@ -1103,7 +1103,7 @@ class AssetServiceGapicClient
      * @param string $parent       Required. The parent project/folder/organization whose feeds are to be
      *                             listed. It can only be using project/folder/organization number (such as
      *                             "folders/12345")", or a project ID (such as "projects/my-project-id").
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1116,15 +1116,15 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listFeeds($parent, array $optionalArgs = [])
+    public function listFeeds($parent, array $callOptions = [])
     {
         $request = new ListFeedsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('ListFeeds', ListFeedsResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('ListFeeds', ListFeedsResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1168,7 +1168,7 @@ class AssetServiceGapicClient
      *                             * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
      *                             * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
      *                             * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $query
@@ -1261,35 +1261,35 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function searchAllIamPolicies($scope, array $optionalArgs = [])
+    public function searchAllIamPolicies($scope, array $callOptions = [])
     {
         $request = new SearchAllIamPoliciesRequest();
         $requestParamHeaders = [];
         $request->setScope($scope);
         $requestParamHeaders['scope'] = $scope;
-        if (isset($optionalArgs['query'])) {
-            $request->setQuery($optionalArgs['query']);
+        if (isset($callOptions['query'])) {
+            $request->setQuery($callOptions['query']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['assetTypes'])) {
-            $request->setAssetTypes($optionalArgs['assetTypes']);
+        if (isset($callOptions['assetTypes'])) {
+            $request->setAssetTypes($callOptions['assetTypes']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchAllIamPolicies', $optionalArgs, SearchAllIamPoliciesResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchAllIamPolicies', $callOptions, SearchAllIamPoliciesResponse::class, $request);
     }
 
     /**
@@ -1332,7 +1332,7 @@ class AssetServiceGapicClient
      *                             * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
      *                             * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
      *                             * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $query
@@ -1462,39 +1462,39 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function searchAllResources($scope, array $optionalArgs = [])
+    public function searchAllResources($scope, array $callOptions = [])
     {
         $request = new SearchAllResourcesRequest();
         $requestParamHeaders = [];
         $request->setScope($scope);
         $requestParamHeaders['scope'] = $scope;
-        if (isset($optionalArgs['query'])) {
-            $request->setQuery($optionalArgs['query']);
+        if (isset($callOptions['query'])) {
+            $request->setQuery($callOptions['query']);
         }
 
-        if (isset($optionalArgs['assetTypes'])) {
-            $request->setAssetTypes($optionalArgs['assetTypes']);
+        if (isset($callOptions['assetTypes'])) {
+            $request->setAssetTypes($callOptions['assetTypes']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
-        if (isset($optionalArgs['readMask'])) {
-            $request->setReadMask($optionalArgs['readMask']);
+        if (isset($callOptions['readMask'])) {
+            $request->setReadMask($callOptions['readMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchAllResources', $optionalArgs, SearchAllResourcesResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchAllResources', $callOptions, SearchAllResourcesResponse::class, $request);
     }
 
     /**
@@ -1520,7 +1520,7 @@ class AssetServiceGapicClient
      * @param FieldMask $updateMask   Required. Only updates the `feed` fields indicated by this mask.
      *                                The field mask must not be empty, and it must not contain fields that
      *                                are immutable or only set by the server.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1533,7 +1533,7 @@ class AssetServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateFeed($feed, $updateMask, array $optionalArgs = [])
+    public function updateFeed($feed, $updateMask, array $callOptions = [])
     {
         $request = new UpdateFeedRequest();
         $requestParamHeaders = [];
@@ -1541,7 +1541,7 @@ class AssetServiceGapicClient
         $request->setUpdateMask($updateMask);
         $requestParamHeaders['feed.name'] = $feed->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateFeed', Feed::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateFeed', Feed::class, $callOptions, $request)->wait();
     }
 }

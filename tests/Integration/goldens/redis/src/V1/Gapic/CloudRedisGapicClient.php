@@ -423,7 +423,7 @@ class CloudRedisGapicClient
      *                               * Must end with a number or a letter.
      *                               * Must be unique within the customer project / location
      * @param Instance $instance     Required. A Redis [Instance] resource
-     * @param array    $optionalArgs {
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -436,7 +436,7 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createInstance($parent, $instanceId, $instance, array $optionalArgs = [])
+    public function createInstance($parent, $instanceId, $instance, array $callOptions = [])
     {
         $request = new CreateInstanceRequest();
         $requestParamHeaders = [];
@@ -445,8 +445,8 @@ class CloudRedisGapicClient
         $request->setInstance($instance);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('CreateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -490,7 +490,7 @@ class CloudRedisGapicClient
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -503,15 +503,15 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteInstance($name, array $optionalArgs = [])
+    public function deleteInstance($name, array $callOptions = [])
     {
         $request = new DeleteInstanceRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('DeleteInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -563,7 +563,7 @@ class CloudRedisGapicClient
      *                                   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                                   where `location_id` refers to a GCP region.
      * @param OutputConfig $outputConfig Required. Specify data to be exported.
-     * @param array        $optionalArgs {
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -576,7 +576,7 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function exportInstance($name, $outputConfig, array $optionalArgs = [])
+    public function exportInstance($name, $outputConfig, array $callOptions = [])
     {
         $request = new ExportInstanceRequest();
         $requestParamHeaders = [];
@@ -584,8 +584,8 @@ class CloudRedisGapicClient
         $request->setOutputConfig($outputConfig);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ExportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -631,7 +631,7 @@ class CloudRedisGapicClient
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $dataProtectionMode
@@ -648,19 +648,19 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function failoverInstance($name, array $optionalArgs = [])
+    public function failoverInstance($name, array $callOptions = [])
     {
         $request = new FailoverInstanceRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($optionalArgs['dataProtectionMode'])) {
-            $request->setDataProtectionMode($optionalArgs['dataProtectionMode']);
+        if (isset($callOptions['dataProtectionMode'])) {
+            $request->setDataProtectionMode($callOptions['dataProtectionMode']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('FailoverInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('FailoverInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -680,7 +680,7 @@ class CloudRedisGapicClient
      * @param string $name         Required. Redis instance resource name using the form:
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -693,15 +693,15 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getInstance($name, array $optionalArgs = [])
+    public function getInstance($name, array $callOptions = [])
     {
         $request = new GetInstanceRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetInstance', Instance::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetInstance', Instance::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -755,7 +755,7 @@ class CloudRedisGapicClient
      *                                  `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                                  where `location_id` refers to a GCP region.
      * @param InputConfig $inputConfig  Required. Specify data to be imported.
-     * @param array       $optionalArgs {
+     * @param array       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -768,7 +768,7 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function importInstance($name, $inputConfig, array $optionalArgs = [])
+    public function importInstance($name, $inputConfig, array $callOptions = [])
     {
         $request = new ImportInstanceRequest();
         $requestParamHeaders = [];
@@ -776,8 +776,8 @@ class CloudRedisGapicClient
         $request->setInputConfig($inputConfig);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ImportInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -817,7 +817,7 @@ class CloudRedisGapicClient
      * @param string $parent       Required. The resource name of the instance location using the form:
      *                             `projects/{project_id}/locations/{location_id}`
      *                             where `location_id` refers to a GCP region.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -839,23 +839,23 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listInstances($parent, array $optionalArgs = [])
+    public function listInstances($parent, array $callOptions = [])
     {
         $request = new ListInstancesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListInstances', $optionalArgs, ListInstancesResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListInstances', $callOptions, ListInstancesResponse::class, $request);
     }
 
     /**
@@ -912,7 +912,7 @@ class CloudRedisGapicClient
      *                                *   `redisConfig`
      * @param Instance  $instance     Required. Update description.
      *                                Only fields specified in update_mask are updated.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -925,7 +925,7 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateInstance($updateMask, $instance, array $optionalArgs = [])
+    public function updateInstance($updateMask, $instance, array $callOptions = [])
     {
         $request = new UpdateInstanceRequest();
         $requestParamHeaders = [];
@@ -933,8 +933,8 @@ class CloudRedisGapicClient
         $request->setInstance($instance);
         $requestParamHeaders['instance.name'] = $instance->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('UpdateInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -982,7 +982,7 @@ class CloudRedisGapicClient
      *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
      *                             where `location_id` refers to a GCP region.
      * @param string $redisVersion Required. Specifies the target version of Redis software to upgrade to.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -995,7 +995,7 @@ class CloudRedisGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function upgradeInstance($name, $redisVersion, array $optionalArgs = [])
+    public function upgradeInstance($name, $redisVersion, array $callOptions = [])
     {
         $request = new UpgradeInstanceRequest();
         $requestParamHeaders = [];
@@ -1003,7 +1003,7 @@ class CloudRedisGapicClient
         $request->setRedisVersion($redisVersion);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('UpgradeInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpgradeInstance', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 }

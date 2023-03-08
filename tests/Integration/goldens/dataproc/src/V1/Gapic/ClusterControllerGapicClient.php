@@ -395,7 +395,7 @@ class ClusterControllerGapicClient
      *                              belongs to.
      * @param string  $region       Required. The Dataproc region in which to handle the request.
      * @param Cluster $cluster      Required. The cluster to create.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type string $requestId
@@ -423,7 +423,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createCluster($projectId, $region, $cluster, array $optionalArgs = [])
+    public function createCluster($projectId, $region, $cluster, array $callOptions = [])
     {
         $request = new CreateClusterRequest();
         $requestParamHeaders = [];
@@ -432,17 +432,17 @@ class ClusterControllerGapicClient
         $request->setCluster($cluster);
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
-        if (isset($optionalArgs['actionOnFailedPrimaryWorkers'])) {
-            $request->setActionOnFailedPrimaryWorkers($optionalArgs['actionOnFailedPrimaryWorkers']);
+        if (isset($callOptions['actionOnFailedPrimaryWorkers'])) {
+            $request->setActionOnFailedPrimaryWorkers($callOptions['actionOnFailedPrimaryWorkers']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('CreateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -490,7 +490,7 @@ class ClusterControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $clusterName  Required. The cluster name.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $clusterUuid
@@ -519,7 +519,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteCluster($projectId, $region, $clusterName, array $optionalArgs = [])
+    public function deleteCluster($projectId, $region, $clusterName, array $callOptions = [])
     {
         $request = new DeleteClusterRequest();
         $requestParamHeaders = [];
@@ -529,17 +529,17 @@ class ClusterControllerGapicClient
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
-        if (isset($optionalArgs['clusterUuid'])) {
-            $request->setClusterUuid($optionalArgs['clusterUuid']);
+        if (isset($callOptions['clusterUuid'])) {
+            $request->setClusterUuid($callOptions['clusterUuid']);
         }
 
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('DeleteCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -593,7 +593,7 @@ class ClusterControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $clusterName  Required. The cluster name.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -606,7 +606,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function diagnoseCluster($projectId, $region, $clusterName, array $optionalArgs = [])
+    public function diagnoseCluster($projectId, $region, $clusterName, array $callOptions = [])
     {
         $request = new DiagnoseClusterRequest();
         $requestParamHeaders = [];
@@ -617,8 +617,8 @@ class ClusterControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('DiagnoseCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DiagnoseCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -641,7 +641,7 @@ class ClusterControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $clusterName  Required. The cluster name.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -654,7 +654,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCluster($projectId, $region, $clusterName, array $optionalArgs = [])
+    public function getCluster($projectId, $region, $clusterName, array $callOptions = [])
     {
         $request = new GetClusterRequest();
         $requestParamHeaders = [];
@@ -665,8 +665,8 @@ class ClusterControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCluster', Cluster::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCluster', Cluster::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -699,7 +699,7 @@ class ClusterControllerGapicClient
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the cluster
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $filter
@@ -741,7 +741,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listClusters($projectId, $region, array $optionalArgs = [])
+    public function listClusters($projectId, $region, array $callOptions = [])
     {
         $request = new ListClustersRequest();
         $requestParamHeaders = [];
@@ -749,21 +749,21 @@ class ClusterControllerGapicClient
         $request->setRegion($region);
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListClusters', $optionalArgs, ListClustersResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListClusters', $callOptions, ListClustersResponse::class, $request);
     }
 
     /**
@@ -811,7 +811,7 @@ class ClusterControllerGapicClient
      *                             cluster belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $clusterName  Required. The cluster name.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $clusterUuid
@@ -840,7 +840,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function startCluster($projectId, $region, $clusterName, array $optionalArgs = [])
+    public function startCluster($projectId, $region, $clusterName, array $callOptions = [])
     {
         $request = new StartClusterRequest();
         $requestParamHeaders = [];
@@ -850,17 +850,17 @@ class ClusterControllerGapicClient
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
-        if (isset($optionalArgs['clusterUuid'])) {
-            $request->setClusterUuid($optionalArgs['clusterUuid']);
+        if (isset($callOptions['clusterUuid'])) {
+            $request->setClusterUuid($callOptions['clusterUuid']);
         }
 
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('StartCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('StartCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -908,7 +908,7 @@ class ClusterControllerGapicClient
      *                             cluster belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $clusterName  Required. The cluster name.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $clusterUuid
@@ -937,7 +937,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function stopCluster($projectId, $region, $clusterName, array $optionalArgs = [])
+    public function stopCluster($projectId, $region, $clusterName, array $callOptions = [])
     {
         $request = new StopClusterRequest();
         $requestParamHeaders = [];
@@ -947,17 +947,17 @@ class ClusterControllerGapicClient
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
-        if (isset($optionalArgs['clusterUuid'])) {
-            $request->setClusterUuid($optionalArgs['clusterUuid']);
+        if (isset($callOptions['clusterUuid'])) {
+            $request->setClusterUuid($callOptions['clusterUuid']);
         }
 
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('StopCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('StopCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -1063,7 +1063,7 @@ class ClusterControllerGapicClient
      *                                </tr>
      *                                </tbody>
      *                                </table>
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type Duration $gracefulDecommissionTimeout
@@ -1099,7 +1099,7 @@ class ClusterControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCluster($projectId, $region, $clusterName, $cluster, $updateMask, array $optionalArgs = [])
+    public function updateCluster($projectId, $region, $clusterName, $cluster, $updateMask, array $callOptions = [])
     {
         $request = new UpdateClusterRequest();
         $requestParamHeaders = [];
@@ -1111,16 +1111,16 @@ class ClusterControllerGapicClient
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['cluster_name'] = $clusterName;
-        if (isset($optionalArgs['gracefulDecommissionTimeout'])) {
-            $request->setGracefulDecommissionTimeout($optionalArgs['gracefulDecommissionTimeout']);
+        if (isset($callOptions['gracefulDecommissionTimeout'])) {
+            $request->setGracefulDecommissionTimeout($callOptions['gracefulDecommissionTimeout']);
         }
 
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('UpdateCluster', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateCluster', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 }

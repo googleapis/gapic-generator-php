@@ -459,7 +459,7 @@ class KeyManagementServiceGapicClient
      * @param string $ciphertext   Required. The data encrypted with the named
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s public key using
      *                             OAEP.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type Int64Value $ciphertextCrc32c
@@ -494,20 +494,20 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function asymmetricDecrypt($name, $ciphertext, array $optionalArgs = [])
+    public function asymmetricDecrypt($name, $ciphertext, array $callOptions = [])
     {
         $request = new AsymmetricDecryptRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setCiphertext($ciphertext);
         $requestParamHeaders['name'] = $name;
-        if (isset($optionalArgs['ciphertextCrc32c'])) {
-            $request->setCiphertextCrc32c($optionalArgs['ciphertextCrc32c']);
+        if (isset($callOptions['ciphertextCrc32c'])) {
+            $request->setCiphertextCrc32c($callOptions['ciphertextCrc32c']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('AsymmetricDecrypt', AsymmetricDecryptResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('AsymmetricDecrypt', AsymmetricDecryptResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -535,7 +535,7 @@ class KeyManagementServiceGapicClient
      * @param Digest $digest       Required. The digest of the data to sign. The digest must be produced with
      *                             the same digest algorithm as specified by the key version's
      *                             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type Int64Value $digestCrc32c
@@ -570,20 +570,20 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function asymmetricSign($name, $digest, array $optionalArgs = [])
+    public function asymmetricSign($name, $digest, array $callOptions = [])
     {
         $request = new AsymmetricSignRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setDigest($digest);
         $requestParamHeaders['name'] = $name;
-        if (isset($optionalArgs['digestCrc32c'])) {
-            $request->setDigestCrc32c($optionalArgs['digestCrc32c']);
+        if (isset($callOptions['digestCrc32c'])) {
+            $request->setDigestCrc32c($callOptions['digestCrc32c']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('AsymmetricSign', AsymmetricSignResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('AsymmetricSign', AsymmetricSignResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -613,7 +613,7 @@ class KeyManagementServiceGapicClient
      *                                expression `[a-zA-Z0-9_-]{1,63}`
      * @param CryptoKey $cryptoKey    Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey] with initial field
      *                                values.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type bool $skipInitialVersionCreation
@@ -635,7 +635,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createCryptoKey($parent, $cryptoKeyId, $cryptoKey, array $optionalArgs = [])
+    public function createCryptoKey($parent, $cryptoKeyId, $cryptoKey, array $callOptions = [])
     {
         $request = new CreateCryptoKeyRequest();
         $requestParamHeaders = [];
@@ -643,13 +643,13 @@ class KeyManagementServiceGapicClient
         $request->setCryptoKeyId($cryptoKeyId);
         $request->setCryptoKey($cryptoKey);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['skipInitialVersionCreation'])) {
-            $request->setSkipInitialVersionCreation($optionalArgs['skipInitialVersionCreation']);
+        if (isset($callOptions['skipInitialVersionCreation'])) {
+            $request->setSkipInitialVersionCreation($callOptions['skipInitialVersionCreation']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateCryptoKey', CryptoKey::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateCryptoKey', CryptoKey::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -677,7 +677,7 @@ class KeyManagementServiceGapicClient
      *                                           [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
      * @param CryptoKeyVersion $cryptoKeyVersion Required. A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
      *                                           initial field values.
-     * @param array            $optionalArgs     {
+     * @param array            $callOptions     {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -690,7 +690,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createCryptoKeyVersion($parent, $cryptoKeyVersion, array $optionalArgs = [])
+    public function createCryptoKeyVersion($parent, $cryptoKeyVersion, array $callOptions = [])
     {
         $request = new CreateCryptoKeyVersionRequest();
         $requestParamHeaders = [];
@@ -698,8 +698,8 @@ class KeyManagementServiceGapicClient
         $request->setCryptoKeyVersion($cryptoKeyVersion);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -729,7 +729,7 @@ class KeyManagementServiceGapicClient
      *                                expression `[a-zA-Z0-9_-]{1,63}`
      * @param ImportJob $importJob    Required. An [ImportJob][google.cloud.kms.v1.ImportJob] with initial field
      *                                values.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -742,7 +742,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createImportJob($parent, $importJobId, $importJob, array $optionalArgs = [])
+    public function createImportJob($parent, $importJobId, $importJob, array $callOptions = [])
     {
         $request = new CreateImportJobRequest();
         $requestParamHeaders = [];
@@ -751,8 +751,8 @@ class KeyManagementServiceGapicClient
         $request->setImportJob($importJob);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateImportJob', ImportJob::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateImportJob', ImportJob::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -779,7 +779,7 @@ class KeyManagementServiceGapicClient
      *                              expression `[a-zA-Z0-9_-]{1,63}`
      * @param KeyRing $keyRing      Required. A [KeyRing][google.cloud.kms.v1.KeyRing] with initial field
      *                              values.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -792,7 +792,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createKeyRing($parent, $keyRingId, $keyRing, array $optionalArgs = [])
+    public function createKeyRing($parent, $keyRingId, $keyRing, array $callOptions = [])
     {
         $request = new CreateKeyRingRequest();
         $requestParamHeaders = [];
@@ -801,8 +801,8 @@ class KeyManagementServiceGapicClient
         $request->setKeyRing($keyRing);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateKeyRing', KeyRing::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateKeyRing', KeyRing::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -828,7 +828,7 @@ class KeyManagementServiceGapicClient
      *                             server will choose the appropriate version.
      * @param string $ciphertext   Required. The encrypted data originally returned in
      *                             [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $additionalAuthenticatedData
@@ -888,28 +888,28 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function decrypt($name, $ciphertext, array $optionalArgs = [])
+    public function decrypt($name, $ciphertext, array $callOptions = [])
     {
         $request = new DecryptRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setCiphertext($ciphertext);
         $requestParamHeaders['name'] = $name;
-        if (isset($optionalArgs['additionalAuthenticatedData'])) {
-            $request->setAdditionalAuthenticatedData($optionalArgs['additionalAuthenticatedData']);
+        if (isset($callOptions['additionalAuthenticatedData'])) {
+            $request->setAdditionalAuthenticatedData($callOptions['additionalAuthenticatedData']);
         }
 
-        if (isset($optionalArgs['ciphertextCrc32c'])) {
-            $request->setCiphertextCrc32c($optionalArgs['ciphertextCrc32c']);
+        if (isset($callOptions['ciphertextCrc32c'])) {
+            $request->setCiphertextCrc32c($callOptions['ciphertextCrc32c']);
         }
 
-        if (isset($optionalArgs['additionalAuthenticatedDataCrc32c'])) {
-            $request->setAdditionalAuthenticatedDataCrc32c($optionalArgs['additionalAuthenticatedDataCrc32c']);
+        if (isset($callOptions['additionalAuthenticatedDataCrc32c'])) {
+            $request->setAdditionalAuthenticatedDataCrc32c($callOptions['additionalAuthenticatedDataCrc32c']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('Decrypt', DecryptResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('Decrypt', DecryptResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -945,7 +945,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -958,15 +958,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function destroyCryptoKeyVersion($name, array $optionalArgs = [])
+    public function destroyCryptoKeyVersion($name, array $callOptions = [])
     {
         $request = new DestroyCryptoKeyVersionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DestroyCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DestroyCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1003,7 +1003,7 @@ class KeyManagementServiceGapicClient
      *                             [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the combined length of
      *                             the plaintext and additional_authenticated_data fields must be no larger
      *                             than 8KiB.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $additionalAuthenticatedData
@@ -1072,28 +1072,28 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function encrypt($name, $plaintext, array $optionalArgs = [])
+    public function encrypt($name, $plaintext, array $callOptions = [])
     {
         $request = new EncryptRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setPlaintext($plaintext);
         $requestParamHeaders['name'] = $name;
-        if (isset($optionalArgs['additionalAuthenticatedData'])) {
-            $request->setAdditionalAuthenticatedData($optionalArgs['additionalAuthenticatedData']);
+        if (isset($callOptions['additionalAuthenticatedData'])) {
+            $request->setAdditionalAuthenticatedData($callOptions['additionalAuthenticatedData']);
         }
 
-        if (isset($optionalArgs['plaintextCrc32c'])) {
-            $request->setPlaintextCrc32c($optionalArgs['plaintextCrc32c']);
+        if (isset($callOptions['plaintextCrc32c'])) {
+            $request->setPlaintextCrc32c($callOptions['plaintextCrc32c']);
         }
 
-        if (isset($optionalArgs['additionalAuthenticatedDataCrc32c'])) {
-            $request->setAdditionalAuthenticatedDataCrc32c($optionalArgs['additionalAuthenticatedDataCrc32c']);
+        if (isset($callOptions['additionalAuthenticatedDataCrc32c'])) {
+            $request->setAdditionalAuthenticatedDataCrc32c($callOptions['additionalAuthenticatedDataCrc32c']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('Encrypt', EncryptResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('Encrypt', EncryptResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1114,7 +1114,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1127,15 +1127,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCryptoKey($name, array $optionalArgs = [])
+    public function getCryptoKey($name, array $callOptions = [])
     {
         $request = new GetCryptoKeyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCryptoKey', CryptoKey::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCryptoKey', CryptoKey::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1155,7 +1155,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1168,15 +1168,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCryptoKeyVersion($name, array $optionalArgs = [])
+    public function getCryptoKeyVersion($name, array $callOptions = [])
     {
         $request = new GetCryptoKeyVersionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1197,7 +1197,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type GetPolicyOptions $options
@@ -1213,19 +1213,19 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getIamPolicy($resource, array $optionalArgs = [])
+    public function getIamPolicy($resource, array $callOptions = [])
     {
         $request = new GetIamPolicyRequest();
         $requestParamHeaders = [];
         $request->setResource($resource);
         $requestParamHeaders['resource'] = $resource;
-        if (isset($optionalArgs['options'])) {
-            $request->setOptions($optionalArgs['options']);
+        if (isset($callOptions['options'])) {
+            $request->setOptions($callOptions['options']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1244,7 +1244,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.ImportJob.name] of the
      *                             [ImportJob][google.cloud.kms.v1.ImportJob] to get.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1257,15 +1257,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getImportJob($name, array $optionalArgs = [])
+    public function getImportJob($name, array $callOptions = [])
     {
         $request = new GetImportJobRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetImportJob', ImportJob::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetImportJob', ImportJob::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1284,7 +1284,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.KeyRing.name] of the
      *                             [KeyRing][google.cloud.kms.v1.KeyRing] to get.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1297,15 +1297,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getKeyRing($name, array $optionalArgs = [])
+    public function getKeyRing($name, array $callOptions = [])
     {
         $request = new GetKeyRingRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetKeyRing', KeyRing::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetKeyRing', KeyRing::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1329,7 +1329,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key to get.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1342,15 +1342,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getPublicKey($name, array $optionalArgs = [])
+    public function getPublicKey($name, array $callOptions = [])
     {
         $request = new GetPublicKeyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetPublicKey', PublicKey::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetPublicKey', PublicKey::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1385,7 +1385,7 @@ class KeyManagementServiceGapicClient
      * @param string $importJob    Required. The [name][google.cloud.kms.v1.ImportJob.name] of the
      *                             [ImportJob][google.cloud.kms.v1.ImportJob] that was used to wrap this key
      *                             material.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $rsaAesWrappedKey
@@ -1422,7 +1422,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function importCryptoKeyVersion($parent, $algorithm, $importJob, array $optionalArgs = [])
+    public function importCryptoKeyVersion($parent, $algorithm, $importJob, array $callOptions = [])
     {
         $request = new ImportCryptoKeyVersionRequest();
         $requestParamHeaders = [];
@@ -1430,13 +1430,13 @@ class KeyManagementServiceGapicClient
         $request->setAlgorithm($algorithm);
         $request->setImportJob($importJob);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['rsaAesWrappedKey'])) {
-            $request->setRsaAesWrappedKey($optionalArgs['rsaAesWrappedKey']);
+        if (isset($callOptions['rsaAesWrappedKey'])) {
+            $request->setRsaAesWrappedKey($callOptions['rsaAesWrappedKey']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('ImportCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('ImportCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1468,7 +1468,7 @@ class KeyManagementServiceGapicClient
      * @param string $parent       Required. The resource name of the
      *                             [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
      *                             `projects/&#42;/locations/&#42;/keyRings/&#42;/cryptoKeys/*`.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1503,35 +1503,35 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listCryptoKeyVersions($parent, array $optionalArgs = [])
+    public function listCryptoKeyVersions($parent, array $callOptions = [])
     {
         $request = new ListCryptoKeyVersionsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['view'])) {
-            $request->setView($optionalArgs['view']);
+        if (isset($callOptions['view'])) {
+            $request->setView($callOptions['view']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListCryptoKeyVersions', $optionalArgs, ListCryptoKeyVersionsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCryptoKeyVersions', $callOptions, ListCryptoKeyVersionsResponse::class, $request);
     }
 
     /**
@@ -1562,7 +1562,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $parent       Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
      *                             to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1597,35 +1597,35 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listCryptoKeys($parent, array $optionalArgs = [])
+    public function listCryptoKeys($parent, array $callOptions = [])
     {
         $request = new ListCryptoKeysRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['versionView'])) {
-            $request->setVersionView($optionalArgs['versionView']);
+        if (isset($callOptions['versionView'])) {
+            $request->setVersionView($callOptions['versionView']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListCryptoKeys', $optionalArgs, ListCryptoKeysResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCryptoKeys', $callOptions, ListCryptoKeysResponse::class, $request);
     }
 
     /**
@@ -1656,7 +1656,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $parent       Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing]
      *                             to list, in the format `projects/&#42;/locations/&#42;/keyRings/*`.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1688,31 +1688,31 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listImportJobs($parent, array $optionalArgs = [])
+    public function listImportJobs($parent, array $callOptions = [])
     {
         $request = new ListImportJobsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListImportJobs', $optionalArgs, ListImportJobsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListImportJobs', $callOptions, ListImportJobsResponse::class, $request);
     }
 
     /**
@@ -1744,7 +1744,7 @@ class KeyManagementServiceGapicClient
      * @param string $parent       Required. The resource name of the location associated with the
      *                             [KeyRings][google.cloud.kms.v1.KeyRing], in the format
      *                             `projects/&#42;/locations/*`.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1776,31 +1776,31 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listKeyRings($parent, array $optionalArgs = [])
+    public function listKeyRings($parent, array $callOptions = [])
     {
         $request = new ListKeyRingsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListKeyRings', $optionalArgs, ListKeyRingsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListKeyRings', $callOptions, ListKeyRingsResponse::class, $request);
     }
 
     /**
@@ -1827,7 +1827,7 @@ class KeyManagementServiceGapicClient
      *
      * @param string $name         Required. The resource name of the
      *                             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1840,15 +1840,15 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function restoreCryptoKeyVersion($name, array $optionalArgs = [])
+    public function restoreCryptoKeyVersion($name, array $callOptions = [])
     {
         $request = new RestoreCryptoKeyVersionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('RestoreCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('RestoreCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1868,7 +1868,7 @@ class KeyManagementServiceGapicClient
      *
      * @param CryptoKey $cryptoKey    Required. [CryptoKey][google.cloud.kms.v1.CryptoKey] with updated values.
      * @param FieldMask $updateMask   Required. List of fields to be updated in this request.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1881,7 +1881,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCryptoKey($cryptoKey, $updateMask, array $optionalArgs = [])
+    public function updateCryptoKey($cryptoKey, $updateMask, array $callOptions = [])
     {
         $request = new UpdateCryptoKeyRequest();
         $requestParamHeaders = [];
@@ -1889,8 +1889,8 @@ class KeyManagementServiceGapicClient
         $request->setUpdateMask($updateMask);
         $requestParamHeaders['crypto_key.name'] = $cryptoKey->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCryptoKey', CryptoKey::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCryptoKey', CryptoKey::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1916,7 +1916,7 @@ class KeyManagementServiceGapicClient
      *                                   [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
      * @param string $cryptoKeyVersionId Required. The id of the child
      *                                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use as primary.
-     * @param array  $optionalArgs       {
+     * @param array  $callOptions       {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1929,7 +1929,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCryptoKeyPrimaryVersion($name, $cryptoKeyVersionId, array $optionalArgs = [])
+    public function updateCryptoKeyPrimaryVersion($name, $cryptoKeyVersionId, array $callOptions = [])
     {
         $request = new UpdateCryptoKeyPrimaryVersionRequest();
         $requestParamHeaders = [];
@@ -1937,8 +1937,8 @@ class KeyManagementServiceGapicClient
         $request->setCryptoKeyVersionId($cryptoKeyVersionId);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCryptoKeyPrimaryVersion', CryptoKey::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCryptoKeyPrimaryVersion', CryptoKey::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1970,7 +1970,7 @@ class KeyManagementServiceGapicClient
      * @param CryptoKeyVersion $cryptoKeyVersion Required. [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
      *                                           updated values.
      * @param FieldMask        $updateMask       Required. List of fields to be updated in this request.
-     * @param array            $optionalArgs     {
+     * @param array            $callOptions     {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1983,7 +1983,7 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCryptoKeyVersion($cryptoKeyVersion, $updateMask, array $optionalArgs = [])
+    public function updateCryptoKeyVersion($cryptoKeyVersion, $updateMask, array $callOptions = [])
     {
         $request = new UpdateCryptoKeyVersionRequest();
         $requestParamHeaders = [];
@@ -1991,8 +1991,8 @@ class KeyManagementServiceGapicClient
         $request->setUpdateMask($updateMask);
         $requestParamHeaders['crypto_key_version.name'] = $cryptoKeyVersion->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCryptoKeyVersion', CryptoKeyVersion::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCryptoKeyVersion', CryptoKeyVersion::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2008,7 +2008,7 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -2023,18 +2023,18 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getLocation(array $optionalArgs = [])
+    public function getLocation(array $callOptions = [])
     {
         $request = new GetLocationRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetLocation', Location::class, $callOptions, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
     }
 
     /**
@@ -2062,7 +2062,7 @@ class KeyManagementServiceGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -2088,29 +2088,29 @@ class KeyManagementServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listLocations(array $optionalArgs = [])
+    public function listLocations(array $callOptions = [])
     {
         $request = new ListLocationsRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLocations', $callOptions, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
     }
 }

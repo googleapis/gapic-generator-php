@@ -249,7 +249,7 @@ class BasicLroGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -262,10 +262,10 @@ class BasicLroGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1(array $optionalArgs = [])
+    public function method1(array $callOptions = [])
     {
         $request = new Request();
-        return $this->startOperationsCall('Method1', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startOperationsCall('Method1', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -280,7 +280,7 @@ class BasicLroGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -293,10 +293,10 @@ class BasicLroGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodNonLro1(array $optionalArgs = [])
+    public function methodNonLro1(array $callOptions = [])
     {
         $request = new Request();
-        return $this->startCall('MethodNonLro1', Request::class, $optionalArgs, $request)->wait();
+        return $this->startCall('MethodNonLro1', Request::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -311,7 +311,7 @@ class BasicLroGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -324,9 +324,9 @@ class BasicLroGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodNonLro2(array $optionalArgs = [])
+    public function methodNonLro2(array $callOptions = [])
     {
         $request = new Request();
-        return $this->startCall('MethodNonLro2', Request::class, $optionalArgs, $request)->wait();
+        return $this->startCall('MethodNonLro2', Request::class, $callOptions, $request)->wait();
     }
 }

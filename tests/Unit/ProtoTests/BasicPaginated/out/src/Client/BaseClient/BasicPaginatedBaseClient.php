@@ -41,7 +41,7 @@ use Testing\BasicPaginated\Request;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface methodPaginatedAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface methodPaginatedAsync(Request $request, array $callOptions = [])
  */
 class BasicPaginatedBaseClient
 {
@@ -158,7 +158,7 @@ class BasicPaginatedBaseClient
      * The async variant is {@see self::methodPaginatedAsync()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -171,8 +171,8 @@ class BasicPaginatedBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodPaginated(Request $request, array $optionalArgs = []): PagedListResponse
+    public function methodPaginated(Request $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('MethodPaginated', $request, $optionalArgs);
+        return $this->startApiCall('MethodPaginated', $request, $callOptions);
     }
 }

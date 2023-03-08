@@ -221,7 +221,7 @@ class JobControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $jobId        Required. The job ID.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -234,7 +234,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function cancelJob($projectId, $region, $jobId, array $optionalArgs = [])
+    public function cancelJob($projectId, $region, $jobId, array $callOptions = [])
     {
         $request = new CancelJobRequest();
         $requestParamHeaders = [];
@@ -245,8 +245,8 @@ class JobControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['job_id'] = $jobId;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CancelJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CancelJob', Job::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -270,7 +270,7 @@ class JobControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $jobId        Required. The job ID.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -281,7 +281,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteJob($projectId, $region, $jobId, array $optionalArgs = [])
+    public function deleteJob($projectId, $region, $jobId, array $callOptions = [])
     {
         $request = new DeleteJobRequest();
         $requestParamHeaders = [];
@@ -292,8 +292,8 @@ class JobControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['job_id'] = $jobId;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteJob', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteJob', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -316,7 +316,7 @@ class JobControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param string $jobId        Required. The job ID.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -329,7 +329,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getJob($projectId, $region, $jobId, array $optionalArgs = [])
+    public function getJob($projectId, $region, $jobId, array $callOptions = [])
     {
         $request = new GetJobRequest();
         $requestParamHeaders = [];
@@ -340,8 +340,8 @@ class JobControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['job_id'] = $jobId;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetJob', Job::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -374,7 +374,7 @@ class JobControllerGapicClient
      * @param string $projectId    Required. The ID of the Google Cloud Platform project that the job
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -420,7 +420,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listJobs($projectId, $region, array $optionalArgs = [])
+    public function listJobs($projectId, $region, array $callOptions = [])
     {
         $request = new ListJobsRequest();
         $requestParamHeaders = [];
@@ -428,29 +428,29 @@ class JobControllerGapicClient
         $request->setRegion($region);
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['clusterName'])) {
-            $request->setClusterName($optionalArgs['clusterName']);
+        if (isset($callOptions['clusterName'])) {
+            $request->setClusterName($callOptions['clusterName']);
         }
 
-        if (isset($optionalArgs['jobStateMatcher'])) {
-            $request->setJobStateMatcher($optionalArgs['jobStateMatcher']);
+        if (isset($callOptions['jobStateMatcher'])) {
+            $request->setJobStateMatcher($callOptions['jobStateMatcher']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListJobs', $optionalArgs, ListJobsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListJobs', $callOptions, ListJobsResponse::class, $request);
     }
 
     /**
@@ -473,7 +473,7 @@ class JobControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param Job    $job          Required. The job resource.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $requestId
@@ -499,7 +499,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function submitJob($projectId, $region, $job, array $optionalArgs = [])
+    public function submitJob($projectId, $region, $job, array $callOptions = [])
     {
         $request = new SubmitJobRequest();
         $requestParamHeaders = [];
@@ -508,13 +508,13 @@ class JobControllerGapicClient
         $request->setJob($job);
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SubmitJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SubmitJob', Job::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -562,7 +562,7 @@ class JobControllerGapicClient
      *                             belongs to.
      * @param string $region       Required. The Dataproc region in which to handle the request.
      * @param Job    $job          Required. The job resource.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $requestId
@@ -588,7 +588,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function submitJobAsOperation($projectId, $region, $job, array $optionalArgs = [])
+    public function submitJobAsOperation($projectId, $region, $job, array $callOptions = [])
     {
         $request = new SubmitJobRequest();
         $requestParamHeaders = [];
@@ -597,13 +597,13 @@ class JobControllerGapicClient
         $request->setJob($job);
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('SubmitJobAsOperation', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('SubmitJobAsOperation', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -635,7 +635,7 @@ class JobControllerGapicClient
      *                                <code>labels</code>, and the `PATCH` request body would specify the new
      *                                value. <strong>Note:</strong> Currently, <code>labels</code> is the only
      *                                field that can be updated.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -648,7 +648,7 @@ class JobControllerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateJob($projectId, $region, $jobId, $job, $updateMask, array $optionalArgs = [])
+    public function updateJob($projectId, $region, $jobId, $job, $updateMask, array $callOptions = [])
     {
         $request = new UpdateJobRequest();
         $requestParamHeaders = [];
@@ -661,7 +661,7 @@ class JobControllerGapicClient
         $requestParamHeaders['region'] = $region;
         $requestParamHeaders['job_id'] = $jobId;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateJob', Job::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateJob', Job::class, $callOptions, $request)->wait();
     }
 }

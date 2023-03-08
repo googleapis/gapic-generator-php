@@ -213,7 +213,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -239,33 +239,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function cancelOperation(array $optionalArgs = [])
+    public function cancelOperation(array $callOptions = [])
     {
         $request = new CancelOperationRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['operationId'])) {
-            $request->setOperationId($optionalArgs['operationId']);
-            $requestParamHeaders['operation_id'] = $optionalArgs['operationId'];
+        if (isset($callOptions['operationId'])) {
+            $request->setOperationId($callOptions['operationId']);
+            $requestParamHeaders['operation_id'] = $callOptions['operationId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CancelOperation', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CancelOperation', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -281,7 +281,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -309,33 +309,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function completeIPRotation(array $optionalArgs = [])
+    public function completeIPRotation(array $callOptions = [])
     {
         $request = new CompleteIPRotationRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CompleteIPRotation', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteIPRotation', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -367,7 +367,7 @@ class ClusterManagerGapicClient
      *
      * @param Cluster $cluster      Required. A [cluster
      *                              resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters)
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -392,29 +392,29 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createCluster($cluster, array $optionalArgs = [])
+    public function createCluster($cluster, array $callOptions = [])
     {
         $request = new CreateClusterRequest();
         $requestParamHeaders = [];
         $request->setCluster($cluster);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateCluster', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateCluster', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -432,7 +432,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param NodePool $nodePool     Required. The node pool to create.
-     * @param array    $optionalArgs {
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -461,34 +461,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createNodePool($nodePool, array $optionalArgs = [])
+    public function createNodePool($nodePool, array $callOptions = [])
     {
         $request = new CreateNodePoolRequest();
         $requestParamHeaders = [];
         $request->setNodePool($nodePool);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateNodePool', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateNodePool', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -512,7 +512,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -540,33 +540,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteCluster(array $optionalArgs = [])
+    public function deleteCluster(array $callOptions = [])
     {
         $request = new DeleteClusterRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteCluster', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteCluster', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -582,7 +582,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -614,38 +614,38 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteNodePool(array $optionalArgs = [])
+    public function deleteNodePool(array $callOptions = [])
     {
         $request = new DeleteNodePoolRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteNodePool', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteNodePool', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -661,7 +661,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -689,33 +689,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCluster(array $optionalArgs = [])
+    public function getCluster(array $callOptions = [])
     {
         $request = new GetClusterRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCluster', Cluster::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCluster', Cluster::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -734,7 +734,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $parent
@@ -750,18 +750,18 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getJSONWebKeys(array $optionalArgs = [])
+    public function getJSONWebKeys(array $callOptions = [])
     {
         $request = new GetJSONWebKeysRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetJSONWebKeys', GetJSONWebKeysResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetJSONWebKeys', GetJSONWebKeysResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -777,7 +777,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -809,38 +809,38 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getNodePool(array $optionalArgs = [])
+    public function getNodePool(array $callOptions = [])
     {
         $request = new GetNodePoolRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetNodePool', NodePool::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetNodePool', NodePool::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -856,7 +856,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -884,33 +884,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getOperation(array $optionalArgs = [])
+    public function getOperation(array $callOptions = [])
     {
         $request = new GetOperationRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['operationId'])) {
-            $request->setOperationId($optionalArgs['operationId']);
-            $requestParamHeaders['operation_id'] = $optionalArgs['operationId'];
+        if (isset($callOptions['operationId'])) {
+            $request->setOperationId($callOptions['operationId']);
+            $requestParamHeaders['operation_id'] = $callOptions['operationId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetOperation', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetOperation', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -926,7 +926,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -951,28 +951,28 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getServerConfig(array $optionalArgs = [])
+    public function getServerConfig(array $callOptions = [])
     {
         $request = new GetServerConfigRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetServerConfig', ServerConfig::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetServerConfig', ServerConfig::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -989,7 +989,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1015,28 +1015,28 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listClusters(array $optionalArgs = [])
+    public function listClusters(array $callOptions = [])
     {
         $request = new ListClustersRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('ListClusters', ListClustersResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('ListClusters', ListClustersResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1052,7 +1052,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1080,33 +1080,33 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listNodePools(array $optionalArgs = [])
+    public function listNodePools(array $callOptions = [])
     {
         $request = new ListNodePoolsRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('ListNodePools', ListNodePoolsResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('ListNodePools', ListNodePoolsResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1122,7 +1122,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1148,28 +1148,28 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listOperations(array $optionalArgs = [])
+    public function listOperations(array $callOptions = [])
     {
         $request = new ListOperationsRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('ListOperations', ListOperationsResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('ListOperations', ListOperationsResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1197,7 +1197,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $parent
@@ -1227,30 +1227,30 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listUsableSubnetworks(array $optionalArgs = [])
+    public function listUsableSubnetworks(array $callOptions = [])
     {
         $request = new ListUsableSubnetworksRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
-            $requestParamHeaders['parent'] = $optionalArgs['parent'];
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
+            $requestParamHeaders['parent'] = $callOptions['parent'];
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListUsableSubnetworks', $optionalArgs, ListUsableSubnetworksResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListUsableSubnetworks', $callOptions, ListUsableSubnetworksResponse::class, $request);
     }
 
     /**
@@ -1267,7 +1267,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1299,38 +1299,38 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function rollbackNodePoolUpgrade(array $optionalArgs = [])
+    public function rollbackNodePoolUpgrade(array $callOptions = [])
     {
         $request = new RollbackNodePoolUpgradeRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('RollbackNodePoolUpgrade', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('RollbackNodePoolUpgrade', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1349,7 +1349,7 @@ class ClusterManagerGapicClient
      *
      * @param AddonsConfig $addonsConfig Required. The desired configurations for the various addons available to run in the
      *                                   cluster.
-     * @param array        $optionalArgs {
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1377,34 +1377,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setAddonsConfig($addonsConfig, array $optionalArgs = [])
+    public function setAddonsConfig($addonsConfig, array $callOptions = [])
     {
         $request = new SetAddonsConfigRequest();
         $requestParamHeaders = [];
         $request->setAddonsConfig($addonsConfig);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetAddonsConfig', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetAddonsConfig', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1429,7 +1429,7 @@ class ClusterManagerGapicClient
      *                                 labels. You must always provide an up-to-date fingerprint hash when
      *                                 updating or changing labels. Make a `get()` request to the
      *                                 resource to get the latest fingerprint.
-     * @param array  $optionalArgs     {
+     * @param array  $callOptions     {
      *     Optional.
      *
      *     @type string $projectId
@@ -1457,35 +1457,35 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setLabels($resourceLabels, $labelFingerprint, array $optionalArgs = [])
+    public function setLabels($resourceLabels, $labelFingerprint, array $callOptions = [])
     {
         $request = new SetLabelsRequest();
         $requestParamHeaders = [];
         $request->setResourceLabels($resourceLabels);
         $request->setLabelFingerprint($labelFingerprint);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetLabels', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetLabels', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1503,7 +1503,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param bool  $enabled      Required. Whether ABAC authorization will be enabled in the cluster.
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1531,34 +1531,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setLegacyAbac($enabled, array $optionalArgs = [])
+    public function setLegacyAbac($enabled, array $callOptions = [])
     {
         $request = new SetLegacyAbacRequest();
         $requestParamHeaders = [];
         $request->setEnabled($enabled);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetLegacyAbac', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetLegacyAbac', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1585,7 +1585,7 @@ class ClusterManagerGapicClient
      *                               depending on whether locations are being added or removed.
      *
      *                               This list must always include the cluster's primary zone.
-     * @param array    $optionalArgs {
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1615,34 +1615,34 @@ class ClusterManagerGapicClient
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function setLocations($locations, array $optionalArgs = [])
+    public function setLocations($locations, array $callOptions = [])
     {
         $request = new SetLocationsRequest();
         $requestParamHeaders = [];
         $request->setLocations($locations);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetLocations', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetLocations', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1670,7 +1670,7 @@ class ClusterManagerGapicClient
      *
      *                               If left as an empty string,`logging.googleapis.com/kubernetes` will be
      *                               used for GKE 1.14+ or `logging.googleapis.com` for earlier versions.
-     * @param array  $optionalArgs   {
+     * @param array  $callOptions   {
      *     Optional.
      *
      *     @type string $projectId
@@ -1698,34 +1698,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setLoggingService($loggingService, array $optionalArgs = [])
+    public function setLoggingService($loggingService, array $callOptions = [])
     {
         $request = new SetLoggingServiceRequest();
         $requestParamHeaders = [];
         $request->setLoggingService($loggingService);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetLoggingService', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetLoggingService', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1753,7 +1753,7 @@ class ClusterManagerGapicClient
      * @param string            $clusterId         Required. The name of the cluster to update.
      * @param MaintenancePolicy $maintenancePolicy Required. The maintenance policy to be set for the cluster. An empty field
      *                                             clears the existing maintenance policy.
-     * @param array             $optionalArgs      {
+     * @param array             $callOptions      {
      *     Optional.
      *
      *     @type string $name
@@ -1770,7 +1770,7 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setMaintenancePolicy($projectId, $zone, $clusterId, $maintenancePolicy, array $optionalArgs = [])
+    public function setMaintenancePolicy($projectId, $zone, $clusterId, $maintenancePolicy, array $callOptions = [])
     {
         $request = new SetMaintenancePolicyRequest();
         $requestParamHeaders = [];
@@ -1781,14 +1781,14 @@ class ClusterManagerGapicClient
         $requestParamHeaders['project_id'] = $projectId;
         $requestParamHeaders['zone'] = $zone;
         $requestParamHeaders['cluster_id'] = $clusterId;
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetMaintenancePolicy', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetMaintenancePolicy', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1811,7 +1811,7 @@ class ClusterManagerGapicClient
      * @param int        $action       Required. The exact form of action to be taken on the master auth.
      *                                 For allowed values, use constants defined on {@see \Google\Cloud\Container\V1\SetMasterAuthRequest\Action}
      * @param MasterAuth $update       Required. A description of the update.
-     * @param array      $optionalArgs {
+     * @param array      $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -1839,35 +1839,35 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setMasterAuth($action, $update, array $optionalArgs = [])
+    public function setMasterAuth($action, $update, array $callOptions = [])
     {
         $request = new SetMasterAuthRequest();
         $requestParamHeaders = [];
         $request->setAction($action);
         $request->setUpdate($update);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetMasterAuth', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetMasterAuth', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1895,7 +1895,7 @@ class ClusterManagerGapicClient
      *
      *                                  If left as an empty string,`monitoring.googleapis.com/kubernetes` will be
      *                                  used for GKE 1.14+ or `monitoring.googleapis.com` for earlier versions.
-     * @param array  $optionalArgs      {
+     * @param array  $callOptions      {
      *     Optional.
      *
      *     @type string $projectId
@@ -1923,34 +1923,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setMonitoringService($monitoringService, array $optionalArgs = [])
+    public function setMonitoringService($monitoringService, array $callOptions = [])
     {
         $request = new SetMonitoringServiceRequest();
         $requestParamHeaders = [];
         $request->setMonitoringService($monitoringService);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetMonitoringService', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetMonitoringService', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -1968,7 +1968,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param NetworkPolicy $networkPolicy Required. Configuration options for the NetworkPolicy feature.
-     * @param array         $optionalArgs  {
+     * @param array         $callOptions  {
      *     Optional.
      *
      *     @type string $projectId
@@ -1996,34 +1996,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setNetworkPolicy($networkPolicy, array $optionalArgs = [])
+    public function setNetworkPolicy($networkPolicy, array $callOptions = [])
     {
         $request = new SetNetworkPolicyRequest();
         $requestParamHeaders = [];
         $request->setNetworkPolicy($networkPolicy);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetNetworkPolicy', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetNetworkPolicy', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2041,7 +2041,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param NodePoolAutoscaling $autoscaling  Required. Autoscaling configuration for the node pool.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2073,39 +2073,39 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setNodePoolAutoscaling($autoscaling, array $optionalArgs = [])
+    public function setNodePoolAutoscaling($autoscaling, array $callOptions = [])
     {
         $request = new SetNodePoolAutoscalingRequest();
         $requestParamHeaders = [];
         $request->setAutoscaling($autoscaling);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetNodePoolAutoscaling', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetNodePoolAutoscaling', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2123,7 +2123,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param NodeManagement $management   Required. NodeManagement configuration for the node pool.
-     * @param array          $optionalArgs {
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2155,39 +2155,39 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setNodePoolManagement($management, array $optionalArgs = [])
+    public function setNodePoolManagement($management, array $callOptions = [])
     {
         $request = new SetNodePoolManagementRequest();
         $requestParamHeaders = [];
         $request->setManagement($management);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetNodePoolManagement', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetNodePoolManagement', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2205,7 +2205,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param int   $nodeCount    Required. The desired node count for the pool.
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2237,39 +2237,39 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setNodePoolSize($nodeCount, array $optionalArgs = [])
+    public function setNodePoolSize($nodeCount, array $callOptions = [])
     {
         $request = new SetNodePoolSizeRequest();
         $requestParamHeaders = [];
         $request->setNodeCount($nodeCount);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetNodePoolSize', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetNodePoolSize', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2285,7 +2285,7 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2315,37 +2315,37 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function startIPRotation(array $optionalArgs = [])
+    public function startIPRotation(array $callOptions = [])
     {
         $request = new StartIPRotationRequest();
         $requestParamHeaders = [];
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
-        if (isset($optionalArgs['rotateCredentials'])) {
-            $request->setRotateCredentials($optionalArgs['rotateCredentials']);
+        if (isset($callOptions['rotateCredentials'])) {
+            $request->setRotateCredentials($callOptions['rotateCredentials']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('StartIPRotation', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('StartIPRotation', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2363,7 +2363,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param ClusterUpdate $update       Required. A description of the update.
-     * @param array         $optionalArgs {
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2391,34 +2391,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCluster($update, array $optionalArgs = [])
+    public function updateCluster($update, array $callOptions = [])
     {
         $request = new UpdateClusterRequest();
         $requestParamHeaders = [];
         $request->setUpdate($update);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCluster', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCluster', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2445,7 +2445,7 @@ class ClusterManagerGapicClient
      *                              - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
      *                              - "1.X.Y-gke.N": picks an explicit Kubernetes version
      *                              - "-": picks the default Kubernetes version
-     * @param array  $optionalArgs  {
+     * @param array  $callOptions  {
      *     Optional.
      *
      *     @type string $projectId
@@ -2473,34 +2473,34 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateMaster($masterVersion, array $optionalArgs = [])
+    public function updateMaster($masterVersion, array $callOptions = [])
     {
         $request = new UpdateMasterRequest();
         $requestParamHeaders = [];
         $request->setMasterVersion($masterVersion);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateMaster', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateMaster', Operation::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -2530,7 +2530,7 @@ class ClusterManagerGapicClient
      *                             - "1.X.Y-gke.N": picks an explicit Kubernetes version
      *                             - "-": picks the Kubernetes master version
      * @param string $imageType    Required. The desired image type for the node pool.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $projectId
@@ -2572,51 +2572,51 @@ class ClusterManagerGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateNodePool($nodeVersion, $imageType, array $optionalArgs = [])
+    public function updateNodePool($nodeVersion, $imageType, array $callOptions = [])
     {
         $request = new UpdateNodePoolRequest();
         $requestParamHeaders = [];
         $request->setNodeVersion($nodeVersion);
         $request->setImageType($imageType);
-        if (isset($optionalArgs['projectId'])) {
-            $request->setProjectId($optionalArgs['projectId']);
-            $requestParamHeaders['project_id'] = $optionalArgs['projectId'];
+        if (isset($callOptions['projectId'])) {
+            $request->setProjectId($callOptions['projectId']);
+            $requestParamHeaders['project_id'] = $callOptions['projectId'];
         }
 
-        if (isset($optionalArgs['zone'])) {
-            $request->setZone($optionalArgs['zone']);
-            $requestParamHeaders['zone'] = $optionalArgs['zone'];
+        if (isset($callOptions['zone'])) {
+            $request->setZone($callOptions['zone']);
+            $requestParamHeaders['zone'] = $callOptions['zone'];
         }
 
-        if (isset($optionalArgs['clusterId'])) {
-            $request->setClusterId($optionalArgs['clusterId']);
-            $requestParamHeaders['cluster_id'] = $optionalArgs['clusterId'];
+        if (isset($callOptions['clusterId'])) {
+            $request->setClusterId($callOptions['clusterId']);
+            $requestParamHeaders['cluster_id'] = $callOptions['clusterId'];
         }
 
-        if (isset($optionalArgs['nodePoolId'])) {
-            $request->setNodePoolId($optionalArgs['nodePoolId']);
-            $requestParamHeaders['node_pool_id'] = $optionalArgs['nodePoolId'];
+        if (isset($callOptions['nodePoolId'])) {
+            $request->setNodePoolId($callOptions['nodePoolId']);
+            $requestParamHeaders['node_pool_id'] = $callOptions['nodePoolId'];
         }
 
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
-            $requestParamHeaders['name'] = $optionalArgs['name'];
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
+            $requestParamHeaders['name'] = $callOptions['name'];
         }
 
-        if (isset($optionalArgs['locations'])) {
-            $request->setLocations($optionalArgs['locations']);
+        if (isset($callOptions['locations'])) {
+            $request->setLocations($callOptions['locations']);
         }
 
-        if (isset($optionalArgs['workloadMetadataConfig'])) {
-            $request->setWorkloadMetadataConfig($optionalArgs['workloadMetadataConfig']);
+        if (isset($callOptions['workloadMetadataConfig'])) {
+            $request->setWorkloadMetadataConfig($callOptions['workloadMetadataConfig']);
         }
 
-        if (isset($optionalArgs['upgradeSettings'])) {
-            $request->setUpgradeSettings($optionalArgs['upgradeSettings']);
+        if (isset($callOptions['upgradeSettings'])) {
+            $request->setUpgradeSettings($callOptions['upgradeSettings']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateNodePool', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateNodePool', Operation::class, $callOptions, $request)->wait();
     }
 }

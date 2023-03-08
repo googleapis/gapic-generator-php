@@ -706,7 +706,7 @@ class ResourceNamesGapicClient
      * @param string $reqFolderMultiNameHistory
      * @param string $reqOrderTest1
      * @param string $reqOrderTest2
-     * @param array  $optionalArgs              {
+     * @param array  $callOptions              {
      *     Optional.
      *
      *     @type string $folderName
@@ -722,7 +722,7 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function fileLevelChildTypeRefMethod($reqFolderName, $reqFolderMultiName, $reqFolderMultiNameHistory, $reqOrderTest1, $reqOrderTest2, array $optionalArgs = [])
+    public function fileLevelChildTypeRefMethod($reqFolderName, $reqFolderMultiName, $reqFolderMultiNameHistory, $reqOrderTest1, $reqOrderTest2, array $callOptions = [])
     {
         $request = new FileLevelChildTypeRefRequest();
         $request->setReqFolderName($reqFolderName);
@@ -730,19 +730,19 @@ class ResourceNamesGapicClient
         $request->setReqFolderMultiNameHistory($reqFolderMultiNameHistory);
         $request->setReqOrderTest1($reqOrderTest1);
         $request->setReqOrderTest2($reqOrderTest2);
-        if (isset($optionalArgs['folderName'])) {
-            $request->setFolderName($optionalArgs['folderName']);
+        if (isset($callOptions['folderName'])) {
+            $request->setFolderName($callOptions['folderName']);
         }
 
-        if (isset($optionalArgs['folderMultiName'])) {
-            $request->setFolderMultiName($optionalArgs['folderMultiName']);
+        if (isset($callOptions['folderMultiName'])) {
+            $request->setFolderMultiName($callOptions['folderMultiName']);
         }
 
-        if (isset($optionalArgs['folderMultiWildcardName'])) {
-            $request->setFolderMultiWildcardName($optionalArgs['folderMultiWildcardName']);
+        if (isset($callOptions['folderMultiWildcardName'])) {
+            $request->setFolderMultiWildcardName($callOptions['folderMultiWildcardName']);
         }
 
-        return $this->startCall('FileLevelChildTypeRefMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('FileLevelChildTypeRefMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -757,7 +757,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $fileName
@@ -772,18 +772,18 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function fileLevelTypeRefMethod(array $optionalArgs = [])
+    public function fileLevelTypeRefMethod(array $callOptions = [])
     {
         $request = new FileLevelTypeRefRequest();
-        if (isset($optionalArgs['fileName'])) {
-            $request->setFileName($optionalArgs['fileName']);
+        if (isset($callOptions['fileName'])) {
+            $request->setFileName($callOptions['fileName']);
         }
 
-        if (isset($optionalArgs['nestedOne'])) {
-            $request->setNestedOne($optionalArgs['nestedOne']);
+        if (isset($callOptions['nestedOne'])) {
+            $request->setNestedOne($callOptions['nestedOne']);
         }
 
-        return $this->startCall('FileLevelTypeRefMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('FileLevelTypeRefMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -798,7 +798,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -812,14 +812,14 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function multiPatternMethod(array $optionalArgs = [])
+    public function multiPatternMethod(array $callOptions = [])
     {
         $request = new MultiPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
         }
 
-        return $this->startCall('MultiPatternMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('MultiPatternMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -834,7 +834,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $realName
@@ -849,14 +849,14 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function singlePatternMethod(array $optionalArgs = [])
+    public function singlePatternMethod(array $callOptions = [])
     {
         $request = new SinglePatternRequest();
-        if (isset($optionalArgs['realName'])) {
-            $request->setRealName($optionalArgs['realName']);
+        if (isset($callOptions['realName'])) {
+            $request->setRealName($callOptions['realName']);
         }
 
-        return $this->startCall('SinglePatternMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('SinglePatternMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -871,7 +871,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $parent
@@ -885,14 +885,14 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function wildcardChildReferenceMethod(array $optionalArgs = [])
+    public function wildcardChildReferenceMethod(array $callOptions = [])
     {
         $request = new WildcardChildReferenceRequest();
-        if (isset($optionalArgs['parent'])) {
-            $request->setParent($optionalArgs['parent']);
+        if (isset($callOptions['parent'])) {
+            $request->setParent($callOptions['parent']);
         }
 
-        return $this->startCall('WildcardChildReferenceMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('WildcardChildReferenceMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -907,7 +907,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -921,14 +921,14 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function wildcardMethod(array $optionalArgs = [])
+    public function wildcardMethod(array $callOptions = [])
     {
         $request = new WildcardPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
         }
 
-        return $this->startCall('WildcardMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('WildcardMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -943,7 +943,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -957,14 +957,14 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function wildcardMultiMethod(array $optionalArgs = [])
+    public function wildcardMultiMethod(array $callOptions = [])
     {
         $request = new WildcardMultiPatternRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
         }
 
-        return $this->startCall('WildcardMultiMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('WildcardMultiMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -979,7 +979,7 @@ class ResourceNamesGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $name
@@ -993,13 +993,13 @@ class ResourceNamesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function wildcardReferenceMethod(array $optionalArgs = [])
+    public function wildcardReferenceMethod(array $callOptions = [])
     {
         $request = new WildcardReferenceRequest();
-        if (isset($optionalArgs['name'])) {
-            $request->setName($optionalArgs['name']);
+        if (isset($callOptions['name'])) {
+            $request->setName($callOptions['name']);
         }
 
-        return $this->startCall('WildcardReferenceMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('WildcardReferenceMethod', PlaceholderResponse::class, $callOptions, $request)->wait();
     }
 }

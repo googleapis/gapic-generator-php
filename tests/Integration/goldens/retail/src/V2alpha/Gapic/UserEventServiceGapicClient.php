@@ -360,7 +360,7 @@ class UserEventServiceGapicClient
      *                             `projects/1234/locations/global/catalogs/default_catalog`.
      * @param string $userEvent    Required. URL encoded UserEvent proto with a length limit of 2,000,000
      *                             characters.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $uri
@@ -384,24 +384,24 @@ class UserEventServiceGapicClient
      *
      * @experimental
      */
-    public function collectUserEvent($parent, $userEvent, array $optionalArgs = [])
+    public function collectUserEvent($parent, $userEvent, array $callOptions = [])
     {
         $request = new CollectUserEventRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setUserEvent($userEvent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['uri'])) {
-            $request->setUri($optionalArgs['uri']);
+        if (isset($callOptions['uri'])) {
+            $request->setUri($callOptions['uri']);
         }
 
-        if (isset($optionalArgs['ets'])) {
-            $request->setEts($optionalArgs['ets']);
+        if (isset($callOptions['ets'])) {
+            $request->setEts($callOptions['ets']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CollectUserEvent', HttpBody::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CollectUserEvent', HttpBody::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -452,7 +452,7 @@ class UserEventServiceGapicClient
      *
      * @param string               $parent       Required. `projects/1234/locations/global/catalogs/default_catalog`
      * @param UserEventInputConfig $inputConfig  Required. The desired input location of the data.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type ImportErrorsConfig $errorsConfig
@@ -470,20 +470,20 @@ class UserEventServiceGapicClient
      *
      * @experimental
      */
-    public function importUserEvents($parent, $inputConfig, array $optionalArgs = [])
+    public function importUserEvents($parent, $inputConfig, array $callOptions = [])
     {
         $request = new ImportUserEventsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['errorsConfig'])) {
-            $request->setErrorsConfig($optionalArgs['errorsConfig']);
+        if (isset($callOptions['errorsConfig'])) {
+            $request->setErrorsConfig($callOptions['errorsConfig']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ImportUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportUserEvents', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -556,7 +556,7 @@ class UserEventServiceGapicClient
      *                             `visitorId = "visitor1024"`
      *
      *                             The filtering fields are assumed to have an implicit AND.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type bool $force
@@ -575,20 +575,20 @@ class UserEventServiceGapicClient
      *
      * @experimental
      */
-    public function purgeUserEvents($parent, $filter, array $optionalArgs = [])
+    public function purgeUserEvents($parent, $filter, array $callOptions = [])
     {
         $request = new PurgeUserEventsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setFilter($filter);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['force'])) {
-            $request->setForce($optionalArgs['force']);
+        if (isset($callOptions['force'])) {
+            $request->setForce($callOptions['force']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('PurgeUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('PurgeUserEvents', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -638,7 +638,7 @@ class UserEventServiceGapicClient
      *
      * @param string $parent       Required. The parent catalog resource name, such as
      *                             `projects/1234/locations/global/catalogs/default_catalog`.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $userEventRejoinScope
@@ -659,19 +659,19 @@ class UserEventServiceGapicClient
      *
      * @experimental
      */
-    public function rejoinUserEvents($parent, array $optionalArgs = [])
+    public function rejoinUserEvents($parent, array $callOptions = [])
     {
         $request = new RejoinUserEventsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['userEventRejoinScope'])) {
-            $request->setUserEventRejoinScope($optionalArgs['userEventRejoinScope']);
+        if (isset($callOptions['userEventRejoinScope'])) {
+            $request->setUserEventRejoinScope($callOptions['userEventRejoinScope']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('RejoinUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('RejoinUserEvents', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -692,7 +692,7 @@ class UserEventServiceGapicClient
      * @param string    $parent       Required. The parent catalog resource name, such as
      *                                `projects/1234/locations/global/catalogs/default_catalog`.
      * @param UserEvent $userEvent    Required. User event to write.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -707,7 +707,7 @@ class UserEventServiceGapicClient
      *
      * @experimental
      */
-    public function writeUserEvent($parent, $userEvent, array $optionalArgs = [])
+    public function writeUserEvent($parent, $userEvent, array $callOptions = [])
     {
         $request = new WriteUserEventRequest();
         $requestParamHeaders = [];
@@ -715,7 +715,7 @@ class UserEventServiceGapicClient
         $request->setUserEvent($userEvent);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('WriteUserEvent', UserEvent::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('WriteUserEvent', UserEvent::class, $callOptions, $request)->wait();
     }
 }

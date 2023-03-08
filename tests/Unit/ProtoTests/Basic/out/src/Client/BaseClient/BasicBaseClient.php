@@ -42,8 +42,8 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
- * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
+ * @method PromiseInterface aMethodAsync(Request $request, array $callOptions = [])
+ * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $callOptions = [])
  */
 class BasicBaseClient
 {
@@ -162,7 +162,7 @@ class BasicBaseClient
      * The async variant is {@see self::aMethodAsync()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -175,9 +175,9 @@ class BasicBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod(Request $request, array $optionalArgs = []): Response
+    public function aMethod(Request $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AMethod', $request, $callOptions)->wait();
     }
 
     /**
@@ -186,7 +186,7 @@ class BasicBaseClient
      * The async variant is {@see self::methodWithArgsAsync()} .
      *
      * @param RequestWithArgs $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -199,8 +199,8 @@ class BasicBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodWithArgs(RequestWithArgs $request, array $optionalArgs = []): Response
+    public function methodWithArgs(RequestWithArgs $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodWithArgs', $request, $callOptions)->wait();
     }
 }

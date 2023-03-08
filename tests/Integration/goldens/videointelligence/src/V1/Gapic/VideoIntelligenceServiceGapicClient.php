@@ -253,7 +253,7 @@ class VideoIntelligenceServiceGapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type string $inputUri
@@ -300,33 +300,33 @@ class VideoIntelligenceServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function annotateVideo(array $optionalArgs = [])
+    public function annotateVideo(array $callOptions = [])
     {
         $request = new AnnotateVideoRequest();
-        if (isset($optionalArgs['inputUri'])) {
-            $request->setInputUri($optionalArgs['inputUri']);
+        if (isset($callOptions['inputUri'])) {
+            $request->setInputUri($callOptions['inputUri']);
         }
 
-        if (isset($optionalArgs['inputContent'])) {
-            $request->setInputContent($optionalArgs['inputContent']);
+        if (isset($callOptions['inputContent'])) {
+            $request->setInputContent($callOptions['inputContent']);
         }
 
-        if (isset($optionalArgs['features'])) {
-            $request->setFeatures($optionalArgs['features']);
+        if (isset($callOptions['features'])) {
+            $request->setFeatures($callOptions['features']);
         }
 
-        if (isset($optionalArgs['videoContext'])) {
-            $request->setVideoContext($optionalArgs['videoContext']);
+        if (isset($callOptions['videoContext'])) {
+            $request->setVideoContext($callOptions['videoContext']);
         }
 
-        if (isset($optionalArgs['outputUri'])) {
-            $request->setOutputUri($optionalArgs['outputUri']);
+        if (isset($callOptions['outputUri'])) {
+            $request->setOutputUri($callOptions['outputUri']);
         }
 
-        if (isset($optionalArgs['locationId'])) {
-            $request->setLocationId($optionalArgs['locationId']);
+        if (isset($callOptions['locationId'])) {
+            $request->setLocationId($callOptions['locationId']);
         }
 
-        return $this->startOperationsCall('AnnotateVideo', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startOperationsCall('AnnotateVideo', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 }

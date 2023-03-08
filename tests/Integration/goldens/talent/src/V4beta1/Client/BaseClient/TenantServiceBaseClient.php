@@ -56,11 +56,11 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface createTenantAsync(CreateTenantRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteTenantAsync(DeleteTenantRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getTenantAsync(GetTenantRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listTenantsAsync(ListTenantsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateTenantAsync(UpdateTenantRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createTenantAsync(CreateTenantRequest $request, array $callOptions = [])
+ * @method PromiseInterface deleteTenantAsync(DeleteTenantRequest $request, array $callOptions = [])
+ * @method PromiseInterface getTenantAsync(GetTenantRequest $request, array $callOptions = [])
+ * @method PromiseInterface listTenantsAsync(ListTenantsRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateTenantAsync(UpdateTenantRequest $request, array $callOptions = [])
  */
 class TenantServiceBaseClient
 {
@@ -250,7 +250,7 @@ class TenantServiceBaseClient
      * The async variant is {@see self::createTenantAsync()} .
      *
      * @param CreateTenantRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -265,9 +265,9 @@ class TenantServiceBaseClient
      *
      * @experimental
      */
-    public function createTenant(CreateTenantRequest $request, array $optionalArgs = []): Tenant
+    public function createTenant(CreateTenantRequest $request, array $callOptions = []): Tenant
     {
-        return $this->startApiCall('CreateTenant', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateTenant', $request, $callOptions)->wait();
     }
 
     /**
@@ -276,7 +276,7 @@ class TenantServiceBaseClient
      * The async variant is {@see self::deleteTenantAsync()} .
      *
      * @param DeleteTenantRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -289,9 +289,9 @@ class TenantServiceBaseClient
      *
      * @experimental
      */
-    public function deleteTenant(DeleteTenantRequest $request, array $optionalArgs = []): void
+    public function deleteTenant(DeleteTenantRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteTenant', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteTenant', $request, $callOptions)->wait();
     }
 
     /**
@@ -300,7 +300,7 @@ class TenantServiceBaseClient
      * The async variant is {@see self::getTenantAsync()} .
      *
      * @param GetTenantRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -315,9 +315,9 @@ class TenantServiceBaseClient
      *
      * @experimental
      */
-    public function getTenant(GetTenantRequest $request, array $optionalArgs = []): Tenant
+    public function getTenant(GetTenantRequest $request, array $callOptions = []): Tenant
     {
-        return $this->startApiCall('GetTenant', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetTenant', $request, $callOptions)->wait();
     }
 
     /**
@@ -326,7 +326,7 @@ class TenantServiceBaseClient
      * The async variant is {@see self::listTenantsAsync()} .
      *
      * @param ListTenantsRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -341,9 +341,9 @@ class TenantServiceBaseClient
      *
      * @experimental
      */
-    public function listTenants(ListTenantsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listTenants(ListTenantsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListTenants', $request, $optionalArgs);
+        return $this->startApiCall('ListTenants', $request, $callOptions);
     }
 
     /**
@@ -352,7 +352,7 @@ class TenantServiceBaseClient
      * The async variant is {@see self::updateTenantAsync()} .
      *
      * @param UpdateTenantRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -367,8 +367,8 @@ class TenantServiceBaseClient
      *
      * @experimental
      */
-    public function updateTenant(UpdateTenantRequest $request, array $optionalArgs = []): Tenant
+    public function updateTenant(UpdateTenantRequest $request, array $callOptions = []): Tenant
     {
-        return $this->startApiCall('UpdateTenant', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateTenant', $request, $callOptions)->wait();
     }
 }

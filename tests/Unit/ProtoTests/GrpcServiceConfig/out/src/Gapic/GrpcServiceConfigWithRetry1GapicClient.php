@@ -195,7 +195,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -208,10 +208,10 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1A(array $optionalArgs = [])
+    public function method1A(array $callOptions = [])
     {
         $request = new Request1();
-        return $this->startCall('Method1A', Response1::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Method1A', Response1::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -251,7 +251,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -264,10 +264,10 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1BLro(array $optionalArgs = [])
+    public function method1BLro(array $callOptions = [])
     {
         $request = new Request1();
-        return $this->startOperationsCall('Method1BLro', $optionalArgs, $request, $this->getOperationsClient())->wait();
+        return $this->startOperationsCall('Method1BLro', $callOptions, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -312,7 +312,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -323,9 +323,9 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1BidiStreaming(array $optionalArgs = [])
+    public function method1BidiStreaming(array $callOptions = [])
     {
-        return $this->startCall('Method1BidiStreaming', Response1::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
+        return $this->startCall('Method1BidiStreaming', Response1::class, $callOptions, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -340,7 +340,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -353,10 +353,10 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1CServiceLevelRetry(array $optionalArgs = [])
+    public function method1CServiceLevelRetry(array $callOptions = [])
     {
         $request = new Request1();
-        return $this->startCall('Method1CServiceLevelRetry', Response1::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Method1CServiceLevelRetry', Response1::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -371,7 +371,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -384,10 +384,10 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1DTimeoutOnlyRetry(array $optionalArgs = [])
+    public function method1DTimeoutOnlyRetry(array $callOptions = [])
     {
         $request = new Request1();
-        return $this->startCall('Method1DTimeoutOnlyRetry', Response1::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Method1DTimeoutOnlyRetry', Response1::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -406,7 +406,7 @@ class GrpcServiceConfigWithRetry1GapicClient
      * }
      * ```
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -417,9 +417,9 @@ class GrpcServiceConfigWithRetry1GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function method1ServerStreaming(array $optionalArgs = [])
+    public function method1ServerStreaming(array $callOptions = [])
     {
         $request = new Request1();
-        return $this->startCall('Method1ServerStreaming', Response1::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
+        return $this->startCall('Method1ServerStreaming', Response1::class, $callOptions, $request, Call::SERVER_STREAMING_CALL);
     }
 }

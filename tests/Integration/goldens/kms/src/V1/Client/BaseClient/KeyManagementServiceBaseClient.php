@@ -94,32 +94,32 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface asymmetricDecryptAsync(AsymmetricDecryptRequest $request, array $optionalArgs = [])
- * @method PromiseInterface asymmetricSignAsync(AsymmetricSignRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createCryptoKeyAsync(CreateCryptoKeyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createCryptoKeyVersionAsync(CreateCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createImportJobAsync(CreateImportJobRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createKeyRingAsync(CreateKeyRingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface decryptAsync(DecryptRequest $request, array $optionalArgs = [])
- * @method PromiseInterface destroyCryptoKeyVersionAsync(DestroyCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface encryptAsync(EncryptRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getCryptoKeyAsync(GetCryptoKeyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getCryptoKeyVersionAsync(GetCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getImportJobAsync(GetImportJobRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getKeyRingAsync(GetKeyRingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getPublicKeyAsync(GetPublicKeyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface importCryptoKeyVersionAsync(ImportCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listCryptoKeyVersionsAsync(ListCryptoKeyVersionsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listCryptoKeysAsync(ListCryptoKeysRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listImportJobsAsync(ListImportJobsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listKeyRingsAsync(ListKeyRingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface restoreCryptoKeyVersionAsync(RestoreCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateCryptoKeyAsync(UpdateCryptoKeyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateCryptoKeyPrimaryVersionAsync(UpdateCryptoKeyPrimaryVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateCryptoKeyVersionAsync(UpdateCryptoKeyVersionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface asymmetricDecryptAsync(AsymmetricDecryptRequest $request, array $callOptions = [])
+ * @method PromiseInterface asymmetricSignAsync(AsymmetricSignRequest $request, array $callOptions = [])
+ * @method PromiseInterface createCryptoKeyAsync(CreateCryptoKeyRequest $request, array $callOptions = [])
+ * @method PromiseInterface createCryptoKeyVersionAsync(CreateCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface createImportJobAsync(CreateImportJobRequest $request, array $callOptions = [])
+ * @method PromiseInterface createKeyRingAsync(CreateKeyRingRequest $request, array $callOptions = [])
+ * @method PromiseInterface decryptAsync(DecryptRequest $request, array $callOptions = [])
+ * @method PromiseInterface destroyCryptoKeyVersionAsync(DestroyCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface encryptAsync(EncryptRequest $request, array $callOptions = [])
+ * @method PromiseInterface getCryptoKeyAsync(GetCryptoKeyRequest $request, array $callOptions = [])
+ * @method PromiseInterface getCryptoKeyVersionAsync(GetCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $callOptions = [])
+ * @method PromiseInterface getImportJobAsync(GetImportJobRequest $request, array $callOptions = [])
+ * @method PromiseInterface getKeyRingAsync(GetKeyRingRequest $request, array $callOptions = [])
+ * @method PromiseInterface getPublicKeyAsync(GetPublicKeyRequest $request, array $callOptions = [])
+ * @method PromiseInterface importCryptoKeyVersionAsync(ImportCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface listCryptoKeyVersionsAsync(ListCryptoKeyVersionsRequest $request, array $callOptions = [])
+ * @method PromiseInterface listCryptoKeysAsync(ListCryptoKeysRequest $request, array $callOptions = [])
+ * @method PromiseInterface listImportJobsAsync(ListImportJobsRequest $request, array $callOptions = [])
+ * @method PromiseInterface listKeyRingsAsync(ListKeyRingsRequest $request, array $callOptions = [])
+ * @method PromiseInterface restoreCryptoKeyVersionAsync(RestoreCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateCryptoKeyAsync(UpdateCryptoKeyRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateCryptoKeyPrimaryVersionAsync(UpdateCryptoKeyPrimaryVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateCryptoKeyVersionAsync(UpdateCryptoKeyVersionRequest $request, array $callOptions = [])
+ * @method PromiseInterface getLocationAsync(GetLocationRequest $request, array $callOptions = [])
+ * @method PromiseInterface listLocationsAsync(ListLocationsRequest $request, array $callOptions = [])
  */
 class KeyManagementServiceBaseClient
 {
@@ -377,7 +377,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::asymmetricDecryptAsync()} .
      *
      * @param AsymmetricDecryptRequest $request      A request to house fields associated with the call.
-     * @param array                    $optionalArgs {
+     * @param array                    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -390,9 +390,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function asymmetricDecrypt(AsymmetricDecryptRequest $request, array $optionalArgs = []): AsymmetricDecryptResponse
+    public function asymmetricDecrypt(AsymmetricDecryptRequest $request, array $callOptions = []): AsymmetricDecryptResponse
     {
-        return $this->startApiCall('AsymmetricDecrypt', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AsymmetricDecrypt', $request, $callOptions)->wait();
     }
 
     /**
@@ -405,7 +405,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::asymmetricSignAsync()} .
      *
      * @param AsymmetricSignRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -418,9 +418,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function asymmetricSign(AsymmetricSignRequest $request, array $optionalArgs = []): AsymmetricSignResponse
+    public function asymmetricSign(AsymmetricSignRequest $request, array $callOptions = []): AsymmetricSignResponse
     {
-        return $this->startApiCall('AsymmetricSign', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AsymmetricSign', $request, $callOptions)->wait();
     }
 
     /**
@@ -434,7 +434,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::createCryptoKeyAsync()} .
      *
      * @param CreateCryptoKeyRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -447,9 +447,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createCryptoKey(CreateCryptoKeyRequest $request, array $optionalArgs = []): CryptoKey
+    public function createCryptoKey(CreateCryptoKeyRequest $request, array $callOptions = []): CryptoKey
     {
-        return $this->startApiCall('CreateCryptoKey', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCryptoKey', $request, $callOptions)->wait();
     }
 
     /**
@@ -463,7 +463,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::createCryptoKeyVersionAsync()} .
      *
      * @param CreateCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                         $optionalArgs {
+     * @param array                         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -476,9 +476,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createCryptoKeyVersion(CreateCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function createCryptoKeyVersion(CreateCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('CreateCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -491,7 +491,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::createImportJobAsync()} .
      *
      * @param CreateImportJobRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -504,9 +504,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createImportJob(CreateImportJobRequest $request, array $optionalArgs = []): ImportJob
+    public function createImportJob(CreateImportJobRequest $request, array $callOptions = []): ImportJob
     {
-        return $this->startApiCall('CreateImportJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateImportJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -516,7 +516,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::createKeyRingAsync()} .
      *
      * @param CreateKeyRingRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -529,9 +529,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createKeyRing(CreateKeyRingRequest $request, array $optionalArgs = []): KeyRing
+    public function createKeyRing(CreateKeyRingRequest $request, array $callOptions = []): KeyRing
     {
-        return $this->startApiCall('CreateKeyRing', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateKeyRing', $request, $callOptions)->wait();
     }
 
     /**
@@ -543,7 +543,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::decryptAsync()} .
      *
      * @param DecryptRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -556,9 +556,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function decrypt(DecryptRequest $request, array $optionalArgs = []): DecryptResponse
+    public function decrypt(DecryptRequest $request, array $callOptions = []): DecryptResponse
     {
-        return $this->startApiCall('Decrypt', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Decrypt', $request, $callOptions)->wait();
     }
 
     /**
@@ -584,7 +584,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::destroyCryptoKeyVersionAsync()} .
      *
      * @param DestroyCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -597,9 +597,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function destroyCryptoKeyVersion(DestroyCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function destroyCryptoKeyVersion(DestroyCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('DestroyCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DestroyCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -611,7 +611,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::encryptAsync()} .
      *
      * @param EncryptRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -624,9 +624,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function encrypt(EncryptRequest $request, array $optionalArgs = []): EncryptResponse
+    public function encrypt(EncryptRequest $request, array $callOptions = []): EncryptResponse
     {
-        return $this->startApiCall('Encrypt', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Encrypt', $request, $callOptions)->wait();
     }
 
     /**
@@ -637,7 +637,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getCryptoKeyAsync()} .
      *
      * @param GetCryptoKeyRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -650,9 +650,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getCryptoKey(GetCryptoKeyRequest $request, array $optionalArgs = []): CryptoKey
+    public function getCryptoKey(GetCryptoKeyRequest $request, array $callOptions = []): CryptoKey
     {
-        return $this->startApiCall('GetCryptoKey', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCryptoKey', $request, $callOptions)->wait();
     }
 
     /**
@@ -662,7 +662,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getCryptoKeyVersionAsync()} .
      *
      * @param GetCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                      $optionalArgs {
+     * @param array                      $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -675,9 +675,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getCryptoKeyVersion(GetCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function getCryptoKeyVersion(GetCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('GetCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -688,7 +688,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getIamPolicyAsync()} .
      *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -701,9 +701,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $optionalArgs = []): Policy
+    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
     {
-        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -712,7 +712,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getImportJobAsync()} .
      *
      * @param GetImportJobRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -725,9 +725,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getImportJob(GetImportJobRequest $request, array $optionalArgs = []): ImportJob
+    public function getImportJob(GetImportJobRequest $request, array $callOptions = []): ImportJob
     {
-        return $this->startApiCall('GetImportJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetImportJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -736,7 +736,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getKeyRingAsync()} .
      *
      * @param GetKeyRingRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -749,9 +749,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getKeyRing(GetKeyRingRequest $request, array $optionalArgs = []): KeyRing
+    public function getKeyRing(GetKeyRingRequest $request, array $callOptions = []): KeyRing
     {
-        return $this->startApiCall('GetKeyRing', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetKeyRing', $request, $callOptions)->wait();
     }
 
     /**
@@ -765,7 +765,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getPublicKeyAsync()} .
      *
      * @param GetPublicKeyRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -778,9 +778,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getPublicKey(GetPublicKeyRequest $request, array $optionalArgs = []): PublicKey
+    public function getPublicKey(GetPublicKeyRequest $request, array $callOptions = []): PublicKey
     {
-        return $this->startApiCall('GetPublicKey', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetPublicKey', $request, $callOptions)->wait();
     }
 
     /**
@@ -794,7 +794,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::importCryptoKeyVersionAsync()} .
      *
      * @param ImportCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                         $optionalArgs {
+     * @param array                         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -807,9 +807,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function importCryptoKeyVersion(ImportCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function importCryptoKeyVersion(ImportCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('ImportCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -818,7 +818,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::listCryptoKeyVersionsAsync()} .
      *
      * @param ListCryptoKeyVersionsRequest $request      A request to house fields associated with the call.
-     * @param array                        $optionalArgs {
+     * @param array                        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -831,9 +831,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listCryptoKeyVersions(ListCryptoKeyVersionsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listCryptoKeyVersions(ListCryptoKeyVersionsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListCryptoKeyVersions', $request, $optionalArgs);
+        return $this->startApiCall('ListCryptoKeyVersions', $request, $callOptions);
     }
 
     /**
@@ -842,7 +842,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::listCryptoKeysAsync()} .
      *
      * @param ListCryptoKeysRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -855,9 +855,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listCryptoKeys(ListCryptoKeysRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listCryptoKeys(ListCryptoKeysRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListCryptoKeys', $request, $optionalArgs);
+        return $this->startApiCall('ListCryptoKeys', $request, $callOptions);
     }
 
     /**
@@ -866,7 +866,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::listImportJobsAsync()} .
      *
      * @param ListImportJobsRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -879,9 +879,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listImportJobs(ListImportJobsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listImportJobs(ListImportJobsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListImportJobs', $request, $optionalArgs);
+        return $this->startApiCall('ListImportJobs', $request, $callOptions);
     }
 
     /**
@@ -890,7 +890,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::listKeyRingsAsync()} .
      *
      * @param ListKeyRingsRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -903,9 +903,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listKeyRings(ListKeyRingsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listKeyRings(ListKeyRingsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListKeyRings', $request, $optionalArgs);
+        return $this->startApiCall('ListKeyRings', $request, $callOptions);
     }
 
     /**
@@ -922,7 +922,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::restoreCryptoKeyVersionAsync()} .
      *
      * @param RestoreCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -935,9 +935,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function restoreCryptoKeyVersion(RestoreCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function restoreCryptoKeyVersion(RestoreCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('RestoreCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RestoreCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -946,7 +946,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::updateCryptoKeyAsync()} .
      *
      * @param UpdateCryptoKeyRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -959,9 +959,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCryptoKey(UpdateCryptoKeyRequest $request, array $optionalArgs = []): CryptoKey
+    public function updateCryptoKey(UpdateCryptoKeyRequest $request, array $callOptions = []): CryptoKey
     {
-        return $this->startApiCall('UpdateCryptoKey', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKey', $request, $callOptions)->wait();
     }
 
     /**
@@ -974,7 +974,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::updateCryptoKeyPrimaryVersionAsync()} .
      *
      * @param UpdateCryptoKeyPrimaryVersionRequest $request      A request to house fields associated with the call.
-     * @param array                                $optionalArgs {
+     * @param array                                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -987,9 +987,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCryptoKeyPrimaryVersion(UpdateCryptoKeyPrimaryVersionRequest $request, array $optionalArgs = []): CryptoKey
+    public function updateCryptoKeyPrimaryVersion(UpdateCryptoKeyPrimaryVersionRequest $request, array $callOptions = []): CryptoKey
     {
-        return $this->startApiCall('UpdateCryptoKeyPrimaryVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKeyPrimaryVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -1009,7 +1009,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::updateCryptoKeyVersionAsync()} .
      *
      * @param UpdateCryptoKeyVersionRequest $request      A request to house fields associated with the call.
-     * @param array                         $optionalArgs {
+     * @param array                         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1022,9 +1022,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCryptoKeyVersion(UpdateCryptoKeyVersionRequest $request, array $optionalArgs = []): CryptoKeyVersion
+    public function updateCryptoKeyVersion(UpdateCryptoKeyVersionRequest $request, array $callOptions = []): CryptoKeyVersion
     {
-        return $this->startApiCall('UpdateCryptoKeyVersion', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCryptoKeyVersion', $request, $callOptions)->wait();
     }
 
     /**
@@ -1033,7 +1033,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::getLocationAsync()} .
      *
      * @param GetLocationRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1046,9 +1046,9 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getLocation(GetLocationRequest $request, array $optionalArgs = []): Location
+    public function getLocation(GetLocationRequest $request, array $callOptions = []): Location
     {
-        return $this->startApiCall('GetLocation', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetLocation', $request, $callOptions)->wait();
     }
 
     /**
@@ -1057,7 +1057,7 @@ class KeyManagementServiceBaseClient
      * The async variant is {@see self::listLocationsAsync()} .
      *
      * @param ListLocationsRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1070,8 +1070,8 @@ class KeyManagementServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLocations(ListLocationsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listLocations(ListLocationsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListLocations', $request, $optionalArgs);
+        return $this->startApiCall('ListLocations', $request, $callOptions);
     }
 }

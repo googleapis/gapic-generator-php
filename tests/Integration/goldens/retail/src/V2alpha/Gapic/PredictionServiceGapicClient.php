@@ -285,7 +285,7 @@ class PredictionServiceGapicClient
      *                                they took to trigger the predict request. Note that this user event detail
      *                                won't be ingested to userEvent logs. Thus, a separate userEvent write
      *                                request is required for event logging.
-     * @param array     $optionalArgs {
+     * @param array     $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -383,39 +383,39 @@ class PredictionServiceGapicClient
      *
      * @experimental
      */
-    public function predict($placement, $userEvent, array $optionalArgs = [])
+    public function predict($placement, $userEvent, array $callOptions = [])
     {
         $request = new PredictRequest();
         $requestParamHeaders = [];
         $request->setPlacement($placement);
         $request->setUserEvent($userEvent);
         $requestParamHeaders['placement'] = $placement;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['validateOnly'])) {
-            $request->setValidateOnly($optionalArgs['validateOnly']);
+        if (isset($callOptions['validateOnly'])) {
+            $request->setValidateOnly($callOptions['validateOnly']);
         }
 
-        if (isset($optionalArgs['params'])) {
-            $request->setParams($optionalArgs['params']);
+        if (isset($callOptions['params'])) {
+            $request->setParams($callOptions['params']);
         }
 
-        if (isset($optionalArgs['labels'])) {
-            $request->setLabels($optionalArgs['labels']);
+        if (isset($callOptions['labels'])) {
+            $request->setLabels($callOptions['labels']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('Predict', PredictResponse::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('Predict', PredictResponse::class, $callOptions, $request)->wait();
     }
 }

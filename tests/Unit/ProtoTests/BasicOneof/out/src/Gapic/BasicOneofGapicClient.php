@@ -176,7 +176,7 @@ class BasicOneofGapicClient
      * @param SupplementaryDataOneof $supplementaryData An instance of the wrapper class for the required proto oneof supplementary_data.
      * @param Other                  $other
      * @param string                 $requiredOptional
-     * @param array                  $optionalArgs      {
+     * @param array                  $callOptions      {
      *     Optional.
      *
      *     @type int $anInt
@@ -194,7 +194,7 @@ class BasicOneofGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod($supplementaryData, $other, $requiredOptional, array $optionalArgs = [])
+    public function aMethod($supplementaryData, $other, $requiredOptional, array $callOptions = [])
     {
         $request = new Request();
         if ($supplementaryData->isExtraDescription()) {
@@ -217,18 +217,18 @@ class BasicOneofGapicClient
 
         $request->setOther($other);
         $request->setRequiredOptional($requiredOptional);
-        if (isset($optionalArgs['anInt'])) {
-            $request->setAnInt($optionalArgs['anInt']);
+        if (isset($callOptions['anInt'])) {
+            $request->setAnInt($callOptions['anInt']);
         }
 
-        if (isset($optionalArgs['optionalPayload'])) {
-            $request->setOptionalPayload($optionalArgs['optionalPayload']);
+        if (isset($callOptions['optionalPayload'])) {
+            $request->setOptionalPayload($callOptions['optionalPayload']);
         }
 
-        if (isset($optionalArgs['optionalCount'])) {
-            $request->setOptionalCount($optionalArgs['optionalCount']);
+        if (isset($callOptions['optionalCount'])) {
+            $request->setOptionalCount($callOptions['optionalCount']);
         }
 
-        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
+        return $this->startCall('AMethod', Response::class, $callOptions, $request)->wait();
     }
 }

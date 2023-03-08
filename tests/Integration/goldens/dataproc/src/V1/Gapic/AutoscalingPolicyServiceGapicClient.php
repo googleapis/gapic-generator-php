@@ -399,7 +399,7 @@ class AutoscalingPolicyServiceGapicClient
      *                                        of the location has the following format:
      *                                        `projects/{project_id}/locations/{location}`
      * @param AutoscalingPolicy $policy       Required. The autoscaling policy to create.
-     * @param array             $optionalArgs {
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -412,7 +412,7 @@ class AutoscalingPolicyServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createAutoscalingPolicy($parent, $policy, array $optionalArgs = [])
+    public function createAutoscalingPolicy($parent, $policy, array $callOptions = [])
     {
         $request = new CreateAutoscalingPolicyRequest();
         $requestParamHeaders = [];
@@ -420,8 +420,8 @@ class AutoscalingPolicyServiceGapicClient
         $request->setPolicy($policy);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateAutoscalingPolicy', AutoscalingPolicy::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -449,7 +449,7 @@ class AutoscalingPolicyServiceGapicClient
      *                             * For `projects.locations.autoscalingPolicies.delete`, the resource name
      *                             of the policy has the following format:
      *                             `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -460,15 +460,15 @@ class AutoscalingPolicyServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteAutoscalingPolicy($name, array $optionalArgs = [])
+    public function deleteAutoscalingPolicy($name, array $callOptions = [])
     {
         $request = new DeleteAutoscalingPolicyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteAutoscalingPolicy', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteAutoscalingPolicy', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -495,7 +495,7 @@ class AutoscalingPolicyServiceGapicClient
      *                             * For `projects.locations.autoscalingPolicies.get`, the resource name
      *                             of the policy has the following format:
      *                             `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -508,15 +508,15 @@ class AutoscalingPolicyServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getAutoscalingPolicy($name, array $optionalArgs = [])
+    public function getAutoscalingPolicy($name, array $callOptions = [])
     {
         $request = new GetAutoscalingPolicyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetAutoscalingPolicy', AutoscalingPolicy::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -555,7 +555,7 @@ class AutoscalingPolicyServiceGapicClient
      *                             * For `projects.locations.autoscalingPolicies.list`, the resource name
      *                             of the location has the following format:
      *                             `projects/{project_id}/locations/{location}`
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type int $pageSize
@@ -577,23 +577,23 @@ class AutoscalingPolicyServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listAutoscalingPolicies($parent, array $optionalArgs = [])
+    public function listAutoscalingPolicies($parent, array $callOptions = [])
     {
         $request = new ListAutoscalingPoliciesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListAutoscalingPolicies', $optionalArgs, ListAutoscalingPoliciesResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListAutoscalingPolicies', $callOptions, ListAutoscalingPoliciesResponse::class, $request);
     }
 
     /**
@@ -614,7 +614,7 @@ class AutoscalingPolicyServiceGapicClient
      * ```
      *
      * @param AutoscalingPolicy $policy       Required. The updated autoscaling policy.
-     * @param array             $optionalArgs {
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -627,14 +627,14 @@ class AutoscalingPolicyServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateAutoscalingPolicy($policy, array $optionalArgs = [])
+    public function updateAutoscalingPolicy($policy, array $callOptions = [])
     {
         $request = new UpdateAutoscalingPolicyRequest();
         $requestParamHeaders = [];
         $request->setPolicy($policy);
         $requestParamHeaders['policy.name'] = $policy->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateAutoscalingPolicy', AutoscalingPolicy::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateAutoscalingPolicy', AutoscalingPolicy::class, $callOptions, $request)->wait();
     }
 }

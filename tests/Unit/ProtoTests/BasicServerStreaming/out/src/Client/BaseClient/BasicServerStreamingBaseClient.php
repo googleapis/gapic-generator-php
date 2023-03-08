@@ -140,7 +140,7 @@ class BasicServerStreamingBaseClient
 
     /**
      * @param EmptyRequest $request      A request to house fields associated with the call.
-     * @param array        $optionalArgs {
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -151,14 +151,14 @@ class BasicServerStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodEmpty(EmptyRequest $request, array $optionalArgs = []): ServerStream
+    public function methodEmpty(EmptyRequest $request, array $callOptions = []): ServerStream
     {
-        return $this->startApiCall('MethodEmpty', $request, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', $request, $callOptions);
     }
 
     /**
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -169,8 +169,8 @@ class BasicServerStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodServer(Request $request, array $optionalArgs = []): ServerStream
+    public function methodServer(Request $request, array $callOptions = []): ServerStream
     {
-        return $this->startApiCall('MethodServer', $request, $optionalArgs);
+        return $this->startApiCall('MethodServer', $request, $callOptions);
     }
 }

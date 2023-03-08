@@ -265,7 +265,7 @@ class AddressesGapicClient
      * ```
      *
      * @param string $project      Project ID for this request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $filter
@@ -301,35 +301,35 @@ class AddressesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aggregatedList($project, array $optionalArgs = [])
+    public function aggregatedList($project, array $callOptions = [])
     {
         $request = new AggregatedListAddressesRequest();
         $requestParamHeaders = [];
         $request->setProject($project);
         $requestParamHeaders['project'] = $project;
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['includeAllScopes'])) {
-            $request->setIncludeAllScopes($optionalArgs['includeAllScopes']);
+        if (isset($callOptions['includeAllScopes'])) {
+            $request->setIncludeAllScopes($callOptions['includeAllScopes']);
         }
 
-        if (isset($optionalArgs['maxResults'])) {
-            $request->setMaxResults($optionalArgs['maxResults']);
+        if (isset($callOptions['maxResults'])) {
+            $request->setMaxResults($callOptions['maxResults']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('AggregatedList', $optionalArgs, AddressAggregatedList::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('AggregatedList', $callOptions, AddressAggregatedList::class, $request);
     }
 
     /**
@@ -374,7 +374,7 @@ class AddressesGapicClient
      * @param string $address      Name of the address resource to delete.
      * @param string $project      Project ID for this request.
      * @param string $region       Name of the region for this request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $requestId
@@ -393,7 +393,7 @@ class AddressesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function delete($address, $project, $region, array $optionalArgs = [])
+    public function delete($address, $project, $region, array $callOptions = [])
     {
         $request = new DeleteAddressRequest();
         $requestParamHeaders = [];
@@ -403,13 +403,13 @@ class AddressesGapicClient
         $requestParamHeaders['address'] = $address;
         $requestParamHeaders['project'] = $project;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('Delete', $optionalArgs, $request, $this->getOperationsClient(), null, Operation::class)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('Delete', $callOptions, $request, $this->getOperationsClient(), null, Operation::class)->wait();
     }
 
     /**
@@ -454,7 +454,7 @@ class AddressesGapicClient
      * @param Address $addressResource The body resource for this request
      * @param string  $project         Project ID for this request.
      * @param string  $region          Name of the region for this request.
-     * @param array   $optionalArgs    {
+     * @param array   $callOptions    {
      *     Optional.
      *
      *     @type string $requestId
@@ -473,7 +473,7 @@ class AddressesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function insert($addressResource, $project, $region, array $optionalArgs = [])
+    public function insert($addressResource, $project, $region, array $callOptions = [])
     {
         $request = new InsertAddressRequest();
         $requestParamHeaders = [];
@@ -482,13 +482,13 @@ class AddressesGapicClient
         $request->setRegion($region);
         $requestParamHeaders['project'] = $project;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['requestId'])) {
-            $request->setRequestId($optionalArgs['requestId']);
+        if (isset($callOptions['requestId'])) {
+            $request->setRequestId($callOptions['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('Insert', $optionalArgs, $request, $this->getOperationsClient(), null, Operation::class)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('Insert', $callOptions, $request, $this->getOperationsClient(), null, Operation::class)->wait();
     }
 
     /**
@@ -526,7 +526,7 @@ class AddressesGapicClient
      *                             Currently, only sorting by name or creationTimestamp desc is supported.
      * @param string $project      Project ID for this request.
      * @param string $region       Name of the region for this request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $filter
@@ -554,7 +554,7 @@ class AddressesGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function list($orderBy, $project, $region, array $optionalArgs = [])
+    public function list($orderBy, $project, $region, array $callOptions = [])
     {
         $request = new ListAddressesRequest();
         $requestParamHeaders = [];
@@ -563,20 +563,20 @@ class AddressesGapicClient
         $request->setRegion($region);
         $requestParamHeaders['project'] = $project;
         $requestParamHeaders['region'] = $region;
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['maxResults'])) {
-            $request->setMaxResults($optionalArgs['maxResults']);
+        if (isset($callOptions['maxResults'])) {
+            $request->setMaxResults($callOptions['maxResults']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('List', $optionalArgs, AddressList::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('List', $callOptions, AddressList::class, $request);
     }
 }

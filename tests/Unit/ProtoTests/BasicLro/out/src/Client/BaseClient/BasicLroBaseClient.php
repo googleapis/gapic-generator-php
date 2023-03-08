@@ -43,9 +43,9 @@ use Testing\BasicLro\Request;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
- * @method PromiseInterface methodNonLro1Async(Request $request, array $optionalArgs = [])
- * @method PromiseInterface methodNonLro2Async(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface method1Async(Request $request, array $callOptions = [])
+ * @method PromiseInterface methodNonLro1Async(Request $request, array $callOptions = [])
+ * @method PromiseInterface methodNonLro2Async(Request $request, array $callOptions = [])
  */
 class BasicLroBaseClient
 {
@@ -198,7 +198,7 @@ class BasicLroBaseClient
      * The async variant is {@see self::method1Async()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -211,16 +211,16 @@ class BasicLroBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1(Request $request, array $optionalArgs = []): OperationResponse
+    public function method1(Request $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::methodNonLro1Async()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -233,16 +233,16 @@ class BasicLroBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodNonLro1(Request $request, array $optionalArgs = []): Request
+    public function methodNonLro1(Request $request, array $callOptions = []): Request
     {
-        return $this->startApiCall('MethodNonLro1', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodNonLro1', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::methodNonLro2Async()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -255,8 +255,8 @@ class BasicLroBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodNonLro2(Request $request, array $optionalArgs = []): Request
+    public function methodNonLro2(Request $request, array $callOptions = []): Request
     {
-        return $this->startApiCall('MethodNonLro2', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodNonLro2', $request, $callOptions)->wait();
     }
 }

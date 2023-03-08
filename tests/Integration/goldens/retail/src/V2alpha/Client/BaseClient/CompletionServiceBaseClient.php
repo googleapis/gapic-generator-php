@@ -59,8 +59,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
- * @method PromiseInterface importCompletionDataAsync(ImportCompletionDataRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $callOptions = [])
+ * @method PromiseInterface importCompletionDataAsync(ImportCompletionDataRequest $request, array $callOptions = [])
  */
 class CompletionServiceBaseClient
 {
@@ -273,7 +273,7 @@ class CompletionServiceBaseClient
      * The async variant is {@see self::completeQueryAsync()} .
      *
      * @param CompleteQueryRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -288,9 +288,9 @@ class CompletionServiceBaseClient
      *
      * @experimental
      */
-    public function completeQuery(CompleteQueryRequest $request, array $optionalArgs = []): CompleteQueryResponse
+    public function completeQuery(CompleteQueryRequest $request, array $callOptions = []): CompleteQueryResponse
     {
-        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteQuery', $request, $callOptions)->wait();
     }
 
     /**
@@ -305,7 +305,7 @@ class CompletionServiceBaseClient
      * The async variant is {@see self::importCompletionDataAsync()} .
      *
      * @param ImportCompletionDataRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -320,8 +320,8 @@ class CompletionServiceBaseClient
      *
      * @experimental
      */
-    public function importCompletionData(ImportCompletionDataRequest $request, array $optionalArgs = []): OperationResponse
+    public function importCompletionData(ImportCompletionDataRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ImportCompletionData', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportCompletionData', $request, $callOptions)->wait();
     }
 }

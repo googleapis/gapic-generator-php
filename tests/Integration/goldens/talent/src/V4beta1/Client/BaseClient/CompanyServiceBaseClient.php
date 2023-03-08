@@ -56,11 +56,11 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface createCompanyAsync(CreateCompanyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteCompanyAsync(DeleteCompanyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getCompanyAsync(GetCompanyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listCompaniesAsync(ListCompaniesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateCompanyAsync(UpdateCompanyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createCompanyAsync(CreateCompanyRequest $request, array $callOptions = [])
+ * @method PromiseInterface deleteCompanyAsync(DeleteCompanyRequest $request, array $callOptions = [])
+ * @method PromiseInterface getCompanyAsync(GetCompanyRequest $request, array $callOptions = [])
+ * @method PromiseInterface listCompaniesAsync(ListCompaniesRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateCompanyAsync(UpdateCompanyRequest $request, array $callOptions = [])
  */
 class CompanyServiceBaseClient
 {
@@ -314,7 +314,7 @@ class CompanyServiceBaseClient
      * The async variant is {@see self::createCompanyAsync()} .
      *
      * @param CreateCompanyRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -329,9 +329,9 @@ class CompanyServiceBaseClient
      *
      * @experimental
      */
-    public function createCompany(CreateCompanyRequest $request, array $optionalArgs = []): Company
+    public function createCompany(CreateCompanyRequest $request, array $callOptions = []): Company
     {
-        return $this->startApiCall('CreateCompany', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCompany', $request, $callOptions)->wait();
     }
 
     /**
@@ -341,7 +341,7 @@ class CompanyServiceBaseClient
      * The async variant is {@see self::deleteCompanyAsync()} .
      *
      * @param DeleteCompanyRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -354,9 +354,9 @@ class CompanyServiceBaseClient
      *
      * @experimental
      */
-    public function deleteCompany(DeleteCompanyRequest $request, array $optionalArgs = []): void
+    public function deleteCompany(DeleteCompanyRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteCompany', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteCompany', $request, $callOptions)->wait();
     }
 
     /**
@@ -365,7 +365,7 @@ class CompanyServiceBaseClient
      * The async variant is {@see self::getCompanyAsync()} .
      *
      * @param GetCompanyRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -380,9 +380,9 @@ class CompanyServiceBaseClient
      *
      * @experimental
      */
-    public function getCompany(GetCompanyRequest $request, array $optionalArgs = []): Company
+    public function getCompany(GetCompanyRequest $request, array $callOptions = []): Company
     {
-        return $this->startApiCall('GetCompany', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCompany', $request, $callOptions)->wait();
     }
 
     /**
@@ -391,7 +391,7 @@ class CompanyServiceBaseClient
      * The async variant is {@see self::listCompaniesAsync()} .
      *
      * @param ListCompaniesRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -406,9 +406,9 @@ class CompanyServiceBaseClient
      *
      * @experimental
      */
-    public function listCompanies(ListCompaniesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listCompanies(ListCompaniesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListCompanies', $request, $optionalArgs);
+        return $this->startApiCall('ListCompanies', $request, $callOptions);
     }
 
     /**
@@ -417,7 +417,7 @@ class CompanyServiceBaseClient
      * The async variant is {@see self::updateCompanyAsync()} .
      *
      * @param UpdateCompanyRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -432,8 +432,8 @@ class CompanyServiceBaseClient
      *
      * @experimental
      */
-    public function updateCompany(UpdateCompanyRequest $request, array $optionalArgs = []): Company
+    public function updateCompany(UpdateCompanyRequest $request, array $callOptions = []): Company
     {
-        return $this->startApiCall('UpdateCompany', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCompany', $request, $callOptions)->wait();
     }
 }

@@ -185,7 +185,7 @@ class RegionOperationsGapicClient
      * @param string $operation    Name of the Operations resource to return.
      * @param string $project      Project ID for this request.
      * @param string $region       Name of the region for this request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -198,7 +198,7 @@ class RegionOperationsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function get($operation, $project, $region, array $optionalArgs = [])
+    public function get($operation, $project, $region, array $callOptions = [])
     {
         $request = new GetRegionOperationRequest();
         $requestParamHeaders = [];
@@ -209,7 +209,7 @@ class RegionOperationsGapicClient
         $requestParamHeaders['project'] = $project;
         $requestParamHeaders['region'] = $region;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('Get', Operation::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('Get', Operation::class, $callOptions, $request)->wait();
     }
 }

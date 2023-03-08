@@ -308,7 +308,7 @@ class TenantServiceGapicClient
      *                             The format is "projects/{project_id}", for example,
      *                             "projects/foo".
      * @param Tenant $tenant       Required. The tenant to be created.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -323,7 +323,7 @@ class TenantServiceGapicClient
      *
      * @experimental
      */
-    public function createTenant($parent, $tenant, array $optionalArgs = [])
+    public function createTenant($parent, $tenant, array $callOptions = [])
     {
         $request = new CreateTenantRequest();
         $requestParamHeaders = [];
@@ -331,8 +331,8 @@ class TenantServiceGapicClient
         $request->setTenant($tenant);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateTenant', Tenant::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateTenant', Tenant::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -353,7 +353,7 @@ class TenantServiceGapicClient
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}", for example,
      *                             "projects/foo/tenants/bar".
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -366,15 +366,15 @@ class TenantServiceGapicClient
      *
      * @experimental
      */
-    public function deleteTenant($name, array $optionalArgs = [])
+    public function deleteTenant($name, array $callOptions = [])
     {
         $request = new DeleteTenantRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteTenant', GPBEmpty::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteTenant', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -395,7 +395,7 @@ class TenantServiceGapicClient
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}", for example,
      *                             "projects/foo/tenants/bar".
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -410,15 +410,15 @@ class TenantServiceGapicClient
      *
      * @experimental
      */
-    public function getTenant($name, array $optionalArgs = [])
+    public function getTenant($name, array $callOptions = [])
     {
         $request = new GetTenantRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetTenant', Tenant::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetTenant', Tenant::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -451,7 +451,7 @@ class TenantServiceGapicClient
      *
      *                             The format is "projects/{project_id}", for example,
      *                             "projects/foo".
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $pageToken
@@ -475,23 +475,23 @@ class TenantServiceGapicClient
      *
      * @experimental
      */
-    public function listTenants($parent, array $optionalArgs = [])
+    public function listTenants($parent, array $callOptions = [])
     {
         $request = new ListTenantsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListTenants', $optionalArgs, ListTenantsResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListTenants', $callOptions, ListTenantsResponse::class, $request);
     }
 
     /**
@@ -509,7 +509,7 @@ class TenantServiceGapicClient
      * ```
      *
      * @param Tenant $tenant       Required. The tenant resource to replace the current resource in the system.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -532,18 +532,18 @@ class TenantServiceGapicClient
      *
      * @experimental
      */
-    public function updateTenant($tenant, array $optionalArgs = [])
+    public function updateTenant($tenant, array $callOptions = [])
     {
         $request = new UpdateTenantRequest();
         $requestParamHeaders = [];
         $request->setTenant($tenant);
         $requestParamHeaders['tenant.name'] = $tenant->getName();
-        if (isset($optionalArgs['updateMask'])) {
-            $request->setUpdateMask($optionalArgs['updateMask']);
+        if (isset($callOptions['updateMask'])) {
+            $request->setUpdateMask($callOptions['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateTenant', Tenant::class, $optionalArgs, $request)->wait();
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateTenant', Tenant::class, $callOptions, $request)->wait();
     }
 }

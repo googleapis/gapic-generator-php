@@ -322,7 +322,7 @@ class SearchServiceGapicClient
      *
      *                             The field must be a UTF-8 encoded string with a length limit of 128
      *                             characters. Otherwise, an INVALID_ARGUMENT error is returned.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type string $branch
@@ -498,79 +498,79 @@ class SearchServiceGapicClient
      *
      * @experimental
      */
-    public function search($placement, $visitorId, array $optionalArgs = [])
+    public function search($placement, $visitorId, array $callOptions = [])
     {
         $request = new SearchRequest();
         $requestParamHeaders = [];
         $request->setPlacement($placement);
         $request->setVisitorId($visitorId);
         $requestParamHeaders['placement'] = $placement;
-        if (isset($optionalArgs['branch'])) {
-            $request->setBranch($optionalArgs['branch']);
+        if (isset($callOptions['branch'])) {
+            $request->setBranch($callOptions['branch']);
         }
 
-        if (isset($optionalArgs['query'])) {
-            $request->setQuery($optionalArgs['query']);
+        if (isset($callOptions['query'])) {
+            $request->setQuery($callOptions['query']);
         }
 
-        if (isset($optionalArgs['userInfo'])) {
-            $request->setUserInfo($optionalArgs['userInfo']);
+        if (isset($callOptions['userInfo'])) {
+            $request->setUserInfo($callOptions['userInfo']);
         }
 
-        if (isset($optionalArgs['pageSize'])) {
-            $request->setPageSize($optionalArgs['pageSize']);
+        if (isset($callOptions['pageSize'])) {
+            $request->setPageSize($callOptions['pageSize']);
         }
 
-        if (isset($optionalArgs['pageToken'])) {
-            $request->setPageToken($optionalArgs['pageToken']);
+        if (isset($callOptions['pageToken'])) {
+            $request->setPageToken($callOptions['pageToken']);
         }
 
-        if (isset($optionalArgs['offset'])) {
-            $request->setOffset($optionalArgs['offset']);
+        if (isset($callOptions['offset'])) {
+            $request->setOffset($callOptions['offset']);
         }
 
-        if (isset($optionalArgs['filter'])) {
-            $request->setFilter($optionalArgs['filter']);
+        if (isset($callOptions['filter'])) {
+            $request->setFilter($callOptions['filter']);
         }
 
-        if (isset($optionalArgs['canonicalFilter'])) {
-            $request->setCanonicalFilter($optionalArgs['canonicalFilter']);
+        if (isset($callOptions['canonicalFilter'])) {
+            $request->setCanonicalFilter($callOptions['canonicalFilter']);
         }
 
-        if (isset($optionalArgs['orderBy'])) {
-            $request->setOrderBy($optionalArgs['orderBy']);
+        if (isset($callOptions['orderBy'])) {
+            $request->setOrderBy($callOptions['orderBy']);
         }
 
-        if (isset($optionalArgs['facetSpecs'])) {
-            $request->setFacetSpecs($optionalArgs['facetSpecs']);
+        if (isset($callOptions['facetSpecs'])) {
+            $request->setFacetSpecs($callOptions['facetSpecs']);
         }
 
-        if (isset($optionalArgs['dynamicFacetSpec'])) {
-            $request->setDynamicFacetSpec($optionalArgs['dynamicFacetSpec']);
+        if (isset($callOptions['dynamicFacetSpec'])) {
+            $request->setDynamicFacetSpec($callOptions['dynamicFacetSpec']);
         }
 
-        if (isset($optionalArgs['boostSpec'])) {
-            $request->setBoostSpec($optionalArgs['boostSpec']);
+        if (isset($callOptions['boostSpec'])) {
+            $request->setBoostSpec($callOptions['boostSpec']);
         }
 
-        if (isset($optionalArgs['queryExpansionSpec'])) {
-            $request->setQueryExpansionSpec($optionalArgs['queryExpansionSpec']);
+        if (isset($callOptions['queryExpansionSpec'])) {
+            $request->setQueryExpansionSpec($callOptions['queryExpansionSpec']);
         }
 
-        if (isset($optionalArgs['relevanceThreshold'])) {
-            $request->setRelevanceThreshold($optionalArgs['relevanceThreshold']);
+        if (isset($callOptions['relevanceThreshold'])) {
+            $request->setRelevanceThreshold($callOptions['relevanceThreshold']);
         }
 
-        if (isset($optionalArgs['variantRollupKeys'])) {
-            $request->setVariantRollupKeys($optionalArgs['variantRollupKeys']);
+        if (isset($callOptions['variantRollupKeys'])) {
+            $request->setVariantRollupKeys($callOptions['variantRollupKeys']);
         }
 
-        if (isset($optionalArgs['pageCategories'])) {
-            $request->setPageCategories($optionalArgs['pageCategories']);
+        if (isset($callOptions['pageCategories'])) {
+            $request->setPageCategories($callOptions['pageCategories']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('Search', $optionalArgs, SearchResponse::class, $request);
+        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('Search', $callOptions, SearchResponse::class, $request);
     }
 }

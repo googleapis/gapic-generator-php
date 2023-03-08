@@ -179,7 +179,7 @@ class CustomLroOperationsGapicClient
      * ```
      *
      * @param string $operation    Name of th Operations resource to cancel.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -190,11 +190,11 @@ class CustomLroOperationsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function cancel($operation, array $optionalArgs = [])
+    public function cancel($operation, array $callOptions = [])
     {
         $request = new CancelOperationRequest();
         $request->setOperation($operation);
-        return $this->startCall('Cancel', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Cancel', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -211,7 +211,7 @@ class CustomLroOperationsGapicClient
      * ```
      *
      * @param string $operation    Name of th Operations resource to delete.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -222,11 +222,11 @@ class CustomLroOperationsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function delete($operation, array $optionalArgs = [])
+    public function delete($operation, array $callOptions = [])
     {
         $request = new DeleteOperationRequest();
         $request->setOperation($operation);
-        return $this->startCall('Delete', GPBEmpty::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Delete', GPBEmpty::class, $callOptions, $request)->wait();
     }
 
     /**
@@ -249,7 +249,7 @@ class CustomLroOperationsGapicClient
      * @param string $project      Project ID for this request.
      * @param string $region       Name of the region for this request.
      * @param string $foo          The foo from the initial request.
-     * @param array  $optionalArgs {
+     * @param array  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -262,13 +262,13 @@ class CustomLroOperationsGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function get($operation, $project, $region, $foo, array $optionalArgs = [])
+    public function get($operation, $project, $region, $foo, array $callOptions = [])
     {
         $request = new GetOperationRequest();
         $request->setOperation($operation);
         $request->setProject($project);
         $request->setRegion($region);
         $request->setFoo($foo);
-        return $this->startCall('Get', CustomOperationResponse::class, $optionalArgs, $request)->wait();
+        return $this->startCall('Get', CustomOperationResponse::class, $callOptions, $request)->wait();
     }
 }

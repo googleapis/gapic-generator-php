@@ -58,12 +58,12 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteProfileAsync(DeleteProfileRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getProfileAsync(GetProfileRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listProfilesAsync(ListProfilesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface searchProfilesAsync(SearchProfilesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateProfileAsync(UpdateProfileRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $callOptions = [])
+ * @method PromiseInterface deleteProfileAsync(DeleteProfileRequest $request, array $callOptions = [])
+ * @method PromiseInterface getProfileAsync(GetProfileRequest $request, array $callOptions = [])
+ * @method PromiseInterface listProfilesAsync(ListProfilesRequest $request, array $callOptions = [])
+ * @method PromiseInterface searchProfilesAsync(SearchProfilesRequest $request, array $callOptions = [])
+ * @method PromiseInterface updateProfileAsync(UpdateProfileRequest $request, array $callOptions = [])
  */
 class ProfileServiceBaseClient
 {
@@ -257,7 +257,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::createProfileAsync()} .
      *
      * @param CreateProfileRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -272,9 +272,9 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function createProfile(CreateProfileRequest $request, array $optionalArgs = []): Profile
+    public function createProfile(CreateProfileRequest $request, array $callOptions = []): Profile
     {
-        return $this->startApiCall('CreateProfile', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateProfile', $request, $callOptions)->wait();
     }
 
     /**
@@ -285,7 +285,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::deleteProfileAsync()} .
      *
      * @param DeleteProfileRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -298,9 +298,9 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function deleteProfile(DeleteProfileRequest $request, array $optionalArgs = []): void
+    public function deleteProfile(DeleteProfileRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteProfile', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteProfile', $request, $callOptions)->wait();
     }
 
     /**
@@ -309,7 +309,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::getProfileAsync()} .
      *
      * @param GetProfileRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -324,9 +324,9 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function getProfile(GetProfileRequest $request, array $optionalArgs = []): Profile
+    public function getProfile(GetProfileRequest $request, array $callOptions = []): Profile
     {
-        return $this->startApiCall('GetProfile', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetProfile', $request, $callOptions)->wait();
     }
 
     /**
@@ -335,7 +335,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::listProfilesAsync()} .
      *
      * @param ListProfilesRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -350,9 +350,9 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function listProfiles(ListProfilesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listProfiles(ListProfilesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListProfiles', $request, $optionalArgs);
+        return $this->startApiCall('ListProfiles', $request, $callOptions);
     }
 
     /**
@@ -366,7 +366,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::searchProfilesAsync()} .
      *
      * @param SearchProfilesRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -381,9 +381,9 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function searchProfiles(SearchProfilesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function searchProfiles(SearchProfilesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('SearchProfiles', $request, $optionalArgs);
+        return $this->startApiCall('SearchProfiles', $request, $callOptions);
     }
 
     /**
@@ -392,7 +392,7 @@ class ProfileServiceBaseClient
      * The async variant is {@see self::updateProfileAsync()} .
      *
      * @param UpdateProfileRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -407,8 +407,8 @@ class ProfileServiceBaseClient
      *
      * @experimental
      */
-    public function updateProfile(UpdateProfileRequest $request, array $optionalArgs = []): Profile
+    public function updateProfile(UpdateProfileRequest $request, array $callOptions = []): Profile
     {
-        return $this->startApiCall('UpdateProfile', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateProfile', $request, $callOptions)->wait();
     }
 }
