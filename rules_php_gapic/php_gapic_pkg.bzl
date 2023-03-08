@@ -63,7 +63,7 @@ def _php_gapic_src_pkg_impl(ctx):
     done
     {post_processor} --input {package_dir_path}
     cd {package_dir_path}/{tar_cd_suffix}
-    tar -zchpf {tar_prefix}/{package_dir}.tar.gz {tar_prefix}/*
+    tar --exclude=*.build.txt  -zchpf {tar_prefix}/{package_dir}.tar.gz {tar_prefix}/*
     cd -
     mv {package_dir_path}/{package_dir}.tar.gz {pkg}
     rm -rf {package_dir_path}
