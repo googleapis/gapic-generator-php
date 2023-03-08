@@ -49,8 +49,8 @@ use Google\Generator\Utils\Type;
 class GapicClientGenerator
 {
     // This is the variable name for the callOptions(prev optionalArgs)
-    // in the GAPIC clients.s
-    const CALL_OPTIONS_VAR = 'optionalArgs';
+    // in the GAPIC clients.
+    const CALL_OPTIONS_VAR = 'callOptions';
 
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
