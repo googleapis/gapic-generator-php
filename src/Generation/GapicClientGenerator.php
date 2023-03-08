@@ -48,6 +48,10 @@ use Google\Generator\Utils\Type;
 
 class GapicClientGenerator
 {
+    // This is the variable name for the callOptions(prev optionalArgs)
+    // in the GAPIC clients.s
+    const CALL_OPTIONS_VAR = 'optionalArgs';
+
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
         return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
@@ -681,7 +685,7 @@ class GapicClientGenerator
         $required = $method->requiredFields
                            ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
                            ->map(fn ($f) => $this->toParam($f));
-        $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
+        $callOptions = AST::param($this->ctx->type(Type::array()), AST::var(self::CALL_OPTIONS_VAR), AST::array([]));
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $requestParams = AST::var('requestParams');
         $isStreamedRequest =
@@ -709,7 +713,7 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC)
             ->withParams(
                 $isStreamedRequest ? null : $required,
-                $optionalArgs
+                $callOptions
             )
             ->withBody(AST::block(
                 $isStreamedRequest ? null : Vector::new([
@@ -724,9 +728,9 @@ class GapicClientGenerator
                     $requestHeaderAssignments['required'],
                     $method->optionalFields->map(
                         fn ($x) =>
-                        AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
+                        AST::if(AST::call(AST::ISSET)(AST::index($callOptions->var, $x->camelName)))
                             ->then(
-                                AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
+                                AST::call($request, $x->setter)(AST::index($callOptions->var, $x->camelName)),
                                 // Request header assignment/parsing for optional fields.
                                 !is_null($requestHeaderAssignments['optional'])
                                     ? $requestHeaderAssignments['optional']->get($x->name, null)
@@ -740,15 +744,15 @@ class GapicClientGenerator
                         ))($requestParamHeaders)
                     ),
                     !$hasRequestParams ? null : AST::assign(
-                        $optionalArgs->var['headers'],
+                        $callOptions->var['headers'],
                         AST::ternary(
-                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
+                            AST::call(AST::ISSET)($callOptions->var['headers']),
+                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $callOptions->var['headers']),
                             $requestParams->getHeader()
                         )
                     )
                 ]),
-                AST::return($this->startCall($method, $optionalArgs, $request))
+                AST::return($this->startCall($method, $callOptions, $request))
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText($method->docLines),
@@ -773,7 +777,7 @@ class GapicClientGenerator
                         )
                     ),
                 $isStreamedRequest ?
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
+                    PhpDoc::param($callOptions, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
                         PhpDoc::type(
                             Vector::new([$this->ctx->type(Type::int())]),
@@ -781,7 +785,7 @@ class GapicClientGenerator
                             PhpDoc::text('Timeout to use for this call.')
                         )
                     )) :
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
+                    PhpDoc::param($callOptions, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
                         $method->optionalFields->map(
                             fn ($field) =>
@@ -822,18 +826,18 @@ class GapicClientGenerator
             ));
     }
 
-    private function startCall($method, $optionalArgs, $request): AST
+    private function startCall($method, $callOptions, $request): AST
     {
         $startCallArgs = [
         $method->name,
         AST::access($this->ctx->type($method->responseType), AST::CLS),
-        $optionalArgs->var
+        $callOptions->var
       ];
         switch ($method->methodType) {
       case MethodDetails::CUSTOM_OP:
         $startCallArgs = [
             $method->name,
-            $optionalArgs->var,
+            $callOptions->var,
             $request,
             AST::call(AST::THIS, AST::method('getOperationsClient'))(),
             AST::NULL,
@@ -851,7 +855,7 @@ class GapicClientGenerator
       case MethodDetails::LRO:
         $startCallArgs = [
           $method->name,
-          $optionalArgs->var,
+          $callOptions->var,
           $request,
           AST::call(AST::THIS, AST::method('getOperationsClient'))()
         ];
@@ -862,7 +866,7 @@ class GapicClientGenerator
       case MethodDetails::PAGINATED:
         $startCallArgs = [
           $method->name,
-          $optionalArgs->var,
+          $callOptions->var,
           AST::access($this->ctx->type($method->responseType), AST::CLS),
           $request
         ];
@@ -1061,7 +1065,7 @@ class GapicClientGenerator
                 $field = $fieldDetailsByRootField[$root];
                 $param = $field->isRequired
                     ? AST::param(null, AST::var($field->camelName))
-                    : AST::index(AST::var('optionalArgs'), $root);
+                    : AST::index(AST::var(self::CALL_OPTIONS_VAR), $root);
                 $assignValue = $param;
 
                 // Construct the getter chain if the routing header uses a nested field.
@@ -1210,7 +1214,7 @@ class GapicClientGenerator
             fn ($f) => $f->name,
             fn ($f) => AST::assign(
                 AST::index($requestParamHeaders, $f->name),
-                AST::index(AST::var('optionalArgs'), $f->camelName)
+                AST::index(AST::var(self::CALL_OPTIONS_VAR), $f->camelName)
             )
         );
 
