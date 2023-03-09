@@ -27,7 +27,7 @@ namespace Testing\BasicDiregapic\Client;
 use Testing\BasicDiregapic\Client\BaseClient\LibraryBaseClient;
 
 /** {@inheritdoc} */
-class LibraryClient extends LibraryBaseClient
+final class LibraryClient extends LibraryBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see LibraryBaseClient} class.

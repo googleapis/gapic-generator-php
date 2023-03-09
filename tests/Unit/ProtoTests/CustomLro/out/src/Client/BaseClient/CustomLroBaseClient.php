@@ -42,6 +42,8 @@ use Testing\CustomLro\CustomLroOperationsClient;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
 class CustomLroBaseClient
