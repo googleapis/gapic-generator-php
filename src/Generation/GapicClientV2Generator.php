@@ -118,7 +118,10 @@ class GapicClientV2Generator
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                     ),
-                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+                // TODO(): Uncomment this and remove the following two lines when stable.
+                // $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+                PhpDoc::text('This class is currently experimental and may be subject to changes.'),
+                PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))

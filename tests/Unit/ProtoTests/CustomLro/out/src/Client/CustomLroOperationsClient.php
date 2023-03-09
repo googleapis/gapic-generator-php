@@ -26,7 +26,13 @@ namespace Testing\CustomLro\Client;
 
 use Testing\CustomLro\Client\BaseClient\CustomLroOperationsBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class CustomLroOperationsClient extends CustomLroOperationsBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

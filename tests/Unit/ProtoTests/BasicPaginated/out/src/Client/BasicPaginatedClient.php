@@ -26,7 +26,13 @@ namespace Testing\BasicPaginated\Client;
 
 use Testing\BasicPaginated\Client\BaseClient\BasicPaginatedBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class BasicPaginatedClient extends BasicPaginatedBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

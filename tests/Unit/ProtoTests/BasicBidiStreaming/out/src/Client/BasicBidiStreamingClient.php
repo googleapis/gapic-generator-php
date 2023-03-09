@@ -26,7 +26,13 @@ namespace Testing\BasicBidiStreaming\Client;
 
 use Testing\BasicBidiStreaming\Client\BaseClient\BasicBidiStreamingBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class BasicBidiStreamingClient extends BasicBidiStreamingBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

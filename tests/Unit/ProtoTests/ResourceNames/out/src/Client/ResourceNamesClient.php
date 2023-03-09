@@ -26,7 +26,13 @@ namespace Testing\ResourceNames\Client;
 
 use Testing\ResourceNames\Client\BaseClient\ResourceNamesBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class ResourceNamesClient extends ResourceNamesBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

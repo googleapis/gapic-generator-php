@@ -26,7 +26,13 @@ namespace Testing\Deprecated\Client;
 
 use Testing\Deprecated\Client\BaseClient\DeprecatedServiceBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class DeprecatedServiceClient extends DeprecatedServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

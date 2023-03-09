@@ -26,7 +26,13 @@ namespace Testing\GrpcServiceConfig\Client;
 
 use Testing\GrpcServiceConfig\Client\BaseClient\GrpcServiceConfigWithRetry1BaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class GrpcServiceConfigWithRetry1Client extends GrpcServiceConfigWithRetry1BaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
