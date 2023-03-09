@@ -288,8 +288,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::createClusterAsync()} .
      *
-     * @param CreateClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param CreateClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -302,9 +302,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createCluster(CreateClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function createCluster(CreateClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('CreateCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -314,8 +314,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::deleteClusterAsync()} .
      *
-     * @param DeleteClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param DeleteClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -328,9 +328,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteCluster(DeleteClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function deleteCluster(DeleteClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('DeleteCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -344,8 +344,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::diagnoseClusterAsync()} .
      *
-     * @param DiagnoseClusterRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param DiagnoseClusterRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -358,9 +358,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function diagnoseCluster(DiagnoseClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function diagnoseCluster(DiagnoseClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('DiagnoseCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DiagnoseCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -368,8 +368,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::getClusterAsync()} .
      *
-     * @param GetClusterRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param GetClusterRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -382,9 +382,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getCluster(GetClusterRequest $request, array $optionalArgs = []): Cluster
+    public function getCluster(GetClusterRequest $request, array $callOptions = []): Cluster
     {
-        return $this->startApiCall('GetCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -392,8 +392,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::listClustersAsync()} .
      *
-     * @param ListClustersRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ListClustersRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -406,9 +406,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listClusters(ListClustersRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listClusters(ListClustersRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListClusters', $request, $optionalArgs);
+        return $this->startApiCall('ListClusters', $request, $callOptions);
     }
 
     /**
@@ -416,8 +416,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::startClusterAsync()} .
      *
-     * @param StartClusterRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param StartClusterRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -430,9 +430,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function startCluster(StartClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function startCluster(StartClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('StartCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('StartCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -440,8 +440,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::stopClusterAsync()} .
      *
-     * @param StopClusterRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param StopClusterRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -454,9 +454,9 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function stopCluster(StopClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function stopCluster(StopClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('StopCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('StopCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -468,8 +468,8 @@ class ClusterControllerBaseClient
      *
      * The async variant is {@see self::updateClusterAsync()} .
      *
-     * @param UpdateClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param UpdateClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -482,8 +482,8 @@ class ClusterControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCluster(UpdateClusterRequest $request, array $optionalArgs = []): OperationResponse
+    public function updateCluster(UpdateClusterRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('UpdateCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCluster', $request, $callOptions)->wait();
     }
 }

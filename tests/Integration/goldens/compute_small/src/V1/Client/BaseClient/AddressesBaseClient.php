@@ -233,8 +233,8 @@ class AddressesBaseClient
      *
      * The async variant is {@see self::aggregatedListAsync()} .
      *
-     * @param AggregatedListAddressesRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param AggregatedListAddressesRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -247,9 +247,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aggregatedList(AggregatedListAddressesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function aggregatedList(AggregatedListAddressesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('AggregatedList', $request, $optionalArgs);
+        return $this->startApiCall('AggregatedList', $request, $callOptions);
     }
 
     /**
@@ -257,8 +257,8 @@ class AddressesBaseClient
      *
      * The async variant is {@see self::deleteAsync()} .
      *
-     * @param DeleteAddressRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param DeleteAddressRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -271,9 +271,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function delete(DeleteAddressRequest $request, array $optionalArgs = []): OperationResponse
+    public function delete(DeleteAddressRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Delete', $request, $callOptions)->wait();
     }
 
     /**
@@ -281,8 +281,8 @@ class AddressesBaseClient
      *
      * The async variant is {@see self::insertAsync()} .
      *
-     * @param InsertAddressRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param InsertAddressRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -295,9 +295,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function insert(InsertAddressRequest $request, array $optionalArgs = []): OperationResponse
+    public function insert(InsertAddressRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('Insert', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Insert', $request, $callOptions)->wait();
     }
 
     /**
@@ -305,8 +305,8 @@ class AddressesBaseClient
      *
      * The async variant is {@see self::listAsync()} .
      *
-     * @param ListAddressesRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param ListAddressesRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -319,8 +319,8 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function list(ListAddressesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function list(ListAddressesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('List', $request, $optionalArgs);
+        return $this->startApiCall('List', $request, $callOptions);
     }
 }

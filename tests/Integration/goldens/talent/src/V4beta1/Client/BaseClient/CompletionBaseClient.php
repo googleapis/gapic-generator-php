@@ -305,8 +305,8 @@ class CompletionBaseClient
      *
      * The async variant is {@see self::completeQueryAsync()} .
      *
-     * @param CompleteQueryRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param CompleteQueryRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -321,8 +321,8 @@ class CompletionBaseClient
      *
      * @experimental
      */
-    public function completeQuery(CompleteQueryRequest $request, array $optionalArgs = []): CompleteQueryResponse
+    public function completeQuery(CompleteQueryRequest $request, array $callOptions = []): CompleteQueryResponse
     {
-        return $this->startApiCall('CompleteQuery', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteQuery', $request, $callOptions)->wait();
     }
 }

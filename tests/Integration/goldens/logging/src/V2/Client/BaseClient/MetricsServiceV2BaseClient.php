@@ -240,8 +240,8 @@ class MetricsServiceV2BaseClient
      *
      * The async variant is {@see self::createLogMetricAsync()} .
      *
-     * @param CreateLogMetricRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param CreateLogMetricRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -254,9 +254,9 @@ class MetricsServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createLogMetric(CreateLogMetricRequest $request, array $optionalArgs = []): LogMetric
+    public function createLogMetric(CreateLogMetricRequest $request, array $callOptions = []): LogMetric
     {
-        return $this->startApiCall('CreateLogMetric', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateLogMetric', $request, $callOptions)->wait();
     }
 
     /**
@@ -264,8 +264,8 @@ class MetricsServiceV2BaseClient
      *
      * The async variant is {@see self::deleteLogMetricAsync()} .
      *
-     * @param DeleteLogMetricRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param DeleteLogMetricRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -276,9 +276,9 @@ class MetricsServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteLogMetric(DeleteLogMetricRequest $request, array $optionalArgs = []): void
+    public function deleteLogMetric(DeleteLogMetricRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteLogMetric', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteLogMetric', $request, $callOptions)->wait();
     }
 
     /**
@@ -286,8 +286,8 @@ class MetricsServiceV2BaseClient
      *
      * The async variant is {@see self::getLogMetricAsync()} .
      *
-     * @param GetLogMetricRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param GetLogMetricRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -300,9 +300,9 @@ class MetricsServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getLogMetric(GetLogMetricRequest $request, array $optionalArgs = []): LogMetric
+    public function getLogMetric(GetLogMetricRequest $request, array $callOptions = []): LogMetric
     {
-        return $this->startApiCall('GetLogMetric', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetLogMetric', $request, $callOptions)->wait();
     }
 
     /**
@@ -310,8 +310,8 @@ class MetricsServiceV2BaseClient
      *
      * The async variant is {@see self::listLogMetricsAsync()} .
      *
-     * @param ListLogMetricsRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ListLogMetricsRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -324,9 +324,9 @@ class MetricsServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLogMetrics(ListLogMetricsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listLogMetrics(ListLogMetricsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListLogMetrics', $request, $optionalArgs);
+        return $this->startApiCall('ListLogMetrics', $request, $callOptions);
     }
 
     /**
@@ -334,8 +334,8 @@ class MetricsServiceV2BaseClient
      *
      * The async variant is {@see self::updateLogMetricAsync()} .
      *
-     * @param UpdateLogMetricRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param UpdateLogMetricRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -348,8 +348,8 @@ class MetricsServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateLogMetric(UpdateLogMetricRequest $request, array $optionalArgs = []): LogMetric
+    public function updateLogMetric(UpdateLogMetricRequest $request, array $callOptions = []): LogMetric
     {
-        return $this->startApiCall('UpdateLogMetric', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateLogMetric', $request, $callOptions)->wait();
     }
 }

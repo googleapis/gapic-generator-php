@@ -299,8 +299,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * The async variant is {@see self::createAutoscalingPolicyAsync()} .
      *
-     * @param CreateAutoscalingPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param CreateAutoscalingPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -313,9 +313,9 @@ class AutoscalingPolicyServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createAutoscalingPolicy(CreateAutoscalingPolicyRequest $request, array $optionalArgs = []): AutoscalingPolicy
+    public function createAutoscalingPolicy(CreateAutoscalingPolicyRequest $request, array $callOptions = []): AutoscalingPolicy
     {
-        return $this->startApiCall('CreateAutoscalingPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateAutoscalingPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -324,8 +324,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * The async variant is {@see self::deleteAutoscalingPolicyAsync()} .
      *
-     * @param DeleteAutoscalingPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param DeleteAutoscalingPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -336,9 +336,9 @@ class AutoscalingPolicyServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteAutoscalingPolicy(DeleteAutoscalingPolicyRequest $request, array $optionalArgs = []): void
+    public function deleteAutoscalingPolicy(DeleteAutoscalingPolicyRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteAutoscalingPolicy', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteAutoscalingPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -346,8 +346,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * The async variant is {@see self::getAutoscalingPolicyAsync()} .
      *
-     * @param GetAutoscalingPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param GetAutoscalingPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -360,9 +360,9 @@ class AutoscalingPolicyServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getAutoscalingPolicy(GetAutoscalingPolicyRequest $request, array $optionalArgs = []): AutoscalingPolicy
+    public function getAutoscalingPolicy(GetAutoscalingPolicyRequest $request, array $callOptions = []): AutoscalingPolicy
     {
-        return $this->startApiCall('GetAutoscalingPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetAutoscalingPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -370,8 +370,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * The async variant is {@see self::listAutoscalingPoliciesAsync()} .
      *
-     * @param ListAutoscalingPoliciesRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param ListAutoscalingPoliciesRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -384,9 +384,9 @@ class AutoscalingPolicyServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listAutoscalingPolicies(ListAutoscalingPoliciesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listAutoscalingPolicies(ListAutoscalingPoliciesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListAutoscalingPolicies', $request, $optionalArgs);
+        return $this->startApiCall('ListAutoscalingPolicies', $request, $callOptions);
     }
 
     /**
@@ -397,8 +397,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * The async variant is {@see self::updateAutoscalingPolicyAsync()} .
      *
-     * @param UpdateAutoscalingPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param UpdateAutoscalingPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -411,8 +411,8 @@ class AutoscalingPolicyServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateAutoscalingPolicy(UpdateAutoscalingPolicyRequest $request, array $optionalArgs = []): AutoscalingPolicy
+    public function updateAutoscalingPolicy(UpdateAutoscalingPolicyRequest $request, array $callOptions = []): AutoscalingPolicy
     {
-        return $this->startApiCall('UpdateAutoscalingPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateAutoscalingPolicy', $request, $callOptions)->wait();
     }
 }

@@ -322,8 +322,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::addFulfillmentPlacesAsync()} .
      *
-     * @param AddFulfillmentPlacesRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param AddFulfillmentPlacesRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -338,9 +338,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function addFulfillmentPlaces(AddFulfillmentPlacesRequest $request, array $optionalArgs = []): OperationResponse
+    public function addFulfillmentPlaces(AddFulfillmentPlacesRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('AddFulfillmentPlaces', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AddFulfillmentPlaces', $request, $callOptions)->wait();
     }
 
     /**
@@ -348,8 +348,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::createProductAsync()} .
      *
-     * @param CreateProductRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param CreateProductRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -364,9 +364,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function createProduct(CreateProductRequest $request, array $optionalArgs = []): Product
+    public function createProduct(CreateProductRequest $request, array $callOptions = []): Product
     {
-        return $this->startApiCall('CreateProduct', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateProduct', $request, $callOptions)->wait();
     }
 
     /**
@@ -374,8 +374,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::deleteProductAsync()} .
      *
-     * @param DeleteProductRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param DeleteProductRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -388,9 +388,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function deleteProduct(DeleteProductRequest $request, array $optionalArgs = []): void
+    public function deleteProduct(DeleteProductRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteProduct', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteProduct', $request, $callOptions)->wait();
     }
 
     /**
@@ -398,8 +398,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::getProductAsync()} .
      *
-     * @param GetProductRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param GetProductRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -414,9 +414,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function getProduct(GetProductRequest $request, array $optionalArgs = []): Product
+    public function getProduct(GetProductRequest $request, array $callOptions = []): Product
     {
-        return $this->startApiCall('GetProduct', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetProduct', $request, $callOptions)->wait();
     }
 
     /**
@@ -430,8 +430,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::importProductsAsync()} .
      *
-     * @param ImportProductsRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ImportProductsRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -446,9 +446,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function importProducts(ImportProductsRequest $request, array $optionalArgs = []): OperationResponse
+    public function importProducts(ImportProductsRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ImportProducts', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportProducts', $request, $callOptions)->wait();
     }
 
     /**
@@ -456,8 +456,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::listProductsAsync()} .
      *
-     * @param ListProductsRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ListProductsRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -472,9 +472,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function listProducts(ListProductsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listProducts(ListProductsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListProducts', $request, $optionalArgs);
+        return $this->startApiCall('ListProducts', $request, $callOptions);
     }
 
     /**
@@ -496,8 +496,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::removeFulfillmentPlacesAsync()} .
      *
-     * @param RemoveFulfillmentPlacesRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param RemoveFulfillmentPlacesRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -512,9 +512,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function removeFulfillmentPlaces(RemoveFulfillmentPlacesRequest $request, array $optionalArgs = []): OperationResponse
+    public function removeFulfillmentPlaces(RemoveFulfillmentPlacesRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('RemoveFulfillmentPlaces', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RemoveFulfillmentPlaces', $request, $callOptions)->wait();
     }
 
     /**
@@ -563,8 +563,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::setInventoryAsync()} .
      *
-     * @param SetInventoryRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param SetInventoryRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -579,9 +579,9 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function setInventory(SetInventoryRequest $request, array $optionalArgs = []): OperationResponse
+    public function setInventory(SetInventoryRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('SetInventory', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetInventory', $request, $callOptions)->wait();
     }
 
     /**
@@ -589,8 +589,8 @@ class ProductServiceBaseClient
      *
      * The async variant is {@see self::updateProductAsync()} .
      *
-     * @param UpdateProductRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param UpdateProductRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -605,8 +605,8 @@ class ProductServiceBaseClient
      *
      * @experimental
      */
-    public function updateProduct(UpdateProductRequest $request, array $optionalArgs = []): Product
+    public function updateProduct(UpdateProductRequest $request, array $callOptions = []): Product
     {
-        return $this->startApiCall('UpdateProduct', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateProduct', $request, $callOptions)->wait();
     }
 }

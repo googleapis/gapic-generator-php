@@ -308,8 +308,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::createInstanceAsync()} .
      *
-     * @param CreateInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param CreateInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -322,9 +322,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createInstance(CreateInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function createInstance(CreateInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('CreateInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -333,8 +333,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::deleteInstanceAsync()} .
      *
-     * @param DeleteInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param DeleteInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -347,9 +347,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteInstance(DeleteInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function deleteInstance(DeleteInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('DeleteInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -362,8 +362,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::exportInstanceAsync()} .
      *
-     * @param ExportInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ExportInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -376,9 +376,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function exportInstance(ExportInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function exportInstance(ExportInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ExportInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ExportInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -387,8 +387,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::failoverInstanceAsync()} .
      *
-     * @param FailoverInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param FailoverInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -401,9 +401,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function failoverInstance(FailoverInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function failoverInstance(FailoverInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('FailoverInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('FailoverInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -411,8 +411,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::getInstanceAsync()} .
      *
-     * @param GetInstanceRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param GetInstanceRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -425,9 +425,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getInstance(GetInstanceRequest $request, array $optionalArgs = []): Instance
+    public function getInstance(GetInstanceRequest $request, array $callOptions = []): Instance
     {
-        return $this->startApiCall('GetInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -442,8 +442,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::importInstanceAsync()} .
      *
-     * @param ImportInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ImportInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -456,9 +456,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function importInstance(ImportInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function importInstance(ImportInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ImportInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -474,8 +474,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::listInstancesAsync()} .
      *
-     * @param ListInstancesRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param ListInstancesRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -488,9 +488,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listInstances(ListInstancesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listInstances(ListInstancesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListInstances', $request, $optionalArgs);
+        return $this->startApiCall('ListInstances', $request, $callOptions);
     }
 
     /**
@@ -502,8 +502,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::updateInstanceAsync()} .
      *
-     * @param UpdateInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param UpdateInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -516,9 +516,9 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateInstance(UpdateInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function updateInstance(UpdateInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('UpdateInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateInstance', $request, $callOptions)->wait();
     }
 
     /**
@@ -527,8 +527,8 @@ class CloudRedisBaseClient
      *
      * The async variant is {@see self::upgradeInstanceAsync()} .
      *
-     * @param UpgradeInstanceRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param UpgradeInstanceRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -541,8 +541,8 @@ class CloudRedisBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function upgradeInstance(UpgradeInstanceRequest $request, array $optionalArgs = []): OperationResponse
+    public function upgradeInstance(UpgradeInstanceRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('UpgradeInstance', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpgradeInstance', $request, $callOptions)->wait();
     }
 }

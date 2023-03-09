@@ -209,8 +209,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::cancelJobAsync()} .
      *
-     * @param CancelJobRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param CancelJobRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -223,9 +223,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function cancelJob(CancelJobRequest $request, array $optionalArgs = []): Job
+    public function cancelJob(CancelJobRequest $request, array $callOptions = []): Job
     {
-        return $this->startApiCall('CancelJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CancelJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -234,8 +234,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::deleteJobAsync()} .
      *
-     * @param DeleteJobRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param DeleteJobRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -246,9 +246,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteJob(DeleteJobRequest $request, array $optionalArgs = []): void
+    public function deleteJob(DeleteJobRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteJob', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -256,8 +256,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::getJobAsync()} .
      *
-     * @param GetJobRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param GetJobRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -270,9 +270,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getJob(GetJobRequest $request, array $optionalArgs = []): Job
+    public function getJob(GetJobRequest $request, array $callOptions = []): Job
     {
-        return $this->startApiCall('GetJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -280,8 +280,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::listJobsAsync()} .
      *
-     * @param ListJobsRequest $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param ListJobsRequest $request     A request to house fields associated with the call.
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -294,9 +294,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listJobs(ListJobsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listJobs(ListJobsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListJobs', $request, $optionalArgs);
+        return $this->startApiCall('ListJobs', $request, $callOptions);
     }
 
     /**
@@ -304,8 +304,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::submitJobAsync()} .
      *
-     * @param SubmitJobRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param SubmitJobRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -318,9 +318,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function submitJob(SubmitJobRequest $request, array $optionalArgs = []): Job
+    public function submitJob(SubmitJobRequest $request, array $callOptions = []): Job
     {
-        return $this->startApiCall('SubmitJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SubmitJob', $request, $callOptions)->wait();
     }
 
     /**
@@ -328,8 +328,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::submitJobAsOperationAsync()} .
      *
-     * @param SubmitJobRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param SubmitJobRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -342,9 +342,9 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function submitJobAsOperation(SubmitJobRequest $request, array $optionalArgs = []): OperationResponse
+    public function submitJobAsOperation(SubmitJobRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('SubmitJobAsOperation', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SubmitJobAsOperation', $request, $callOptions)->wait();
     }
 
     /**
@@ -352,8 +352,8 @@ class JobControllerBaseClient
      *
      * The async variant is {@see self::updateJobAsync()} .
      *
-     * @param UpdateJobRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param UpdateJobRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -366,8 +366,8 @@ class JobControllerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateJob(UpdateJobRequest $request, array $optionalArgs = []): Job
+    public function updateJob(UpdateJobRequest $request, array $callOptions = []): Job
     {
-        return $this->startApiCall('UpdateJob', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateJob', $request, $callOptions)->wait();
     }
 }
