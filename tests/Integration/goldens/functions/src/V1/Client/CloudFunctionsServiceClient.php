@@ -27,7 +27,7 @@ namespace Google\Cloud\Functions\V1\Client;
 use Google\Cloud\Functions\V1\Client\BaseClient\CloudFunctionsServiceBaseClient;
 
 /** {@inheritdoc} */
-class CloudFunctionsServiceClient extends CloudFunctionsServiceBaseClient
+final class CloudFunctionsServiceClient extends CloudFunctionsServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CloudFunctionsServiceBaseClient} class.

@@ -94,6 +94,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @internal
+ *
  * @method PromiseInterface asymmetricDecryptAsync(AsymmetricDecryptRequest $request, array $optionalArgs = [])
  * @method PromiseInterface asymmetricSignAsync(AsymmetricSignRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createCryptoKeyAsync(CreateCryptoKeyRequest $request, array $optionalArgs = [])

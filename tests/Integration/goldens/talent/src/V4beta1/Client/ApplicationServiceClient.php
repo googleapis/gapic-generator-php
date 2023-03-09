@@ -29,7 +29,7 @@ namespace Google\Cloud\Talent\V4beta1\Client;
 use Google\Cloud\Talent\V4beta1\Client\BaseClient\ApplicationServiceBaseClient;
 
 /** {@inheritdoc} */
-class ApplicationServiceClient extends ApplicationServiceBaseClient
+final class ApplicationServiceClient extends ApplicationServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ApplicationServiceBaseClient} class.

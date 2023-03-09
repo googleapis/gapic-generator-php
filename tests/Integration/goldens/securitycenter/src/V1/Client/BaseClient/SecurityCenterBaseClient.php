@@ -79,6 +79,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @internal
+ *
  * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])

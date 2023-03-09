@@ -27,7 +27,7 @@ namespace Google\Cloud\Asset\V1\Client;
 use Google\Cloud\Asset\V1\Client\BaseClient\AssetServiceBaseClient;
 
 /** {@inheritdoc} */
-class AssetServiceClient extends AssetServiceBaseClient
+final class AssetServiceClient extends AssetServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see AssetServiceBaseClient} class.

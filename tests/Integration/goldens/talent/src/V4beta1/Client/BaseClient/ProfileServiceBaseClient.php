@@ -56,6 +56,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @internal
+ *
  * @experimental
  *
  * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $optionalArgs = [])

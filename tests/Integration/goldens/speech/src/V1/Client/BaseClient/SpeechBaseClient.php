@@ -47,6 +47,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
  * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */

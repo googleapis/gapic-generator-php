@@ -49,6 +49,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $optionalArgs = [])
  * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])

@@ -27,7 +27,7 @@ namespace Google\Cloud\Redis\V1\Client;
 use Google\Cloud\Redis\V1\Client\BaseClient\CloudRedisBaseClient;
 
 /** {@inheritdoc} */
-class CloudRedisClient extends CloudRedisBaseClient
+final class CloudRedisClient extends CloudRedisBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CloudRedisBaseClient} class.
