@@ -45,6 +45,10 @@ use GuzzleHttp\Promise\PromiseInterface;
 
 class GapicClientV2Generator
 {
+    // This is the variable name for the callOptions(prev optionalArgs)
+    // in the GAPIC clients.
+    const CALL_OPTIONS_VAR = 'callOptions';
+
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
         return (new GapicClientV2Generator($ctx, $serviceDetails))->generateImpl();
@@ -631,15 +635,15 @@ class GapicClientV2Generator
             $this->ctx->type($method->requestType),
             $request
         );
-        $optionalArgs = AST::param(
+        $callOptions = AST::param(
             $this->ctx->type(Type::array()),
-            AST::var('optionalArgs'),
+            AST::var(self::CALL_OPTIONS_VAR),
             AST::array([])
         );
         $retrySettingsType = Type::fromName(RetrySettings::class);
         $usesRequest = !$method->isClientStreaming()
             && !$method->isBidiStreaming();
-        $startCall = $this->startCall($method, $optionalArgs, $request);
+        $startCall = $this->startCall($method, $callOptions, $request);
         $phpDocReturnType = null;
         $returnType = null;
         if ($method->hasEmptyResponse) {
@@ -654,7 +658,7 @@ class GapicClientV2Generator
             ->withAccess(Access::PUBLIC)
             ->withParams(
                 $usesRequest ? $required : null,
-                $optionalArgs
+                $callOptions
             )
             ->withBody(AST::block($startCall))
             ->withReturnType($returnType)
@@ -674,7 +678,7 @@ class GapicClientV2Generator
                     $usesRequest
                         ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
                         : null,
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
+                    PhpDoc::param($callOptions, PhpDoc::block(
                         PhpDoc::Text('Optional.'),
                         $method->isStreaming()
                             ? PhpDoc::type(
@@ -710,12 +714,12 @@ class GapicClientV2Generator
             );
     }
 
-    private function startCall($method, $optionalArgs, $request): AST
+    private function startCall($method, $callOptions, $request): AST
     {
         $startApiCallArgs = Map::new([
             'methodName' => $method->name,
             'request' => $request,
-            'optionalArgs' => $optionalArgs->var
+            self::CALL_OPTIONS_VAR => $callOptions->var
         ]);
         $wait = true;
         switch ($method->methodType) {
