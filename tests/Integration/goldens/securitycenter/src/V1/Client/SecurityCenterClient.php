@@ -26,7 +26,13 @@ namespace Google\Cloud\SecurityCenter\V1\Client;
 
 use Google\Cloud\SecurityCenter\V1\Client\BaseClient\SecurityCenterBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class SecurityCenterClient extends SecurityCenterBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

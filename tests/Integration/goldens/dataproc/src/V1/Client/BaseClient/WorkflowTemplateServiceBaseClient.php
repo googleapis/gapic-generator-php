@@ -59,6 +59,10 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ *
  * @method PromiseInterface createWorkflowTemplateAsync(CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteWorkflowTemplateAsync(DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getWorkflowTemplateAsync(GetWorkflowTemplateRequest $request, array $optionalArgs = [])

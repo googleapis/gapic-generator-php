@@ -28,7 +28,13 @@ namespace Google\Cloud\Retail\V2alpha\Client;
 
 use Google\Cloud\Retail\V2alpha\Client\BaseClient\UserEventServiceBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class UserEventServiceClient extends UserEventServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

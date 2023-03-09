@@ -26,7 +26,13 @@ namespace Google\Cloud\VideoIntelligence\V1\Client;
 
 use Google\Cloud\VideoIntelligence\V1\Client\BaseClient\VideoIntelligenceServiceBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 class VideoIntelligenceServiceClient extends VideoIntelligenceServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

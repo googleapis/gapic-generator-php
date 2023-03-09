@@ -66,6 +66,10 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ *
  * @method PromiseInterface callFunctionAsync(CallFunctionRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createFunctionAsync(CreateFunctionRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteFunctionAsync(DeleteFunctionRequest $request, array $optionalArgs = [])
