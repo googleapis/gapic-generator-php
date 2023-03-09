@@ -118,7 +118,7 @@ class GapicClientV2Generator
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                     ),
-                // TODO(): Uncomment this and remove the following two lines when stable.
+                // TODO(#594): Uncomment this and remove the following two lines when stable.
                 // $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 PhpDoc::text('This class is currently experimental and may be subject to changes.'),
                 PhpDoc::experimental(),

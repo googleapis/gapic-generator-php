@@ -54,7 +54,7 @@ class EmptyClientV2Generator
         return AST::class($this->serviceDetails->emptyClientV2Type, $this->ctx->type($this->serviceDetails->gapicClientV2Type))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::inherit(),
-                // TODO(): Remove the following two lines when stable.
+                // TODO(#594): Remove the following two lines when stable.
                 PhpDoc::text('This class is currently experimental and may be subject to changes.'),
                 PhpDoc::experimental()
             ))
