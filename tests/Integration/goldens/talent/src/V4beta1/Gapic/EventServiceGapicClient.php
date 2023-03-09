@@ -309,7 +309,7 @@ class EventServiceGapicClient
      *                                  is created, for example, "projects/foo".
      * @param ClientEvent $clientEvent  Required. Events issued when end user interacts with customer's application that
      *                                  uses Cloud Talent Solution.
-     * @param array       $callOptions {
+     * @param array       $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -324,7 +324,7 @@ class EventServiceGapicClient
      *
      * @experimental
      */
-    public function createClientEvent($parent, $clientEvent, array $callOptions = [])
+    public function createClientEvent($parent, $clientEvent, array $optionalArgs = [])
     {
         $request = new CreateClientEventRequest();
         $requestParamHeaders = [];
@@ -332,7 +332,7 @@ class EventServiceGapicClient
         $request->setClientEvent($clientEvent);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateClientEvent', ClientEvent::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateClientEvent', ClientEvent::class, $optionalArgs, $request)->wait();
     }
 }

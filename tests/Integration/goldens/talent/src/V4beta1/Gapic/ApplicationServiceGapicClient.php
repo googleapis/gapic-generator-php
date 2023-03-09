@@ -518,7 +518,7 @@ class ApplicationServiceGapicClient
      *                                  "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}".
      *                                  For example, "projects/foo/tenants/bar/profiles/baz".
      * @param Application $application  Required. The application to be created.
-     * @param array       $callOptions {
+     * @param array       $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -533,7 +533,7 @@ class ApplicationServiceGapicClient
      *
      * @experimental
      */
-    public function createApplication($parent, $application, array $callOptions = [])
+    public function createApplication($parent, $application, array $optionalArgs = [])
     {
         $request = new CreateApplicationRequest();
         $requestParamHeaders = [];
@@ -541,8 +541,8 @@ class ApplicationServiceGapicClient
         $request->setApplication($application);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateApplication', Application::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateApplication', Application::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -564,7 +564,7 @@ class ApplicationServiceGapicClient
      *                             The format is
      *                             "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
      *                             For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -577,15 +577,15 @@ class ApplicationServiceGapicClient
      *
      * @experimental
      */
-    public function deleteApplication($name, array $callOptions = [])
+    public function deleteApplication($name, array $optionalArgs = [])
     {
         $request = new DeleteApplicationRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteApplication', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteApplication', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -607,7 +607,7 @@ class ApplicationServiceGapicClient
      *                             The format is
      *                             "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
      *                             For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -622,15 +622,15 @@ class ApplicationServiceGapicClient
      *
      * @experimental
      */
-    public function getApplication($name, array $callOptions = [])
+    public function getApplication($name, array $optionalArgs = [])
     {
         $request = new GetApplicationRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetApplication', Application::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetApplication', Application::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -664,7 +664,7 @@ class ApplicationServiceGapicClient
      *                             The format is
      *                             "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}", for
      *                             example, "projects/foo/tenants/bar/profiles/baz".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -688,23 +688,23 @@ class ApplicationServiceGapicClient
      *
      * @experimental
      */
-    public function listApplications($parent, array $callOptions = [])
+    public function listApplications($parent, array $optionalArgs = [])
     {
         $request = new ListApplicationsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListApplications', $callOptions, ListApplicationsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListApplications', $optionalArgs, ListApplicationsResponse::class, $request);
     }
 
     /**
@@ -722,7 +722,7 @@ class ApplicationServiceGapicClient
      * ```
      *
      * @param Application $application  Required. The application resource to replace the current resource in the system.
-     * @param array       $callOptions {
+     * @param array       $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -745,18 +745,18 @@ class ApplicationServiceGapicClient
      *
      * @experimental
      */
-    public function updateApplication($application, array $callOptions = [])
+    public function updateApplication($application, array $optionalArgs = [])
     {
         $request = new UpdateApplicationRequest();
         $requestParamHeaders = [];
         $request->setApplication($application);
         $requestParamHeaders['application.name'] = $application->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateApplication', Application::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateApplication', Application::class, $optionalArgs, $request)->wait();
     }
 }

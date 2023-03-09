@@ -63,16 +63,16 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface batchCreateJobsAsync(BatchCreateJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface batchDeleteJobsAsync(BatchDeleteJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface batchUpdateJobsAsync(BatchUpdateJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface createJobAsync(CreateJobRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $callOptions = [])
- * @method PromiseInterface getJobAsync(GetJobRequest $request, array $callOptions = [])
- * @method PromiseInterface listJobsAsync(ListJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface searchJobsAsync(SearchJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface searchJobsForAlertAsync(SearchJobsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $callOptions = [])
+ * @method PromiseInterface batchCreateJobsAsync(BatchCreateJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchDeleteJobsAsync(BatchDeleteJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface batchUpdateJobsAsync(BatchUpdateJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createJobAsync(CreateJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getJobAsync(GetJobRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listJobsAsync(ListJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchJobsAsync(SearchJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface searchJobsForAlertAsync(SearchJobsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
 class JobServiceBaseClient
 {
@@ -426,7 +426,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::batchCreateJobsAsync()} .
      *
      * @param BatchCreateJobsRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -441,9 +441,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function batchCreateJobs(BatchCreateJobsRequest $request, array $callOptions = []): OperationResponse
+    public function batchCreateJobs(BatchCreateJobsRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('BatchCreateJobs', $request, $callOptions)->wait();
+        return $this->startApiCall('BatchCreateJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -452,7 +452,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::batchDeleteJobsAsync()} .
      *
      * @param BatchDeleteJobsRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -465,9 +465,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function batchDeleteJobs(BatchDeleteJobsRequest $request, array $callOptions = []): void
+    public function batchDeleteJobs(BatchDeleteJobsRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('BatchDeleteJobs', $request, $callOptions)->wait();
+        $this->startApiCall('BatchDeleteJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -476,7 +476,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::batchUpdateJobsAsync()} .
      *
      * @param BatchUpdateJobsRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -491,9 +491,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function batchUpdateJobs(BatchUpdateJobsRequest $request, array $callOptions = []): OperationResponse
+    public function batchUpdateJobs(BatchUpdateJobsRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('BatchUpdateJobs', $request, $callOptions)->wait();
+        return $this->startApiCall('BatchUpdateJobs', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -505,7 +505,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::createJobAsync()} .
      *
      * @param CreateJobRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -520,9 +520,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function createJob(CreateJobRequest $request, array $callOptions = []): Job
+    public function createJob(CreateJobRequest $request, array $optionalArgs = []): Job
     {
-        return $this->startApiCall('CreateJob', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -534,7 +534,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::deleteJobAsync()} .
      *
      * @param DeleteJobRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -547,9 +547,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function deleteJob(DeleteJobRequest $request, array $callOptions = []): void
+    public function deleteJob(DeleteJobRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteJob', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -559,7 +559,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::getJobAsync()} .
      *
      * @param GetJobRequest $request      A request to house fields associated with the call.
-     * @param array         $callOptions {
+     * @param array         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -574,9 +574,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function getJob(GetJobRequest $request, array $callOptions = []): Job
+    public function getJob(GetJobRequest $request, array $optionalArgs = []): Job
     {
-        return $this->startApiCall('GetJob', $request, $callOptions)->wait();
+        return $this->startApiCall('GetJob', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -585,7 +585,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::listJobsAsync()} .
      *
      * @param ListJobsRequest $request      A request to house fields associated with the call.
-     * @param array           $callOptions {
+     * @param array           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -600,9 +600,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function listJobs(ListJobsRequest $request, array $callOptions = []): PagedListResponse
+    public function listJobs(ListJobsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListJobs', $request, $callOptions);
+        return $this->startApiCall('ListJobs', $request, $optionalArgs);
     }
 
     /**
@@ -615,7 +615,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::searchJobsAsync()} .
      *
      * @param SearchJobsRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -630,9 +630,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function searchJobs(SearchJobsRequest $request, array $callOptions = []): PagedListResponse
+    public function searchJobs(SearchJobsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('SearchJobs', $request, $callOptions);
+        return $this->startApiCall('SearchJobs', $request, $optionalArgs);
     }
 
     /**
@@ -650,7 +650,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::searchJobsForAlertAsync()} .
      *
      * @param SearchJobsRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -665,9 +665,9 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function searchJobsForAlert(SearchJobsRequest $request, array $callOptions = []): PagedListResponse
+    public function searchJobsForAlert(SearchJobsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('SearchJobsForAlert', $request, $callOptions);
+        return $this->startApiCall('SearchJobsForAlert', $request, $optionalArgs);
     }
 
     /**
@@ -679,7 +679,7 @@ class JobServiceBaseClient
      * The async variant is {@see self::updateJobAsync()} .
      *
      * @param UpdateJobRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -694,8 +694,8 @@ class JobServiceBaseClient
      *
      * @experimental
      */
-    public function updateJob(UpdateJobRequest $request, array $callOptions = []): Job
+    public function updateJob(UpdateJobRequest $request, array $optionalArgs = []): Job
     {
-        return $this->startApiCall('UpdateJob', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateJob', $request, $optionalArgs)->wait();
     }
 }

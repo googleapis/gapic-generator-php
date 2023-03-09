@@ -344,7 +344,7 @@ class CatalogServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $catalog
@@ -362,18 +362,18 @@ class CatalogServiceGapicClient
      *
      * @experimental
      */
-    public function getDefaultBranch(array $callOptions = [])
+    public function getDefaultBranch(array $optionalArgs = [])
     {
         $request = new GetDefaultBranchRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['catalog'])) {
-            $request->setCatalog($callOptions['catalog']);
-            $requestParamHeaders['catalog'] = $callOptions['catalog'];
+        if (isset($optionalArgs['catalog'])) {
+            $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetDefaultBranch', GetDefaultBranchResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetDefaultBranch', GetDefaultBranchResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -409,7 +409,7 @@ class CatalogServiceGapicClient
      *                             [Catalog][google.cloud.retail.v2alpha.Catalog]s under this location,
      *                             regardless of whether or not this location exists, a PERMISSION_DENIED
      *                             error is returned.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -433,23 +433,23 @@ class CatalogServiceGapicClient
      *
      * @experimental
      */
-    public function listCatalogs($parent, array $callOptions = [])
+    public function listCatalogs($parent, array $optionalArgs = [])
     {
         $request = new ListCatalogsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListCatalogs', $callOptions, ListCatalogsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCatalogs', $optionalArgs, ListCatalogsResponse::class, $request);
     }
 
     /**
@@ -501,7 +501,7 @@ class CatalogServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $catalog
@@ -529,26 +529,26 @@ class CatalogServiceGapicClient
      *
      * @experimental
      */
-    public function setDefaultBranch(array $callOptions = [])
+    public function setDefaultBranch(array $optionalArgs = [])
     {
         $request = new SetDefaultBranchRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['catalog'])) {
-            $request->setCatalog($callOptions['catalog']);
-            $requestParamHeaders['catalog'] = $callOptions['catalog'];
+        if (isset($optionalArgs['catalog'])) {
+            $request->setCatalog($optionalArgs['catalog']);
+            $requestParamHeaders['catalog'] = $optionalArgs['catalog'];
         }
 
-        if (isset($callOptions['branchId'])) {
-            $request->setBranchId($callOptions['branchId']);
+        if (isset($optionalArgs['branchId'])) {
+            $request->setBranchId($optionalArgs['branchId']);
         }
 
-        if (isset($callOptions['note'])) {
-            $request->setNote($callOptions['note']);
+        if (isset($optionalArgs['note'])) {
+            $request->setNote($optionalArgs['note']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetDefaultBranch', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetDefaultBranch', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -573,7 +573,7 @@ class CatalogServiceGapicClient
      *
      *                              If the [Catalog][google.cloud.retail.v2alpha.Catalog] to update does not
      *                              exist, a NOT_FOUND error is returned.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -594,18 +594,18 @@ class CatalogServiceGapicClient
      *
      * @experimental
      */
-    public function updateCatalog($catalog, array $callOptions = [])
+    public function updateCatalog($catalog, array $optionalArgs = [])
     {
         $request = new UpdateCatalogRequest();
         $requestParamHeaders = [];
         $request->setCatalog($catalog);
         $requestParamHeaders['catalog.name'] = $catalog->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCatalog', Catalog::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCatalog', Catalog::class, $optionalArgs, $request)->wait();
     }
 }

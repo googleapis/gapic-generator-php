@@ -49,10 +49,10 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $callOptions = [])
- * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $callOptions = [])
- * @method PromiseInterface listAsync(ListAddressesRequest $request, array $callOptions = [])
+ * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAsync(ListAddressesRequest $request, array $optionalArgs = [])
  */
 class AddressesBaseClient
 {
@@ -234,7 +234,7 @@ class AddressesBaseClient
      * The async variant is {@see self::aggregatedListAsync()} .
      *
      * @param AggregatedListAddressesRequest $request      A request to house fields associated with the call.
-     * @param array                          $callOptions {
+     * @param array                          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -247,9 +247,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aggregatedList(AggregatedListAddressesRequest $request, array $callOptions = []): PagedListResponse
+    public function aggregatedList(AggregatedListAddressesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('AggregatedList', $request, $callOptions);
+        return $this->startApiCall('AggregatedList', $request, $optionalArgs);
     }
 
     /**
@@ -258,7 +258,7 @@ class AddressesBaseClient
      * The async variant is {@see self::deleteAsync()} .
      *
      * @param DeleteAddressRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -271,9 +271,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function delete(DeleteAddressRequest $request, array $callOptions = []): OperationResponse
+    public function delete(DeleteAddressRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('Delete', $request, $callOptions)->wait();
+        return $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -282,7 +282,7 @@ class AddressesBaseClient
      * The async variant is {@see self::insertAsync()} .
      *
      * @param InsertAddressRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -295,9 +295,9 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function insert(InsertAddressRequest $request, array $callOptions = []): OperationResponse
+    public function insert(InsertAddressRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('Insert', $request, $callOptions)->wait();
+        return $this->startApiCall('Insert', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -306,7 +306,7 @@ class AddressesBaseClient
      * The async variant is {@see self::listAsync()} .
      *
      * @param ListAddressesRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -319,8 +319,8 @@ class AddressesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function list(ListAddressesRequest $request, array $callOptions = []): PagedListResponse
+    public function list(ListAddressesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('List', $request, $callOptions);
+        return $this->startApiCall('List', $request, $optionalArgs);
     }
 }

@@ -414,7 +414,7 @@ class CompletionGapicClient
      * @param int    $pageSize     Required. Completion result count.
      *
      *                             The maximum allowed page size is 10.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string[] $languageCodes
@@ -451,7 +451,7 @@ class CompletionGapicClient
      *
      * @experimental
      */
-    public function completeQuery($parent, $query, $pageSize, array $callOptions = [])
+    public function completeQuery($parent, $query, $pageSize, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
         $requestParamHeaders = [];
@@ -459,24 +459,24 @@ class CompletionGapicClient
         $request->setQuery($query);
         $request->setPageSize($pageSize);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['languageCodes'])) {
-            $request->setLanguageCodes($callOptions['languageCodes']);
+        if (isset($optionalArgs['languageCodes'])) {
+            $request->setLanguageCodes($optionalArgs['languageCodes']);
         }
 
-        if (isset($callOptions['company'])) {
-            $request->setCompany($callOptions['company']);
+        if (isset($optionalArgs['company'])) {
+            $request->setCompany($optionalArgs['company']);
         }
 
-        if (isset($callOptions['scope'])) {
-            $request->setScope($callOptions['scope']);
+        if (isset($optionalArgs['scope'])) {
+            $request->setScope($optionalArgs['scope']);
         }
 
-        if (isset($callOptions['type'])) {
-            $request->setType($callOptions['type']);
+        if (isset($optionalArgs['type'])) {
+            $request->setType($optionalArgs['type']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
 }

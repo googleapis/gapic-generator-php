@@ -43,9 +43,9 @@ use Testing\CustomLro\GetOperationRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface cancelAsync(CancelOperationRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $callOptions = [])
- * @method PromiseInterface getAsync(GetOperationRequest $request, array $callOptions = [])
+ * @method PromiseInterface cancelAsync(CancelOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getAsync(GetOperationRequest $request, array $optionalArgs = [])
  */
 class CustomLroOperationsBaseClient
 {
@@ -173,7 +173,7 @@ class CustomLroOperationsBaseClient
      * The async variant is {@see self::cancelAsync()} .
      *
      * @param CancelOperationRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -184,16 +184,16 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function cancel(CancelOperationRequest $request, array $callOptions = []): void
+    public function cancel(CancelOperationRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('Cancel', $request, $callOptions)->wait();
+        $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::deleteAsync()} .
      *
      * @param DeleteOperationRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -204,16 +204,16 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function delete(DeleteOperationRequest $request, array $callOptions = []): void
+    public function delete(DeleteOperationRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('Delete', $request, $callOptions)->wait();
+        $this->startApiCall('Delete', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::getAsync()} .
      *
      * @param GetOperationRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -226,8 +226,8 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function get(GetOperationRequest $request, array $callOptions = []): CustomOperationResponse
+    public function get(GetOperationRequest $request, array $optionalArgs = []): CustomOperationResponse
     {
-        return $this->startApiCall('Get', $request, $callOptions)->wait();
+        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
     }
 }

@@ -51,7 +51,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface predictAsync(PredictRequest $request, array $callOptions = [])
+ * @method PromiseInterface predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
 class PredictionServiceBaseClient
 {
@@ -228,7 +228,7 @@ class PredictionServiceBaseClient
      * The async variant is {@see self::predictAsync()} .
      *
      * @param PredictRequest $request      A request to house fields associated with the call.
-     * @param array          $callOptions {
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -243,8 +243,8 @@ class PredictionServiceBaseClient
      *
      * @experimental
      */
-    public function predict(PredictRequest $request, array $callOptions = []): PredictResponse
+    public function predict(PredictRequest $request, array $optionalArgs = []): PredictResponse
     {
-        return $this->startApiCall('Predict', $request, $callOptions)->wait();
+        return $this->startApiCall('Predict', $request, $optionalArgs)->wait();
     }
 }

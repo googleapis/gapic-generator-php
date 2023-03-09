@@ -280,7 +280,7 @@ class CustomLroGapicClient
      *
      * @param string $project
      * @param string $region
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $foo
@@ -294,15 +294,15 @@ class CustomLroGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createFoo($project, $region, array $callOptions = [])
+    public function createFoo($project, $region, array $optionalArgs = [])
     {
         $request = new CreateFooRequest();
         $request->setProject($project);
         $request->setRegion($region);
-        if (isset($callOptions['foo'])) {
-            $request->setFoo($callOptions['foo']);
+        if (isset($optionalArgs['foo'])) {
+            $request->setFoo($optionalArgs['foo']);
         }
 
-        return $this->startOperationsCall('CreateFoo', $callOptions, $request, $this->getOperationsClient(), null, CustomOperationResponse::class)->wait();
+        return $this->startOperationsCall('CreateFoo', $optionalArgs, $request, $this->getOperationsClient(), null, CustomOperationResponse::class)->wait();
     }
 }

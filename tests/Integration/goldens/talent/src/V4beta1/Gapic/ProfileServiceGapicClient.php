@@ -318,7 +318,7 @@ class ProfileServiceGapicClient
      *                              The format is "projects/{project_id}/tenants/{tenant_id}". For example,
      *                              "projects/foo/tenants/bar".
      * @param Profile $profile      Required. The profile to be created.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -333,7 +333,7 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function createProfile($parent, $profile, array $callOptions = [])
+    public function createProfile($parent, $profile, array $optionalArgs = [])
     {
         $request = new CreateProfileRequest();
         $requestParamHeaders = [];
@@ -341,8 +341,8 @@ class ProfileServiceGapicClient
         $request->setProfile($profile);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateProfile', Profile::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -366,7 +366,7 @@ class ProfileServiceGapicClient
      *                             The format is
      *                             "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
      *                             example, "projects/foo/tenants/bar/profiles/baz".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -379,15 +379,15 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function deleteProfile($name, array $callOptions = [])
+    public function deleteProfile($name, array $optionalArgs = [])
     {
         $request = new DeleteProfileRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteProfile', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteProfile', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -409,7 +409,7 @@ class ProfileServiceGapicClient
      *                             The format is
      *                             "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
      *                             example, "projects/foo/tenants/bar/profiles/baz".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -424,15 +424,15 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function getProfile($name, array $callOptions = [])
+    public function getProfile($name, array $optionalArgs = [])
     {
         $request = new GetProfileRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetProfile', Profile::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -465,7 +465,7 @@ class ProfileServiceGapicClient
      *
      *                             The format is "projects/{project_id}/tenants/{tenant_id}". For example,
      *                             "projects/foo/tenants/bar".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $filter
@@ -514,31 +514,31 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function listProfiles($parent, array $callOptions = [])
+    public function listProfiles($parent, array $optionalArgs = [])
     {
         $request = new ListProfilesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['readMask'])) {
-            $request->setReadMask($callOptions['readMask']);
+        if (isset($optionalArgs['readMask'])) {
+            $request->setReadMask($optionalArgs['readMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListProfiles', $callOptions, ListProfilesResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListProfiles', $optionalArgs, ListProfilesResponse::class, $request);
     }
 
     /**
@@ -580,7 +580,7 @@ class ProfileServiceGapicClient
      * @param RequestMetadata $requestMetadata Required. The meta information collected about the profile search user. This is used
      *                                         to improve the search quality of the service. These values are provided by
      *                                         users, and must be precise and consistent.
-     * @param array           $callOptions    {
+     * @param array           $optionalArgs    {
      *     Optional.
      *
      *     @type ProfileQuery $profileQuery
@@ -754,56 +754,56 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function searchProfiles($parent, $requestMetadata, array $callOptions = [])
+    public function searchProfiles($parent, $requestMetadata, array $optionalArgs = [])
     {
         $request = new SearchProfilesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setRequestMetadata($requestMetadata);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['profileQuery'])) {
-            $request->setProfileQuery($callOptions['profileQuery']);
+        if (isset($optionalArgs['profileQuery'])) {
+            $request->setProfileQuery($optionalArgs['profileQuery']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['offset'])) {
-            $request->setOffset($callOptions['offset']);
+        if (isset($optionalArgs['offset'])) {
+            $request->setOffset($optionalArgs['offset']);
         }
 
-        if (isset($callOptions['disableSpellCheck'])) {
-            $request->setDisableSpellCheck($callOptions['disableSpellCheck']);
+        if (isset($optionalArgs['disableSpellCheck'])) {
+            $request->setDisableSpellCheck($optionalArgs['disableSpellCheck']);
         }
 
-        if (isset($callOptions['orderBy'])) {
-            $request->setOrderBy($callOptions['orderBy']);
+        if (isset($optionalArgs['orderBy'])) {
+            $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        if (isset($callOptions['caseSensitiveSort'])) {
-            $request->setCaseSensitiveSort($callOptions['caseSensitiveSort']);
+        if (isset($optionalArgs['caseSensitiveSort'])) {
+            $request->setCaseSensitiveSort($optionalArgs['caseSensitiveSort']);
         }
 
-        if (isset($callOptions['histogramQueries'])) {
-            $request->setHistogramQueries($callOptions['histogramQueries']);
+        if (isset($optionalArgs['histogramQueries'])) {
+            $request->setHistogramQueries($optionalArgs['histogramQueries']);
         }
 
-        if (isset($callOptions['resultSetId'])) {
-            $request->setResultSetId($callOptions['resultSetId']);
+        if (isset($optionalArgs['resultSetId'])) {
+            $request->setResultSetId($optionalArgs['resultSetId']);
         }
 
-        if (isset($callOptions['strictKeywordsSearch'])) {
-            $request->setStrictKeywordsSearch($callOptions['strictKeywordsSearch']);
+        if (isset($optionalArgs['strictKeywordsSearch'])) {
+            $request->setStrictKeywordsSearch($optionalArgs['strictKeywordsSearch']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('SearchProfiles', $callOptions, SearchProfilesResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('SearchProfiles', $optionalArgs, SearchProfilesResponse::class, $request);
     }
 
     /**
@@ -821,7 +821,7 @@ class ProfileServiceGapicClient
      * ```
      *
      * @param Profile $profile      Required. Profile to be updated.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -840,18 +840,18 @@ class ProfileServiceGapicClient
      *
      * @experimental
      */
-    public function updateProfile($profile, array $callOptions = [])
+    public function updateProfile($profile, array $optionalArgs = [])
     {
         $request = new UpdateProfileRequest();
         $requestParamHeaders = [];
         $request->setProfile($profile);
         $requestParamHeaders['profile.name'] = $profile->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateProfile', Profile::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateProfile', Profile::class, $optionalArgs, $request)->wait();
     }
 }

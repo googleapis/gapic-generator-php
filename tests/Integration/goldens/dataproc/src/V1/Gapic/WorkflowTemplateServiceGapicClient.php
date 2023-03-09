@@ -501,7 +501,7 @@ class WorkflowTemplateServiceGapicClient
      *                                       the location has the following format:
      *                                       `projects/{project_id}/locations/{location}`
      * @param WorkflowTemplate $template     Required. The Dataproc workflow template to create.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -514,7 +514,7 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createWorkflowTemplate($parent, $template, array $callOptions = [])
+    public function createWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new CreateWorkflowTemplateRequest();
         $requestParamHeaders = [];
@@ -522,8 +522,8 @@ class WorkflowTemplateServiceGapicClient
         $request->setTemplate($template);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateWorkflowTemplate', WorkflowTemplate::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -550,7 +550,7 @@ class WorkflowTemplateServiceGapicClient
      *                             * For `projects.locations.workflowTemplates.instantiate`, the resource name
      *                             of the template has the following format:
      *                             `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $version
@@ -565,19 +565,19 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteWorkflowTemplate($name, array $callOptions = [])
+    public function deleteWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new DeleteWorkflowTemplateRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['version'])) {
-            $request->setVersion($callOptions['version']);
+        if (isset($optionalArgs['version'])) {
+            $request->setVersion($optionalArgs['version']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteWorkflowTemplate', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteWorkflowTemplate', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -607,7 +607,7 @@ class WorkflowTemplateServiceGapicClient
      *                             * For `projects.locations.workflowTemplates.get`, the resource name of the
      *                             template has the following format:
      *                             `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $version
@@ -625,19 +625,19 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getWorkflowTemplate($name, array $callOptions = [])
+    public function getWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new GetWorkflowTemplateRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['version'])) {
-            $request->setVersion($callOptions['version']);
+        if (isset($optionalArgs['version'])) {
+            $request->setVersion($optionalArgs['version']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetWorkflowTemplate', WorkflowTemplate::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -712,7 +712,7 @@ class WorkflowTemplateServiceGapicClient
      *                                       resource name of the location has the following format:
      *                                       `projects/{project_id}/locations/{location}`
      * @param WorkflowTemplate $template     Required. The workflow template to instantiate.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type string $requestId
@@ -735,20 +735,20 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function instantiateInlineWorkflowTemplate($parent, $template, array $callOptions = [])
+    public function instantiateInlineWorkflowTemplate($parent, $template, array $optionalArgs = [])
     {
         $request = new InstantiateInlineWorkflowTemplateRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setTemplate($template);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['requestId'])) {
-            $request->setRequestId($callOptions['requestId']);
+        if (isset($optionalArgs['requestId'])) {
+            $request->setRequestId($optionalArgs['requestId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('InstantiateInlineWorkflowTemplate', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('InstantiateInlineWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -817,7 +817,7 @@ class WorkflowTemplateServiceGapicClient
      *                             * For `projects.locations.workflowTemplates.instantiate`, the resource name
      *                             of the template has the following format:
      *                             `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $version
@@ -850,27 +850,27 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function instantiateWorkflowTemplate($name, array $callOptions = [])
+    public function instantiateWorkflowTemplate($name, array $optionalArgs = [])
     {
         $request = new InstantiateWorkflowTemplateRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['version'])) {
-            $request->setVersion($callOptions['version']);
+        if (isset($optionalArgs['version'])) {
+            $request->setVersion($optionalArgs['version']);
         }
 
-        if (isset($callOptions['requestId'])) {
-            $request->setRequestId($callOptions['requestId']);
+        if (isset($optionalArgs['requestId'])) {
+            $request->setRequestId($optionalArgs['requestId']);
         }
 
-        if (isset($callOptions['parameters'])) {
-            $request->setParameters($callOptions['parameters']);
+        if (isset($optionalArgs['parameters'])) {
+            $request->setParameters($optionalArgs['parameters']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('InstantiateWorkflowTemplate', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('InstantiateWorkflowTemplate', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -909,7 +909,7 @@ class WorkflowTemplateServiceGapicClient
      *                             * For `projects.locations.workflowTemplates.list`, the
      *                             resource name of the location has the following format:
      *                             `projects/{project_id}/locations/{location}`
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -931,23 +931,23 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listWorkflowTemplates($parent, array $callOptions = [])
+    public function listWorkflowTemplates($parent, array $optionalArgs = [])
     {
         $request = new ListWorkflowTemplatesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListWorkflowTemplates', $callOptions, ListWorkflowTemplatesResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListWorkflowTemplates', $optionalArgs, ListWorkflowTemplatesResponse::class, $request);
     }
 
     /**
@@ -968,7 +968,7 @@ class WorkflowTemplateServiceGapicClient
      * @param WorkflowTemplate $template     Required. The updated workflow template.
      *
      *                                       The `template.version` field must match the current version.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -981,14 +981,14 @@ class WorkflowTemplateServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateWorkflowTemplate($template, array $callOptions = [])
+    public function updateWorkflowTemplate($template, array $optionalArgs = [])
     {
         $request = new UpdateWorkflowTemplateRequest();
         $requestParamHeaders = [];
         $request->setTemplate($template);
         $requestParamHeaders['template.name'] = $template->getName();
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateWorkflowTemplate', WorkflowTemplate::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
     }
 }

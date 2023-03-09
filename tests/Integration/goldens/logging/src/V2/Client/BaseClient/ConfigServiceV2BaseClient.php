@@ -74,29 +74,29 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface createBucketAsync(CreateBucketRequest $request, array $callOptions = [])
- * @method PromiseInterface createExclusionAsync(CreateExclusionRequest $request, array $callOptions = [])
- * @method PromiseInterface createSinkAsync(CreateSinkRequest $request, array $callOptions = [])
- * @method PromiseInterface createViewAsync(CreateViewRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteBucketAsync(DeleteBucketRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteExclusionAsync(DeleteExclusionRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteSinkAsync(DeleteSinkRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteViewAsync(DeleteViewRequest $request, array $callOptions = [])
- * @method PromiseInterface getBucketAsync(GetBucketRequest $request, array $callOptions = [])
- * @method PromiseInterface getCmekSettingsAsync(GetCmekSettingsRequest $request, array $callOptions = [])
- * @method PromiseInterface getExclusionAsync(GetExclusionRequest $request, array $callOptions = [])
- * @method PromiseInterface getSinkAsync(GetSinkRequest $request, array $callOptions = [])
- * @method PromiseInterface getViewAsync(GetViewRequest $request, array $callOptions = [])
- * @method PromiseInterface listBucketsAsync(ListBucketsRequest $request, array $callOptions = [])
- * @method PromiseInterface listExclusionsAsync(ListExclusionsRequest $request, array $callOptions = [])
- * @method PromiseInterface listSinksAsync(ListSinksRequest $request, array $callOptions = [])
- * @method PromiseInterface listViewsAsync(ListViewsRequest $request, array $callOptions = [])
- * @method PromiseInterface undeleteBucketAsync(UndeleteBucketRequest $request, array $callOptions = [])
- * @method PromiseInterface updateBucketAsync(UpdateBucketRequest $request, array $callOptions = [])
- * @method PromiseInterface updateCmekSettingsAsync(UpdateCmekSettingsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateExclusionAsync(UpdateExclusionRequest $request, array $callOptions = [])
- * @method PromiseInterface updateSinkAsync(UpdateSinkRequest $request, array $callOptions = [])
- * @method PromiseInterface updateViewAsync(UpdateViewRequest $request, array $callOptions = [])
+ * @method PromiseInterface createBucketAsync(CreateBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createExclusionAsync(CreateExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createSinkAsync(CreateSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createViewAsync(CreateViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteBucketAsync(DeleteBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteExclusionAsync(DeleteExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteSinkAsync(DeleteSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteViewAsync(DeleteViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getBucketAsync(GetBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getCmekSettingsAsync(GetCmekSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getExclusionAsync(GetExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getSinkAsync(GetSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getViewAsync(GetViewRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listBucketsAsync(ListBucketsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listExclusionsAsync(ListExclusionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listSinksAsync(ListSinksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listViewsAsync(ListViewsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface undeleteBucketAsync(UndeleteBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateBucketAsync(UpdateBucketRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateCmekSettingsAsync(UpdateCmekSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateExclusionAsync(UpdateExclusionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSinkAsync(UpdateSinkRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateViewAsync(UpdateViewRequest $request, array $optionalArgs = [])
  */
 class ConfigServiceV2BaseClient
 {
@@ -853,7 +853,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::createBucketAsync()} .
      *
      * @param CreateBucketRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -866,9 +866,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createBucket(CreateBucketRequest $request, array $callOptions = []): LogBucket
+    public function createBucket(CreateBucketRequest $request, array $optionalArgs = []): LogBucket
     {
-        return $this->startApiCall('CreateBucket', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -879,7 +879,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::createExclusionAsync()} .
      *
      * @param CreateExclusionRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -892,9 +892,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createExclusion(CreateExclusionRequest $request, array $callOptions = []): LogExclusion
+    public function createExclusion(CreateExclusionRequest $request, array $optionalArgs = []): LogExclusion
     {
-        return $this->startApiCall('CreateExclusion', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -906,7 +906,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::createSinkAsync()} .
      *
      * @param CreateSinkRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -919,9 +919,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createSink(CreateSinkRequest $request, array $callOptions = []): LogSink
+    public function createSink(CreateSinkRequest $request, array $optionalArgs = []): LogSink
     {
-        return $this->startApiCall('CreateSink', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -931,7 +931,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::createViewAsync()} .
      *
      * @param CreateViewRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -944,9 +944,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createView(CreateViewRequest $request, array $callOptions = []): LogView
+    public function createView(CreateViewRequest $request, array $optionalArgs = []): LogView
     {
-        return $this->startApiCall('CreateView', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -958,7 +958,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::deleteBucketAsync()} .
      *
      * @param DeleteBucketRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -969,9 +969,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBucket(DeleteBucketRequest $request, array $callOptions = []): void
+    public function deleteBucket(DeleteBucketRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteBucket', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -980,7 +980,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::deleteExclusionAsync()} .
      *
      * @param DeleteExclusionRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -991,9 +991,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteExclusion(DeleteExclusionRequest $request, array $callOptions = []): void
+    public function deleteExclusion(DeleteExclusionRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteExclusion', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1003,7 +1003,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::deleteSinkAsync()} .
      *
      * @param DeleteSinkRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1014,9 +1014,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteSink(DeleteSinkRequest $request, array $callOptions = []): void
+    public function deleteSink(DeleteSinkRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteSink', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1025,7 +1025,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::deleteViewAsync()} .
      *
      * @param DeleteViewRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1036,9 +1036,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteView(DeleteViewRequest $request, array $callOptions = []): void
+    public function deleteView(DeleteViewRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteView', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1047,7 +1047,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::getBucketAsync()} .
      *
      * @param GetBucketRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1060,9 +1060,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBucket(GetBucketRequest $request, array $callOptions = []): LogBucket
+    public function getBucket(GetBucketRequest $request, array $optionalArgs = []): LogBucket
     {
-        return $this->startApiCall('GetBucket', $request, $callOptions)->wait();
+        return $this->startApiCall('GetBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1079,7 +1079,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::getCmekSettingsAsync()} .
      *
      * @param GetCmekSettingsRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1092,9 +1092,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getCmekSettings(GetCmekSettingsRequest $request, array $callOptions = []): CmekSettings
+    public function getCmekSettings(GetCmekSettingsRequest $request, array $optionalArgs = []): CmekSettings
     {
-        return $this->startApiCall('GetCmekSettings', $request, $callOptions)->wait();
+        return $this->startApiCall('GetCmekSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1103,7 +1103,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::getExclusionAsync()} .
      *
      * @param GetExclusionRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1116,9 +1116,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getExclusion(GetExclusionRequest $request, array $callOptions = []): LogExclusion
+    public function getExclusion(GetExclusionRequest $request, array $optionalArgs = []): LogExclusion
     {
-        return $this->startApiCall('GetExclusion', $request, $callOptions)->wait();
+        return $this->startApiCall('GetExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1127,7 +1127,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::getSinkAsync()} .
      *
      * @param GetSinkRequest $request      A request to house fields associated with the call.
-     * @param array          $callOptions {
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1140,9 +1140,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getSink(GetSinkRequest $request, array $callOptions = []): LogSink
+    public function getSink(GetSinkRequest $request, array $optionalArgs = []): LogSink
     {
-        return $this->startApiCall('GetSink', $request, $callOptions)->wait();
+        return $this->startApiCall('GetSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1151,7 +1151,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::getViewAsync()} .
      *
      * @param GetViewRequest $request      A request to house fields associated with the call.
-     * @param array          $callOptions {
+     * @param array          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1164,9 +1164,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getView(GetViewRequest $request, array $callOptions = []): LogView
+    public function getView(GetViewRequest $request, array $optionalArgs = []): LogView
     {
-        return $this->startApiCall('GetView', $request, $callOptions)->wait();
+        return $this->startApiCall('GetView', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1175,7 +1175,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::listBucketsAsync()} .
      *
      * @param ListBucketsRequest $request      A request to house fields associated with the call.
-     * @param array              $callOptions {
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1188,9 +1188,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBuckets(ListBucketsRequest $request, array $callOptions = []): PagedListResponse
+    public function listBuckets(ListBucketsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListBuckets', $request, $callOptions);
+        return $this->startApiCall('ListBuckets', $request, $optionalArgs);
     }
 
     /**
@@ -1199,7 +1199,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::listExclusionsAsync()} .
      *
      * @param ListExclusionsRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1212,9 +1212,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listExclusions(ListExclusionsRequest $request, array $callOptions = []): PagedListResponse
+    public function listExclusions(ListExclusionsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListExclusions', $request, $callOptions);
+        return $this->startApiCall('ListExclusions', $request, $optionalArgs);
     }
 
     /**
@@ -1223,7 +1223,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::listSinksAsync()} .
      *
      * @param ListSinksRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1236,9 +1236,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listSinks(ListSinksRequest $request, array $callOptions = []): PagedListResponse
+    public function listSinks(ListSinksRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListSinks', $request, $callOptions);
+        return $this->startApiCall('ListSinks', $request, $optionalArgs);
     }
 
     /**
@@ -1247,7 +1247,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::listViewsAsync()} .
      *
      * @param ListViewsRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1260,9 +1260,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listViews(ListViewsRequest $request, array $callOptions = []): PagedListResponse
+    public function listViews(ListViewsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListViews', $request, $callOptions);
+        return $this->startApiCall('ListViews', $request, $optionalArgs);
     }
 
     /**
@@ -1272,7 +1272,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::undeleteBucketAsync()} .
      *
      * @param UndeleteBucketRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1283,9 +1283,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function undeleteBucket(UndeleteBucketRequest $request, array $callOptions = []): void
+    public function undeleteBucket(UndeleteBucketRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('UndeleteBucket', $request, $callOptions)->wait();
+        $this->startApiCall('UndeleteBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1303,7 +1303,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::updateBucketAsync()} .
      *
      * @param UpdateBucketRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1316,9 +1316,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBucket(UpdateBucketRequest $request, array $callOptions = []): LogBucket
+    public function updateBucket(UpdateBucketRequest $request, array $optionalArgs = []): LogBucket
     {
-        return $this->startApiCall('UpdateBucket', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateBucket', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1341,7 +1341,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::updateCmekSettingsAsync()} .
      *
      * @param UpdateCmekSettingsRequest $request      A request to house fields associated with the call.
-     * @param array                     $callOptions {
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1354,9 +1354,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCmekSettings(UpdateCmekSettingsRequest $request, array $callOptions = []): CmekSettings
+    public function updateCmekSettings(UpdateCmekSettingsRequest $request, array $optionalArgs = []): CmekSettings
     {
-        return $this->startApiCall('UpdateCmekSettings', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateCmekSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1365,7 +1365,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::updateExclusionAsync()} .
      *
      * @param UpdateExclusionRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1378,9 +1378,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateExclusion(UpdateExclusionRequest $request, array $callOptions = []): LogExclusion
+    public function updateExclusion(UpdateExclusionRequest $request, array $optionalArgs = []): LogExclusion
     {
-        return $this->startApiCall('UpdateExclusion', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateExclusion', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1393,7 +1393,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::updateSinkAsync()} .
      *
      * @param UpdateSinkRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1406,9 +1406,9 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSink(UpdateSinkRequest $request, array $callOptions = []): LogSink
+    public function updateSink(UpdateSinkRequest $request, array $optionalArgs = []): LogSink
     {
-        return $this->startApiCall('UpdateSink', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateSink', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1418,7 +1418,7 @@ class ConfigServiceV2BaseClient
      * The async variant is {@see self::updateViewAsync()} .
      *
      * @param UpdateViewRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1431,8 +1431,8 @@ class ConfigServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateView(UpdateViewRequest $request, array $callOptions = []): LogView
+    public function updateView(UpdateViewRequest $request, array $optionalArgs = []): LogView
     {
-        return $this->startApiCall('UpdateView', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateView', $request, $optionalArgs)->wait();
     }
 }

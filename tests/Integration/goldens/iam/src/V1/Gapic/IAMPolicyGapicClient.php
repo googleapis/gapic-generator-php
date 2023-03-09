@@ -195,7 +195,7 @@ class IAMPolicyGapicClient
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type GetPolicyOptions $options
@@ -211,19 +211,19 @@ class IAMPolicyGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getIamPolicy($resource, array $callOptions = [])
+    public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
         $requestParamHeaders = [];
         $request->setResource($resource);
         $requestParamHeaders['resource'] = $resource;
-        if (isset($callOptions['options'])) {
-            $request->setOptions($callOptions['options']);
+        if (isset($optionalArgs['options'])) {
+            $request->setOptions($optionalArgs['options']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -248,7 +248,7 @@ class IAMPolicyGapicClient
      *                             the policy is limited to a few 10s of KB. An empty policy is a
      *                             valid policy but certain Cloud Platform services (such as Projects)
      *                             might reject them.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -261,7 +261,7 @@ class IAMPolicyGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setIamPolicy($resource, $policy, array $callOptions = [])
+    public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
         $requestParamHeaders = [];
@@ -269,8 +269,8 @@ class IAMPolicyGapicClient
         $request->setPolicy($policy);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -300,7 +300,7 @@ class IAMPolicyGapicClient
      *                               wildcards (such as '*' or 'storage.*') are not allowed. For more
      *                               information see
      *                               [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-     * @param array    $callOptions {
+     * @param array    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -313,7 +313,7 @@ class IAMPolicyGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function testIamPermissions($resource, $permissions, array $callOptions = [])
+    public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
         $requestParamHeaders = [];
@@ -321,7 +321,7 @@ class IAMPolicyGapicClient
         $request->setPermissions($permissions);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
 }

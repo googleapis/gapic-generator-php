@@ -345,7 +345,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @param string $name         Required. The name of the function to be called.
      * @param string $data         Required. Input to be passed to the function.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -358,7 +358,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function callFunction($name, $data, array $callOptions = [])
+    public function callFunction($name, $data, array $optionalArgs = [])
     {
         $request = new CallFunctionRequest();
         $requestParamHeaders = [];
@@ -366,8 +366,8 @@ class CloudFunctionsServiceGapicClient
         $request->setData($data);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CallFunction', CallFunctionResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CallFunction', CallFunctionResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -415,7 +415,7 @@ class CloudFunctionsServiceGapicClient
      * @param string        $location     Required. The project and location in which the function should be created, specified
      *                                    in the format `projects/&#42;/locations/*`
      * @param CloudFunction $function     Required. Function to be created.
-     * @param array         $callOptions {
+     * @param array         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -428,7 +428,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createFunction($location, $function, array $callOptions = [])
+    public function createFunction($location, $function, array $optionalArgs = [])
     {
         $request = new CreateFunctionRequest();
         $requestParamHeaders = [];
@@ -436,8 +436,8 @@ class CloudFunctionsServiceGapicClient
         $request->setFunction($function);
         $requestParamHeaders['location'] = $location;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('CreateFunction', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('CreateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -480,7 +480,7 @@ class CloudFunctionsServiceGapicClient
      * ```
      *
      * @param string $name         Required. The name of the function which should be deleted.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -493,15 +493,15 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteFunction($name, array $callOptions = [])
+    public function deleteFunction($name, array $optionalArgs = [])
     {
         $request = new DeleteFunctionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('DeleteFunction', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('DeleteFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -521,7 +521,7 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $name
@@ -540,22 +540,22 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function generateDownloadUrl(array $callOptions = [])
+    public function generateDownloadUrl(array $optionalArgs = [])
     {
         $request = new GenerateDownloadUrlRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['name'])) {
-            $request->setName($callOptions['name']);
-            $requestParamHeaders['name'] = $callOptions['name'];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
-        if (isset($callOptions['versionId'])) {
-            $request->setVersionId($callOptions['versionId']);
+        if (isset($optionalArgs['versionId'])) {
+            $request->setVersionId($optionalArgs['versionId']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GenerateDownloadUrl', GenerateDownloadUrlResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GenerateDownloadUrl', GenerateDownloadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -595,7 +595,7 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $parent
@@ -611,18 +611,18 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function generateUploadUrl(array $callOptions = [])
+    public function generateUploadUrl(array $optionalArgs = [])
     {
         $request = new GenerateUploadUrlRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['parent'])) {
-            $request->setParent($callOptions['parent']);
-            $requestParamHeaders['parent'] = $callOptions['parent'];
+        if (isset($optionalArgs['parent'])) {
+            $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GenerateUploadUrl', GenerateUploadUrlResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GenerateUploadUrl', GenerateUploadUrlResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -640,7 +640,7 @@ class CloudFunctionsServiceGapicClient
      * ```
      *
      * @param string $name         Required. The name of the function which details should be obtained.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -653,15 +653,15 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getFunction($name, array $callOptions = [])
+    public function getFunction($name, array $optionalArgs = [])
     {
         $request = new GetFunctionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetFunction', CloudFunction::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetFunction', CloudFunction::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -682,7 +682,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type GetPolicyOptions $options
@@ -698,19 +698,19 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getIamPolicy($resource, array $callOptions = [])
+    public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
         $requestParamHeaders = [];
         $request->setResource($resource);
         $requestParamHeaders['resource'] = $resource;
-        if (isset($callOptions['options'])) {
-            $request->setOptions($callOptions['options']);
+        if (isset($optionalArgs['options'])) {
+            $request->setOptions($optionalArgs['options']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -738,7 +738,7 @@ class CloudFunctionsServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $parent
@@ -767,26 +767,26 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listFunctions(array $callOptions = [])
+    public function listFunctions(array $optionalArgs = [])
     {
         $request = new ListFunctionsRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['parent'])) {
-            $request->setParent($callOptions['parent']);
-            $requestParamHeaders['parent'] = $callOptions['parent'];
+        if (isset($optionalArgs['parent'])) {
+            $request->setParent($optionalArgs['parent']);
+            $requestParamHeaders['parent'] = $optionalArgs['parent'];
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListFunctions', $callOptions, ListFunctionsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListFunctions', $optionalArgs, ListFunctionsResponse::class, $request);
     }
 
     /**
@@ -811,7 +811,7 @@ class CloudFunctionsServiceGapicClient
      *                             the policy is limited to a few 10s of KB. An empty policy is a
      *                             valid policy but certain Cloud Platform services (such as Projects)
      *                             might reject them.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -824,7 +824,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setIamPolicy($resource, $policy, array $callOptions = [])
+    public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
         $requestParamHeaders = [];
@@ -832,8 +832,8 @@ class CloudFunctionsServiceGapicClient
         $request->setPolicy($policy);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -860,7 +860,7 @@ class CloudFunctionsServiceGapicClient
      *                               wildcards (such as '*' or 'storage.*') are not allowed. For more
      *                               information see
      *                               [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-     * @param array    $callOptions {
+     * @param array    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -873,7 +873,7 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function testIamPermissions($resource, $permissions, array $callOptions = [])
+    public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
         $requestParamHeaders = [];
@@ -881,8 +881,8 @@ class CloudFunctionsServiceGapicClient
         $request->setPermissions($permissions);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -925,7 +925,7 @@ class CloudFunctionsServiceGapicClient
      * ```
      *
      * @param CloudFunction $function     Required. New version of the function.
-     * @param array         $callOptions {
+     * @param array         $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -940,18 +940,18 @@ class CloudFunctionsServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateFunction($function, array $callOptions = [])
+    public function updateFunction($function, array $optionalArgs = [])
     {
         $request = new UpdateFunctionRequest();
         $requestParamHeaders = [];
         $request->setFunction($function);
         $requestParamHeaders['function.name'] = $function->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('UpdateFunction', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('UpdateFunction', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

@@ -79,29 +79,29 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $callOptions = [])
- * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $callOptions = [])
- * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $callOptions = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $callOptions = [])
- * @method PromiseInterface getNotificationConfigAsync(GetNotificationConfigRequest $request, array $callOptions = [])
- * @method PromiseInterface getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $callOptions = [])
- * @method PromiseInterface getSourceAsync(GetSourceRequest $request, array $callOptions = [])
- * @method PromiseInterface groupAssetsAsync(GroupAssetsRequest $request, array $callOptions = [])
- * @method PromiseInterface groupFindingsAsync(GroupFindingsRequest $request, array $callOptions = [])
- * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $callOptions = [])
- * @method PromiseInterface listFindingsAsync(ListFindingsRequest $request, array $callOptions = [])
- * @method PromiseInterface listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $callOptions = [])
- * @method PromiseInterface listSourcesAsync(ListSourcesRequest $request, array $callOptions = [])
- * @method PromiseInterface runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $callOptions = [])
- * @method PromiseInterface setFindingStateAsync(SetFindingStateRequest $request, array $callOptions = [])
- * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $callOptions = [])
- * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateFindingAsync(UpdateFindingRequest $request, array $callOptions = [])
- * @method PromiseInterface updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $callOptions = [])
- * @method PromiseInterface updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $callOptions = [])
- * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $callOptions = [])
+ * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
 class SecurityCenterBaseClient
 {
@@ -665,7 +665,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::createFindingAsync()} .
      *
      * @param CreateFindingRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -678,9 +678,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createFinding(CreateFindingRequest $request, array $callOptions = []): Finding
+    public function createFinding(CreateFindingRequest $request, array $optionalArgs = []): Finding
     {
-        return $this->startApiCall('CreateFinding', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -689,7 +689,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::createNotificationConfigAsync()} .
      *
      * @param CreateNotificationConfigRequest $request      A request to house fields associated with the call.
-     * @param array                           $callOptions {
+     * @param array                           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -702,9 +702,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createNotificationConfig(CreateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
+    public function createNotificationConfig(CreateNotificationConfigRequest $request, array $optionalArgs = []): NotificationConfig
     {
-        return $this->startApiCall('CreateNotificationConfig', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -713,7 +713,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::createSourceAsync()} .
      *
      * @param CreateSourceRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -726,9 +726,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createSource(CreateSourceRequest $request, array $callOptions = []): Source
+    public function createSource(CreateSourceRequest $request, array $optionalArgs = []): Source
     {
-        return $this->startApiCall('CreateSource', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -737,7 +737,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::deleteNotificationConfigAsync()} .
      *
      * @param DeleteNotificationConfigRequest $request      A request to house fields associated with the call.
-     * @param array                           $callOptions {
+     * @param array                           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -748,9 +748,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteNotificationConfig(DeleteNotificationConfigRequest $request, array $callOptions = []): void
+    public function deleteNotificationConfig(DeleteNotificationConfigRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteNotificationConfig', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -759,7 +759,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::getIamPolicyAsync()} .
      *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -772,9 +772,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
+    public function getIamPolicy(GetIamPolicyRequest $request, array $optionalArgs = []): Policy
     {
-        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -783,7 +783,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::getNotificationConfigAsync()} .
      *
      * @param GetNotificationConfigRequest $request      A request to house fields associated with the call.
-     * @param array                        $callOptions {
+     * @param array                        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -796,9 +796,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNotificationConfig(GetNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
+    public function getNotificationConfig(GetNotificationConfigRequest $request, array $optionalArgs = []): NotificationConfig
     {
-        return $this->startApiCall('GetNotificationConfig', $request, $callOptions)->wait();
+        return $this->startApiCall('GetNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -807,7 +807,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::getOrganizationSettingsAsync()} .
      *
      * @param GetOrganizationSettingsRequest $request      A request to house fields associated with the call.
-     * @param array                          $callOptions {
+     * @param array                          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -820,9 +820,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getOrganizationSettings(GetOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings
+    public function getOrganizationSettings(GetOrganizationSettingsRequest $request, array $optionalArgs = []): OrganizationSettings
     {
-        return $this->startApiCall('GetOrganizationSettings', $request, $callOptions)->wait();
+        return $this->startApiCall('GetOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -831,7 +831,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::getSourceAsync()} .
      *
      * @param GetSourceRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -844,9 +844,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getSource(GetSourceRequest $request, array $callOptions = []): Source
+    public function getSource(GetSourceRequest $request, array $optionalArgs = []): Source
     {
-        return $this->startApiCall('GetSource', $request, $callOptions)->wait();
+        return $this->startApiCall('GetSource', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -856,7 +856,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::groupAssetsAsync()} .
      *
      * @param GroupAssetsRequest $request      A request to house fields associated with the call.
-     * @param array              $callOptions {
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -869,9 +869,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function groupAssets(GroupAssetsRequest $request, array $callOptions = []): PagedListResponse
+    public function groupAssets(GroupAssetsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('GroupAssets', $request, $callOptions);
+        return $this->startApiCall('GroupAssets', $request, $optionalArgs);
     }
 
     /**
@@ -886,7 +886,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::groupFindingsAsync()} .
      *
      * @param GroupFindingsRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -899,9 +899,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function groupFindings(GroupFindingsRequest $request, array $callOptions = []): PagedListResponse
+    public function groupFindings(GroupFindingsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('GroupFindings', $request, $callOptions);
+        return $this->startApiCall('GroupFindings', $request, $optionalArgs);
     }
 
     /**
@@ -910,7 +910,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::listAssetsAsync()} .
      *
      * @param ListAssetsRequest $request      A request to house fields associated with the call.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -923,9 +923,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listAssets(ListAssetsRequest $request, array $callOptions = []): PagedListResponse
+    public function listAssets(ListAssetsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListAssets', $request, $callOptions);
+        return $this->startApiCall('ListAssets', $request, $optionalArgs);
     }
 
     /**
@@ -937,7 +937,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::listFindingsAsync()} .
      *
      * @param ListFindingsRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -950,9 +950,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listFindings(ListFindingsRequest $request, array $callOptions = []): PagedListResponse
+    public function listFindings(ListFindingsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListFindings', $request, $callOptions);
+        return $this->startApiCall('ListFindings', $request, $optionalArgs);
     }
 
     /**
@@ -961,7 +961,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::listNotificationConfigsAsync()} .
      *
      * @param ListNotificationConfigsRequest $request      A request to house fields associated with the call.
-     * @param array                          $callOptions {
+     * @param array                          $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -974,9 +974,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listNotificationConfigs(ListNotificationConfigsRequest $request, array $callOptions = []): PagedListResponse
+    public function listNotificationConfigs(ListNotificationConfigsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListNotificationConfigs', $request, $callOptions);
+        return $this->startApiCall('ListNotificationConfigs', $request, $optionalArgs);
     }
 
     /**
@@ -985,7 +985,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::listSourcesAsync()} .
      *
      * @param ListSourcesRequest $request      A request to house fields associated with the call.
-     * @param array              $callOptions {
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -998,9 +998,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listSources(ListSourcesRequest $request, array $callOptions = []): PagedListResponse
+    public function listSources(ListSourcesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListSources', $request, $callOptions);
+        return $this->startApiCall('ListSources', $request, $optionalArgs);
     }
 
     /**
@@ -1014,7 +1014,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::runAssetDiscoveryAsync()} .
      *
      * @param RunAssetDiscoveryRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1027,9 +1027,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function runAssetDiscovery(RunAssetDiscoveryRequest $request, array $callOptions = []): OperationResponse
+    public function runAssetDiscovery(RunAssetDiscoveryRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('RunAssetDiscovery', $request, $callOptions)->wait();
+        return $this->startApiCall('RunAssetDiscovery', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1038,7 +1038,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::setFindingStateAsync()} .
      *
      * @param SetFindingStateRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1051,9 +1051,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setFindingState(SetFindingStateRequest $request, array $callOptions = []): Finding
+    public function setFindingState(SetFindingStateRequest $request, array $optionalArgs = []): Finding
     {
-        return $this->startApiCall('SetFindingState', $request, $callOptions)->wait();
+        return $this->startApiCall('SetFindingState', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1062,7 +1062,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::setIamPolicyAsync()} .
      *
      * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1075,9 +1075,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy
+    public function setIamPolicy(SetIamPolicyRequest $request, array $optionalArgs = []): Policy
     {
-        return $this->startApiCall('SetIamPolicy', $request, $callOptions)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1086,7 +1086,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::testIamPermissionsAsync()} .
      *
      * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
-     * @param array                     $callOptions {
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1099,9 +1099,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
+    public function testIamPermissions(TestIamPermissionsRequest $request, array $optionalArgs = []): TestIamPermissionsResponse
     {
-        return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1111,7 +1111,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::updateFindingAsync()} .
      *
      * @param UpdateFindingRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1124,9 +1124,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateFinding(UpdateFindingRequest $request, array $callOptions = []): Finding
+    public function updateFinding(UpdateFindingRequest $request, array $optionalArgs = []): Finding
     {
-        return $this->startApiCall('UpdateFinding', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateFinding', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1137,7 +1137,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::updateNotificationConfigAsync()} .
      *
      * @param UpdateNotificationConfigRequest $request      A request to house fields associated with the call.
-     * @param array                           $callOptions {
+     * @param array                           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1150,9 +1150,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateNotificationConfig(UpdateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
+    public function updateNotificationConfig(UpdateNotificationConfigRequest $request, array $optionalArgs = []): NotificationConfig
     {
-        return $this->startApiCall('UpdateNotificationConfig', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateNotificationConfig', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1161,7 +1161,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::updateOrganizationSettingsAsync()} .
      *
      * @param UpdateOrganizationSettingsRequest $request      A request to house fields associated with the call.
-     * @param array                             $callOptions {
+     * @param array                             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1174,9 +1174,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateOrganizationSettings(UpdateOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings
+    public function updateOrganizationSettings(UpdateOrganizationSettingsRequest $request, array $optionalArgs = []): OrganizationSettings
     {
-        return $this->startApiCall('UpdateOrganizationSettings', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateOrganizationSettings', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1185,7 +1185,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::updateSecurityMarksAsync()} .
      *
      * @param UpdateSecurityMarksRequest $request      A request to house fields associated with the call.
-     * @param array                      $callOptions {
+     * @param array                      $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1198,9 +1198,9 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSecurityMarks(UpdateSecurityMarksRequest $request, array $callOptions = []): SecurityMarks
+    public function updateSecurityMarks(UpdateSecurityMarksRequest $request, array $optionalArgs = []): SecurityMarks
     {
-        return $this->startApiCall('UpdateSecurityMarks', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateSecurityMarks', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -1209,7 +1209,7 @@ class SecurityCenterBaseClient
      * The async variant is {@see self::updateSourceAsync()} .
      *
      * @param UpdateSourceRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1222,8 +1222,8 @@ class SecurityCenterBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSource(UpdateSourceRequest $request, array $callOptions = []): Source
+    public function updateSource(UpdateSourceRequest $request, array $optionalArgs = []): Source
     {
-        return $this->startApiCall('UpdateSource', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateSource', $request, $optionalArgs)->wait();
     }
 }

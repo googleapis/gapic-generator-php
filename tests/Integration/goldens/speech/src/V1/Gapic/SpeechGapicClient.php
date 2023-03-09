@@ -267,7 +267,7 @@ class SpeechGapicClient
      * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
      *                                        process the request.
      * @param RecognitionAudio  $audio        Required. The audio data to be recognized.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type TranscriptOutputConfig $outputConfig
@@ -282,16 +282,16 @@ class SpeechGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function longRunningRecognize($config, $audio, array $callOptions = [])
+    public function longRunningRecognize($config, $audio, array $optionalArgs = [])
     {
         $request = new LongRunningRecognizeRequest();
         $request->setConfig($config);
         $request->setAudio($audio);
-        if (isset($callOptions['outputConfig'])) {
-            $request->setOutputConfig($callOptions['outputConfig']);
+        if (isset($optionalArgs['outputConfig'])) {
+            $request->setOutputConfig($optionalArgs['outputConfig']);
         }
 
-        return $this->startOperationsCall('LongRunningRecognize', $callOptions, $request, $this->getOperationsClient())->wait();
+        return $this->startOperationsCall('LongRunningRecognize', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -313,7 +313,7 @@ class SpeechGapicClient
      * @param RecognitionConfig $config       Required. Provides information to the recognizer that specifies how to
      *                                        process the request.
      * @param RecognitionAudio  $audio        Required. The audio data to be recognized.
-     * @param array             $callOptions {
+     * @param array             $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -326,12 +326,12 @@ class SpeechGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function recognize($config, $audio, array $callOptions = [])
+    public function recognize($config, $audio, array $optionalArgs = [])
     {
         $request = new RecognizeRequest();
         $request->setConfig($config);
         $request->setAudio($audio);
-        return $this->startCall('Recognize', RecognizeResponse::class, $callOptions, $request)->wait();
+        return $this->startCall('Recognize', RecognizeResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -378,7 +378,7 @@ class SpeechGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -389,8 +389,8 @@ class SpeechGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function streamingRecognize(array $callOptions = [])
+    public function streamingRecognize(array $optionalArgs = [])
     {
-        return $this->startCall('StreamingRecognize', StreamingRecognizeResponse::class, $callOptions, null, Call::BIDI_STREAMING_CALL);
+        return $this->startCall('StreamingRecognize', StreamingRecognizeResponse::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }

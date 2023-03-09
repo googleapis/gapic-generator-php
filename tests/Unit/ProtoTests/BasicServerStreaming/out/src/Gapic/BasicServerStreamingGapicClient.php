@@ -168,7 +168,7 @@ class BasicServerStreamingGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -179,10 +179,10 @@ class BasicServerStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodEmpty(array $callOptions = [])
+    public function methodEmpty(array $optionalArgs = [])
     {
         $request = new EmptyRequest();
-        return $this->startCall('MethodEmpty', Response::class, $callOptions, $request, Call::SERVER_STREAMING_CALL);
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 
     /**
@@ -203,7 +203,7 @@ class BasicServerStreamingGapicClient
      * ```
      *
      * @param int   $aNumber
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $aString
@@ -215,14 +215,14 @@ class BasicServerStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodServer($aNumber, array $callOptions = [])
+    public function methodServer($aNumber, array $optionalArgs = [])
     {
         $request = new Request();
         $request->setANumber($aNumber);
-        if (isset($callOptions['aString'])) {
-            $request->setAString($callOptions['aString']);
+        if (isset($optionalArgs['aString'])) {
+            $request->setAString($optionalArgs['aString']);
         }
 
-        return $this->startCall('MethodServer', Response::class, $callOptions, $request, Call::SERVER_STREAMING_CALL);
+        return $this->startCall('MethodServer', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
     }
 }

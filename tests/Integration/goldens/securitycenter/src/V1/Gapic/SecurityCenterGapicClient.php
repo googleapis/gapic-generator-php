@@ -946,7 +946,7 @@ class SecurityCenterGapicClient
      *                              greater than 0 characters in length.
      * @param Finding $finding      Required. The Finding being created. The name and security_marks will be ignored as
      *                              they are both output only fields on this resource.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -959,7 +959,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createFinding($parent, $findingId, $finding, array $callOptions = [])
+    public function createFinding($parent, $findingId, $finding, array $optionalArgs = [])
     {
         $request = new CreateFindingRequest();
         $requestParamHeaders = [];
@@ -968,8 +968,8 @@ class SecurityCenterGapicClient
         $request->setFinding($finding);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateFinding', Finding::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateFinding', Finding::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -996,7 +996,7 @@ class SecurityCenterGapicClient
      *                                               characters, underscores or hyphens only.
      * @param NotificationConfig $notificationConfig Required. The notification config being created. The name and the service account
      *                                               will be ignored as they are both output only fields on this resource.
-     * @param array              $callOptions       {
+     * @param array              $optionalArgs       {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1009,7 +1009,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createNotificationConfig($parent, $configId, $notificationConfig, array $callOptions = [])
+    public function createNotificationConfig($parent, $configId, $notificationConfig, array $optionalArgs = [])
     {
         $request = new CreateNotificationConfigRequest();
         $requestParamHeaders = [];
@@ -1018,8 +1018,8 @@ class SecurityCenterGapicClient
         $request->setNotificationConfig($notificationConfig);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateNotificationConfig', NotificationConfig::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1041,7 +1041,7 @@ class SecurityCenterGapicClient
      *                             "organizations/[organization_id]".
      * @param Source $source       Required. The Source being created, only the display_name and description will be
      *                             used. All other fields will be ignored.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1054,7 +1054,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createSource($parent, $source, array $callOptions = [])
+    public function createSource($parent, $source, array $optionalArgs = [])
     {
         $request = new CreateSourceRequest();
         $requestParamHeaders = [];
@@ -1062,8 +1062,8 @@ class SecurityCenterGapicClient
         $request->setSource($source);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateSource', Source::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateSource', Source::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1082,7 +1082,7 @@ class SecurityCenterGapicClient
      *
      * @param string $name         Required. Name of the notification config to delete. Its format is
      *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1093,15 +1093,15 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteNotificationConfig($name, array $callOptions = [])
+    public function deleteNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new DeleteNotificationConfigRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteNotificationConfig', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteNotificationConfig', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1120,7 +1120,7 @@ class SecurityCenterGapicClient
      *
      * @param string $resource     REQUIRED: The resource for which the policy is being requested.
      *                             See the operation documentation for the appropriate value for this field.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type GetPolicyOptions $options
@@ -1136,19 +1136,19 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getIamPolicy($resource, array $callOptions = [])
+    public function getIamPolicy($resource, array $optionalArgs = [])
     {
         $request = new GetIamPolicyRequest();
         $requestParamHeaders = [];
         $request->setResource($resource);
         $requestParamHeaders['resource'] = $resource;
-        if (isset($callOptions['options'])) {
-            $request->setOptions($callOptions['options']);
+        if (isset($optionalArgs['options'])) {
+            $request->setOptions($optionalArgs['options']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1167,7 +1167,7 @@ class SecurityCenterGapicClient
      *
      * @param string $name         Required. Name of the notification config to get. Its format is
      *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1180,15 +1180,15 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getNotificationConfig($name, array $callOptions = [])
+    public function getNotificationConfig($name, array $optionalArgs = [])
     {
         $request = new GetNotificationConfigRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetNotificationConfig', NotificationConfig::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1207,7 +1207,7 @@ class SecurityCenterGapicClient
      *
      * @param string $name         Required. Name of the organization to get organization settings for. Its format is
      *                             "organizations/[organization_id]/organizationSettings".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1220,15 +1220,15 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getOrganizationSettings($name, array $callOptions = [])
+    public function getOrganizationSettings($name, array $optionalArgs = [])
     {
         $request = new GetOrganizationSettingsRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetOrganizationSettings', OrganizationSettings::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1247,7 +1247,7 @@ class SecurityCenterGapicClient
      *
      * @param string $name         Required. Relative resource name of the source. Its format is
      *                             "organizations/[organization_id]/source/[source_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1260,15 +1260,15 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getSource($name, array $callOptions = [])
+    public function getSource($name, array $optionalArgs = [])
     {
         $request = new GetSourceRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetSource', Source::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetSource', Source::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1320,7 +1320,7 @@ class SecurityCenterGapicClient
      *                             * security_center_properties.resource_type
      *                             * security_center_properties.resource_project_display_name
      *                             * security_center_properties.resource_parent_display_name
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $filter
@@ -1438,36 +1438,36 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function groupAssets($parent, $groupBy, array $callOptions = [])
+    public function groupAssets($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupAssetsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['compareDuration'])) {
-            $request->setCompareDuration($callOptions['compareDuration']);
+        if (isset($optionalArgs['compareDuration'])) {
+            $request->setCompareDuration($optionalArgs['compareDuration']);
         }
 
-        if (isset($callOptions['readTime'])) {
-            $request->setReadTime($callOptions['readTime']);
+        if (isset($optionalArgs['readTime'])) {
+            $request->setReadTime($optionalArgs['readTime']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('GroupAssets', $callOptions, GroupAssetsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('GroupAssets', $optionalArgs, GroupAssetsResponse::class, $request);
     }
 
     /**
@@ -1525,7 +1525,7 @@ class SecurityCenterGapicClient
      *                             The following fields are supported when compare_duration is set:
      *
      *                             * state_change
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $filter
@@ -1645,36 +1645,36 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function groupFindings($parent, $groupBy, array $callOptions = [])
+    public function groupFindings($parent, $groupBy, array $optionalArgs = [])
     {
         $request = new GroupFindingsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setGroupBy($groupBy);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['readTime'])) {
-            $request->setReadTime($callOptions['readTime']);
+        if (isset($optionalArgs['readTime'])) {
+            $request->setReadTime($optionalArgs['readTime']);
         }
 
-        if (isset($callOptions['compareDuration'])) {
-            $request->setCompareDuration($callOptions['compareDuration']);
+        if (isset($optionalArgs['compareDuration'])) {
+            $request->setCompareDuration($optionalArgs['compareDuration']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('GroupFindings', $callOptions, GroupFindingsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('GroupFindings', $optionalArgs, GroupFindingsResponse::class, $request);
     }
 
     /**
@@ -1706,7 +1706,7 @@ class SecurityCenterGapicClient
      * @param string $parent       Required. Name of the organization assets should belong to. Its format is
      *                             "organizations/[organization_id], folders/[folder_id], or
      *                             projects/[project_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $filter
@@ -1847,43 +1847,43 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listAssets($parent, array $callOptions = [])
+    public function listAssets($parent, array $optionalArgs = [])
     {
         $request = new ListAssetsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['orderBy'])) {
-            $request->setOrderBy($callOptions['orderBy']);
+        if (isset($optionalArgs['orderBy'])) {
+            $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        if (isset($callOptions['readTime'])) {
-            $request->setReadTime($callOptions['readTime']);
+        if (isset($optionalArgs['readTime'])) {
+            $request->setReadTime($optionalArgs['readTime']);
         }
 
-        if (isset($callOptions['compareDuration'])) {
-            $request->setCompareDuration($callOptions['compareDuration']);
+        if (isset($optionalArgs['compareDuration'])) {
+            $request->setCompareDuration($optionalArgs['compareDuration']);
         }
 
-        if (isset($callOptions['fieldMask'])) {
-            $request->setFieldMask($callOptions['fieldMask']);
+        if (isset($optionalArgs['fieldMask'])) {
+            $request->setFieldMask($optionalArgs['fieldMask']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListAssets', $callOptions, ListAssetsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListAssets', $optionalArgs, ListAssetsResponse::class, $request);
     }
 
     /**
@@ -1922,7 +1922,7 @@ class SecurityCenterGapicClient
      *                             provide a source_id of `-`. For example:
      *                             organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
      *                             projects/{projects_id}/sources/-
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $filter
@@ -2063,43 +2063,43 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listFindings($parent, array $callOptions = [])
+    public function listFindings($parent, array $optionalArgs = [])
     {
         $request = new ListFindingsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['orderBy'])) {
-            $request->setOrderBy($callOptions['orderBy']);
+        if (isset($optionalArgs['orderBy'])) {
+            $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        if (isset($callOptions['readTime'])) {
-            $request->setReadTime($callOptions['readTime']);
+        if (isset($optionalArgs['readTime'])) {
+            $request->setReadTime($optionalArgs['readTime']);
         }
 
-        if (isset($callOptions['compareDuration'])) {
-            $request->setCompareDuration($callOptions['compareDuration']);
+        if (isset($optionalArgs['compareDuration'])) {
+            $request->setCompareDuration($optionalArgs['compareDuration']);
         }
 
-        if (isset($callOptions['fieldMask'])) {
-            $request->setFieldMask($callOptions['fieldMask']);
+        if (isset($optionalArgs['fieldMask'])) {
+            $request->setFieldMask($optionalArgs['fieldMask']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListFindings', $callOptions, ListFindingsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListFindings', $optionalArgs, ListFindingsResponse::class, $request);
     }
 
     /**
@@ -2130,7 +2130,7 @@ class SecurityCenterGapicClient
      *
      * @param string $parent       Required. Name of the organization to list notification configs.
      *                             Its format is "organizations/[organization_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2152,23 +2152,23 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listNotificationConfigs($parent, array $callOptions = [])
+    public function listNotificationConfigs($parent, array $optionalArgs = [])
     {
         $request = new ListNotificationConfigsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListNotificationConfigs', $callOptions, ListNotificationConfigsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListNotificationConfigs', $optionalArgs, ListNotificationConfigsResponse::class, $request);
     }
 
     /**
@@ -2200,7 +2200,7 @@ class SecurityCenterGapicClient
      * @param string $parent       Required. Resource name of the parent of sources to list. Its format should be
      *                             "organizations/[organization_id], folders/[folder_id], or
      *                             projects/[project_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2222,23 +2222,23 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listSources($parent, array $callOptions = [])
+    public function listSources($parent, array $optionalArgs = [])
     {
         $request = new ListSourcesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListSources', $callOptions, ListSourcesResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListSources', $optionalArgs, ListSourcesResponse::class, $request);
     }
 
     /**
@@ -2287,7 +2287,7 @@ class SecurityCenterGapicClient
      *
      * @param string $parent       Required. Name of the organization to run asset discovery for. Its format is
      *                             "organizations/[organization_id]".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2300,15 +2300,15 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function runAssetDiscovery($parent, array $callOptions = [])
+    public function runAssetDiscovery($parent, array $optionalArgs = [])
     {
         $request = new RunAssetDiscoveryRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('RunAssetDiscovery', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('RunAssetDiscovery', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -2334,7 +2334,7 @@ class SecurityCenterGapicClient
      * @param int       $state        Required. The desired State of the finding.
      *                                For allowed values, use constants defined on {@see \Google\Cloud\SecurityCenter\V1\Finding\State}
      * @param Timestamp $startTime    Required. The time at which the updated state takes effect.
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2347,7 +2347,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setFindingState($name, $state, $startTime, array $callOptions = [])
+    public function setFindingState($name, $state, $startTime, array $optionalArgs = [])
     {
         $request = new SetFindingStateRequest();
         $requestParamHeaders = [];
@@ -2356,8 +2356,8 @@ class SecurityCenterGapicClient
         $request->setStartTime($startTime);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetFindingState', Finding::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetFindingState', Finding::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2381,7 +2381,7 @@ class SecurityCenterGapicClient
      *                             the policy is limited to a few 10s of KB. An empty policy is a
      *                             valid policy but certain Cloud Platform services (such as Projects)
      *                             might reject them.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2394,7 +2394,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function setIamPolicy($resource, $policy, array $callOptions = [])
+    public function setIamPolicy($resource, $policy, array $optionalArgs = [])
     {
         $request = new SetIamPolicyRequest();
         $requestParamHeaders = [];
@@ -2402,8 +2402,8 @@ class SecurityCenterGapicClient
         $request->setPolicy($policy);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('SetIamPolicy', Policy::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2427,7 +2427,7 @@ class SecurityCenterGapicClient
      *                               wildcards (such as '*' or 'storage.*') are not allowed. For more
      *                               information see
      *                               [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-     * @param array    $callOptions {
+     * @param array    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2440,7 +2440,7 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function testIamPermissions($resource, $permissions, array $callOptions = [])
+    public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
     {
         $request = new TestIamPermissionsRequest();
         $requestParamHeaders = [];
@@ -2448,8 +2448,8 @@ class SecurityCenterGapicClient
         $request->setPermissions($permissions);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2473,7 +2473,7 @@ class SecurityCenterGapicClient
      *                              In the case of creation, the finding id portion of the name must be
      *                              alphanumeric and less than or equal to 32 characters and greater than 0
      *                              characters in length.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2494,19 +2494,19 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateFinding($finding, array $callOptions = [])
+    public function updateFinding($finding, array $optionalArgs = [])
     {
         $request = new UpdateFindingRequest();
         $requestParamHeaders = [];
         $request->setFinding($finding);
         $requestParamHeaders['finding.name'] = $finding->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateFinding', Finding::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateFinding', Finding::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2526,7 +2526,7 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param NotificationConfig $notificationConfig Required. The notification config to update.
-     * @param array              $callOptions       {
+     * @param array              $optionalArgs       {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2543,19 +2543,19 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateNotificationConfig($notificationConfig, array $callOptions = [])
+    public function updateNotificationConfig($notificationConfig, array $optionalArgs = [])
     {
         $request = new UpdateNotificationConfigRequest();
         $requestParamHeaders = [];
         $request->setNotificationConfig($notificationConfig);
         $requestParamHeaders['notification_config.name'] = $notificationConfig->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateNotificationConfig', NotificationConfig::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateNotificationConfig', NotificationConfig::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2573,7 +2573,7 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param OrganizationSettings $organizationSettings Required. The organization settings resource to update.
-     * @param array                $callOptions         {
+     * @param array                $optionalArgs         {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2590,19 +2590,19 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateOrganizationSettings($organizationSettings, array $callOptions = [])
+    public function updateOrganizationSettings($organizationSettings, array $optionalArgs = [])
     {
         $request = new UpdateOrganizationSettingsRequest();
         $requestParamHeaders = [];
         $request->setOrganizationSettings($organizationSettings);
         $requestParamHeaders['organization_settings.name'] = $organizationSettings->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateOrganizationSettings', OrganizationSettings::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2620,7 +2620,7 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param SecurityMarks $securityMarks Required. The security marks resource to update.
-     * @param array         $callOptions  {
+     * @param array         $optionalArgs  {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2643,23 +2643,23 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateSecurityMarks($securityMarks, array $callOptions = [])
+    public function updateSecurityMarks($securityMarks, array $optionalArgs = [])
     {
         $request = new UpdateSecurityMarksRequest();
         $requestParamHeaders = [];
         $request->setSecurityMarks($securityMarks);
         $requestParamHeaders['security_marks.name'] = $securityMarks->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
-        if (isset($callOptions['startTime'])) {
-            $request->setStartTime($callOptions['startTime']);
+        if (isset($optionalArgs['startTime'])) {
+            $request->setStartTime($optionalArgs['startTime']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSecurityMarks', SecurityMarks::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateSecurityMarks', SecurityMarks::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2677,7 +2677,7 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param Source $source       Required. The source resource to update.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2694,18 +2694,18 @@ class SecurityCenterGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateSource($source, array $callOptions = [])
+    public function updateSource($source, array $optionalArgs = [])
     {
         $request = new UpdateSourceRequest();
         $requestParamHeaders = [];
         $request->setSource($source);
         $requestParamHeaders['source.name'] = $source->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSource', Source::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateSource', Source::class, $optionalArgs, $request)->wait();
     }
 }

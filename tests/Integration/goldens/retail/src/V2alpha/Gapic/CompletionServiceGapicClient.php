@@ -323,7 +323,7 @@ class CompletionServiceGapicClient
      * @param string $query        Required. The query used to generate suggestions.
      *
      *                             The maximum number of allowed characters is 255.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $visitorId
@@ -390,36 +390,36 @@ class CompletionServiceGapicClient
      *
      * @experimental
      */
-    public function completeQuery($catalog, $query, array $callOptions = [])
+    public function completeQuery($catalog, $query, array $optionalArgs = [])
     {
         $request = new CompleteQueryRequest();
         $requestParamHeaders = [];
         $request->setCatalog($catalog);
         $request->setQuery($query);
         $requestParamHeaders['catalog'] = $catalog;
-        if (isset($callOptions['visitorId'])) {
-            $request->setVisitorId($callOptions['visitorId']);
+        if (isset($optionalArgs['visitorId'])) {
+            $request->setVisitorId($optionalArgs['visitorId']);
         }
 
-        if (isset($callOptions['languageCodes'])) {
-            $request->setLanguageCodes($callOptions['languageCodes']);
+        if (isset($optionalArgs['languageCodes'])) {
+            $request->setLanguageCodes($optionalArgs['languageCodes']);
         }
 
-        if (isset($callOptions['deviceType'])) {
-            $request->setDeviceType($callOptions['deviceType']);
+        if (isset($optionalArgs['deviceType'])) {
+            $request->setDeviceType($optionalArgs['deviceType']);
         }
 
-        if (isset($callOptions['dataset'])) {
-            $request->setDataset($callOptions['dataset']);
+        if (isset($optionalArgs['dataset'])) {
+            $request->setDataset($optionalArgs['dataset']);
         }
 
-        if (isset($callOptions['maxSuggestions'])) {
-            $request->setMaxSuggestions($callOptions['maxSuggestions']);
+        if (isset($optionalArgs['maxSuggestions'])) {
+            $request->setMaxSuggestions($optionalArgs['maxSuggestions']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteQuery', CompleteQueryResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -472,7 +472,7 @@ class CompletionServiceGapicClient
      *
      *                                                Format: `projects/1234/locations/global/catalogs/default_catalog`.
      * @param CompletionDataInputConfig $inputConfig  Required. The desired input location of the data.
-     * @param array                     $callOptions {
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type string $notificationPubsubTopic
@@ -493,19 +493,19 @@ class CompletionServiceGapicClient
      *
      * @experimental
      */
-    public function importCompletionData($parent, $inputConfig, array $callOptions = [])
+    public function importCompletionData($parent, $inputConfig, array $optionalArgs = [])
     {
         $request = new ImportCompletionDataRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setInputConfig($inputConfig);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['notificationPubsubTopic'])) {
-            $request->setNotificationPubsubTopic($callOptions['notificationPubsubTopic']);
+        if (isset($optionalArgs['notificationPubsubTopic'])) {
+            $request->setNotificationPubsubTopic($optionalArgs['notificationPubsubTopic']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('ImportCompletionData', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ImportCompletionData', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 }

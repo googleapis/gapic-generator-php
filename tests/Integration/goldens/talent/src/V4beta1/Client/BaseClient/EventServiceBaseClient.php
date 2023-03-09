@@ -51,7 +51,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $callOptions = [])
+ * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
 class EventServiceBaseClient
 {
@@ -247,7 +247,7 @@ class EventServiceBaseClient
      * The async variant is {@see self::createClientEventAsync()} .
      *
      * @param CreateClientEventRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -262,8 +262,8 @@ class EventServiceBaseClient
      *
      * @experimental
      */
-    public function createClientEvent(CreateClientEventRequest $request, array $callOptions = []): ClientEvent
+    public function createClientEvent(CreateClientEventRequest $request, array $optionalArgs = []): ClientEvent
     {
-        return $this->startApiCall('CreateClientEvent', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateClientEvent', $request, $optionalArgs)->wait();
     }
 }

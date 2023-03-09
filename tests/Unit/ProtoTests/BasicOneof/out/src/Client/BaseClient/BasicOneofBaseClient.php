@@ -41,7 +41,7 @@ use Testing\BasicOneof\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aMethodAsync(Request $request, array $callOptions = [])
+ * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
  */
 class BasicOneofBaseClient
 {
@@ -160,7 +160,7 @@ class BasicOneofBaseClient
      * The async variant is {@see self::aMethodAsync()} .
      *
      * @param Request $request      A request to house fields associated with the call.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -173,8 +173,8 @@ class BasicOneofBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod(Request $request, array $callOptions = []): Response
+    public function aMethod(Request $request, array $optionalArgs = []): Response
     {
-        return $this->startApiCall('AMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
     }
 }

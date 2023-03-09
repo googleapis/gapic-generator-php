@@ -59,13 +59,13 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface createWorkflowTemplateAsync(CreateWorkflowTemplateRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteWorkflowTemplateAsync(DeleteWorkflowTemplateRequest $request, array $callOptions = [])
- * @method PromiseInterface getWorkflowTemplateAsync(GetWorkflowTemplateRequest $request, array $callOptions = [])
- * @method PromiseInterface instantiateInlineWorkflowTemplateAsync(InstantiateInlineWorkflowTemplateRequest $request, array $callOptions = [])
- * @method PromiseInterface instantiateWorkflowTemplateAsync(InstantiateWorkflowTemplateRequest $request, array $callOptions = [])
- * @method PromiseInterface listWorkflowTemplatesAsync(ListWorkflowTemplatesRequest $request, array $callOptions = [])
- * @method PromiseInterface updateWorkflowTemplateAsync(UpdateWorkflowTemplateRequest $request, array $callOptions = [])
+ * @method PromiseInterface createWorkflowTemplateAsync(CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteWorkflowTemplateAsync(DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getWorkflowTemplateAsync(GetWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface instantiateInlineWorkflowTemplateAsync(InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface instantiateWorkflowTemplateAsync(InstantiateWorkflowTemplateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listWorkflowTemplatesAsync(ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateWorkflowTemplateAsync(UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
  */
 class WorkflowTemplateServiceBaseClient
 {
@@ -380,7 +380,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::createWorkflowTemplateAsync()} .
      *
      * @param CreateWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                         $callOptions {
+     * @param array                         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -393,9 +393,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createWorkflowTemplate(CreateWorkflowTemplateRequest $request, array $callOptions = []): WorkflowTemplate
+    public function createWorkflowTemplate(CreateWorkflowTemplateRequest $request, array $optionalArgs = []): WorkflowTemplate
     {
-        return $this->startApiCall('CreateWorkflowTemplate', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -404,7 +404,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::deleteWorkflowTemplateAsync()} .
      *
      * @param DeleteWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                         $callOptions {
+     * @param array                         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -415,9 +415,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteWorkflowTemplate(DeleteWorkflowTemplateRequest $request, array $callOptions = []): void
+    public function deleteWorkflowTemplate(DeleteWorkflowTemplateRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteWorkflowTemplate', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -429,7 +429,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::getWorkflowTemplateAsync()} .
      *
      * @param GetWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                      $callOptions {
+     * @param array                      $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -442,9 +442,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getWorkflowTemplate(GetWorkflowTemplateRequest $request, array $callOptions = []): WorkflowTemplate
+    public function getWorkflowTemplate(GetWorkflowTemplateRequest $request, array $optionalArgs = []): WorkflowTemplate
     {
-        return $this->startApiCall('GetWorkflowTemplate', $request, $callOptions)->wait();
+        return $this->startApiCall('GetWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -476,7 +476,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::instantiateInlineWorkflowTemplateAsync()} .
      *
      * @param InstantiateInlineWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                                    $callOptions {
+     * @param array                                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -489,9 +489,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function instantiateInlineWorkflowTemplate(InstantiateInlineWorkflowTemplateRequest $request, array $callOptions = []): OperationResponse
+    public function instantiateInlineWorkflowTemplate(InstantiateInlineWorkflowTemplateRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('InstantiateInlineWorkflowTemplate', $request, $callOptions)->wait();
+        return $this->startApiCall('InstantiateInlineWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -519,7 +519,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::instantiateWorkflowTemplateAsync()} .
      *
      * @param InstantiateWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                              $callOptions {
+     * @param array                              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -532,9 +532,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function instantiateWorkflowTemplate(InstantiateWorkflowTemplateRequest $request, array $callOptions = []): OperationResponse
+    public function instantiateWorkflowTemplate(InstantiateWorkflowTemplateRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('InstantiateWorkflowTemplate', $request, $callOptions)->wait();
+        return $this->startApiCall('InstantiateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -543,7 +543,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::listWorkflowTemplatesAsync()} .
      *
      * @param ListWorkflowTemplatesRequest $request      A request to house fields associated with the call.
-     * @param array                        $callOptions {
+     * @param array                        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -556,9 +556,9 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listWorkflowTemplates(ListWorkflowTemplatesRequest $request, array $callOptions = []): PagedListResponse
+    public function listWorkflowTemplates(ListWorkflowTemplatesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListWorkflowTemplates', $request, $callOptions);
+        return $this->startApiCall('ListWorkflowTemplates', $request, $optionalArgs);
     }
 
     /**
@@ -568,7 +568,7 @@ class WorkflowTemplateServiceBaseClient
      * The async variant is {@see self::updateWorkflowTemplateAsync()} .
      *
      * @param UpdateWorkflowTemplateRequest $request      A request to house fields associated with the call.
-     * @param array                         $callOptions {
+     * @param array                         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -581,8 +581,8 @@ class WorkflowTemplateServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateWorkflowTemplate(UpdateWorkflowTemplateRequest $request, array $callOptions = []): WorkflowTemplate
+    public function updateWorkflowTemplate(UpdateWorkflowTemplateRequest $request, array $optionalArgs = []): WorkflowTemplate
     {
-        return $this->startApiCall('UpdateWorkflowTemplate', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateWorkflowTemplate', $request, $optionalArgs)->wait();
     }
 }

@@ -224,7 +224,7 @@ class BasicBidiStreamingGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -235,9 +235,9 @@ class BasicBidiStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodBidi(array $callOptions = [])
+    public function methodBidi(array $optionalArgs = [])
     {
-        return $this->startCall('MethodBidi', Response::class, $callOptions, null, Call::BIDI_STREAMING_CALL);
+        return $this->startCall('MethodBidi', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -282,7 +282,7 @@ class BasicBidiStreamingGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -293,8 +293,8 @@ class BasicBidiStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodEmpty(array $callOptions = [])
+    public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startCall('MethodEmpty', Response::class, $callOptions, null, Call::BIDI_STREAMING_CALL);
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 }

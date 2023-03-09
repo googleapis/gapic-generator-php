@@ -165,7 +165,7 @@ class DeprecatedServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $value
@@ -178,14 +178,14 @@ class DeprecatedServiceGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function fastFibonacci(array $callOptions = [])
+    public function fastFibonacci(array $optionalArgs = [])
     {
         $request = new FibonacciRequest();
-        if (isset($callOptions['value'])) {
-            $request->setValue($callOptions['value']);
+        if (isset($optionalArgs['value'])) {
+            $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startCall('FastFibonacci', GPBEmpty::class, $callOptions, $request)->wait();
+        return $this->startCall('FastFibonacci', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -201,7 +201,7 @@ class DeprecatedServiceGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $value
@@ -216,13 +216,13 @@ class DeprecatedServiceGapicClient
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function slowFibonacci(array $callOptions = [])
+    public function slowFibonacci(array $optionalArgs = [])
     {
         $request = new FibonacciRequest();
-        if (isset($callOptions['value'])) {
-            $request->setValue($callOptions['value']);
+        if (isset($optionalArgs['value'])) {
+            $request->setValue($optionalArgs['value']);
         }
 
-        return $this->startCall('SlowFibonacci', GPBEmpty::class, $callOptions, $request)->wait();
+        return $this->startCall('SlowFibonacci', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 }

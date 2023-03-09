@@ -200,7 +200,7 @@ class BasicClientStreamingGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -211,9 +211,9 @@ class BasicClientStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodClient(array $callOptions = [])
+    public function methodClient(array $optionalArgs = [])
     {
-        return $this->startCall('MethodClient', Response::class, $callOptions, null, Call::CLIENT_STREAMING_CALL);
+        return $this->startCall('MethodClient', Response::class, $optionalArgs, null, Call::CLIENT_STREAMING_CALL);
     }
 
     /**
@@ -246,7 +246,7 @@ class BasicClientStreamingGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -257,8 +257,8 @@ class BasicClientStreamingGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodEmpty(array $callOptions = [])
+    public function methodEmpty(array $optionalArgs = [])
     {
-        return $this->startCall('MethodEmpty', Response::class, $callOptions, null, Call::CLIENT_STREAMING_CALL);
+        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, null, Call::CLIENT_STREAMING_CALL);
     }
 }

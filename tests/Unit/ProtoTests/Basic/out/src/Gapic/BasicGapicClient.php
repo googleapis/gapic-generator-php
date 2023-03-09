@@ -167,7 +167,7 @@ class BasicGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -180,10 +180,10 @@ class BasicGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function aMethod(array $callOptions = [])
+    public function aMethod(array $optionalArgs = [])
     {
         $request = new Request();
-        return $this->startCall('AMethod', Response::class, $callOptions, $request)->wait();
+        return $this->startCall('AMethod', Response::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -204,7 +204,7 @@ class BasicGapicClient
      * @param string           $aString        A required field...
      * @param PartOfRequestA[] $partOfRequestA ...and a repeated message type, which checks that an extra import is *not* added,
      *                                         in contrast to a paginated method where an extra import *is* added.
-     * @param array            $callOptions   {
+     * @param array            $optionalArgs   {
      *     Optional.
      *
      *     @type int $anInt
@@ -221,23 +221,23 @@ class BasicGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function methodWithArgs($aString, $partOfRequestA, array $callOptions = [])
+    public function methodWithArgs($aString, $partOfRequestA, array $optionalArgs = [])
     {
         $request = new RequestWithArgs();
         $request->setAString($aString);
         $request->setPartOfRequestA($partOfRequestA);
-        if (isset($callOptions['anInt'])) {
-            $request->setAnInt($callOptions['anInt']);
+        if (isset($optionalArgs['anInt'])) {
+            $request->setAnInt($optionalArgs['anInt']);
         }
 
-        if (isset($callOptions['partOfRequestB'])) {
-            $request->setPartOfRequestB($callOptions['partOfRequestB']);
+        if (isset($optionalArgs['partOfRequestB'])) {
+            $request->setPartOfRequestB($optionalArgs['partOfRequestB']);
         }
 
-        if (isset($callOptions['partOfRequestC'])) {
-            $request->setPartOfRequestC($callOptions['partOfRequestC']);
+        if (isset($optionalArgs['partOfRequestC'])) {
+            $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->startCall('MethodWithArgs', Response::class, $callOptions, $request)->wait();
+        return $this->startCall('MethodWithArgs', Response::class, $optionalArgs, $request)->wait();
     }
 }

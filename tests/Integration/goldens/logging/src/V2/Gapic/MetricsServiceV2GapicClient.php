@@ -300,7 +300,7 @@ class MetricsServiceV2GapicClient
      *                                The new metric must be provided in the request.
      * @param LogMetric $metric       Required. The new logs-based metric, which must not have an identifier that
      *                                already exists.
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -313,7 +313,7 @@ class MetricsServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createLogMetric($parent, $metric, array $callOptions = [])
+    public function createLogMetric($parent, $metric, array $optionalArgs = [])
     {
         $request = new CreateLogMetricRequest();
         $requestParamHeaders = [];
@@ -321,8 +321,8 @@ class MetricsServiceV2GapicClient
         $request->setMetric($metric);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateLogMetric', LogMetric::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -342,7 +342,7 @@ class MetricsServiceV2GapicClient
      * @param string $metricName   Required. The resource name of the metric to delete:
      *
      *                             "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -353,15 +353,15 @@ class MetricsServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteLogMetric($metricName, array $callOptions = [])
+    public function deleteLogMetric($metricName, array $optionalArgs = [])
     {
         $request = new DeleteLogMetricRequest();
         $requestParamHeaders = [];
         $request->setMetricName($metricName);
         $requestParamHeaders['metric_name'] = $metricName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteLogMetric', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteLogMetric', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -381,7 +381,7 @@ class MetricsServiceV2GapicClient
      * @param string $metricName   Required. The resource name of the desired metric:
      *
      *                             "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -394,15 +394,15 @@ class MetricsServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getLogMetric($metricName, array $callOptions = [])
+    public function getLogMetric($metricName, array $optionalArgs = [])
     {
         $request = new GetLogMetricRequest();
         $requestParamHeaders = [];
         $request->setMetricName($metricName);
         $requestParamHeaders['metric_name'] = $metricName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetLogMetric', LogMetric::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -434,7 +434,7 @@ class MetricsServiceV2GapicClient
      * @param string $parent       Required. The name of the project containing the metrics:
      *
      *                             "projects/[PROJECT_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -456,23 +456,23 @@ class MetricsServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listLogMetrics($parent, array $callOptions = [])
+    public function listLogMetrics($parent, array $optionalArgs = [])
     {
         $request = new ListLogMetricsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListLogMetrics', $callOptions, ListLogMetricsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLogMetrics', $optionalArgs, ListLogMetricsResponse::class, $request);
     }
 
     /**
@@ -498,7 +498,7 @@ class MetricsServiceV2GapicClient
      *                                `name` field must be the same as `[METRIC_ID]` If the metric
      *                                does not exist in `[PROJECT_ID]`, then a new metric is created.
      * @param LogMetric $metric       Required. The updated metric.
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -511,7 +511,7 @@ class MetricsServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateLogMetric($metricName, $metric, array $callOptions = [])
+    public function updateLogMetric($metricName, $metric, array $optionalArgs = [])
     {
         $request = new UpdateLogMetricRequest();
         $requestParamHeaders = [];
@@ -519,7 +519,7 @@ class MetricsServiceV2GapicClient
         $request->setMetric($metric);
         $requestParamHeaders['metric_name'] = $metricName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateLogMetric', LogMetric::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateLogMetric', LogMetric::class, $optionalArgs, $request)->wait();
     }
 }

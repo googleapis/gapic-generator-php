@@ -45,7 +45,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface annotateVideoAsync(AnnotateVideoRequest $request, array $callOptions = [])
+ * @method PromiseInterface annotateVideoAsync(AnnotateVideoRequest $request, array $optionalArgs = [])
  */
 class VideoIntelligenceServiceBaseClient
 {
@@ -198,7 +198,7 @@ class VideoIntelligenceServiceBaseClient
      * The async variant is {@see self::annotateVideoAsync()} .
      *
      * @param AnnotateVideoRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -211,8 +211,8 @@ class VideoIntelligenceServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function annotateVideo(AnnotateVideoRequest $request, array $callOptions = []): OperationResponse
+    public function annotateVideo(AnnotateVideoRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('AnnotateVideo', $request, $callOptions)->wait();
+        return $this->startApiCall('AnnotateVideo', $request, $optionalArgs)->wait();
     }
 }

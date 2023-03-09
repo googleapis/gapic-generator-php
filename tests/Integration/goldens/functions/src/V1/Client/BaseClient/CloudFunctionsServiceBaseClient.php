@@ -66,17 +66,17 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface callFunctionAsync(CallFunctionRequest $request, array $callOptions = [])
- * @method PromiseInterface createFunctionAsync(CreateFunctionRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteFunctionAsync(DeleteFunctionRequest $request, array $callOptions = [])
- * @method PromiseInterface generateDownloadUrlAsync(GenerateDownloadUrlRequest $request, array $callOptions = [])
- * @method PromiseInterface generateUploadUrlAsync(GenerateUploadUrlRequest $request, array $callOptions = [])
- * @method PromiseInterface getFunctionAsync(GetFunctionRequest $request, array $callOptions = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $callOptions = [])
- * @method PromiseInterface listFunctionsAsync(ListFunctionsRequest $request, array $callOptions = [])
- * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $callOptions = [])
- * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateFunctionAsync(UpdateFunctionRequest $request, array $callOptions = [])
+ * @method PromiseInterface callFunctionAsync(CallFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface createFunctionAsync(CreateFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteFunctionAsync(DeleteFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface generateDownloadUrlAsync(GenerateDownloadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface generateUploadUrlAsync(GenerateUploadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getFunctionAsync(GetFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listFunctionsAsync(ListFunctionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
  */
 class CloudFunctionsServiceBaseClient
 {
@@ -296,7 +296,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::callFunctionAsync()} .
      *
      * @param CallFunctionRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -309,9 +309,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function callFunction(CallFunctionRequest $request, array $callOptions = []): CallFunctionResponse
+    public function callFunction(CallFunctionRequest $request, array $optionalArgs = []): CallFunctionResponse
     {
-        return $this->startApiCall('CallFunction', $request, $callOptions)->wait();
+        return $this->startApiCall('CallFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -322,7 +322,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::createFunctionAsync()} .
      *
      * @param CreateFunctionRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -335,9 +335,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createFunction(CreateFunctionRequest $request, array $callOptions = []): OperationResponse
+    public function createFunction(CreateFunctionRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('CreateFunction', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -348,7 +348,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::deleteFunctionAsync()} .
      *
      * @param DeleteFunctionRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -361,9 +361,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteFunction(DeleteFunctionRequest $request, array $callOptions = []): OperationResponse
+    public function deleteFunction(DeleteFunctionRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('DeleteFunction', $request, $callOptions)->wait();
+        return $this->startApiCall('DeleteFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -376,7 +376,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::generateDownloadUrlAsync()} .
      *
      * @param GenerateDownloadUrlRequest $request      A request to house fields associated with the call.
-     * @param array                      $callOptions {
+     * @param array                      $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -389,9 +389,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function generateDownloadUrl(GenerateDownloadUrlRequest $request, array $callOptions = []): GenerateDownloadUrlResponse
+    public function generateDownloadUrl(GenerateDownloadUrlRequest $request, array $optionalArgs = []): GenerateDownloadUrlResponse
     {
-        return $this->startApiCall('GenerateDownloadUrl', $request, $callOptions)->wait();
+        return $this->startApiCall('GenerateDownloadUrl', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -424,7 +424,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::generateUploadUrlAsync()} .
      *
      * @param GenerateUploadUrlRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -437,9 +437,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function generateUploadUrl(GenerateUploadUrlRequest $request, array $callOptions = []): GenerateUploadUrlResponse
+    public function generateUploadUrl(GenerateUploadUrlRequest $request, array $optionalArgs = []): GenerateUploadUrlResponse
     {
-        return $this->startApiCall('GenerateUploadUrl', $request, $callOptions)->wait();
+        return $this->startApiCall('GenerateUploadUrl', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -448,7 +448,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::getFunctionAsync()} .
      *
      * @param GetFunctionRequest $request      A request to house fields associated with the call.
-     * @param array              $callOptions {
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -461,9 +461,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getFunction(GetFunctionRequest $request, array $callOptions = []): CloudFunction
+    public function getFunction(GetFunctionRequest $request, array $optionalArgs = []): CloudFunction
     {
-        return $this->startApiCall('GetFunction', $request, $callOptions)->wait();
+        return $this->startApiCall('GetFunction', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -474,7 +474,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::getIamPolicyAsync()} .
      *
      * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -487,9 +487,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
+    public function getIamPolicy(GetIamPolicyRequest $request, array $optionalArgs = []): Policy
     {
-        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -498,7 +498,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::listFunctionsAsync()} .
      *
      * @param ListFunctionsRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -511,9 +511,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listFunctions(ListFunctionsRequest $request, array $callOptions = []): PagedListResponse
+    public function listFunctions(ListFunctionsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListFunctions', $request, $callOptions);
+        return $this->startApiCall('ListFunctions', $request, $optionalArgs);
     }
 
     /**
@@ -523,7 +523,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::setIamPolicyAsync()} .
      *
      * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -536,9 +536,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy
+    public function setIamPolicy(SetIamPolicyRequest $request, array $optionalArgs = []): Policy
     {
-        return $this->startApiCall('SetIamPolicy', $request, $callOptions)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -550,7 +550,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::testIamPermissionsAsync()} .
      *
      * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
-     * @param array                     $callOptions {
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -563,9 +563,9 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
+    public function testIamPermissions(TestIamPermissionsRequest $request, array $optionalArgs = []): TestIamPermissionsResponse
     {
-        return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -574,7 +574,7 @@ class CloudFunctionsServiceBaseClient
      * The async variant is {@see self::updateFunctionAsync()} .
      *
      * @param UpdateFunctionRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -587,8 +587,8 @@ class CloudFunctionsServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateFunction(UpdateFunctionRequest $request, array $callOptions = []): OperationResponse
+    public function updateFunction(UpdateFunctionRequest $request, array $optionalArgs = []): OperationResponse
     {
-        return $this->startApiCall('UpdateFunction', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateFunction', $request, $optionalArgs)->wait();
     }
 }

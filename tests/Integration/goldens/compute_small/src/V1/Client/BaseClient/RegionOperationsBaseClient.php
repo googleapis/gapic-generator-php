@@ -41,7 +41,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface getAsync(GetRegionOperationRequest $request, array $callOptions = [])
+ * @method PromiseInterface getAsync(GetRegionOperationRequest $request, array $optionalArgs = [])
  */
 class RegionOperationsBaseClient
 {
@@ -172,7 +172,7 @@ class RegionOperationsBaseClient
      * The async variant is {@see self::getAsync()} .
      *
      * @param GetRegionOperationRequest $request      A request to house fields associated with the call.
-     * @param array                     $callOptions {
+     * @param array                     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -185,8 +185,8 @@ class RegionOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function get(GetRegionOperationRequest $request, array $callOptions = []): Operation
+    public function get(GetRegionOperationRequest $request, array $optionalArgs = []): Operation
     {
-        return $this->startApiCall('Get', $request, $callOptions)->wait();
+        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
     }
 }

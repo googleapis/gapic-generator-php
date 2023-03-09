@@ -57,11 +57,11 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @method PromiseInterface createApplicationAsync(CreateApplicationRequest $request, array $callOptions = [])
- * @method PromiseInterface deleteApplicationAsync(DeleteApplicationRequest $request, array $callOptions = [])
- * @method PromiseInterface getApplicationAsync(GetApplicationRequest $request, array $callOptions = [])
- * @method PromiseInterface listApplicationsAsync(ListApplicationsRequest $request, array $callOptions = [])
- * @method PromiseInterface updateApplicationAsync(UpdateApplicationRequest $request, array $callOptions = [])
+ * @method PromiseInterface createApplicationAsync(CreateApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface deleteApplicationAsync(DeleteApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface getApplicationAsync(GetApplicationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listApplicationsAsync(ListApplicationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateApplicationAsync(UpdateApplicationRequest $request, array $optionalArgs = [])
  */
 class ApplicationServiceBaseClient
 {
@@ -387,7 +387,7 @@ class ApplicationServiceBaseClient
      * The async variant is {@see self::createApplicationAsync()} .
      *
      * @param CreateApplicationRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -402,9 +402,9 @@ class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public function createApplication(CreateApplicationRequest $request, array $callOptions = []): Application
+    public function createApplication(CreateApplicationRequest $request, array $optionalArgs = []): Application
     {
-        return $this->startApiCall('CreateApplication', $request, $callOptions)->wait();
+        return $this->startApiCall('CreateApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -413,7 +413,7 @@ class ApplicationServiceBaseClient
      * The async variant is {@see self::deleteApplicationAsync()} .
      *
      * @param DeleteApplicationRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -426,9 +426,9 @@ class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public function deleteApplication(DeleteApplicationRequest $request, array $callOptions = []): void
+    public function deleteApplication(DeleteApplicationRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteApplication', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -437,7 +437,7 @@ class ApplicationServiceBaseClient
      * The async variant is {@see self::getApplicationAsync()} .
      *
      * @param GetApplicationRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -452,9 +452,9 @@ class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public function getApplication(GetApplicationRequest $request, array $callOptions = []): Application
+    public function getApplication(GetApplicationRequest $request, array $optionalArgs = []): Application
     {
-        return $this->startApiCall('GetApplication', $request, $callOptions)->wait();
+        return $this->startApiCall('GetApplication', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -463,7 +463,7 @@ class ApplicationServiceBaseClient
      * The async variant is {@see self::listApplicationsAsync()} .
      *
      * @param ListApplicationsRequest $request      A request to house fields associated with the call.
-     * @param array                   $callOptions {
+     * @param array                   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -478,9 +478,9 @@ class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public function listApplications(ListApplicationsRequest $request, array $callOptions = []): PagedListResponse
+    public function listApplications(ListApplicationsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListApplications', $request, $callOptions);
+        return $this->startApiCall('ListApplications', $request, $optionalArgs);
     }
 
     /**
@@ -489,7 +489,7 @@ class ApplicationServiceBaseClient
      * The async variant is {@see self::updateApplicationAsync()} .
      *
      * @param UpdateApplicationRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -504,8 +504,8 @@ class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public function updateApplication(UpdateApplicationRequest $request, array $callOptions = []): Application
+    public function updateApplication(UpdateApplicationRequest $request, array $optionalArgs = []): Application
     {
-        return $this->startApiCall('UpdateApplication', $request, $callOptions)->wait();
+        return $this->startApiCall('UpdateApplication', $request, $optionalArgs)->wait();
     }
 }

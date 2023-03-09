@@ -409,7 +409,7 @@ class CompanyServiceGapicClient
      *                              "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
      *                              is created, for example, "projects/foo".
      * @param Company $company      Required. The company to be created.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -424,7 +424,7 @@ class CompanyServiceGapicClient
      *
      * @experimental
      */
-    public function createCompany($parent, $company, array $callOptions = [])
+    public function createCompany($parent, $company, array $optionalArgs = [])
     {
         $request = new CreateCompanyRequest();
         $requestParamHeaders = [];
@@ -432,8 +432,8 @@ class CompanyServiceGapicClient
         $request->setCompany($company);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateCompany', Company::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateCompany', Company::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -459,7 +459,7 @@ class CompanyServiceGapicClient
      *
      *                             If tenant id is unspecified, the default tenant is used, for
      *                             example, "projects/foo/companies/bar".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -472,15 +472,15 @@ class CompanyServiceGapicClient
      *
      * @experimental
      */
-    public function deleteCompany($name, array $callOptions = [])
+    public function deleteCompany($name, array $optionalArgs = [])
     {
         $request = new DeleteCompanyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteCompany', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteCompany', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -505,7 +505,7 @@ class CompanyServiceGapicClient
      *
      *                             If tenant id is unspecified, the default tenant is used, for
      *                             example, "projects/api-test-project/companies/bar".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -520,15 +520,15 @@ class CompanyServiceGapicClient
      *
      * @experimental
      */
-    public function getCompany($name, array $callOptions = [])
+    public function getCompany($name, array $optionalArgs = [])
     {
         $request = new GetCompanyRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCompany', Company::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCompany', Company::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -564,7 +564,7 @@ class CompanyServiceGapicClient
      *
      *                             If tenant id is unspecified, the default tenant will be used, for
      *                             example, "projects/foo".
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -595,27 +595,27 @@ class CompanyServiceGapicClient
      *
      * @experimental
      */
-    public function listCompanies($parent, array $callOptions = [])
+    public function listCompanies($parent, array $optionalArgs = [])
     {
         $request = new ListCompaniesRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['requireOpenJobs'])) {
-            $request->setRequireOpenJobs($callOptions['requireOpenJobs']);
+        if (isset($optionalArgs['requireOpenJobs'])) {
+            $request->setRequireOpenJobs($optionalArgs['requireOpenJobs']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListCompanies', $callOptions, ListCompaniesResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListCompanies', $optionalArgs, ListCompaniesResponse::class, $request);
     }
 
     /**
@@ -633,7 +633,7 @@ class CompanyServiceGapicClient
      * ```
      *
      * @param Company $company      Required. The company resource to replace the current resource in the system.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -656,18 +656,18 @@ class CompanyServiceGapicClient
      *
      * @experimental
      */
-    public function updateCompany($company, array $callOptions = [])
+    public function updateCompany($company, array $optionalArgs = [])
     {
         $request = new UpdateCompanyRequest();
         $requestParamHeaders = [];
         $request->setCompany($company);
         $requestParamHeaders['company.name'] = $company->getName();
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCompany', Company::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCompany', Company::class, $optionalArgs, $request)->wait();
     }
 }

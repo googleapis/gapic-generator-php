@@ -517,7 +517,7 @@ class LoggingServiceV2GapicClient
      *                             `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
      *                             For more information about log names, see
      *                             [LogEntry][google.logging.v2.LogEntry].
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -528,15 +528,15 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteLog($logName, array $callOptions = [])
+    public function deleteLog($logName, array $optionalArgs = [])
     {
         $request = new DeleteLogRequest();
         $requestParamHeaders = [];
         $request->setLogName($logName);
         $requestParamHeaders['log_name'] = $logName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteLog', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteLog', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -585,7 +585,7 @@ class LoggingServiceV2GapicClient
      *                                folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
      *
      *                                Projects listed in the `project_ids` field are added to this list.
-     * @param array    $callOptions  {
+     * @param array    $optionalArgs  {
      *     Optional.
      *
      *     @type string $filter
@@ -622,27 +622,27 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listLogEntries($resourceNames, array $callOptions = [])
+    public function listLogEntries($resourceNames, array $optionalArgs = [])
     {
         $request = new ListLogEntriesRequest();
         $request->setResourceNames($resourceNames);
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
-        if (isset($callOptions['orderBy'])) {
-            $request->setOrderBy($callOptions['orderBy']);
+        if (isset($optionalArgs['orderBy'])) {
+            $request->setOrderBy($optionalArgs['orderBy']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->getPagedListResponse('ListLogEntries', $callOptions, ListLogEntriesResponse::class, $request);
+        return $this->getPagedListResponse('ListLogEntries', $optionalArgs, ListLogEntriesResponse::class, $request);
     }
 
     /**
@@ -678,7 +678,7 @@ class LoggingServiceV2GapicClient
      *                             "organizations/[ORGANIZATION_ID]"
      *                             "billingAccounts/[BILLING_ACCOUNT_ID]"
      *                             "folders/[FOLDER_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -712,27 +712,27 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listLogs($parent, array $callOptions = [])
+    public function listLogs($parent, array $optionalArgs = [])
     {
         $request = new ListLogsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['resourceNames'])) {
-            $request->setResourceNames($callOptions['resourceNames']);
+        if (isset($optionalArgs['resourceNames'])) {
+            $request->setResourceNames($optionalArgs['resourceNames']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListLogs', $callOptions, ListLogsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLogs', $optionalArgs, ListLogsResponse::class, $request);
     }
 
     /**
@@ -760,7 +760,7 @@ class LoggingServiceV2GapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -782,18 +782,18 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listMonitoredResourceDescriptors(array $callOptions = [])
+    public function listMonitoredResourceDescriptors(array $optionalArgs = [])
     {
         $request = new ListMonitoredResourceDescriptorsRequest();
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->getPagedListResponse('ListMonitoredResourceDescriptors', $callOptions, ListMonitoredResourceDescriptorsResponse::class, $request);
+        return $this->getPagedListResponse('ListMonitoredResourceDescriptors', $optionalArgs, ListMonitoredResourceDescriptorsResponse::class, $request);
     }
 
     /**
@@ -842,7 +842,7 @@ class LoggingServiceV2GapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -853,9 +853,9 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function tailLogEntries(array $callOptions = [])
+    public function tailLogEntries(array $optionalArgs = [])
     {
-        return $this->startCall('TailLogEntries', TailLogEntriesResponse::class, $callOptions, null, Call::BIDI_STREAMING_CALL);
+        return $this->startCall('TailLogEntries', TailLogEntriesResponse::class, $optionalArgs, null, Call::BIDI_STREAMING_CALL);
     }
 
     /**
@@ -902,7 +902,7 @@ class LoggingServiceV2GapicClient
      *                                 [quota limit](https://cloud.google.com/logging/quota-policy) for calls to
      *                                 `entries.write`, you should try to include several log entries in this
      *                                 list, rather than calling this method for each individual log entry.
-     * @param array      $callOptions {
+     * @param array      $optionalArgs {
      *     Optional.
      *
      *     @type string $logName
@@ -957,30 +957,30 @@ class LoggingServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function writeLogEntries($entries, array $callOptions = [])
+    public function writeLogEntries($entries, array $optionalArgs = [])
     {
         $request = new WriteLogEntriesRequest();
         $request->setEntries($entries);
-        if (isset($callOptions['logName'])) {
-            $request->setLogName($callOptions['logName']);
+        if (isset($optionalArgs['logName'])) {
+            $request->setLogName($optionalArgs['logName']);
         }
 
-        if (isset($callOptions['resource'])) {
-            $request->setResource($callOptions['resource']);
+        if (isset($optionalArgs['resource'])) {
+            $request->setResource($optionalArgs['resource']);
         }
 
-        if (isset($callOptions['labels'])) {
-            $request->setLabels($callOptions['labels']);
+        if (isset($optionalArgs['labels'])) {
+            $request->setLabels($optionalArgs['labels']);
         }
 
-        if (isset($callOptions['partialSuccess'])) {
-            $request->setPartialSuccess($callOptions['partialSuccess']);
+        if (isset($optionalArgs['partialSuccess'])) {
+            $request->setPartialSuccess($optionalArgs['partialSuccess']);
         }
 
-        if (isset($callOptions['dryRun'])) {
-            $request->setDryRun($callOptions['dryRun']);
+        if (isset($optionalArgs['dryRun'])) {
+            $request->setDryRun($optionalArgs['dryRun']);
         }
 
-        return $this->startCall('WriteLogEntries', WriteLogEntriesResponse::class, $callOptions, $request)->wait();
+        return $this->startCall('WriteLogEntries', WriteLogEntriesResponse::class, $optionalArgs, $request)->wait();
     }
 }

@@ -1276,7 +1276,7 @@ class ConfigServiceV2GapicClient
      * @param LogBucket $bucket       Required. The new bucket. The region specified in the new bucket must be compliant
      *                                with any Location Restriction Org Policy. The name field in the bucket is
      *                                ignored.
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1289,7 +1289,7 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createBucket($parent, $bucketId, $bucket, array $callOptions = [])
+    public function createBucket($parent, $bucketId, $bucket, array $optionalArgs = [])
     {
         $request = new CreateBucketRequest();
         $requestParamHeaders = [];
@@ -1298,8 +1298,8 @@ class ConfigServiceV2GapicClient
         $request->setBucket($bucket);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateBucket', LogBucket::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1329,7 +1329,7 @@ class ConfigServiceV2GapicClient
      *                                   Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
      * @param LogExclusion $exclusion    Required. The new exclusion, whose `name` parameter is an exclusion name
      *                                   that is not already used in the parent resource.
-     * @param array        $callOptions {
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1342,7 +1342,7 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createExclusion($parent, $exclusion, array $callOptions = [])
+    public function createExclusion($parent, $exclusion, array $optionalArgs = [])
     {
         $request = new CreateExclusionRequest();
         $requestParamHeaders = [];
@@ -1350,8 +1350,8 @@ class ConfigServiceV2GapicClient
         $request->setExclusion($exclusion);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateExclusion', LogExclusion::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1382,7 +1382,7 @@ class ConfigServiceV2GapicClient
      *                              Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
      * @param LogSink $sink         Required. The new sink, whose `name` parameter is a sink identifier that
      *                              is not already in use.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type bool $uniqueWriterIdentity
@@ -1407,20 +1407,20 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createSink($parent, $sink, array $callOptions = [])
+    public function createSink($parent, $sink, array $optionalArgs = [])
     {
         $request = new CreateSinkRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $request->setSink($sink);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['uniqueWriterIdentity'])) {
-            $request->setUniqueWriterIdentity($callOptions['uniqueWriterIdentity']);
+        if (isset($optionalArgs['uniqueWriterIdentity'])) {
+            $request->setUniqueWriterIdentity($optionalArgs['uniqueWriterIdentity']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateSink', LogSink::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateSink', LogSink::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1448,7 +1448,7 @@ class ConfigServiceV2GapicClient
      *                              `"projects/my-logging-project/locations/my-location/buckets/my-bucket"`
      * @param string  $viewId       Required. The id to use for this view.
      * @param LogView $view         Required. The new view.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1461,7 +1461,7 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createView($parent, $viewId, $view, array $callOptions = [])
+    public function createView($parent, $viewId, $view, array $optionalArgs = [])
     {
         $request = new CreateViewRequest();
         $requestParamHeaders = [];
@@ -1470,8 +1470,8 @@ class ConfigServiceV2GapicClient
         $request->setView($view);
         $requestParamHeaders['parent'] = $parent;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateView', LogView::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateView', LogView::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1500,7 +1500,7 @@ class ConfigServiceV2GapicClient
      *
      *                             Example:
      *                             `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1511,15 +1511,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteBucket($name, array $callOptions = [])
+    public function deleteBucket($name, array $optionalArgs = [])
     {
         $request = new DeleteBucketRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteBucket', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteBucket', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1544,7 +1544,7 @@ class ConfigServiceV2GapicClient
      *                             "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
      *
      *                             Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1555,15 +1555,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteExclusion($name, array $callOptions = [])
+    public function deleteExclusion($name, array $optionalArgs = [])
     {
         $request = new DeleteExclusionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteExclusion', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteExclusion', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1590,7 +1590,7 @@ class ConfigServiceV2GapicClient
      *                             "folders/[FOLDER_ID]/sinks/[SINK_ID]"
      *
      *                             Example: `"projects/my-project-id/sinks/my-sink-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1601,15 +1601,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteSink($sinkName, array $callOptions = [])
+    public function deleteSink($sinkName, array $optionalArgs = [])
     {
         $request = new DeleteSinkRequest();
         $requestParamHeaders = [];
         $request->setSinkName($sinkName);
         $requestParamHeaders['sink_name'] = $sinkName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteSink', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteSink', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1632,7 +1632,7 @@ class ConfigServiceV2GapicClient
      *
      *                             Example:
      *                             `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1643,15 +1643,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteView($name, array $callOptions = [])
+    public function deleteView($name, array $optionalArgs = [])
     {
         $request = new DeleteViewRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteView', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteView', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1677,7 +1677,7 @@ class ConfigServiceV2GapicClient
      *
      *                             Example:
      *                             `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1690,15 +1690,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBucket($name, array $callOptions = [])
+    public function getBucket($name, array $optionalArgs = [])
     {
         $request = new GetBucketRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBucket', LogBucket::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1722,7 +1722,7 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $name
@@ -1748,18 +1748,18 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getCmekSettings(array $callOptions = [])
+    public function getCmekSettings(array $optionalArgs = [])
     {
         $request = new GetCmekSettingsRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['name'])) {
-            $request->setName($callOptions['name']);
-            $requestParamHeaders['name'] = $callOptions['name'];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetCmekSettings', CmekSettings::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCmekSettings', CmekSettings::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1784,7 +1784,7 @@ class ConfigServiceV2GapicClient
      *                             "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
      *
      *                             Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1797,15 +1797,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getExclusion($name, array $callOptions = [])
+    public function getExclusion($name, array $optionalArgs = [])
     {
         $request = new GetExclusionRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetExclusion', LogExclusion::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1830,7 +1830,7 @@ class ConfigServiceV2GapicClient
      *                             "folders/[FOLDER_ID]/sinks/[SINK_ID]"
      *
      *                             Example: `"projects/my-project-id/sinks/my-sink-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1843,15 +1843,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getSink($sinkName, array $callOptions = [])
+    public function getSink($sinkName, array $optionalArgs = [])
     {
         $request = new GetSinkRequest();
         $requestParamHeaders = [];
         $request->setSinkName($sinkName);
         $requestParamHeaders['sink_name'] = $sinkName;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetSink', LogSink::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetSink', LogSink::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1874,7 +1874,7 @@ class ConfigServiceV2GapicClient
      *
      *                             Example:
      *                             `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1887,15 +1887,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getView($name, array $callOptions = [])
+    public function getView($name, array $optionalArgs = [])
     {
         $request = new GetViewRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetView', LogView::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetView', LogView::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1934,7 +1934,7 @@ class ConfigServiceV2GapicClient
      *                             Note: The locations portion of the resource must be specified, but
      *                             supplying the character `-` in place of [LOCATION_ID] will return all
      *                             buckets.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -1956,23 +1956,23 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listBuckets($parent, array $callOptions = [])
+    public function listBuckets($parent, array $optionalArgs = [])
     {
         $request = new ListBucketsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListBuckets', $callOptions, ListBucketsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListBuckets', $optionalArgs, ListBucketsResponse::class, $request);
     }
 
     /**
@@ -2007,7 +2007,7 @@ class ConfigServiceV2GapicClient
      *                             "organizations/[ORGANIZATION_ID]"
      *                             "billingAccounts/[BILLING_ACCOUNT_ID]"
      *                             "folders/[FOLDER_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2029,23 +2029,23 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listExclusions($parent, array $callOptions = [])
+    public function listExclusions($parent, array $optionalArgs = [])
     {
         $request = new ListExclusionsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListExclusions', $callOptions, ListExclusionsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListExclusions', $optionalArgs, ListExclusionsResponse::class, $request);
     }
 
     /**
@@ -2080,7 +2080,7 @@ class ConfigServiceV2GapicClient
      *                             "organizations/[ORGANIZATION_ID]"
      *                             "billingAccounts/[BILLING_ACCOUNT_ID]"
      *                             "folders/[FOLDER_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2102,23 +2102,23 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listSinks($parent, array $callOptions = [])
+    public function listSinks($parent, array $optionalArgs = [])
     {
         $request = new ListSinksRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListSinks', $callOptions, ListSinksResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListSinks', $optionalArgs, ListSinksResponse::class, $request);
     }
 
     /**
@@ -2150,7 +2150,7 @@ class ConfigServiceV2GapicClient
      * @param string $parent       Required. The bucket whose views are to be listed:
      *
      *                             "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2172,23 +2172,23 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listViews($parent, array $callOptions = [])
+    public function listViews($parent, array $optionalArgs = [])
     {
         $request = new ListViewsRequest();
         $requestParamHeaders = [];
         $request->setParent($parent);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListViews', $callOptions, ListViewsResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListViews', $optionalArgs, ListViewsResponse::class, $request);
     }
 
     /**
@@ -2215,7 +2215,7 @@ class ConfigServiceV2GapicClient
      *
      *                             Example:
      *                             `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2226,15 +2226,15 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function undeleteBucket($name, array $callOptions = [])
+    public function undeleteBucket($name, array $optionalArgs = [])
     {
         $request = new UndeleteBucketRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UndeleteBucket', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UndeleteBucket', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2282,7 +2282,7 @@ class ConfigServiceV2GapicClient
      *                                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
      *
      *                                Example: `updateMask=retention_days`.
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2295,7 +2295,7 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateBucket($name, $bucket, $updateMask, array $callOptions = [])
+    public function updateBucket($name, $bucket, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateBucketRequest();
         $requestParamHeaders = [];
@@ -2304,8 +2304,8 @@ class ConfigServiceV2GapicClient
         $request->setUpdateMask($updateMask);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateBucket', LogBucket::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateBucket', LogBucket::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2335,7 +2335,7 @@ class ConfigServiceV2GapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $name
@@ -2375,26 +2375,26 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateCmekSettings(array $callOptions = [])
+    public function updateCmekSettings(array $optionalArgs = [])
     {
         $request = new UpdateCmekSettingsRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['name'])) {
-            $request->setName($callOptions['name']);
-            $requestParamHeaders['name'] = $callOptions['name'];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
-        if (isset($callOptions['cmekSettings'])) {
-            $request->setCmekSettings($callOptions['cmekSettings']);
+        if (isset($optionalArgs['cmekSettings'])) {
+            $request->setCmekSettings($optionalArgs['cmekSettings']);
         }
 
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateCmekSettings', CmekSettings::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCmekSettings', CmekSettings::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2430,7 +2430,7 @@ class ConfigServiceV2GapicClient
      *
      *                                   For example, to change the filter and description of an exclusion,
      *                                   specify an `update_mask` of `"filter,description"`.
-     * @param array        $callOptions {
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2443,7 +2443,7 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateExclusion($name, $exclusion, $updateMask, array $callOptions = [])
+    public function updateExclusion($name, $exclusion, $updateMask, array $optionalArgs = [])
     {
         $request = new UpdateExclusionRequest();
         $requestParamHeaders = [];
@@ -2452,8 +2452,8 @@ class ConfigServiceV2GapicClient
         $request->setUpdateMask($updateMask);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateExclusion', LogExclusion::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateExclusion', LogExclusion::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2486,7 +2486,7 @@ class ConfigServiceV2GapicClient
      *                              Example: `"projects/my-project-id/sinks/my-sink-id"`.
      * @param LogSink $sink         Required. The updated sink, whose name is the same identifier that appears as part
      *                              of `sink_name`.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type bool $uniqueWriterIdentity
@@ -2526,24 +2526,24 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateSink($sinkName, $sink, array $callOptions = [])
+    public function updateSink($sinkName, $sink, array $optionalArgs = [])
     {
         $request = new UpdateSinkRequest();
         $requestParamHeaders = [];
         $request->setSinkName($sinkName);
         $request->setSink($sink);
         $requestParamHeaders['sink_name'] = $sinkName;
-        if (isset($callOptions['uniqueWriterIdentity'])) {
-            $request->setUniqueWriterIdentity($callOptions['uniqueWriterIdentity']);
+        if (isset($optionalArgs['uniqueWriterIdentity'])) {
+            $request->setUniqueWriterIdentity($optionalArgs['uniqueWriterIdentity']);
         }
 
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateSink', LogSink::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateSink', LogSink::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2569,7 +2569,7 @@ class ConfigServiceV2GapicClient
      *                              Example:
      *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
      * @param LogView $view         Required. The updated view.
-     * @param array   $callOptions {
+     * @param array   $optionalArgs {
      *     Optional.
      *
      *     @type FieldMask $updateMask
@@ -2591,19 +2591,19 @@ class ConfigServiceV2GapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateView($name, $view, array $callOptions = [])
+    public function updateView($name, $view, array $optionalArgs = [])
     {
         $request = new UpdateViewRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setView($view);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateView', LogView::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateView', LogView::class, $optionalArgs, $request)->wait();
     }
 }

@@ -53,11 +53,11 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface deleteLogAsync(DeleteLogRequest $request, array $callOptions = [])
- * @method PromiseInterface listLogEntriesAsync(ListLogEntriesRequest $request, array $callOptions = [])
- * @method PromiseInterface listLogsAsync(ListLogsRequest $request, array $callOptions = [])
- * @method PromiseInterface listMonitoredResourceDescriptorsAsync(ListMonitoredResourceDescriptorsRequest $request, array $callOptions = [])
- * @method PromiseInterface writeLogEntriesAsync(WriteLogEntriesRequest $request, array $callOptions = [])
+ * @method PromiseInterface deleteLogAsync(DeleteLogRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLogEntriesAsync(ListLogEntriesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listLogsAsync(ListLogsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listMonitoredResourceDescriptorsAsync(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface writeLogEntriesAsync(WriteLogEntriesRequest $request, array $optionalArgs = [])
  */
 class LoggingServiceV2BaseClient
 {
@@ -365,7 +365,7 @@ class LoggingServiceV2BaseClient
      * The async variant is {@see self::deleteLogAsync()} .
      *
      * @param DeleteLogRequest $request      A request to house fields associated with the call.
-     * @param array            $callOptions {
+     * @param array            $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -376,9 +376,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteLog(DeleteLogRequest $request, array $callOptions = []): void
+    public function deleteLog(DeleteLogRequest $request, array $optionalArgs = []): void
     {
-        $this->startApiCall('DeleteLog', $request, $callOptions)->wait();
+        $this->startApiCall('DeleteLog', $request, $optionalArgs)->wait();
     }
 
     /**
@@ -390,7 +390,7 @@ class LoggingServiceV2BaseClient
      * The async variant is {@see self::listLogEntriesAsync()} .
      *
      * @param ListLogEntriesRequest $request      A request to house fields associated with the call.
-     * @param array                 $callOptions {
+     * @param array                 $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -403,9 +403,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLogEntries(ListLogEntriesRequest $request, array $callOptions = []): PagedListResponse
+    public function listLogEntries(ListLogEntriesRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListLogEntries', $request, $callOptions);
+        return $this->startApiCall('ListLogEntries', $request, $optionalArgs);
     }
 
     /**
@@ -415,7 +415,7 @@ class LoggingServiceV2BaseClient
      * The async variant is {@see self::listLogsAsync()} .
      *
      * @param ListLogsRequest $request      A request to house fields associated with the call.
-     * @param array           $callOptions {
+     * @param array           $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -428,9 +428,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLogs(ListLogsRequest $request, array $callOptions = []): PagedListResponse
+    public function listLogs(ListLogsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListLogs', $request, $callOptions);
+        return $this->startApiCall('ListLogs', $request, $optionalArgs);
     }
 
     /**
@@ -439,7 +439,7 @@ class LoggingServiceV2BaseClient
      * The async variant is {@see self::listMonitoredResourceDescriptorsAsync()} .
      *
      * @param ListMonitoredResourceDescriptorsRequest $request      A request to house fields associated with the call.
-     * @param array                                   $callOptions {
+     * @param array                                   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -452,16 +452,16 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listMonitoredResourceDescriptors(ListMonitoredResourceDescriptorsRequest $request, array $callOptions = []): PagedListResponse
+    public function listMonitoredResourceDescriptors(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = []): PagedListResponse
     {
-        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $callOptions);
+        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $optionalArgs);
     }
 
     /**
      * Streaming read of log entries as they are ingested. Until the stream is
      * terminated, it will continue reading logs.
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -472,9 +472,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function tailLogEntries(array $callOptions = []): BidiStream
+    public function tailLogEntries(array $optionalArgs = []): BidiStream
     {
-        return $this->startApiCall('TailLogEntries', null, $callOptions);
+        return $this->startApiCall('TailLogEntries', null, $optionalArgs);
     }
 
     /**
@@ -489,7 +489,7 @@ class LoggingServiceV2BaseClient
      * The async variant is {@see self::writeLogEntriesAsync()} .
      *
      * @param WriteLogEntriesRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -502,8 +502,8 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function writeLogEntries(WriteLogEntriesRequest $request, array $callOptions = []): WriteLogEntriesResponse
+    public function writeLogEntries(WriteLogEntriesRequest $request, array $optionalArgs = []): WriteLogEntriesResponse
     {
-        return $this->startApiCall('WriteLogEntries', $request, $callOptions)->wait();
+        return $this->startApiCall('WriteLogEntries', $request, $optionalArgs)->wait();
     }
 }

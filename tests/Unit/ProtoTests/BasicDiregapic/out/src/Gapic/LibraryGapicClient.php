@@ -864,7 +864,7 @@ class LibraryGapicClient
      *
      * @param string    $name
      * @param Comment[] $comments
-     * @param array     $callOptions {
+     * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -875,7 +875,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function addComments($name, $comments, array $callOptions = [])
+    public function addComments($name, $comments, array $optionalArgs = [])
     {
         $request = new AddCommentsRequest();
         $requestParamHeaders = [];
@@ -883,8 +883,8 @@ class LibraryGapicClient
         $request->setComments($comments);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('AddComments', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('AddComments', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -905,7 +905,7 @@ class LibraryGapicClient
      * @param string $resource     REQUIRED: The resource which the tag is being added to.
      *                             In the form "shelves/{shelf_id}/books/{book_id}".
      * @param string $tag          REQUIRED: The tag to add.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -918,7 +918,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function addTag($resource, $tag, array $callOptions = [])
+    public function addTag($resource, $tag, array $optionalArgs = [])
     {
         $request = new AddTagRequest();
         $requestParamHeaders = [];
@@ -926,8 +926,8 @@ class LibraryGapicClient
         $request->setTag($tag);
         $requestParamHeaders['resource'] = $resource;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('AddTag', AddTagResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('AddTag', AddTagResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -942,7 +942,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $source
@@ -957,22 +957,22 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function archiveBooks(array $callOptions = [])
+    public function archiveBooks(array $optionalArgs = [])
     {
         $request = new ArchiveBooksRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['source'])) {
-            $request->setSource($callOptions['source']);
-            $requestParamHeaders['source'] = $callOptions['source'];
+        if (isset($optionalArgs['source'])) {
+            $request->setSource($optionalArgs['source']);
+            $requestParamHeaders['source'] = $optionalArgs['source'];
         }
 
-        if (isset($callOptions['archive'])) {
-            $request->setArchive($callOptions['archive']);
+        if (isset($optionalArgs['archive'])) {
+            $request->setArchive($optionalArgs['archive']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('ArchiveBooks', ArchiveBooksResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('ArchiveBooks', ArchiveBooksResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -993,7 +993,7 @@ class LibraryGapicClient
      * @param string       $name         Parent shelf
      *                                   id.
      * @param BookResponse $book         The book to create.
-     * @param array        $callOptions {
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1006,7 +1006,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createBook($name, $book, array $callOptions = [])
+    public function createBook($name, $book, array $optionalArgs = [])
     {
         $request = new CreateBookRequest();
         $requestParamHeaders = [];
@@ -1014,8 +1014,8 @@ class LibraryGapicClient
         $request->setBook($book);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateBook', BookResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1039,7 +1039,7 @@ class LibraryGapicClient
      * @param string   $asset
      * @param string   $parentAsset
      * @param string[] $assets
-     * @param array    $callOptions {
+     * @param array    $optionalArgs {
      *     Optional.
      *
      *     @type InventoryResponse $inventory
@@ -1053,7 +1053,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createInventory($parent, $asset, $parentAsset, $assets, array $callOptions = [])
+    public function createInventory($parent, $asset, $parentAsset, $assets, array $optionalArgs = [])
     {
         $request = new CreateInventoryRequest();
         $requestParamHeaders = [];
@@ -1062,13 +1062,13 @@ class LibraryGapicClient
         $request->setParentAsset($parentAsset);
         $request->setAssets($assets);
         $requestParamHeaders['parent'] = $parent;
-        if (isset($callOptions['inventory'])) {
-            $request->setInventory($callOptions['inventory']);
+        if (isset($optionalArgs['inventory'])) {
+            $request->setInventory($optionalArgs['inventory']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('CreateInventory', InventoryResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateInventory', InventoryResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1087,7 +1087,7 @@ class LibraryGapicClient
      * ```
      *
      * @param ShelfResponse $shelf        The shelf to create.
-     * @param array         $callOptions {
+     * @param array         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1100,11 +1100,11 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function createShelf($shelf, array $callOptions = [])
+    public function createShelf($shelf, array $optionalArgs = [])
     {
         $request = new CreateShelfRequest();
         $request->setShelf($shelf);
-        return $this->startCall('CreateShelf', ShelfResponse::class, $callOptions, $request)->wait();
+        return $this->startCall('CreateShelf', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1122,7 +1122,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the book to delete.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1133,15 +1133,15 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteBook($name, array $callOptions = [])
+    public function deleteBook($name, array $optionalArgs = [])
     {
         $request = new DeleteBookRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteBook', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteBook', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1159,7 +1159,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the shelf to delete.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1170,15 +1170,15 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function deleteShelf($name, array $callOptions = [])
+    public function deleteShelf($name, array $optionalArgs = [])
     {
         $request = new DeleteShelfRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('DeleteShelf', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteShelf', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1213,7 +1213,7 @@ class LibraryGapicClient
      *
      * @param string[] $names
      * @param string[] $shelves
-     * @param array    $callOptions {
+     * @param array    $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1235,20 +1235,20 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function findRelatedBooks($names, $shelves, array $callOptions = [])
+    public function findRelatedBooks($names, $shelves, array $optionalArgs = [])
     {
         $request = new FindRelatedBooksRequest();
         $request->setNames($names);
         $request->setShelves($shelves);
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->getPagedListResponse('FindRelatedBooks', $callOptions, FindRelatedBooksResponse::class, $request);
+        return $this->getPagedListResponse('FindRelatedBooks', $optionalArgs, FindRelatedBooksResponse::class, $request);
     }
 
     /**
@@ -1291,7 +1291,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the book to retrieve.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1304,15 +1304,15 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBigBook($name, array $callOptions = [])
+    public function getBigBook($name, array $optionalArgs = [])
     {
         $request = new GetBookRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('GetBigBook', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('GetBigBook', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -1353,7 +1353,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the book to retrieve.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1366,15 +1366,15 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBigNothing($name, array $callOptions = [])
+    public function getBigNothing($name, array $optionalArgs = [])
     {
         $request = new GetBookRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('GetBigNothing', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('GetBigNothing', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -1392,7 +1392,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the book to retrieve.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1405,15 +1405,15 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBook($name, array $callOptions = [])
+    public function getBook($name, array $optionalArgs = [])
     {
         $request = new GetBookRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBook', BookResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1431,7 +1431,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the book to retrieve.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $altBookName
@@ -1447,20 +1447,20 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBookFromAbsolutelyAnywhere($name, array $callOptions = [])
+    public function getBookFromAbsolutelyAnywhere($name, array $optionalArgs = [])
     {
         $request = new GetBookFromAbsolutelyAnywhereRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['altBookName'])) {
-            $request->setAltBookName($callOptions['altBookName']);
-            $requestParamHeaders['alt_book_name'] = $callOptions['altBookName'];
+        if (isset($optionalArgs['altBookName'])) {
+            $request->setAltBookName($optionalArgs['altBookName']);
+            $requestParamHeaders['alt_book_name'] = $optionalArgs['altBookName'];
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromAbsolutelyAnywhere', BookFromAnywhereResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBookFromAbsolutelyAnywhere', BookFromAnywhereResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1485,7 +1485,7 @@ class LibraryGapicClient
      *                             single resource name type in a oneof.
      * @param string $place
      * @param string $folder
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1498,7 +1498,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBookFromAnywhere($name, $altBookName, $place, $folder, array $callOptions = [])
+    public function getBookFromAnywhere($name, $altBookName, $place, $folder, array $optionalArgs = [])
     {
         $request = new GetBookFromAnywhereRequest();
         $requestParamHeaders = [];
@@ -1508,8 +1508,8 @@ class LibraryGapicClient
         $request->setFolder($folder);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromAnywhere', BookFromAnywhereResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBookFromAnywhere', BookFromAnywhereResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1529,7 +1529,7 @@ class LibraryGapicClient
      *
      * @param string $name         The name of the book to retrieve.
      * @param string $parent
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1542,7 +1542,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getBookFromArchive($name, $parent, array $callOptions = [])
+    public function getBookFromArchive($name, $parent, array $optionalArgs = [])
     {
         $request = new GetBookFromArchiveRequest();
         $requestParamHeaders = [];
@@ -1550,8 +1550,8 @@ class LibraryGapicClient
         $request->setParent($parent);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetBookFromArchive', BookFromArchiveResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBookFromArchive', BookFromArchiveResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1571,7 +1571,7 @@ class LibraryGapicClient
      *
      * @param string $name         The name of the shelf to retrieve.
      * @param string $options      To test 'options' parameter name conflict.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type SomeMessage $message
@@ -1587,24 +1587,24 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function getShelf($name, $options, array $callOptions = [])
+    public function getShelf($name, $options, array $optionalArgs = [])
     {
         $request = new GetShelfRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setOptions($options);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['message'])) {
-            $request->setMessage($callOptions['message']);
+        if (isset($optionalArgs['message'])) {
+            $request->setMessage($optionalArgs['message']);
         }
 
-        if (isset($callOptions['stringBuilder'])) {
-            $request->setStringBuilder($callOptions['stringBuilder']);
+        if (isset($optionalArgs['stringBuilder'])) {
+            $request->setStringBuilder($optionalArgs['stringBuilder']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('GetShelf', ShelfResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetShelf', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1632,7 +1632,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type int $maxResults
@@ -1652,18 +1652,18 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listAggregatedShelves(array $callOptions = [])
+    public function listAggregatedShelves(array $optionalArgs = [])
     {
         $request = new ListAggregatedShelvesRequest();
-        if (isset($callOptions['maxResults'])) {
-            $request->setMaxResults($callOptions['maxResults']);
+        if (isset($optionalArgs['maxResults'])) {
+            $request->setMaxResults($optionalArgs['maxResults']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->getPagedListResponse('ListAggregatedShelves', $callOptions, ListAggregatedShelvesResponse::class, $request);
+        return $this->getPagedListResponse('ListAggregatedShelves', $optionalArgs, ListAggregatedShelvesResponse::class, $request);
     }
 
     /**
@@ -1693,7 +1693,7 @@ class LibraryGapicClient
      * ```
      *
      * @param string $name         The name of the shelf whose books we'd like to list.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
@@ -1717,27 +1717,27 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listBooks($name, array $callOptions = [])
+    public function listBooks($name, array $optionalArgs = [])
     {
         $request = new ListBooksRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        if (isset($callOptions['filter'])) {
-            $request->setFilter($callOptions['filter']);
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->getPagedListResponse('ListBooks', $callOptions, ListBooksResponse::class, $request);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListBooks', $optionalArgs, ListBooksResponse::class, $request);
     }
 
     /**
@@ -1753,7 +1753,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -1771,14 +1771,14 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listShelves(array $callOptions = [])
+    public function listShelves(array $optionalArgs = [])
     {
         $request = new ListShelvesRequest();
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startCall('ListShelves', ListShelvesResponse::class, $callOptions, $request)->wait();
+        return $this->startCall('ListShelves', ListShelvesResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1806,7 +1806,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $name
@@ -1829,22 +1829,22 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function listStrings(array $callOptions = [])
+    public function listStrings(array $optionalArgs = [])
     {
         $request = new ListStringsRequest();
-        if (isset($callOptions['name'])) {
-            $request->setName($callOptions['name']);
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
         }
 
-        if (isset($callOptions['pageSize'])) {
-            $request->setPageSize($callOptions['pageSize']);
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
         }
 
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->getPagedListResponse('ListStrings', $callOptions, ListStringsResponse::class, $request);
+        return $this->getPagedListResponse('ListStrings', $optionalArgs, ListStringsResponse::class, $request);
     }
 
     /**
@@ -1884,7 +1884,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $source
@@ -1899,22 +1899,22 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function longRunningArchiveBooks(array $callOptions = [])
+    public function longRunningArchiveBooks(array $optionalArgs = [])
     {
         $request = new ArchiveBooksRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['source'])) {
-            $request->setSource($callOptions['source']);
-            $requestParamHeaders['source'] = $callOptions['source'];
+        if (isset($optionalArgs['source'])) {
+            $request->setSource($optionalArgs['source']);
+            $requestParamHeaders['source'] = $optionalArgs['source'];
         }
 
-        if (isset($callOptions['archive'])) {
-            $request->setArchive($callOptions['archive']);
+        if (isset($optionalArgs['archive'])) {
+            $request->setArchive($optionalArgs['archive']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startOperationsCall('LongRunningArchiveBooks', $callOptions, $request, $this->getOperationsClient())->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('LongRunningArchiveBooks', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
@@ -1936,7 +1936,7 @@ class LibraryGapicClient
      *
      * @param string $name           The name of the shelf we're adding books to.
      * @param string $otherShelfName The name of the shelf we're removing books from and deleting.
-     * @param array  $callOptions   {
+     * @param array  $optionalArgs   {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1949,7 +1949,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function mergeShelves($name, $otherShelfName, array $callOptions = [])
+    public function mergeShelves($name, $otherShelfName, array $optionalArgs = [])
     {
         $request = new MergeShelvesRequest();
         $requestParamHeaders = [];
@@ -1957,8 +1957,8 @@ class LibraryGapicClient
         $request->setOtherShelfName($otherShelfName);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('MergeShelves', ShelfResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('MergeShelves', ShelfResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1978,7 +1978,7 @@ class LibraryGapicClient
      *
      * @param string $name           The name of the book to move.
      * @param string $otherShelfName The name of the destination shelf.
-     * @param array  $callOptions   {
+     * @param array  $optionalArgs   {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1991,7 +1991,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function moveBook($name, $otherShelfName, array $callOptions = [])
+    public function moveBook($name, $otherShelfName, array $optionalArgs = [])
     {
         $request = new MoveBookRequest();
         $requestParamHeaders = [];
@@ -1999,8 +1999,8 @@ class LibraryGapicClient
         $request->setOtherShelfName($otherShelfName);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('MoveBook', BookResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('MoveBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2015,7 +2015,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $source
@@ -2032,30 +2032,30 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function moveBooks(array $callOptions = [])
+    public function moveBooks(array $optionalArgs = [])
     {
         $request = new MoveBooksRequest();
         $requestParamHeaders = [];
-        if (isset($callOptions['source'])) {
-            $request->setSource($callOptions['source']);
-            $requestParamHeaders['source'] = $callOptions['source'];
+        if (isset($optionalArgs['source'])) {
+            $request->setSource($optionalArgs['source']);
+            $requestParamHeaders['source'] = $optionalArgs['source'];
         }
 
-        if (isset($callOptions['destination'])) {
-            $request->setDestination($callOptions['destination']);
+        if (isset($optionalArgs['destination'])) {
+            $request->setDestination($optionalArgs['destination']);
         }
 
-        if (isset($callOptions['publishers'])) {
-            $request->setPublishers($callOptions['publishers']);
+        if (isset($optionalArgs['publishers'])) {
+            $request->setPublishers($optionalArgs['publishers']);
         }
 
-        if (isset($callOptions['project'])) {
-            $request->setProject($callOptions['project']);
+        if (isset($optionalArgs['project'])) {
+            $request->setProject($optionalArgs['project']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('MoveBooks', MoveBooksResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('MoveBooks', MoveBooksResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2071,7 +2071,7 @@ class LibraryGapicClient
      * }
      * ```
      *
-     * @param array $callOptions {
+     * @param array $optionalArgs {
      *     Optional.
      *
      *     @type string $pageToken
@@ -2089,14 +2089,14 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function privateListShelves(array $callOptions = [])
+    public function privateListShelves(array $optionalArgs = [])
     {
         $request = new ListShelvesRequest();
-        if (isset($callOptions['pageToken'])) {
-            $request->setPageToken($callOptions['pageToken']);
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
         }
 
-        return $this->startCall('PrivateListShelves', BookResponse::class, $callOptions, $request)->wait();
+        return $this->startCall('PrivateListShelves', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2122,7 +2122,7 @@ class LibraryGapicClient
      * @param SeriesUuidResponse $seriesUuid   Uniquely identifies the series to the publishing house.
      * @param int[]              $genres       A set of enums containing genres the series falls into.
      *                                         For allowed values, use constants defined on {@see \Testing\BasicDiregapic\PublishSeriesRequest\Genre}
-     * @param array              $callOptions {
+     * @param array              $optionalArgs {
      *     Optional.
      *
      *     @type int $edition
@@ -2141,7 +2141,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function publishSeries($shelf, $books, $seriesUuid, $genres, array $callOptions = [])
+    public function publishSeries($shelf, $books, $seriesUuid, $genres, array $optionalArgs = [])
     {
         $request = new PublishSeriesRequest();
         $requestParamHeaders = [];
@@ -2150,21 +2150,21 @@ class LibraryGapicClient
         $request->setSeriesUuid($seriesUuid);
         $request->setGenres($genres);
         $requestParamHeaders['shelf.name'] = $shelf->getName();
-        if (isset($callOptions['edition'])) {
-            $request->setEdition($callOptions['edition']);
+        if (isset($optionalArgs['edition'])) {
+            $request->setEdition($optionalArgs['edition']);
         }
 
-        if (isset($callOptions['reviewCopy'])) {
-            $request->setReviewCopy($callOptions['reviewCopy']);
+        if (isset($optionalArgs['reviewCopy'])) {
+            $request->setReviewCopy($optionalArgs['reviewCopy']);
         }
 
-        if (isset($callOptions['publisher'])) {
-            $request->setPublisher($callOptions['publisher']);
+        if (isset($optionalArgs['publisher'])) {
+            $request->setPublisher($optionalArgs['publisher']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('PublishSeries', PublishSeriesResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('PublishSeries', PublishSeriesResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2186,7 +2186,7 @@ class LibraryGapicClient
      * @param string $name         The resource name of the book.
      *                             BookResponse names have the form `bookShelves/{shelf_id}/books/{book_id}`.
      *                             Message field comment may include special characters: <>&"`'&#64;.
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $author
@@ -2242,115 +2242,115 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function saveBook($name, array $callOptions = [])
+    public function saveBook($name, array $optionalArgs = [])
     {
         $request = new BookResponse();
         $request->setName($name);
-        if (isset($callOptions['author'])) {
-            $request->setAuthor($callOptions['author']);
+        if (isset($optionalArgs['author'])) {
+            $request->setAuthor($optionalArgs['author']);
         }
 
-        if (isset($callOptions['title'])) {
-            $request->setTitle($callOptions['title']);
+        if (isset($optionalArgs['title'])) {
+            $request->setTitle($optionalArgs['title']);
         }
 
-        if (isset($callOptions['read'])) {
-            $request->setRead($callOptions['read']);
+        if (isset($optionalArgs['read'])) {
+            $request->setRead($optionalArgs['read']);
         }
 
-        if (isset($callOptions['rating'])) {
-            $request->setRating($callOptions['rating']);
+        if (isset($optionalArgs['rating'])) {
+            $request->setRating($optionalArgs['rating']);
         }
 
-        if (isset($callOptions['reader'])) {
-            $request->setReader($callOptions['reader']);
+        if (isset($optionalArgs['reader'])) {
+            $request->setReader($optionalArgs['reader']);
         }
 
-        if (isset($callOptions['anyValue'])) {
-            $request->setAnyValue($callOptions['anyValue']);
+        if (isset($optionalArgs['anyValue'])) {
+            $request->setAnyValue($optionalArgs['anyValue']);
         }
 
-        if (isset($callOptions['structValue'])) {
-            $request->setStructValue($callOptions['structValue']);
+        if (isset($optionalArgs['structValue'])) {
+            $request->setStructValue($optionalArgs['structValue']);
         }
 
-        if (isset($callOptions['valueValue'])) {
-            $request->setValueValue($callOptions['valueValue']);
+        if (isset($optionalArgs['valueValue'])) {
+            $request->setValueValue($optionalArgs['valueValue']);
         }
 
-        if (isset($callOptions['listValueValue'])) {
-            $request->setListValueValue($callOptions['listValueValue']);
+        if (isset($optionalArgs['listValueValue'])) {
+            $request->setListValueValue($optionalArgs['listValueValue']);
         }
 
-        if (isset($callOptions['mapListValueValue'])) {
-            $request->setMapListValueValue($callOptions['mapListValueValue']);
+        if (isset($optionalArgs['mapListValueValue'])) {
+            $request->setMapListValueValue($optionalArgs['mapListValueValue']);
         }
 
-        if (isset($callOptions['timeValue'])) {
-            $request->setTimeValue($callOptions['timeValue']);
+        if (isset($optionalArgs['timeValue'])) {
+            $request->setTimeValue($optionalArgs['timeValue']);
         }
 
-        if (isset($callOptions['durationValue'])) {
-            $request->setDurationValue($callOptions['durationValue']);
+        if (isset($optionalArgs['durationValue'])) {
+            $request->setDurationValue($optionalArgs['durationValue']);
         }
 
-        if (isset($callOptions['fieldMaskValue'])) {
-            $request->setFieldMaskValue($callOptions['fieldMaskValue']);
+        if (isset($optionalArgs['fieldMaskValue'])) {
+            $request->setFieldMaskValue($optionalArgs['fieldMaskValue']);
         }
 
-        if (isset($callOptions['int32Value'])) {
-            $request->setInt32Value($callOptions['int32Value']);
+        if (isset($optionalArgs['int32Value'])) {
+            $request->setInt32Value($optionalArgs['int32Value']);
         }
 
-        if (isset($callOptions['uint32Value'])) {
-            $request->setUint32Value($callOptions['uint32Value']);
+        if (isset($optionalArgs['uint32Value'])) {
+            $request->setUint32Value($optionalArgs['uint32Value']);
         }
 
-        if (isset($callOptions['int64Value'])) {
-            $request->setInt64Value($callOptions['int64Value']);
+        if (isset($optionalArgs['int64Value'])) {
+            $request->setInt64Value($optionalArgs['int64Value']);
         }
 
-        if (isset($callOptions['uint64Value'])) {
-            $request->setUint64Value($callOptions['uint64Value']);
+        if (isset($optionalArgs['uint64Value'])) {
+            $request->setUint64Value($optionalArgs['uint64Value']);
         }
 
-        if (isset($callOptions['floatValue'])) {
-            $request->setFloatValue($callOptions['floatValue']);
+        if (isset($optionalArgs['floatValue'])) {
+            $request->setFloatValue($optionalArgs['floatValue']);
         }
 
-        if (isset($callOptions['doubleValue'])) {
-            $request->setDoubleValue($callOptions['doubleValue']);
+        if (isset($optionalArgs['doubleValue'])) {
+            $request->setDoubleValue($optionalArgs['doubleValue']);
         }
 
-        if (isset($callOptions['stringValue'])) {
-            $request->setStringValue($callOptions['stringValue']);
+        if (isset($optionalArgs['stringValue'])) {
+            $request->setStringValue($optionalArgs['stringValue']);
         }
 
-        if (isset($callOptions['boolValue'])) {
-            $request->setBoolValue($callOptions['boolValue']);
+        if (isset($optionalArgs['boolValue'])) {
+            $request->setBoolValue($optionalArgs['boolValue']);
         }
 
-        if (isset($callOptions['bytesValue'])) {
-            $request->setBytesValue($callOptions['bytesValue']);
+        if (isset($optionalArgs['bytesValue'])) {
+            $request->setBytesValue($optionalArgs['bytesValue']);
         }
 
-        if (isset($callOptions['mapStringValue'])) {
-            $request->setMapStringValue($callOptions['mapStringValue']);
+        if (isset($optionalArgs['mapStringValue'])) {
+            $request->setMapStringValue($optionalArgs['mapStringValue']);
         }
 
-        if (isset($callOptions['mapMessageValue'])) {
-            $request->setMapMessageValue($callOptions['mapMessageValue']);
+        if (isset($optionalArgs['mapMessageValue'])) {
+            $request->setMapMessageValue($optionalArgs['mapMessageValue']);
         }
 
-        if (isset($callOptions['resource'])) {
-            $request->setResource($callOptions['resource']);
+        if (isset($optionalArgs['resource'])) {
+            $request->setResource($optionalArgs['resource']);
         }
 
-        if (isset($callOptions['mapBoolKey'])) {
-            $request->setMapBoolKey($callOptions['mapBoolKey']);
+        if (isset($optionalArgs['mapBoolKey'])) {
+            $request->setMapBoolKey($optionalArgs['mapBoolKey']);
         }
 
-        return $this->startCall('SaveBook', GPBEmpty::class, $callOptions, $request)->wait();
+        return $this->startCall('SaveBook', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2370,7 +2370,7 @@ class LibraryGapicClient
      *
      * @param string       $name         The name of the book to update.
      * @param BookResponse $book         The book to update with.
-     * @param array        $callOptions {
+     * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type string $optionalFoo
@@ -2387,24 +2387,24 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateBook($name, $book, array $callOptions = [])
+    public function updateBook($name, $book, array $optionalArgs = [])
     {
         $request = new UpdateBookRequest();
         $requestParamHeaders = [];
         $request->setName($name);
         $request->setBook($book);
         $requestParamHeaders['name'] = $name;
-        if (isset($callOptions['optionalFoo'])) {
-            $request->setOptionalFoo($callOptions['optionalFoo']);
+        if (isset($optionalArgs['optionalFoo'])) {
+            $request->setOptionalFoo($optionalArgs['optionalFoo']);
         }
 
-        if (isset($callOptions['updateMask'])) {
-            $request->setUpdateMask($callOptions['updateMask']);
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateBook', BookResponse::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateBook', BookResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2426,7 +2426,7 @@ class LibraryGapicClient
      * @param string $name         The name of the book to update.
      * @param string $indexName    The name of the index for the book
      * @param array  $indexMap     The index to update the book with
-     * @param array  $callOptions {
+     * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -2437,7 +2437,7 @@ class LibraryGapicClient
      *
      * @throws ApiException if the remote call fails
      */
-    public function updateBookIndex($name, $indexName, $indexMap, array $callOptions = [])
+    public function updateBookIndex($name, $indexName, $indexMap, array $optionalArgs = [])
     {
         $request = new UpdateBookIndexRequest();
         $requestParamHeaders = [];
@@ -2446,7 +2446,7 @@ class LibraryGapicClient
         $request->setIndexMap($indexMap);
         $requestParamHeaders['name'] = $name;
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
-        $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
-        return $this->startCall('UpdateBookIndex', GPBEmpty::class, $callOptions, $request)->wait();
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateBookIndex', GPBEmpty::class, $optionalArgs, $request)->wait();
     }
 }

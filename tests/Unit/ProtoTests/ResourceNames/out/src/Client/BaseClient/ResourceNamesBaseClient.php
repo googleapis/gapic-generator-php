@@ -54,14 +54,14 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $callOptions = [])
- * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $callOptions = [])
- * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $callOptions = [])
- * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $callOptions = [])
- * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $callOptions = [])
- * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $callOptions = [])
- * @method PromiseInterface wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $callOptions = [])
- * @method PromiseInterface wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $callOptions = [])
+ * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 class ResourceNamesBaseClient
 {
@@ -478,7 +478,7 @@ class ResourceNamesBaseClient
      * The async variant is {@see self::fileLevelChildTypeRefMethodAsync()} .
      *
      * @param FileLevelChildTypeRefRequest $request      A request to house fields associated with the call.
-     * @param array                        $callOptions {
+     * @param array                        $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -491,16 +491,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function fileLevelChildTypeRefMethod(FileLevelChildTypeRefRequest $request, array $callOptions = []): PlaceholderResponse
+    public function fileLevelChildTypeRefMethod(FileLevelChildTypeRefRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('FileLevelChildTypeRefMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('FileLevelChildTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::fileLevelTypeRefMethodAsync()} .
      *
      * @param FileLevelTypeRefRequest $request      A request to house fields associated with the call.
-     * @param array                   $callOptions {
+     * @param array                   $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -513,16 +513,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function fileLevelTypeRefMethod(FileLevelTypeRefRequest $request, array $callOptions = []): PlaceholderResponse
+    public function fileLevelTypeRefMethod(FileLevelTypeRefRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('FileLevelTypeRefMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('FileLevelTypeRefMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::multiPatternMethodAsync()} .
      *
      * @param MultiPatternRequest $request      A request to house fields associated with the call.
-     * @param array               $callOptions {
+     * @param array               $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -535,16 +535,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function multiPatternMethod(MultiPatternRequest $request, array $callOptions = []): PlaceholderResponse
+    public function multiPatternMethod(MultiPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('MultiPatternMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('MultiPatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::singlePatternMethodAsync()} .
      *
      * @param SinglePatternRequest $request      A request to house fields associated with the call.
-     * @param array                $callOptions {
+     * @param array                $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -557,16 +557,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function singlePatternMethod(SinglePatternRequest $request, array $callOptions = []): PlaceholderResponse
+    public function singlePatternMethod(SinglePatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('SinglePatternMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('SinglePatternMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::wildcardChildReferenceMethodAsync()} .
      *
      * @param WildcardChildReferenceRequest $request      A request to house fields associated with the call.
-     * @param array                         $callOptions {
+     * @param array                         $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -579,16 +579,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardChildReferenceMethod(WildcardChildReferenceRequest $request, array $callOptions = []): PlaceholderResponse
+    public function wildcardChildReferenceMethod(WildcardChildReferenceRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('WildcardChildReferenceMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('WildcardChildReferenceMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::wildcardMethodAsync()} .
      *
      * @param WildcardPatternRequest $request      A request to house fields associated with the call.
-     * @param array                  $callOptions {
+     * @param array                  $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -601,16 +601,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardMethod(WildcardPatternRequest $request, array $callOptions = []): PlaceholderResponse
+    public function wildcardMethod(WildcardPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('WildcardMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('WildcardMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::wildcardMultiMethodAsync()} .
      *
      * @param WildcardMultiPatternRequest $request      A request to house fields associated with the call.
-     * @param array                       $callOptions {
+     * @param array                       $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -623,16 +623,16 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardMultiMethod(WildcardMultiPatternRequest $request, array $callOptions = []): PlaceholderResponse
+    public function wildcardMultiMethod(WildcardMultiPatternRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('WildcardMultiMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('WildcardMultiMethod', $request, $optionalArgs)->wait();
     }
 
     /**
      * The async variant is {@see self::wildcardReferenceMethodAsync()} .
      *
      * @param WildcardReferenceRequest $request      A request to house fields associated with the call.
-     * @param array                    $callOptions {
+     * @param array                    $optionalArgs {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -645,8 +645,8 @@ class ResourceNamesBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function wildcardReferenceMethod(WildcardReferenceRequest $request, array $callOptions = []): PlaceholderResponse
+    public function wildcardReferenceMethod(WildcardReferenceRequest $request, array $optionalArgs = []): PlaceholderResponse
     {
-        return $this->startApiCall('WildcardReferenceMethod', $request, $callOptions)->wait();
+        return $this->startApiCall('WildcardReferenceMethod', $request, $optionalArgs)->wait();
     }
 }
