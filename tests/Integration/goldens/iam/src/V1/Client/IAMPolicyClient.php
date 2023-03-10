@@ -27,7 +27,7 @@ namespace Google\Cloud\Iam\V1\Client;
 use Google\Cloud\Iam\V1\Client\BaseClient\IAMPolicyBaseClient;
 
 /** {@inheritdoc} */
-class IAMPolicyClient extends IAMPolicyBaseClient
+final class IAMPolicyClient extends IAMPolicyBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see IAMPolicyBaseClient} class.

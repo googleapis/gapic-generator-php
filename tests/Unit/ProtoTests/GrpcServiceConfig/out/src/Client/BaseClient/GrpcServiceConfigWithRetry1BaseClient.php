@@ -46,6 +46,8 @@ use Testing\GrpcServiceConfig\Response1;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface method1AAsync(Request1 $request, array $optionalArgs = [])
  * @method PromiseInterface method1BLroAsync(Request1 $request, array $optionalArgs = [])
  * @method PromiseInterface method1CServiceLevelRetryAsync(Request1 $request, array $optionalArgs = [])

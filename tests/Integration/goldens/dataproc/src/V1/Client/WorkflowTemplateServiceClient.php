@@ -27,7 +27,7 @@ namespace Google\Cloud\Dataproc\V1\Client;
 use Google\Cloud\Dataproc\V1\Client\BaseClient\WorkflowTemplateServiceBaseClient;
 
 /** {@inheritdoc} */
-class WorkflowTemplateServiceClient extends WorkflowTemplateServiceBaseClient
+final class WorkflowTemplateServiceClient extends WorkflowTemplateServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see WorkflowTemplateServiceBaseClient} class.

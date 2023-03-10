@@ -181,6 +181,21 @@ abstract class PhpDoc
     }
 
     /**
+     * Add the @internal tag to the PHP doc block.
+     *
+     * @return PhpDoc
+     */
+    public static function internal(): PhpDoc
+    {
+        return new class extends PhpDoc {
+            protected function toLines(Map $info): Vector
+            {
+                return Vector::new(['@internal']);
+            }
+        };
+    }
+
+    /**
      * Add the @experimental tag to the PHP doc block.
      *
      * @return PhpDoc

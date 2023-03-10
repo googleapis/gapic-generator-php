@@ -27,7 +27,7 @@ namespace Testing\CustomLro\Client;
 use Testing\CustomLro\Client\BaseClient\CustomLroBaseClient;
 
 /** {@inheritdoc} */
-class CustomLroClient extends CustomLroBaseClient
+final class CustomLroClient extends CustomLroBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CustomLroBaseClient} class.

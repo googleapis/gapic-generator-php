@@ -61,6 +61,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @internal
+ *
  * @method PromiseInterface createClusterAsync(CreateClusterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteClusterAsync(DeleteClusterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface diagnoseClusterAsync(DiagnoseClusterRequest $request, array $optionalArgs = [])

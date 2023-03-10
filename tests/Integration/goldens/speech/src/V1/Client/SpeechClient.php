@@ -27,7 +27,7 @@ namespace Google\Cloud\Speech\V1\Client;
 use Google\Cloud\Speech\V1\Client\BaseClient\SpeechBaseClient;
 
 /** {@inheritdoc} */
-class SpeechClient extends SpeechBaseClient
+final class SpeechClient extends SpeechBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see SpeechBaseClient} class.

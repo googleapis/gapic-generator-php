@@ -51,7 +51,7 @@ class EmptyClientV2Generator
 
     private function generateClass(): PhpClass
     {
-        return AST::class($this->serviceDetails->emptyClientV2Type, $this->ctx->type($this->serviceDetails->gapicClientV2Type))
+        return AST::class($this->serviceDetails->emptyClientV2Type, $this->ctx->type($this->serviceDetails->gapicClientV2Type), /* final */ true)
             ->withPhpDoc(PhpDoc::block(PhpDoc::inherit()))
             ->withMember(AST::comment(PhpDoc::text(
                 'This class is intentionally empty, and is intended to hold manual additions to the generated',

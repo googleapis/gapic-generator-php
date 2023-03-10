@@ -27,7 +27,7 @@ namespace Google\Cloud\Logging\V2\Client;
 use Google\Cloud\Logging\V2\Client\BaseClient\ConfigServiceV2BaseClient;
 
 /** {@inheritdoc} */
-class ConfigServiceV2Client extends ConfigServiceV2BaseClient
+final class ConfigServiceV2Client extends ConfigServiceV2BaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ConfigServiceV2BaseClient} class.

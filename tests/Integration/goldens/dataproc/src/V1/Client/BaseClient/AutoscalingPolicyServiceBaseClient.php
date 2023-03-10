@@ -53,6 +53,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @internal
+ *
  * @method PromiseInterface createAutoscalingPolicyAsync(CreateAutoscalingPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAutoscalingPolicyAsync(DeleteAutoscalingPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getAutoscalingPolicyAsync(GetAutoscalingPolicyRequest $request, array $optionalArgs = [])

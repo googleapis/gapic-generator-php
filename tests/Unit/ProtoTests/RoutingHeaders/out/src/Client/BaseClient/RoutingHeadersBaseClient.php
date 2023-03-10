@@ -43,6 +43,8 @@ use Testing\RoutingHeaders\SimpleRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])

@@ -27,7 +27,7 @@ namespace Google\Cloud\Logging\V2\Client;
 use Google\Cloud\Logging\V2\Client\BaseClient\LoggingServiceV2BaseClient;
 
 /** {@inheritdoc} */
-class LoggingServiceV2Client extends LoggingServiceV2BaseClient
+final class LoggingServiceV2Client extends LoggingServiceV2BaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see LoggingServiceV2BaseClient} class.

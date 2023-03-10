@@ -29,7 +29,7 @@ namespace Google\Cloud\Retail\V2alpha\Client;
 use Google\Cloud\Retail\V2alpha\Client\BaseClient\CatalogServiceBaseClient;
 
 /** {@inheritdoc} */
-class CatalogServiceClient extends CatalogServiceBaseClient
+final class CatalogServiceClient extends CatalogServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CatalogServiceBaseClient} class.

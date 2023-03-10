@@ -42,6 +42,8 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */

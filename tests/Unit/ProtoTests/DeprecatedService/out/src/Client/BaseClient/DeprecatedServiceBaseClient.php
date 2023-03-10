@@ -41,6 +41,8 @@ use Testing\Deprecated\FibonacciRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @deprecated This class will be removed in the next major version update.
  *
  * @method PromiseInterface fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])

@@ -27,7 +27,7 @@ namespace Testing\BasicOneof\Client;
 use Testing\BasicOneof\Client\BaseClient\BasicOneofBaseClient;
 
 /** {@inheritdoc} */
-class BasicOneofClient extends BasicOneofBaseClient
+final class BasicOneofClient extends BasicOneofBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see BasicOneofBaseClient} class.

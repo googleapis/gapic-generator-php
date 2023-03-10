@@ -43,6 +43,8 @@ use Testing\CustomLro\GetOperationRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface cancelAsync(CancelOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getAsync(GetOperationRequest $request, array $optionalArgs = [])

@@ -43,6 +43,8 @@ use Testing\BasicLro\Request;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * @internal
+ *
  * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodNonLro1Async(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodNonLro2Async(Request $request, array $optionalArgs = [])

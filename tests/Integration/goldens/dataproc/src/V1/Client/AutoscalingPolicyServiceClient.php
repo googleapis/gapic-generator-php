@@ -27,7 +27,7 @@ namespace Google\Cloud\Dataproc\V1\Client;
 use Google\Cloud\Dataproc\V1\Client\BaseClient\AutoscalingPolicyServiceBaseClient;
 
 /** {@inheritdoc} */
-class AutoscalingPolicyServiceClient extends AutoscalingPolicyServiceBaseClient
+final class AutoscalingPolicyServiceClient extends AutoscalingPolicyServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see AutoscalingPolicyServiceBaseClient} class.

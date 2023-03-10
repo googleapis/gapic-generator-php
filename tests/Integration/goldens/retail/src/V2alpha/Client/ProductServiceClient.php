@@ -29,7 +29,7 @@ namespace Google\Cloud\Retail\V2alpha\Client;
 use Google\Cloud\Retail\V2alpha\Client\BaseClient\ProductServiceBaseClient;
 
 /** {@inheritdoc} */
-class ProductServiceClient extends ProductServiceBaseClient
+final class ProductServiceClient extends ProductServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ProductServiceBaseClient} class.
