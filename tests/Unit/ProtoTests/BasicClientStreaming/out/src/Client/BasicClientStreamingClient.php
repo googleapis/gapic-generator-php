@@ -33,7 +33,7 @@ use Testing\BasicClientStreaming\Client\BaseClient\BasicClientStreamingBaseClien
  *
  * @experimental
  */
-class BasicClientStreamingClient extends BasicClientStreamingBaseClient
+final class BasicClientStreamingClient extends BasicClientStreamingBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see BasicClientStreamingBaseClient} class.

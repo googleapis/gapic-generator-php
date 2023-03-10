@@ -45,6 +45,8 @@ use Testing\Deprecated\FibonacciRequest;
  *
  * @experimental
  *
+ * @internal
+ *
  * @deprecated This class will be removed in the next major version update.
  *
  * @method PromiseInterface fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])

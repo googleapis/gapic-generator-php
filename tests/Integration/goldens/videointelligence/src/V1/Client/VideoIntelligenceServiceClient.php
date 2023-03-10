@@ -33,7 +33,7 @@ use Google\Cloud\VideoIntelligence\V1\Client\BaseClient\VideoIntelligenceService
  *
  * @experimental
  */
-class VideoIntelligenceServiceClient extends VideoIntelligenceServiceBaseClient
+final class VideoIntelligenceServiceClient extends VideoIntelligenceServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see VideoIntelligenceServiceBaseClient} class.

@@ -41,6 +41,8 @@ use Google\Auth\FetchAuthTokenInterface;
  * This class is currently experimental and may be subject to changes.
  *
  * @experimental
+ *
+ * @internal
  */
 class BasicBidiStreamingBaseClient
 {

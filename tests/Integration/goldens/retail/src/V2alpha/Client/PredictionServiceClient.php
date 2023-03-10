@@ -35,7 +35,7 @@ use Google\Cloud\Retail\V2alpha\Client\BaseClient\PredictionServiceBaseClient;
  *
  * @experimental
  */
-class PredictionServiceClient extends PredictionServiceBaseClient
+final class PredictionServiceClient extends PredictionServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see PredictionServiceBaseClient} class.

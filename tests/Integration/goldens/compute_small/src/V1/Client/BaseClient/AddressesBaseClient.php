@@ -53,6 +53,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface aggregatedListAsync(AggregatedListAddressesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAsync(DeleteAddressRequest $request, array $optionalArgs = [])
  * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])

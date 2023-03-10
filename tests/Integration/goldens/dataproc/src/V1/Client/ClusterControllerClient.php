@@ -33,7 +33,7 @@ use Google\Cloud\Dataproc\V1\Client\BaseClient\ClusterControllerBaseClient;
  *
  * @experimental
  */
-class ClusterControllerClient extends ClusterControllerBaseClient
+final class ClusterControllerClient extends ClusterControllerBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ClusterControllerBaseClient} class.

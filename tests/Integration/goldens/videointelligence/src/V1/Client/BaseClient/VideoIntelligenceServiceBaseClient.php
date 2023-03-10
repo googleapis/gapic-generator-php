@@ -49,6 +49,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface annotateVideoAsync(AnnotateVideoRequest $request, array $optionalArgs = [])
  */
 class VideoIntelligenceServiceBaseClient

@@ -57,6 +57,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createAutoscalingPolicyAsync(CreateAutoscalingPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAutoscalingPolicyAsync(DeleteAutoscalingPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getAutoscalingPolicyAsync(GetAutoscalingPolicyRequest $request, array $optionalArgs = [])

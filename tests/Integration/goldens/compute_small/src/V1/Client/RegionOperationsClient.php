@@ -33,7 +33,7 @@ use Google\Cloud\Compute\V1\Client\BaseClient\RegionOperationsBaseClient;
  *
  * @experimental
  */
-class RegionOperationsClient extends RegionOperationsBaseClient
+final class RegionOperationsClient extends RegionOperationsBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see RegionOperationsBaseClient} class.

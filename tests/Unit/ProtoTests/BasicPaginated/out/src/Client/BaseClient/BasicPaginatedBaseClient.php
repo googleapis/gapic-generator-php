@@ -45,6 +45,8 @@ use Testing\BasicPaginated\Request;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface methodPaginatedAsync(Request $request, array $optionalArgs = [])
  */
 class BasicPaginatedBaseClient

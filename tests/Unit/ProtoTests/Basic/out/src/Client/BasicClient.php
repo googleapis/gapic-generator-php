@@ -33,7 +33,7 @@ use Testing\Basic\Client\BaseClient\BasicBaseClient;
  *
  * @experimental
  */
-class BasicClient extends BasicBaseClient
+final class BasicClient extends BasicBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see BasicBaseClient} class.

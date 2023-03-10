@@ -84,6 +84,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface cancelOperationAsync(CancelOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface completeIPRotationAsync(CompleteIPRotationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createClusterAsync(CreateClusterRequest $request, array $optionalArgs = [])

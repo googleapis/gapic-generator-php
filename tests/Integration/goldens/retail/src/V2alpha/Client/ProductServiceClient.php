@@ -35,7 +35,7 @@ use Google\Cloud\Retail\V2alpha\Client\BaseClient\ProductServiceBaseClient;
  *
  * @experimental
  */
-class ProductServiceClient extends ProductServiceBaseClient
+final class ProductServiceClient extends ProductServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ProductServiceBaseClient} class.

@@ -33,7 +33,7 @@ use Google\Cloud\Dataproc\V1\Client\BaseClient\WorkflowTemplateServiceBaseClient
  *
  * @experimental
  */
-class WorkflowTemplateServiceClient extends WorkflowTemplateServiceBaseClient
+final class WorkflowTemplateServiceClient extends WorkflowTemplateServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see WorkflowTemplateServiceBaseClient} class.

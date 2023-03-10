@@ -53,6 +53,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
 class EventServiceBaseClient

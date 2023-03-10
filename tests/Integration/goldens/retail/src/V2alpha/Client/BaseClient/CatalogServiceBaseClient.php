@@ -58,6 +58,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface getDefaultBranchAsync(GetDefaultBranchRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listCatalogsAsync(ListCatalogsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface setDefaultBranchAsync(SetDefaultBranchRequest $request, array $optionalArgs = [])

@@ -58,6 +58,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createTenantAsync(CreateTenantRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteTenantAsync(DeleteTenantRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getTenantAsync(GetTenantRequest $request, array $optionalArgs = [])

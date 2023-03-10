@@ -33,7 +33,7 @@ use Testing\BasicPaginated\Client\BaseClient\BasicPaginatedBaseClient;
  *
  * @experimental
  */
-class BasicPaginatedClient extends BasicPaginatedBaseClient
+final class BasicPaginatedClient extends BasicPaginatedBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see BasicPaginatedBaseClient} class.

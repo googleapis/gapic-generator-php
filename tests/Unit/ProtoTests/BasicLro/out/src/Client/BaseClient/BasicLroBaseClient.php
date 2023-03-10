@@ -47,6 +47,8 @@ use Testing\BasicLro\Request;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodNonLro1Async(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodNonLro2Async(Request $request, array $optionalArgs = [])

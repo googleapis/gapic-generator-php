@@ -56,6 +56,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createLogMetricAsync(CreateLogMetricRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteLogMetricAsync(DeleteLogMetricRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getLogMetricAsync(GetLogMetricRequest $request, array $optionalArgs = [])

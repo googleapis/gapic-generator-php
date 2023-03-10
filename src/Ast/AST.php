@@ -155,9 +155,9 @@ abstract class AST
      *
      * @return PhpClass
      */
-    public static function class(Type $type, ?ResolvedType $extends = null): PhpClass
+    public static function class(Type $type, ?ResolvedType $extends = null, bool $final = false): PhpClass
     {
-        return new PhpClass($type, $extends);
+        return new PhpClass($type, $extends, $final);
     }
 
     /**

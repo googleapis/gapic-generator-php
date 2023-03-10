@@ -35,7 +35,7 @@ use Google\Cloud\Retail\V2alpha\Client\BaseClient\UserEventServiceBaseClient;
  *
  * @experimental
  */
-class UserEventServiceClient extends UserEventServiceBaseClient
+final class UserEventServiceClient extends UserEventServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see UserEventServiceBaseClient} class.

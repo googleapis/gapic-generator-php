@@ -57,6 +57,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface searchAsync(SearchRequest $request, array $optionalArgs = [])
  */
 class SearchServiceBaseClient

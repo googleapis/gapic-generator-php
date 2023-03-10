@@ -57,6 +57,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface deleteLogAsync(DeleteLogRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listLogEntriesAsync(ListLogEntriesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listLogsAsync(ListLogsRequest $request, array $optionalArgs = [])

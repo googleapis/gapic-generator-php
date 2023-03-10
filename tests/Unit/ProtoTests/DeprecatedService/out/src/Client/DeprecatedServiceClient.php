@@ -33,7 +33,7 @@ use Testing\Deprecated\Client\BaseClient\DeprecatedServiceBaseClient;
  *
  * @experimental
  */
-class DeprecatedServiceClient extends DeprecatedServiceBaseClient
+final class DeprecatedServiceClient extends DeprecatedServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see DeprecatedServiceBaseClient} class.

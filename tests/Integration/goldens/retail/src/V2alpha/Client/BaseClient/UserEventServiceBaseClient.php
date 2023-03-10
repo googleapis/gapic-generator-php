@@ -62,6 +62,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface collectUserEventAsync(CollectUserEventRequest $request, array $optionalArgs = [])
  * @method PromiseInterface importUserEventsAsync(ImportUserEventsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface purgeUserEventsAsync(PurgeUserEventsRequest $request, array $optionalArgs = [])

@@ -35,7 +35,7 @@ use Google\Cloud\Talent\V4beta1\Client\BaseClient\EventServiceBaseClient;
  *
  * @experimental
  */
-class EventServiceClient extends EventServiceBaseClient
+final class EventServiceClient extends EventServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see EventServiceBaseClient} class.

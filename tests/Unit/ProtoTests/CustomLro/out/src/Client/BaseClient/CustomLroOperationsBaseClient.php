@@ -47,6 +47,8 @@ use Testing\CustomLro\GetOperationRequest;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface cancelAsync(CancelOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getAsync(GetOperationRequest $request, array $optionalArgs = [])

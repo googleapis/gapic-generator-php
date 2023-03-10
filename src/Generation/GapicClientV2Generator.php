@@ -122,6 +122,7 @@ class GapicClientV2Generator
                 // $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 PhpDoc::text('This class is currently experimental and may be subject to changes.'),
                 PhpDoc::experimental(),
+                PhpDoc::internal(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))

@@ -53,6 +53,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  */
 class CompletionBaseClient

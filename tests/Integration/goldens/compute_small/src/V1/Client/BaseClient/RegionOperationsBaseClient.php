@@ -45,6 +45,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface getAsync(GetRegionOperationRequest $request, array $optionalArgs = [])
  */
 class RegionOperationsBaseClient

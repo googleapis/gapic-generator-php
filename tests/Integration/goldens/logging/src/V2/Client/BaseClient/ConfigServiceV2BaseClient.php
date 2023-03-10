@@ -78,6 +78,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createBucketAsync(CreateBucketRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createExclusionAsync(CreateExclusionRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createSinkAsync(CreateSinkRequest $request, array $optionalArgs = [])

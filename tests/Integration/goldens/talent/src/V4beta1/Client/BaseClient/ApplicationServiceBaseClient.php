@@ -59,6 +59,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createApplicationAsync(CreateApplicationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteApplicationAsync(DeleteApplicationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getApplicationAsync(GetApplicationRequest $request, array $optionalArgs = [])

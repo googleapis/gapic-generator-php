@@ -33,7 +33,7 @@ use Google\Cloud\Logging\V2\Client\BaseClient\MetricsServiceV2BaseClient;
  *
  * @experimental
  */
-class MetricsServiceV2Client extends MetricsServiceV2BaseClient
+final class MetricsServiceV2Client extends MetricsServiceV2BaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see MetricsServiceV2BaseClient} class.

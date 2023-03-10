@@ -71,6 +71,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface analyzeIamPolicyAsync(AnalyzeIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface analyzeIamPolicyLongrunningAsync(AnalyzeIamPolicyLongrunningRequest $request, array $optionalArgs = [])
  * @method PromiseInterface analyzeMoveAsync(AnalyzeMoveRequest $request, array $optionalArgs = [])

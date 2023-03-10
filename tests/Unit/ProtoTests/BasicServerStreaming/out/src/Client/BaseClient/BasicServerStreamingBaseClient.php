@@ -43,6 +43,8 @@ use Testing\BasicServerStreaming\Request;
  * This class is currently experimental and may be subject to changes.
  *
  * @experimental
+ *
+ * @internal
  */
 class BasicServerStreamingBaseClient
 {

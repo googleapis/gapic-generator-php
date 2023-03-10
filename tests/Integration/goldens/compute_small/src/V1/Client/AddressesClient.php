@@ -33,7 +33,7 @@ use Google\Cloud\Compute\V1\Client\BaseClient\AddressesBaseClient;
  *
  * @experimental
  */
-class AddressesClient extends AddressesBaseClient
+final class AddressesClient extends AddressesBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see AddressesBaseClient} class.

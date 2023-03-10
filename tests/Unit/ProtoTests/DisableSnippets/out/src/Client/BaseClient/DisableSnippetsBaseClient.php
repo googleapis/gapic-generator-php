@@ -45,6 +45,8 @@ use Testing\DisableSnippets\Response;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface method1Async(Request $request, array $optionalArgs = [])
  */
 class DisableSnippetsBaseClient

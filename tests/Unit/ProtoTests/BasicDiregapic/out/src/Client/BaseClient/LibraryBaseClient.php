@@ -104,6 +104,8 @@ use Testing\BasicDiregapic\UpdateBookRequest;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface addCommentsAsync(AddCommentsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface addTagAsync(AddTagRequest $request, array $optionalArgs = [])
  * @method PromiseInterface archiveBooksAsync(ArchiveBooksRequest $request, array $optionalArgs = [])

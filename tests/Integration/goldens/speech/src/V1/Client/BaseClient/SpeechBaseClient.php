@@ -51,6 +51,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
  * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */

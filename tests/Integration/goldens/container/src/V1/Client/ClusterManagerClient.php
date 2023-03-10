@@ -33,7 +33,7 @@ use Google\Cloud\Container\V1\Client\BaseClient\ClusterManagerBaseClient;
  *
  * @experimental
  */
-class ClusterManagerClient extends ClusterManagerBaseClient
+final class ClusterManagerClient extends ClusterManagerBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ClusterManagerBaseClient} class.

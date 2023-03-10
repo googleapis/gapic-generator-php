@@ -35,7 +35,7 @@ use Google\Cloud\Talent\V4beta1\Client\BaseClient\TenantServiceBaseClient;
  *
  * @experimental
  */
-class TenantServiceClient extends TenantServiceBaseClient
+final class TenantServiceClient extends TenantServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see TenantServiceBaseClient} class.

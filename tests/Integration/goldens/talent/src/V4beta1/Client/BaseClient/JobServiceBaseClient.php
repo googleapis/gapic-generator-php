@@ -65,6 +65,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface batchCreateJobsAsync(BatchCreateJobsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface batchDeleteJobsAsync(BatchDeleteJobsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface batchUpdateJobsAsync(BatchUpdateJobsRequest $request, array $optionalArgs = [])

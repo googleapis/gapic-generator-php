@@ -33,7 +33,7 @@ use Google\Cloud\Dataproc\V1\Client\BaseClient\JobControllerBaseClient;
  *
  * @experimental
  */
-class JobControllerClient extends JobControllerBaseClient
+final class JobControllerClient extends JobControllerBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see JobControllerBaseClient} class.

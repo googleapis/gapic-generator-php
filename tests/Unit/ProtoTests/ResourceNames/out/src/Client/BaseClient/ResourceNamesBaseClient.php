@@ -58,6 +58,8 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
  * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
  * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])

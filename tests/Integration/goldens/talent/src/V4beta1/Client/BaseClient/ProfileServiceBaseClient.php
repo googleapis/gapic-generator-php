@@ -60,6 +60,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createProfileAsync(CreateProfileRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteProfileAsync(DeleteProfileRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getProfileAsync(GetProfileRequest $request, array $optionalArgs = [])

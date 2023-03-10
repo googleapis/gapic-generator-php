@@ -35,7 +35,7 @@ use Google\Cloud\Retail\V2alpha\Client\BaseClient\CompletionServiceBaseClient;
  *
  * @experimental
  */
-class CompletionServiceClient extends CompletionServiceBaseClient
+final class CompletionServiceClient extends CompletionServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CompletionServiceBaseClient} class.

@@ -65,6 +65,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createClusterAsync(CreateClusterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteClusterAsync(DeleteClusterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface diagnoseClusterAsync(DiagnoseClusterRequest $request, array $optionalArgs = [])

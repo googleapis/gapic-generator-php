@@ -35,7 +35,7 @@ use Google\Cloud\Talent\V4beta1\Client\BaseClient\CompletionBaseClient;
  *
  * @experimental
  */
-class CompletionClient extends CompletionBaseClient
+final class CompletionClient extends CompletionBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CompletionBaseClient} class.

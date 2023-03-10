@@ -35,7 +35,7 @@ use Google\Cloud\Retail\V2alpha\Client\BaseClient\SearchServiceBaseClient;
  *
  * @experimental
  */
-class SearchServiceClient extends SearchServiceBaseClient
+final class SearchServiceClient extends SearchServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see SearchServiceBaseClient} class.

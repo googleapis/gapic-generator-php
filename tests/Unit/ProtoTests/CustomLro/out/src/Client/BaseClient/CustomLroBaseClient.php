@@ -46,6 +46,8 @@ use Testing\CustomLro\CustomLroOperationsClient;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
 class CustomLroBaseClient

@@ -98,6 +98,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface asymmetricDecryptAsync(AsymmetricDecryptRequest $request, array $optionalArgs = [])
  * @method PromiseInterface asymmetricSignAsync(AsymmetricSignRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createCryptoKeyAsync(CreateCryptoKeyRequest $request, array $optionalArgs = [])

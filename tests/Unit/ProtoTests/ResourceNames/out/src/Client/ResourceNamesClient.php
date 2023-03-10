@@ -33,7 +33,7 @@ use Testing\ResourceNames\Client\BaseClient\ResourceNamesBaseClient;
  *
  * @experimental
  */
-class ResourceNamesClient extends ResourceNamesBaseClient
+final class ResourceNamesClient extends ResourceNamesBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see ResourceNamesBaseClient} class.

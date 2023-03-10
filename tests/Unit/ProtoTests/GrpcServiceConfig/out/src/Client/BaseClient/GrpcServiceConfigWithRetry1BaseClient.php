@@ -50,6 +50,8 @@ use Testing\GrpcServiceConfig\Response1;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface method1AAsync(Request1 $request, array $optionalArgs = [])
  * @method PromiseInterface method1BLroAsync(Request1 $request, array $optionalArgs = [])
  * @method PromiseInterface method1CServiceLevelRetryAsync(Request1 $request, array $optionalArgs = [])

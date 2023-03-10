@@ -33,7 +33,7 @@ use Testing\GrpcServiceConfig\Client\BaseClient\GrpcServiceConfigWithRetry1BaseC
  *
  * @experimental
  */
-class GrpcServiceConfigWithRetry1Client extends GrpcServiceConfigWithRetry1BaseClient
+final class GrpcServiceConfigWithRetry1Client extends GrpcServiceConfigWithRetry1BaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see GrpcServiceConfigWithRetry1BaseClient} class.

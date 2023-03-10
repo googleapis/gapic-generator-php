@@ -63,6 +63,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createWorkflowTemplateAsync(CreateWorkflowTemplateRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteWorkflowTemplateAsync(DeleteWorkflowTemplateRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getWorkflowTemplateAsync(GetWorkflowTemplateRequest $request, array $optionalArgs = [])

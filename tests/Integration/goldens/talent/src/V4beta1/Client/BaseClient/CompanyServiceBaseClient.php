@@ -58,6 +58,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface createCompanyAsync(CreateCompanyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteCompanyAsync(DeleteCompanyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getCompanyAsync(GetCompanyRequest $request, array $optionalArgs = [])

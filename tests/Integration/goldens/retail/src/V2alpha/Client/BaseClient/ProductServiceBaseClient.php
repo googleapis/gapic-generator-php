@@ -66,6 +66,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface addFulfillmentPlacesAsync(AddFulfillmentPlacesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createProductAsync(CreateProductRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteProductAsync(DeleteProductRequest $request, array $optionalArgs = [])

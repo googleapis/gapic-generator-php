@@ -33,7 +33,7 @@ use Testing\BasicLro\Client\BaseClient\BasicLroBaseClient;
  *
  * @experimental
  */
-class BasicLroClient extends BasicLroBaseClient
+final class BasicLroClient extends BasicLroBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see BasicLroBaseClient} class.

@@ -53,6 +53,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
 class PredictionServiceBaseClient

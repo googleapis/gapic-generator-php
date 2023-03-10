@@ -33,7 +33,7 @@ use Testing\RoutingHeaders\Client\BaseClient\RoutingHeadersBaseClient;
  *
  * @experimental
  */
-class RoutingHeadersClient extends RoutingHeadersBaseClient
+final class RoutingHeadersClient extends RoutingHeadersBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see RoutingHeadersBaseClient} class.

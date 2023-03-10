@@ -33,7 +33,7 @@ use Testing\CustomLro\Client\BaseClient\CustomLroOperationsBaseClient;
  *
  * @experimental
  */
-class CustomLroOperationsClient extends CustomLroOperationsBaseClient
+final class CustomLroOperationsClient extends CustomLroOperationsBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CustomLroOperationsBaseClient} class.

@@ -35,7 +35,7 @@ use Google\Cloud\Talent\V4beta1\Client\BaseClient\CompanyServiceBaseClient;
  *
  * @experimental
  */
-class CompanyServiceClient extends CompanyServiceBaseClient
+final class CompanyServiceClient extends CompanyServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see CompanyServiceBaseClient} class.

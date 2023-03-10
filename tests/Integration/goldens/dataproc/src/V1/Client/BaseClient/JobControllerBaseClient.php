@@ -54,6 +54,8 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
+ * @internal
+ *
  * @method PromiseInterface cancelJobAsync(CancelJobRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteJobAsync(DeleteJobRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getJobAsync(GetJobRequest $request, array $optionalArgs = [])

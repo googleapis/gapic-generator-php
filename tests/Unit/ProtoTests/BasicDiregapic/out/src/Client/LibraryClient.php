@@ -33,7 +33,7 @@ use Testing\BasicDiregapic\Client\BaseClient\LibraryBaseClient;
  *
  * @experimental
  */
-class LibraryClient extends LibraryBaseClient
+final class LibraryClient extends LibraryBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see LibraryBaseClient} class.

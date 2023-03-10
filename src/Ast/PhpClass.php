@@ -28,12 +28,13 @@ final class PhpClass extends AST
 {
     use HasPhpDoc;
 
-    public function __construct(Type $type, ?ResolvedType $extends)
+    public function __construct(Type $type, ?ResolvedType $extends, bool $final)
     {
         $this->type = $type;
         $this->extends = $extends;
         $this->traits = Set::new();
         $this->members = Vector::new();
+        $this->final = $final;
     }
 
     /** @var Type *Readonly* The type of this class. */
@@ -44,6 +45,9 @@ final class PhpClass extends AST
 
     /** @var Vector *Readonly* Vector of PhpClassMember; all members of this class. */
     public Vector $members;
+
+    /** @var bool *Readonly* Flag indicating if the class is final or not. */
+    public bool $final;
 
     /**
      * Create a class with an additional trait.
@@ -94,9 +98,10 @@ final class PhpClass extends AST
     public function toCode(): string
     {
         $extends = is_null($this->extends) ? '' : " extends {$this->extends->toCode()}";
+        $class = $this->final ? 'final class' : 'class';
         return
             $this->phpDocToCode() .
-            "class {$this->type->name}{$extends}\n" .
+            "{$class} {$this->type->name}{$extends}\n" .
             "{\n" .
             $this->traits->toVector()->map(fn ($x) => "use {$x->toCode()};\n")->join() .
             (count($this->traits) >= 1 ? "\n" : '') .
