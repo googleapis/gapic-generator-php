@@ -189,8 +189,8 @@ class IAMPolicyBaseClient
      *
      * The async variant is {@see self::getIamPolicyAsync()} .
      *
-     * @param GetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param GetIamPolicyRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -203,9 +203,9 @@ class IAMPolicyBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $optionalArgs = []): Policy
+    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
     {
-        return $this->startApiCall('GetIamPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -214,8 +214,8 @@ class IAMPolicyBaseClient
      *
      * The async variant is {@see self::setIamPolicyAsync()} .
      *
-     * @param SetIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param SetIamPolicyRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -228,9 +228,9 @@ class IAMPolicyBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setIamPolicy(SetIamPolicyRequest $request, array $optionalArgs = []): Policy
+    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy
     {
-        return $this->startApiCall('SetIamPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetIamPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -244,8 +244,8 @@ class IAMPolicyBaseClient
      *
      * The async variant is {@see self::testIamPermissionsAsync()} .
      *
-     * @param TestIamPermissionsRequest $request      A request to house fields associated with the call.
-     * @param array                     $optionalArgs {
+     * @param TestIamPermissionsRequest $request     A request to house fields associated with the call.
+     * @param array                     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -258,8 +258,8 @@ class IAMPolicyBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function testIamPermissions(TestIamPermissionsRequest $request, array $optionalArgs = []): TestIamPermissionsResponse
+    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
     {
-        return $this->startApiCall('TestIamPermissions', $request, $optionalArgs)->wait();
+        return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
     }
 }

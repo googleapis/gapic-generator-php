@@ -163,8 +163,8 @@ class BasicBaseClient
      *
      * The async variant is {@see self::aMethodAsync()} .
      *
-     * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param Request $request     A request to house fields associated with the call.
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -177,9 +177,9 @@ class BasicBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function aMethod(Request $request, array $optionalArgs = []): Response
+    public function aMethod(Request $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('AMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AMethod', $request, $callOptions)->wait();
     }
 
     /**
@@ -187,8 +187,8 @@ class BasicBaseClient
      *
      * The async variant is {@see self::methodWithArgsAsync()} .
      *
-     * @param RequestWithArgs $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param RequestWithArgs $request     A request to house fields associated with the call.
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -201,8 +201,8 @@ class BasicBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodWithArgs(RequestWithArgs $request, array $optionalArgs = []): Response
+    public function methodWithArgs(RequestWithArgs $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('MethodWithArgs', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MethodWithArgs', $request, $callOptions)->wait();
     }
 }

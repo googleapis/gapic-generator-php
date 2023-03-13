@@ -196,8 +196,8 @@ class GrpcServiceConfigWithRetry1BaseClient
     /**
      * The async variant is {@see self::method1AAsync()} .
      *
-     * @param Request1 $request      A request to house fields associated with the call.
-     * @param array    $optionalArgs {
+     * @param Request1 $request     A request to house fields associated with the call.
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -210,16 +210,16 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1A(Request1 $request, array $optionalArgs = []): Response1
+    public function method1A(Request1 $request, array $callOptions = []): Response1
     {
-        return $this->startApiCall('Method1A', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1A', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::method1BLroAsync()} .
      *
-     * @param Request1 $request      A request to house fields associated with the call.
-     * @param array    $optionalArgs {
+     * @param Request1 $request     A request to house fields associated with the call.
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -232,13 +232,13 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1BLro(Request1 $request, array $optionalArgs = []): OperationResponse
+    public function method1BLro(Request1 $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('Method1BLro', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1BLro', $request, $callOptions)->wait();
     }
 
     /**
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -249,16 +249,16 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1BidiStreaming(array $optionalArgs = []): BidiStream
+    public function method1BidiStreaming(array $callOptions = []): BidiStream
     {
-        return $this->startApiCall('Method1BidiStreaming', null, $optionalArgs);
+        return $this->startApiCall('Method1BidiStreaming', null, $callOptions);
     }
 
     /**
      * The async variant is {@see self::method1CServiceLevelRetryAsync()} .
      *
-     * @param Request1 $request      A request to house fields associated with the call.
-     * @param array    $optionalArgs {
+     * @param Request1 $request     A request to house fields associated with the call.
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -271,16 +271,16 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1CServiceLevelRetry(Request1 $request, array $optionalArgs = []): Response1
+    public function method1CServiceLevelRetry(Request1 $request, array $callOptions = []): Response1
     {
-        return $this->startApiCall('Method1CServiceLevelRetry', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1CServiceLevelRetry', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::method1DTimeoutOnlyRetryAsync()} .
      *
-     * @param Request1 $request      A request to house fields associated with the call.
-     * @param array    $optionalArgs {
+     * @param Request1 $request     A request to house fields associated with the call.
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -293,14 +293,14 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1DTimeoutOnlyRetry(Request1 $request, array $optionalArgs = []): Response1
+    public function method1DTimeoutOnlyRetry(Request1 $request, array $callOptions = []): Response1
     {
-        return $this->startApiCall('Method1DTimeoutOnlyRetry', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1DTimeoutOnlyRetry', $request, $callOptions)->wait();
     }
 
     /**
-     * @param Request1 $request      A request to house fields associated with the call.
-     * @param array    $optionalArgs {
+     * @param Request1 $request     A request to house fields associated with the call.
+     * @param array    $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -311,8 +311,8 @@ class GrpcServiceConfigWithRetry1BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1ServerStreaming(Request1 $request, array $optionalArgs = []): ServerStream
+    public function method1ServerStreaming(Request1 $request, array $callOptions = []): ServerStream
     {
-        return $this->startApiCall('Method1ServerStreaming', $request, $optionalArgs);
+        return $this->startApiCall('Method1ServerStreaming', $request, $callOptions);
     }
 }

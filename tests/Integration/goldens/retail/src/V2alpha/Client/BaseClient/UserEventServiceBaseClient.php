@@ -304,8 +304,8 @@ class UserEventServiceBaseClient
      *
      * The async variant is {@see self::collectUserEventAsync()} .
      *
-     * @param CollectUserEventRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param CollectUserEventRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -320,9 +320,9 @@ class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public function collectUserEvent(CollectUserEventRequest $request, array $optionalArgs = []): HttpBody
+    public function collectUserEvent(CollectUserEventRequest $request, array $callOptions = []): HttpBody
     {
-        return $this->startApiCall('CollectUserEvent', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CollectUserEvent', $request, $callOptions)->wait();
     }
 
     /**
@@ -336,8 +336,8 @@ class UserEventServiceBaseClient
      *
      * The async variant is {@see self::importUserEventsAsync()} .
      *
-     * @param ImportUserEventsRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param ImportUserEventsRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -352,9 +352,9 @@ class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public function importUserEvents(ImportUserEventsRequest $request, array $optionalArgs = []): OperationResponse
+    public function importUserEvents(ImportUserEventsRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ImportUserEvents', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ImportUserEvents', $request, $callOptions)->wait();
     }
 
     /**
@@ -365,8 +365,8 @@ class UserEventServiceBaseClient
      *
      * The async variant is {@see self::purgeUserEventsAsync()} .
      *
-     * @param PurgeUserEventsRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param PurgeUserEventsRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -381,9 +381,9 @@ class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public function purgeUserEvents(PurgeUserEventsRequest $request, array $optionalArgs = []): OperationResponse
+    public function purgeUserEvents(PurgeUserEventsRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('PurgeUserEvents', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PurgeUserEvents', $request, $callOptions)->wait();
     }
 
     /**
@@ -397,8 +397,8 @@ class UserEventServiceBaseClient
      *
      * The async variant is {@see self::rejoinUserEventsAsync()} .
      *
-     * @param RejoinUserEventsRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param RejoinUserEventsRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -413,9 +413,9 @@ class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public function rejoinUserEvents(RejoinUserEventsRequest $request, array $optionalArgs = []): OperationResponse
+    public function rejoinUserEvents(RejoinUserEventsRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('RejoinUserEvents', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RejoinUserEvents', $request, $callOptions)->wait();
     }
 
     /**
@@ -423,8 +423,8 @@ class UserEventServiceBaseClient
      *
      * The async variant is {@see self::writeUserEventAsync()} .
      *
-     * @param WriteUserEventRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param WriteUserEventRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -439,8 +439,8 @@ class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public function writeUserEvent(WriteUserEventRequest $request, array $optionalArgs = []): UserEvent
+    public function writeUserEvent(WriteUserEventRequest $request, array $callOptions = []): UserEvent
     {
-        return $this->startApiCall('WriteUserEvent', $request, $optionalArgs)->wait();
+        return $this->startApiCall('WriteUserEvent', $request, $callOptions)->wait();
     }
 }

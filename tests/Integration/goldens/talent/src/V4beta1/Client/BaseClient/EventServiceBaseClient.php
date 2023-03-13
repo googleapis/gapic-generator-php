@@ -248,8 +248,8 @@ class EventServiceBaseClient
      *
      * The async variant is {@see self::createClientEventAsync()} .
      *
-     * @param CreateClientEventRequest $request      A request to house fields associated with the call.
-     * @param array                    $optionalArgs {
+     * @param CreateClientEventRequest $request     A request to house fields associated with the call.
+     * @param array                    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -264,8 +264,8 @@ class EventServiceBaseClient
      *
      * @experimental
      */
-    public function createClientEvent(CreateClientEventRequest $request, array $optionalArgs = []): ClientEvent
+    public function createClientEvent(CreateClientEventRequest $request, array $callOptions = []): ClientEvent
     {
-        return $this->startApiCall('CreateClientEvent', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateClientEvent', $request, $callOptions)->wait();
     }
 }

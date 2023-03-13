@@ -156,8 +156,8 @@ class DisableSnippetsBaseClient
     /**
      * The async variant is {@see self::method1Async()} .
      *
-     * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param Request $request     A request to house fields associated with the call.
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -170,8 +170,8 @@ class DisableSnippetsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function method1(Request $request, array $optionalArgs = []): Response
+    public function method1(Request $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('Method1', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Method1', $request, $callOptions)->wait();
     }
 }

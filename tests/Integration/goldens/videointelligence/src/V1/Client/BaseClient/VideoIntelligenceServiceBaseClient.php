@@ -199,8 +199,8 @@ class VideoIntelligenceServiceBaseClient
      *
      * The async variant is {@see self::annotateVideoAsync()} .
      *
-     * @param AnnotateVideoRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param AnnotateVideoRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -213,8 +213,8 @@ class VideoIntelligenceServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function annotateVideo(AnnotateVideoRequest $request, array $optionalArgs = []): OperationResponse
+    public function annotateVideo(AnnotateVideoRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('AnnotateVideo', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnnotateVideo', $request, $callOptions)->wait();
     }
 }

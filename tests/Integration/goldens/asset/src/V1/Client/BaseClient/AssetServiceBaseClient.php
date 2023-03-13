@@ -332,8 +332,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::analyzeIamPolicyAsync()} .
      *
-     * @param AnalyzeIamPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param AnalyzeIamPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -346,9 +346,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function analyzeIamPolicy(AnalyzeIamPolicyRequest $request, array $optionalArgs = []): AnalyzeIamPolicyResponse
+    public function analyzeIamPolicy(AnalyzeIamPolicyRequest $request, array $callOptions = []): AnalyzeIamPolicyResponse
     {
-        return $this->startApiCall('AnalyzeIamPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeIamPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -364,8 +364,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::analyzeIamPolicyLongrunningAsync()} .
      *
-     * @param AnalyzeIamPolicyLongrunningRequest $request      A request to house fields associated with the call.
-     * @param array                              $optionalArgs {
+     * @param AnalyzeIamPolicyLongrunningRequest $request     A request to house fields associated with the call.
+     * @param array                              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -378,9 +378,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function analyzeIamPolicyLongrunning(AnalyzeIamPolicyLongrunningRequest $request, array $optionalArgs = []): OperationResponse
+    public function analyzeIamPolicyLongrunning(AnalyzeIamPolicyLongrunningRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('AnalyzeIamPolicyLongrunning', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeIamPolicyLongrunning', $request, $callOptions)->wait();
     }
 
     /**
@@ -392,8 +392,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::analyzeMoveAsync()} .
      *
-     * @param AnalyzeMoveRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param AnalyzeMoveRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -406,9 +406,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function analyzeMove(AnalyzeMoveRequest $request, array $optionalArgs = []): AnalyzeMoveResponse
+    public function analyzeMove(AnalyzeMoveRequest $request, array $callOptions = []): AnalyzeMoveResponse
     {
-        return $this->startApiCall('AnalyzeMove', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AnalyzeMove', $request, $callOptions)->wait();
     }
 
     /**
@@ -422,8 +422,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::batchGetAssetsHistoryAsync()} .
      *
-     * @param BatchGetAssetsHistoryRequest $request      A request to house fields associated with the call.
-     * @param array                        $optionalArgs {
+     * @param BatchGetAssetsHistoryRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -436,9 +436,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function batchGetAssetsHistory(BatchGetAssetsHistoryRequest $request, array $optionalArgs = []): BatchGetAssetsHistoryResponse
+    public function batchGetAssetsHistory(BatchGetAssetsHistoryRequest $request, array $callOptions = []): BatchGetAssetsHistoryResponse
     {
-        return $this->startApiCall('BatchGetAssetsHistory', $request, $optionalArgs)->wait();
+        return $this->startApiCall('BatchGetAssetsHistory', $request, $callOptions)->wait();
     }
 
     /**
@@ -447,8 +447,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::createFeedAsync()} .
      *
-     * @param CreateFeedRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param CreateFeedRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -461,9 +461,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createFeed(CreateFeedRequest $request, array $optionalArgs = []): Feed
+    public function createFeed(CreateFeedRequest $request, array $callOptions = []): Feed
     {
-        return $this->startApiCall('CreateFeed', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFeed', $request, $callOptions)->wait();
     }
 
     /**
@@ -471,8 +471,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::deleteFeedAsync()} .
      *
-     * @param DeleteFeedRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param DeleteFeedRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -483,9 +483,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteFeed(DeleteFeedRequest $request, array $optionalArgs = []): void
+    public function deleteFeed(DeleteFeedRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteFeed', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteFeed', $request, $callOptions)->wait();
     }
 
     /**
@@ -502,8 +502,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::exportAssetsAsync()} .
      *
-     * @param ExportAssetsRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ExportAssetsRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -516,9 +516,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function exportAssets(ExportAssetsRequest $request, array $optionalArgs = []): OperationResponse
+    public function exportAssets(ExportAssetsRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('ExportAssets', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ExportAssets', $request, $callOptions)->wait();
     }
 
     /**
@@ -526,8 +526,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::getFeedAsync()} .
      *
-     * @param GetFeedRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param GetFeedRequest $request     A request to house fields associated with the call.
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -540,9 +540,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getFeed(GetFeedRequest $request, array $optionalArgs = []): Feed
+    public function getFeed(GetFeedRequest $request, array $callOptions = []): Feed
     {
-        return $this->startApiCall('GetFeed', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetFeed', $request, $callOptions)->wait();
     }
 
     /**
@@ -551,8 +551,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::listAssetsAsync()} .
      *
-     * @param ListAssetsRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param ListAssetsRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -565,9 +565,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listAssets(ListAssetsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listAssets(ListAssetsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListAssets', $request, $optionalArgs);
+        return $this->startApiCall('ListAssets', $request, $callOptions);
     }
 
     /**
@@ -575,8 +575,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::listFeedsAsync()} .
      *
-     * @param ListFeedsRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param ListFeedsRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -589,9 +589,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listFeeds(ListFeedsRequest $request, array $optionalArgs = []): ListFeedsResponse
+    public function listFeeds(ListFeedsRequest $request, array $callOptions = []): ListFeedsResponse
     {
-        return $this->startApiCall('ListFeeds', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListFeeds', $request, $callOptions)->wait();
     }
 
     /**
@@ -602,8 +602,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::searchAllIamPoliciesAsync()} .
      *
-     * @param SearchAllIamPoliciesRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param SearchAllIamPoliciesRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -616,9 +616,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function searchAllIamPolicies(SearchAllIamPoliciesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function searchAllIamPolicies(SearchAllIamPoliciesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('SearchAllIamPolicies', $request, $optionalArgs);
+        return $this->startApiCall('SearchAllIamPolicies', $request, $callOptions);
     }
 
     /**
@@ -629,8 +629,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::searchAllResourcesAsync()} .
      *
-     * @param SearchAllResourcesRequest $request      A request to house fields associated with the call.
-     * @param array                     $optionalArgs {
+     * @param SearchAllResourcesRequest $request     A request to house fields associated with the call.
+     * @param array                     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -643,9 +643,9 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function searchAllResources(SearchAllResourcesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function searchAllResources(SearchAllResourcesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('SearchAllResources', $request, $optionalArgs);
+        return $this->startApiCall('SearchAllResources', $request, $callOptions);
     }
 
     /**
@@ -653,8 +653,8 @@ class AssetServiceBaseClient
      *
      * The async variant is {@see self::updateFeedAsync()} .
      *
-     * @param UpdateFeedRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param UpdateFeedRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -667,8 +667,8 @@ class AssetServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateFeed(UpdateFeedRequest $request, array $optionalArgs = []): Feed
+    public function updateFeed(UpdateFeedRequest $request, array $callOptions = []): Feed
     {
-        return $this->startApiCall('UpdateFeed', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateFeed', $request, $callOptions)->wait();
     }
 }
