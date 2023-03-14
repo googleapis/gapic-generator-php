@@ -55,16 +55,16 @@ class CustomLroBaseClient
     use GapicClientTrait;
 
     /** The name of the service. */
-    const SERVICE_NAME = 'testing.customlro.CustomLro';
+    private const SERVICE_NAME = 'testing.customlro.CustomLro';
 
     /** The default address of the service. */
-    const SERVICE_ADDRESS = 'customlro.example.com';
+    private const SERVICE_ADDRESS = 'customlro.example.com';
 
     /** The default port of the service. */
-    const DEFAULT_SERVICE_PORT = 443;
+    private const DEFAULT_SERVICE_PORT = 443;
 
     /** The name of the code generator, to be included in the agent header. */
-    const CODEGEN_NAME = 'gapic';
+    private const CODEGEN_NAME = 'gapic';
 
     /** The default scopes required by the service. */
     public static $serviceScopes = [
