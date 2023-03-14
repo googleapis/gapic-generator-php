@@ -80,8 +80,9 @@ We'll be using **PHP 7.4** for the setup.
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
 
-    Updating unit test goldens:
-    > This is useful if you have changed something in the generation process(_for example, renamed a variable in a generator_) and you want to recreate the test files that will be used for comparison.
+-   Updating unit test goldens:
+
+    You will need to update the golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
 
     ```
     php tests/Unit/ProtoTests/GoldenUpdateMain.php
@@ -124,8 +125,9 @@ We'll be using **PHP 7.4** for the setup.
     bazel run tests/Integration:asset_update
     ```
 
-    -   Update all goldens:
-    > This is useful if you have changed something in the generation process(_for example, renamed a variable in a generator_) and you want to recreate the test files that will be used for comparison.
+    -   Updating integration test goldens:
+    
+    You will need to update the integration golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
 
     ```
     bazel clean --expunge && \
