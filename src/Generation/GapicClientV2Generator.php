@@ -146,6 +146,7 @@ class GapicClientV2Generator
     {
         return AST::constant('SERVICE_NAME')
             ->withPhpDocText('The name of the service.')
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->serviceName);
     }
 
@@ -153,6 +154,7 @@ class GapicClientV2Generator
     {
         return AST::constant('SERVICE_ADDRESS')
             ->withPhpDocText('The default address of the service.')
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->defaultHost);
     }
 
@@ -160,6 +162,7 @@ class GapicClientV2Generator
     {
         return AST::constant('DEFAULT_SERVICE_PORT')
             ->withPhpDocText('The default port of the service.')
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->defaultPort);
     }
 
@@ -167,6 +170,7 @@ class GapicClientV2Generator
     {
         return AST::constant('CODEGEN_NAME')
             ->withPhpDocText('The name of the code generator, to be included in the agent header.')
+            ->withAccess(Access::PRIVATE)
             ->withValue('gapic');
     }
 

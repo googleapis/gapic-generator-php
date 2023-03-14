@@ -138,16 +138,16 @@ class LibraryBaseClient
     use ResourceHelperTrait;
 
     /** The name of the service. */
-    const SERVICE_NAME = 'google.example.library.v1.Library';
+    private const SERVICE_NAME = 'google.example.library.v1.Library';
 
     /** The default address of the service. */
-    const SERVICE_ADDRESS = 'library-example.googleapis.com:1234';
+    private const SERVICE_ADDRESS = 'library-example.googleapis.com:1234';
 
     /** The default port of the service. */
-    const DEFAULT_SERVICE_PORT = 443;
+    private const DEFAULT_SERVICE_PORT = 443;
 
     /** The name of the code generator, to be included in the agent header. */
-    const CODEGEN_NAME = 'gapic';
+    private const CODEGEN_NAME = 'gapic';
 
     /** The default scopes required by the service. */
     public static $serviceScopes = [
