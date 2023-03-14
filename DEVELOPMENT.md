@@ -2,6 +2,8 @@
 
 ## Setting Up
 
+We'll be using **PHP 7.4** for the setup.
+
 1.  Clone the directory.
 
     ```
@@ -16,7 +18,7 @@
     1.  On Linux:
 
     ```
-    sudo apt-get install php-curl php7.4-mbstring libxml2-dev
+    sudo apt-get install php-curl php7.4-mbstring libxml2-dev libssl-dev libcurl4-openssl-dev
     ```
 
 4.  Run `php composer.phar install`
@@ -78,7 +80,9 @@
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
 
-    Updating unit test goldens:
+-   Updating unit test goldens:
+
+    You will need to update the golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
 
     ```
     php tests/Unit/ProtoTests/GoldenUpdateMain.php
@@ -121,7 +125,9 @@
     bazel run tests/Integration:asset_update
     ```
 
-    -   Update all goldens:
+    -   Updating integration test goldens:
+    
+    You will need to update the integration golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
 
     ```
     bazel clean --expunge && \
@@ -180,7 +186,7 @@ To update the `googleapis` submodule, change into the directory and pull:
 
 ```
 pushd googleapis
-git pull origin main
+git pull origin master
 popd
 ```
 
