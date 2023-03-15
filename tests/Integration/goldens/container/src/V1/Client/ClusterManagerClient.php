@@ -26,7 +26,13 @@ namespace Google\Cloud\Container\V1\Client;
 
 use Google\Cloud\Container\V1\Client\BaseClient\ClusterManagerBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class ClusterManagerClient extends ClusterManagerBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

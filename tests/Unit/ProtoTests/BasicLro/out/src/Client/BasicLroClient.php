@@ -26,7 +26,13 @@ namespace Testing\BasicLro\Client;
 
 use Testing\BasicLro\Client\BaseClient\BasicLroBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class BasicLroClient extends BasicLroBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

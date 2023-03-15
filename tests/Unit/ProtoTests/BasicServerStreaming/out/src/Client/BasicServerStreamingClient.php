@@ -26,7 +26,13 @@ namespace Testing\BasicServerStreaming\Client;
 
 use Testing\BasicServerStreaming\Client\BaseClient\BasicServerStreamingBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class BasicServerStreamingClient extends BasicServerStreamingBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

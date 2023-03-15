@@ -26,7 +26,13 @@ namespace Testing\DisableSnippets\Client;
 
 use Testing\DisableSnippets\Client\BaseClient\DisableSnippetsBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class DisableSnippetsClient extends DisableSnippetsBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

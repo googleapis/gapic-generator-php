@@ -26,7 +26,13 @@ namespace Testing\RoutingHeaders\Client;
 
 use Testing\RoutingHeaders\Client\BaseClient\RoutingHeadersBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class RoutingHeadersClient extends RoutingHeadersBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

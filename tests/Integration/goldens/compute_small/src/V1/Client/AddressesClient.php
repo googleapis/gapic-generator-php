@@ -26,7 +26,13 @@ namespace Google\Cloud\Compute\V1\Client;
 
 use Google\Cloud\Compute\V1\Client\BaseClient\AddressesBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class AddressesClient extends AddressesBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

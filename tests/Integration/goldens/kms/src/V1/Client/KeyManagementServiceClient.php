@@ -26,7 +26,13 @@ namespace Google\Cloud\Kms\V1\Client;
 
 use Google\Cloud\Kms\V1\Client\BaseClient\KeyManagementServiceBaseClient;
 
-/** {@inheritdoc} */
+/**
+ * {@inheritdoc}
+ *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ */
 final class KeyManagementServiceClient extends KeyManagementServiceBaseClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to

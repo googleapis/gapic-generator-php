@@ -38,6 +38,10 @@ use Google\Auth\FetchAuthTokenInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
+ * This class is currently experimental and may be subject to changes.
+ *
+ * @experimental
+ *
  * @internal
  */
 class BasicBidiStreamingBaseClient
