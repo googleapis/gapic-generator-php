@@ -61,7 +61,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @method PromiseInterface searchAsync(SearchRequest $request, array $optionalArgs = [])
  */
-class SearchServiceBaseClient
+abstract class SearchServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

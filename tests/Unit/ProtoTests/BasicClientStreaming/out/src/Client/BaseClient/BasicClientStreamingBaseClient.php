@@ -44,7 +44,7 @@ use Google\Auth\FetchAuthTokenInterface;
  *
  * @internal
  */
-class BasicClientStreamingBaseClient
+abstract class BasicClientStreamingBaseClient
 {
     use GapicClientTrait;
 

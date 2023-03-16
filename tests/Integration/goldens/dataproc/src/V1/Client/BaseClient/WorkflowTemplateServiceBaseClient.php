@@ -73,7 +73,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listWorkflowTemplatesAsync(ListWorkflowTemplatesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateWorkflowTemplateAsync(UpdateWorkflowTemplateRequest $request, array $optionalArgs = [])
  */
-class WorkflowTemplateServiceBaseClient
+abstract class WorkflowTemplateServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

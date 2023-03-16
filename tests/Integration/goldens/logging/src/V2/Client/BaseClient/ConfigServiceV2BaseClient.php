@@ -104,7 +104,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface updateSinkAsync(UpdateSinkRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateViewAsync(UpdateViewRequest $request, array $optionalArgs = [])
  */
-class ConfigServiceV2BaseClient
+abstract class ConfigServiceV2BaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

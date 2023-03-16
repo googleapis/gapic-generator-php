@@ -78,7 +78,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
-class IAMPolicyBaseClient
+abstract class IAMPolicyBaseClient
 {
     use GapicClientTrait;
 

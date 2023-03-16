@@ -66,7 +66,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listCompaniesAsync(ListCompaniesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateCompanyAsync(UpdateCompanyRequest $request, array $optionalArgs = [])
  */
-class CompanyServiceBaseClient
+abstract class CompanyServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

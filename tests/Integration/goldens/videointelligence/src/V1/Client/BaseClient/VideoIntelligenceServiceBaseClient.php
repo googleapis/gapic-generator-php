@@ -53,7 +53,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @method PromiseInterface annotateVideoAsync(AnnotateVideoRequest $request, array $optionalArgs = [])
  */
-class VideoIntelligenceServiceBaseClient
+abstract class VideoIntelligenceServiceBaseClient
 {
     use GapicClientTrait;
 

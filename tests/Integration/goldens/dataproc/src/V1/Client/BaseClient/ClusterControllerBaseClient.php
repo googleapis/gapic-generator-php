@@ -76,7 +76,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface stopClusterAsync(StopClusterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateClusterAsync(UpdateClusterRequest $request, array $optionalArgs = [])
  */
-class ClusterControllerBaseClient
+abstract class ClusterControllerBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

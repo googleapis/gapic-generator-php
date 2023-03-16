@@ -119,7 +119,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface updateMasterAsync(UpdateMasterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateNodePoolAsync(UpdateNodePoolRequest $request, array $optionalArgs = [])
  */
-class ClusterManagerBaseClient
+abstract class ClusterManagerBaseClient
 {
     use GapicClientTrait;
 

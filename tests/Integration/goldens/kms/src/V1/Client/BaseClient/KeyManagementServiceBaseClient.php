@@ -127,7 +127,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
-class KeyManagementServiceBaseClient
+abstract class KeyManagementServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

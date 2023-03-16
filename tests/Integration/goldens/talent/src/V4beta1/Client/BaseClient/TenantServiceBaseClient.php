@@ -66,7 +66,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listTenantsAsync(ListTenantsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateTenantAsync(UpdateTenantRequest $request, array $optionalArgs = [])
  */
-class TenantServiceBaseClient
+abstract class TenantServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

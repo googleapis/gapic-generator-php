@@ -53,7 +53,7 @@ use Testing\CustomLro\GetOperationRequest;
  * @method PromiseInterface deleteAsync(DeleteOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getAsync(GetOperationRequest $request, array $optionalArgs = [])
  */
-class CustomLroOperationsBaseClient
+abstract class CustomLroOperationsBaseClient
 {
     use GapicClientTrait;
 

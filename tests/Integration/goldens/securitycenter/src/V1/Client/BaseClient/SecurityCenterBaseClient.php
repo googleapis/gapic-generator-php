@@ -109,7 +109,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
-class SecurityCenterBaseClient
+abstract class SecurityCenterBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

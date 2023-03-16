@@ -136,7 +136,7 @@ use Testing\BasicDiregapic\UpdateBookRequest;
  * @method PromiseInterface updateBookAsync(UpdateBookRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateBookIndexAsync(UpdateBookIndexRequest $request, array $optionalArgs = [])
  */
-class LibraryBaseClient
+abstract class LibraryBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
