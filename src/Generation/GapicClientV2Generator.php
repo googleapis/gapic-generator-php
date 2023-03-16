@@ -45,8 +45,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 
 class GapicClientV2Generator
 {
-    // This is the variable name for the callOptions(prev optionalArgs)
-    // in the GAPIC clients.
     private const CALL_OPTIONS_VAR = 'callOptions';
 
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
