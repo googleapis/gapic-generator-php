@@ -177,8 +177,8 @@ class RegionOperationsBaseClient
      *
      * The async variant is {@see self::getAsync()} .
      *
-     * @param GetRegionOperationRequest $request      A request to house fields associated with the call.
-     * @param array                     $optionalArgs {
+     * @param GetRegionOperationRequest $request     A request to house fields associated with the call.
+     * @param array                     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -191,8 +191,8 @@ class RegionOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function get(GetRegionOperationRequest $request, array $optionalArgs = []): Operation
+    public function get(GetRegionOperationRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Get', $request, $callOptions)->wait();
     }
 }

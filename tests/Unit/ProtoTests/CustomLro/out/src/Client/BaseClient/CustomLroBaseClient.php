@@ -228,8 +228,8 @@ class CustomLroBaseClient
     /**
      * The async variant is {@see self::createFooAsync()} .
      *
-     * @param CreateFooRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param CreateFooRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -242,8 +242,8 @@ class CustomLroBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createFoo(CreateFooRequest $request, array $optionalArgs = []): OperationResponse
+    public function createFoo(CreateFooRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('CreateFoo', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateFoo', $request, $callOptions)->wait();
     }
 }

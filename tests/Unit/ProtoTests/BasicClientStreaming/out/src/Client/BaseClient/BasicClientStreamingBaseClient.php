@@ -143,7 +143,7 @@ class BasicClientStreamingBaseClient
     }
 
     /**
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -154,13 +154,13 @@ class BasicClientStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodClient(array $optionalArgs = []): ClientStream
+    public function methodClient(array $callOptions = []): ClientStream
     {
-        return $this->startApiCall('MethodClient', null, $optionalArgs);
+        return $this->startApiCall('MethodClient', null, $callOptions);
     }
 
     /**
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -171,8 +171,8 @@ class BasicClientStreamingBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodEmpty(array $optionalArgs = []): ClientStream
+    public function methodEmpty(array $callOptions = []): ClientStream
     {
-        return $this->startApiCall('MethodEmpty', null, $optionalArgs);
+        return $this->startApiCall('MethodEmpty', null, $callOptions);
     }
 }

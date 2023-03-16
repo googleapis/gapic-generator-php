@@ -285,8 +285,8 @@ class CatalogServiceBaseClient
      *
      * The async variant is {@see self::getDefaultBranchAsync()} .
      *
-     * @param GetDefaultBranchRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param GetDefaultBranchRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -301,9 +301,9 @@ class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public function getDefaultBranch(GetDefaultBranchRequest $request, array $optionalArgs = []): GetDefaultBranchResponse
+    public function getDefaultBranch(GetDefaultBranchRequest $request, array $callOptions = []): GetDefaultBranchResponse
     {
-        return $this->startApiCall('GetDefaultBranch', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetDefaultBranch', $request, $callOptions)->wait();
     }
 
     /**
@@ -312,8 +312,8 @@ class CatalogServiceBaseClient
      *
      * The async variant is {@see self::listCatalogsAsync()} .
      *
-     * @param ListCatalogsRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ListCatalogsRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -328,9 +328,9 @@ class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public function listCatalogs(ListCatalogsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listCatalogs(ListCatalogsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListCatalogs', $request, $optionalArgs);
+        return $this->startApiCall('ListCatalogs', $request, $callOptions);
     }
 
     /**
@@ -374,8 +374,8 @@ class CatalogServiceBaseClient
      *
      * The async variant is {@see self::setDefaultBranchAsync()} .
      *
-     * @param SetDefaultBranchRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param SetDefaultBranchRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -388,9 +388,9 @@ class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public function setDefaultBranch(SetDefaultBranchRequest $request, array $optionalArgs = []): void
+    public function setDefaultBranch(SetDefaultBranchRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('SetDefaultBranch', $request, $optionalArgs)->wait();
+        $this->startApiCall('SetDefaultBranch', $request, $callOptions)->wait();
     }
 
     /**
@@ -398,8 +398,8 @@ class CatalogServiceBaseClient
      *
      * The async variant is {@see self::updateCatalogAsync()} .
      *
-     * @param UpdateCatalogRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param UpdateCatalogRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -414,8 +414,8 @@ class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public function updateCatalog(UpdateCatalogRequest $request, array $optionalArgs = []): Catalog
+    public function updateCatalog(UpdateCatalogRequest $request, array $callOptions = []): Catalog
     {
-        return $this->startApiCall('UpdateCatalog', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCatalog', $request, $callOptions)->wait();
     }
 }

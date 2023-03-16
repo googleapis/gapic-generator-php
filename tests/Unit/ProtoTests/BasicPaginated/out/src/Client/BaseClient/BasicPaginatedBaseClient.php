@@ -163,8 +163,8 @@ class BasicPaginatedBaseClient
     /**
      * The async variant is {@see self::methodPaginatedAsync()} .
      *
-     * @param Request $request      A request to house fields associated with the call.
-     * @param array   $optionalArgs {
+     * @param Request $request     A request to house fields associated with the call.
+     * @param array   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -177,8 +177,8 @@ class BasicPaginatedBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodPaginated(Request $request, array $optionalArgs = []): PagedListResponse
+    public function methodPaginated(Request $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('MethodPaginated', $request, $optionalArgs);
+        return $this->startApiCall('MethodPaginated', $request, $callOptions);
     }
 }

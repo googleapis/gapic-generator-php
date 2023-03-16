@@ -237,8 +237,8 @@ class SearchServiceBaseClient
      *
      * The async variant is {@see self::searchAsync()} .
      *
-     * @param SearchRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SearchRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -253,8 +253,8 @@ class SearchServiceBaseClient
      *
      * @experimental
      */
-    public function search(SearchRequest $request, array $optionalArgs = []): PagedListResponse
+    public function search(SearchRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('Search', $request, $optionalArgs);
+        return $this->startApiCall('Search', $request, $callOptions);
     }
 }

@@ -173,8 +173,8 @@ class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::deleteMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -187,16 +187,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function deleteMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('DeleteMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::getMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -209,16 +209,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function getMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('GetMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::getNoPlaceholdersMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -231,16 +231,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoPlaceholdersMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function getNoPlaceholdersMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('GetNoPlaceholdersMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNoPlaceholdersMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::getNoTemplateMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -253,16 +253,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoTemplateMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function getNoTemplateMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('GetNoTemplateMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNoTemplateMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::nestedMethodAsync()} .
      *
-     * @param NestedRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param NestedRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -275,16 +275,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMethod(NestedRequest $request, array $optionalArgs = []): Response
+    public function nestedMethod(NestedRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('NestedMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('NestedMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::nestedMultiMethodAsync()} .
      *
-     * @param NestedRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param NestedRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -297,16 +297,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMultiMethod(NestedRequest $request, array $optionalArgs = []): Response
+    public function nestedMultiMethod(NestedRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('NestedMultiMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('NestedMultiMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::orderingMethodAsync()} .
      *
-     * @param OrderRequest $request      A request to house fields associated with the call.
-     * @param array        $optionalArgs {
+     * @param OrderRequest $request     A request to house fields associated with the call.
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -319,16 +319,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function orderingMethod(OrderRequest $request, array $optionalArgs = []): Response
+    public function orderingMethod(OrderRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('OrderingMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('OrderingMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::patchMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -341,16 +341,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function patchMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function patchMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('PatchMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PatchMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::postMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -363,16 +363,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function postMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function postMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('PostMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PostMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::putMethodAsync()} .
      *
-     * @param SimpleRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param SimpleRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -385,16 +385,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function putMethod(SimpleRequest $request, array $optionalArgs = []): Response
+    public function putMethod(SimpleRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('PutMethod', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PutMethod', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::routingRuleWithOutParametersAsync()} .
      *
-     * @param NestedRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param NestedRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -407,16 +407,16 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithOutParameters(NestedRequest $request, array $optionalArgs = []): Response
+    public function routingRuleWithOutParameters(NestedRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('RoutingRuleWithOutParameters', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RoutingRuleWithOutParameters', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::routingRuleWithParametersAsync()} .
      *
-     * @param NestedRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param NestedRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -429,8 +429,8 @@ class RoutingHeadersBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithParameters(NestedRequest $request, array $optionalArgs = []): Response
+    public function routingRuleWithParameters(NestedRequest $request, array $callOptions = []): Response
     {
-        return $this->startApiCall('RoutingRuleWithParameters', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RoutingRuleWithParameters', $request, $callOptions)->wait();
     }
 }

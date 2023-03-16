@@ -636,8 +636,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::addCommentsAsync()} .
      *
-     * @param AddCommentsRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param AddCommentsRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -648,9 +648,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function addComments(AddCommentsRequest $request, array $optionalArgs = []): void
+    public function addComments(AddCommentsRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('AddComments', $request, $optionalArgs)->wait();
+        $this->startApiCall('AddComments', $request, $callOptions)->wait();
     }
 
     /**
@@ -658,8 +658,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::addTagAsync()} .
      *
-     * @param AddTagRequest $request      A request to house fields associated with the call.
-     * @param array         $optionalArgs {
+     * @param AddTagRequest $request     A request to house fields associated with the call.
+     * @param array         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -672,16 +672,16 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function addTag(AddTagRequest $request, array $optionalArgs = []): AddTagResponse
+    public function addTag(AddTagRequest $request, array $callOptions = []): AddTagResponse
     {
-        return $this->startApiCall('AddTag', $request, $optionalArgs)->wait();
+        return $this->startApiCall('AddTag', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::archiveBooksAsync()} .
      *
-     * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ArchiveBooksRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -694,9 +694,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function archiveBooks(ArchiveBooksRequest $request, array $optionalArgs = []): ArchiveBooksResponse
+    public function archiveBooks(ArchiveBooksRequest $request, array $callOptions = []): ArchiveBooksResponse
     {
-        return $this->startApiCall('ArchiveBooks', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ArchiveBooks', $request, $callOptions)->wait();
     }
 
     /**
@@ -704,8 +704,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::createBookAsync()} .
      *
-     * @param CreateBookRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param CreateBookRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -718,9 +718,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createBook(CreateBookRequest $request, array $optionalArgs = []): BookResponse
+    public function createBook(CreateBookRequest $request, array $callOptions = []): BookResponse
     {
-        return $this->startApiCall('CreateBook', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -728,8 +728,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::createInventoryAsync()} .
      *
-     * @param CreateInventoryRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param CreateInventoryRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -742,9 +742,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createInventory(CreateInventoryRequest $request, array $optionalArgs = []): InventoryResponse
+    public function createInventory(CreateInventoryRequest $request, array $callOptions = []): InventoryResponse
     {
-        return $this->startApiCall('CreateInventory', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateInventory', $request, $callOptions)->wait();
     }
 
     /**
@@ -753,8 +753,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::createShelfAsync()} .
      *
-     * @param CreateShelfRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param CreateShelfRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -767,9 +767,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createShelf(CreateShelfRequest $request, array $optionalArgs = []): ShelfResponse
+    public function createShelf(CreateShelfRequest $request, array $callOptions = []): ShelfResponse
     {
-        return $this->startApiCall('CreateShelf', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateShelf', $request, $callOptions)->wait();
     }
 
     /**
@@ -777,8 +777,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::deleteBookAsync()} .
      *
-     * @param DeleteBookRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param DeleteBookRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -789,9 +789,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBook(DeleteBookRequest $request, array $optionalArgs = []): void
+    public function deleteBook(DeleteBookRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteBook', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -799,8 +799,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::deleteShelfAsync()} .
      *
-     * @param DeleteShelfRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param DeleteShelfRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -811,16 +811,16 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteShelf(DeleteShelfRequest $request, array $optionalArgs = []): void
+    public function deleteShelf(DeleteShelfRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteShelf', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteShelf', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::findRelatedBooksAsync()} .
      *
-     * @param FindRelatedBooksRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param FindRelatedBooksRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -833,9 +833,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function findRelatedBooks(FindRelatedBooksRequest $request, array $optionalArgs = []): PagedListResponse
+    public function findRelatedBooks(FindRelatedBooksRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('FindRelatedBooks', $request, $optionalArgs);
+        return $this->startApiCall('FindRelatedBooks', $request, $callOptions);
     }
 
     /**
@@ -843,8 +843,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBigBookAsync()} .
      *
-     * @param GetBookRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param GetBookRequest $request     A request to house fields associated with the call.
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -857,9 +857,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBigBook(GetBookRequest $request, array $optionalArgs = []): OperationResponse
+    public function getBigBook(GetBookRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('GetBigBook', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBigBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -867,8 +867,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBigNothingAsync()} .
      *
-     * @param GetBookRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param GetBookRequest $request     A request to house fields associated with the call.
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -881,9 +881,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBigNothing(GetBookRequest $request, array $optionalArgs = []): OperationResponse
+    public function getBigNothing(GetBookRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('GetBigNothing', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBigNothing', $request, $callOptions)->wait();
     }
 
     /**
@@ -891,8 +891,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBookAsync()} .
      *
-     * @param GetBookRequest $request      A request to house fields associated with the call.
-     * @param array          $optionalArgs {
+     * @param GetBookRequest $request     A request to house fields associated with the call.
+     * @param array          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -905,9 +905,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBook(GetBookRequest $request, array $optionalArgs = []): BookResponse
+    public function getBook(GetBookRequest $request, array $callOptions = []): BookResponse
     {
-        return $this->startApiCall('GetBook', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -915,8 +915,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBookFromAbsolutelyAnywhereAsync()} .
      *
-     * @param GetBookFromAbsolutelyAnywhereRequest $request      A request to house fields associated with the call.
-     * @param array                                $optionalArgs {
+     * @param GetBookFromAbsolutelyAnywhereRequest $request     A request to house fields associated with the call.
+     * @param array                                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -929,9 +929,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromAbsolutelyAnywhere(GetBookFromAbsolutelyAnywhereRequest $request, array $optionalArgs = []): BookFromAnywhereResponse
+    public function getBookFromAbsolutelyAnywhere(GetBookFromAbsolutelyAnywhereRequest $request, array $callOptions = []): BookFromAnywhereResponse
     {
-        return $this->startApiCall('GetBookFromAbsolutelyAnywhere', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromAbsolutelyAnywhere', $request, $callOptions)->wait();
     }
 
     /**
@@ -939,8 +939,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBookFromAnywhereAsync()} .
      *
-     * @param GetBookFromAnywhereRequest $request      A request to house fields associated with the call.
-     * @param array                      $optionalArgs {
+     * @param GetBookFromAnywhereRequest $request     A request to house fields associated with the call.
+     * @param array                      $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -953,9 +953,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromAnywhere(GetBookFromAnywhereRequest $request, array $optionalArgs = []): BookFromAnywhereResponse
+    public function getBookFromAnywhere(GetBookFromAnywhereRequest $request, array $callOptions = []): BookFromAnywhereResponse
     {
-        return $this->startApiCall('GetBookFromAnywhere', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromAnywhere', $request, $callOptions)->wait();
     }
 
     /**
@@ -963,8 +963,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getBookFromArchiveAsync()} .
      *
-     * @param GetBookFromArchiveRequest $request      A request to house fields associated with the call.
-     * @param array                     $optionalArgs {
+     * @param GetBookFromArchiveRequest $request     A request to house fields associated with the call.
+     * @param array                     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -977,9 +977,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBookFromArchive(GetBookFromArchiveRequest $request, array $optionalArgs = []): BookFromArchiveResponse
+    public function getBookFromArchive(GetBookFromArchiveRequest $request, array $callOptions = []): BookFromArchiveResponse
     {
-        return $this->startApiCall('GetBookFromArchive', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetBookFromArchive', $request, $callOptions)->wait();
     }
 
     /**
@@ -987,8 +987,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::getShelfAsync()} .
      *
-     * @param GetShelfRequest $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param GetShelfRequest $request     A request to house fields associated with the call.
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1001,9 +1001,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getShelf(GetShelfRequest $request, array $optionalArgs = []): ShelfResponse
+    public function getShelf(GetShelfRequest $request, array $callOptions = []): ShelfResponse
     {
-        return $this->startApiCall('GetShelf', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetShelf', $request, $callOptions)->wait();
     }
 
     /**
@@ -1011,8 +1011,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::listAggregatedShelvesAsync()} .
      *
-     * @param ListAggregatedShelvesRequest $request      A request to house fields associated with the call.
-     * @param array                        $optionalArgs {
+     * @param ListAggregatedShelvesRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1025,9 +1025,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listAggregatedShelves(ListAggregatedShelvesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listAggregatedShelves(ListAggregatedShelvesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListAggregatedShelves', $request, $optionalArgs);
+        return $this->startApiCall('ListAggregatedShelves', $request, $callOptions);
     }
 
     /**
@@ -1035,8 +1035,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::listBooksAsync()} .
      *
-     * @param ListBooksRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param ListBooksRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1049,9 +1049,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBooks(ListBooksRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listBooks(ListBooksRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListBooks', $request, $optionalArgs);
+        return $this->startApiCall('ListBooks', $request, $callOptions);
     }
 
     /**
@@ -1059,8 +1059,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::listShelvesAsync()} .
      *
-     * @param ListShelvesRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param ListShelvesRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1073,9 +1073,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listShelves(ListShelvesRequest $request, array $optionalArgs = []): ListShelvesResponse
+    public function listShelves(ListShelvesRequest $request, array $callOptions = []): ListShelvesResponse
     {
-        return $this->startApiCall('ListShelves', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListShelves', $request, $callOptions)->wait();
     }
 
     /**
@@ -1083,8 +1083,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::listStringsAsync()} .
      *
-     * @param ListStringsRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param ListStringsRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1097,16 +1097,16 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listStrings(ListStringsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listStrings(ListStringsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListStrings', $request, $optionalArgs);
+        return $this->startApiCall('ListStrings', $request, $callOptions);
     }
 
     /**
      * The async variant is {@see self::longRunningArchiveBooksAsync()} .
      *
-     * @param ArchiveBooksRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ArchiveBooksRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1119,9 +1119,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function longRunningArchiveBooks(ArchiveBooksRequest $request, array $optionalArgs = []): OperationResponse
+    public function longRunningArchiveBooks(ArchiveBooksRequest $request, array $callOptions = []): OperationResponse
     {
-        return $this->startApiCall('LongRunningArchiveBooks', $request, $optionalArgs)->wait();
+        return $this->startApiCall('LongRunningArchiveBooks', $request, $callOptions)->wait();
     }
 
     /**
@@ -1131,8 +1131,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::mergeShelvesAsync()} .
      *
-     * @param MergeShelvesRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param MergeShelvesRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1145,9 +1145,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function mergeShelves(MergeShelvesRequest $request, array $optionalArgs = []): ShelfResponse
+    public function mergeShelves(MergeShelvesRequest $request, array $callOptions = []): ShelfResponse
     {
-        return $this->startApiCall('MergeShelves', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MergeShelves', $request, $callOptions)->wait();
     }
 
     /**
@@ -1155,8 +1155,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::moveBookAsync()} .
      *
-     * @param MoveBookRequest $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param MoveBookRequest $request     A request to house fields associated with the call.
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1169,16 +1169,16 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function moveBook(MoveBookRequest $request, array $optionalArgs = []): BookResponse
+    public function moveBook(MoveBookRequest $request, array $callOptions = []): BookResponse
     {
-        return $this->startApiCall('MoveBook', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MoveBook', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::moveBooksAsync()} .
      *
-     * @param MoveBooksRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param MoveBooksRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1191,9 +1191,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function moveBooks(MoveBooksRequest $request, array $optionalArgs = []): MoveBooksResponse
+    public function moveBooks(MoveBooksRequest $request, array $callOptions = []): MoveBooksResponse
     {
-        return $this->startApiCall('MoveBooks', $request, $optionalArgs)->wait();
+        return $this->startApiCall('MoveBooks', $request, $callOptions)->wait();
     }
 
     /**
@@ -1201,8 +1201,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::privateListShelvesAsync()} .
      *
-     * @param ListShelvesRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param ListShelvesRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1215,9 +1215,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function privateListShelves(ListShelvesRequest $request, array $optionalArgs = []): BookResponse
+    public function privateListShelves(ListShelvesRequest $request, array $callOptions = []): BookResponse
     {
-        return $this->startApiCall('PrivateListShelves', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PrivateListShelves', $request, $callOptions)->wait();
     }
 
     /**
@@ -1226,8 +1226,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::publishSeriesAsync()} .
      *
-     * @param PublishSeriesRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param PublishSeriesRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1240,9 +1240,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function publishSeries(PublishSeriesRequest $request, array $optionalArgs = []): PublishSeriesResponse
+    public function publishSeries(PublishSeriesRequest $request, array $callOptions = []): PublishSeriesResponse
     {
-        return $this->startApiCall('PublishSeries', $request, $optionalArgs)->wait();
+        return $this->startApiCall('PublishSeries', $request, $callOptions)->wait();
     }
 
     /**
@@ -1252,8 +1252,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::saveBookAsync()} .
      *
-     * @param BookResponse $request      A request to house fields associated with the call.
-     * @param array        $optionalArgs {
+     * @param BookResponse $request     A request to house fields associated with the call.
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1264,9 +1264,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function saveBook(BookResponse $request, array $optionalArgs = []): void
+    public function saveBook(BookResponse $request, array $callOptions = []): void
     {
-        $this->startApiCall('SaveBook', $request, $optionalArgs)->wait();
+        $this->startApiCall('SaveBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -1274,8 +1274,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::updateBookAsync()} .
      *
-     * @param UpdateBookRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param UpdateBookRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1288,9 +1288,9 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBook(UpdateBookRequest $request, array $optionalArgs = []): BookResponse
+    public function updateBook(UpdateBookRequest $request, array $callOptions = []): BookResponse
     {
-        return $this->startApiCall('UpdateBook', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateBook', $request, $callOptions)->wait();
     }
 
     /**
@@ -1298,8 +1298,8 @@ class LibraryBaseClient
      *
      * The async variant is {@see self::updateBookIndexAsync()} .
      *
-     * @param UpdateBookIndexRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param UpdateBookIndexRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1310,8 +1310,8 @@ class LibraryBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBookIndex(UpdateBookIndexRequest $request, array $optionalArgs = []): void
+    public function updateBookIndex(UpdateBookIndexRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('UpdateBookIndex', $request, $optionalArgs)->wait();
+        $this->startApiCall('UpdateBookIndex', $request, $callOptions)->wait();
     }
 }

@@ -167,8 +167,8 @@ class DeprecatedServiceBaseClient
      *
      * The async variant is {@see self::fastFibonacciAsync()} .
      *
-     * @param FibonacciRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param FibonacciRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -179,9 +179,9 @@ class DeprecatedServiceBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function fastFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
+    public function fastFibonacci(FibonacciRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('FastFibonacci', $request, $optionalArgs)->wait();
+        $this->startApiCall('FastFibonacci', $request, $callOptions)->wait();
     }
 
     /**
@@ -189,8 +189,8 @@ class DeprecatedServiceBaseClient
      *
      * The async variant is {@see self::slowFibonacciAsync()} .
      *
-     * @param FibonacciRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param FibonacciRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -203,8 +203,8 @@ class DeprecatedServiceBaseClient
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function slowFibonacci(FibonacciRequest $request, array $optionalArgs = []): void
+    public function slowFibonacci(FibonacciRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('SlowFibonacci', $request, $optionalArgs)->wait();
+        $this->startApiCall('SlowFibonacci', $request, $callOptions)->wait();
     }
 }

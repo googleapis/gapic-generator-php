@@ -234,8 +234,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::cancelOperationAsync()} .
      *
-     * @param CancelOperationRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param CancelOperationRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -246,9 +246,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function cancelOperation(CancelOperationRequest $request, array $optionalArgs = []): void
+    public function cancelOperation(CancelOperationRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('CancelOperation', $request, $optionalArgs)->wait();
+        $this->startApiCall('CancelOperation', $request, $callOptions)->wait();
     }
 
     /**
@@ -256,8 +256,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::completeIPRotationAsync()} .
      *
-     * @param CompleteIPRotationRequest $request      A request to house fields associated with the call.
-     * @param array                     $optionalArgs {
+     * @param CompleteIPRotationRequest $request     A request to house fields associated with the call.
+     * @param array                     $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -270,9 +270,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function completeIPRotation(CompleteIPRotationRequest $request, array $optionalArgs = []): Operation
+    public function completeIPRotation(CompleteIPRotationRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('CompleteIPRotation', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CompleteIPRotation', $request, $callOptions)->wait();
     }
 
     /**
@@ -293,8 +293,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::createClusterAsync()} .
      *
-     * @param CreateClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param CreateClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -307,9 +307,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createCluster(CreateClusterRequest $request, array $optionalArgs = []): Operation
+    public function createCluster(CreateClusterRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('CreateCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -317,8 +317,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::createNodePoolAsync()} .
      *
-     * @param CreateNodePoolRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param CreateNodePoolRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -331,9 +331,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createNodePool(CreateNodePoolRequest $request, array $optionalArgs = []): Operation
+    public function createNodePool(CreateNodePoolRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('CreateNodePool', $request, $optionalArgs)->wait();
+        return $this->startApiCall('CreateNodePool', $request, $callOptions)->wait();
     }
 
     /**
@@ -349,8 +349,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::deleteClusterAsync()} .
      *
-     * @param DeleteClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param DeleteClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -363,9 +363,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteCluster(DeleteClusterRequest $request, array $optionalArgs = []): Operation
+    public function deleteCluster(DeleteClusterRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('DeleteCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -373,8 +373,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::deleteNodePoolAsync()} .
      *
-     * @param DeleteNodePoolRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param DeleteNodePoolRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -387,9 +387,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteNodePool(DeleteNodePoolRequest $request, array $optionalArgs = []): Operation
+    public function deleteNodePool(DeleteNodePoolRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('DeleteNodePool', $request, $optionalArgs)->wait();
+        return $this->startApiCall('DeleteNodePool', $request, $callOptions)->wait();
     }
 
     /**
@@ -397,8 +397,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::getClusterAsync()} .
      *
-     * @param GetClusterRequest $request      A request to house fields associated with the call.
-     * @param array             $optionalArgs {
+     * @param GetClusterRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -411,9 +411,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getCluster(GetClusterRequest $request, array $optionalArgs = []): Cluster
+    public function getCluster(GetClusterRequest $request, array $callOptions = []): Cluster
     {
-        return $this->startApiCall('GetCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -424,8 +424,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::getJSONWebKeysAsync()} .
      *
-     * @param GetJSONWebKeysRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param GetJSONWebKeysRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -438,9 +438,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getJSONWebKeys(GetJSONWebKeysRequest $request, array $optionalArgs = []): GetJSONWebKeysResponse
+    public function getJSONWebKeys(GetJSONWebKeysRequest $request, array $callOptions = []): GetJSONWebKeysResponse
     {
-        return $this->startApiCall('GetJSONWebKeys', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetJSONWebKeys', $request, $callOptions)->wait();
     }
 
     /**
@@ -448,8 +448,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::getNodePoolAsync()} .
      *
-     * @param GetNodePoolRequest $request      A request to house fields associated with the call.
-     * @param array              $optionalArgs {
+     * @param GetNodePoolRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -462,9 +462,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNodePool(GetNodePoolRequest $request, array $optionalArgs = []): NodePool
+    public function getNodePool(GetNodePoolRequest $request, array $callOptions = []): NodePool
     {
-        return $this->startApiCall('GetNodePool', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetNodePool', $request, $callOptions)->wait();
     }
 
     /**
@@ -472,8 +472,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::getOperationAsync()} .
      *
-     * @param GetOperationRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param GetOperationRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -486,9 +486,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getOperation(GetOperationRequest $request, array $optionalArgs = []): Operation
+    public function getOperation(GetOperationRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('GetOperation', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetOperation', $request, $callOptions)->wait();
     }
 
     /**
@@ -496,8 +496,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::getServerConfigAsync()} .
      *
-     * @param GetServerConfigRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param GetServerConfigRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -510,9 +510,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getServerConfig(GetServerConfigRequest $request, array $optionalArgs = []): ServerConfig
+    public function getServerConfig(GetServerConfigRequest $request, array $callOptions = []): ServerConfig
     {
-        return $this->startApiCall('GetServerConfig', $request, $optionalArgs)->wait();
+        return $this->startApiCall('GetServerConfig', $request, $callOptions)->wait();
     }
 
     /**
@@ -521,8 +521,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::listClustersAsync()} .
      *
-     * @param ListClustersRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param ListClustersRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -535,9 +535,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listClusters(ListClustersRequest $request, array $optionalArgs = []): ListClustersResponse
+    public function listClusters(ListClustersRequest $request, array $callOptions = []): ListClustersResponse
     {
-        return $this->startApiCall('ListClusters', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListClusters', $request, $callOptions)->wait();
     }
 
     /**
@@ -545,8 +545,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::listNodePoolsAsync()} .
      *
-     * @param ListNodePoolsRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param ListNodePoolsRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -559,9 +559,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listNodePools(ListNodePoolsRequest $request, array $optionalArgs = []): ListNodePoolsResponse
+    public function listNodePools(ListNodePoolsRequest $request, array $callOptions = []): ListNodePoolsResponse
     {
-        return $this->startApiCall('ListNodePools', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListNodePools', $request, $callOptions)->wait();
     }
 
     /**
@@ -569,8 +569,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::listOperationsAsync()} .
      *
-     * @param ListOperationsRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ListOperationsRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -583,9 +583,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listOperations(ListOperationsRequest $request, array $optionalArgs = []): ListOperationsResponse
+    public function listOperations(ListOperationsRequest $request, array $callOptions = []): ListOperationsResponse
     {
-        return $this->startApiCall('ListOperations', $request, $optionalArgs)->wait();
+        return $this->startApiCall('ListOperations', $request, $callOptions)->wait();
     }
 
     /**
@@ -593,8 +593,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::listUsableSubnetworksAsync()} .
      *
-     * @param ListUsableSubnetworksRequest $request      A request to house fields associated with the call.
-     * @param array                        $optionalArgs {
+     * @param ListUsableSubnetworksRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -607,9 +607,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listUsableSubnetworks(ListUsableSubnetworksRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listUsableSubnetworks(ListUsableSubnetworksRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListUsableSubnetworks', $request, $optionalArgs);
+        return $this->startApiCall('ListUsableSubnetworks', $request, $callOptions);
     }
 
     /**
@@ -618,8 +618,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::rollbackNodePoolUpgradeAsync()} .
      *
-     * @param RollbackNodePoolUpgradeRequest $request      A request to house fields associated with the call.
-     * @param array                          $optionalArgs {
+     * @param RollbackNodePoolUpgradeRequest $request     A request to house fields associated with the call.
+     * @param array                          $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -632,9 +632,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function rollbackNodePoolUpgrade(RollbackNodePoolUpgradeRequest $request, array $optionalArgs = []): Operation
+    public function rollbackNodePoolUpgrade(RollbackNodePoolUpgradeRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('RollbackNodePoolUpgrade', $request, $optionalArgs)->wait();
+        return $this->startApiCall('RollbackNodePoolUpgrade', $request, $callOptions)->wait();
     }
 
     /**
@@ -642,8 +642,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setAddonsConfigAsync()} .
      *
-     * @param SetAddonsConfigRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param SetAddonsConfigRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -656,9 +656,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setAddonsConfig(SetAddonsConfigRequest $request, array $optionalArgs = []): Operation
+    public function setAddonsConfig(SetAddonsConfigRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetAddonsConfig', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetAddonsConfig', $request, $callOptions)->wait();
     }
 
     /**
@@ -666,8 +666,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setLabelsAsync()} .
      *
-     * @param SetLabelsRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param SetLabelsRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -680,9 +680,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setLabels(SetLabelsRequest $request, array $optionalArgs = []): Operation
+    public function setLabels(SetLabelsRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetLabels', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLabels', $request, $callOptions)->wait();
     }
 
     /**
@@ -690,8 +690,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setLegacyAbacAsync()} .
      *
-     * @param SetLegacyAbacRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param SetLegacyAbacRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -704,9 +704,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setLegacyAbac(SetLegacyAbacRequest $request, array $optionalArgs = []): Operation
+    public function setLegacyAbac(SetLegacyAbacRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetLegacyAbac', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLegacyAbac', $request, $callOptions)->wait();
     }
 
     /**
@@ -717,8 +717,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setLocationsAsync()} .
      *
-     * @param SetLocationsRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param SetLocationsRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -733,9 +733,9 @@ class ClusterManagerBaseClient
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function setLocations(SetLocationsRequest $request, array $optionalArgs = []): Operation
+    public function setLocations(SetLocationsRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetLocations', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLocations', $request, $callOptions)->wait();
     }
 
     /**
@@ -743,8 +743,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setLoggingServiceAsync()} .
      *
-     * @param SetLoggingServiceRequest $request      A request to house fields associated with the call.
-     * @param array                    $optionalArgs {
+     * @param SetLoggingServiceRequest $request     A request to house fields associated with the call.
+     * @param array                    $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -757,9 +757,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setLoggingService(SetLoggingServiceRequest $request, array $optionalArgs = []): Operation
+    public function setLoggingService(SetLoggingServiceRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetLoggingService', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetLoggingService', $request, $callOptions)->wait();
     }
 
     /**
@@ -767,8 +767,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setMaintenancePolicyAsync()} .
      *
-     * @param SetMaintenancePolicyRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param SetMaintenancePolicyRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -781,9 +781,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setMaintenancePolicy(SetMaintenancePolicyRequest $request, array $optionalArgs = []): Operation
+    public function setMaintenancePolicy(SetMaintenancePolicyRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetMaintenancePolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMaintenancePolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -793,8 +793,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setMasterAuthAsync()} .
      *
-     * @param SetMasterAuthRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param SetMasterAuthRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -807,9 +807,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setMasterAuth(SetMasterAuthRequest $request, array $optionalArgs = []): Operation
+    public function setMasterAuth(SetMasterAuthRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetMasterAuth', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMasterAuth', $request, $callOptions)->wait();
     }
 
     /**
@@ -817,8 +817,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setMonitoringServiceAsync()} .
      *
-     * @param SetMonitoringServiceRequest $request      A request to house fields associated with the call.
-     * @param array                       $optionalArgs {
+     * @param SetMonitoringServiceRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -831,9 +831,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setMonitoringService(SetMonitoringServiceRequest $request, array $optionalArgs = []): Operation
+    public function setMonitoringService(SetMonitoringServiceRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetMonitoringService', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetMonitoringService', $request, $callOptions)->wait();
     }
 
     /**
@@ -841,8 +841,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setNetworkPolicyAsync()} .
      *
-     * @param SetNetworkPolicyRequest $request      A request to house fields associated with the call.
-     * @param array                   $optionalArgs {
+     * @param SetNetworkPolicyRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -855,9 +855,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setNetworkPolicy(SetNetworkPolicyRequest $request, array $optionalArgs = []): Operation
+    public function setNetworkPolicy(SetNetworkPolicyRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetNetworkPolicy', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNetworkPolicy', $request, $callOptions)->wait();
     }
 
     /**
@@ -865,8 +865,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setNodePoolAutoscalingAsync()} .
      *
-     * @param SetNodePoolAutoscalingRequest $request      A request to house fields associated with the call.
-     * @param array                         $optionalArgs {
+     * @param SetNodePoolAutoscalingRequest $request     A request to house fields associated with the call.
+     * @param array                         $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -879,9 +879,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setNodePoolAutoscaling(SetNodePoolAutoscalingRequest $request, array $optionalArgs = []): Operation
+    public function setNodePoolAutoscaling(SetNodePoolAutoscalingRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetNodePoolAutoscaling', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolAutoscaling', $request, $callOptions)->wait();
     }
 
     /**
@@ -889,8 +889,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setNodePoolManagementAsync()} .
      *
-     * @param SetNodePoolManagementRequest $request      A request to house fields associated with the call.
-     * @param array                        $optionalArgs {
+     * @param SetNodePoolManagementRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -903,9 +903,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setNodePoolManagement(SetNodePoolManagementRequest $request, array $optionalArgs = []): Operation
+    public function setNodePoolManagement(SetNodePoolManagementRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetNodePoolManagement', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolManagement', $request, $callOptions)->wait();
     }
 
     /**
@@ -913,8 +913,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::setNodePoolSizeAsync()} .
      *
-     * @param SetNodePoolSizeRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param SetNodePoolSizeRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -927,9 +927,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setNodePoolSize(SetNodePoolSizeRequest $request, array $optionalArgs = []): Operation
+    public function setNodePoolSize(SetNodePoolSizeRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('SetNodePoolSize', $request, $optionalArgs)->wait();
+        return $this->startApiCall('SetNodePoolSize', $request, $callOptions)->wait();
     }
 
     /**
@@ -937,8 +937,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::startIPRotationAsync()} .
      *
-     * @param StartIPRotationRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param StartIPRotationRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -951,9 +951,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function startIPRotation(StartIPRotationRequest $request, array $optionalArgs = []): Operation
+    public function startIPRotation(StartIPRotationRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('StartIPRotation', $request, $optionalArgs)->wait();
+        return $this->startApiCall('StartIPRotation', $request, $callOptions)->wait();
     }
 
     /**
@@ -961,8 +961,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::updateClusterAsync()} .
      *
-     * @param UpdateClusterRequest $request      A request to house fields associated with the call.
-     * @param array                $optionalArgs {
+     * @param UpdateClusterRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -975,9 +975,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateCluster(UpdateClusterRequest $request, array $optionalArgs = []): Operation
+    public function updateCluster(UpdateClusterRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('UpdateCluster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateCluster', $request, $callOptions)->wait();
     }
 
     /**
@@ -985,8 +985,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::updateMasterAsync()} .
      *
-     * @param UpdateMasterRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param UpdateMasterRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -999,9 +999,9 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateMaster(UpdateMasterRequest $request, array $optionalArgs = []): Operation
+    public function updateMaster(UpdateMasterRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('UpdateMaster', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateMaster', $request, $callOptions)->wait();
     }
 
     /**
@@ -1009,8 +1009,8 @@ class ClusterManagerBaseClient
      *
      * The async variant is {@see self::updateNodePoolAsync()} .
      *
-     * @param UpdateNodePoolRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param UpdateNodePoolRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -1023,8 +1023,8 @@ class ClusterManagerBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateNodePool(UpdateNodePoolRequest $request, array $optionalArgs = []): Operation
+    public function updateNodePool(UpdateNodePoolRequest $request, array $callOptions = []): Operation
     {
-        return $this->startApiCall('UpdateNodePool', $request, $optionalArgs)->wait();
+        return $this->startApiCall('UpdateNodePool', $request, $callOptions)->wait();
     }
 }

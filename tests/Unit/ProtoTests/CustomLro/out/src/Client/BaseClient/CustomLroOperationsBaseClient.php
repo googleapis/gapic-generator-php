@@ -178,8 +178,8 @@ class CustomLroOperationsBaseClient
     /**
      * The async variant is {@see self::cancelAsync()} .
      *
-     * @param CancelOperationRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param CancelOperationRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -190,16 +190,16 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function cancel(CancelOperationRequest $request, array $optionalArgs = []): void
+    public function cancel(CancelOperationRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('Cancel', $request, $optionalArgs)->wait();
+        $this->startApiCall('Cancel', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::deleteAsync()} .
      *
-     * @param DeleteOperationRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param DeleteOperationRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -210,16 +210,16 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function delete(DeleteOperationRequest $request, array $optionalArgs = []): void
+    public function delete(DeleteOperationRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('Delete', $request, $optionalArgs)->wait();
+        $this->startApiCall('Delete', $request, $callOptions)->wait();
     }
 
     /**
      * The async variant is {@see self::getAsync()} .
      *
-     * @param GetOperationRequest $request      A request to house fields associated with the call.
-     * @param array               $optionalArgs {
+     * @param GetOperationRequest $request     A request to house fields associated with the call.
+     * @param array               $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -232,8 +232,8 @@ class CustomLroOperationsBaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function get(GetOperationRequest $request, array $optionalArgs = []): CustomOperationResponse
+    public function get(GetOperationRequest $request, array $callOptions = []): CustomOperationResponse
     {
-        return $this->startApiCall('Get', $request, $optionalArgs)->wait();
+        return $this->startApiCall('Get', $request, $callOptions)->wait();
     }
 }

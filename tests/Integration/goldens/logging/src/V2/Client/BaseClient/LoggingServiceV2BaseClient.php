@@ -370,8 +370,8 @@ class LoggingServiceV2BaseClient
      *
      * The async variant is {@see self::deleteLogAsync()} .
      *
-     * @param DeleteLogRequest $request      A request to house fields associated with the call.
-     * @param array            $optionalArgs {
+     * @param DeleteLogRequest $request     A request to house fields associated with the call.
+     * @param array            $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -382,9 +382,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteLog(DeleteLogRequest $request, array $optionalArgs = []): void
+    public function deleteLog(DeleteLogRequest $request, array $callOptions = []): void
     {
-        $this->startApiCall('DeleteLog', $request, $optionalArgs)->wait();
+        $this->startApiCall('DeleteLog', $request, $callOptions)->wait();
     }
 
     /**
@@ -395,8 +395,8 @@ class LoggingServiceV2BaseClient
      *
      * The async variant is {@see self::listLogEntriesAsync()} .
      *
-     * @param ListLogEntriesRequest $request      A request to house fields associated with the call.
-     * @param array                 $optionalArgs {
+     * @param ListLogEntriesRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -409,9 +409,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLogEntries(ListLogEntriesRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listLogEntries(ListLogEntriesRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListLogEntries', $request, $optionalArgs);
+        return $this->startApiCall('ListLogEntries', $request, $callOptions);
     }
 
     /**
@@ -420,8 +420,8 @@ class LoggingServiceV2BaseClient
      *
      * The async variant is {@see self::listLogsAsync()} .
      *
-     * @param ListLogsRequest $request      A request to house fields associated with the call.
-     * @param array           $optionalArgs {
+     * @param ListLogsRequest $request     A request to house fields associated with the call.
+     * @param array           $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -434,9 +434,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLogs(ListLogsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listLogs(ListLogsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListLogs', $request, $optionalArgs);
+        return $this->startApiCall('ListLogs', $request, $callOptions);
     }
 
     /**
@@ -444,8 +444,8 @@ class LoggingServiceV2BaseClient
      *
      * The async variant is {@see self::listMonitoredResourceDescriptorsAsync()} .
      *
-     * @param ListMonitoredResourceDescriptorsRequest $request      A request to house fields associated with the call.
-     * @param array                                   $optionalArgs {
+     * @param ListMonitoredResourceDescriptorsRequest $request     A request to house fields associated with the call.
+     * @param array                                   $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -458,16 +458,16 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listMonitoredResourceDescriptors(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = []): PagedListResponse
+    public function listMonitoredResourceDescriptors(ListMonitoredResourceDescriptorsRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $optionalArgs);
+        return $this->startApiCall('ListMonitoredResourceDescriptors', $request, $callOptions);
     }
 
     /**
      * Streaming read of log entries as they are ingested. Until the stream is
      * terminated, it will continue reading logs.
      *
-     * @param array $optionalArgs {
+     * @param array $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
@@ -478,9 +478,9 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function tailLogEntries(array $optionalArgs = []): BidiStream
+    public function tailLogEntries(array $callOptions = []): BidiStream
     {
-        return $this->startApiCall('TailLogEntries', null, $optionalArgs);
+        return $this->startApiCall('TailLogEntries', null, $callOptions);
     }
 
     /**
@@ -494,8 +494,8 @@ class LoggingServiceV2BaseClient
      *
      * The async variant is {@see self::writeLogEntriesAsync()} .
      *
-     * @param WriteLogEntriesRequest $request      A request to house fields associated with the call.
-     * @param array                  $optionalArgs {
+     * @param WriteLogEntriesRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
      *     Optional.
      *
      *     @type RetrySettings|array $retrySettings
@@ -508,8 +508,8 @@ class LoggingServiceV2BaseClient
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function writeLogEntries(WriteLogEntriesRequest $request, array $optionalArgs = []): WriteLogEntriesResponse
+    public function writeLogEntries(WriteLogEntriesRequest $request, array $callOptions = []): WriteLogEntriesResponse
     {
-        return $this->startApiCall('WriteLogEntries', $request, $optionalArgs)->wait();
+        return $this->startApiCall('WriteLogEntries', $request, $callOptions)->wait();
     }
 }
