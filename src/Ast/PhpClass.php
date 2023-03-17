@@ -22,6 +22,7 @@ use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
+use RuntimeException;
 
 /** A class definition. */
 final class PhpClass extends AST
@@ -32,7 +33,7 @@ final class PhpClass extends AST
         Type $type,
         ?ResolvedType $extends,
         bool $final,
-        bool $abstract = false
+        bool $abstract
     ) {
         $this->type = $type;
         $this->extends = $extends;
@@ -56,7 +57,6 @@ final class PhpClass extends AST
 
     /**
      * @var bool *Readonly* Flag indicating if the class is abtract or not.
-     * If $final is set to true, then this will be ignored.
      */
     public bool $abstract;
 
@@ -106,14 +106,23 @@ final class PhpClass extends AST
             $this->clone(fn ($clone) => $clone->members = $clone->members->concat($members));
     }
 
+    /**
+     * Generates PHP code of the class.
+     * 
+     * @throws RuntimeException When $abstract and $final both are set.
+     */
     public function toCode(): string
     {
         $extends = is_null($this->extends) ? '' : " extends {$this->extends->toCode()}";
 
         $class = 'class';
-        if($this->final) {
+        if ($this->final && $this->abstract) {
+            throw new RuntimeException('Cannot use the final modifier on an abstract class');
+        }
+
+        if ($this->final) {
             $class = 'final class';
-        } elseif( $this->abstract) {
+        } elseif ($this->abstract) {
             $class = 'abstract class';
         }
 
