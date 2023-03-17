@@ -57,7 +57,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @method PromiseInterface createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
-class EventServiceBaseClient
+abstract class EventServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

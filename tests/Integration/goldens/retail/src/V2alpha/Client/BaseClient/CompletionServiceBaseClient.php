@@ -66,7 +66,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  * @method PromiseInterface importCompletionDataAsync(ImportCompletionDataRequest $request, array $optionalArgs = [])
  */
-class CompletionServiceBaseClient
+abstract class CompletionServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

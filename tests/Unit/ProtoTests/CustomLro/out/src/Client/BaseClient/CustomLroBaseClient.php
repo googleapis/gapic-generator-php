@@ -50,7 +50,7 @@ use Testing\CustomLro\CustomLroOperationsClient;
  *
  * @method PromiseInterface createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
-class CustomLroBaseClient
+abstract class CustomLroBaseClient
 {
     use GapicClientTrait;
 

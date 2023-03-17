@@ -60,7 +60,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface insertAsync(InsertAddressRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listAsync(ListAddressesRequest $request, array $optionalArgs = [])
  */
-class AddressesBaseClient
+abstract class AddressesBaseClient
 {
     use GapicClientTrait;
 

@@ -22,19 +22,25 @@ use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
+use RuntimeException;
 
 /** A class definition. */
 final class PhpClass extends AST
 {
     use HasPhpDoc;
 
-    public function __construct(Type $type, ?ResolvedType $extends, bool $final)
-    {
+    public function __construct(
+        Type $type,
+        ?ResolvedType $extends,
+        bool $final,
+        bool $abstract
+    ) {
         $this->type = $type;
         $this->extends = $extends;
         $this->traits = Set::new();
         $this->members = Vector::new();
         $this->final = $final;
+        $this->abstract = $abstract;
     }
 
     /** @var Type *Readonly* The type of this class. */
@@ -48,6 +54,11 @@ final class PhpClass extends AST
 
     /** @var bool *Readonly* Flag indicating if the class is final or not. */
     public bool $final;
+
+    /**
+     * @var bool *Readonly* Flag indicating if the class is abtract or not.
+     */
+    public bool $abstract;
 
     /**
      * Create a class with an additional trait.
@@ -95,10 +106,26 @@ final class PhpClass extends AST
             $this->clone(fn ($clone) => $clone->members = $clone->members->concat($members));
     }
 
+    /**
+     * Generates PHP code of the class.
+     * 
+     * @throws RuntimeException When $abstract and $final both are set.
+     */
     public function toCode(): string
     {
         $extends = is_null($this->extends) ? '' : " extends {$this->extends->toCode()}";
-        $class = $this->final ? 'final class' : 'class';
+
+        $class = 'class';
+        if ($this->final && $this->abstract) {
+            throw new RuntimeException('Cannot use the final modifier on an abstract class');
+        }
+
+        if ($this->final) {
+            $class = 'final class';
+        } elseif ($this->abstract) {
+            $class = 'abstract class';
+        }
+
         return
             $this->phpDocToCode() .
             "{$class} {$this->type->name}{$extends}\n" .

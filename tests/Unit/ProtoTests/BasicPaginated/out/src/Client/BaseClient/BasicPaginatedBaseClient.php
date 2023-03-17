@@ -49,7 +49,7 @@ use Testing\BasicPaginated\Request;
  *
  * @method PromiseInterface methodPaginatedAsync(Request $request, array $optionalArgs = [])
  */
-class BasicPaginatedBaseClient
+abstract class BasicPaginatedBaseClient
 {
     use GapicClientTrait;
 

@@ -87,7 +87,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface searchAllResourcesAsync(SearchAllResourcesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateFeedAsync(UpdateFeedRequest $request, array $optionalArgs = [])
  */
-class AssetServiceBaseClient
+abstract class AssetServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

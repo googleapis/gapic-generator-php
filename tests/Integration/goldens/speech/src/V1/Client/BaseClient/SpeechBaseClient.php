@@ -56,7 +56,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
  * @method PromiseInterface recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */
-class SpeechBaseClient
+abstract class SpeechBaseClient
 {
     use GapicClientTrait;
 

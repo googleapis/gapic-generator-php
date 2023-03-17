@@ -65,7 +65,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listAutoscalingPoliciesAsync(ListAutoscalingPoliciesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateAutoscalingPolicyAsync(UpdateAutoscalingPolicyRequest $request, array $optionalArgs = [])
  */
-class AutoscalingPolicyServiceBaseClient
+abstract class AutoscalingPolicyServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

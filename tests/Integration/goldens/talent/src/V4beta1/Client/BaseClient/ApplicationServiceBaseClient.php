@@ -67,7 +67,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listApplicationsAsync(ListApplicationsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateApplicationAsync(UpdateApplicationRequest $request, array $optionalArgs = [])
  */
-class ApplicationServiceBaseClient
+abstract class ApplicationServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

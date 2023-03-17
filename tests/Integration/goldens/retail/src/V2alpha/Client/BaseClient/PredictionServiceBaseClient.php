@@ -57,7 +57,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @method PromiseInterface predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
-class PredictionServiceBaseClient
+abstract class PredictionServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

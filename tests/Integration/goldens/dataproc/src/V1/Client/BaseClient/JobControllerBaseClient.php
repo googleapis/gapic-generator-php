@@ -64,7 +64,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface submitJobAsOperationAsync(SubmitJobRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
-class JobControllerBaseClient
+abstract class JobControllerBaseClient
 {
     use GapicClientTrait;
 

@@ -78,7 +78,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface searchJobsForAlertAsync(SearchJobsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
-class JobServiceBaseClient
+abstract class JobServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

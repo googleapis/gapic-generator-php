@@ -65,7 +65,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface setDefaultBranchAsync(SetDefaultBranchRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateCatalogAsync(UpdateCatalogRequest $request, array $optionalArgs = [])
  */
-class CatalogServiceBaseClient
+abstract class CatalogServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

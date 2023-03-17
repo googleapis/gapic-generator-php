@@ -78,7 +78,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface setInventoryAsync(SetInventoryRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateProductAsync(UpdateProductRequest $request, array $optionalArgs = [])
  */
-class ProductServiceBaseClient
+abstract class ProductServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

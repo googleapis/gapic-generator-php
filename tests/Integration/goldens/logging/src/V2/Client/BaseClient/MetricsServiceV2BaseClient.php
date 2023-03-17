@@ -64,7 +64,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listLogMetricsAsync(ListLogMetricsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateLogMetricAsync(UpdateLogMetricRequest $request, array $optionalArgs = [])
  */
-class MetricsServiceV2BaseClient
+abstract class MetricsServiceV2BaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

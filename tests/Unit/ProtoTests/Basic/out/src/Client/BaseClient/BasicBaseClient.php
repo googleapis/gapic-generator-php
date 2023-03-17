@@ -51,7 +51,7 @@ use Testing\Basic\Response;
  * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */
-class BasicBaseClient
+abstract class BasicBaseClient
 {
     use GapicClientTrait;
 

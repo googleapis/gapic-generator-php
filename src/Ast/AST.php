@@ -152,12 +152,18 @@ abstract class AST
      *
      * @param Type $type The type of the class to create.
      * @param ?ResolvedType $extends
+     * @param bool $final Flag indicating if the class is final or not.
+     * @param bool $abstract Flag indicating if the class is abtract or not.
      *
      * @return PhpClass
      */
-    public static function class(Type $type, ?ResolvedType $extends = null, bool $final = false): PhpClass
-    {
-        return new PhpClass($type, $extends, $final);
+    public static function class(
+        Type $type,
+        ?ResolvedType $extends = null,
+        bool $final = false,
+        bool $abstract = false
+    ): PhpClass {
+        return new PhpClass($type, $extends, $final, $abstract);
     }
 
     /**

@@ -69,7 +69,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface searchProfilesAsync(SearchProfilesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateProfileAsync(UpdateProfileRequest $request, array $optionalArgs = [])
  */
-class ProfileServiceBaseClient
+abstract class ProfileServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

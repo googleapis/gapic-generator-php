@@ -49,7 +49,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @method PromiseInterface getAsync(GetRegionOperationRequest $request, array $optionalArgs = [])
  */
-class RegionOperationsBaseClient
+abstract class RegionOperationsBaseClient
 {
     use GapicClientTrait;
 

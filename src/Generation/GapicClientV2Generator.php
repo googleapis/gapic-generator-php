@@ -98,7 +98,9 @@ class GapicClientV2Generator
 
     private function generateClass(): PhpClass
     {
-        return AST::class($this->serviceDetails->gapicClientV2Type)
+        return AST::class(
+                $this->serviceDetails->gapicClientV2Type,
+                abstract: true)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)

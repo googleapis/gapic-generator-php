@@ -52,7 +52,7 @@ use Testing\Deprecated\FibonacciRequest;
  * @method PromiseInterface fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  * @method PromiseInterface slowFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  */
-class DeprecatedServiceBaseClient
+abstract class DeprecatedServiceBaseClient
 {
     use GapicClientTrait;
 

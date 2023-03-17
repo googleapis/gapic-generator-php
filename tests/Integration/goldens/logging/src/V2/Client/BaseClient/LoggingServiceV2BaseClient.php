@@ -65,7 +65,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listMonitoredResourceDescriptorsAsync(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface writeLogEntriesAsync(WriteLogEntriesRequest $request, array $optionalArgs = [])
  */
-class LoggingServiceV2BaseClient
+abstract class LoggingServiceV2BaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

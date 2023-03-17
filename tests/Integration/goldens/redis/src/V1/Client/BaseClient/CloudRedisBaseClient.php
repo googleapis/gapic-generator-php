@@ -89,7 +89,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface updateInstanceAsync(UpdateInstanceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface upgradeInstanceAsync(UpgradeInstanceRequest $request, array $optionalArgs = [])
  */
-class CloudRedisBaseClient
+abstract class CloudRedisBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

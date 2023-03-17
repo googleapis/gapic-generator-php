@@ -46,7 +46,7 @@ use Testing\BasicServerStreaming\Request;
  *
  * @internal
  */
-class BasicServerStreamingBaseClient
+abstract class BasicServerStreamingBaseClient
 {
     use GapicClientTrait;
 

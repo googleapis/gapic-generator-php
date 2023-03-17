@@ -70,7 +70,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface rejoinUserEventsAsync(RejoinUserEventsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface writeUserEventAsync(WriteUserEventRequest $request, array $optionalArgs = [])
  */
-class UserEventServiceBaseClient
+abstract class UserEventServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

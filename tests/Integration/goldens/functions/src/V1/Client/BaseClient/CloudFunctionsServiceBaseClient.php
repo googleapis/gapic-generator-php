@@ -84,7 +84,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
  */
-class CloudFunctionsServiceBaseClient
+abstract class CloudFunctionsServiceBaseClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
