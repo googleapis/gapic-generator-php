@@ -224,7 +224,10 @@ class GapicClientV2Generator
                     ->then($triggerError),
                 AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
                 AST::return(
-                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))));
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text("Handles execution of the async variants for each documented method."),
+            ));
     }
 
     private function operationsClient(): ?PhpClassMember
@@ -357,14 +360,7 @@ class GapicClientV2Generator
                     PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 )))
-            ->append(AST::method('registerPathTemplates')
-                ->withAccess(Access::PRIVATE, Access::STATIC)
-                ->withBody(AST::block(
-                    AST::call(AST::SELF, AST::method('loadPathTemplates'))(
-                        AST::concat(AST::__DIR__, "/../../resources/$descriptorConfigFilename"),
-                        AST::access(AST::SELF, AST::constant('SERVICE_NAME')))
-                ))
-            )->append(AST::method('parseName')
+            ->append(AST::method('parseName')
                 ->withAccess(Access::PUBLIC, Access::STATIC)
                 ->withParams($formattedName, $template)
                 ->withBody(AST::block(
