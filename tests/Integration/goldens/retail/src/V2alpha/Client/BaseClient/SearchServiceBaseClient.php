@@ -125,11 +125,6 @@ abstract class SearchServiceBaseClient
         ]);
     }
 
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/search_service_descriptor_config.php', self::SERVICE_NAME);
-    }
-
     /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
@@ -218,6 +213,7 @@ abstract class SearchServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -1,3 +1,4 @@
+
     /**
      * @param string $projectId  Deprecated. The Google Developers Console [project ID or project
      *                           number](https://support.google.com/cloud/answer/6158840).
@@ -12,6 +13,8 @@
      *                           This field has been deprecated and replaced by the name field.
      *
      * @return \Google\Cloud\Container\V1\RollbackNodePoolUpgradeRequest
+     *
+     * @experimental
      */
     public static function build(string $projectId, string $zone, string $clusterId, string $nodePoolId): self
     {
@@ -28,6 +31,8 @@
      *                     Specified in the format `projects/&#42;/locations/&#42;/clusters/&#42;/nodePools/*`.
      *
      * @return \Google\Cloud\Container\V1\RollbackNodePoolUpgradeRequest
+     *
+     * @experimental
      */
     public static function buildFromName(string $name): self
     {

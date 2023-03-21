@@ -1,3 +1,4 @@
+
     /**
      * @param string $projectId Deprecated. The Google Developers Console [project ID or project
      *                          number](https://support.google.com/cloud/answer/6158840).
@@ -11,6 +12,8 @@
      * @param bool   $enabled   Required. Whether ABAC authorization will be enabled in the cluster.
      *
      * @return \Google\Cloud\Container\V1\SetLegacyAbacRequest
+     *
+     * @experimental
      */
     public static function build(string $projectId, string $zone, string $clusterId, bool $enabled): self
     {
@@ -27,6 +30,8 @@
      * @param bool   $enabled Required. Whether ABAC authorization will be enabled in the cluster.
      *
      * @return \Google\Cloud\Container\V1\SetLegacyAbacRequest
+     *
+     * @experimental
      */
     public static function buildFromNameEnabled(string $name, bool $enabled): self
     {

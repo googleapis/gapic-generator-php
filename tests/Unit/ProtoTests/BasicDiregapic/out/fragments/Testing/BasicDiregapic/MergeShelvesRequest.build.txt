@@ -1,3 +1,4 @@
+
     /**
      * @param string $name           The name of the shelf we're adding books to. Please see
      *                               {@see LibraryClient::shelfName()} for help formatting this field.
@@ -5,6 +6,8 @@
      *                               {@see LibraryClient::shelfName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\MergeShelvesRequest
+     *
+     * @experimental
      */
     public static function build(string $name, string $otherShelfName): self
     {

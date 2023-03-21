@@ -1,3 +1,4 @@
+
     /**
      * @param \Google\Cloud\Retail\V2alpha\Catalog $catalog    Required. The [Catalog][google.cloud.retail.v2alpha.Catalog] to update.
      *
@@ -14,6 +15,8 @@
      *                                                         is returned.
      *
      * @return \Google\Cloud\Retail\V2alpha\UpdateCatalogRequest
+     *
+     * @experimental
      */
     public static function build(\Google\Cloud\Retail\V2alpha\Catalog $catalog, \Google\Protobuf\FieldMask $updateMask): self
     {

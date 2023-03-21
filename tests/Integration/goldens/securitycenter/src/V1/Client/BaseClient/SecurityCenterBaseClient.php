@@ -544,11 +544,6 @@ abstract class SecurityCenterBaseClient
         ]);
     }
 
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/security_center_descriptor_config.php', self::SERVICE_NAME);
-    }
-
     /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
@@ -654,6 +649,7 @@ abstract class SecurityCenterBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

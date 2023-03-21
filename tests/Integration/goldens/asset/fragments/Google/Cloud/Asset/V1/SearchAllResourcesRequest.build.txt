@@ -1,3 +1,4 @@
+
     /**
      * @param string   $scope      Required. A scope can be a project, a folder, or an organization. The search is
      *                             limited to the resources within the `scope`. The caller must be granted the
@@ -66,6 +67,8 @@
      *                             supported asset type, an INVALID_ARGUMENT error will be returned.
      *
      * @return \Google\Cloud\Asset\V1\SearchAllResourcesRequest
+     *
+     * @experimental
      */
     public static function build(string $scope, string $query, array $assetTypes): self
     {

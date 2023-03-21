@@ -1,3 +1,4 @@
+
     /**
      * @param string                                $name       Required. The resource name of the exclusion to update:
      *
@@ -19,6 +20,8 @@
      *                                                          specify an `update_mask` of `"filter,description"`.
      *
      * @return \Google\Cloud\Logging\V2\UpdateExclusionRequest
+     *
+     * @experimental
      */
     public static function build(string $name, \Google\Cloud\Logging\V2\LogExclusion $exclusion, \Google\Protobuf\FieldMask $updateMask): self
     {

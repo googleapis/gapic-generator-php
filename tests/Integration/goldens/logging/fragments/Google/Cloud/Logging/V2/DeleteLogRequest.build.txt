@@ -1,3 +1,4 @@
+
     /**
      * @param string $logName Required. The resource name of the log to delete:
      *
@@ -14,6 +15,8 @@
      *                        {@see LoggingServiceV2Client::logName()} for help formatting this field.
      *
      * @return \Google\Cloud\Logging\V2\DeleteLogRequest
+     *
+     * @experimental
      */
     public static function build(string $logName): self
     {

@@ -1,3 +1,4 @@
+
     /**
      * @param \Testing\BasicDiregapic\ShelfResponse      $shelf      The shelf in which the series is created.
      * @param \Testing\BasicDiregapic\BookResponse[]     $books      The books to publish in the series.
@@ -6,6 +7,8 @@
      * @param string                                     $publisher  The publisher of the series.
      *
      * @return \Testing\BasicDiregapic\PublishSeriesRequest
+     *
+     * @experimental
      */
     public static function build(\Testing\BasicDiregapic\ShelfResponse $shelf, array $books, int $edition, \Testing\BasicDiregapic\SeriesUuidResponse $seriesUuid, string $publisher): self
     {

@@ -1,3 +1,4 @@
+
     /**
      * @param string $projectId   Deprecated. The Google Developers Console [project ID or project
      *                            number](https://support.google.com/cloud/answer/6158840).
@@ -10,6 +11,8 @@
      *                            This field has been deprecated and replaced by the name field.
      *
      * @return \Google\Cloud\Container\V1\CancelOperationRequest
+     *
+     * @experimental
      */
     public static function build(string $projectId, string $zone, string $operationId): self
     {
@@ -24,6 +27,8 @@
      *                     Specified in the format `projects/&#42;/locations/&#42;/operations/*`.
      *
      * @return \Google\Cloud\Container\V1\CancelOperationRequest
+     *
+     * @experimental
      */
     public static function buildFromName(string $name): self
     {
