@@ -28,12 +28,16 @@ final class PhpFile extends AST
         $this->class = $class;
         $this->uses = Set::new();
         $this->headerLines = Vector::new();
+        // TODO(#604): Remove this once our new min runtime version is PHP 7.4.
+        $this->requiresPhp74 = false;
     }
 
     public ?PhpClass $class;
     private ?AST $block;
     private Set $uses;
     private Vector $headerLines;
+    // TODO(#604): Remove this once our new min runtime version is PHP 7.4.
+    private ?bool $requiresPhp74;
 
     public function withUses(Set $uses)
     {
@@ -62,6 +66,13 @@ final class PhpFile extends AST
             EOF;
         $license = Vector::new(explode("\n", $license));
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($license));
+    }
+
+    // TODO(#604): Remove this once our new min runtime version is PHP 7.4.
+    public function withPhp74Requirement()
+    {
+        $this->requiresPhp74 = true;
+        return $this;
     }
 
     public function withGeneratedCodeWarning()
@@ -114,6 +125,16 @@ final class PhpFile extends AST
         if ($this->class) {
             $lines[] = "namespace {$this->class->type->getNamespace()};\n";
             $lines[] = $this->uses->toVector()->map(fn ($x) => "use {$x};")->join();
+        }
+
+        // TODO(#604): Remove this once our new min runtime version is PHP 7.4.
+        if ($this->requiresPhp74) {
+            // In the spirit of not over complicating things and following the
+            // rest of the code in here, the AST libraries are not used to build
+            // this conditional statement.
+            $lines[] = "if (PHP_VERSION_ID < 74000) {\n";
+            $lines[] = "    throw new \RuntimeException('This class is only available on PHP 7.4 and above');\n";
+            $lines[] = "}\n";
         }
 
         return implode("\n", $lines) .

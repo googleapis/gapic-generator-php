@@ -42,6 +42,10 @@ use Google\Cloud\Logging\V2\WriteLogEntriesRequest;
 use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
 use GuzzleHttp\Promise\PromiseInterface;
 
+if (PHP_VERSION_ID < 74000) {
+    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
+}
+
 /**
  * Service Description: Service for ingesting and querying logs.
  *

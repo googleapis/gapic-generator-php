@@ -35,6 +35,10 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Response;
 
+if (PHP_VERSION_ID < 74000) {
+    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
+}
+
 /**
  * Service Description: This is a basic service.
  *

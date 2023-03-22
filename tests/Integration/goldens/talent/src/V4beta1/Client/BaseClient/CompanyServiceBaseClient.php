@@ -43,6 +43,10 @@ use Google\Cloud\Talent\V4beta1\ListCompaniesRequest;
 use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
 use GuzzleHttp\Promise\PromiseInterface;
 
+if (PHP_VERSION_ID < 74000) {
+    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
+}
+
 /**
  * Service Description: A service that handles company management, including CRUD and enumeration.
  *

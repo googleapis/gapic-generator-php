@@ -5,6 +5,7 @@ bazel-*
 .php_cs.cache
 composer.lock
 .php-cs-fixer.cache
+.phpunit.result.cache
 
 # Vim
 *.sw*
