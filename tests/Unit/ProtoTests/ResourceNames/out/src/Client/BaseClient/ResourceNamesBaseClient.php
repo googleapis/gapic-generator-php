@@ -120,7 +120,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted deeply_nested resource.
      */
-    public static function deeplyNestedName($foo)
+    public static function deeplyNestedName(string $foo): string
     {
         return self::getPathTemplate('deeplyNested')->render([
             'foo' => $foo,
@@ -135,7 +135,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted file_res_def resource.
      */
-    public static function fileResDefName($item1Id)
+    public static function fileResDefName(string $item1Id): string
     {
         return self::getPathTemplate('fileResDef')->render([
             'item1_id' => $item1Id,
@@ -150,7 +150,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted folder resource.
      */
-    public static function folderName($folderId)
+    public static function folderName(string $folderId): string
     {
         return self::getPathTemplate('folder')->render([
             'folder_id' => $folderId,
@@ -165,7 +165,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted folder1 resource.
      */
-    public static function folder1Name($folder1Id)
+    public static function folder1Name(string $folder1Id): string
     {
         return self::getPathTemplate('folder1')->render([
             'folder1_id' => $folder1Id,
@@ -180,7 +180,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted folder2 resource.
      */
-    public static function folder2Name($folder2Id)
+    public static function folder2Name(string $folder2Id): string
     {
         return self::getPathTemplate('folder2')->render([
             'folder2_id' => $folder2Id,
@@ -195,7 +195,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted item1_id resource.
      */
-    public static function item1IdName($item1Id)
+    public static function item1IdName(string $item1Id): string
     {
         return self::getPathTemplate('item1Id')->render([
             'item1_id' => $item1Id,
@@ -211,7 +211,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted item1_id_item2_id resource.
      */
-    public static function item1IdItem2IdName($item1Id, $item2Id)
+    public static function item1IdItem2IdName(string $item1Id, string $item2Id): string
     {
         return self::getPathTemplate('item1IdItem2Id')->render([
             'item1_id' => $item1Id,
@@ -227,7 +227,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted item2_id resource.
      */
-    public static function item2IdName($item2Id)
+    public static function item2IdName(string $item2Id): string
     {
         return self::getPathTemplate('item2Id')->render([
             'item2_id' => $item2Id,
@@ -242,7 +242,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted item3_id resource.
      */
-    public static function item3IdName($item3Id)
+    public static function item3IdName(string $item3Id): string
     {
         return self::getPathTemplate('item3Id')->render([
             'item3_id' => $item3Id,
@@ -263,7 +263,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted item4_id_item5a_id_item5b_id_item5c_id_item5d_id_item5e_id_item6_id resource.
      */
-    public static function item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdName($item4Id, $item5aId, $item5bId, $item5cId, $item5dId, $item5eId, $item6Id)
+    public static function item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdName(string $item4Id, string $item5aId, string $item5bId, string $item5cId, string $item5dId, string $item5eId, string $item6Id): string
     {
         return self::getPathTemplate('item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id')->render([
             'item4_id' => $item4Id,
@@ -285,7 +285,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted multi_pattern resource.
      */
-    public static function multiPatternName($item1Id, $item2Id)
+    public static function multiPatternName(string $item1Id, string $item2Id): string
     {
         return self::getPathTemplate('multiPattern')->render([
             'item1_id' => $item1Id,
@@ -301,7 +301,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted order1 resource.
      */
-    public static function order1Name($order1Id)
+    public static function order1Name(string $order1Id): string
     {
         return self::getPathTemplate('order1')->render([
             'order1_id' => $order1Id,
@@ -316,7 +316,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted order2 resource.
      */
-    public static function order2Name($order2Id)
+    public static function order2Name(string $order2Id): string
     {
         return self::getPathTemplate('order2')->render([
             'order2_id' => $order2Id,
@@ -331,7 +331,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted order3 resource.
      */
-    public static function order3Name($order3Id)
+    public static function order3Name(string $order3Id): string
     {
         return self::getPathTemplate('order3')->render([
             'order3_id' => $order3Id,
@@ -347,7 +347,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted single_pattern resource.
      */
-    public static function singlePatternName($item1Id, $item2Id)
+    public static function singlePatternName(string $item1Id, string $item2Id): string
     {
         return self::getPathTemplate('singlePattern')->render([
             'item1_id' => $item1Id,
@@ -363,7 +363,7 @@ abstract class ResourceNamesBaseClient
      *
      * @return string The formatted wildcard_multi_pattern resource.
      */
-    public static function wildcardMultiPatternName($item1Id)
+    public static function wildcardMultiPatternName(string $item1Id): string
     {
         return self::getPathTemplate('wildcardMultiPattern')->render([
             'item1_id' => $item1Id,
@@ -404,7 +404,7 @@ abstract class ResourceNamesBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

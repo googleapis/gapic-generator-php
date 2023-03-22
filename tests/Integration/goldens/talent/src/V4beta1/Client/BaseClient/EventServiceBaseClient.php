@@ -113,7 +113,7 @@ abstract class EventServiceBaseClient
      *
      * @experimental
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -131,7 +131,7 @@ abstract class EventServiceBaseClient
      *
      * @experimental
      */
-    public static function tenantName($project, $tenant)
+    public static function tenantName(string $project, string $tenant): string
     {
         return self::getPathTemplate('tenant')->render([
             'project' => $project,
@@ -161,7 +161,7 @@ abstract class EventServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

@@ -175,7 +175,7 @@ abstract class CloudRedisBaseClient
      *
      * @return string The formatted instance resource.
      */
-    public static function instanceName($project, $location, $instance)
+    public static function instanceName(string $project, string $location, string $instance): string
     {
         return self::getPathTemplate('instance')->render([
             'project' => $project,
@@ -193,7 +193,7 @@ abstract class CloudRedisBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -221,7 +221,7 @@ abstract class CloudRedisBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

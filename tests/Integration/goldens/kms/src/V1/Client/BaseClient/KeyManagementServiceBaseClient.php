@@ -184,7 +184,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @return string The formatted crypto_key resource.
      */
-    public static function cryptoKeyName($project, $location, $keyRing, $cryptoKey)
+    public static function cryptoKeyName(string $project, string $location, string $keyRing, string $cryptoKey): string
     {
         return self::getPathTemplate('cryptoKey')->render([
             'project' => $project,
@@ -206,7 +206,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @return string The formatted crypto_key_version resource.
      */
-    public static function cryptoKeyVersionName($project, $location, $keyRing, $cryptoKey, $cryptoKeyVersion)
+    public static function cryptoKeyVersionName(string $project, string $location, string $keyRing, string $cryptoKey, string $cryptoKeyVersion): string
     {
         return self::getPathTemplate('cryptoKeyVersion')->render([
             'project' => $project,
@@ -228,7 +228,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @return string The formatted import_job resource.
      */
-    public static function importJobName($project, $location, $keyRing, $importJob)
+    public static function importJobName(string $project, string $location, string $keyRing, string $importJob): string
     {
         return self::getPathTemplate('importJob')->render([
             'project' => $project,
@@ -248,7 +248,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @return string The formatted key_ring resource.
      */
-    public static function keyRingName($project, $location, $keyRing)
+    public static function keyRingName(string $project, string $location, string $keyRing): string
     {
         return self::getPathTemplate('keyRing')->render([
             'project' => $project,
@@ -266,7 +266,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -297,7 +297,7 @@ abstract class KeyManagementServiceBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

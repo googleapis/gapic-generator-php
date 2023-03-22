@@ -160,7 +160,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account resource.
      */
-    public static function billingAccountName($billingAccount)
+    public static function billingAccountName(string $billingAccount): string
     {
         return self::getPathTemplate('billingAccount')->render([
             'billing_account' => $billingAccount,
@@ -175,7 +175,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_cmekSettings resource.
      */
-    public static function billingAccountCmekSettingsName($billingAccount)
+    public static function billingAccountCmekSettingsName(string $billingAccount): string
     {
         return self::getPathTemplate('billingAccountCmekSettings')->render([
             'billing_account' => $billingAccount,
@@ -191,7 +191,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_exclusion resource.
      */
-    public static function billingAccountExclusionName($billingAccount, $exclusion)
+    public static function billingAccountExclusionName(string $billingAccount, string $exclusion): string
     {
         return self::getPathTemplate('billingAccountExclusion')->render([
             'billing_account' => $billingAccount,
@@ -208,7 +208,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_location resource.
      */
-    public static function billingAccountLocationName($billingAccount, $location)
+    public static function billingAccountLocationName(string $billingAccount, string $location): string
     {
         return self::getPathTemplate('billingAccountLocation')->render([
             'billing_account' => $billingAccount,
@@ -226,7 +226,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_location_bucket resource.
      */
-    public static function billingAccountLocationBucketName($billingAccount, $location, $bucket)
+    public static function billingAccountLocationBucketName(string $billingAccount, string $location, string $bucket): string
     {
         return self::getPathTemplate('billingAccountLocationBucket')->render([
             'billing_account' => $billingAccount,
@@ -246,7 +246,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_location_bucket_view resource.
      */
-    public static function billingAccountLocationBucketViewName($billingAccount, $location, $bucket, $view)
+    public static function billingAccountLocationBucketViewName(string $billingAccount, string $location, string $bucket, string $view): string
     {
         return self::getPathTemplate('billingAccountLocationBucketView')->render([
             'billing_account' => $billingAccount,
@@ -265,7 +265,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted billing_account_sink resource.
      */
-    public static function billingAccountSinkName($billingAccount, $sink)
+    public static function billingAccountSinkName(string $billingAccount, string $sink): string
     {
         return self::getPathTemplate('billingAccountSink')->render([
             'billing_account' => $billingAccount,
@@ -281,7 +281,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted cmek_settings resource.
      */
-    public static function cmekSettingsName($project)
+    public static function cmekSettingsName(string $project): string
     {
         return self::getPathTemplate('cmekSettings')->render([
             'project' => $project,
@@ -296,7 +296,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder resource.
      */
-    public static function folderName($folder)
+    public static function folderName(string $folder): string
     {
         return self::getPathTemplate('folder')->render([
             'folder' => $folder,
@@ -311,7 +311,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_cmekSettings resource.
      */
-    public static function folderCmekSettingsName($folder)
+    public static function folderCmekSettingsName(string $folder): string
     {
         return self::getPathTemplate('folderCmekSettings')->render([
             'folder' => $folder,
@@ -327,7 +327,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_exclusion resource.
      */
-    public static function folderExclusionName($folder, $exclusion)
+    public static function folderExclusionName(string $folder, string $exclusion): string
     {
         return self::getPathTemplate('folderExclusion')->render([
             'folder' => $folder,
@@ -344,7 +344,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_location resource.
      */
-    public static function folderLocationName($folder, $location)
+    public static function folderLocationName(string $folder, string $location): string
     {
         return self::getPathTemplate('folderLocation')->render([
             'folder' => $folder,
@@ -362,7 +362,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_location_bucket resource.
      */
-    public static function folderLocationBucketName($folder, $location, $bucket)
+    public static function folderLocationBucketName(string $folder, string $location, string $bucket): string
     {
         return self::getPathTemplate('folderLocationBucket')->render([
             'folder' => $folder,
@@ -382,7 +382,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_location_bucket_view resource.
      */
-    public static function folderLocationBucketViewName($folder, $location, $bucket, $view)
+    public static function folderLocationBucketViewName(string $folder, string $location, string $bucket, string $view): string
     {
         return self::getPathTemplate('folderLocationBucketView')->render([
             'folder' => $folder,
@@ -401,7 +401,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted folder_sink resource.
      */
-    public static function folderSinkName($folder, $sink)
+    public static function folderSinkName(string $folder, string $sink): string
     {
         return self::getPathTemplate('folderSink')->render([
             'folder' => $folder,
@@ -418,7 +418,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -436,7 +436,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted log_bucket resource.
      */
-    public static function logBucketName($project, $location, $bucket)
+    public static function logBucketName(string $project, string $location, string $bucket): string
     {
         return self::getPathTemplate('logBucket')->render([
             'project' => $project,
@@ -454,7 +454,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted log_exclusion resource.
      */
-    public static function logExclusionName($project, $exclusion)
+    public static function logExclusionName(string $project, string $exclusion): string
     {
         return self::getPathTemplate('logExclusion')->render([
             'project' => $project,
@@ -471,7 +471,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted log_sink resource.
      */
-    public static function logSinkName($project, $sink)
+    public static function logSinkName(string $project, string $sink): string
     {
         return self::getPathTemplate('logSink')->render([
             'project' => $project,
@@ -490,7 +490,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted log_view resource.
      */
-    public static function logViewName($project, $location, $bucket, $view)
+    public static function logViewName(string $project, string $location, string $bucket, string $view): string
     {
         return self::getPathTemplate('logView')->render([
             'project' => $project,
@@ -508,7 +508,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization resource.
      */
-    public static function organizationName($organization)
+    public static function organizationName(string $organization): string
     {
         return self::getPathTemplate('organization')->render([
             'organization' => $organization,
@@ -523,7 +523,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_cmekSettings resource.
      */
-    public static function organizationCmekSettingsName($organization)
+    public static function organizationCmekSettingsName(string $organization): string
     {
         return self::getPathTemplate('organizationCmekSettings')->render([
             'organization' => $organization,
@@ -539,7 +539,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_exclusion resource.
      */
-    public static function organizationExclusionName($organization, $exclusion)
+    public static function organizationExclusionName(string $organization, string $exclusion): string
     {
         return self::getPathTemplate('organizationExclusion')->render([
             'organization' => $organization,
@@ -556,7 +556,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_location resource.
      */
-    public static function organizationLocationName($organization, $location)
+    public static function organizationLocationName(string $organization, string $location): string
     {
         return self::getPathTemplate('organizationLocation')->render([
             'organization' => $organization,
@@ -574,7 +574,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_location_bucket resource.
      */
-    public static function organizationLocationBucketName($organization, $location, $bucket)
+    public static function organizationLocationBucketName(string $organization, string $location, string $bucket): string
     {
         return self::getPathTemplate('organizationLocationBucket')->render([
             'organization' => $organization,
@@ -594,7 +594,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_location_bucket_view resource.
      */
-    public static function organizationLocationBucketViewName($organization, $location, $bucket, $view)
+    public static function organizationLocationBucketViewName(string $organization, string $location, string $bucket, string $view): string
     {
         return self::getPathTemplate('organizationLocationBucketView')->render([
             'organization' => $organization,
@@ -613,7 +613,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted organization_sink resource.
      */
-    public static function organizationSinkName($organization, $sink)
+    public static function organizationSinkName(string $organization, string $sink): string
     {
         return self::getPathTemplate('organizationSink')->render([
             'organization' => $organization,
@@ -629,7 +629,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project resource.
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -644,7 +644,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project_cmekSettings resource.
      */
-    public static function projectCmekSettingsName($project)
+    public static function projectCmekSettingsName(string $project): string
     {
         return self::getPathTemplate('projectCmekSettings')->render([
             'project' => $project,
@@ -660,7 +660,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project_exclusion resource.
      */
-    public static function projectExclusionName($project, $exclusion)
+    public static function projectExclusionName(string $project, string $exclusion): string
     {
         return self::getPathTemplate('projectExclusion')->render([
             'project' => $project,
@@ -678,7 +678,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project_location_bucket resource.
      */
-    public static function projectLocationBucketName($project, $location, $bucket)
+    public static function projectLocationBucketName(string $project, string $location, string $bucket): string
     {
         return self::getPathTemplate('projectLocationBucket')->render([
             'project' => $project,
@@ -698,7 +698,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project_location_bucket_view resource.
      */
-    public static function projectLocationBucketViewName($project, $location, $bucket, $view)
+    public static function projectLocationBucketViewName(string $project, string $location, string $bucket, string $view): string
     {
         return self::getPathTemplate('projectLocationBucketView')->render([
             'project' => $project,
@@ -717,7 +717,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @return string The formatted project_sink resource.
      */
-    public static function projectSinkName($project, $sink)
+    public static function projectSinkName(string $project, string $sink): string
     {
         return self::getPathTemplate('projectSink')->render([
             'project' => $project,
@@ -776,7 +776,7 @@ abstract class ConfigServiceV2BaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

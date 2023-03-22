@@ -116,7 +116,7 @@ abstract class PredictionServiceBaseClient
      *
      * @experimental
      */
-    public static function productName($project, $location, $catalog, $branch, $product)
+    public static function productName(string $project, string $location, string $catalog, string $branch, string $product): string
     {
         return self::getPathTemplate('product')->render([
             'project' => $project,
@@ -148,7 +148,7 @@ abstract class PredictionServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

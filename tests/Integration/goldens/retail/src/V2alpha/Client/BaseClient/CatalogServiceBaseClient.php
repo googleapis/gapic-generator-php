@@ -123,7 +123,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function branchName($project, $location, $catalog, $branch)
+    public static function branchName(string $project, string $location, string $catalog, string $branch): string
     {
         return self::getPathTemplate('branch')->render([
             'project' => $project,
@@ -145,7 +145,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function catalogName($project, $location, $catalog)
+    public static function catalogName(string $project, string $location, string $catalog): string
     {
         return self::getPathTemplate('catalog')->render([
             'project' => $project,
@@ -165,7 +165,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -196,7 +196,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

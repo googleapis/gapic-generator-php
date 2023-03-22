@@ -25,6 +25,26 @@ namespace Google\Generator\Utils;
 class ResolvedType
 {
     /**
+     * The 'array' built-in type.
+     *
+     * @return ResolvedType
+     */
+    public static function array(): ResolvedType
+    {
+        return new ResolvedType(Type::array(), fn () => 'array');
+    }
+
+    /**
+     * The 'string' built-in type.
+     *
+     * @return ResolvedType
+     */
+    public static function string(): ResolvedType
+    {
+        return new ResolvedType(Type::string(), fn () => 'string');
+    }
+
+    /**
      * The 'mixed' built-in type.
      *
      * @return ResolvedType

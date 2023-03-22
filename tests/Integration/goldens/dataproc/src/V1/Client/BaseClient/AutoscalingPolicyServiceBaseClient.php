@@ -120,7 +120,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @return string The formatted autoscaling_policy resource.
      */
-    public static function autoscalingPolicyName($project, $location, $autoscalingPolicy)
+    public static function autoscalingPolicyName(string $project, string $location, string $autoscalingPolicy): string
     {
         return self::getPathTemplate('autoscalingPolicy')->render([
             'project' => $project,
@@ -138,7 +138,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -156,7 +156,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @return string The formatted project_location_autoscaling_policy resource.
      */
-    public static function projectLocationAutoscalingPolicyName($project, $location, $autoscalingPolicy)
+    public static function projectLocationAutoscalingPolicyName(string $project, string $location, string $autoscalingPolicy): string
     {
         return self::getPathTemplate('projectLocationAutoscalingPolicy')->render([
             'project' => $project,
@@ -175,7 +175,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @return string The formatted project_region_autoscaling_policy resource.
      */
-    public static function projectRegionAutoscalingPolicyName($project, $region, $autoscalingPolicy)
+    public static function projectRegionAutoscalingPolicyName(string $project, string $region, string $autoscalingPolicy): string
     {
         return self::getPathTemplate('projectRegionAutoscalingPolicy')->render([
             'project' => $project,
@@ -193,7 +193,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @return string The formatted region resource.
      */
-    public static function regionName($project, $region)
+    public static function regionName(string $project, string $region): string
     {
         return self::getPathTemplate('region')->render([
             'project' => $project,
@@ -224,7 +224,7 @@ abstract class AutoscalingPolicyServiceBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

@@ -235,7 +235,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted archive resource.
      */
-    public static function archiveName($archive)
+    public static function archiveName(string $archive): string
     {
         return self::getPathTemplate('archive')->render([
             'archive' => $archive,
@@ -251,7 +251,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted archive_book resource.
      */
-    public static function archiveBookName($archive, $book)
+    public static function archiveBookName(string $archive, string $book): string
     {
         return self::getPathTemplate('archiveBook')->render([
             'archive' => $archive,
@@ -268,7 +268,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted archived_book resource.
      */
-    public static function archivedBookName($archive, $book)
+    public static function archivedBookName(string $archive, string $book): string
     {
         return self::getPathTemplate('archivedBook')->render([
             'archive' => $archive,
@@ -286,7 +286,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted book resource.
      */
-    public static function bookName($shelf, $bookOne, $bookTwo)
+    public static function bookName(string $shelf, string $bookOne, string $bookTwo): string
     {
         return self::getPathTemplate('book')->render([
             'shelf' => $shelf,
@@ -303,7 +303,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted folder resource.
      */
-    public static function folderName($folder)
+    public static function folderName(string $folder): string
     {
         return self::getPathTemplate('folder')->render([
             'folder' => $folder,
@@ -320,7 +320,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted inventory resource.
      */
-    public static function inventoryName($project, $location, $publisher)
+    public static function inventoryName(string $project, string $location, string $publisher): string
     {
         return self::getPathTemplate('inventory')->render([
             'project' => $project,
@@ -338,7 +338,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -354,7 +354,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted organization_reader resource.
      */
-    public static function organizationReaderName($organization)
+    public static function organizationReaderName(string $organization): string
     {
         return self::getPathTemplate('organizationReader')->render([
             'organization' => $organization,
@@ -369,7 +369,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted project resource.
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -385,7 +385,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted project_book resource.
      */
-    public static function projectBookName($project, $book)
+    public static function projectBookName(string $project, string $book): string
     {
         return self::getPathTemplate('projectBook')->render([
             'project' => $project,
@@ -404,7 +404,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted project_location_publisher_book resource.
      */
-    public static function projectLocationPublisherBookName($project, $location, $publisher, $book)
+    public static function projectLocationPublisherBookName(string $project, string $location, string $publisher, string $book): string
     {
         return self::getPathTemplate('projectLocationPublisherBook')->render([
             'project' => $project,
@@ -423,7 +423,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted project_reader resource.
      */
-    public static function projectReaderName($project, $reader)
+    public static function projectReaderName(string $project, string $reader): string
     {
         return self::getPathTemplate('projectReader')->render([
             'project' => $project,
@@ -442,7 +442,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted project_shelf_reader_surname_reader_first_name resource.
      */
-    public static function projectShelfReaderSurnameReaderFirstNameName($project, $shelf, $readerSurname, $readerFirstName)
+    public static function projectShelfReaderSurnameReaderFirstNameName(string $project, string $shelf, string $readerSurname, string $readerFirstName): string
     {
         return self::getPathTemplate('projectShelfReaderSurnameReaderFirstName')->render([
             'project' => $project,
@@ -462,7 +462,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted publisher resource.
      */
-    public static function publisherName($project, $location, $publisher)
+    public static function publisherName(string $project, string $location, string $publisher): string
     {
         return self::getPathTemplate('publisher')->render([
             'project' => $project,
@@ -480,7 +480,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted reader resource.
      */
-    public static function readerName($project, $reader)
+    public static function readerName(string $project, string $reader): string
     {
         return self::getPathTemplate('reader')->render([
             'project' => $project,
@@ -496,7 +496,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted shelf resource.
      */
-    public static function shelfName($shelf)
+    public static function shelfName(string $shelf): string
     {
         return self::getPathTemplate('shelf')->render([
             'shelf' => $shelf,
@@ -513,7 +513,7 @@ abstract class LibraryBaseClient
      *
      * @return string The formatted shelf_book_one_book_two resource.
      */
-    public static function shelfBookOneBookTwoName($shelf, $bookOne, $bookTwo)
+    public static function shelfBookOneBookTwoName(string $shelf, string $bookOne, string $bookTwo): string
     {
         return self::getPathTemplate('shelfBookOneBookTwo')->render([
             'shelf' => $shelf,
@@ -557,7 +557,7 @@ abstract class LibraryBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

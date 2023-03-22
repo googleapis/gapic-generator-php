@@ -172,7 +172,7 @@ abstract class AssetServiceBaseClient
      *
      * @return string The formatted feed resource.
      */
-    public static function feedName($project, $feed)
+    public static function feedName(string $project, string $feed): string
     {
         return self::getPathTemplate('feed')->render([
             'project' => $project,
@@ -189,7 +189,7 @@ abstract class AssetServiceBaseClient
      *
      * @return string The formatted folder_feed resource.
      */
-    public static function folderFeedName($folder, $feed)
+    public static function folderFeedName(string $folder, string $feed): string
     {
         return self::getPathTemplate('folderFeed')->render([
             'folder' => $folder,
@@ -206,7 +206,7 @@ abstract class AssetServiceBaseClient
      *
      * @return string The formatted organization_feed resource.
      */
-    public static function organizationFeedName($organization, $feed)
+    public static function organizationFeedName(string $organization, string $feed): string
     {
         return self::getPathTemplate('organizationFeed')->render([
             'organization' => $organization,
@@ -223,7 +223,7 @@ abstract class AssetServiceBaseClient
      *
      * @return string The formatted project_feed resource.
      */
-    public static function projectFeedName($project, $feed)
+    public static function projectFeedName(string $project, string $feed): string
     {
         return self::getPathTemplate('projectFeed')->render([
             'project' => $project,
@@ -253,7 +253,7 @@ abstract class AssetServiceBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

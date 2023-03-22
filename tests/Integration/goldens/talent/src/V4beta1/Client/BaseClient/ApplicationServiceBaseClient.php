@@ -126,7 +126,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function applicationName($project, $tenant, $profile, $application)
+    public static function applicationName(string $project, string $tenant, string $profile, string $application): string
     {
         return self::getPathTemplate('application')->render([
             'project' => $project,
@@ -148,7 +148,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function companyName($project, $tenant, $company)
+    public static function companyName(string $project, string $tenant, string $company): string
     {
         return self::getPathTemplate('company')->render([
             'project' => $project,
@@ -169,7 +169,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function jobName($project, $tenant, $job)
+    public static function jobName(string $project, string $tenant, string $job): string
     {
         return self::getPathTemplate('job')->render([
             'project' => $project,
@@ -190,7 +190,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function profileName($project, $tenant, $profile)
+    public static function profileName(string $project, string $tenant, string $profile): string
     {
         return self::getPathTemplate('profile')->render([
             'project' => $project,
@@ -210,7 +210,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function projectCompanyName($project, $company)
+    public static function projectCompanyName(string $project, string $company): string
     {
         return self::getPathTemplate('projectCompany')->render([
             'project' => $project,
@@ -229,7 +229,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function projectJobName($project, $job)
+    public static function projectJobName(string $project, string $job): string
     {
         return self::getPathTemplate('projectJob')->render([
             'project' => $project,
@@ -249,7 +249,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function projectTenantCompanyName($project, $tenant, $company)
+    public static function projectTenantCompanyName(string $project, string $tenant, string $company): string
     {
         return self::getPathTemplate('projectTenantCompany')->render([
             'project' => $project,
@@ -270,7 +270,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function projectTenantJobName($project, $tenant, $job)
+    public static function projectTenantJobName(string $project, string $tenant, string $job): string
     {
         return self::getPathTemplate('projectTenantJob')->render([
             'project' => $project,
@@ -307,7 +307,7 @@ abstract class ApplicationServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }

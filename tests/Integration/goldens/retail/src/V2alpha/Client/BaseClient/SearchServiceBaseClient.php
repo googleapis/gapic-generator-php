@@ -119,7 +119,7 @@ abstract class SearchServiceBaseClient
      *
      * @experimental
      */
-    public static function branchName($project, $location, $catalog, $branch)
+    public static function branchName(string $project, string $location, string $catalog, string $branch): string
     {
         return self::getPathTemplate('branch')->render([
             'project' => $project,
@@ -150,7 +150,7 @@ abstract class SearchServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
