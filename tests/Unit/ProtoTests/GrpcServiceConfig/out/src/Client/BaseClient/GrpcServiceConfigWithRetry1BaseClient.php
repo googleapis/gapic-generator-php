@@ -40,7 +40,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
-if (PHP_VERSION_ID < 74000) {
+if (PHP_VERSION_ID < 70400) {
     throw new \RuntimeException('This class is only available on PHP 7.4 and above');
 }
 

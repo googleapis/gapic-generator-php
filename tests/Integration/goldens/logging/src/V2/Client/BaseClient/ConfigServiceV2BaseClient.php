@@ -63,7 +63,7 @@ use Google\Cloud\Logging\V2\UpdateSinkRequest;
 use Google\Cloud\Logging\V2\UpdateViewRequest;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 74000) {
+if (PHP_VERSION_ID < 70400) {
     throw new \RuntimeException('This class is only available on PHP 7.4 and above');
 }
 

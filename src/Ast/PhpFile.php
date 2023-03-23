@@ -132,7 +132,7 @@ final class PhpFile extends AST
             // In the spirit of not over complicating things and following the
             // rest of the code in here, the AST libraries are not used to build
             // this conditional statement.
-            $lines[] = "if (PHP_VERSION_ID < 74000) {\n";
+            $lines[] = "if (PHP_VERSION_ID < 70400) {\n";
             $lines[] = "    throw new \RuntimeException('This class is only available on PHP 7.4 and above');\n";
             $lines[] = "}\n";
         }

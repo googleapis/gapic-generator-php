@@ -35,7 +35,7 @@ use Google\Cloud\Compute\V1\GetRegionOperationRequest;
 use Google\Cloud\Compute\V1\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 74000) {
+if (PHP_VERSION_ID < 70400) {
     throw new \RuntimeException('This class is only available on PHP 7.4 and above');
 }
 
