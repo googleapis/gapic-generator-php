@@ -34,10 +34,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Deprecated\FibonacciRequest;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: This is a service description.
  * It takes up multiple lines, like so.

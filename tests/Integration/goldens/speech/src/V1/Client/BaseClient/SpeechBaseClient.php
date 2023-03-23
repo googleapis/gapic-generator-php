@@ -41,10 +41,6 @@ use Google\Cloud\Speech\V1\RecognizeResponse;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: Service that implements Google Cloud Speech API.
  *

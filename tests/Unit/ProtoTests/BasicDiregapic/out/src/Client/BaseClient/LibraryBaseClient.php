@@ -73,10 +73,6 @@ use Testing\BasicDiregapic\ShelfResponse;
 use Testing\BasicDiregapic\UpdateBookIndexRequest;
 use Testing\BasicDiregapic\UpdateBookRequest;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: This API represents a simple digital library.  It lets you manage Shelf
  * resources and BookResponse resources in the library. It defines the following

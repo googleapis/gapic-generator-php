@@ -47,10 +47,6 @@ use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: Service for ingesting end user actions on the customer website.
  *

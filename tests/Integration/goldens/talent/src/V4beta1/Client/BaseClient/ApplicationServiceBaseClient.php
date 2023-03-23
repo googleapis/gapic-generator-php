@@ -43,10 +43,6 @@ use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: A service that handles application management, including CRUD and
  * enumeration.

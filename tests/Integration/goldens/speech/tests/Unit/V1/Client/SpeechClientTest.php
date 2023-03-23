@@ -47,8 +47,6 @@ use stdClass;
  * @group speech
  *
  * @group gapic
- *
- * @group min-php74
  */
 class SpeechClientTest extends GeneratedTest
 {

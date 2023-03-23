@@ -36,10 +36,6 @@ use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: This is a basic service.
  *

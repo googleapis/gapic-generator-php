@@ -38,10 +38,6 @@ use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description: Service for making recommendation prediction.
  *

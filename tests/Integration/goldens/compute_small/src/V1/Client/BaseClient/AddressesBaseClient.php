@@ -40,10 +40,6 @@ use Google\Cloud\Compute\V1\ListAddressesRequest;
 use Google\Cloud\Compute\V1\RegionOperationsClient;
 use GuzzleHttp\Promise\PromiseInterface;
 
-if (PHP_VERSION_ID < 70400) {
-    throw new \RuntimeException('This class is only available on PHP 7.4 and above');
-}
-
 /**
  * Service Description:
  * Services

@@ -44,8 +44,6 @@ use stdClass;
  * @group talent
  *
  * @group gapic
- *
- * @group min-php74
  */
 class ApplicationServiceClientTest extends GeneratedTest
 {

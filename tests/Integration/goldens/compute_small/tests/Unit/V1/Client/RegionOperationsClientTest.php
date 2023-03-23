@@ -36,8 +36,6 @@ use stdClass;
  * @group compute
  *
  * @group gapic
- *
- * @group min-php74
  */
 class RegionOperationsClientTest extends GeneratedTest
 {

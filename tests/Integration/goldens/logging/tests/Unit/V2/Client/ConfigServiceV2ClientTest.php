@@ -68,8 +68,6 @@ use stdClass;
  * @group logging
  *
  * @group gapic
- *
- * @group min-php74
  */
 class ConfigServiceV2ClientTest extends GeneratedTest
 {

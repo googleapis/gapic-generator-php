@@ -91,9 +91,7 @@ class GapicClientV2Generator
             ->withGeneratedFromProtoCodeWarning(
                 $this->serviceDetails->filePath,
                 $this->serviceDetails->isGa()
-            )
-            // TODO(#604): Remove this once our new min runtime version is PHP 7.4.
-            ->withPhp74Requirement();
+            );
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }

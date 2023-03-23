@@ -37,8 +37,6 @@ use stdClass;
  * @group basic
  *
  * @group gapic
- *
- * @group min-php74
  */
 class BasicClientTest extends GeneratedTest
 {

@@ -72,8 +72,6 @@ use stdClass;
  * @group asset
  *
  * @group gapic
- *
- * @group min-php74
  */
 class AssetServiceClientTest extends GeneratedTest
 {

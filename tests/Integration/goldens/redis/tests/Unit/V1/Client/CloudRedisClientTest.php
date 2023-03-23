@@ -54,8 +54,6 @@ use stdClass;
  * @group redis
  *
  * @group gapic
- *
- * @group min-php74
  */
 class CloudRedisClientTest extends GeneratedTest
 {

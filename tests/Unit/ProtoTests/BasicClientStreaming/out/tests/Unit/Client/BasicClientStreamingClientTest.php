@@ -30,8 +30,6 @@ use Google\ApiCore\Testing\MockTransport;
  * @group basicclientstreaming
  *
  * @group gapic
- *
- * @group min-php74
  */
 class BasicClientStreamingClientTest extends GeneratedTest
 {
