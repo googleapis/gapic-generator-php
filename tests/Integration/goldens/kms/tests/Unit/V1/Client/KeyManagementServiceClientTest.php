@@ -81,6 +81,8 @@ use stdClass;
  * @group kms
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class KeyManagementServiceClientTest extends GeneratedTest
 {

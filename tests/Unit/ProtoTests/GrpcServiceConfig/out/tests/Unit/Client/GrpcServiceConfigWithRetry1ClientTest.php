@@ -43,6 +43,8 @@ use stdClass;
  * @group grpcserviceconfig
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
 {

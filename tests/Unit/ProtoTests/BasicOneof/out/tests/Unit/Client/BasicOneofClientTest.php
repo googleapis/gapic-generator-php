@@ -38,6 +38,8 @@ use stdClass;
  * @group basiconeof
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class BasicOneofClientTest extends GeneratedTest
 {

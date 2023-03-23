@@ -81,6 +81,8 @@ use stdClass;
  * @group securitycenter
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class SecurityCenterClientTest extends GeneratedTest
 {

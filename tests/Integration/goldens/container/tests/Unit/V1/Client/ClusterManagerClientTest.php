@@ -84,6 +84,8 @@ use stdClass;
  * @group container
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class ClusterManagerClientTest extends GeneratedTest
 {

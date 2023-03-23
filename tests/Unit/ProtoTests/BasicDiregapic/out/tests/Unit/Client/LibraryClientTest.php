@@ -78,6 +78,8 @@ use stdClass;
  * @group basicdiregapic
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class LibraryClientTest extends GeneratedTest
 {

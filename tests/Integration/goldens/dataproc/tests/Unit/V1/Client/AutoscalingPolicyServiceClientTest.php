@@ -46,6 +46,8 @@ use stdClass;
  * @group dataproc
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class AutoscalingPolicyServiceClientTest extends GeneratedTest
 {

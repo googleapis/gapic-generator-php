@@ -36,6 +36,8 @@ use stdClass;
  * @group basicpaginated
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class BasicPaginatedClientTest extends GeneratedTest
 {

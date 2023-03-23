@@ -43,6 +43,8 @@ use stdClass;
  * @group resourcenames
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class ResourceNamesClientTest extends GeneratedTest
 {

@@ -38,6 +38,8 @@ use stdClass;
  * @group basicbidistreaming
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class BasicBidiStreamingClientTest extends GeneratedTest
 {

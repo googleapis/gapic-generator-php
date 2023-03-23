@@ -57,6 +57,8 @@ use stdClass;
  * @group functions
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class CloudFunctionsServiceClientTest extends GeneratedTest
 {

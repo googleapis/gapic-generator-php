@@ -39,6 +39,8 @@ use stdClass;
  * @group iam
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class IAMPolicyClientTest extends GeneratedTest
 {

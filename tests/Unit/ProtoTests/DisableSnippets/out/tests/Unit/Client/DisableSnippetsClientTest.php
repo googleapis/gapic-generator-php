@@ -36,6 +36,8 @@ use stdClass;
  * @group disablesnippets
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class DisableSnippetsClientTest extends GeneratedTest
 {

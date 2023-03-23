@@ -55,6 +55,8 @@ use stdClass;
  * @group retail
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class ProductServiceClientTest extends GeneratedTest
 {

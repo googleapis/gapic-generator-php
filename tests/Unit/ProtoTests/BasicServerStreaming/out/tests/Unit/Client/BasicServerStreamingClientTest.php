@@ -38,6 +38,8 @@ use stdClass;
  * @group basicserverstreaming
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class BasicServerStreamingClientTest extends GeneratedTest
 {

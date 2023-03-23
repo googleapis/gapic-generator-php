@@ -40,6 +40,8 @@ use stdClass;
  * @group routingheaders
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class RoutingHeadersClientTest extends GeneratedTest
 {

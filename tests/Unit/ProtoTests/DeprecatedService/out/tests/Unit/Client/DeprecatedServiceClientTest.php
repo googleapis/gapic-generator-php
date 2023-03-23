@@ -36,6 +36,8 @@ use stdClass;
  * @group deprecated
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class DeprecatedServiceClientTest extends GeneratedTest
 {

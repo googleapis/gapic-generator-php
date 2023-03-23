@@ -38,6 +38,8 @@ use stdClass;
  * @group customlro
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class CustomLroClientTest extends GeneratedTest
 {

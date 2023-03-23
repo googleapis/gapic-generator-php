@@ -49,6 +49,8 @@ use stdClass;
  * @group logging
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class LoggingServiceV2ClientTest extends GeneratedTest
 {

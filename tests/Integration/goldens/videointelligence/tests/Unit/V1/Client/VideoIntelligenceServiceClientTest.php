@@ -40,6 +40,8 @@ use stdClass;
  * @group videointelligence
  *
  * @group gapic
+ *
+ * @group min-php74
  */
 class VideoIntelligenceServiceClientTest extends GeneratedTest
 {
