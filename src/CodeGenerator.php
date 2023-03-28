@@ -65,6 +65,7 @@ class CodeGenerator
      * @param bool $numericEnums Whether to generate the numeric-enums JSON encoding system parameter.
      * @param int $licenseYear The year to use in license headers.
      * @param bool $generateSnippets Whether to generate snippets.
+     * @param string $migrationMode MigrationMode to generate code with.
      *
      * @return string[]
      */
