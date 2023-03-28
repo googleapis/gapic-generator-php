@@ -21,6 +21,7 @@ namespace Google\Generator\Tests\Unit\ProtoTests;
 use PHPUnit\Framework\TestCase;
 use FilesystemIterator;
 use Google\Generator\Tests\Tools\GeneratorUtils;
+use Google\Generator\Utils\MigrationMode;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -30,13 +31,15 @@ final class ProtoTest extends TestCase
         string $protoPath,
         ?string $package = null,
         ?string $transport = null,
-        bool $generateSnippets = true
+        bool $generateSnippets = true,
+        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
     ): void {
         $codeIterator = GeneratorUtils::generateFromProto(
             $protoPath,
             $package,
             $transport,
-            $generateSnippets
+            $generateSnippets,
+            $migrationMode
         );
         $files = iterator_to_array(
             new RecursiveIteratorIterator(
@@ -68,7 +71,7 @@ final class ProtoTest extends TestCase
 
     public function testBasic0(): void
     {
-        $this->runProtoTest('Basic/basic.proto');
+        $this->runProtoTest('Basic/basic.proto', null, null, true, MigrationMode::NEW_SURFACE_ONLY);
     }
 
     public function testBasicLro(): void
@@ -107,7 +110,7 @@ final class ProtoTest extends TestCase
 
     public function testRoutingHeaders(): void
     {
-        $this->runProtoTest('RoutingHeaders/routing-headers.proto');
+        $this->runProtoTest('RoutingHeaders/routing-headers.proto', null, null, true, MigrationMode::MIGRATING);
     }
 
     public function testDeprecatedService(): void
