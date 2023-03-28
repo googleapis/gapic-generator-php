@@ -23,6 +23,7 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\Type;
 
 class SnippetDetails
@@ -57,6 +58,9 @@ class SnippetDetails
     /** @var Variable An AST node representing the service client associated with this method. */
     public Variable $serviceClientVar;
 
+    /** @var Type The empty client type to use in snippet code. */
+    public Type $emptyClientType;
+
     public function __construct(MethodDetails $methodDetails, ServiceDetails $serviceDetails)
     {
         $this->methodDetails = $methodDetails;
@@ -69,6 +73,9 @@ class SnippetDetails
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
         $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
+        $this->emptyClientType = $serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+            $serviceDetails->emptyClientType :
+            $serviceDetails->emptyClientV2Type;
 
         $this->initialize();
     }
@@ -237,7 +244,7 @@ class SnippetDetails
                 return strtoupper("[$paramDetails[0]]");
             });
         $clientCall = AST::staticCall(
-            $this->context->type($this->serviceDetails->emptyClientV2Type),
+            $this->context->type($this->emptyClientType),
             $field->resourceDetails->formatMethod
         );
         if ($field->isRepeated) {
@@ -249,7 +256,7 @@ class SnippetDetails
 
         // append a message to the param description guiding users where to find the helper.
         $docLineCount = count($field->docLines);
-        $formatCall = $this->serviceDetails->emptyClientV2Type->name .
+        $formatCall = $this->emptyClientType->name .
                       '::' . $field->resourceDetails->formatMethod->getName() . '()';
         $formatString = "Please see {@see $formatCall} for help formatting this field.";
         if ($docLineCount > 0) {

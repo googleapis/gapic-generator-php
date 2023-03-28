@@ -22,6 +22,7 @@ use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
@@ -146,17 +147,22 @@ class ServiceDetails
     /** @var bool *Readonly* Whether the service only has streaming RPCs or not. */
     public bool $streamingOnly;
 
+    /** @var string *Readonly* MigrationMode to use during generation. */
+    public string $migrationMode;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
         FileDescriptorProto $fileDesc,
-        int $transportType = Transport::GRPC_REST
+        int $transportType = Transport::GRPC_REST,
+        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
         $this->namespace = $namespace;
+        $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
