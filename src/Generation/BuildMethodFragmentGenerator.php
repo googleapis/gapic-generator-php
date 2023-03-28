@@ -48,7 +48,7 @@ class BuildMethodFragmentGenerator
         // Remove the wrapping class
         preg_match(sprintf('/' . $codeWrap . '/s', '(.*)'), $code, $matches);
 
-        return PHP_EOL . $matches[1] . PHP_EOL;
+        return PHP_EOL . $matches[1];
     }
 
     private function generateImpl(): Map
