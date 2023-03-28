@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\ListClustersRequest;
 
 /**
  * Lists all regions/{region}/clusters in a project alphabetically.
@@ -41,15 +40,10 @@ function list_clusters_sample(string $projectId, string $region): void
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
-    // Prepare the request message.
-    $request = (new ListClustersRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $clusterControllerClient->listClusters($request);
+        $response = $clusterControllerClient->listClusters($projectId, $region);
 
         /** @var Cluster $element */
         foreach ($response as $element) {

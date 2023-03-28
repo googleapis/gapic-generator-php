@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_ListLogs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Logging\V2\ListLogsRequest;
 use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
@@ -45,14 +44,10 @@ function list_logs_sample(string $formattedParent): void
     // Create a client.
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new ListLogsRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $loggingServiceV2Client->listLogs($request);
+        $response = $loggingServiceV2Client->listLogs($formattedParent);
 
         /** @var string $element */
         foreach ($response as $element) {

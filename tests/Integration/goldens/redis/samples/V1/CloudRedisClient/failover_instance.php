@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Redis\V1\CloudRedisClient;
-use Google\Cloud\Redis\V1\FailoverInstanceRequest;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Rpc\Status;
 
@@ -44,14 +43,10 @@ function failover_instance_sample(string $formattedName): void
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
-    // Prepare the request message.
-    $request = (new FailoverInstanceRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->failoverInstance($request);
+        $response = $cloudRedisClient->failoverInstance($formattedName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

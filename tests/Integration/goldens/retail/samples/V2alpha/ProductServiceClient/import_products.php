@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_ImportProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\ImportProductsRequest;
 use Google\Cloud\Retail\V2alpha\ImportProductsResponse;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
 use Google\Cloud\Retail\V2alpha\ProductServiceClient;
@@ -54,14 +53,11 @@ function import_products_sample(string $formattedParent): void
 
     // Prepare the request message.
     $inputConfig = new ProductInputConfig();
-    $request = (new ImportProductsRequest())
-        ->setParent($formattedParent)
-        ->setInputConfig($inputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->importProducts($request);
+        $response = $productServiceClient->importProducts($formattedParent, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

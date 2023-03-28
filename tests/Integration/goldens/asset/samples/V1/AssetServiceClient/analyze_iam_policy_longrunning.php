@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudasset_v1_generated_AssetService_AnalyzeIamPolicyLongrunning_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse;
 use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisOutputConfig;
@@ -65,14 +64,11 @@ function analyze_iam_policy_longrunning_sample(string $analysisQueryScope): void
     $analysisQuery = (new IamPolicyAnalysisQuery())
         ->setScope($analysisQueryScope);
     $outputConfig = new IamPolicyAnalysisOutputConfig();
-    $request = (new AnalyzeIamPolicyLongrunningRequest())
-        ->setAnalysisQuery($analysisQuery)
-        ->setOutputConfig($outputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $assetServiceClient->analyzeIamPolicyLongrunning($request);
+        $response = $assetServiceClient->analyzeIamPolicyLongrunning($analysisQuery, $outputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

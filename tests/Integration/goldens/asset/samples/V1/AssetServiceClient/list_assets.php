@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Asset\V1\Asset;
 use Google\Cloud\Asset\V1\AssetServiceClient;
-use Google\Cloud\Asset\V1\ListAssetsRequest;
 
 /**
  * Lists assets with time and resource types and returns paged results in
@@ -43,14 +42,10 @@ function list_assets_sample(string $parent): void
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 
-    // Prepare the request message.
-    $request = (new ListAssetsRequest())
-        ->setParent($parent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $assetServiceClient->listAssets($request);
+        $response = $assetServiceClient->listAssets($parent);
 
         /** @var Asset $element */
         foreach ($response as $element) {

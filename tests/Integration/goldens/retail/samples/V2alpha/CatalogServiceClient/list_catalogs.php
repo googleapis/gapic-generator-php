@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Retail\V2alpha\Catalog;
 use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
-use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 
 /**
  * Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s associated
@@ -46,14 +45,10 @@ function list_catalogs_sample(string $formattedParent): void
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
-    // Prepare the request message.
-    $request = (new ListCatalogsRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $catalogServiceClient->listCatalogs($request);
+        $response = $catalogServiceClient->listCatalogs($formattedParent);
 
         /** @var Catalog $element */
         foreach ($response as $element) {

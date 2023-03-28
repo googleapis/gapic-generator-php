@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\NetworkPolicy;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetNetworkPolicyRequest;
 
 /**
  * Enables or disables Network Policy for a cluster.
@@ -45,13 +44,11 @@ function set_network_policy_sample(): void
 
     // Prepare the request message.
     $networkPolicy = new NetworkPolicy();
-    $request = (new SetNetworkPolicyRequest())
-        ->setNetworkPolicy($networkPolicy);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setNetworkPolicy($request);
+        $response = $clusterManagerClient->setNetworkPolicy($networkPolicy);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

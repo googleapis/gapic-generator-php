@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_ConfigServiceV2_DeleteView_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\DeleteViewRequest;
 
 /**
  * Deletes a view from a bucket.
@@ -43,13 +42,9 @@ function delete_view_sample(string $formattedName): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new DeleteViewRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $configServiceV2Client->deleteView($request);
+        $configServiceV2Client->deleteView($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

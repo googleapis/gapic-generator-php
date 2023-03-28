@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START localhost:7469_generated_DeprecatedService_FastFibonacci_sync]
 use Google\ApiCore\ApiException;
 use Testing\Deprecated\DeprecatedServiceClient;
-use Testing\Deprecated\FibonacciRequest;
 
 /**
  * Calculates Fibonacci on the provided value, quickly.
@@ -41,12 +40,9 @@ function fast_fibonacci_sample(): void
     // Create a client.
     $deprecatedServiceClient = new DeprecatedServiceClient();
 
-    // Prepare the request message.
-    $request = new FibonacciRequest();
-
     // Call the API and handle any network failures.
     try {
-        $deprecatedServiceClient->fastFibonacci($request);
+        $deprecatedServiceClient->fastFibonacci();
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

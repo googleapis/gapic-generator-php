@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogSink;
-use Google\Cloud\Logging\V2\UpdateSinkRequest;
 
 /**
  * Updates a sink. This method replaces the following fields in the existing
@@ -74,14 +73,11 @@ function update_sink_sample(
     $sink = (new LogSink())
         ->setName($sinkName)
         ->setDestination($sinkDestination);
-    $request = (new UpdateSinkRequest())
-        ->setSinkName($formattedSinkName)
-        ->setSink($sink);
 
     // Call the API and handle any network failures.
     try {
         /** @var LogSink $response */
-        $response = $configServiceV2Client->updateSink($request);
+        $response = $configServiceV2Client->updateSink($formattedSinkName, $sink);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProductService_DeleteProduct_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\DeleteProductRequest;
 use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 
 /**
@@ -59,13 +58,9 @@ function delete_product_sample(string $formattedName): void
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
-    // Prepare the request message.
-    $request = (new DeleteProductRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $productServiceClient->deleteProduct($request);
+        $productServiceClient->deleteProduct($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

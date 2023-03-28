@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\Api\MonitoredResource;
 use Google\Cloud\Logging\V2\LogEntry;
 use Google\Cloud\Logging\V2\LoggingServiceV2Client;
-use Google\Cloud\Logging\V2\WriteLogEntriesRequest;
 use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
 
 /**
@@ -73,13 +72,11 @@ function write_log_entries_sample(string $entriesLogName): void
         ->setLogName($entriesLogName)
         ->setResource($entriesResource);
     $entries = [$logEntry,];
-    $request = (new WriteLogEntriesRequest())
-        ->setEntries($entries);
 
     // Call the API and handle any network failures.
     try {
         /** @var WriteLogEntriesResponse $response */
-        $response = $loggingServiceV2Client->writeLogEntries($request);
+        $response = $loggingServiceV2Client->writeLogEntries($entries);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

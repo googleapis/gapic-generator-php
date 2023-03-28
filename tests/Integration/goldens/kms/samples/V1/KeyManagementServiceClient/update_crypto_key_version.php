@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\CryptoKeyVersion;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
-use Google\Cloud\Kms\V1\UpdateCryptoKeyVersionRequest;
 use Google\Protobuf\FieldMask;
 
 /**
@@ -57,14 +56,11 @@ function update_crypto_key_version_sample(): void
     // Prepare the request message.
     $cryptoKeyVersion = new CryptoKeyVersion();
     $updateMask = new FieldMask();
-    $request = (new UpdateCryptoKeyVersionRequest())
-        ->setCryptoKeyVersion($cryptoKeyVersion)
-        ->setUpdateMask($updateMask);
 
     // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->updateCryptoKeyVersion($request);
+        $response = $keyManagementServiceClient->updateCryptoKeyVersion($cryptoKeyVersion, $updateMask);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

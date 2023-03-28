@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\CustomLro\CreateFooRequest;
 use Testing\CustomLro\CustomLroClient;
 
 /**
@@ -38,15 +37,10 @@ function create_foo_sample(string $project, string $region): void
     // Create a client.
     $customLroClient = new CustomLroClient();
 
-    // Prepare the request message.
-    $request = (new CreateFooRequest())
-        ->setProject($project)
-        ->setRegion($region);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $customLroClient->createFoo($request);
+        $response = $customLroClient->createFoo($project, $region);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\Cluster;
 use Google\Cloud\Container\V1\ClusterManagerClient;
-use Google\Cloud\Container\V1\CreateClusterRequest;
 use Google\Cloud\Container\V1\Operation;
 
 /**
@@ -58,13 +57,11 @@ function create_cluster_sample(): void
 
     // Prepare the request message.
     $cluster = new Cluster();
-    $request = (new CreateClusterRequest())
-        ->setCluster($cluster);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->createCluster($request);
+        $response = $clusterManagerClient->createCluster($cluster);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

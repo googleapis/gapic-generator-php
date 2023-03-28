@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\ClusterUpdate;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\UpdateClusterRequest;
 
 /**
  * Updates the settings of a specific cluster.
@@ -45,13 +44,11 @@ function update_cluster_sample(): void
 
     // Prepare the request message.
     $update = new ClusterUpdate();
-    $request = (new UpdateClusterRequest())
-        ->setUpdate($update);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->updateCluster($request);
+        $response = $clusterManagerClient->updateCluster($update);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

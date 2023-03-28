@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
-use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\Rpc\Status;
 
 /**
@@ -45,15 +44,10 @@ function upgrade_instance_sample(string $formattedName, string $redisVersion): v
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
-    // Prepare the request message.
-    $request = (new UpgradeInstanceRequest())
-        ->setName($formattedName)
-        ->setRedisVersion($redisVersion);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->upgradeInstance($request);
+        $response = $cloudRedisClient->upgradeInstance($formattedName, $redisVersion);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

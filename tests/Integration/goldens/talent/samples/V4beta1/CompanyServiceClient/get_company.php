@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Company;
 use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
-use Google\Cloud\Talent\V4beta1\GetCompanyRequest;
 
 /**
  * Retrieves specified company.
@@ -46,14 +45,10 @@ function get_company_sample(string $formattedName): void
     // Create a client.
     $companyServiceClient = new CompanyServiceClient();
 
-    // Prepare the request message.
-    $request = (new GetCompanyRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
         /** @var Company $response */
-        $response = $companyServiceClient->getCompany($request);
+        $response = $companyServiceClient->getCompany($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

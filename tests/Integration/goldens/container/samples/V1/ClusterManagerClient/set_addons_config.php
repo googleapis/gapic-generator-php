@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\AddonsConfig;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetAddonsConfigRequest;
 
 /**
  * Sets the addons for a specific cluster.
@@ -45,13 +44,11 @@ function set_addons_config_sample(): void
 
     // Prepare the request message.
     $addonsConfig = new AddonsConfig();
-    $request = (new SetAddonsConfigRequest())
-        ->setAddonsConfig($addonsConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setAddonsConfig($request);
+        $response = $clusterManagerClient->setAddonsConfig($addonsConfig);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

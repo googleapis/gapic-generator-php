@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProductService_CreateProduct_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\CreateProductRequest;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 
@@ -69,15 +68,11 @@ function create_product_sample(
     // Prepare the request message.
     $product = (new Product())
         ->setTitle($productTitle);
-    $request = (new CreateProductRequest())
-        ->setParent($formattedParent)
-        ->setProduct($product)
-        ->setProductId($productId);
 
     // Call the API and handle any network failures.
     try {
         /** @var Product $response */
-        $response = $productServiceClient->createProduct($request);
+        $response = $productServiceClient->createProduct($formattedParent, $product, $productId);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

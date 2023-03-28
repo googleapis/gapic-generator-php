@@ -28,7 +28,6 @@ use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
 use Google\Cloud\Dataproc\V1\ClusterConfig;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\CreateClusterRequest;
 use Google\Rpc\Status;
 
 /**
@@ -58,15 +57,11 @@ function create_cluster_sample(
         ->setProjectId($clusterProjectId)
         ->setClusterName($clusterClusterName)
         ->setConfig($clusterConfig);
-    $request = (new CreateClusterRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setCluster($cluster);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->createCluster($request);
+        $response = $clusterControllerClient->createCluster($projectId, $region, $cluster);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

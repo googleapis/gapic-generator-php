@@ -28,7 +28,6 @@ use Google\ApiCore\OperationResponse;
 use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\Instance\Tier;
-use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Protobuf\FieldMask;
 use Google\Rpc\Status;
 
@@ -65,14 +64,11 @@ function update_instance_sample(
         ->setName($instanceName)
         ->setTier($instanceTier)
         ->setMemorySizeGb($instanceMemorySizeGb);
-    $request = (new UpdateInstanceRequest())
-        ->setUpdateMask($updateMask)
-        ->setInstance($instance);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->updateInstance($request);
+        $response = $cloudRedisClient->updateInstance($updateMask, $instance);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_CollectUserEvent_sync]
 use Google\ApiCore\ApiException;
 use Google\Api\HttpBody;
-use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
 use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 
 /**
@@ -45,15 +44,10 @@ function collect_user_event_sample(string $parent, string $userEvent): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
-    // Prepare the request message.
-    $request = (new CollectUserEventRequest())
-        ->setParent($parent)
-        ->setUserEvent($userEvent);
-
     // Call the API and handle any network failures.
     try {
         /** @var HttpBody $response */
-        $response = $userEventServiceClient->collectUserEvent($request);
+        $response = $userEventServiceClient->collectUserEvent($parent, $userEvent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

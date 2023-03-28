@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 
@@ -49,14 +48,10 @@ function list_workflow_templates_sample(string $formattedParent): void
     // Create a client.
     $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
 
-    // Prepare the request message.
-    $request = (new ListWorkflowTemplatesRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $workflowTemplateServiceClient->listWorkflowTemplates($request);
+        $response = $workflowTemplateServiceClient->listWorkflowTemplates($formattedParent);
 
         /** @var WorkflowTemplate $element */
         foreach ($response as $element) {

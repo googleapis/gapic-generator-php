@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_JobService_CreateJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\CreateJobRequest;
 use Google\Cloud\Talent\V4beta1\Job;
 use Google\Cloud\Talent\V4beta1\JobServiceClient;
 
@@ -86,14 +85,11 @@ function create_job_sample(
         ->setRequisitionId($jobRequisitionId)
         ->setTitle($jobTitle)
         ->setDescription($jobDescription);
-    $request = (new CreateJobRequest())
-        ->setParent($formattedParent)
-        ->setJob($job);
 
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobServiceClient->createJob($request);
+        $response = $jobServiceClient->createJob($formattedParent, $job);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

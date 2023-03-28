@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_EventService_CreateClientEvent_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
-use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
 use Google\Cloud\Talent\V4beta1\EventServiceClient;
 use Google\Protobuf\Timestamp;
 
@@ -56,14 +55,11 @@ function create_client_event_sample(string $formattedParent, string $clientEvent
     $clientEvent = (new ClientEvent())
         ->setEventId($clientEventEventId)
         ->setCreateTime($clientEventCreateTime);
-    $request = (new CreateClientEventRequest())
-        ->setParent($formattedParent)
-        ->setClientEvent($clientEvent);
 
     // Call the API and handle any network failures.
     try {
         /** @var ClientEvent $response */
-        $response = $eventServiceClient->createClientEvent($request);
+        $response = $eventServiceClient->createClientEvent($formattedParent, $clientEvent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

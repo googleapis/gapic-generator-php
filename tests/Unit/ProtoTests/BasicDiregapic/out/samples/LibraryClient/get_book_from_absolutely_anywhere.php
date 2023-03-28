@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_GetBookFromAbsolutelyAnywhere_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
-use Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest;
 use Testing\BasicDiregapic\LibraryClient;
 
 /**
@@ -39,14 +38,10 @@ function get_book_from_absolutely_anywhere_sample(string $formattedName): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = (new GetBookFromAbsolutelyAnywhereRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
         /** @var BookFromAnywhereResponse $response */
-        $response = $libraryClient->getBookFromAbsolutelyAnywhere($request);
+        $response = $libraryClient->getBookFromAbsolutelyAnywhere($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

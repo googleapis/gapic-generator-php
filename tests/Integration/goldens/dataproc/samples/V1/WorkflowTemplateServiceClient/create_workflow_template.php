@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\CreateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\OrderedJob;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
 use Google\Cloud\Dataproc\V1\WorkflowTemplatePlacement;
@@ -74,14 +73,11 @@ function create_workflow_template_sample(
         ->setId($templateId)
         ->setPlacement($templatePlacement)
         ->setJobs($templateJobs);
-    $request = (new CreateWorkflowTemplateRequest())
-        ->setParent($formattedParent)
-        ->setTemplate($template);
 
     // Call the API and handle any network failures.
     try {
         /** @var WorkflowTemplate $response */
-        $response = $workflowTemplateServiceClient->createWorkflowTemplate($request);
+        $response = $workflowTemplateServiceClient->createWorkflowTemplate($formattedParent, $template);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

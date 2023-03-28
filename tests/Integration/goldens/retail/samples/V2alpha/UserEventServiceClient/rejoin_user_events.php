@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_RejoinUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
@@ -47,14 +46,10 @@ function rejoin_user_events_sample(string $parent): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
-    // Prepare the request message.
-    $request = (new RejoinUserEventsRequest())
-        ->setParent($parent);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->rejoinUserEvents($request);
+        $response = $userEventServiceClient->rejoinUserEvents($parent);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

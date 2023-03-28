@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
-use Google\Cloud\Redis\V1\ListInstancesRequest;
 
 /**
  * Lists all Redis instances owned by a project in either the specified
@@ -50,14 +49,10 @@ function list_instances_sample(string $formattedParent): void
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
-    // Prepare the request message.
-    $request = (new ListInstancesRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $cloudRedisClient->listInstances($request);
+        $response = $cloudRedisClient->listInstances($formattedParent);
 
         /** @var Instance $element */
         foreach ($response as $element) {

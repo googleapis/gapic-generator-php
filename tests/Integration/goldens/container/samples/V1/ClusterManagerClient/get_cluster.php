@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\Cluster;
 use Google\Cloud\Container\V1\ClusterManagerClient;
-use Google\Cloud\Container\V1\GetClusterRequest;
 
 /**
  * Gets the details of a specific cluster.
@@ -42,13 +41,10 @@ function get_cluster_sample(): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = new GetClusterRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var Cluster $response */
-        $response = $clusterManagerClient->getCluster($request);
+        $response = $clusterManagerClient->getCluster();
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

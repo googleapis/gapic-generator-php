@@ -28,7 +28,6 @@ use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Job;
 use Google\Cloud\Dataproc\V1\JobControllerClient;
 use Google\Cloud\Dataproc\V1\JobPlacement;
-use Google\Cloud\Dataproc\V1\SubmitJobRequest;
 use Google\Rpc\Status;
 
 /**
@@ -52,15 +51,11 @@ function submit_job_as_operation_sample(
         ->setClusterName($jobPlacementClusterName);
     $job = (new Job())
         ->setPlacement($jobPlacement);
-    $request = (new SubmitJobRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setJob($job);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $jobControllerClient->submitJobAsOperation($request);
+        $response = $jobControllerClient->submitJobAsOperation($projectId, $region, $job);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

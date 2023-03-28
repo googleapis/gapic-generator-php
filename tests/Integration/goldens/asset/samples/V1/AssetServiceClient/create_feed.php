@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudasset_v1_generated_AssetService_CreateFeed_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Asset\V1\AssetServiceClient;
-use Google\Cloud\Asset\V1\CreateFeedRequest;
 use Google\Cloud\Asset\V1\Feed;
 use Google\Cloud\Asset\V1\FeedOutputConfig;
 
@@ -58,15 +57,11 @@ function create_feed_sample(string $parent, string $feedId, string $feedName): v
     $feed = (new Feed())
         ->setName($feedName)
         ->setFeedOutputConfig($feedFeedOutputConfig);
-    $request = (new CreateFeedRequest())
-        ->setParent($parent)
-        ->setFeedId($feedId)
-        ->setFeed($feed);
 
     // Call the API and handle any network failures.
     try {
         /** @var Feed $response */
-        $response = $assetServiceClient->createFeed($request);
+        $response = $assetServiceClient->createFeed($parent, $feedId, $feed);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

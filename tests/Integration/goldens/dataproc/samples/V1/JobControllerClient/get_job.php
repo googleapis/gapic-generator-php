@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_JobController_GetJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\GetJobRequest;
 use Google\Cloud\Dataproc\V1\Job;
 use Google\Cloud\Dataproc\V1\JobControllerClient;
 
@@ -41,16 +40,10 @@ function get_job_sample(string $projectId, string $region, string $jobId): void
     // Create a client.
     $jobControllerClient = new JobControllerClient();
 
-    // Prepare the request message.
-    $request = (new GetJobRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setJobId($jobId);
-
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobControllerClient->getJob($request);
+        $response = $jobControllerClient->getJob($projectId, $region, $jobId);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

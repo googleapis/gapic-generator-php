@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\StartClusterRequest;
 use Google\Rpc\Status;
 
 /**
@@ -43,16 +42,10 @@ function start_cluster_sample(string $projectId, string $region, string $cluster
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
-    // Prepare the request message.
-    $request = (new StartClusterRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setClusterName($clusterName);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->startCluster($request);
+        $response = $clusterControllerClient->startCluster($projectId, $region, $clusterName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

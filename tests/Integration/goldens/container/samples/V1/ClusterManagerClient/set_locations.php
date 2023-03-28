@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetLocationsRequest;
 
 /**
  * Sets the locations for a specific cluster.
@@ -49,13 +48,11 @@ function set_locations_sample(string $locationsElement): void
 
     // Prepare the request message.
     $locations = [$locationsElement,];
-    $request = (new SetLocationsRequest())
-        ->setLocations($locations);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setLocations($request);
+        $response = $clusterManagerClient->setLocations($locations);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetNodePoolSizeRequest;
 
 /**
  * Sets the size for a specific node pool.
@@ -38,14 +37,10 @@ function set_node_pool_size_sample(int $nodeCount): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = (new SetNodePoolSizeRequest())
-        ->setNodeCount($nodeCount);
-
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setNodePoolSize($request);
+        $response = $clusterManagerClient->setNodePoolSize($nodeCount);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

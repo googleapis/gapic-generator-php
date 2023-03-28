@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\DeleteClusterRequest;
 use Google\Rpc\Status;
 
 /**
@@ -44,16 +43,10 @@ function delete_cluster_sample(string $projectId, string $region, string $cluste
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
-    // Prepare the request message.
-    $request = (new DeleteClusterRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setClusterName($clusterName);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->deleteCluster($request);
+        $response = $clusterControllerClient->deleteCluster($projectId, $region, $clusterName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

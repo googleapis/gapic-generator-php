@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Job;
 use Google\Cloud\Talent\V4beta1\JobServiceClient;
-use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 
 /**
  * Updates specified job.
@@ -79,13 +78,11 @@ function update_job_sample(
         ->setRequisitionId($jobRequisitionId)
         ->setTitle($jobTitle)
         ->setDescription($jobDescription);
-    $request = (new UpdateJobRequest())
-        ->setJob($job);
 
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobServiceClient->updateJob($request);
+        $response = $jobServiceClient->updateJob($job);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_FileLevelChildTypeRefMethod_sync]
 use Google\ApiCore\ApiException;
-use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
@@ -45,18 +44,16 @@ function file_level_child_type_ref_method_sample(
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
 
-    // Prepare the request message.
-    $request = (new FileLevelChildTypeRefRequest())
-        ->setReqFolderName($formattedReqFolderName)
-        ->setReqFolderMultiName($formattedReqFolderMultiName)
-        ->setReqFolderMultiNameHistory($formattedReqFolderMultiNameHistory)
-        ->setReqOrderTest1($formattedReqOrderTest1)
-        ->setReqOrderTest2($formattedReqOrderTest2);
-
     // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
-        $response = $resourceNamesClient->fileLevelChildTypeRefMethod($request);
+        $response = $resourceNamesClient->fileLevelChildTypeRefMethod(
+            $formattedReqFolderName,
+            $formattedReqFolderMultiName,
+            $formattedReqFolderMultiNameHistory,
+            $formattedReqOrderTest1,
+            $formattedReqOrderTest2
+        );
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

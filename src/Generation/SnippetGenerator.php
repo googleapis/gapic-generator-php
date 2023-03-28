@@ -67,7 +67,9 @@ class SnippetGenerator
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
-            $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
+            $snippetDetails = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+                new SnippetDetails($method, $this->serviceDetails) :
+                new SnippetDetailsV2($method, $this->serviceDetails);
             $rpcMethodExample = $this->rpcMethodExample($snippetDetails);
             $files[Helpers::toSnakeCase($method->name)] = AST::file(null)
                 ->withApacheLicense($this->licenseYear)

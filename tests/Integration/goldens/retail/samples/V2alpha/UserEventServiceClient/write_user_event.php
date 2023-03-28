@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
-use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 
 /**
  * Writes a single user event.
@@ -72,14 +71,11 @@ function write_user_event_sample(
     $userEvent = (new UserEvent())
         ->setEventType($userEventEventType)
         ->setVisitorId($userEventVisitorId);
-    $request = (new WriteUserEventRequest())
-        ->setParent($parent)
-        ->setUserEvent($userEvent);
 
     // Call the API and handle any network failures.
     try {
         /** @var UserEvent $response */
-        $response = $userEventServiceClient->writeUserEvent($request);
+        $response = $userEventServiceClient->writeUserEvent($parent, $userEvent);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

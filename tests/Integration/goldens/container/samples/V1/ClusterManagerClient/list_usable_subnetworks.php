@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Container\V1\ClusterManagerClient;
-use Google\Cloud\Container\V1\ListUsableSubnetworksRequest;
 use Google\Cloud\Container\V1\UsableSubnetwork;
 
 /**
@@ -43,13 +42,10 @@ function list_usable_subnetworks_sample(): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = new ListUsableSubnetworksRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $clusterManagerClient->listUsableSubnetworks($request);
+        $response = $clusterManagerClient->listUsableSubnetworks();
 
         /** @var UsableSubnetwork $element */
         foreach ($response as $element) {

@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_MetricsServiceV2_CreateLogMetric_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\CreateLogMetricRequest;
 use Google\Cloud\Logging\V2\LogMetric;
 use Google\Cloud\Logging\V2\MetricsServiceV2Client;
 
@@ -70,14 +69,11 @@ function create_log_metric_sample(
     $metric = (new LogMetric())
         ->setName($metricName)
         ->setFilter($metricFilter);
-    $request = (new CreateLogMetricRequest())
-        ->setParent($formattedParent)
-        ->setMetric($metric);
 
     // Call the API and handle any network failures.
     try {
         /** @var LogMetric $response */
-        $response = $metricsServiceV2Client->createLogMetric($request);
+        $response = $metricsServiceV2Client->createLogMetric($formattedParent, $metric);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

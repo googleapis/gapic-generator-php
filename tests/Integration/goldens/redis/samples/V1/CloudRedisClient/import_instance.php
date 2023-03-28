@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Redis\V1\CloudRedisClient;
-use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Rpc\Status;
@@ -52,14 +51,11 @@ function import_instance_sample(string $name): void
 
     // Prepare the request message.
     $inputConfig = new InputConfig();
-    $request = (new ImportInstanceRequest())
-        ->setName($name)
-        ->setInputConfig($inputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->importInstance($request);
+        $response = $cloudRedisClient->importInstance($name, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

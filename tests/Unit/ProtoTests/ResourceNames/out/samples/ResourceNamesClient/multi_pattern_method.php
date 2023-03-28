@@ -24,7 +24,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_MultiPatternMethod_sync]
 use Google\ApiCore\ApiException;
-use Testing\ResourceNames\MultiPatternRequest;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\ResourceNamesClient;
 
@@ -40,13 +39,10 @@ function multi_pattern_method_sample(): void
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
 
-    // Prepare the request message.
-    $request = new MultiPatternRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
-        $response = $resourceNamesClient->multiPatternMethod($request);
+        $response = $resourceNamesClient->multiPatternMethod();
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

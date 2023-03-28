@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Talent\V4beta1\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
-use Google\Cloud\Talent\V4beta1\SearchJobsRequest;
 use Google\Cloud\Talent\V4beta1\SearchJobsResponse\MatchingJob;
 
 /**
@@ -56,14 +55,11 @@ function search_jobs_for_alert_sample(string $formattedParent): void
 
     // Prepare the request message.
     $requestMetadata = new RequestMetadata();
-    $request = (new SearchJobsRequest())
-        ->setParent($formattedParent)
-        ->setRequestMetadata($requestMetadata);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $jobServiceClient->searchJobsForAlert($request);
+        $response = $jobServiceClient->searchJobsForAlert($formattedParent, $requestMetadata);
 
         /** @var MatchingJob $element */
         foreach ($response as $element) {

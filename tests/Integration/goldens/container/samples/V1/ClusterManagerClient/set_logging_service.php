@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetLoggingServiceRequest;
 
 /**
  * Sets the logging service for a specific cluster.
@@ -48,14 +47,10 @@ function set_logging_service_sample(string $loggingService): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = (new SetLoggingServiceRequest())
-        ->setLoggingService($loggingService);
-
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setLoggingService($request);
+        $response = $clusterManagerClient->setLoggingService($loggingService);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

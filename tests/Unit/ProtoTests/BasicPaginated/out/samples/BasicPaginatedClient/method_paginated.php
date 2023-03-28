@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicPaginated\BasicPaginatedClient;
 use Testing\BasicPaginated\PartOfRequestA;
-use Testing\BasicPaginated\Request;
 
 /**
  * @param string $aField
@@ -43,15 +42,11 @@ function method_paginated_sample(string $aField, string $pageToken): void
 
     // Prepare the request message.
     $partOfRequestA = [new PartOfRequestA()];
-    $request = (new Request())
-        ->setAField($aField)
-        ->setPageToken($pageToken)
-        ->setPartOfRequestA($partOfRequestA);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $basicPaginatedClient->methodPaginated($request);
+        $response = $basicPaginatedClient->methodPaginated($aField, $pageToken, $partOfRequestA);
 
         /** @var string $element */
         foreach ($response as $element) {

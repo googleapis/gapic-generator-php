@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\ListExclusionsRequest;
 use Google\Cloud\Logging\V2\LogExclusion;
 
 /**
@@ -45,14 +44,10 @@ function list_exclusions_sample(string $formattedParent): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new ListExclusionsRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $configServiceV2Client->listExclusions($request);
+        $response = $configServiceV2Client->listExclusions($formattedParent);
 
         /** @var LogExclusion $element */
         foreach ($response as $element) {

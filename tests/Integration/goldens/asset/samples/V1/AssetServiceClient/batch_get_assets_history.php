@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Asset\V1\AssetServiceClient;
-use Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
 use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\TimeWindow;
@@ -51,15 +50,11 @@ function batch_get_assets_history_sample(string $parent, int $contentType): void
 
     // Prepare the request message.
     $readTimeWindow = new TimeWindow();
-    $request = (new BatchGetAssetsHistoryRequest())
-        ->setParent($parent)
-        ->setContentType($contentType)
-        ->setReadTimeWindow($readTimeWindow);
 
     // Call the API and handle any network failures.
     try {
         /** @var BatchGetAssetsHistoryResponse $response */
-        $response = $assetServiceClient->batchGetAssetsHistory($request);
+        $response = $assetServiceClient->batchGetAssetsHistory($parent, $contentType, $readTimeWindow);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

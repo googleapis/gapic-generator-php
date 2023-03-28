@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Kms\V1\CryptoKeyVersion;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
-use Google\Cloud\Kms\V1\ListCryptoKeyVersionsRequest;
 
 /**
  * Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
@@ -42,14 +41,10 @@ function list_crypto_key_versions_sample(string $formattedParent): void
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
-    // Prepare the request message.
-    $request = (new ListCryptoKeyVersionsRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $keyManagementServiceClient->listCryptoKeyVersions($request);
+        $response = $keyManagementServiceClient->listCryptoKeyVersions($formattedParent);
 
         /** @var CryptoKeyVersion $element */
         foreach ($response as $element) {

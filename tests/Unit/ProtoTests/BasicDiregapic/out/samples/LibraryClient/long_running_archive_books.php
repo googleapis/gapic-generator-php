@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
 use Testing\BasicDiregapic\LibraryClient;
 
@@ -42,13 +41,10 @@ function long_running_archive_books_sample(): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = new ArchiveBooksRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $libraryClient->longRunningArchiveBooks($request);
+        $response = $libraryClient->longRunningArchiveBooks();
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

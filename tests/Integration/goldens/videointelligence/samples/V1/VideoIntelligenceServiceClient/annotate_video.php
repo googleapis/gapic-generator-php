@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START videointelligence_v1_generated_VideoIntelligenceService_AnnotateVideo_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
 use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\Rpc\Status;
@@ -47,13 +46,10 @@ function annotate_video_sample(): void
     // Create a client.
     $videoIntelligenceServiceClient = new VideoIntelligenceServiceClient();
 
-    // Prepare the request message.
-    $request = new AnnotateVideoRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $videoIntelligenceServiceClient->annotateVideo($request);
+        $response = $videoIntelligenceServiceClient->annotateVideo();
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

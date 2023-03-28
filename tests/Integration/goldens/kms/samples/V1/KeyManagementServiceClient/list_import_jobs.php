@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Kms\V1\ImportJob;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
-use Google\Cloud\Kms\V1\ListImportJobsRequest;
 
 /**
  * Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
@@ -41,14 +40,10 @@ function list_import_jobs_sample(string $formattedParent): void
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
-    // Prepare the request message.
-    $request = (new ListImportJobsRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $keyManagementServiceClient->listImportJobs($request);
+        $response = $keyManagementServiceClient->listImportJobs($formattedParent);
 
         /** @var ImportJob $element */
         foreach ($response as $element) {

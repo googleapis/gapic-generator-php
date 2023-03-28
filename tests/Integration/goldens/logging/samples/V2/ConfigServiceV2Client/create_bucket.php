@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_ConfigServiceV2_CreateBucket_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\CreateBucketRequest;
 use Google\Cloud\Logging\V2\LogBucket;
 
 /**
@@ -49,15 +48,11 @@ function create_bucket_sample(string $formattedParent, string $bucketId): void
 
     // Prepare the request message.
     $bucket = new LogBucket();
-    $request = (new CreateBucketRequest())
-        ->setParent($formattedParent)
-        ->setBucketId($bucketId)
-        ->setBucket($bucket);
 
     // Call the API and handle any network failures.
     try {
         /** @var LogBucket $response */
-        $response = $configServiceV2Client->createBucket($request);
+        $response = $configServiceV2Client->createBucket($formattedParent, $bucketId, $bucket);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

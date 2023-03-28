@@ -28,7 +28,6 @@ use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
 use Google\Cloud\Dataproc\V1\ClusterConfig;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\UpdateClusterRequest;
 use Google\Protobuf\FieldMask;
 use Google\Rpc\Status;
 
@@ -64,17 +63,17 @@ function update_cluster_sample(
         ->setClusterName($clusterClusterName)
         ->setConfig($clusterConfig);
     $updateMask = new FieldMask();
-    $request = (new UpdateClusterRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setClusterName($clusterName)
-        ->setCluster($cluster)
-        ->setUpdateMask($updateMask);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->updateCluster($request);
+        $response = $clusterControllerClient->updateCluster(
+            $projectId,
+            $region,
+            $clusterName,
+            $cluster,
+            $updateMask
+        );
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

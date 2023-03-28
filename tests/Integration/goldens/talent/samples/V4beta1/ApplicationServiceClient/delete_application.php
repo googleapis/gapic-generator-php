@@ -25,7 +25,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ApplicationService_DeleteApplication_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
-use Google\Cloud\Talent\V4beta1\DeleteApplicationRequest;
 
 /**
  * Deletes specified application.
@@ -42,13 +41,9 @@ function delete_application_sample(string $formattedName): void
     // Create a client.
     $applicationServiceClient = new ApplicationServiceClient();
 
-    // Prepare the request message.
-    $request = (new DeleteApplicationRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $applicationServiceClient->deleteApplication($request);
+        $applicationServiceClient->deleteApplication($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

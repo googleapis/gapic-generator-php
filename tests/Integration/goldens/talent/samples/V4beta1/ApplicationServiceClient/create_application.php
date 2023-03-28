@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Application;
 use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\Application\ApplicationStage;
-use Google\Cloud\Talent\V4beta1\CreateApplicationRequest;
 use Google\Protobuf\Timestamp;
 
 /**
@@ -70,14 +69,11 @@ function create_application_sample(
         ->setJob($formattedApplicationJob)
         ->setStage($applicationStage)
         ->setCreateTime($applicationCreateTime);
-    $request = (new CreateApplicationRequest())
-        ->setParent($formattedParent)
-        ->setApplication($application);
 
     // Call the API and handle any network failures.
     try {
         /** @var Application $response */
-        $response = $applicationServiceClient->createApplication($request);
+        $response = $applicationServiceClient->createApplication($formattedParent, $application);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

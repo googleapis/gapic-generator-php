@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetLegacyAbacRequest;
 
 /**
  * Enables or disables the ABAC authorization mechanism on a cluster.
@@ -38,14 +37,10 @@ function set_legacy_abac_sample(bool $enabled): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = (new SetLegacyAbacRequest())
-        ->setEnabled($enabled);
-
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setLegacyAbac($request);
+        $response = $clusterManagerClient->setLegacyAbac($enabled);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

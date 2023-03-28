@@ -28,7 +28,6 @@ use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
 use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\LroResponse;
-use Testing\BasicLro\Request;
 
 /**
  * To test method ordering; LRO methods referenced in gapic.yaml
@@ -46,13 +45,10 @@ function method1_sample(): void
     // Create a client.
     $basicLroClient = new BasicLroClient();
 
-    // Prepare the request message.
-    $request = new Request();
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $basicLroClient->method1($request);
+        $response = $basicLroClient->method1();
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

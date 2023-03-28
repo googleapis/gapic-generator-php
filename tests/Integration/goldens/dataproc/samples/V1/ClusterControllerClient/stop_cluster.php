@@ -27,7 +27,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
-use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Rpc\Status;
 
 /**
@@ -43,16 +42,10 @@ function stop_cluster_sample(string $projectId, string $region, string $clusterN
     // Create a client.
     $clusterControllerClient = new ClusterControllerClient();
 
-    // Prepare the request message.
-    $request = (new StopClusterRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region)
-        ->setClusterName($clusterName);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $clusterControllerClient->stopCluster($request);
+        $response = $clusterControllerClient->stopCluster($projectId, $region, $clusterName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
