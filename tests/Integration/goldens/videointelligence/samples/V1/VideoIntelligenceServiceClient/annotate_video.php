@@ -27,7 +27,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoRequest;
 use Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse;
-use Google\Cloud\VideoIntelligence\V1\Client\VideoIntelligenceServiceClient;
+use Google\Cloud\VideoIntelligence\V1\VideoIntelligenceServiceClient;
 use Google\Rpc\Status;
 
 /**

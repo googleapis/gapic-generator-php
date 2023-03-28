@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_AddComments_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\AddCommentsRequest;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\Comment;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Adds comments to a book

@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_ProfileService_CreateProfile_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\CreateProfileRequest;
 use Google\Cloud\Talent\V4beta1\Profile;
+use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 
 /**
  * Creates and returns a new profile.

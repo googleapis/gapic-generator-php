@@ -27,8 +27,8 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\GetBookRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Test long-running operations

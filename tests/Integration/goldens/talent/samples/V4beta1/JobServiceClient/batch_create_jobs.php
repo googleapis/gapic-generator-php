@@ -26,9 +26,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Talent\V4beta1\BatchCreateJobsRequest;
-use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\Job;
 use Google\Cloud\Talent\V4beta1\JobOperationResult;
+use Google\Cloud\Talent\V4beta1\JobServiceClient;
 use Google\Rpc\Status;
 
 /**

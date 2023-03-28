@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\AsymmetricDecryptRequest;
 use Google\Cloud\Kms\V1\AsymmetricDecryptResponse;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
 /**
  * Decrypts data that was encrypted with a public key retrieved from

@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudkms_v1_generated_KeyManagementService_ListCryptoKeys_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\CryptoKey;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\ListCryptoKeysRequest;
 
 /**

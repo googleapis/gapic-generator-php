@@ -24,11 +24,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Speech_Recognize_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Speech\V1\Client\SpeechClient;
 use Google\Cloud\Speech\V1\RecognitionAudio;
 use Google\Cloud\Speech\V1\RecognitionConfig;
 use Google\Cloud\Speech\V1\RecognizeRequest;
 use Google\Cloud\Speech\V1\RecognizeResponse;
+use Google\Cloud\Speech\V1\SpeechClient;
 
 /**
  * Performs synchronous speech recognition: receive results after all audio

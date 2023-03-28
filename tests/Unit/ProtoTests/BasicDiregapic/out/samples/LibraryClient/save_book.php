@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_SaveBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Test using resource messages as request objects. Only used by PubSub

@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_MetricsServiceV2_GetLogMetric_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\MetricsServiceV2Client;
 use Google\Cloud\Logging\V2\GetLogMetricRequest;
 use Google\Cloud\Logging\V2\LogMetric;
+use Google\Cloud\Logging\V2\MetricsServiceV2Client;
 
 /**
  * Gets a logs-based metric.

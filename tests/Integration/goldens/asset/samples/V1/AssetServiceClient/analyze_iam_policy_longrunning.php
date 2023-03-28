@@ -27,7 +27,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisOutputConfig;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisQuery;
 use Google\Rpc\Status;

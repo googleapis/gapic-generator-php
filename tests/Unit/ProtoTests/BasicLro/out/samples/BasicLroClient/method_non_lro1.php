@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START lro_generated_BasicLro_MethodNonLro1_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicLro\Client\BasicLroClient;
+use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\Request;
 
 /**

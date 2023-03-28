@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyRequest;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\IamPolicyAnalysisQuery;
 
 /**

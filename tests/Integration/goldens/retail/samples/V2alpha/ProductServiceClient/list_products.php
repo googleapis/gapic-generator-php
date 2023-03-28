@@ -25,9 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_ListProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\ListProductsRequest;
 use Google\Cloud\Retail\V2alpha\Product;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 
 /**
  * Gets a list of [Product][google.cloud.retail.v2alpha.Product]s.

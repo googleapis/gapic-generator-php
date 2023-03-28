@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_UserEventService_WriteUserEvent_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
 use Google\Cloud\Retail\V2alpha\UserEvent;
+use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Cloud\Retail\V2alpha\WriteUserEventRequest;
 
 /**

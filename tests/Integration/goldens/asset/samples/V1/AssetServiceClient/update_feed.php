@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_UpdateFeed_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\Feed;
 use Google\Cloud\Asset\V1\FeedOutputConfig;
 use Google\Cloud\Asset\V1\UpdateFeedRequest;

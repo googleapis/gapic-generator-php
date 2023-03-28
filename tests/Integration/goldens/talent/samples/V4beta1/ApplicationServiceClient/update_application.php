@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ApplicationService_UpdateApplication_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\Application;
+use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\Application\ApplicationStage;
-use Google\Cloud\Talent\V4beta1\Client\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\UpdateApplicationRequest;
 use Google\Protobuf\Timestamp;
 

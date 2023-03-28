@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_GetPublicKey_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\GetPublicKeyRequest;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\PublicKey;
 
 /**

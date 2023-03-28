@@ -26,8 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\GetBookRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Test long-running operations with empty return type.

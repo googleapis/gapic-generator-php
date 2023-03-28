@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_CollectUserEvent_sync]
 use Google\ApiCore\ApiException;
 use Google\Api\HttpBody;
-use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
 use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
+use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 
 /**
  * Writes a single user event from the browser. This uses a GET request to

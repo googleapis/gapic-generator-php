@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_GetImportJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\GetImportJobRequest;
 use Google\Cloud\Kms\V1\ImportJob;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
 /**
  * Returns metadata for a given [ImportJob][google.cloud.kms.v1.ImportJob].

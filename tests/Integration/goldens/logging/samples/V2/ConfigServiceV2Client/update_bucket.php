@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_ConfigServiceV2_UpdateBucket_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogBucket;
 use Google\Cloud\Logging\V2\UpdateBucketRequest;
 use Google\Protobuf\FieldMask;

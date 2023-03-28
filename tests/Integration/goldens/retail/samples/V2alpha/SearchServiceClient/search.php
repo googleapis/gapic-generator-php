@@ -25,9 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_SearchService_Search_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Retail\V2alpha\Client\SearchServiceClient;
 use Google\Cloud\Retail\V2alpha\SearchRequest;
 use Google\Cloud\Retail\V2alpha\SearchResponse\SearchResult;
+use Google\Cloud\Retail\V2alpha\SearchServiceClient;
 
 /**
  * Performs a search.

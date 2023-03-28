@@ -25,12 +25,12 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_ImportUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInlineSource;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
+use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**

@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_WorkflowTemplateService_DeleteWorkflowTemplate_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\Client\WorkflowTemplateServiceClient;
 use Google\Cloud\Dataproc\V1\DeleteWorkflowTemplateRequest;
+use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 
 /**
  * Deletes a workflow template. It does not cancel in-progress workflows.

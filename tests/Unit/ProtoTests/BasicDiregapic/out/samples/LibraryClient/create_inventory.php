@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_CreateInventory_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\CreateInventoryRequest;
 use Testing\BasicDiregapic\InventoryResponse;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Creates an inventory. Tests singleton resources.

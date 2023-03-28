@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryRequest;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
 use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\TimeWindow;
 

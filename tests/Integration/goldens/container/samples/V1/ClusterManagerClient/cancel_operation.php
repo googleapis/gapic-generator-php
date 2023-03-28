@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START container_v1_generated_ClusterManager_CancelOperation_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Container\V1\CancelOperationRequest;
-use Google\Cloud\Container\V1\Client\ClusterManagerClient;
+use Google\Cloud\Container\V1\ClusterManagerClient;
 
 /**
  * Cancels the specified operation.

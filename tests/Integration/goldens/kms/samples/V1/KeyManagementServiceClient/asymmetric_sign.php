@@ -26,8 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\AsymmetricSignRequest;
 use Google\Cloud\Kms\V1\AsymmetricSignResponse;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\Digest;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
 /**
  * Signs data using a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]

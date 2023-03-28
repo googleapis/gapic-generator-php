@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_ProfileService_SearchProfiles_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\HistogramQueryResult;
+use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
 use Google\Cloud\Talent\V4beta1\SearchProfilesRequest;
 

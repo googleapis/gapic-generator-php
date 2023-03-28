@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START bidi_generated_BasicBidiStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Testing\BasicBidiStreaming\Client\BasicBidiStreamingClient;
+use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Response;
 

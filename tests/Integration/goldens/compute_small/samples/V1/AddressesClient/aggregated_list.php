@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START compute_v1_generated_Addresses_AggregatedList_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Compute\V1\AddressesClient;
 use Google\Cloud\Compute\V1\AggregatedListAddressesRequest;
-use Google\Cloud\Compute\V1\Client\AddressesClient;
 
 /**
  * Retrieves an aggregated list of addresses.

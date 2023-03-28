@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_ListLogs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\ListLogsRequest;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Lists the logs in projects, organizations, folders, or billing accounts.

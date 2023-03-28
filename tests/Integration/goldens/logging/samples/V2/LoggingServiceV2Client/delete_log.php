@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_LoggingServiceV2_DeleteLog_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\DeleteLogRequest;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Deletes all the log entries in a log. The log reappears if it receives new

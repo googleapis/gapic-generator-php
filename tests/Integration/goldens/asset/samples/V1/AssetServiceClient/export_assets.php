@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudasset_v1_generated_AssetService_ExportAssets_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\ExportAssetsRequest;
 use Google\Cloud\Asset\V1\ExportAssetsResponse;
 use Google\Cloud\Asset\V1\OutputConfig;

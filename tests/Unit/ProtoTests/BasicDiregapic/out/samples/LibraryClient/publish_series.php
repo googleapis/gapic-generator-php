@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_PublishSeries_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 use Testing\BasicDiregapic\PublishSeriesRequest;
 use Testing\BasicDiregapic\PublishSeriesRequest\Genre;
 use Testing\BasicDiregapic\PublishSeriesResponse;

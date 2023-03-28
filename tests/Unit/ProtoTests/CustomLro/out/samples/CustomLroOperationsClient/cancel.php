@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START customlro_generated_CustomLroOperations_Cancel_sync]
 use Google\ApiCore\ApiException;
 use Testing\CustomLro\CancelOperationRequest;
-use Testing\CustomLro\Client\CustomLroOperationsClient;
+use Testing\CustomLro\CustomLroOperationsClient;
 
 /** @param string $operation Name of th Operations resource to cancel. */
 function cancel_sample(string $operation): void

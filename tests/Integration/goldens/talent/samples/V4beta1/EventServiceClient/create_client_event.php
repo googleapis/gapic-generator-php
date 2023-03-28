@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_EventService_CreateClientEvent_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Talent\V4beta1\ClientEvent;
-use Google\Cloud\Talent\V4beta1\Client\EventServiceClient;
 use Google\Cloud\Talent\V4beta1\CreateClientEventRequest;
+use Google\Cloud\Talent\V4beta1\EventServiceClient;
 use Google\Protobuf\Timestamp;
 
 /**

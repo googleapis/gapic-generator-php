@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_ProfileService_UpdateProfile_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\Profile;
+use Google\Cloud\Talent\V4beta1\ProfileServiceClient;
 use Google\Cloud\Talent\V4beta1\UpdateProfileRequest;
 
 /**

@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_JobController_GetJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\Client\JobControllerClient;
 use Google\Cloud\Dataproc\V1\GetJobRequest;
 use Google\Cloud\Dataproc\V1\Job;
+use Google\Cloud\Dataproc\V1\JobControllerClient;
 
 /**
  * Gets the resource representation for a job in a project.

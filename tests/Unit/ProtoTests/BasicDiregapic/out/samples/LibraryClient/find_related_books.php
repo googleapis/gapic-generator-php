@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_FindRelatedBooks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\FindRelatedBooksRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * @param string $formattedNamesElement   Please see {@see LibraryClient::bookName()} for help formatting this field.

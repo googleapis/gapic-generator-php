@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START localhost:7469_generated_DeprecatedService_FastFibonacci_sync]
 use Google\ApiCore\ApiException;
-use Testing\Deprecated\Client\DeprecatedServiceClient;
+use Testing\Deprecated\DeprecatedServiceClient;
 use Testing\Deprecated\FibonacciRequest;
 
 /**

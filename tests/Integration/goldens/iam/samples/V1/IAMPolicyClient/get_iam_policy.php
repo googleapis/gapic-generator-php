@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START iam_v1_generated_IAMPolicy_GetIamPolicy_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Iam\V1\Client\IAMPolicyClient;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
+use Google\Cloud\Iam\V1\IAMPolicyClient;
 use Google\Cloud\Iam\V1\Policy;
 
 /**

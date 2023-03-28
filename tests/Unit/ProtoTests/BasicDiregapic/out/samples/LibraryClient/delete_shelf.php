@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_DeleteShelf_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\DeleteShelfRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Deletes a shelf.

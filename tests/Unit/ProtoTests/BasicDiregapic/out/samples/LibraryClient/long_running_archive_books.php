@@ -28,7 +28,7 @@ use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
 use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * This sample has been automatically generated and should be regarded as a code

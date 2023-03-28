@@ -26,8 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Api\MonitoredResourceDescriptor;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Lists the descriptors for monitored resource types used by Logging.

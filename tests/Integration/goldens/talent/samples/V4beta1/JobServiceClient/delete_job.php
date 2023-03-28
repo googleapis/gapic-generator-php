@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_JobService_DeleteJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\DeleteJobRequest;
+use Google\Cloud\Talent\V4beta1\JobServiceClient;
 
 /**
  * Deletes the specified job.

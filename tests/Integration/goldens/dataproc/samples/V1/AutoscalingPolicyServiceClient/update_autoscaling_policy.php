@@ -25,9 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_AutoscalingPolicyService_UpdateAutoscalingPolicy_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Dataproc\V1\AutoscalingPolicy;
+use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 use Google\Cloud\Dataproc\V1\BasicAutoscalingAlgorithm;
 use Google\Cloud\Dataproc\V1\BasicYarnAutoscalingConfig;
-use Google\Cloud\Dataproc\V1\Client\AutoscalingPolicyServiceClient;
 use Google\Cloud\Dataproc\V1\InstanceGroupAutoscalingPolicyConfig;
 use Google\Cloud\Dataproc\V1\UpdateAutoscalingPolicyRequest;
 use Google\Protobuf\Duration;

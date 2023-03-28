@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_JobService_UpdateJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\Job;
+use Google\Cloud\Talent\V4beta1\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\UpdateJobRequest;
 
 /**

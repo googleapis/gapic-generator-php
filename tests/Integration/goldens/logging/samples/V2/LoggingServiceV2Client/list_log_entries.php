@@ -25,9 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_ListLogEntries_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\ListLogEntriesRequest;
 use Google\Cloud\Logging\V2\LogEntry;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Lists log entries.  Use this method to retrieve log entries that originated

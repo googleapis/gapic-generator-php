@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Asset\V1\AnalyzeMoveRequest;
 use Google\Cloud\Asset\V1\AnalyzeMoveResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 
 /**
  * Analyze moving a resource to a specified destination without kicking off

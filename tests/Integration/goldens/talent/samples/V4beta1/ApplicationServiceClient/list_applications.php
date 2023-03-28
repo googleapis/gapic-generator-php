@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Talent\V4beta1\Application;
-use Google\Cloud\Talent\V4beta1\Client\ApplicationServiceClient;
+use Google\Cloud\Talent\V4beta1\ApplicationServiceClient;
 use Google\Cloud\Talent\V4beta1\ListApplicationsRequest;
 
 /**

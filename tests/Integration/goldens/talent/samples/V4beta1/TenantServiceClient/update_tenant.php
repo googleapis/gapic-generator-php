@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_TenantService_UpdateTenant_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\TenantServiceClient;
 use Google\Cloud\Talent\V4beta1\Tenant;
+use Google\Cloud\Talent\V4beta1\TenantServiceClient;
 use Google\Cloud\Talent\V4beta1\UpdateTenantRequest;
 
 /**

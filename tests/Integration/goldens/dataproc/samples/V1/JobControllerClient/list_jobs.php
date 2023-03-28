@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_JobController_ListJobs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Dataproc\V1\Client\JobControllerClient;
 use Google\Cloud\Dataproc\V1\Job;
+use Google\Cloud\Dataproc\V1\JobControllerClient;
 use Google\Cloud\Dataproc\V1\ListJobsRequest;
 
 /**

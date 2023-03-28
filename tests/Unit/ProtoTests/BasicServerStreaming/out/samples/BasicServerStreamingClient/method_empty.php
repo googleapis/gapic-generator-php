@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ServerStream;
-use Testing\BasicServerStreaming\Client\BasicServerStreamingClient;
+use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Response;
 

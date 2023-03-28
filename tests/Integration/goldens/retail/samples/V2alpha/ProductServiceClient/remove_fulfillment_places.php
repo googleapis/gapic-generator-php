@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_RemoveFulfillmentPlaces_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesResponse;
 use Google\Rpc\Status;

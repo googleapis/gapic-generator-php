@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_GetBookFromArchive_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromArchiveResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\GetBookFromArchiveRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Gets a book from an archive.

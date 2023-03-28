@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_Completion_CompleteQuery_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\CompletionClient;
 use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
+use Google\Cloud\Talent\V4beta1\CompletionClient;
 
 /**
  * Completes the specified prefix with keyword suggestions.

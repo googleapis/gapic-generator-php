@@ -27,7 +27,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Rpc\Status;
 
 /**

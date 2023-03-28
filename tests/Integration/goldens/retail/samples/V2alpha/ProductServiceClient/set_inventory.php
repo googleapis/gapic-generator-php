@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_SetInventory_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\Product;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\SetInventoryRequest;
 use Google\Cloud\Retail\V2alpha\SetInventoryResponse;
 use Google\Rpc\Status;

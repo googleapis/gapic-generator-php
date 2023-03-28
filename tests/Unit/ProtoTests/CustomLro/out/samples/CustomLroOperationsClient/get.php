@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START customlro_generated_CustomLroOperations_Get_sync]
 use Google\ApiCore\ApiException;
-use Testing\CustomLro\Client\CustomLroOperationsClient;
+use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
 use Testing\CustomLro\GetOperationRequest;
 

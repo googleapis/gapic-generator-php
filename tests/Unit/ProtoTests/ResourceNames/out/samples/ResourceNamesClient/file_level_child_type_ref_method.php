@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_FileLevelChildTypeRefMethod_sync]
 use Google\ApiCore\ApiException;
-use Testing\ResourceNames\Client\ResourceNamesClient;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\PlaceholderResponse;
+use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  * @param string $formattedReqFolderName             Please see {@see ResourceNamesClient::folderName()} for help formatting this field.

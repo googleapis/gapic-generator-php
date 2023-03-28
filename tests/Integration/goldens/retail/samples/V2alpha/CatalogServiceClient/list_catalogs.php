@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Retail\V2alpha\Catalog;
-use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 
 /**

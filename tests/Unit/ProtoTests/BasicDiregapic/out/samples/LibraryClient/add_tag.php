@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Adds a tag to the book. This RPC is a mixin.

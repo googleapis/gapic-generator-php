@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_ClusterController_StopCluster_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Dataproc\V1\Client\ClusterControllerClient;
 use Google\Cloud\Dataproc\V1\Cluster;
+use Google\Cloud\Dataproc\V1\ClusterControllerClient;
 use Google\Cloud\Dataproc\V1\StopClusterRequest;
 use Google\Rpc\Status;
 

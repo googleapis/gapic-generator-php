@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProductService_DeleteProduct_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\DeleteProductRequest;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 
 /**
  * Deletes a [Product][google.cloud.retail.v2alpha.Product].

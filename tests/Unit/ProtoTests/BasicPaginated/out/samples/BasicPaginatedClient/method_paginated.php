@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START paginated_generated_BasicPaginated_MethodPaginated_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicPaginated\Client\BasicPaginatedClient;
+use Testing\BasicPaginated\BasicPaginatedClient;
 use Testing\BasicPaginated\PartOfRequestA;
 use Testing\BasicPaginated\Request;
 

@@ -25,9 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Dataproc\V1\Client\WorkflowTemplateServiceClient;
 use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesRequest;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
+use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 
 /**
  * Lists workflows that match the specified filter in the request.

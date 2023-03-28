@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\GrpcServiceConfig\Client\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\LroResponse;
 use Testing\GrpcServiceConfig\Request1;
 

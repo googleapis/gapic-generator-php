@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\BasicLro\Client\BasicLroClient;
+use Testing\BasicLro\BasicLroClient;
 use Testing\BasicLro\LroResponse;
 use Testing\BasicLro\Request;
 

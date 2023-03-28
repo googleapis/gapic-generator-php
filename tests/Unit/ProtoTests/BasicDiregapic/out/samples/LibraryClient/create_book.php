@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_CreateBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\CreateBookRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Creates a book.

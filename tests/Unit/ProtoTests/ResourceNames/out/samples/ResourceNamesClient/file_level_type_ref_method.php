@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_FileLevelTypeRefMethod_sync]
 use Google\ApiCore\ApiException;
-use Testing\ResourceNames\Client\ResourceNamesClient;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\PlaceholderResponse;
+use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  * This sample has been automatically generated and should be regarded as a code

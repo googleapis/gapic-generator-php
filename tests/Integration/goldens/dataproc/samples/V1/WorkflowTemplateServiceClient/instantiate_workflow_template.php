@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_WorkflowTemplateService_InstantiateWorkflowTemplate_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Dataproc\V1\Client\WorkflowTemplateServiceClient;
 use Google\Cloud\Dataproc\V1\InstantiateWorkflowTemplateRequest;
+use Google\Cloud\Dataproc\V1\WorkflowTemplateServiceClient;
 use Google\Rpc\Status;
 
 /**

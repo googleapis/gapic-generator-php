@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_CatalogService_GetDefaultBranch_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 

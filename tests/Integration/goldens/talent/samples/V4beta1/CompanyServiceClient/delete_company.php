@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_CompanyService_DeleteCompany_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\CompanyServiceClient;
+use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
 use Google\Cloud\Talent\V4beta1\DeleteCompanyRequest;
 
 /**

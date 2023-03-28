@@ -25,8 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_GetBookFromAbsolutelyAnywhere_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookFromAnywhereResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
 use Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Test proper OneOf-Any resource name mapping

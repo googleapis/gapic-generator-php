@@ -24,8 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_JobController_DeleteJob_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\Client\JobControllerClient;
 use Google\Cloud\Dataproc\V1\DeleteJobRequest;
+use Google\Cloud\Dataproc\V1\JobControllerClient;
 
 /**
  * Deletes the job from the project. If the job is active, the delete fails,

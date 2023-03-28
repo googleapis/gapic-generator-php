@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_ImportInstance_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Redis\V1\Client\CloudRedisClient;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;

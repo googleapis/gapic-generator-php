@@ -25,10 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_ImportProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\ImportProductsRequest;
 use Google\Cloud\Retail\V2alpha\ImportProductsResponse;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Rpc\Status;
 
 /**

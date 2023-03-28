@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Dataproc\V1\AutoscalingPolicy;
-use Google\Cloud\Dataproc\V1\Client\AutoscalingPolicyServiceClient;
+use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 use Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesRequest;
 
 /**

@@ -26,8 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
-use Testing\CustomLro\Client\CustomLroClient;
 use Testing\CustomLro\CreateFooRequest;
+use Testing\CustomLro\CustomLroClient;
 
 /**
  * @param string $project

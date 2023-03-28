@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START compute_v1_generated_Addresses_Delete_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Compute\V1\Client\AddressesClient;
+use Google\Cloud\Compute\V1\AddressesClient;
 use Google\Cloud\Compute\V1\DeleteAddressRequest;
 use Google\Rpc\Status;
 

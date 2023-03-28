@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_ListInstances_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Redis\V1\Client\CloudRedisClient;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\ListInstancesRequest;
 

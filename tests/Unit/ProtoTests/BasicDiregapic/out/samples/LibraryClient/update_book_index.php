@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_UpdateBookIndex_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 use Testing\BasicDiregapic\UpdateBookIndexRequest;
 
 /**

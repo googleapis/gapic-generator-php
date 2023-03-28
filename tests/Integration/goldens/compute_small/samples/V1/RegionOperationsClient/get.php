@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START compute_v1_generated_RegionOperations_Get_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Compute\V1\Client\RegionOperationsClient;
 use Google\Cloud\Compute\V1\GetRegionOperationRequest;
 use Google\Cloud\Compute\V1\Operation;
+use Google\Cloud\Compute\V1\RegionOperationsClient;
 
 /**
  * Retrieves the specified region-specific Operations resource.

@@ -24,9 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_PredictionService_Predict_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\Client\PredictionServiceClient;
 use Google\Cloud\Retail\V2alpha\PredictRequest;
 use Google\Cloud\Retail\V2alpha\PredictResponse;
+use Google\Cloud\Retail\V2alpha\PredictionServiceClient;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 
 /**

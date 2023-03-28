@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START container_v1_generated_ClusterManager_ListUsableSubnetworks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Container\V1\Client\ClusterManagerClient;
+use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\ListUsableSubnetworksRequest;
 use Google\Cloud\Container\V1\UsableSubnetwork;
 

@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START customlro_generated_CustomLroOperations_Delete_sync]
 use Google\ApiCore\ApiException;
-use Testing\CustomLro\Client\CustomLroOperationsClient;
+use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\DeleteOperationRequest;
 
 /** @param string $operation Name of th Operations resource to delete. */
