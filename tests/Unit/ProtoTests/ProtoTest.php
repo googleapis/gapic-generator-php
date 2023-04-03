@@ -111,7 +111,8 @@ final class ProtoTest extends TestCase
 
     public function testRoutingHeaders(): void
     {
-        $this->runProtoTest('RoutingHeaders/routing-headers.proto', null, null, true, MigrationMode::MIGRATING);
+        // test generating the client in migration mode (both v1 and v2 clients, but with v2 samples)
+        $this->runProtoTest('RoutingHeaders/routing-headers.proto', migrationMode: MigrationMode::MIGRATING);
     }
 
     public function testDeprecatedService(): void
