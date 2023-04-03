@@ -1,3 +1,4 @@
+
     /**
      * @param string $sinkName Required. The resource name of the sink:
      *
@@ -10,6 +11,8 @@
      *                         {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
      *
      * @return \Google\Cloud\Logging\V2\GetSinkRequest
+     *
+     * @experimental
      */
     public static function build(string $sinkName): self
     {

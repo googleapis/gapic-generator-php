@@ -1,7 +1,10 @@
+
     /**
      * @param \Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig Required. The notification config to update.
      *
      * @return \Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest
+     *
+     * @experimental
      */
     public static function build(\Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig): self
     {
@@ -16,6 +19,8 @@
      *                                                                               If empty all mutable fields will be updated.
      *
      * @return \Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest
+     *
+     * @experimental
      */
     public static function buildFromNotificationConfigUpdateMask(\Google\Cloud\SecurityCenter\V1\NotificationConfig $notificationConfig, \Google\Protobuf\FieldMask $updateMask): self
     {

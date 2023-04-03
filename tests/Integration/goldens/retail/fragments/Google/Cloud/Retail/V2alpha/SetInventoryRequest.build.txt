@@ -1,3 +1,4 @@
+
     /**
      * @param \Google\Cloud\Retail\V2alpha\Product $inventory Required. The inventory information to update. The allowable fields to
      *                                                        update are:
@@ -42,6 +43,8 @@
      *                                                        is returned and the entire update will be ignored.
      *
      * @return \Google\Cloud\Retail\V2alpha\SetInventoryRequest
+     *
+     * @experimental
      */
     public static function build(\Google\Cloud\Retail\V2alpha\Product $inventory, \Google\Protobuf\FieldMask $setMask): self
     {

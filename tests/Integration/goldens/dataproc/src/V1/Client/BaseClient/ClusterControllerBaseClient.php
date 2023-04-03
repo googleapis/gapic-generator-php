@@ -158,7 +158,7 @@ abstract class ClusterControllerBaseClient
      *
      * @return string The formatted cluster resource.
      */
-    public static function clusterName($project, $location, $cluster)
+    public static function clusterName(string $project, string $location, string $cluster): string
     {
         return self::getPathTemplate('cluster')->render([
             'project' => $project,
@@ -177,18 +177,13 @@ abstract class ClusterControllerBaseClient
      *
      * @return string The formatted service resource.
      */
-    public static function serviceName($project, $location, $service)
+    public static function serviceName(string $project, string $location, string $service): string
     {
         return self::getPathTemplate('service')->render([
             'project' => $project,
             'location' => $location,
             'service' => $service,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/cluster_controller_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -211,7 +206,7 @@ abstract class ClusterControllerBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -277,6 +272,7 @@ abstract class ClusterControllerBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

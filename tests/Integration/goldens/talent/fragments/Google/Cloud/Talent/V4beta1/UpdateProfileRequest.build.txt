@@ -1,7 +1,10 @@
+
     /**
      * @param \Google\Cloud\Talent\V4beta1\Profile $profile Required. Profile to be updated.
      *
      * @return \Google\Cloud\Talent\V4beta1\UpdateProfileRequest
+     *
+     * @experimental
      */
     public static function build(\Google\Cloud\Talent\V4beta1\Profile $profile): self
     {

@@ -1,8 +1,11 @@
+
     /**
      * @param string $name The name of the book to retrieve. Please see
      *                     {@see LibraryClient::bookName()} for help formatting this field.
      *
      * @return \Testing\BasicDiregapic\GetBookFromAbsolutelyAnywhereRequest
+     *
+     * @experimental
      */
     public static function build(string $name): self
     {

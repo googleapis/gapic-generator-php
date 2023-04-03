@@ -118,7 +118,7 @@ abstract class MetricsServiceV2BaseClient
      *
      * @return string The formatted log_metric resource.
      */
-    public static function logMetricName($project, $metric)
+    public static function logMetricName(string $project, string $metric): string
     {
         return self::getPathTemplate('logMetric')->render([
             'project' => $project,
@@ -134,16 +134,11 @@ abstract class MetricsServiceV2BaseClient
      *
      * @return string The formatted project resource.
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/metrics_service_v2_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -166,7 +161,7 @@ abstract class MetricsServiceV2BaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -231,6 +226,7 @@ abstract class MetricsServiceV2BaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -1,3 +1,4 @@
+
     /**
      * @param string $name Required. Full resource name of
      *                     [Product][google.cloud.retail.v2alpha.Product], such as
@@ -24,6 +25,8 @@
      *                     {@see ProductServiceClient::productName()} for help formatting this field.
      *
      * @return \Google\Cloud\Retail\V2alpha\DeleteProductRequest
+     *
+     * @experimental
      */
     public static function build(string $name): self
     {

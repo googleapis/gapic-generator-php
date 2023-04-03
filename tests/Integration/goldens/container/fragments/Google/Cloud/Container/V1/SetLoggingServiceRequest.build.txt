@@ -1,3 +1,4 @@
+
     /**
      * @param string $projectId      Deprecated. The Google Developers Console [project ID or project
      *                               number](https://support.google.com/cloud/answer/6158840).
@@ -21,6 +22,8 @@
      *                               used for GKE 1.14+ or `logging.googleapis.com` for earlier versions.
      *
      * @return \Google\Cloud\Container\V1\SetLoggingServiceRequest
+     *
+     * @experimental
      */
     public static function build(string $projectId, string $zone, string $clusterId, string $loggingService): self
     {
@@ -47,6 +50,8 @@
      *                               used for GKE 1.14+ or `logging.googleapis.com` for earlier versions.
      *
      * @return \Google\Cloud\Container\V1\SetLoggingServiceRequest
+     *
+     * @experimental
      */
     public static function buildFromNameLoggingService(string $name, string $loggingService): self
     {

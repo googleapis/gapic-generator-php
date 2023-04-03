@@ -155,7 +155,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted cluster resource.
      */
-    public static function clusterName($project, $location, $cluster)
+    public static function clusterName(string $project, string $location, string $cluster): string
     {
         return self::getPathTemplate('cluster')->render([
             'project' => $project,
@@ -173,7 +173,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
@@ -191,7 +191,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted project_location_workflow_template resource.
      */
-    public static function projectLocationWorkflowTemplateName($project, $location, $workflowTemplate)
+    public static function projectLocationWorkflowTemplateName(string $project, string $location, string $workflowTemplate): string
     {
         return self::getPathTemplate('projectLocationWorkflowTemplate')->render([
             'project' => $project,
@@ -210,7 +210,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted project_region_workflow_template resource.
      */
-    public static function projectRegionWorkflowTemplateName($project, $region, $workflowTemplate)
+    public static function projectRegionWorkflowTemplateName(string $project, string $region, string $workflowTemplate): string
     {
         return self::getPathTemplate('projectRegionWorkflowTemplate')->render([
             'project' => $project,
@@ -228,7 +228,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted region resource.
      */
-    public static function regionName($project, $region)
+    public static function regionName(string $project, string $region): string
     {
         return self::getPathTemplate('region')->render([
             'project' => $project,
@@ -246,7 +246,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted service resource.
      */
-    public static function serviceName($project, $location, $service)
+    public static function serviceName(string $project, string $location, string $service): string
     {
         return self::getPathTemplate('service')->render([
             'project' => $project,
@@ -265,18 +265,13 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @return string The formatted workflow_template resource.
      */
-    public static function workflowTemplateName($project, $region, $workflowTemplate)
+    public static function workflowTemplateName(string $project, string $region, string $workflowTemplate): string
     {
         return self::getPathTemplate('workflowTemplate')->render([
             'project' => $project,
             'region' => $region,
             'workflow_template' => $workflowTemplate,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/workflow_template_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -304,7 +299,7 @@ abstract class WorkflowTemplateServiceBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -370,6 +365,7 @@ abstract class WorkflowTemplateServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

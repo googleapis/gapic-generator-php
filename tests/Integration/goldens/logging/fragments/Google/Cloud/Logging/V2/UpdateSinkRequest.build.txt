@@ -1,3 +1,4 @@
+
     /**
      * @param string                           $sinkName   Required. The full resource name of the sink to update, including the parent
      *                                                     resource and the sink identifier:
@@ -27,6 +28,8 @@
      *                                                     Example: `updateMask=filter`.
      *
      * @return \Google\Cloud\Logging\V2\UpdateSinkRequest
+     *
+     * @experimental
      */
     public static function build(string $sinkName, \Google\Cloud\Logging\V2\LogSink $sink, \Google\Protobuf\FieldMask $updateMask): self
     {
@@ -51,6 +54,8 @@
      *                                                   of `sink_name`.
      *
      * @return \Google\Cloud\Logging\V2\UpdateSinkRequest
+     *
+     * @experimental
      */
     public static function buildFromSinkNameSink(string $sinkName, \Google\Cloud\Logging\V2\LogSink $sink): self
     {

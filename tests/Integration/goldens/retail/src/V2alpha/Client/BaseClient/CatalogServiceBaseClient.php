@@ -119,7 +119,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function branchName($project, $location, $catalog, $branch)
+    public static function branchName(string $project, string $location, string $catalog, string $branch): string
     {
         return self::getPathTemplate('branch')->render([
             'project' => $project,
@@ -141,7 +141,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function catalogName($project, $location, $catalog)
+    public static function catalogName(string $project, string $location, string $catalog): string
     {
         return self::getPathTemplate('catalog')->render([
             'project' => $project,
@@ -161,17 +161,12 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
             'location' => $location,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/catalog_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -197,7 +192,7 @@ abstract class CatalogServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -264,6 +259,7 @@ abstract class CatalogServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -118,7 +118,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted billing_account resource.
      */
-    public static function billingAccountName($billingAccount)
+    public static function billingAccountName(string $billingAccount): string
     {
         return self::getPathTemplate('billingAccount')->render([
             'billing_account' => $billingAccount,
@@ -134,7 +134,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted billing_account_log resource.
      */
-    public static function billingAccountLogName($billingAccount, $log)
+    public static function billingAccountLogName(string $billingAccount, string $log): string
     {
         return self::getPathTemplate('billingAccountLog')->render([
             'billing_account' => $billingAccount,
@@ -150,7 +150,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted folder resource.
      */
-    public static function folderName($folder)
+    public static function folderName(string $folder): string
     {
         return self::getPathTemplate('folder')->render([
             'folder' => $folder,
@@ -166,7 +166,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted folder_log resource.
      */
-    public static function folderLogName($folder, $log)
+    public static function folderLogName(string $folder, string $log): string
     {
         return self::getPathTemplate('folderLog')->render([
             'folder' => $folder,
@@ -183,7 +183,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted log resource.
      */
-    public static function logName($project, $log)
+    public static function logName(string $project, string $log): string
     {
         return self::getPathTemplate('log')->render([
             'project' => $project,
@@ -199,7 +199,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted organization resource.
      */
-    public static function organizationName($organization)
+    public static function organizationName(string $organization): string
     {
         return self::getPathTemplate('organization')->render([
             'organization' => $organization,
@@ -215,7 +215,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted organization_log resource.
      */
-    public static function organizationLogName($organization, $log)
+    public static function organizationLogName(string $organization, string $log): string
     {
         return self::getPathTemplate('organizationLog')->render([
             'organization' => $organization,
@@ -231,7 +231,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted project resource.
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -247,17 +247,12 @@ abstract class LoggingServiceV2BaseClient
      *
      * @return string The formatted project_log resource.
      */
-    public static function projectLogName($project, $log)
+    public static function projectLogName(string $project, string $log): string
     {
         return self::getPathTemplate('projectLog')->render([
             'project' => $project,
             'log' => $log,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/logging_service_v2_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -287,7 +282,7 @@ abstract class LoggingServiceV2BaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -352,6 +347,7 @@ abstract class LoggingServiceV2BaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

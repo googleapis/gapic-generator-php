@@ -158,7 +158,7 @@ abstract class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public static function catalogName($project, $location, $catalog)
+    public static function catalogName(string $project, string $location, string $catalog): string
     {
         return self::getPathTemplate('catalog')->render([
             'project' => $project,
@@ -181,7 +181,7 @@ abstract class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public static function productName($project, $location, $catalog, $branch, $product)
+    public static function productName(string $project, string $location, string $catalog, string $branch, string $product): string
     {
         return self::getPathTemplate('product')->render([
             'project' => $project,
@@ -190,11 +190,6 @@ abstract class UserEventServiceBaseClient
             'branch' => $branch,
             'product' => $product,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/user_event_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -219,7 +214,7 @@ abstract class UserEventServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -287,6 +282,7 @@ abstract class UserEventServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -167,7 +167,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function companyName($project, $tenant, $company)
+    public static function companyName(string $project, string $tenant, string $company): string
     {
         return self::getPathTemplate('company')->render([
             'project' => $project,
@@ -188,7 +188,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function jobName($project, $tenant, $job)
+    public static function jobName(string $project, string $tenant, string $job): string
     {
         return self::getPathTemplate('job')->render([
             'project' => $project,
@@ -207,7 +207,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -225,7 +225,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function projectCompanyName($project, $company)
+    public static function projectCompanyName(string $project, string $company): string
     {
         return self::getPathTemplate('projectCompany')->render([
             'project' => $project,
@@ -244,7 +244,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function projectJobName($project, $job)
+    public static function projectJobName(string $project, string $job): string
     {
         return self::getPathTemplate('projectJob')->render([
             'project' => $project,
@@ -264,7 +264,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function projectTenantCompanyName($project, $tenant, $company)
+    public static function projectTenantCompanyName(string $project, string $tenant, string $company): string
     {
         return self::getPathTemplate('projectTenantCompany')->render([
             'project' => $project,
@@ -285,7 +285,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function projectTenantJobName($project, $tenant, $job)
+    public static function projectTenantJobName(string $project, string $tenant, string $job): string
     {
         return self::getPathTemplate('projectTenantJob')->render([
             'project' => $project,
@@ -305,17 +305,12 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function tenantName($project, $tenant)
+    public static function tenantName(string $project, string $tenant): string
     {
         return self::getPathTemplate('tenant')->render([
             'project' => $project,
             'tenant' => $tenant,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/job_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -346,7 +341,7 @@ abstract class JobServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -414,6 +409,7 @@ abstract class JobServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -1,3 +1,4 @@
+
     /**
      * @param \Google\Cloud\Retail\V2alpha\Product $product    Required. The product to update/create.
      *
@@ -18,6 +19,8 @@
      *                                                         is returned.
      *
      * @return \Google\Cloud\Retail\V2alpha\UpdateProductRequest
+     *
+     * @experimental
      */
     public static function build(\Google\Cloud\Retail\V2alpha\Product $product, \Google\Protobuf\FieldMask $updateMask): self
     {

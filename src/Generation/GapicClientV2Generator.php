@@ -224,7 +224,10 @@ class GapicClientV2Generator
                     ->then($triggerError),
                 AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
                 AST::return(
-                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))));
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text("Handles execution of the async variants for each documented method."),
+            ));
     }
 
     private function operationsClient(): ?PhpClassMember
@@ -314,11 +317,11 @@ class GapicClientV2Generator
                     'final response.'
                 ),
                 PhpDoc::param(
-                    AST::param($this->ctx->type(Type::string()), $operationName),
+                    AST::param(ResolvedType::string(), $operationName),
                     PhpDoc::text('The name of the long running operation')
                 ),
                 PhpDoc::param(
-                    AST::param($this->ctx->type(Type::string()), $methodName),
+                    AST::param(ResolvedType::string(), $methodName),
                     PhpDoc::text('The name of the method used to start the operation')
                 ),
                 PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
@@ -334,14 +337,16 @@ class GapicClientV2Generator
         if (!$this->serviceDetails->hasResources) {
             return Vector::new();
         }
-        $descriptorConfigFilename = $this->serviceDetails->descriptorConfigFilename;
-        $formattedName = AST::param(null, AST::var('formattedName'));
-        $template = AST::param(null, AST::var('template'), AST::NULL);
+        $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
+        $template = AST::param(ResolvedType::string(), AST::var('template'), AST::NULL);
 
         return $this->serviceDetails->resourceParts
             ->map(fn ($x) => $x->getFormatMethod()
                 ->withAccess(Access::PUBLIC, Access::STATIC)
-                ->withParams($x->getParams()->map(fn ($x) => $x[1]))
+                // In order to avoid adding type hints to the v1 clients which has shared code for
+                // Resource helper generation, we lazily add the param types here.
+                ->withParams($x->getParams()->map(fn ($x) => AST::param(ResolvedType::string(), $x[1]->var)))
+                ->withReturnType(ResolvedType::string())
                 ->withBody(AST::block(
                     AST::return(AST::call(AST::SELF, AST::method('getPathTemplate'))($x->nameCamelCase)->render(
                         AST::array($x->getParams()->toArray(fn ($x) => $x[0], fn ($x) => $x[1]))
@@ -353,20 +358,14 @@ class GapicClientV2Generator
                         $x->getNameSnakeCase(),
                         'resource.'
                     ),
-                    $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                    PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
+                    $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), ResolvedType::string())),
+                    PhpDoc::return(ResolvedType::string(), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 )))
-            ->append(AST::method('registerPathTemplates')
-                ->withAccess(Access::PRIVATE, Access::STATIC)
-                ->withBody(AST::block(
-                    AST::call(AST::SELF, AST::method('loadPathTemplates'))(
-                        AST::concat(AST::__DIR__, "/../../resources/$descriptorConfigFilename"),
-                        AST::access(AST::SELF, AST::constant('SERVICE_NAME')))
-                ))
-            )->append(AST::method('parseName')
+            ->append(AST::method('parseName')
                 ->withAccess(Access::PUBLIC, Access::STATIC)
                 ->withParams($formattedName, $template)
+                ->withReturnType(ResolvedType::array())
                 ->withBody(AST::block(
                     AST::return(AST::call(AST::SELF, AST::method('parseFormattedName'))($formattedName->var, $template->var))
                 ))
@@ -382,9 +381,9 @@ class GapicClientV2Generator
                         '$template argument does not match one of the templates listed, then parseName will check',
                         'each of the supported templates, and return the first match.'
                     ),
-                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
-                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
-                    PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
+                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string')),
+                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match')),
+                    PhpDoc::return(ResolvedType::array(), PhpDoc::text('An associative array from name component IDs to component values.')),
                     PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 ))
@@ -473,7 +472,7 @@ class GapicClientV2Generator
         $buildClientOptions = AST::method('buildClientOptions');
         $setClientOptions = AST::method('setClientOptions');
         $options = AST::var('options');
-        $optionsParam = AST::param($this->ctx->type(Type::array()), $options, AST::array([]));
+        $optionsParam = AST::param(ResolvedType::array(), $options, AST::array([]));
         $clientOptions = AST::var('clientOptions');
 
         // Assumes there are only two transport types.
@@ -644,7 +643,7 @@ class GapicClientV2Generator
             $request
         );
         $callOptions = AST::param(
-            $this->ctx->type(Type::array()),
+            ResolvedType::array(),
             AST::var(self::CALL_OPTIONS_VAR),
             AST::array([])
         );
@@ -695,7 +694,7 @@ class GapicClientV2Generator
                                 PhpDoc::text('Timeout to use for this call.')
                             )
                             : PhpDoc::type(
-                                Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
+                                Vector::new([$this->ctx->type($retrySettingsType), ResolvedType::array()]),
                                 'retrySettings',
                                 PhpDoc::text(
                                     'Retry settings to use for this call. Can be a ',

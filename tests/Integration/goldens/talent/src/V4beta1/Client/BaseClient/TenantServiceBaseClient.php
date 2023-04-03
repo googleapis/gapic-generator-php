@@ -118,7 +118,7 @@ abstract class TenantServiceBaseClient
      *
      * @experimental
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -136,17 +136,12 @@ abstract class TenantServiceBaseClient
      *
      * @experimental
      */
-    public static function tenantName($project, $tenant)
+    public static function tenantName(string $project, string $tenant): string
     {
         return self::getPathTemplate('tenant')->render([
             'project' => $project,
             'tenant' => $tenant,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/tenant_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -171,7 +166,7 @@ abstract class TenantServiceBaseClient
      *
      * @experimental
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -238,6 +233,7 @@ abstract class TenantServiceBaseClient
         $this->setClientOptions($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -1,3 +1,4 @@
+
     /**
      * @param string $name Required. The resource name of the company to be deleted.
      *
@@ -10,6 +11,8 @@
      *                     {@see CompanyServiceClient::companyName()} for help formatting this field.
      *
      * @return \Google\Cloud\Talent\V4beta1\DeleteCompanyRequest
+     *
+     * @experimental
      */
     public static function build(string $name): self
     {

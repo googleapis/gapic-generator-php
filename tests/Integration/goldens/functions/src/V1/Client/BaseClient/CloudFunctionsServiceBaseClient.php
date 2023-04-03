@@ -166,7 +166,7 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * @return string The formatted cloud_function resource.
      */
-    public static function cloudFunctionName($project, $location, $function)
+    public static function cloudFunctionName(string $project, string $location, string $function): string
     {
         return self::getPathTemplate('cloudFunction')->render([
             'project' => $project,
@@ -184,17 +184,12 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * @return string The formatted location resource.
      */
-    public static function locationName($project, $location)
+    public static function locationName(string $project, string $location): string
     {
         return self::getPathTemplate('location')->render([
             'project' => $project,
             'location' => $location,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/cloud_functions_service_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -217,7 +212,7 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -283,6 +278,7 @@ abstract class CloudFunctionsServiceBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

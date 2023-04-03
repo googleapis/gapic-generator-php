@@ -1,3 +1,4 @@
+
     /**
      * @param string $projectId Deprecated. The Google Developers Console [project ID or project
      *                          number](https://developers.google.com/console/help/new/#projectnumber).
@@ -10,6 +11,8 @@
      *                          This field has been deprecated and replaced by the parent field.
      *
      * @return \Google\Cloud\Container\V1\ListNodePoolsRequest
+     *
+     * @experimental
      */
     public static function build(string $projectId, string $zone, string $clusterId): self
     {
@@ -24,6 +27,8 @@
      *                       listed. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *
      * @return \Google\Cloud\Container\V1\ListNodePoolsRequest
+     *
+     * @experimental
      */
     public static function buildFromParent(string $parent): self
     {

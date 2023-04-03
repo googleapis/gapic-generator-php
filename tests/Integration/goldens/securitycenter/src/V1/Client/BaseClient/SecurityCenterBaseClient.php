@@ -191,7 +191,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted finding resource.
      */
-    public static function findingName($organization, $source, $finding)
+    public static function findingName(string $organization, string $source, string $finding): string
     {
         return self::getPathTemplate('finding')->render([
             'organization' => $organization,
@@ -208,7 +208,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted folder resource.
      */
-    public static function folderName($folder)
+    public static function folderName(string $folder): string
     {
         return self::getPathTemplate('folder')->render([
             'folder' => $folder,
@@ -224,7 +224,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted folder_asset_securityMarks resource.
      */
-    public static function folderAssetSecurityMarksName($folder, $asset)
+    public static function folderAssetSecurityMarksName(string $folder, string $asset): string
     {
         return self::getPathTemplate('folderAssetSecurityMarks')->render([
             'folder' => $folder,
@@ -241,7 +241,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted folder_source resource.
      */
-    public static function folderSourceName($folder, $source)
+    public static function folderSourceName(string $folder, string $source): string
     {
         return self::getPathTemplate('folderSource')->render([
             'folder' => $folder,
@@ -259,7 +259,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted folder_source_finding resource.
      */
-    public static function folderSourceFindingName($folder, $source, $finding)
+    public static function folderSourceFindingName(string $folder, string $source, string $finding): string
     {
         return self::getPathTemplate('folderSourceFinding')->render([
             'folder' => $folder,
@@ -278,7 +278,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted folder_source_finding_securityMarks resource.
      */
-    public static function folderSourceFindingSecurityMarksName($folder, $source, $finding)
+    public static function folderSourceFindingSecurityMarksName(string $folder, string $source, string $finding): string
     {
         return self::getPathTemplate('folderSourceFindingSecurityMarks')->render([
             'folder' => $folder,
@@ -296,7 +296,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted notification_config resource.
      */
-    public static function notificationConfigName($organization, $notificationConfig)
+    public static function notificationConfigName(string $organization, string $notificationConfig): string
     {
         return self::getPathTemplate('notificationConfig')->render([
             'organization' => $organization,
@@ -312,7 +312,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization resource.
      */
-    public static function organizationName($organization)
+    public static function organizationName(string $organization): string
     {
         return self::getPathTemplate('organization')->render([
             'organization' => $organization,
@@ -328,7 +328,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization_asset_securityMarks resource.
      */
-    public static function organizationAssetSecurityMarksName($organization, $asset)
+    public static function organizationAssetSecurityMarksName(string $organization, string $asset): string
     {
         return self::getPathTemplate('organizationAssetSecurityMarks')->render([
             'organization' => $organization,
@@ -344,7 +344,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization_settings resource.
      */
-    public static function organizationSettingsName($organization)
+    public static function organizationSettingsName(string $organization): string
     {
         return self::getPathTemplate('organizationSettings')->render([
             'organization' => $organization,
@@ -360,7 +360,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization_source resource.
      */
-    public static function organizationSourceName($organization, $source)
+    public static function organizationSourceName(string $organization, string $source): string
     {
         return self::getPathTemplate('organizationSource')->render([
             'organization' => $organization,
@@ -378,7 +378,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization_source_finding resource.
      */
-    public static function organizationSourceFindingName($organization, $source, $finding)
+    public static function organizationSourceFindingName(string $organization, string $source, string $finding): string
     {
         return self::getPathTemplate('organizationSourceFinding')->render([
             'organization' => $organization,
@@ -397,7 +397,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted organization_source_finding_securityMarks resource.
      */
-    public static function organizationSourceFindingSecurityMarksName($organization, $source, $finding)
+    public static function organizationSourceFindingSecurityMarksName(string $organization, string $source, string $finding): string
     {
         return self::getPathTemplate('organizationSourceFindingSecurityMarks')->render([
             'organization' => $organization,
@@ -414,7 +414,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted project resource.
      */
-    public static function projectName($project)
+    public static function projectName(string $project): string
     {
         return self::getPathTemplate('project')->render([
             'project' => $project,
@@ -430,7 +430,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted project_asset_securityMarks resource.
      */
-    public static function projectAssetSecurityMarksName($project, $asset)
+    public static function projectAssetSecurityMarksName(string $project, string $asset): string
     {
         return self::getPathTemplate('projectAssetSecurityMarks')->render([
             'project' => $project,
@@ -447,7 +447,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted project_source resource.
      */
-    public static function projectSourceName($project, $source)
+    public static function projectSourceName(string $project, string $source): string
     {
         return self::getPathTemplate('projectSource')->render([
             'project' => $project,
@@ -465,7 +465,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted project_source_finding resource.
      */
-    public static function projectSourceFindingName($project, $source, $finding)
+    public static function projectSourceFindingName(string $project, string $source, string $finding): string
     {
         return self::getPathTemplate('projectSourceFinding')->render([
             'project' => $project,
@@ -484,7 +484,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted project_source_finding_securityMarks resource.
      */
-    public static function projectSourceFindingSecurityMarksName($project, $source, $finding)
+    public static function projectSourceFindingSecurityMarksName(string $project, string $source, string $finding): string
     {
         return self::getPathTemplate('projectSourceFindingSecurityMarks')->render([
             'project' => $project,
@@ -502,7 +502,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted security_marks resource.
      */
-    public static function securityMarksName($organization, $asset)
+    public static function securityMarksName(string $organization, string $asset): string
     {
         return self::getPathTemplate('securityMarks')->render([
             'organization' => $organization,
@@ -519,7 +519,7 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted source resource.
      */
-    public static function sourceName($organization, $source)
+    public static function sourceName(string $organization, string $source): string
     {
         return self::getPathTemplate('source')->render([
             'organization' => $organization,
@@ -536,17 +536,12 @@ abstract class SecurityCenterBaseClient
      *
      * @return string The formatted topic resource.
      */
-    public static function topicName($project, $topic)
+    public static function topicName(string $project, string $topic): string
     {
         return self::getPathTemplate('topic')->render([
             'project' => $project,
             'topic' => $topic,
         ]);
-    }
-
-    private static function registerPathTemplates()
-    {
-        self::loadPathTemplates(__DIR__ . '/../../resources/security_center_descriptor_config.php', self::SERVICE_NAME);
     }
 
     /**
@@ -588,7 +583,7 @@ abstract class SecurityCenterBaseClient
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName($formattedName, $template = null)
+    public static function parseName(string $formattedName, string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -654,6 +649,7 @@ abstract class SecurityCenterBaseClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
+    /** Handles execution of the async variants for each documented method. */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {
