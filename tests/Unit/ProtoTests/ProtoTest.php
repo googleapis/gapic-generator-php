@@ -71,7 +71,8 @@ final class ProtoTest extends TestCase
 
     public function testBasic0(): void
     {
-        $this->runProtoTest('Basic/basic.proto', null, null, true, MigrationMode::NEW_SURFACE_ONLY);
+        // test generating the client with only the new surface (no v1 client, v2 samples)
+        $this->runProtoTest('Basic/basic.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
     }
 
     public function testBasicLro(): void
