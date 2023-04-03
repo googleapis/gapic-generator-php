@@ -24,10 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_AsymmetricSign_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Kms\V1\AsymmetricSignRequest;
 use Google\Cloud\Kms\V1\AsymmetricSignResponse;
-use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\Digest;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
 /**
  * Signs data using a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
@@ -48,14 +47,11 @@ function asymmetric_sign_sample(string $formattedName): void
 
     // Prepare the request message.
     $digest = new Digest();
-    $request = (new AsymmetricSignRequest())
-        ->setName($formattedName)
-        ->setDigest($digest);
 
     // Call the API and handle any network failures.
     try {
         /** @var AsymmetricSignResponse $response */
-        $response = $keyManagementServiceClient->asymmetricSign($request);
+        $response = $keyManagementServiceClient->asymmetricSign($formattedName, $digest);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

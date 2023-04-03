@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_UpdateBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
-use Testing\BasicDiregapic\UpdateBookRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Updates a book.
@@ -46,14 +45,11 @@ function update_book_sample(string $formattedName, string $formattedBookName): v
     // Prepare the request message.
     $book = (new BookResponse())
         ->setName($formattedBookName);
-    $request = (new UpdateBookRequest())
-        ->setName($formattedName)
-        ->setBook($book);
 
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryClient->updateBook($request);
+        $response = $libraryClient->updateBook($formattedName, $book);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

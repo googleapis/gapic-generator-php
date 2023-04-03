@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_CompanyService_CreateCompany_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\CompanyServiceClient;
 use Google\Cloud\Talent\V4beta1\Company;
-use Google\Cloud\Talent\V4beta1\CreateCompanyRequest;
+use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
 
 /**
  * Creates a new company entity.
@@ -55,14 +54,11 @@ function create_company_sample(
     $company = (new Company())
         ->setDisplayName($companyDisplayName)
         ->setExternalId($companyExternalId);
-    $request = (new CreateCompanyRequest())
-        ->setParent($formattedParent)
-        ->setCompany($company);
 
     // Call the API and handle any network failures.
     try {
         /** @var Company $response */
-        $response = $companyServiceClient->createCompany($request);
+        $response = $companyServiceClient->createCompany($formattedParent, $company);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Dataproc\V1\AutoscalingPolicy;
-use Google\Cloud\Dataproc\V1\Client\AutoscalingPolicyServiceClient;
-use Google\Cloud\Dataproc\V1\GetAutoscalingPolicyRequest;
+use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 
 /**
  * Retrieves autoscaling policy.
@@ -48,14 +47,10 @@ function get_autoscaling_policy_sample(string $formattedName): void
     // Create a client.
     $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
 
-    // Prepare the request message.
-    $request = (new GetAutoscalingPolicyRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
         /** @var AutoscalingPolicy $response */
-        $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy($request);
+        $response = $autoscalingPolicyServiceClient->getAutoscalingPolicy($formattedName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

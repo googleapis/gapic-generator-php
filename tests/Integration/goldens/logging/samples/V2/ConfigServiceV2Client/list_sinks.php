@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_ConfigServiceV2_ListSinks_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\ListSinksRequest;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogSink;
 
 /**
@@ -45,14 +44,10 @@ function list_sinks_sample(string $formattedParent): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new ListSinksRequest())
-        ->setParent($formattedParent);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $configServiceV2Client->listSinks($request);
+        $response = $configServiceV2Client->listSinks($formattedParent);
 
         /** @var LogSink $element */
         foreach ($response as $element) {

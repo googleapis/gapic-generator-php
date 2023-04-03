@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_CatalogService_SetDefaultBranch_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
-use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
+use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 
 /**
  * Set a specified branch id as default branch. API methods such as
@@ -77,12 +76,9 @@ function set_default_branch_sample(): void
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
-    // Prepare the request message.
-    $request = new SetDefaultBranchRequest();
-
     // Call the API and handle any network failures.
     try {
-        $catalogServiceClient->setDefaultBranch($request);
+        $catalogServiceClient->setDefaultBranch();
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

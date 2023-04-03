@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START logging_v2_generated_LoggingServiceV2_TailLogEntries_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 use Google\Cloud\Logging\V2\TailLogEntriesRequest;
 use Google\Cloud\Logging\V2\TailLogEntriesResponse;
 

@@ -25,12 +25,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_ImportUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
-use Google\Cloud\Retail\V2alpha\ImportUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\UserEvent;
 use Google\Cloud\Retail\V2alpha\UserEventInlineSource;
 use Google\Cloud\Retail\V2alpha\UserEventInputConfig;
+use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -88,14 +87,11 @@ function import_user_events_sample(
         ->setUserEvents($inputConfigUserEventInlineSourceUserEvents);
     $inputConfig = (new UserEventInputConfig())
         ->setUserEventInlineSource($inputConfigUserEventInlineSource);
-    $request = (new ImportUserEventsRequest())
-        ->setParent($formattedParent)
-        ->setInputConfig($inputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->importUserEvents($request);
+        $response = $userEventServiceClient->importUserEvents($formattedParent, $inputConfig);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

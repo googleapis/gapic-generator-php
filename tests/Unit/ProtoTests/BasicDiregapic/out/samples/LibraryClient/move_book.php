@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_MoveBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
-use Testing\BasicDiregapic\MoveBookRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Moves a book to another shelf, and returns the new book.
@@ -41,15 +40,10 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = (new MoveBookRequest())
-        ->setName($formattedName)
-        ->setOtherShelfName($formattedOtherShelfName);
-
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryClient->moveBook($request);
+        $response = $libraryClient->moveBook($formattedName, $formattedOtherShelfName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_MergeShelves_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\Client\LibraryClient;
-use Testing\BasicDiregapic\MergeShelvesRequest;
+use Testing\BasicDiregapic\LibraryClient;
 use Testing\BasicDiregapic\ShelfResponse;
 
 /**
@@ -43,15 +42,10 @@ function merge_shelves_sample(string $formattedName, string $formattedOtherShelf
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = (new MergeShelvesRequest())
-        ->setName($formattedName)
-        ->setOtherShelfName($formattedOtherShelfName);
-
     // Call the API and handle any network failures.
     try {
         /** @var ShelfResponse $response */
-        $response = $libraryClient->mergeShelves($request);
+        $response = $libraryClient->mergeShelves($formattedName, $formattedOtherShelfName);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ServerStream;
-use Testing\BasicServerStreaming\Client\BasicServerStreamingClient;
-use Testing\BasicServerStreaming\EmptyRequest;
+use Testing\BasicServerStreaming\BasicServerStreamingClient;
 use Testing\BasicServerStreaming\Response;
 
 /**
@@ -41,13 +40,10 @@ function method_empty_sample(): void
     // Create a client.
     $basicServerStreamingClient = new BasicServerStreamingClient();
 
-    // Prepare the request message.
-    $request = new EmptyRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var ServerStream $stream */
-        $stream = $basicServerStreamingClient->methodEmpty($request);
+        $stream = $basicServerStreamingClient->methodEmpty();
 
         /** @var Response $element */
         foreach ($stream->readAll() as $element) {

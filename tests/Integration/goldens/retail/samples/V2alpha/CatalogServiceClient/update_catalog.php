@@ -25,9 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_CatalogService_UpdateCatalog_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Retail\V2alpha\Catalog;
-use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\ProductLevelConfig;
-use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
 
 /**
  * Updates the [Catalog][google.cloud.retail.v2alpha.Catalog]s.
@@ -49,13 +48,11 @@ function update_catalog_sample(string $catalogName, string $catalogDisplayName):
         ->setName($catalogName)
         ->setDisplayName($catalogDisplayName)
         ->setProductLevelConfig($catalogProductLevelConfig);
-    $request = (new UpdateCatalogRequest())
-        ->setCatalog($catalog);
 
     // Call the API and handle any network failures.
     try {
         /** @var Catalog $response */
-        $response = $catalogServiceClient->updateCatalog($request);
+        $response = $catalogServiceClient->updateCatalog($catalog);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

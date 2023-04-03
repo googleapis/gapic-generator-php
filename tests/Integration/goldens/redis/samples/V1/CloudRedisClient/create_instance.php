@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_CreateInstance_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Redis\V1\Client\CloudRedisClient;
-use Google\Cloud\Redis\V1\CreateInstanceRequest;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\Instance\Tier;
 use Google\Rpc\Status;
@@ -84,15 +83,11 @@ function create_instance_sample(
         ->setName($instanceName)
         ->setTier($instanceTier)
         ->setMemorySizeGb($instanceMemorySizeGb);
-    $request = (new CreateInstanceRequest())
-        ->setParent($formattedParent)
-        ->setInstanceId($instanceId)
-        ->setInstance($instance);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->createInstance($request);
+        $response = $cloudRedisClient->createInstance($formattedParent, $instanceId, $instance);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

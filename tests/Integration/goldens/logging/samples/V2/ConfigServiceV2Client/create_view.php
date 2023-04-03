@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_ConfigServiceV2_CreateView_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\CreateViewRequest;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogView;
 
 /**
@@ -47,15 +46,11 @@ function create_view_sample(string $parent, string $viewId): void
 
     // Prepare the request message.
     $view = new LogView();
-    $request = (new CreateViewRequest())
-        ->setParent($parent)
-        ->setViewId($viewId)
-        ->setView($view);
 
     // Call the API and handle any network failures.
     try {
         /** @var LogView $response */
-        $response = $configServiceV2Client->createView($request);
+        $response = $configServiceV2Client->createView($parent, $viewId, $view);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

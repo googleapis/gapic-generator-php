@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START container_v1_generated_ClusterManager_GetServerConfig_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Container\V1\Client\ClusterManagerClient;
-use Google\Cloud\Container\V1\GetServerConfigRequest;
+use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\ServerConfig;
 
 /**
@@ -42,13 +41,10 @@ function get_server_config_sample(): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = new GetServerConfigRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var ServerConfig $response */
-        $response = $clusterManagerClient->getServerConfig($request);
+        $response = $clusterManagerClient->getServerConfig();
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

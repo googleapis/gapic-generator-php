@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_DeleteInstance_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Redis\V1\Client\CloudRedisClient;
-use Google\Cloud\Redis\V1\DeleteInstanceRequest;
+use Google\Cloud\Redis\V1\CloudRedisClient;
 use Google\Rpc\Status;
 
 /**
@@ -43,14 +42,10 @@ function delete_instance_sample(string $formattedName): void
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
-    // Prepare the request message.
-    $request = (new DeleteInstanceRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->deleteInstance($request);
+        $response = $cloudRedisClient->deleteInstance($formattedName);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START container_v1_generated_ClusterManager_SetLabels_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Container\V1\Client\ClusterManagerClient;
+use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\SetLabelsRequest;
 
 /**
  * Sets labels on a cluster.
@@ -45,14 +44,11 @@ function set_labels_sample(string $labelFingerprint): void
 
     // Prepare the request message.
     $resourceLabels = [];
-    $request = (new SetLabelsRequest())
-        ->setResourceLabels($resourceLabels)
-        ->setLabelFingerprint($labelFingerprint);
 
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->setLabels($request);
+        $response = $clusterManagerClient->setLabels($resourceLabels, $labelFingerprint);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

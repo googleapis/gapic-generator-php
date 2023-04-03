@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Tests\Tools\GeneratorUtils;
 
 class UnitGoldenUpdater
@@ -26,13 +27,15 @@ class UnitGoldenUpdater
         string $protoPath,
         ?string $package = null,
         ?string $transport = null,
-        bool $generateSnippets = true
+        bool $generateSnippets = true,
+        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
     ): void {
         $codeIterator = GeneratorUtils::generateFromProto(
             $protoPath,
             $package,
             $transport,
-            $generateSnippets
+            $generateSnippets,
+            $migrationMode
         );
         $outputPath = __DIR__ . '/' . dirname($protoPath) . '/out';
         // Delete everything from the directory.

@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_RemoveFulfillmentPlaces_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
-use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesRequest;
+use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Cloud\Retail\V2alpha\RemoveFulfillmentPlacesResponse;
 use Google\Rpc\Status;
 
@@ -95,15 +94,11 @@ function remove_fulfillment_places_sample(
 
     // Prepare the request message.
     $placeIds = [$placeIdsElement,];
-    $request = (new RemoveFulfillmentPlacesRequest())
-        ->setProduct($formattedProduct)
-        ->setType($type)
-        ->setPlaceIds($placeIds);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->removeFulfillmentPlaces($request);
+        $response = $productServiceClient->removeFulfillmentPlaces($formattedProduct, $type, $placeIds);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

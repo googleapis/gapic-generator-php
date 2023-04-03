@@ -25,9 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudasset_v1_generated_AssetService_SearchAllIamPolicies_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Asset\V1\Client\AssetServiceClient;
+use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\IamPolicySearchResult;
-use Google\Cloud\Asset\V1\SearchAllIamPoliciesRequest;
 
 /**
  * Searches all IAM policies within the specified scope, such as a project,
@@ -53,14 +52,10 @@ function search_all_iam_policies_sample(string $scope): void
     // Create a client.
     $assetServiceClient = new AssetServiceClient();
 
-    // Prepare the request message.
-    $request = (new SearchAllIamPoliciesRequest())
-        ->setScope($scope);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $assetServiceClient->searchAllIamPolicies($request);
+        $response = $assetServiceClient->searchAllIamPolicies($scope);
 
         /** @var IamPolicySearchResult $element */
         foreach ($response as $element) {

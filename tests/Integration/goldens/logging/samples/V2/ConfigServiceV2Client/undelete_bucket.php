@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_ConfigServiceV2_UndeleteBucket_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\UndeleteBucketRequest;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
  * Undeletes a bucket. A bucket that has been deleted may be undeleted within
@@ -47,13 +46,9 @@ function undelete_bucket_sample(string $formattedName): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new UndeleteBucketRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $configServiceV2Client->undeleteBucket($request);
+        $configServiceV2Client->undeleteBucket($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

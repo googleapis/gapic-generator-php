@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START speech_v1_generated_Speech_StreamingRecognize_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Google\Cloud\Speech\V1\Client\SpeechClient;
+use Google\Cloud\Speech\V1\SpeechClient;
 use Google\Cloud\Speech\V1\StreamingRecognizeRequest;
 use Google\Cloud\Speech\V1\StreamingRecognizeResponse;
 

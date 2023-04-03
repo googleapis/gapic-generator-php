@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START container_v1_generated_ClusterManager_UpdateMaster_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Container\V1\Client\ClusterManagerClient;
+use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
-use Google\Cloud\Container\V1\UpdateMasterRequest;
 
 /**
  * Updates the master for a specific cluster.
@@ -47,14 +46,10 @@ function update_master_sample(string $masterVersion): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
-    // Prepare the request message.
-    $request = (new UpdateMasterRequest())
-        ->setMasterVersion($masterVersion);
-
     // Call the API and handle any network failures.
     try {
         /** @var Operation $response */
-        $response = $clusterManagerClient->updateMaster($request);
+        $response = $clusterManagerClient->updateMaster($masterVersion);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

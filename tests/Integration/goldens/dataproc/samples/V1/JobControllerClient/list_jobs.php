@@ -25,9 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_JobController_ListJobs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Dataproc\V1\Client\JobControllerClient;
 use Google\Cloud\Dataproc\V1\Job;
-use Google\Cloud\Dataproc\V1\ListJobsRequest;
+use Google\Cloud\Dataproc\V1\JobControllerClient;
 
 /**
  * Lists regions/{region}/jobs in a project.
@@ -41,15 +40,10 @@ function list_jobs_sample(string $projectId, string $region): void
     // Create a client.
     $jobControllerClient = new JobControllerClient();
 
-    // Prepare the request message.
-    $request = (new ListJobsRequest())
-        ->setProjectId($projectId)
-        ->setRegion($region);
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $jobControllerClient->listJobs($request);
+        $response = $jobControllerClient->listJobs($projectId, $region);
 
         /** @var Job $element */
         foreach ($response as $element) {

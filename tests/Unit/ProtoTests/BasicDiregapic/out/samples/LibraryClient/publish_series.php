@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_PublishSeries_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
-use Testing\BasicDiregapic\PublishSeriesRequest;
+use Testing\BasicDiregapic\LibraryClient;
 use Testing\BasicDiregapic\PublishSeriesRequest\Genre;
 use Testing\BasicDiregapic\PublishSeriesResponse;
 use Testing\BasicDiregapic\SeriesUuidResponse;
@@ -60,16 +59,11 @@ function publish_series_sample(
     $books = [$bookResponse,];
     $seriesUuid = new SeriesUuidResponse();
     $genres = [$genresElement,];
-    $request = (new PublishSeriesRequest())
-        ->setShelf($shelf)
-        ->setBooks($books)
-        ->setSeriesUuid($seriesUuid)
-        ->setGenres($genres);
 
     // Call the API and handle any network failures.
     try {
         /** @var PublishSeriesResponse $response */
-        $response = $libraryClient->publishSeries($request);
+        $response = $libraryClient->publishSeries($shelf, $books, $seriesUuid, $genres);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

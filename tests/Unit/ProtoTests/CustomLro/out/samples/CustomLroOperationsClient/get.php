@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START customlro_generated_CustomLroOperations_Get_sync]
 use Google\ApiCore\ApiException;
-use Testing\CustomLro\Client\CustomLroOperationsClient;
+use Testing\CustomLro\CustomLroOperationsClient;
 use Testing\CustomLro\CustomOperationResponse;
-use Testing\CustomLro\GetOperationRequest;
 
 /**
  * @param string $operation Name of the Operations resource to return.
@@ -39,17 +38,10 @@ function get_sample(string $operation, string $project, string $region, string $
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
 
-    // Prepare the request message.
-    $request = (new GetOperationRequest())
-        ->setOperation($operation)
-        ->setProject($project)
-        ->setRegion($region)
-        ->setFoo($foo);
-
     // Call the API and handle any network failures.
     try {
         /** @var CustomOperationResponse $response */
-        $response = $customLroOperationsClient->get($request);
+        $response = $customLroOperationsClient->get($operation, $project, $region, $foo);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

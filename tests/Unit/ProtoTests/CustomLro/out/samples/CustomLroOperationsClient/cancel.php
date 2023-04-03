@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START customlro_generated_CustomLroOperations_Cancel_sync]
 use Google\ApiCore\ApiException;
-use Testing\CustomLro\CancelOperationRequest;
-use Testing\CustomLro\Client\CustomLroOperationsClient;
+use Testing\CustomLro\CustomLroOperationsClient;
 
 /** @param string $operation Name of th Operations resource to cancel. */
 function cancel_sample(string $operation): void
@@ -33,13 +32,9 @@ function cancel_sample(string $operation): void
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
 
-    // Prepare the request message.
-    $request = (new CancelOperationRequest())
-        ->setOperation($operation);
-
     // Call the API and handle any network failures.
     try {
-        $customLroOperationsClient->cancel($request);
+        $customLroOperationsClient->cancel($operation);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

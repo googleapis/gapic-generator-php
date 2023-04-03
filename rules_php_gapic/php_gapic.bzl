@@ -54,6 +54,8 @@ def php_gapic_srcjar(
         transport = None,
         rest_numeric_enums = False,
         generate_snippets = True,
+        # Supported values validated and specified in src/Utils/MigrationMode.php.
+        migration_mode = "MIGRATION_MODE_UNSPECIFIED", 
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     plugin_file_args = {}
@@ -75,6 +77,7 @@ def php_gapic_srcjar(
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
+    plugin_args.append("migration-mode=%s" % migration_mode)
     
     # Generate REGAPIC param for requesting response enums be JSON-encoded as numbers, not strings.
     if rest_numeric_enums:

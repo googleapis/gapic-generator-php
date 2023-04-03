@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_AutoscalingPolicyService_DeleteAutoscalingPolicy_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\Client\AutoscalingPolicyServiceClient;
-use Google\Cloud\Dataproc\V1\DeleteAutoscalingPolicyRequest;
+use Google\Cloud\Dataproc\V1\AutoscalingPolicyServiceClient;
 
 /**
  * Deletes an autoscaling policy. It is an error to delete an autoscaling
@@ -48,13 +47,9 @@ function delete_autoscaling_policy_sample(string $formattedName): void
     // Create a client.
     $autoscalingPolicyServiceClient = new AutoscalingPolicyServiceClient();
 
-    // Prepare the request message.
-    $request = (new DeleteAutoscalingPolicyRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $autoscalingPolicyServiceClient->deleteAutoscalingPolicy($request);
+        $autoscalingPolicyServiceClient->deleteAutoscalingPolicy($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

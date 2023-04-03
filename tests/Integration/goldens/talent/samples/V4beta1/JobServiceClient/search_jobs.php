@@ -25,9 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START jobs_v4beta1_generated_JobService_SearchJobs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
+use Google\Cloud\Talent\V4beta1\JobServiceClient;
 use Google\Cloud\Talent\V4beta1\RequestMetadata;
-use Google\Cloud\Talent\V4beta1\SearchJobsRequest;
 use Google\Cloud\Talent\V4beta1\SearchJobsResponse\MatchingJob;
 
 /**
@@ -51,14 +50,11 @@ function search_jobs_sample(string $formattedParent): void
 
     // Prepare the request message.
     $requestMetadata = new RequestMetadata();
-    $request = (new SearchJobsRequest())
-        ->setParent($formattedParent)
-        ->setRequestMetadata($requestMetadata);
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $jobServiceClient->searchJobs($request);
+        $response = $jobServiceClient->searchJobs($formattedParent, $requestMetadata);
 
         /** @var MatchingJob $element */
         foreach ($response as $element) {

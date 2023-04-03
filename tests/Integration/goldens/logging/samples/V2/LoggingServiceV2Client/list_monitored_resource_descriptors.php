@@ -26,8 +26,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Google\Api\MonitoredResourceDescriptor;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
-use Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsRequest;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Lists the descriptors for monitored resource types used by Logging.
@@ -43,13 +42,10 @@ function list_monitored_resource_descriptors_sample(): void
     // Create a client.
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
-    // Prepare the request message.
-    $request = new ListMonitoredResourceDescriptorsRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $loggingServiceV2Client->listMonitoredResourceDescriptors($request);
+        $response = $loggingServiceV2Client->listMonitoredResourceDescriptors();
 
         /** @var MonitoredResourceDescriptor $element */
         foreach ($response as $element) {

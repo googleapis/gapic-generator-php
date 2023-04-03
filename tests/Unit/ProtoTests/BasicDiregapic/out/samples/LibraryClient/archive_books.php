@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_ArchiveBooks_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\ArchiveBooksRequest;
 use Testing\BasicDiregapic\ArchiveBooksResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * This sample has been automatically generated and should be regarded as a code
@@ -40,13 +39,10 @@ function archive_books_sample(): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = new ArchiveBooksRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var ArchiveBooksResponse $response */
-        $response = $libraryClient->archiveBooks($request);
+        $response = $libraryClient->archiveBooks();
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

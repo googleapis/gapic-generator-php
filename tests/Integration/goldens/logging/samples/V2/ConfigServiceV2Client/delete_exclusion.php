@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_ConfigServiceV2_DeleteExclusion_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\ConfigServiceV2Client;
-use Google\Cloud\Logging\V2\DeleteExclusionRequest;
+use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
  * Deletes an exclusion.
@@ -45,13 +44,9 @@ function delete_exclusion_sample(string $formattedName): void
     // Create a client.
     $configServiceV2Client = new ConfigServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new DeleteExclusionRequest())
-        ->setName($formattedName);
-
     // Call the API and handle any network failures.
     try {
-        $configServiceV2Client->deleteExclusion($request);
+        $configServiceV2Client->deleteExclusion($formattedName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

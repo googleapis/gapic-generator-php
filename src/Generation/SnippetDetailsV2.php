@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,12 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\Type;
 
-class SnippetDetails
+/**
+ * A copy of SnippetDetails with all of the previosly made v2 surface changes.
+ * This only extends SnippetDetails (v1) for type safety in some of the
+ * SnippetGenerator functions that take SnippetDetails as a param.
+ */
+class SnippetDetailsV2 extends SnippetDetails
 {
     /** @var Vector The main sample's parameters. */
     public Vector $sampleParams;
@@ -57,6 +62,9 @@ class SnippetDetails
     /** @var Variable An AST node representing the service client associated with this method. */
     public Variable $serviceClientVar;
 
+    /** @var Type The empty client type to use in snippet code. */
+    public Type $emptyClientType;
+
     public function __construct(MethodDetails $methodDetails, ServiceDetails $serviceDetails)
     {
         $this->methodDetails = $methodDetails;
@@ -69,23 +77,44 @@ class SnippetDetails
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
         $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
+        $this->emptyClientType = $serviceDetails->emptyClientV2Type;
 
         $this->initialize();
     }
 
     private function initialize(): void
     {
-        if ($this->methodDetails->isClientStreaming() || $this->methodDetails->isBidiStreaming()) {
-            $this->handleBidiOrClientStreaming();
-            return;
-        }
-
+        $requestVar = AST::var('request');
+        $value = AST::new(
+            $this->context->type($this->methodDetails->requestType)
+        )();
         foreach ($this->methodDetails->requiredFields as $field) {
             if ($field->isOneOf && !$field->isFirstFieldInOneof()) {
                 continue;
             }
-            $this->handleField($field);
+            $this->handleField($field, '');
+            $setter = $field->setter->getName();
+            $prefix = $field->useResourceTestValue
+                ? 'formatted_'
+                : '';
+            $value = $value->$setter(
+                AST::var(
+                    Helpers::toCamelCase(
+                        $prefix . $field->camelName
+                    )
+                )
+            );
         }
+        $this->sampleAssignments = $this->sampleAssignments->append(
+            AST::assign(
+                $requestVar,
+                $value
+            )
+        );
+        if ($this->methodDetails->isClientStreaming() || $this->methodDetails->isBidiStreaming()) {
+            $requestVar = [$requestVar];
+        }
+        $this->rpcArguments = $this->rpcArguments->append($requestVar);
     }
 
     /**
@@ -107,55 +136,13 @@ class SnippetDetails
         }
 
         // messages
-        if ($field->isMessage && !$field->isOneOf) {
+        if ($field->isMessage) {
             $this->handleMessage($field, $parentFieldName);
-            return;
-        }
-
-        // oneofs
-        if ($field->isOneOf) {
-            $this->handleOneof($field, $parentFieldName);
             return;
         }
 
         // scalar/enum
         $this->handleScalarAndEnum($field, $parentFieldName);
-    }
-
-    private function handleBidiOrClientStreaming(): void
-    {
-        // bidi/client stream RPC initiations accept a request message
-        $value = AST::new(
-            $this->context->type($this->methodDetails->requestType)
-        )();
-
-        foreach ($this->methodDetails->requiredFields as $field) {
-            if ($field->isOneOf && !$field->isFirstFieldInOneof()) {
-                continue;
-            }
-
-            $this->handleField($field, '');
-            $prefix = $field->useResourceTestValue
-                ? 'formatted_'
-                : '';
-            $setter = $field->setter->getName();
-            $value = $value->$setter(
-                AST::var(
-                    Helpers::toCamelCase(
-                        $prefix . $field->camelName
-                    )
-                )
-            );
-        }
-
-        $requestVar = AST::var('request');
-        $this->sampleAssignments = $this->sampleAssignments->append(
-            AST::assign(
-                $requestVar,
-                $value
-            )
-        );
-        $this->rpcArguments = $this->rpcArguments->append([$requestVar]);
     }
 
     /**
@@ -167,9 +154,6 @@ class SnippetDetails
     private function handleMap(FieldDetails $field, string $parentFieldName = null): void
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
-        if ($parentFieldName === null) {
-            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
-        }
         $this->sampleAssignments = $this->sampleAssignments->append(
             AST::assign(
                 $fieldVar,
@@ -185,9 +169,6 @@ class SnippetDetails
     private function handleMessage(FieldDetails $field, string $parentFieldName = null): void
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
-        if ($parentFieldName === null) {
-            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
-        }
         $value = AST::new(
             $this->context->type($field->typeSingular)
         )();
@@ -235,11 +216,6 @@ class SnippetDetails
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
         $arrayElementVar = null;
-
-        if ($parentFieldName === null) {
-            $this->rpcArguments = $this->rpcArguments->append($fieldVar);
-        }
-
         if ($field->isRepeated) {
             $arrayElementVar = AST::var($fieldVar->name . 'Element');
             $this->sampleAssignments = $this->sampleAssignments->append(
@@ -251,50 +227,6 @@ class SnippetDetails
         }
 
         $this->handleSampleParams($field, $arrayElementVar ?: $fieldVar);
-    }
-
-    /**
-     * TODO: handle oneofs that use a comment to indicate required instead of an annotation
-     *
-     * @param FieldDetails $field
-     * @param string|null $parentFieldName
-     */
-    private function handleOneof(FieldDetails $field, string $parentFieldName = null): void
-    {
-        $oneOfName = $field->getOneofDesc()->getName();
-        $wrapperVar = null;
-
-        if ($parentFieldName === null) {
-            $wrapperVar = AST::var(Helpers::toCamelCase($oneOfName));
-            $this->rpcArguments = $this->rpcArguments->append($wrapperVar);
-        }
-
-        if ($field->isMessage) {
-            $this->handleMessage($field, $parentFieldName ?: '');
-        } else {
-            $this->handleScalarAndEnum($field, $parentFieldName ?: $oneOfName);
-        }
-
-        if ($wrapperVar) {
-            $wrapperArgVar = $field->isMessage
-                ? AST::var($field->camelName)
-                : AST::var(Helpers::toCamelCase($oneOfName . '_' . $field->camelName));
-            $this->sampleAssignments = $this->sampleAssignments->append(
-                AST::assign(
-                    $wrapperVar,
-                    AST::call(
-                        AST::new(
-                            $this->context->type(
-                                $field->toOneofWrapperType(
-                                    $this->serviceDetails->namespace
-                                )
-                            )
-                        )(),
-                        AST::method($field->setter->name)
-                    )($wrapperArgVar)
-                )
-            );
-        }
     }
 
     /**
@@ -314,7 +246,7 @@ class SnippetDetails
                 return strtoupper("[$paramDetails[0]]");
             });
         $clientCall = AST::staticCall(
-            $this->context->type($this->serviceDetails->emptyClientType),
+            $this->context->type($this->emptyClientType),
             $field->resourceDetails->formatMethod
         );
         if ($field->isRepeated) {
@@ -326,7 +258,7 @@ class SnippetDetails
 
         // append a message to the param description guiding users where to find the helper.
         $docLineCount = count($field->docLines);
-        $formatCall = $this->serviceDetails->emptyClientType->name .
+        $formatCall = $this->emptyClientType->name .
                       '::' . $field->resourceDetails->formatMethod->getName() . '()';
         $formatString = "Please see {@see $formatCall} for help formatting this field.";
         if ($docLineCount > 0) {

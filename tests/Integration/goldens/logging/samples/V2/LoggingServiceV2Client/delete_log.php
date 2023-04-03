@@ -24,8 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START logging_v2_generated_LoggingServiceV2_DeleteLog_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Logging\V2\Client\LoggingServiceV2Client;
-use Google\Cloud\Logging\V2\DeleteLogRequest;
+use Google\Cloud\Logging\V2\LoggingServiceV2Client;
 
 /**
  * Deletes all the log entries in a log. The log reappears if it receives new
@@ -52,13 +51,9 @@ function delete_log_sample(string $formattedLogName): void
     // Create a client.
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
-    // Prepare the request message.
-    $request = (new DeleteLogRequest())
-        ->setLogName($formattedLogName);
-
     // Call the API and handle any network failures.
     try {
-        $loggingServiceV2Client->deleteLog($request);
+        $loggingServiceV2Client->deleteLog($formattedLogName);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

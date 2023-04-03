@@ -24,9 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_CompanyService_UpdateCompany_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\Client\CompanyServiceClient;
 use Google\Cloud\Talent\V4beta1\Company;
-use Google\Cloud\Talent\V4beta1\UpdateCompanyRequest;
+use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
 
 /**
  * Updates specified company.
@@ -46,13 +45,11 @@ function update_company_sample(string $companyDisplayName, string $companyExtern
     $company = (new Company())
         ->setDisplayName($companyDisplayName)
         ->setExternalId($companyExternalId);
-    $request = (new UpdateCompanyRequest())
-        ->setCompany($company);
 
     // Call the API and handle any network failures.
     try {
         /** @var Company $response */
-        $response = $companyServiceClient->updateCompany($request);
+        $response = $companyServiceClient->updateCompany($company);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -25,8 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_ListAggregatedShelves_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\Client\LibraryClient;
-use Testing\BasicDiregapic\ListAggregatedShelvesRequest;
+use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Lists shelves.
@@ -42,13 +41,10 @@ function list_aggregated_shelves_sample(): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
-    $request = new ListAggregatedShelvesRequest();
-
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryClient->listAggregatedShelves($request);
+        $response = $libraryClient->listAggregatedShelves();
 
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());

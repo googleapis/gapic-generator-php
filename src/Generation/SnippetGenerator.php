@@ -25,6 +25,7 @@ use Google\Generator\Ast\PhpFunction;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\Rpc\Status;
@@ -66,7 +67,9 @@ class SnippetGenerator
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
-            $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
+            $snippetDetails = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+                new SnippetDetails($method, $this->serviceDetails) :
+                new SnippetDetailsV2($method, $this->serviceDetails);
             $rpcMethodExample = $this->rpcMethodExample($snippetDetails);
             $files[Helpers::toSnakeCase($method->name)] = AST::file(null)
                 ->withApacheLicense($this->licenseYear)
@@ -375,6 +378,10 @@ class SnippetGenerator
         $shouldGenerateDocBlock = $docLineCount > 0
             || count($snippetDetails->phpDocParams) > 0
             || !$hasSampleParams;
+        $clientType = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+            $this->serviceDetails->emptyClientType :
+            $this->serviceDetails->emptyClientV2Type;
+
         $sampleFn = AST::fn($sampleName)
             ->withParams($snippetDetails->sampleParams)
             ->withReturnType($snippetDetails->context->type(Type::void()))
@@ -383,11 +390,7 @@ class SnippetGenerator
                     '// Create a client.',
                     AST::assign(
                         $snippetDetails->serviceClientVar,
-                        AST::new(
-                            $snippetDetails->context->type(
-                                $this->serviceDetails->emptyClientV2Type
-                            )
-                        )()
+                        AST::new($snippetDetails->context->type($clientType))()
                     ),
                     $hasSampleAssignments ? PHP_EOL : null,
                     $hasSampleAssignments ? '// Prepare the request message.' : null,
