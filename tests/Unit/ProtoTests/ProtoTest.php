@@ -122,7 +122,7 @@ final class ProtoTest extends TestCase
 
     public function testBasicDiregapic(): void
     {
-        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest');
+        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest', migrationMode: MigrationMode::PRE_MIGRATION_SURFACE_ONLY);
     }
 
     public function testResourceNames(): void
