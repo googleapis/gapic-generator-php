@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.asset.v1.AssetService' => [
             'AnalyzeIamPolicyLongrunning' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningResponse',
                     'metadataReturnType' => '\Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'analysis_query.scope',
@@ -24,7 +24,6 @@ return [
                 ],
             ],
             'ExportAssets' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Asset\V1\ExportAssetsResponse',
                     'metadataReturnType' => '\Google\Cloud\Asset\V1\ExportAssetsRequest',
@@ -33,6 +32,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -116,8 +116,6 @@ return [
                 ],
             ],
             'ListAssets' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Asset\V1\ListAssetsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -126,6 +124,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getAssets',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Asset\V1\ListAssetsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -148,8 +148,6 @@ return [
                 ],
             ],
             'SearchAllIamPolicies' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Asset\V1\SearchAllIamPoliciesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -158,6 +156,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Asset\V1\SearchAllIamPoliciesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'scope',
@@ -168,8 +168,6 @@ return [
                 ],
             ],
             'SearchAllResources' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Asset\V1\SearchAllResourcesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -178,6 +176,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Asset\V1\SearchAllResourcesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'scope',

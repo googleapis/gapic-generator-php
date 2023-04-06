@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.functions.v1.CloudFunctionsService' => [
             'CreateFunction' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Functions\V1\CloudFunction',
                     'metadataReturnType' => '\Google\Cloud\Functions\V1\OperationMetadataV1',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'location',
@@ -23,7 +23,6 @@ return [
                 ],
             ],
             'DeleteFunction' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Protobuf\GPBEmpty',
                     'metadataReturnType' => '\Google\Cloud\Functions\V1\OperationMetadataV1',
@@ -32,6 +31,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -42,7 +42,6 @@ return [
                 ],
             ],
             'UpdateFunction' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Functions\V1\CloudFunction',
                     'metadataReturnType' => '\Google\Cloud\Functions\V1\OperationMetadataV1',
@@ -51,6 +50,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'function.name',
@@ -122,8 +122,6 @@ return [
                 ],
             ],
             'ListFunctions' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Functions\V1\ListFunctionsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -132,6 +130,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getFunctions',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Functions\V1\ListFunctionsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

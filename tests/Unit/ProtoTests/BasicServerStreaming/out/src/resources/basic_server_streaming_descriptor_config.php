@@ -4,18 +4,18 @@ return [
     'interfaces' => [
         'testing.basicserverstreaming.BasicServerStreaming' => [
             'MethodEmpty' => [
-                'callType' => \Google\ApiCore\Call::SERVER_STREAMING_CALL,
-                'responseType' => 'Testing\BasicServerStreaming\Response',
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'ServerStreaming',
                 ],
+                'callType' => \Google\ApiCore\Call::SERVER_STREAMING_CALL,
+                'responseType' => 'Testing\BasicServerStreaming\Response',
             ],
             'MethodServer' => [
-                'callType' => \Google\ApiCore\Call::SERVER_STREAMING_CALL,
-                'responseType' => 'Testing\BasicServerStreaming\Response',
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'ServerStreaming',
                 ],
+                'callType' => \Google\ApiCore\Call::SERVER_STREAMING_CALL,
+                'responseType' => 'Testing\BasicServerStreaming\Response',
             ],
         ],
     ],

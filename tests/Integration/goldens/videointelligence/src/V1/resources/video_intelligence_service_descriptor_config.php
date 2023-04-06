@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.videointelligence.v1.VideoIntelligenceService' => [
             'AnnotateVideo' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\VideoIntelligence\V1\AnnotateVideoResponse',
                     'metadataReturnType' => '\Google\Cloud\VideoIntelligence\V1\AnnotateVideoProgress',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '45000',
                     'totalPollTimeoutMillis' => '86400000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
             ],
         ],
     ],

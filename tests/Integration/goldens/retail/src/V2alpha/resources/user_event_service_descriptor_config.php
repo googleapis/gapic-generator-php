@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.retail.v2alpha.UserEventService' => [
             'ImportUserEvents' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ImportUserEventsResponse',
                     'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\ImportMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -23,7 +23,6 @@ return [
                 ],
             ],
             'PurgeUserEvents' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\PurgeUserEventsResponse',
                     'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\PurgeMetadata',
@@ -32,6 +31,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -42,7 +42,6 @@ return [
                 ],
             ],
             'RejoinUserEvents' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\RejoinUserEventsResponse',
                     'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\RejoinUserEventsMetadata',
@@ -51,6 +50,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

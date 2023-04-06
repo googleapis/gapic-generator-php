@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.talent.v4beta1.JobService' => [
             'BatchCreateJobs' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Talent\V4beta1\JobOperationResult',
                     'metadataReturnType' => '\Google\Cloud\Talent\V4beta1\BatchOperationMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -23,7 +23,6 @@ return [
                 ],
             ],
             'BatchUpdateJobs' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Talent\V4beta1\JobOperationResult',
                     'metadataReturnType' => '\Google\Cloud\Talent\V4beta1\BatchOperationMetadata',
@@ -32,6 +31,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -90,8 +90,6 @@ return [
                 ],
             ],
             'ListJobs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\ListJobsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -100,6 +98,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getJobs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\ListJobsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -110,8 +110,6 @@ return [
                 ],
             ],
             'SearchJobs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchJobsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -120,6 +118,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getMatchingJobs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchJobsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -130,8 +130,6 @@ return [
                 ],
             ],
             'SearchJobsForAlert' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchJobsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -140,6 +138,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getMatchingJobs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchJobsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

@@ -160,8 +160,6 @@ return [
                 ],
             ],
             'ListBuckets' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListBucketsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -170,6 +168,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getBuckets',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListBucketsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -180,8 +180,6 @@ return [
                 ],
             ],
             'ListExclusions' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListExclusionsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -190,6 +188,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getExclusions',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListExclusionsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -200,8 +200,6 @@ return [
                 ],
             ],
             'ListSinks' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListSinksResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -210,6 +208,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getSinks',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListSinksResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -220,8 +220,6 @@ return [
                 ],
             ],
             'ListViews' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListViewsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -230,6 +228,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getViews',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListViewsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

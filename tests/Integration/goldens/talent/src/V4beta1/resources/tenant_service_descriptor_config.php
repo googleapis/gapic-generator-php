@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListTenants' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\ListTenantsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getTenants',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\ListTenantsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListCompanies' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\ListCompaniesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getCompanies',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\ListCompaniesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

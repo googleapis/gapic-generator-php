@@ -4,8 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.retail.v2alpha.SearchService' => [
             'Search' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Retail\V2alpha\SearchResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -14,6 +12,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\SearchResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'placement',

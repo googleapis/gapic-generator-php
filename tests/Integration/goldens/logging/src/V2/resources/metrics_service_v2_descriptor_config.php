@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListLogMetrics' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListLogMetricsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getMetrics',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListLogMetricsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

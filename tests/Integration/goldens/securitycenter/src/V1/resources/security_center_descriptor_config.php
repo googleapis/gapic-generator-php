@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.securitycenter.v1.SecurityCenter' => [
             'RunAssetDiscovery' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryResponse',
                     'metadataReturnType' => '\Google\Protobuf\GPBEmpty',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -119,8 +119,6 @@ return [
                 ],
             ],
             'GroupAssets' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\GroupAssetsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -129,6 +127,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getGroupByResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\GroupAssetsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -139,8 +139,6 @@ return [
                 ],
             ],
             'GroupFindings' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\GroupFindingsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -149,6 +147,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getGroupByResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\GroupFindingsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -159,8 +159,6 @@ return [
                 ],
             ],
             'ListAssets' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListAssetsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -169,6 +167,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getListAssetsResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListAssetsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -179,8 +179,6 @@ return [
                 ],
             ],
             'ListFindings' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListFindingsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -189,6 +187,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getListFindingsResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListFindingsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -199,8 +199,6 @@ return [
                 ],
             ],
             'ListNotificationConfigs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -209,6 +207,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getNotificationConfigs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -219,8 +219,6 @@ return [
                 ],
             ],
             'ListSources' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListSourcesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -229,6 +227,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getSources',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListSourcesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

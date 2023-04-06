@@ -196,8 +196,6 @@ return [
                 ],
             ],
             'ListCryptoKeyVersions' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Kms\V1\ListCryptoKeyVersionsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -206,6 +204,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getCryptoKeyVersions',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Kms\V1\ListCryptoKeyVersionsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -216,8 +216,6 @@ return [
                 ],
             ],
             'ListCryptoKeys' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Kms\V1\ListCryptoKeysResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -226,6 +224,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getCryptoKeys',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Kms\V1\ListCryptoKeysResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -236,8 +236,6 @@ return [
                 ],
             ],
             'ListImportJobs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Kms\V1\ListImportJobsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -246,6 +244,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getImportJobs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Kms\V1\ListImportJobsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -256,8 +256,6 @@ return [
                 ],
             ],
             'ListKeyRings' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Kms\V1\ListKeyRingsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -266,6 +264,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getKeyRings',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Kms\V1\ListKeyRingsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -339,8 +339,6 @@ return [
                 'interfaceOverride' => 'google.cloud.location.Locations',
             ],
             'ListLocations' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Location\ListLocationsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -349,6 +347,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getLocations',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Location\ListLocationsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'name',

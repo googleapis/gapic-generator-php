@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListProfiles' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\ListProfilesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getProfiles',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\ListProfilesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -60,8 +60,6 @@ return [
                 ],
             ],
             'SearchProfiles' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchProfilesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -70,6 +68,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getHistogramQueryResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\SearchProfilesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

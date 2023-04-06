@@ -4,8 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.compute.v1.Addresses' => [
             'Delete' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
-                'responseType' => 'Google\Cloud\Compute\V1\Operation',
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -20,6 +18,8 @@ return [
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Google\Cloud\Compute\V1\Operation\Status::DONE,
                 ],
+                'responseType' => 'Google\Cloud\Compute\V1\Operation',
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project',
@@ -42,8 +42,6 @@ return [
                 ],
             ],
             'Insert' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
-                'responseType' => 'Google\Cloud\Compute\V1\Operation',
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -58,6 +56,8 @@ return [
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Google\Cloud\Compute\V1\Operation\Status::DONE,
                 ],
+                'responseType' => 'Google\Cloud\Compute\V1\Operation',
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project',
@@ -74,8 +74,6 @@ return [
                 ],
             ],
             'AggregatedList' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Compute\V1\AddressAggregatedList',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -84,6 +82,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getItems',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\AddressAggregatedList',
                 'headerParams' => [
                     [
                         'keyName' => 'project',
@@ -94,8 +94,6 @@ return [
                 ],
             ],
             'List' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Compute\V1\AddressList',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -104,6 +102,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getItems',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Compute\V1\AddressList',
                 'headerParams' => [
                     [
                         'keyName' => 'project',

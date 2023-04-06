@@ -394,8 +394,6 @@ return [
                 ],
             ],
             'ListUsableSubnetworks' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Container\V1\ListUsableSubnetworksResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -404,6 +402,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getSubnetworks',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Container\V1\ListUsableSubnetworksResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

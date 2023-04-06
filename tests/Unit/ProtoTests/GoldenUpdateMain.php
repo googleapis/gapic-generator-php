@@ -71,7 +71,8 @@ const UNIT_TESTS = [
     'name' => 'BasicDiregapic',
     'protoPath' => 'BasicDiregapic/library_rest.proto',
     'package' => 'google.example.library.v1',
-    'transport' => 'rest'
+    'transport' => 'rest',
+    'migrationMode' => 'PRE_MIGRATION_SURFACE_ONLY'
   ],
   12 => [
     'name' => 'ResourceNames',
