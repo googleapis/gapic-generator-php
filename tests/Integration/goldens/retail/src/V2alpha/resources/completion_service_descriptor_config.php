@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.retail.v2alpha.CompletionService' => [
             'ImportCompletionData' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ImportCompletionDataResponse',
                     'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\ImportMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

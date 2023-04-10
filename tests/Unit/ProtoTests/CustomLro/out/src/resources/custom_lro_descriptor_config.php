@@ -4,8 +4,6 @@ return [
     'interfaces' => [
         'testing.customlro.CustomLro' => [
             'CreateFoo' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
-                'responseType' => 'Testing\CustomLro\CustomOperationResponse',
                 'longRunning' => [
                     'additionalArgumentMethods' => [
                         'getProject',
@@ -21,6 +19,8 @@ return [
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
                 ],
+                'responseType' => 'Testing\CustomLro\CustomOperationResponse',
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
             ],
         ],
     ],

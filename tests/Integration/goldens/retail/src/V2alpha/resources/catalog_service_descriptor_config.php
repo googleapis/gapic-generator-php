@@ -16,8 +16,6 @@ return [
                 ],
             ],
             'ListCatalogs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Retail\V2alpha\ListCatalogsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -26,6 +24,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getCatalogs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\ListCatalogsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

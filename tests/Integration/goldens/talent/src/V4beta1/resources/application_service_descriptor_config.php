@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListApplications' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Talent\V4beta1\ListApplicationsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getApplications',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Talent\V4beta1\ListApplicationsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

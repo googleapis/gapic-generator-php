@@ -111,6 +111,7 @@ def _php_overwrite_golden_impl(ctx):
     golden_update_script_content = """
     cd ${{BUILD_WORKSPACE_DIRECTORY}}
     # Filename pattern-based removal is needed to preserve the BUILD.bazel file.
+    find tests/Integration/goldens/{api_name}/ -name \\*.txt -type f -delete
     find tests/Integration/goldens/{api_name}/ -name \\*.php -type f -delete
     find tests/Integration/goldens/{api_name}/ -name \\*.json -type f -delete
     unzip -ao {goldens_output_zip} -d tests/Integration/goldens/{api_name}

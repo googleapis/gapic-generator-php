@@ -16,8 +16,6 @@ return [
                 ],
             ],
             'ListLogEntries' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListLogEntriesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -26,10 +24,10 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getEntries',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListLogEntriesResponse',
             ],
             'ListLogs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListLogsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -38,6 +36,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getLogNames',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListLogsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -48,8 +48,6 @@ return [
                 ],
             ],
             'ListMonitoredResourceDescriptors' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -58,13 +56,15 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getResourceDescriptors',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\ListMonitoredResourceDescriptorsResponse',
             ],
             'TailLogEntries' => [
-                'callType' => \Google\ApiCore\Call::BIDI_STREAMING_CALL,
-                'responseType' => 'Google\Cloud\Logging\V2\TailLogEntriesResponse',
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'BidiStreaming',
                 ],
+                'callType' => \Google\ApiCore\Call::BIDI_STREAMING_CALL,
+                'responseType' => 'Google\Cloud\Logging\V2\TailLogEntriesResponse',
             ],
             'WriteLogEntries' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,

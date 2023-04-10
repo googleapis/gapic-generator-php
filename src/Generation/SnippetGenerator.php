@@ -67,7 +67,7 @@ class SnippetGenerator
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
-            $snippetDetails = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+            $snippetDetails = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED || $this->serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY ?
                 new SnippetDetails($method, $this->serviceDetails) :
                 new SnippetDetailsV2($method, $this->serviceDetails);
             $rpcMethodExample = $this->rpcMethodExample($snippetDetails);
@@ -378,7 +378,7 @@ class SnippetGenerator
         $shouldGenerateDocBlock = $docLineCount > 0
             || count($snippetDetails->phpDocParams) > 0
             || !$hasSampleParams;
-        $clientType = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED ?
+        $clientType = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED || $this->serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY ?
             $this->serviceDetails->emptyClientType :
             $this->serviceDetails->emptyClientV2Type;
 

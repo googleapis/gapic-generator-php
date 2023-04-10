@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.dataproc.v1.WorkflowTemplateService' => [
             'InstantiateInlineWorkflowTemplate' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Protobuf\GPBEmpty',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\WorkflowMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '43200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -23,7 +23,6 @@ return [
                 ],
             ],
             'InstantiateWorkflowTemplate' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Protobuf\GPBEmpty',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\WorkflowMetadata',
@@ -32,6 +31,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '43200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -78,8 +78,6 @@ return [
                 ],
             ],
             'ListWorkflowTemplates' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -88,6 +86,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getTemplates',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

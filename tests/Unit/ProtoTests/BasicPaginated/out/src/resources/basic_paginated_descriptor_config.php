@@ -4,8 +4,6 @@ return [
     'interfaces' => [
         'testing.basicpaginated.BasicPaginated' => [
             'MethodPaginated' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Testing\BasicPaginated\Response',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -14,6 +12,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getTheResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Testing\BasicPaginated\Response',
             ],
         ],
     ],

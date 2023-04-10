@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.dataproc.v1.JobController' => [
             'SubmitJobAsOperation' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Job',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\JobMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -101,8 +101,6 @@ return [
                 ],
             ],
             'ListJobs' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Dataproc\V1\ListJobsResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -111,6 +109,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getJobs',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Dataproc\V1\ListJobsResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',

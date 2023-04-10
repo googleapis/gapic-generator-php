@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.dataproc.v1.ClusterController' => [
             'CreateCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '900000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -29,7 +29,6 @@ return [
                 ],
             ],
             'DeleteCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Protobuf\GPBEmpty',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -38,6 +37,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '900000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -60,7 +60,6 @@ return [
                 ],
             ],
             'DiagnoseCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\DiagnoseClusterResults',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -69,6 +68,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '30000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -91,7 +91,6 @@ return [
                 ],
             ],
             'StartCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -100,6 +99,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -122,7 +122,6 @@ return [
                 ],
             ],
             'StopCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -131,6 +130,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -153,7 +153,6 @@ return [
                 ],
             ],
             'UpdateCluster' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Dataproc\V1\Cluster',
                     'metadataReturnType' => '\Google\Cloud\Dataproc\V1\ClusterOperationMetadata',
@@ -162,6 +161,7 @@ return [
                     'maxPollDelayMillis' => '10000',
                     'totalPollTimeoutMillis' => '900000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',
@@ -208,8 +208,6 @@ return [
                 ],
             ],
             'ListClusters' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Dataproc\V1\ListClustersResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -218,6 +216,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getClusters',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Dataproc\V1\ListClustersResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'project_id',

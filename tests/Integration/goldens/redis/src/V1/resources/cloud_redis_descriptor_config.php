@@ -4,7 +4,6 @@ return [
     'interfaces' => [
         'google.cloud.redis.v1.CloudRedis' => [
             'CreateInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -13,6 +12,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '7200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -23,7 +23,6 @@ return [
                 ],
             ],
             'DeleteInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Protobuf\GPBEmpty',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -32,6 +31,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '1200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -42,7 +42,6 @@ return [
                 ],
             ],
             'ExportInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -51,6 +50,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '18000000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -61,7 +61,6 @@ return [
                 ],
             ],
             'FailoverInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -70,6 +69,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '1200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -80,7 +80,6 @@ return [
                 ],
             ],
             'ImportInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -89,6 +88,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '18000000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -99,7 +99,6 @@ return [
                 ],
             ],
             'UpdateInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -108,6 +107,7 @@ return [
                     'maxPollDelayMillis' => '360000',
                     'totalPollTimeoutMillis' => '7200000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'instance.name',
@@ -119,7 +119,6 @@ return [
                 ],
             ],
             'UpgradeInstance' => [
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Redis\V1\Instance',
                     'metadataReturnType' => '\Google\Cloud\Redis\V1\OperationMetadata',
@@ -128,6 +127,7 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -150,8 +150,6 @@ return [
                 ],
             ],
             'ListInstances' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Redis\V1\ListInstancesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -160,6 +158,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getInstances',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Redis\V1\ListInstancesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

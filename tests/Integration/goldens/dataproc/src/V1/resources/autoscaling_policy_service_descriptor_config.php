@@ -40,8 +40,6 @@ return [
                 ],
             ],
             'ListAutoscalingPolicies' => [
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesResponse',
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
@@ -50,6 +48,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getPolicies',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Dataproc\V1\ListAutoscalingPoliciesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

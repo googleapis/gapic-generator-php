@@ -318,6 +318,7 @@ php_gapic_library(
     srcs = ["@com_google_googleapis//google/cloud/speech/v1:speech_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/speech/v1:speech_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/speech/v1:speech_v1.yaml",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     deps = [
         ":speech_php_grpc",
         ":speech_php_proto",

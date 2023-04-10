@@ -69,7 +69,7 @@ final class ProtoTest extends TestCase
         );
     }
 
-    public function testBasic0(): void
+    public function testBasic0WithNewSurface(): void
     {
         // test generating the client with only the new surface (no v1 client, v2 samples)
         $this->runProtoTest('Basic/basic.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
@@ -109,7 +109,7 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('GrpcServiceConfig/grpc-service-config1.proto', 'testing.grpcserviceconfig');
     }
 
-    public function testRoutingHeaders(): void
+    public function testRoutingHeadersWithMigrationSurface(): void
     {
         // test generating the client in migration mode (both v1 and v2 clients, but with v2 samples)
         $this->runProtoTest('RoutingHeaders/routing-headers.proto', migrationMode: MigrationMode::MIGRATING);
@@ -120,9 +120,9 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('DeprecatedService/deprecated_service.proto');
     }
 
-    public function testBasicDiregapic(): void
+    public function testBasicDiregapicWithPreMigrationSurface(): void
     {
-        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest');
+        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest', migrationMode: MigrationMode::PRE_MIGRATION_SURFACE_ONLY);
     }
 
     public function testResourceNames(): void
