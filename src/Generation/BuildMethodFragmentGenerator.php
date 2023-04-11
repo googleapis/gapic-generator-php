@@ -55,7 +55,7 @@ class BuildMethodFragmentGenerator
     {
         $buildMethodSnippets = Map::new([]);
         foreach ($this->serviceDetails->methods as $methodDetails) {
-            if ($methodDetails->methodSignature) {
+            if ($methodDetails->methodSignature && !$methodDetails->isMixin()) {
                 $buildMethods = Vector::new();
                 foreach ($methodDetails->methodSignature as $i => $methodSignature) {
                     if (empty($methodSignature)) {
