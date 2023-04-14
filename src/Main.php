@@ -236,7 +236,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
         $migrationMode = $opts['migration-mode'];
         MigrationMode::validateMode($migrationMode);
     } else {
-        $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED;
+        $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY;
     }
 
     // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.

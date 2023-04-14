@@ -32,7 +32,7 @@ final class ProtoTest extends TestCase
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ): void {
         $codeIterator = GeneratorUtils::generateFromProto(
             $protoPath,

@@ -12,19 +12,6 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getResults',
                 ],
-                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
-                'responseType' => 'Google\Cloud\Retail\V2alpha\SearchResponse',
-                'headerParams' => [
-                    [
-                        'keyName' => 'placement',
-                        'fieldAccessors' => [
-                            'getPlacement',
-                        ],
-                    ],
-                ],
-            ],
-            'templateMap' => [
-                'branch' => 'projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}',
             ],
         ],
     ],
