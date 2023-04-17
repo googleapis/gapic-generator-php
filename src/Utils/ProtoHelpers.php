@@ -224,7 +224,7 @@ class ProtoHelpers
         }
 
         $key = static::fieldOrTemplateVariable($routingParam);
-        
+
         $original = $matches[0];
         // Replace the entire template variable with just the segment matcher,
         // wrapped in a capture group.
@@ -402,7 +402,7 @@ class ProtoHelpers
      * @param mixed $message The message containing the custom option. Must be of type Message, or
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
-     * @param ?string $msgClas Optional; to return a proto msg, set this to the PHP class of the msg.
+     * @param ?string $msgClass Optional; to return a proto msg, set this to the PHP class of the msg.
      *
      * @return mixed Will be null if the option does not exist.
      */

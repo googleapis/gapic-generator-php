@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.6.7](https://github.com/googleapis/gapic-generator-php/compare/v1.6.6...v1.6.7) (2023-03-07)
+
+
+### Bug Fixes
+
+* Dupe method names from mixins ([#584](https://github.com/googleapis/gapic-generator-php/issues/584)) ([378b2d4](https://github.com/googleapis/gapic-generator-php/commit/378b2d49946f0a3c171c92bb2943eaae5476a4db))
+* Max precision for float test values ([#585](https://github.com/googleapis/gapic-generator-php/issues/585)) ([e4619b2](https://github.com/googleapis/gapic-generator-php/commit/e4619b2421e681b50309d7a63d8e1850e62f4df1))
+* Required to optional field in Firestore ListDocuments ([996dc49](https://github.com/googleapis/gapic-generator-php/commit/996dc498a726ae634be833f0ff0b4e59cacf6dd7))
+* Required-to-optional for Scheduler.UpdateJob ([#583](https://github.com/googleapis/gapic-generator-php/issues/583)) ([ca9b53a](https://github.com/googleapis/gapic-generator-php/commit/ca9b53a8b80c3de940a39bdf0d4f7493a30b0fa8))
+* Required-to-optional for Spanner.CommitRequest ([#589](https://github.com/googleapis/gapic-generator-php/issues/589)) ([f5d5da7](https://github.com/googleapis/gapic-generator-php/commit/f5d5da72d0ff5d5b19b26b4b8cba2530113178a0))
+
+## [1.6.6](https://github.com/googleapis/gapic-generator-php/compare/v1.6.5...v1.6.6) (2023-02-22)
+
+
+### Bug Fixes
+
+* Required to optional field in PubSub API ([#578](https://github.com/googleapis/gapic-generator-php/issues/578)) ([8fe38e7](https://github.com/googleapis/gapic-generator-php/commit/8fe38e7c89ac7d465ff03ef64fd8ef888bd55130))
+* Use camelName for optionalArgs when settings requestParamHeaders ([#574](https://github.com/googleapis/gapic-generator-php/issues/574)) ([27a8a0f](https://github.com/googleapis/gapic-generator-php/commit/27a8a0f52ee1f29641d8123f365b1ebc1de1535f))
+
+## [1.6.5](https://github.com/googleapis/gapic-generator-php/compare/v1.6.4...v1.6.5) (2023-01-31)
+
+
+### Bug Fixes
+
+* Protect artifact registry fields from bc ([#566](https://github.com/googleapis/gapic-generator-php/issues/566)) ([4747c98](https://github.com/googleapis/gapic-generator-php/commit/4747c984ba0cef8b2eacbd26900fbe34c2f6c543))
+
 ## [1.6.4](https://github.com/googleapis/gapic-generator-php/compare/v1.6.3...v1.6.4) (2023-01-05)
 
 

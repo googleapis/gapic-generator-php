@@ -2,6 +2,8 @@
 
 ## Setting Up
 
+We'll be using **PHP 7.4** for the setup.
+
 1.  Clone the directory.
 
     ```
@@ -16,7 +18,7 @@
     1.  On Linux:
 
     ```
-    sudo apt-get install php-curl php7.4-mbstring libxml2-dev
+    sudo apt-get install php-curl php7.4-mbstring libxml2-dev libssl-dev libcurl4-openssl-dev
     ```
 
 4.  Run `php composer.phar install`
@@ -78,7 +80,9 @@
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
 
-    Updating unit test goldens:
+-   Updating unit test goldens:
+
+    You will need to update the golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
 
     ```
     php tests/Unit/ProtoTests/GoldenUpdateMain.php
@@ -88,13 +92,6 @@
 
     If a new unit test case is added, make sure to add it to the `UNIT_TESTS` list in [GoldenUpdateMain.php](tests/Unit/ProtoTests/GoldenUpdateMain.php).
 
--   Monolith integration tests. These may take 5 minutes or so to run.
-
-    ```
-    cd tests/Integration
-    php Main.php
-    ```
-
 -   Bazel integration tests.
 
     -   Running:
@@ -103,11 +100,85 @@
     bazel test tests/Integration:asset
     ```
 
+    -   Running all tests:
+
+    ```
+    bazel test //tests/Integration:asset && \
+        bazel test //tests/Integration:compute_small && \
+        bazel test //tests/Integration:container && \
+        bazel test //tests/Integration:dataproc && \
+        bazel test //tests/Integration:functions && \
+        bazel test //tests/Integration:kms && \
+        bazel test //tests/Integration:iam && \
+        bazel test //tests/Integration:logging && \
+        bazel test //tests/Integration:redis && \
+        bazel test //tests/Integration:retail && \
+        bazel test //tests/Integration:speech && \
+        bazel test //tests/Integration:securitycenter && \
+        bazel test //tests/Integration:talent && \
+        bazel test //tests/Integration:videointelligence
+    ```
+
     -   Updating goldens:
 
     ```
     bazel run tests/Integration:asset_update
     ```
+
+    -   Updating integration test goldens:
+    
+    You will need to update the integration golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
+
+    ```
+    bazel clean --expunge && \
+        bazel run //tests/Integration:asset_update && \
+        bazel run //tests/Integration:compute_small_update && \
+        bazel run //tests/Integration:container_update && \
+        bazel run //tests/Integration:dataproc_update && \
+        bazel run //tests/Integration:functions_update && \
+        bazel run //tests/Integration:kms_update && \
+        bazel run //tests/Integration:iam_update && \
+        bazel run //tests/Integration:logging_update && \
+        bazel run //tests/Integration:redis_update && \
+        bazel run //tests/Integration:retail_update && \
+        bazel run //tests/Integration:speech_update && \
+        bazel run //tests/Integration:securitycenter_update && \
+        bazel run //tests/Integration:talent_update && \
+        bazel run //tests/Integration:videointelligence_update
+    ```
+
+    _Note: Running `bazel` commands may require removing the `composer.lock` and
+    `vendor/` directory._
+
+    -  Debugging in `googleapis`:
+
+    In [`googleapis/WORKSPACE`](https://github.com/googleapis/googleapis/blob/86fa44cc5ee2136e87c312f153113d4dd8e9c4de/WORKSPACE#L397-L401),
+    replace the `http_archive` downloading the generator with a
+    `local_repository` target pointing to the locally modified version of the
+    generator:
+
+    ```
+    local_repository(
+        name = "gapic_generator_php",
+        path = "/absolute/path/to/local/generator",
+    )
+    ```
+
+## Rotating the bazel cache key
+
+The GitHub Actions that run the `bazel`-based integration tests hold a cache of
+the build in order to speed up testing pull requests that do not impact
+generated surface. If proposing a change that modifies the integration test
+golden files, one must also rotate the cache key using the
+[`gh` CLI](https://cli.github.com/). Use the following command before opening
+your pull request:
+
+```
+uuidgen | gh secret set CACHE_VERSION -r https://github.com/googleapis/gapic-generator-php
+```
+
+If you don't have the proper permissions to rotate the cache key, request that
+the reviewers do so and rerun the Action checks.
 
 ## Updating the `googleapis` submodule
 
@@ -115,7 +186,7 @@ To update the `googleapis` submodule, change into the directory and pull:
 
 ```
 pushd googleapis
-git pull origin main
+git pull origin master
 popd
 ```
 

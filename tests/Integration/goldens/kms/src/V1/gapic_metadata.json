@@ -130,6 +130,16 @@
                                 "updateCryptoKeyVersion"
                             ]
                         },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
+                        },
                         "GetLocation": {
                             "methods": [
                                 "getLocation"

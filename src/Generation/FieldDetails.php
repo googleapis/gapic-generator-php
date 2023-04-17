@@ -115,11 +115,13 @@ class FieldDetails
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
         'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['content_type', 'read_time_window'],
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
+        'google.cloud.scheduler.v1.UpdateJobRequest' => ['update_mask'],
         'google.datastore.v1.CommitRequest' => ['mode', 'mutations'],
         'google.datastore.v1.RunQueryRequest' => ['partition_id'],
         'google.firestore.v1.CommitRequest' => ['writes'],
         'google.firestore.v1.BatchGetDocumentsRequest' => ['documents'],
         'google.firestore.v1.CreateDocumentRequest' => ['document_id'],
+        'google.firestore.v1.ListDocumentsRequest'  => ['collection_id'],
         'google.firestore.v1.UpdateDocumentRequest' => ['update_mask'],
         'google.cloud.kms.v1.AsymmetricSignRequest' => ['digest'],
         'google.cloud.recaptchaenterprise.v1.AnnotateAssessmentRequest' => ['annotation'],
@@ -127,6 +129,8 @@ class FieldDetails
         'google.longrunning.DeleteOperationRequest' => ['name'],
         'google.longrunning.GetOperationRequest'    => ['name'],
         'google.longrunning.ListOperationsRequest'  => ['name', 'filter'],
+        'google.pubsub.v1.DeleteSchemaRevisionRequest' => ['revision_id'],
+        'google.spanner.v1.CommitRequest' => ['mutations'],
     ];
 
     /**
@@ -140,6 +144,8 @@ class FieldDetails
         'google.firestore.v1.BatchWriteRequest' => ['database'],
         'google.firestore.v1.PartitionQueryRequest' => ['parent'],
         'google.spanner.v1.CreateSessionRequest' => ['session'],
+        'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
+        'google.devtools.artifactregistry.v1beta2.GetFileRequest' => ['name'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)

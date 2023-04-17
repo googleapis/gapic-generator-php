@@ -1061,7 +1061,7 @@ class GapicClientGenerator
                 $field = $fieldDetailsByRootField[$root];
                 $param = $field->isRequired
                     ? AST::param(null, AST::var($field->camelName))
-                    : AST::index(AST::var('optionalArgs'), $root);
+                    : AST::index(AST::var('optionalArgs'), $field->camelName);
                 $assignValue = $param;
 
                 // Construct the getter chain if the routing header uses a nested field.
