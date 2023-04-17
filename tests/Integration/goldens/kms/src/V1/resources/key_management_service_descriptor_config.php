@@ -43,6 +43,12 @@ return [
                     'resourcesGetMethod' => 'getKeyRings',
                 ],
             ],
+            'SetIamPolicy' => [
+                'interfaceOverride' => 'google.iam.v1.IAMPolicy',
+            ],
+            'TestIamPermissions' => [
+                'interfaceOverride' => 'google.iam.v1.IAMPolicy',
+            ],
             'GetLocation' => [
                 'interfaceOverride' => 'google.cloud.location.Locations',
             ],
