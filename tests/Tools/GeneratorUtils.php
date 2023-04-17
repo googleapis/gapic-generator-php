@@ -38,7 +38,7 @@ class GeneratorUtils
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED,
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY,
     ) {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.

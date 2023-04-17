@@ -19,8 +19,6 @@ return [
                     'operationStatusMethod' => 'getStatus',
                     'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
                 ],
-                'responseType' => 'Testing\CustomLro\CustomOperationResponse',
-                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
             ],
         ],
     ],

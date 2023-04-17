@@ -157,7 +157,7 @@ class ServiceDetails
         ServiceDescriptorProto $desc,
         FileDescriptorProto $fileDesc,
         int $transportType = Transport::GRPC_REST,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
         $this->catalog = $catalog;
         $this->package = $package;

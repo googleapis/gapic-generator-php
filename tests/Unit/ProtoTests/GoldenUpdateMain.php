@@ -76,7 +76,8 @@ const UNIT_TESTS = [
   ],
   12 => [
     'name' => 'ResourceNames',
-    'protoPath' => 'ResourceNames/resource-names.proto'
+    'protoPath' => 'ResourceNames/resource-names.proto',
+    'migrationMode' => MigrationMode::MIGRATION_MODE_UNSPECIFIED
   ],
   13 => [
     'name' => 'CustomLro',
@@ -126,7 +127,7 @@ function updateGolden(int $testIndex)
         array_key_exists('package', $testData) ? $testData['package'] : null,
         array_key_exists('transport', $testData) ? $testData['transport'] : null,
         array_key_exists('generateSnippets', $testData) ? $testData['generateSnippets'] : true,
-        array_key_exists('migrationMode', $testData) ? $testData['migrationMode'] : MigrationMode::MIGRATION_MODE_UNSPECIFIED
+        array_key_exists('migrationMode', $testData) ? $testData['migrationMode'] : MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     );
     print("\n");
 }

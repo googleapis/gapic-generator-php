@@ -80,7 +80,7 @@ class CodeGenerator
         bool $numericEnums = false,
         int $licenseYear = -1,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED,
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY,
     ) {
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
@@ -133,7 +133,7 @@ class CodeGenerator
         bool $numericEnums = false,
         int $licenseYear = -1,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
         if ($licenseYear < 0) {
             $licenseYear = (int)date('Y');

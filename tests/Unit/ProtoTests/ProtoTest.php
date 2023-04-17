@@ -32,7 +32,7 @@ final class ProtoTest extends TestCase
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::MIGRATION_MODE_UNSPECIFIED
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ): void {
         $codeIterator = GeneratorUtils::generateFromProto(
             $protoPath,
@@ -125,9 +125,9 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest', migrationMode: MigrationMode::PRE_MIGRATION_SURFACE_ONLY);
     }
 
-    public function testResourceNames(): void
+    public function testResourceNamesWithMigrationModeUnspecified(): void
     {
-        $this->runProtoTest('ResourceNames/resource-names.proto');
+        $this->runProtoTest('ResourceNames/resource-names.proto', migrationMode: MigrationMode::MIGRATION_MODE_UNSPECIFIED);
     }
 
     public function testCustomLro(): void

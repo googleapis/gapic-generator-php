@@ -55,7 +55,7 @@ def php_gapic_srcjar(
         rest_numeric_enums = False,
         generate_snippets = True,
         # Supported values validated and specified in src/Utils/MigrationMode.php.
-        migration_mode = "MIGRATION_MODE_UNSPECIFIED", 
+        migration_mode = "PRE_MIGRATION_SURFACE_ONLY", 
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     plugin_file_args = {}
