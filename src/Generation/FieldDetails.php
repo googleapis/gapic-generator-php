@@ -146,6 +146,7 @@ class FieldDetails
         'google.spanner.v1.CreateSessionRequest' => ['session'],
         'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
         'google.devtools.artifactregistry.v1beta2.GetFileRequest' => ['name'],
+        'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)
