@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.8](https://github.com/googleapis/gapic-generator-php/compare/v1.6.7...v1.6.8) (2023-04-26)
+
+
+### Bug Fixes
+
+* **tts:** Prevent TTS opt to req breakage ([#613](https://github.com/googleapis/gapic-generator-php/issues/613)) ([54d6378](https://github.com/googleapis/gapic-generator-php/commit/54d637815f992d9a7c199ae9f4b70742495ae3d7))
+
 ## [1.6.7](https://github.com/googleapis/gapic-generator-php/compare/v1.6.6...v1.6.7) (2023-03-07)
 
 
