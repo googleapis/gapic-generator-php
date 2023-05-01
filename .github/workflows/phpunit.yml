@@ -2,9 +2,9 @@ name: PhpUnit tests
 
 on:
   push:
-    branches: [ main, v2-dev ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, v2-dev ]
+    branches: [ main ]
 
 jobs:
   build:
