@@ -388,7 +388,7 @@ abstract class AST
      *
      * @return Expression
      */
-    public static function array($data, $oneLine = false): Expression
+    public static function array(mixed $data, bool $oneLine = false): Expression
     {
         if (is_array($data)) {
             $keyValues = Vector::new(array_map(fn ($v, $k) => [$k, $v], $data, array_keys($data)))
