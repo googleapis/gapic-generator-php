@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/gapic-generator-php/compare/v1.6.8...v1.7.0) (2023-05-01)
+
+
+### Features
+
+* Introduce next generation PHP client surface ([#612](https://github.com/googleapis/gapic-generator-php/issues/612)) ([c675c3d](https://github.com/googleapis/gapic-generator-php/commit/c675c3d6a98e37c4cb79bbcb187a481d3cbceea7))
+
 ## [1.6.8](https://github.com/googleapis/gapic-generator-php/compare/v1.6.7...v1.6.8) (2023-04-26)
 
 
