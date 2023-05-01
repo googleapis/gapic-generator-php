@@ -52,6 +52,7 @@ def _php_gapic_src_pkg_impl(ctx):
     paths = _construct_package_dir_paths(ctx.attr.package_dir, ctx.outputs.pkg, ctx.label.name)
 
     script = """
+    set -e
     for proto_grpc_src in {proto_grpc_srcs}; do
         mkdir -p {package_dir_path}/proto/src
         unzip -q -o $proto_grpc_src -d {package_dir_path}/proto/src
@@ -60,8 +61,9 @@ def _php_gapic_src_pkg_impl(ctx):
         mkdir -p {package_dir_path}/proto
         unzip -q -o $gapic_src -d {package_dir_path}
     done
+    {post_processor} --input {package_dir_path}
     cd {package_dir_path}/{tar_cd_suffix}
-    tar -zchpf {tar_prefix}/{package_dir}.tar.gz {tar_prefix}/*
+    tar --exclude=*.build.txt  -zchpf {tar_prefix}/{package_dir}.tar.gz {tar_prefix}/*
     cd -
     mv {package_dir_path}/{package_dir}.tar.gz {pkg}
     rm -rf {package_dir_path}
@@ -73,12 +75,14 @@ def _php_gapic_src_pkg_impl(ctx):
         pkg = ctx.outputs.pkg.path,
         tar_cd_suffix = paths.tar_cd_suffix,
         tar_prefix = paths.tar_prefix,
+        post_processor = ctx.executable._post_processor.path,
     )
 
     ctx.actions.run_shell(
         inputs = proto_grpc_srcs + gapic_srcs,
         command = script,
         outputs = [ctx.outputs.pkg],
+        tools = [ctx.executable._post_processor],
     )
 
 _php_gapic_src_pkg = rule(
@@ -86,6 +90,12 @@ _php_gapic_src_pkg = rule(
     attrs = {
         "deps": attr.label_list(allow_files = True, mandatory = True),
         "package_dir": attr.string(mandatory = True),
+        "_post_processor": attr.label(
+            executable = True,
+            mandatory = False,
+            default = Label("//rules_php_gapic:php_post_processor_binary"),
+            cfg = "exec",
+        )
     },
     outputs = {"pkg": "%{name}.tar.gz"},
 )

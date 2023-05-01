@@ -28,6 +28,7 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ServiceYamlConfig;
@@ -43,12 +44,19 @@ class ResourcesGenerator
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
+        $preMigrationOnly = $serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY;
+        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails, $preMigrationOnly) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
-                    return Map::new([
+                    $descriptor = [
                         'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
-                    ]);
+                    ];
+                    if (!$preMigrationOnly) {
+                        // Include the responseType for Custom Operations because they define their own operation class.
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL');
+                    }
+                    break;
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
                     if (!is_null($methodGapicConfig) && isset($methodGapicConfig['long_running'])) {
@@ -64,50 +72,105 @@ class ResourcesGenerator
                         $maxPollDelayMillis = '5000';
                         $totalPollTimeoutMillis = '300000';
                     }
-                    return Map::new(['longRunning' => AST::array([
-                        'operationReturnType' => $method->lroResponseType->getFullname(),
-                        'metadataReturnType' => $method->lroMetadataType->getFullname(),
-                        'initialPollDelayMillis' => $initialPollDelayMillis,
-                        'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
-                        'maxPollDelayMillis' => $maxPollDelayMillis,
-                        'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
-                    ])]);
+                    $descriptor = [
+                        'longRunning' => AST::array([
+                            'operationReturnType' => $method->lroResponseType->getFullname(),
+                            'metadataReturnType' => $method->lroMetadataType->getFullname(),
+                            'initialPollDelayMillis' => $initialPollDelayMillis,
+                            'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
+                            'maxPollDelayMillis' => $maxPollDelayMillis,
+                            'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
+                        ])
+                    ];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL');
+                    }
+                    break;
                 case MethodDetails::PAGINATED:
-                    return Map::new(['pageStreaming' => AST::array([
-                        'requestPageTokenGetMethod' => $method->requestPageTokenGetter->name,
-                        'requestPageTokenSetMethod' => $method->requestPageTokenSetter->name,
-                        'requestPageSizeGetMethod' => $method->requestPageSizeGetter->name,
-                        'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
-                        'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
-                        'resourcesGetMethod' => $method->resourcesGetter->name,
-                    ])]);
+                    $descriptor = [
+                        'pageStreaming' => AST::array([
+                            'requestPageTokenGetMethod' => $method->requestPageTokenGetter->name,
+                            'requestPageTokenSetMethod' => $method->requestPageTokenSetter->name,
+                            'requestPageSizeGetMethod' => $method->requestPageSizeGetter->name,
+                            'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
+                            'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
+                            'resourcesGetMethod' => $method->resourcesGetter->name,
+                        ])
+                    ];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::PAGINATED_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
                 case MethodDetails::BIDI_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'BidiStreaming',
-                    ])]);
+                    $descriptor = [
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'BidiStreaming',
+                        ])
+                    ];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::BIDI_STREAMING_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
                 case MethodDetails::SERVER_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'ServerStreaming',
-                    ])]);
+                    $descriptor = [
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'ServerStreaming',
+                        ])
+                    ];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::SERVER_STREAMING_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
                 case MethodDetails::CLIENT_STREAMING:
-                    return Map::new(['grpcStreaming' => AST::array([
-                        'grpcStreamingType' => 'ClientStreaming',
-                    ])]);
+                    $descriptor = [
+                        'grpcStreaming' => AST::array([
+                            'grpcStreamingType' => 'ClientStreaming',
+                        ])
+                    ];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::CLIENT_STREAMING_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
                 default:
-                    return Map::new();
+                    $descriptor = [];
+
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::UNARY_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
             }
+            
+            if ($method->headerParams && !$preMigrationOnly) {
+                $descriptor['headerParams'] = $method->headerParams;
+            }
+
+            if ($method->isMixin()) {
+                $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
+            }
+
+            return Map::new($descriptor);
         };
+
+        $serviceDescriptor = $serviceDetails->methods
+            ->map(fn ($x) => [$x->name, $perMethod($x)])
+            ->filter(fn ($x) => count($x[1]) > 0)
+            ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
+            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]));
+
+        if ($serviceDetails->hasResources && !$preMigrationOnly) {
+            $serviceDescriptor['templateMap'] = $serviceDetails->resourceParts
+                ->toArray(fn($x) => $x->getNameCamelCase(), fn($x) => $x->getPattern());
+        }
 
         $return = AST::return(
             AST::array([
                 'interfaces' => AST::array([
-                    $serviceDetails->serviceName => AST::array(
-                        $serviceDetails->methods
-                            ->map(fn ($x) => [$x->name, $perMethod($x)])
-                            ->filter(fn ($x) => count($x[1]) > 0)
-                            ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
-                            ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]))
-                    )
+                    $serviceDetails->serviceName => AST::array($serviceDescriptor)
                 ])
             ])
         );

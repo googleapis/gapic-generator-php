@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
 use Google\Cloud\Functions\V1\CloudFunction;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\ListFunctionsRequest;
 
 /**
  * Returns a list of functions that belong to the requested project.
@@ -42,10 +43,13 @@ function list_functions_sample(): void
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
+    // Prepare the request message.
+    $request = new ListFunctionsRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $cloudFunctionsServiceClient->listFunctions();
+        $response = $cloudFunctionsServiceClient->listFunctions($request);
 
         /** @var CloudFunction $element */
         foreach ($response as $element) {

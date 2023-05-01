@@ -37,7 +37,7 @@ function add_comments_sample(string $formattedName): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $comments = [new Comment()];
 
     // Call the API and handle any network failures.

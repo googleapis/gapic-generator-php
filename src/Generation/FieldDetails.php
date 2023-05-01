@@ -172,7 +172,7 @@ class FieldDetails
         $this->docLines = $docLinesOverride ?? $field->leadingComments->concat($field->trailingComments);
         $this->requiredSubFields = Vector::new();
         // Load resource details, if relevant.
-        $resRef = ProtoHelpers::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+        $resRef = ProtoHelpers::resourceReference($field);
         if (!is_null($resRef)) {
             if ($resRef->getType() === '' && $resRef->getChildType() === '') {
                 throw new \Exception('type of child_type must be set to a value.');

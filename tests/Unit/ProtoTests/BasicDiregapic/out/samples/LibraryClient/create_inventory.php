@@ -44,7 +44,7 @@ function create_inventory_sample(
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $assets = [$assetsElement,];
 
     // Call the API and handle any network failures.

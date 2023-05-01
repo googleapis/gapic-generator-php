@@ -1,0 +1,19 @@
+
+    /**
+     * @param string                      $resource REQUIRED: The resource for which the policy is being specified.
+     *                                              See the operation documentation for the appropriate value for this field.
+     * @param \Google\Cloud\Iam\V1\Policy $policy   REQUIRED: The complete policy to be applied to the `resource`. The size of
+     *                                              the policy is limited to a few 10s of KB. An empty policy is a
+     *                                              valid policy but certain Cloud Platform services (such as Projects)
+     *                                              might reject them.
+     *
+     * @return \Google\Cloud\Iam\V1\SetIamPolicyRequest
+     *
+     * @experimental
+     */
+    public static function build(string $resource, \Google\Cloud\Iam\V1\Policy $policy): self
+    {
+        return (new self())
+            ->setResource($resource)
+            ->setPolicy($policy);
+    }

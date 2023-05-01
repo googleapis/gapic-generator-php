@@ -39,4 +39,7 @@ class CustomOptions
 
     // Protobuf extension number for https://github.com/googleapis/googleapis/blob/master/google/api/routing.proto.
     public const GOOGLE_API_ROUTING = 72295729;
+
+    // Protobuf extension number for fhttps://github.com/googleapis/googleapis/blob/master/google/api/client.proto.
+    public const GOOGLE_API_METHODSIGNATURE = 1051;
 }

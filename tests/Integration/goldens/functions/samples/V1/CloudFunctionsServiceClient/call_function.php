@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Functions\V1\CallFunctionRequest;
 use Google\Cloud\Functions\V1\CallFunctionResponse;
-use Google\Cloud\Functions\V1\CloudFunctionsServiceClient;
+use Google\Cloud\Functions\V1\Client\CloudFunctionsServiceClient;
 
 /**
  * Synchronously invokes a deployed Cloud Function. To be used for testing
@@ -42,10 +43,15 @@ function call_function_sample(string $formattedName, string $data): void
     // Create a client.
     $cloudFunctionsServiceClient = new CloudFunctionsServiceClient();
 
+    // Prepare the request message.
+    $request = (new CallFunctionRequest())
+        ->setName($formattedName)
+        ->setData($data);
+
     // Call the API and handle any network failures.
     try {
         /** @var CallFunctionResponse $response */
-        $response = $cloudFunctionsServiceClient->callFunction($formattedName, $data);
+        $response = $cloudFunctionsServiceClient->callFunction($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

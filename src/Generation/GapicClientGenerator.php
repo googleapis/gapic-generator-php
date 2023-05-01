@@ -527,6 +527,7 @@ class GapicClientGenerator
                 $isGrpcRest ? 'methods ' : 'method ',
                 'for the supported options.'
             );
+
         return AST::method('__construct')
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)

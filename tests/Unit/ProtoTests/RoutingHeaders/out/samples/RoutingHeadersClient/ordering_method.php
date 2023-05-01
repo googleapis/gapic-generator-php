@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START routingheaders_generated_RoutingHeaders_OrderingMethod_sync]
 use Google\ApiCore\ApiException;
+use Testing\RoutingHeaders\Client\RoutingHeadersClient;
+use Testing\RoutingHeaders\OrderRequest;
 use Testing\RoutingHeaders\Response;
-use Testing\RoutingHeaders\RoutingHeadersClient;
 
 /**
  * @param string $a
@@ -39,10 +40,18 @@ function ordering_method_sample(string $a, string $b, string $d, string $c, stri
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
 
+    // Prepare the request message.
+    $request = (new OrderRequest())
+        ->setA($a)
+        ->setB($b)
+        ->setD($d)
+        ->setC($c)
+        ->setE($e);
+
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $routingHeadersClient->orderingMethod($a, $b, $d, $c, $e);
+        $response = $routingHeadersClient->orderingMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

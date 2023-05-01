@@ -41,7 +41,7 @@ function create_profile_sample(string $formattedParent): void
     // Create a client.
     $profileServiceClient = new ProfileServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $profile = new Profile();
 
     // Call the API and handle any network failures.

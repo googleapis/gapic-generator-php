@@ -44,7 +44,7 @@ function a_method_sample(
     // Create a client.
     $basicOneofClient = new BasicOneofClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $supplementaryData = (new SupplementaryDataOneof())
         ->setExtraDescription($supplementaryDataExtraDescription);
     $other = (new Other())

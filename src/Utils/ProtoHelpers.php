@@ -19,12 +19,15 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Api\HttpRule;
+use Google\Api\ResourceDescriptor;
+use Google\Api\ResourceReference;
 use Google\Api\RoutingParameter;
 use Google\Api\RoutingRule;
 use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Generation\MethodDetails;
 use Google\Protobuf\Internal\CodedInputStream;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptor;
@@ -105,6 +108,83 @@ class ProtoHelpers
             );
     }
 
+    public static function headerParams(ProtoCatalog $catalog, MethodDescriptorProto $desc): array
+    {
+        $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
+        $httpRule = static::httpRule($desc);
+        $routingRule = static::routingRule($desc);
+
+        if ($httpRule && !$routingRule) {
+            return static::httpBasedHeaderParams($catalog, $httpRule, $inputMsg);
+        }
+
+        if ($routingRule) {
+            return static::routingBasedHeaderParams($catalog, $routingRule, $inputMsg);
+        }
+
+        return [];
+    }
+
+    public static function httpBasedHeaderParams(ProtoCatalog $catalog, HttpRule $httpRule, DescriptorProto $msg): array
+    {
+        $placeholders = static::restPlaceholders($catalog, $httpRule, $msg);
+
+        return $placeholders
+            ->keys()
+            ->map(fn($key) => [
+                'keyName' => $key,
+                'fieldAccessors' => $placeholders->get($key, Vector::new())->toArray()
+            ])
+            ->toArray();
+    }
+
+    public static function routingBasedHeaderParams(ProtoCatalog $catalog, RoutingRule $routingRule, DescriptorProto $msg): array
+    {
+
+        // Organize rules by resulting key name.
+        $rulesByKey = Vector::new($routingRule->getRoutingParameters())
+            ->groupBy(fn($x) => static::fieldOrTemplateVariable($x));
+
+        // Organize "compiled" segment matchers by resulting key name.
+        $matchersByKey = $rulesByKey->mapValues(
+            fn($key, $routingRules) =>
+                $routingRules
+                    ->filter(fn($rule) => static::hasMatcher($rule))
+                    ->map(fn($rule) => static::compileRoutingRegex($rule)))
+            ->filter(fn($key, $matchers) => $matchers->count() > 0)
+            ->mapValues(fn($key, $val) => $val->toArray());
+
+        // Reduce the rules for each key into one rule, taking first its
+        // keyName and fieldAccessors. Note: If multiple fields can be configured
+        // to supply a value for the same keyName, this will not work. To date,
+        // we only support referring to one field with multiple parsing rules
+        // per header key.
+        $paramDescs = $rulesByKey->keys()
+            ->map(fn($key) => $rulesByKey->get($key, Vector::new())
+                ->reduce([], fn($val, $rule) => [
+                        'keyName' => $val['keyName'] ?? $key,
+                        'fieldAccessors' => $val['fieldAccessors'] ?? static::buildGetterChain($catalog, $msg, $rule->getField()),
+                ])
+            );
+
+        // Include the list of segment matchers for a parsing rule.
+        $paramDescs = $paramDescs->map(fn($p) =>
+            isset($matchersByKey[$p['keyName']]) ? 
+                array_merge($p, ['matchers' => $matchersByKey[$p['keyName']]]) :
+                $p);
+        
+        return $paramDescs->toArray();
+    }
+
+    private static function hasMatcher(RoutingParameter $routingParam): bool
+    {
+        // Has a path_template in RoutingParameter and the path_template defines
+        // a segment matcher other than '**' ("match anything"), with the header
+        // key override.
+        $temp = $routingParam->getPathTemplate();
+        return !empty($temp) && static::strContains($temp, '=') && !static::strEndsWith($temp, "=**}");
+    }
+
     /**
      * Processes the `RoutingParameter.path_template` segment matcher into a PHP regular expression,
      * if defined.
@@ -122,6 +202,10 @@ class ProtoHelpers
         // The path_template only overrides the header key, doesn't define
         // segment matcher.
         if (!str_contains($routingParam->getPathTemplate(), '=')) {
+            return null;
+        }
+
+        if (!static::hasMatcher($routingParam)) {
             return null;
         }
         $template = $routingParam->getPathTemplate();
@@ -355,6 +439,11 @@ class ProtoHelpers
         return $result;
     }
 
+    public static function httpRule(MethodDescriptorProto $method)
+    {
+        return static::getCustomOption($method, CustomOptions::GOOGLE_API_HTTP, HttpRule::class);
+    }
+
     public static function routingRule(MethodDescriptorProto $method)
     {
         return static::getCustomOption($method, CustomOptions::GOOGLE_API_ROUTING, RoutingRule::class);
@@ -409,20 +498,52 @@ class ProtoHelpers
         return static::getCustomOption($field, CustomOptions::GOOGLE_CLOUD_OPERATION_FIELD);
     }
 
+    public static function resourceReference(FieldDescriptorProto $field)
+    {
+        return static::getCustomOption($field, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class);
+    }
+
+    public static function resourceDefinition(DescriptorProto $message)
+    {
+        return static::getCustomOption($message, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
+    }
+
+    public static function fileResourceDefinitions(FileDescriptorProto $file)
+    {
+        return static::getCustomOptionRepeated($file, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class);
+    }
+
     // Use of lookupOperationService assumes that isOperationService has already been called and returned true.
     public static function lookupOperationService(ProtoCatalog $catalog, MethodDescriptorProto $desc, string $package): ServiceDescriptorProto
     {
         $opServ = ProtoHelpers::operationService($desc);
         // Prepare fully-qualified proto element name using containing proto package.
         // Values that exist in another package will contain the '.' separator.
-        if (!str_contains($opServ, '.')) {
+        if (!static::strContains($opServ, '.')) {
             $opServ = "{$package}.{$opServ}";
         }
         // Prepend '.' to indicate the name is fully-qualified.
-        if (!str_starts_with($opServ, '.')) {
+        if (!static::strStartsWith($opServ, '.')) {
             $opServ = '.' . $opServ;
         }
 
         return $catalog->servicesByFullname[$opServ];
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strEndsWith($haystack, $needle)
+    {
+        return $needle !== '' ? substr($haystack, -strlen($needle)) === $needle : true;
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strStartsWith($haystack, $needle) {
+        return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+    }
+
+    // TODO: Remove once running on PHP 8.
+    private static function strContains( $haystack, $needle)
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
     }
 }

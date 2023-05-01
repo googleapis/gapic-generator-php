@@ -218,6 +218,7 @@ php_gapic_library(
     name = "functions_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/functions/v1:functions_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/functions/v1:functions_grpc_service_config.json",
+    migration_mode = "NEW_SURFACE_ONLY",
     deps = [
         ":functions_php_grpc",
         ":functions_php_proto",
@@ -284,6 +285,7 @@ php_gapic_library(
     srcs = ["@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/securitycenter/v1:securitycenter_v1.yaml",
+    migration_mode = "MIGRATING",
     deps = [
         ":securitycenter_php_grpc",
         ":securitycenter_php_proto",
@@ -316,6 +318,7 @@ php_gapic_library(
     srcs = ["@com_google_googleapis//google/cloud/speech/v1:speech_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/speech/v1:speech_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/speech/v1:speech_v1.yaml",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     deps = [
         ":speech_php_grpc",
         ":speech_php_proto",
@@ -349,6 +352,7 @@ php_gapic_library(
     gapic_yaml = "@com_google_googleapis//google/cloud/redis/v1:redis_gapic.yaml",
     grpc_service_config = "@com_google_googleapis//google/cloud/redis/v1:redis_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/redis/v1:redis_v1.yaml",
+    migration_mode = "MIGRATION_MODE_UNSPECIFIED",
     deps = [
         ":redis_php_grpc",
         ":redis_php_proto",

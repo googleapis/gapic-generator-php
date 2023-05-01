@@ -18,13 +18,16 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
+use Google\Generator\Utils\MigrationMode;
+
 require __DIR__ . '../../../../vendor/autoload.php';
 error_reporting(E_ALL);
 
 const UNIT_TESTS = [
   1 => [
     'name' => 'Basic',
-    'protoPath' => 'Basic/basic.proto'
+    'protoPath' => 'Basic/basic.proto',
+    'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
   ],
   2 => [
     'name' => 'BasicLro',
@@ -57,7 +60,8 @@ const UNIT_TESTS = [
   ],
   9 => [
     'name' => 'RoutingHeaders',
-    'protoPath' => 'RoutingHeaders/routing-headers.proto'
+    'protoPath' => 'RoutingHeaders/routing-headers.proto',
+    'migrationMode' => MigrationMode::MIGRATING
   ],
   10 => [
     'name' => 'DeprecatedService',
@@ -67,11 +71,13 @@ const UNIT_TESTS = [
     'name' => 'BasicDiregapic',
     'protoPath' => 'BasicDiregapic/library_rest.proto',
     'package' => 'google.example.library.v1',
-    'transport' => 'rest'
+    'transport' => 'rest',
+    'migrationMode' => MigrationMode::PRE_MIGRATION_SURFACE_ONLY
   ],
   12 => [
     'name' => 'ResourceNames',
-    'protoPath' => 'ResourceNames/resource-names.proto'
+    'protoPath' => 'ResourceNames/resource-names.proto',
+    'migrationMode' => MigrationMode::MIGRATION_MODE_UNSPECIFIED
   ],
   13 => [
     'name' => 'CustomLro',
@@ -120,7 +126,8 @@ function updateGolden(int $testIndex)
         $testData['protoPath'],
         array_key_exists('package', $testData) ? $testData['package'] : null,
         array_key_exists('transport', $testData) ? $testData['transport'] : null,
-        array_key_exists('generateSnippets', $testData) ? $testData['generateSnippets'] : true
+        array_key_exists('generateSnippets', $testData) ? $testData['generateSnippets'] : true,
+        array_key_exists('migrationMode', $testData) ? $testData['migrationMode'] : MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     );
     print("\n");
 }

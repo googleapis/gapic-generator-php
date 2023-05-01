@@ -92,6 +92,8 @@ class WorkflowTemplateServiceGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $clusterNameTemplate;
+
     private static $locationNameTemplate;
 
     private static $projectLocationWorkflowTemplateNameTemplate;
@@ -99,6 +101,8 @@ class WorkflowTemplateServiceGapicClient
     private static $projectRegionWorkflowTemplateNameTemplate;
 
     private static $regionNameTemplate;
+
+    private static $serviceNameTemplate;
 
     private static $workflowTemplateNameTemplate;
 
@@ -123,6 +127,15 @@ class WorkflowTemplateServiceGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getClusterNameTemplate()
+    {
+        if (self::$clusterNameTemplate == null) {
+            self::$clusterNameTemplate = new PathTemplate('projects/{project}/locations/{location}/clusters/{cluster}');
+        }
+
+        return self::$clusterNameTemplate;
     }
 
     private static function getLocationNameTemplate()
@@ -161,6 +174,15 @@ class WorkflowTemplateServiceGapicClient
         return self::$regionNameTemplate;
     }
 
+    private static function getServiceNameTemplate()
+    {
+        if (self::$serviceNameTemplate == null) {
+            self::$serviceNameTemplate = new PathTemplate('projects/{project}/locations/{location}/services/{service}');
+        }
+
+        return self::$serviceNameTemplate;
+    }
+
     private static function getWorkflowTemplateNameTemplate()
     {
         if (self::$workflowTemplateNameTemplate == null) {
@@ -174,15 +196,36 @@ class WorkflowTemplateServiceGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
+                'cluster' => self::getClusterNameTemplate(),
                 'location' => self::getLocationNameTemplate(),
                 'projectLocationWorkflowTemplate' => self::getProjectLocationWorkflowTemplateNameTemplate(),
                 'projectRegionWorkflowTemplate' => self::getProjectRegionWorkflowTemplateNameTemplate(),
                 'region' => self::getRegionNameTemplate(),
+                'service' => self::getServiceNameTemplate(),
                 'workflowTemplate' => self::getWorkflowTemplateNameTemplate(),
             ];
         }
 
         return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a cluster
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $cluster
+     *
+     * @return string The formatted cluster resource.
+     */
+    public static function clusterName($project, $location, $cluster)
+    {
+        return self::getClusterNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'cluster' => $cluster,
+        ]);
     }
 
     /**
@@ -258,6 +301,25 @@ class WorkflowTemplateServiceGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a service
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $service
+     *
+     * @return string The formatted service resource.
+     */
+    public static function serviceName($project, $location, $service)
+    {
+        return self::getServiceNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'service' => $service,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a
      * workflow_template resource.
      *
@@ -280,10 +342,12 @@ class WorkflowTemplateServiceGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
      * - location: projects/{project}/locations/{location}
      * - projectLocationWorkflowTemplate: projects/{project}/locations/{location}/workflowTemplates/{workflow_template}
      * - projectRegionWorkflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
      * - region: projects/{project}/regions/{region}
+     * - service: projects/{project}/locations/{location}/services/{service}
      * - workflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
      *
      * The optional $template argument can be supplied to specify a particular pattern,

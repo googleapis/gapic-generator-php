@@ -62,7 +62,7 @@ function create_application_sample(
     // Create a client.
     $applicationServiceClient = new ApplicationServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $applicationCreateTime = new Timestamp();
     $application = (new Application())
         ->setExternalId($applicationExternalId)

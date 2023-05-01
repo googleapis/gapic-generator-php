@@ -38,6 +38,9 @@ abstract class AST
     /** @var string Constant to reference `__DIR__`. */
     public const __DIR__ = "\0__DIR__";
 
+    /** @var string Constant to reference `__CLASS__`. */
+    public const __CLASS__ = "\0__CLASS__";
+
     /** @var string Constant to reference `isset`. */
     public const ISSET = "\0isset";
 
@@ -56,11 +59,26 @@ abstract class AST
     /** @var string Constant to reference `array_merge`. */
     public const ARRAY_MERGE = "\0array_merge";
 
+    /** @var string Constant to reference `array_unshift`. */
+    public const ARRAY_UNSHIFT = "\0array_unshift";
+
+    /** @var string Constant to reference `call_user_func_array`. */
+    public const CALL_USER_FUNC_ARRAY = "\0call_user_func_array";
+
     /** @var string Constant to reference `preg_match`. */
     public const PREG_MATCH = "\0preg_match";
 
     /** @var string Constant to reference `printf`. */
     public const PRINT_F = "\0printf";
+
+    /** @var string Constant to reference `substr`. */
+    public const SUBSTR = "\0substr";
+
+    /** @var string Constant to reference `trigger_error`. */
+    public const TRIGGER_ERROR = "\0trigger_error";
+
+    /** @var string Constant to reference `E_USER_ERROR`. */
+    public const E_USER_ERROR = "\0E_USER_ERROR";
 
     protected static function deref($obj): string
     {
@@ -134,12 +152,18 @@ abstract class AST
      *
      * @param Type $type The type of the class to create.
      * @param ?ResolvedType $extends
+     * @param bool $final Flag indicating if the class is final or not.
+     * @param bool $abstract Flag indicating if the class is abtract or not.
      *
      * @return PhpClass
      */
-    public static function class(Type $type, ?ResolvedType $extends = null): PhpClass
-    {
-        return new PhpClass($type, $extends);
+    public static function class(
+        Type $type,
+        ?ResolvedType $extends = null,
+        bool $final = false,
+        bool $abstract = false
+    ): PhpClass {
+        return new PhpClass($type, $extends, $final, $abstract);
     }
 
     /**
@@ -360,10 +384,11 @@ abstract class AST
      *
      * @param mixed $data The array content. Supports both associative and sequential arrays.
      *     May be an array or a Map.
+     * @param bool $oneLine Indicates the code should be generated on one line, rather than multiple.
      *
      * @return Expression
      */
-    public static function array($data): Expression
+    public static function array(mixed $data, bool $oneLine = false): Expression
     {
         if (is_array($data)) {
             $keyValues = Vector::new(array_map(fn ($v, $k) => [$k, $v], $data, array_keys($data)))
@@ -373,10 +398,11 @@ abstract class AST
         } else {
             throw new \Exception('$data must be an array or a Map.');
         }
-        return new class($keyValues) extends Expression {
-            public function __construct($keyValues)
+        return new class($keyValues, $oneLine) extends Expression {
+            public function __construct($keyValues, $oneLine)
             {
                 $this->keyValues = $keyValues;
+                $this->oneLine = $oneLine;
             }
             public function toCode(): string
             {
@@ -386,6 +412,11 @@ abstract class AST
                     $this->keyValues->map(fn ($x) => static::toPhp($x[1]));
                 if (count($items) === 1 && substr($items[0], 0, 4) === 'new ') {
                     return "{$items}";
+                }
+                if ($this->oneLine) {
+                    $itemsStr = $items->skipLast(1)->map(fn ($x) => "{$x}, ")->join();
+                    $itemsStr = $itemsStr . "{$items->last()}";
+                    return "[{$itemsStr}]";    
                 }
                 $itemsStr = $items->map(fn ($x) => "{$x},\n")->join();
                 $firstNl = count($items) === 0 ? '' : "\n";
@@ -724,6 +755,30 @@ abstract class AST
                 return static::toPhp($this->expr) .
                     ' ? ' . static::toPhp($this->true) .
                     ' : ' . static::toPhp($this->false);
+            }
+        };
+    }
+
+    /**
+     * Create a '??' expression.
+     * 
+     * @param Expression $expr The expression to check \isset and !\is_null, as well as the value to return if true.
+     * @param Expression $false The expresion to return if $expr is not set or is null.
+     * 
+     * @return Expression
+     */
+    public static function nullCoalescing(Expression $expr, Expression $false): Expression
+    {
+        return new class($expr, $false) extends Expression {
+            public function __construct($expr, $false)
+            {
+                $this->expr = $expr;
+                $this->false = $false;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->expr) .
+                    ' ?? ' . static::toPhp($this->false);
             }
         };
     }

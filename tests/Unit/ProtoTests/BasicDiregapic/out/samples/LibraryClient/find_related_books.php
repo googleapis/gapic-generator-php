@@ -38,7 +38,7 @@ function find_related_books_sample(
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $formattedNames = [$formattedNamesElement,];
     $formattedShelves = [$formattedShelvesElement,];
 

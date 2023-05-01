@@ -18,12 +18,11 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Api\ResourceDescriptor;
-use Google\Api\ResourceReference;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
@@ -49,14 +48,23 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
 
+    /** @var Type *Readonly* The type of the service client V2 class. */
+    public Type $gapicClientV2Type;
+
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
+
+    /** @var Type *Readonly* The type of the empty client V2 class. */
+    public Type $emptyClientV2Type;
 
     /** @var Type *Readonly* The type of the gRPC client. */
     public Type $grpcClientType;
 
     /** @var Type *Readonly* The type of the unit-tests class. */
     public Type $unitTestsType;
+
+    /** @var Type *Readonly* The type of the unit-tests class for V2 clients. */
+    public Type $unitTestsV2Type;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
@@ -116,6 +124,9 @@ class ServiceDetails
 
     public bool $hasCustomOpCancel;
 
+    /** @var bool *Readonly* Whether this service makes use of resources. */
+    public bool $hasResources;
+    
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
@@ -133,26 +144,37 @@ class ServiceDetails
      */
     public int $transportType;
 
+    /** @var bool *Readonly* Whether the service only has streaming RPCs or not. */
+    public bool $streamingOnly;
+
+    /** @var string *Readonly* MigrationMode to use during generation. */
+    public string $migrationMode;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
         FileDescriptorProto $fileDesc,
-        int $transportType = Transport::GRPC_REST
+        int $transportType = Transport::GRPC_REST,
+        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
         $this->namespace = $namespace;
+        $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
+        $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\BaseClient\\{$desc->getName()}BaseClient");
+        $this->emptyClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?
             "{$namespace}\\Tests\\Unit" :
             substr($namespace, 0, -strlen($nsVersionAndSuffix)) . 'Tests\\Unit\\' . str_replace('/', '\\', $nsVersionAndSuffix);
         $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
+        $this->unitTestsV2Type = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->shortName = $desc->getName();
@@ -168,6 +190,7 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
+        $this->streamingOnly = !$this->methods->any(fn($m) => !$m->isStreaming());
         $customOperations = $this->methods->filter(fn ($x) => $x->methodType === MethodDetails::CUSTOM_OP);
         $this->hasCustomOp = $customOperations->count() > 0;
         if ($this->hasCustomOp) {
@@ -210,11 +233,11 @@ class ServiceDetails
             // Only top-level resource-defs are included; matches monolith behaviour.
             // TODO(vNext): Decide if this behaviour is correct, posibly modify.
             $messageResourceDef = $level === 0 ?
-                ProtoHelpers::getCustomOption($msg, CustomOptions::GOOGLE_API_RESOURCEDEFINITION, ResourceDescriptor::class) :
+                ProtoHelpers::resourceDefinition($msg) :
                 null;
             $fields = Vector::new($msg->getField());
             $resourceRefs = $fields
-                ->map(fn ($x) => ProtoHelpers::getCustomOption($x->desc, CustomOptions::GOOGLE_API_RESOURCEREFERENCE, ResourceReference::class))
+                ->map(fn ($x) => ProtoHelpers::resourceReference($x))
                 ->filter(fn ($x) => !is_null($x));
             $typeRefResourceDefs = $resourceRefs
                 ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
@@ -223,41 +246,32 @@ class ServiceDetails
                 ->filter(fn ($x) => $x->getChildType() !== '')
                 ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getChildType(), Vector::new([])));
 
-            // Find all fields (only one level deep) that are resources defined elsewhere.
-            $typeFieldRefResourceDefs = Vector::new([]);
-            $childFieldTypeRefResourceDefs = Vector::new([]);
-            if ($level == 0) {
-                $fieldDetails = $fields
+            // At every level, find fields that represent resource names for resources defined elsewhere.
+            $fieldDetails = $fields
                 ->filter(fn ($f) => !is_null($f))
                 ->map(fn ($f) => new FieldDetails($catalog, $msg, $f));
 
-                $fullnameFn = function ($fd) {
-                    return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
-                };
-                $fieldResourceRefs = $fieldDetails
-                ->filter(fn ($x) => $x->isRequired
-                  && $x->isMessage
-                  && !is_null($x->fullname))
-                  ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
-                  ->filter(fn ($x) => !is_null($x));
-                $typeFieldRefResourceDefs = $fieldResourceRefs
+            $fullnameFn = function ($fd) {
+                return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
+            };
+            $fieldResourceRefs = $fieldDetails
+            ->filter(fn ($x) => $x->isRequired
+                && $x->isMessage
+                && !is_null($x->fullname))
+                ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
+                ->filter(fn ($x) => !is_null($x));
+            $typeFieldRefResourceDefs = $fieldResourceRefs
                 ->filter(fn ($x) => $x->getType() !== '' && $x->getType() !== '*')
                 ->map(fn ($x) => $catalog->resourcesByType[$x->getType()]);
-                $childFieldTypeRefResourceDefs = $fieldResourceRefs
+            $childFieldTypeRefResourceDefs = $fieldResourceRefs
                 ->filter(fn ($x) => $x->getType() !== '')
                 ->flatMap(fn ($x) => $catalog->parentResourceByChildType->get($x->getType(), Vector::new([])));
-            }
 
-            // Recurse one level down into message fields; matches monolith behaviour.
-            // TODO(vNext): Decide if this behaviour is correct, posibly modify.
-            if ($level === 0) {
-                $nestedDefs = $fields
+            // Recurse as deep as necessary to reach all resource in the request message tree.
+            $nestedDefs = $fields
                     ->filter(fn ($f) => $f->getType() === GPBType::MESSAGE)
                     ->map(fn ($f) => $catalog->msgsByFullname[$f->desc->getMessageType()])
                     ->flatMap(fn ($nestedMsg) => $gatherMsgResDefs($nestedMsg, $level + 1));
-            } else {
-                $nestedDefs = Vector::new([]);
-            }
             return $typeRefResourceDefs
               ->concat($typeFieldRefResourceDefs)
               ->concat($childFieldTypeRefResourceDefs)
@@ -275,6 +289,7 @@ class ServiceDetails
             ->concat($this->resourceDefs->map(fn ($res) => count($res->patterns) === 1 ? Vector::new([]) : $res->patterns)->flatten())
             ->distinct(fn ($x) => $x->getNameCamelCase())
             ->orderBy(fn ($x) => $x->getNameCamelCase());
+        $this->hasResources = count($this->resourceParts) > 0;
     }
 
     /**

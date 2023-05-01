@@ -120,7 +120,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     }
 
     /** @inheritDoc */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->data[$offset < 0 ? count($this->data) + $offset : $offset];
     }

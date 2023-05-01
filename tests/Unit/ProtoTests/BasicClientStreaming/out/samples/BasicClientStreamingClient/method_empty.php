@@ -41,7 +41,7 @@ function method_empty_sample(): void
     // Create a client.
     $basicClientStreamingClient = new BasicClientStreamingClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = new EmptyRequest();
 
     // Call the API and handle any network failures.

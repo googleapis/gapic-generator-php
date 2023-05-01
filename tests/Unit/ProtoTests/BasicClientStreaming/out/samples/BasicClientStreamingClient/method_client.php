@@ -35,7 +35,7 @@ function method_client_sample(int $aNumber): void
     // Create a client.
     $basicClientStreamingClient = new BasicClientStreamingClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = (new Request())
         ->setANumber($aNumber);
 

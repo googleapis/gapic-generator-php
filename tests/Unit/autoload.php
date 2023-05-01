@@ -24,24 +24,6 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
     // RUNNING is a fake constant for the custom operation status enum.
     const RUNNING = 1;
 
-    private static function defaultFieldValue($name)
-    {
-        switch ($name) {
-            case 'PageToken':
-                return '';
-            case 'Project':
-                return '';
-            case 'Region':
-                return '';
-            case 'HttpErrorStatusCode':
-                return '';
-            case 'Foo':
-                return '';
-            default:
-                throw new \Exception("No default value available for field: '{$name}'");
-        }
-    }
-
     public function __construct()
     {
     }
@@ -55,9 +37,11 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         switch ($prefix) {
             case 'set':
                 $this->$suffix = $arguments[0];
-                return;
+                return $this;
             case 'get':
-                return isset($this->$suffix) ? $this->$suffix : static::defaultFieldValue($suffix);
+                // Always return an empty string as by default. If a special case is necessary we
+                // can add (back) a default value function that switches on field name to handle it.
+                return isset($this->$suffix) ? $this->$suffix : '';
             default:
                 throw new \Exception("FakeMessage cannot handle method call: '{$name}'");
         }

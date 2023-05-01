@@ -40,7 +40,7 @@ abstract class Expression extends AST implements \ArrayAccess
         return true;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return AST::index($this, $offset);
     }
