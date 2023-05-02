@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/gapic-generator-php/compare/v1.7.1...v1.7.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* **bazel:** Ignore empty zip files during packaging ([#619](https://github.com/googleapis/gapic-generator-php/issues/619)) ([0db730f](https://github.com/googleapis/gapic-generator-php/commit/0db730faadf82ffc1430ef2cc42c3919e48fa91d))
+
 ## [1.7.1](https://github.com/googleapis/gapic-generator-php/compare/v1.7.0...v1.7.1) (2023-05-02)
 
 
