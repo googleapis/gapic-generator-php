@@ -39,7 +39,7 @@ function create_shelf_sample(string $shelfName): void
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $shelf = (new ShelfResponse())
         ->setName($shelfName);
 

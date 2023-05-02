@@ -42,7 +42,7 @@ function update_book_sample(string $formattedName, string $formattedBookName): v
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $book = (new BookResponse())
         ->setName($formattedBookName);
 

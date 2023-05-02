@@ -38,7 +38,7 @@ function update_book_index_sample(string $formattedName, string $indexName): voi
     // Create a client.
     $libraryClient = new LibraryClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $indexMap = [];
 
     // Call the API and handle any network failures.

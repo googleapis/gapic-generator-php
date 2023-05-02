@@ -41,7 +41,7 @@ function method1_bidi_streaming_sample(): void
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $request = new Request1();
 
     // Call the API and handle any network failures.

@@ -41,7 +41,7 @@ function method_empty_sample(): void
     // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $request = new EmptyRequest();
 
     // Call the API and handle any network failures.
