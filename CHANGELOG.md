@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/gapic-generator-php/compare/v1.7.0...v1.7.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* Lower hashing constant to avoid overflow ([#617](https://github.com/googleapis/gapic-generator-php/issues/617)) ([b05d16f](https://github.com/googleapis/gapic-generator-php/commit/b05d16fe1650cd92a97eb2d872dc0561462924c8))
+
 ## [1.7.0](https://github.com/googleapis/gapic-generator-php/compare/v1.6.8...v1.7.0) (2023-05-01)
 
 
