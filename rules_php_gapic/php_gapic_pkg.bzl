@@ -55,11 +55,19 @@ def _php_gapic_src_pkg_impl(ctx):
     set -e
     for proto_grpc_src in {proto_grpc_srcs}; do
         mkdir -p {package_dir_path}/proto/src
-        unzip -q -o $proto_grpc_src -d {package_dir_path}/proto/src
+        if zipinfo -t $proto_grpc_src | grep -q "Empty zipfile."; then
+            echo "Ignoring empty proto/grpc zip file $proto_grpc_src";
+        else
+            unzip -q -o $proto_grpc_src -d {package_dir_path}/proto/src
+        fi
     done
     for gapic_src in {gapic_srcs}; do
-        mkdir -p {package_dir_path}/proto
-        unzip -q -o $gapic_src -d {package_dir_path}
+        if zipinfo -t $gapic_src | grep -q "Empty zipfile."; then
+            echo "Ignoring empty gapic zip file $gapic_src";
+        else
+            mkdir -p {package_dir_path}/proto
+            unzip -q -o $gapic_src -d {package_dir_path}
+        fi
     done
     {post_processor} --input {package_dir_path}
     cd {package_dir_path}/{tar_cd_suffix}
