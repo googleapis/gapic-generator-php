@@ -35,7 +35,7 @@ function method_bidi_sample(int $aNumber): void
     // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $request = (new Request())
         ->setANumber($aNumber);
 

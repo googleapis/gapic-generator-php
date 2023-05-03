@@ -378,7 +378,11 @@ class SnippetGenerator
         $shouldGenerateDocBlock = $docLineCount > 0
             || count($snippetDetails->phpDocParams) > 0
             || !$hasSampleParams;
-        $clientType = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED || $this->serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY ?
+        $preMigrationSurface = in_array(
+            $this->serviceDetails->migrationMode,
+            [MigrationMode::MIGRATION_MODE_UNSPECIFIED, MigrationMode::PRE_MIGRATION_SURFACE_ONLY]
+        );
+        $clientType = $preMigrationSurface ?
             $this->serviceDetails->emptyClientType :
             $this->serviceDetails->emptyClientV2Type;
 
@@ -393,7 +397,11 @@ class SnippetGenerator
                         AST::new($snippetDetails->context->type($clientType))()
                     ),
                     $hasSampleAssignments ? PHP_EOL : null,
-                    $hasSampleAssignments ? '// Prepare the request message.' : null,
+                    $hasSampleAssignments ? (
+                        $preMigrationSurface
+                            ? '// Prepare any non-scalar elements to be passed along with the request.'
+                            : '// Prepare the request message.'
+                        ) : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',

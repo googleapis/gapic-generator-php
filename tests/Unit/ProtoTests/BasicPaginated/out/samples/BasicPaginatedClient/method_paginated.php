@@ -40,7 +40,7 @@ function method_paginated_sample(string $aField, string $pageToken): void
     // Create a client.
     $basicPaginatedClient = new BasicPaginatedClient();
 
-    // Prepare the request message.
+    // Prepare any non-scalar elements to be passed along with the request.
     $partOfRequestA = [new PartOfRequestA()];
 
     // Call the API and handle any network failures.
