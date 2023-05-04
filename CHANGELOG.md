@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/gapic-generator-php/compare/v1.7.2...v1.7.3) (2023-05-03)
+
+
+### Bug Fixes
+
+* Reduce noise by reverting sample comment ([#622](https://github.com/googleapis/gapic-generator-php/issues/622)) ([d2e87ab](https://github.com/googleapis/gapic-generator-php/commit/d2e87ab51912c4f1e3e09e85f11330a1d3ef7970))
+
 ## [1.7.2](https://github.com/googleapis/gapic-generator-php/compare/v1.7.1...v1.7.2) (2023-05-02)
 
 
