@@ -38,7 +38,11 @@ class FragmentInjectionProcessor implements Processor
         foreach($fragmentItr as $finding) {
             $fragmentPath = $finding[0];
             $protoPath = str_replace(['fragments', '.build.txt'], ['proto/src', '.php'], $fragmentPath);
-            
+            if (!file_exists($protoPath)) {
+                // requested class may be defined in a different package
+                printf("Class not found for %s - Skipping.\n", str_replace($inputDir . '/', '', $fragmentPath));
+                continue;
+            }
             self::inject($fragmentPath, $protoPath);
         }
     }

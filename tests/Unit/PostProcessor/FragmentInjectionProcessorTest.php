@@ -117,23 +117,13 @@ EOL;
         $addFragmentUtil->insert('SYNTAX ERROR');
     }
 
-    /**
-     * @dataProvider provideWriteMethodToClassScript
-     */
-    public function testFragmentInjectionProcessor(
-        string $methodFragment,
-        string $classContents,
-        \Throwable $expectedException = null
-    ) {
-        if ($expectedException) {
-            $this->expectException(get_class($expectedException));
-            $this->expectExceptionMessage($expectedException->getMessage());
-        }
+    public function testFragmentInjectionProcessor()
+    {
         $tmpDir = sys_get_temp_dir() . '/test-fragment-injection-processor-' . rand();
         mkdir($tmpDir . '/fragments', 0777, true);
         mkdir($tmpDir . '/proto/src', 0777, true);
-        file_put_contents($tmpDir . '/fragments/Bar.build.txt', $methodFragment);
-        file_put_contents($toFile = $tmpDir . '/proto/src/Bar.php', $classContents);
+        file_put_contents($tmpDir . '/fragments/Bar.build.txt', $this->methodFragment);
+        file_put_contents($toFile = $tmpDir . '/proto/src/Bar.php', $this->classContents1);
 
         FragmentInjectionProcessor::run($tmpDir);
 
@@ -141,15 +131,29 @@ EOL;
         $this->expectOutputString('Fragment written to ' . $toFile . PHP_EOL);
     }
 
-    public function provideWriteMethodToClassScript()
+    public function testFragmentInjectionProcessorFailsOnSyntaxError()
     {
-        return [
-            [$this->methodFragment, $this->classContents1],
-            [
-                'SYNTAX ERROR',
-                $this->classContents1,
-                new ParseError('Provided contents contains a PHP syntax error')
-            ]
-        ];
+        $this->expectException(ParseError::class);
+        $this->expectExceptionMessage('Provided contents contains a PHP syntax error');
+
+        $tmpDir = sys_get_temp_dir() . '/test-fragment-injection-processor-' . rand();
+        mkdir($tmpDir . '/fragments', 0777, true);
+        mkdir($tmpDir . '/proto/src', 0777, true);
+        file_put_contents($tmpDir . '/fragments/Bar.build.txt', 'SYNTAX ERROR');
+        file_put_contents($tmpDir . '/proto/src/Bar.php', $this->classContents);
+
+        FragmentInjectionProcessor::run($tmpDir);
+    }
+
+    public function testFragmentInjectionProcessorSkipsMissingClasses()
+    {
+        $tmpDir = sys_get_temp_dir() . '/test-fragment-injection-processor-' . rand();
+        mkdir($tmpDir . '/fragments', 0777, true);
+        file_put_contents($tmpDir . '/fragments/Bar.build.txt', $this->methodFragment);
+
+        FragmentInjectionProcessor::run($tmpDir);
+
+        // If we've gotten here, the PHP code is valid. Just assert that the contents have changed.
+        $this->expectOutputString("Class not found for fragments/Bar.build.txt - Skipping.\n");
     }
 }
