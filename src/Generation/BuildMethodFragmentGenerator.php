@@ -56,6 +56,11 @@ class BuildMethodFragmentGenerator
         $buildMethodSnippets = Map::new([]);
         foreach ($this->serviceDetails->methods as $methodDetails) {
             if ($methodDetails->methodSignature && !$methodDetails->isMixin()) {
+                // Do not generate build method fragments for request messages outside this package
+                $descriptor = $methodDetails->inputMsg->desc;
+                if (0 !== strpos($descriptor->getFullName(), $this->serviceDetails->package)) {
+                    continue;
+                }
                 $buildMethods = Vector::new();
                 foreach ($methodDetails->methodSignature as $i => $methodSignature) {
                     if (empty($methodSignature)) {

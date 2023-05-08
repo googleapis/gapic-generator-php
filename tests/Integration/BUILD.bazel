@@ -484,6 +484,7 @@ php_gapic_library(
     grpc_service_config = "apis/kms/v1/cloudkms_grpc_service_config.json",
     # For the IAM mixin.
     service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
+    migration_mode = "MIGRATION_MODE_UNSPECIFIED",
     deps = [
         ":kms_php_proto",
     ],
