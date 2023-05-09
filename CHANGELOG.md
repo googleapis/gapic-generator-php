@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.4](https://github.com/googleapis/gapic-generator-php/compare/v1.7.3...v1.7.4) (2023-05-09)
+
+
+### Bug Fixes
+
+* Do not generate fragments for requests in other packages ([#626](https://github.com/googleapis/gapic-generator-php/issues/626)) ([d5be067](https://github.com/googleapis/gapic-generator-php/commit/d5be067dce236efb8f66737e80074277dc5dfd86))
+
 ## [1.7.3](https://github.com/googleapis/gapic-generator-php/compare/v1.7.2...v1.7.3) (2023-05-03)
 
 
