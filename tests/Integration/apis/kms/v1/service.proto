@@ -349,7 +349,6 @@ service KeyManagementService {
       post: "/v1/{resource=**}:getIamPolicy"
       body: "*"
     };
-    option (google.api.method_signature) = "resource";
   }
 }
 
