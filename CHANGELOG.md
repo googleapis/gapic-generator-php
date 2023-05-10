@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.5](https://github.com/googleapis/gapic-generator-php/compare/v1.7.4...v1.7.5) (2023-05-10)
+
+
+### Bug Fixes
+
+* Remove oneof wrappers in v2 ([#629](https://github.com/googleapis/gapic-generator-php/issues/629)) ([f69fcfb](https://github.com/googleapis/gapic-generator-php/commit/f69fcfb19121d1bb4f4c6282be3cced945e6accc))
+
 ## [1.7.4](https://github.com/googleapis/gapic-generator-php/compare/v1.7.3...v1.7.4) (2023-05-09)
 
 
