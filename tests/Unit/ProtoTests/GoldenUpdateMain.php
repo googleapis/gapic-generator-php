@@ -91,7 +91,7 @@ const UNIT_TESTS = [
     'package' => 'testing.disablesnippets',
     'generateSnippets' => false
   ],
-  14 => [
+  15 => [
     'name' => 'BasicOneof (new surface only)',
     'protoPath' => 'BasicOneofNew/basic-oneof-new.proto',
     'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
