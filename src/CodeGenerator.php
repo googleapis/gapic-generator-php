@@ -380,8 +380,8 @@ class CodeGenerator
             // [Start surface version-agnostic code generation]
 
             // Oneof wrapper classes.
-            $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
             if ($migrationMode != MigrationMode::NEW_SURFACE_ONLY) {
+                $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
                 $oneofWrapperFiles = OneofWrapperGenerator::generate($ctx, $service);
                 foreach ($oneofWrapperFiles as $oneofWrapperFile) {
                     $oneofClassNameComponents = explode('\\', $oneofWrapperFile->class->type->getFullname(/* omitLeadingBackslash = */ true));

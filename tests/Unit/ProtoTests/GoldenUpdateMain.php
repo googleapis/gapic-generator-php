@@ -35,7 +35,7 @@ const UNIT_TESTS = [
   ],
   3 => [
     'name' => 'BasicOneof',
-    'protoPath' => 'BasicOneof/basic-oneof.proto',
+    'protoPath' => 'BasicOneof/basic-oneof.proto'
   ],
   4 => [
     'name' => 'BasicPaginated',
