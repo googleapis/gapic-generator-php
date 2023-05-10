@@ -30,7 +30,6 @@ use Google\Rpc\Code;
 use Testing\BasicOneof\Client\BasicOneofClient;
 use Testing\BasicOneof\Request;
 use Testing\BasicOneof\Request\Other;
-use Testing\BasicOneof\Request\SupplementaryDataOneof;
 use Testing\BasicOneof\Response;
 use stdClass;
 
@@ -74,14 +73,13 @@ class BasicOneofClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $supplementaryData = new SupplementaryDataOneof();
-        $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $extraDescription = 'extraDescription-1352933811';
         $other = new Other();
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
         $requiredOptional = 'requiredOptional987493376';
         $request = (new Request())
-            ->setExtraDescription($supplementaryData)
+            ->setExtraDescription($extraDescription)
             ->setOther($other)
             ->setRequiredOptional($requiredOptional);
         $response = $gapicClient->aMethod($request);
@@ -119,14 +117,13 @@ class BasicOneofClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $transport->addResponse(null, $status);
         // Mock request
-        $supplementaryData = new SupplementaryDataOneof();
-        $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $extraDescription = 'extraDescription-1352933811';
         $other = new Other();
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
         $requiredOptional = 'requiredOptional987493376';
         $request = (new Request())
-            ->setExtraDescription($supplementaryData)
+            ->setExtraDescription($extraDescription)
             ->setOther($other)
             ->setRequiredOptional($requiredOptional);
         try {
@@ -154,14 +151,13 @@ class BasicOneofClientTest extends GeneratedTest
         $expectedResponse = new Response();
         $transport->addResponse($expectedResponse);
         // Mock request
-        $supplementaryData = new SupplementaryDataOneof();
-        $supplementaryData->setExtraDescription('extraDescription-1352933811');
+        $extraDescription = 'extraDescription-1352933811';
         $other = new Other();
         $otherFirst = 'otherFirst-205632128';
         $other->setFirst($otherFirst);
         $requiredOptional = 'requiredOptional987493376';
         $request = (new Request())
-            ->setExtraDescription($supplementaryData)
+            ->setExtraDescription($extraDescription)
             ->setOther($other)
             ->setRequiredOptional($requiredOptional);
         $response = $gapicClient->aMethodAsync($request)->wait();
