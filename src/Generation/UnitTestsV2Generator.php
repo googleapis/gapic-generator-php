@@ -288,15 +288,7 @@ class UnitTestsV2Generator
                 ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
-                    !$x->field->isOneOf
-                        ? ($this->assertProtobufEquals)($x->var, $actualValue)
-                        : ($this->assertTrue)(
-                            // Variable of type oneof wrapper, e.g. supplementaryData.
-                            AST::call(
-                                AST::var(Helpers::toCamelCase($x->field->getOneofDesc()->getName())),
-                                AST::method("is" . Helpers::toUpperCamelCase($x->field->name))
-                            )()
-                        )
+                    ($this->assertProtobufEquals)($x->var, $actualValue)
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
             ))

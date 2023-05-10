@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package testing.basiconeofnew;
+
+// php_namespace option not included; to test generating namespace from proto
+// package.
+
+option php_namespace = "Testing\\BasicOneofNew";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+// This is a basic service.
+service BasicOneofNew {
+  option (google.api.default_host) = "basic.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  // Test including method args with required oneofs.
+  rpc AMethod(Request) returns (Response) {
+    option (google.api.http) = {
+      post: "/path:aMethod"
+      body: "*"
+    };
+  }
+}
+
+message PartOfRequestA {}
+
+message Request {
+  int32 an_int = 1;
+
+  oneof supplementary_data {
+    // Supplemental request description.
+    string extra_description = 2 [(google.api.field_behavior) = REQUIRED];
+
+    // Supplemental request summary.
+    string extra_summary = 3 [(google.api.field_behavior) = REQUIRED];
+
+    // An extra request.
+    PartOfRequestA extra_request = 4 [(google.api.field_behavior) = REQUIRED];
+
+    // An extra index.
+    int32 extra_index = 5 [(google.api.field_behavior) = REQUIRED];
+
+    // An extra double.
+    double extra_double = 6 [(google.api.field_behavior) = REQUIRED];
+
+    // An extra float.
+    float extra_float = 7 [(google.api.field_behavior) = REQUIRED];
+
+    // An extra bool.
+    bool extra_bool = 8 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  oneof optional_data {
+    // An optional payload.
+    string optional_payload = 10;
+
+    // An optional count.
+    int32 optional_count = 11;
+  }
+
+  message Other {
+    oneof other_of {
+      string first = 1 [(google.api.field_behavior) = REQUIRED];
+
+      string second = 2 [(google.api.field_behavior) = REQUIRED];
+    }
+  }
+
+  Other other = 12 [(google.api.field_behavior) = REQUIRED];
+
+  optional string required_optional = 13 [(google.api.field_behavior) = REQUIRED];
+}
+
+message Response {}

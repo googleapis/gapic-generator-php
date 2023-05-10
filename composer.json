@@ -17,6 +17,7 @@
             "Testing\\BasicDiregapic\\": "tests/Unit/ProtoTests/BasicDiregapic/out/src",
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
+            "Testing\\BasicOneofNew\\": "tests/Unit/ProtoTests/BasicOneofNew/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",

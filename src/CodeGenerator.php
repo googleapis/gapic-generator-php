@@ -315,7 +315,7 @@ class CodeGenerator
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["src/{$version}{$service->emptyClientType->name}.php", $code];
-                
+
                 // Unit tests.
                 $ctx = new SourceFileContext($service->unitTestsType->getNamespace(), $licenseYear);
                 $file = UnitTestsGenerator::generate($ctx, $service);
@@ -363,7 +363,7 @@ class CodeGenerator
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["tests/Unit/{$version}Client/{$service->unitTestsV2Type->name}.php", $code];
-            
+
 
                 // Resource: build_method.txt
                 $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
@@ -381,14 +381,16 @@ class CodeGenerator
 
             // Oneof wrapper classes.
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
-            $oneofWrapperFiles = OneofWrapperGenerator::generate($ctx, $service);
-            foreach ($oneofWrapperFiles as $oneofWrapperFile) {
-                $oneofClassNameComponents = explode('\\', $oneofWrapperFile->class->type->getFullname(/* omitLeadingBackslash = */ true));
-                $oneofContainingMessageName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 2];
-                $oneofClassName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 1];
-                $oneofCode = $oneofWrapperFile->toCode();
-                $oneofCode = Formatter::format($oneofCode);
-                yield ["src/{$version}$oneofContainingMessageName/$oneofClassName.php", $oneofCode];
+            if ($migrationMode != MigrationMode::NEW_SURFACE_ONLY) {
+                $oneofWrapperFiles = OneofWrapperGenerator::generate($ctx, $service);
+                foreach ($oneofWrapperFiles as $oneofWrapperFile) {
+                    $oneofClassNameComponents = explode('\\', $oneofWrapperFile->class->type->getFullname(/* omitLeadingBackslash = */ true));
+                    $oneofContainingMessageName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 2];
+                    $oneofClassName = $oneofClassNameComponents[sizeof($oneofClassNameComponents) - 1];
+                    $oneofCode = $oneofWrapperFile->toCode();
+                    $oneofCode = Formatter::format($oneofCode);
+                    yield ["src/{$version}$oneofContainingMessageName/$oneofClassName.php", $oneofCode];
+                }
             }
 
             // Resource: descriptor_config.php

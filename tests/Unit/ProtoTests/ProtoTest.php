@@ -82,8 +82,14 @@ final class ProtoTest extends TestCase
 
     public function testBasicOneof(): void
     {
-        $this->runProtoTest('BasicOneof/basic-oneof.proto', migrationMode: MigrationMode::MIGRATION_MODE_UNSPECIFIED);
+        $this->runProtoTest('BasicOneof/basic-oneof.proto');
     }
+
+    public function testBasicOneofNew(): void
+    {
+        $this->runProtoTest('BasicOneofNew/basic-oneof-new.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
+    }
+
     public function testBasicPaginated(): void
     {
         $this->runProtoTest('BasicPaginated/basic-paginated.proto');

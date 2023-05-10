@@ -20,25 +20,25 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Testing\BasicOneof\Tests\Unit\Client;
+namespace Testing\BasicOneofNew\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use Testing\BasicOneof\Client\BasicOneofClient;
-use Testing\BasicOneof\Request;
-use Testing\BasicOneof\Request\Other;
-use Testing\BasicOneof\Response;
+use Testing\BasicOneofNew\Client\BasicOneofNewClient;
+use Testing\BasicOneofNew\Request;
+use Testing\BasicOneofNew\Request\Other;
+use Testing\BasicOneofNew\Response;
 use stdClass;
 
 /**
- * @group basiconeof
+ * @group basiconeofnew
  *
  * @group gapic
  */
-class BasicOneofClientTest extends GeneratedTest
+class BasicOneofNewClientTest extends GeneratedTest
 {
     /** @return TransportInterface */
     private function createTransport($deserialize = null)
@@ -52,13 +52,13 @@ class BasicOneofClientTest extends GeneratedTest
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicOneofClient */
+    /** @return BasicOneofNewClient */
     private function createClient(array $options = [])
     {
         $options += [
             'credentials' => $this->createCredentials(),
         ];
-        return new BasicOneofClient($options);
+        return new BasicOneofNewClient($options);
     }
 
     /** @test */
@@ -88,9 +88,9 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basiconeof.BasicOneof/AMethod', $actualFuncCall);
+        $this->assertSame('/testing.basiconeofnew.BasicOneofNew/AMethod', $actualFuncCall);
         $actualValue = $actualRequestObject->getExtraDescription();
-        $this->assertTrue($supplementaryData->isExtraDescription());
+        $this->assertProtobufEquals($extraDescription, $actualValue);
         $actualValue = $actualRequestObject->getOther();
         $this->assertProtobufEquals($other, $actualValue);
         $actualValue = $actualRequestObject->getRequiredOptional();
@@ -166,9 +166,9 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basiconeof.BasicOneof/AMethod', $actualFuncCall);
+        $this->assertSame('/testing.basiconeofnew.BasicOneofNew/AMethod', $actualFuncCall);
         $actualValue = $actualRequestObject->getExtraDescription();
-        $this->assertTrue($supplementaryData->isExtraDescription());
+        $this->assertProtobufEquals($extraDescription, $actualValue);
         $actualValue = $actualRequestObject->getOther();
         $this->assertProtobufEquals($other, $actualValue);
         $actualValue = $actualRequestObject->getRequiredOptional();

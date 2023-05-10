@@ -36,7 +36,6 @@ const UNIT_TESTS = [
   3 => [
     'name' => 'BasicOneof',
     'protoPath' => 'BasicOneof/basic-oneof.proto',
-    'migrationMode' => MigrationMode::MIGRATION_MODE_UNSPECIFIED,
   ],
   4 => [
     'name' => 'BasicPaginated',
@@ -91,6 +90,11 @@ const UNIT_TESTS = [
     'protoPath' => 'DisableSnippets/disable_snippets.proto',
     'package' => 'testing.disablesnippets',
     'generateSnippets' => false
+  ],
+  14 => [
+    'name' => 'BasicOneof (new surface only)',
+    'protoPath' => 'BasicOneofNew/basic-oneof-new.proto',
+    'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
   ],
 ];
 
