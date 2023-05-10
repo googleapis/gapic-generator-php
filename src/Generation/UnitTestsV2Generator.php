@@ -240,7 +240,7 @@ class UnitTestsV2Generator
 
     private function testSuccessCaseNormal(MethodDetails $method, $async = false): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
@@ -297,7 +297,7 @@ class UnitTestsV2Generator
 
     private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
@@ -342,7 +342,7 @@ class UnitTestsV2Generator
 
     private function testSuccessCaseLro(MethodDetails $method, $async = false): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $expectedResponse = AST::var('expectedResponse');
         $anyResponse = AST::var('anyResponse');
         $completeOperation = AST::var('completeOperation');
@@ -422,7 +422,7 @@ class UnitTestsV2Generator
 
     private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
@@ -505,7 +505,7 @@ class UnitTestsV2Generator
 
     private function testSuccessCasePaginated(MethodDetails $method, $async = false): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
@@ -589,7 +589,7 @@ class UnitTestsV2Generator
 
     private function testSuccessCaseBidiStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -705,7 +705,7 @@ class UnitTestsV2Generator
     private function testSuccessCaseServerStreaming(MethodDetails $method): PhpMethod
     {
         // TODO: Support resource-names in request args.
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -768,7 +768,7 @@ class UnitTestsV2Generator
 
     private function testExceptionalCaseServerStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
@@ -817,7 +817,7 @@ class UnitTestsV2Generator
     private function testSuccessCaseCustomOp(MethodDetails $method, $async = false): PhpMethod
     {
         $testMethodName = $async ? $method->testAsyncMethodName : $method->testSuccessMethodName;
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $completeOperation = AST::var('completeOperation');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
@@ -895,7 +895,7 @@ class UnitTestsV2Generator
 
     private function testExceptionalCaseCustomOp(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, false);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);

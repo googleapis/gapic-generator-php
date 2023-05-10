@@ -30,14 +30,14 @@ use Google\Protobuf\Internal\GPBType;
 
 class TestNameValueProducer
 {
-    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx, bool $useOneofWrappers = true)
+    public function __construct(ProtoCatalog $catalog, SourceFileContext $ctx, bool $isV2Test = false)
     {
         $this->catalog = $catalog;
         $this->ctx = $ctx;
         $this->names = Set::new();
         $this->values = Set::new();
         $this->valuesByName = Map::new();
-        $this->useOneofWrappers = $useOneofWrappers;
+        $this->isV2Test = $isV2Test;
     }
 
     private ProtoCatalog $catalog;
@@ -45,7 +45,7 @@ class TestNameValueProducer
     private Set $names;
     private Set $values;
     private Map $valuesByName;
-    private bool $useOneofWrappers;
+    private bool $isV2Test;
 
     public function name(string $name): string
     {
@@ -148,7 +148,7 @@ class TestNameValueProducer
         // This should only use oneof wrapper types if the oneof is on the top level request message.
         $inTopLevel = $method->inputMsg === $field->containingMessage;
         // This should only be used in V1 tests, as V2 does not need Oneof wrappers.
-        if ($field->isOneOf && $inTopLevel && $this->useOneofWrappers) {
+        if ($field->isOneOf && $inTopLevel && !$this->isV2Test) {
             $oneofWrapperType = $field->toOneofWrapperType($method->serviceDetails->namespace);
             // Initialize the oneof, e.g.
             //   $supplementaryData = new SupplementaryDataOneof();
