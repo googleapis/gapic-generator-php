@@ -72,6 +72,13 @@ service ResourceNames {
       body: "*"
     };
   }
+
+  rpc NestedReferenceMethod(NestedReferenceRequest) returns (PlaceholderResponse) {
+    option (google.api.http) = {
+      post: "/path:nestedReferenceMethod"
+      body: "*"
+    };
+  }
 }
 
 message SinglePatternRequest {
@@ -271,3 +278,26 @@ option (google.api.resource_definition) = {
 };
 
 message PlaceholderResponse {}
+
+message NestedReferenceRequest {
+  NestedReferenceMessage nested_reference_message = 1;
+}
+
+// Only referenced by name in NestedReferenceMessage
+option (google.api.resource_definition) = {
+  type: "resourcenames.example.com/OtherReferenceResource",
+  pattern: "otherReferenceResource/{other_reference_resource}"
+};
+
+message NestedReferenceMessage {
+  option (google.api.resource) = {
+    type: "resourcenames.example.com/NestedReferenceMessage",
+    pattern: "nestedReferenceMessages/{nested_reference_message}"
+  };
+
+  string name = 1;
+
+  string other = 2 [(google.api.resource_reference).type = "resourcenames.example.com/OtherReferenceResource"];
+}
+
+

@@ -36,6 +36,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\MultiPatternRequest;
+use Testing\ResourceNames\NestedReferenceRequest;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\SinglePatternRequest;
 use Testing\ResourceNames\WildcardChildReferenceRequest;
@@ -63,6 +64,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
  * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
  * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface nestedReferenceMethodAsync(NestedReferenceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
  * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
@@ -290,6 +292,21 @@ abstract class ResourceNamesBaseClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * nested_reference_message resource.
+     *
+     * @param string $nestedReferenceMessage
+     *
+     * @return string The formatted nested_reference_message resource.
+     */
+    public static function nestedReferenceMessageName(string $nestedReferenceMessage): string
+    {
+        return self::getPathTemplate('nestedReferenceMessage')->render([
+            'nested_reference_message' => $nestedReferenceMessage,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a order1
      * resource.
      *
@@ -331,6 +348,21 @@ abstract class ResourceNamesBaseClient
     {
         return self::getPathTemplate('order3')->render([
             'order3_id' => $order3Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * other_reference_resource resource.
+     *
+     * @param string $otherReferenceResource
+     *
+     * @return string The formatted other_reference_resource resource.
+     */
+    public static function otherReferenceResourceName(string $otherReferenceResource): string
+    {
+        return self::getPathTemplate('otherReferenceResource')->render([
+            'other_reference_resource' => $otherReferenceResource,
         ]);
     }
 
@@ -381,9 +413,11 @@ abstract class ResourceNamesBaseClient
      * - item3Id: items3/{item3_id}
      * - item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id: items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}
      * - multiPattern: items1/{item1_id}/items2/{item2_id}
+     * - nestedReferenceMessage: nestedReferenceMessages/{nested_reference_message}
      * - order1: orders1/{order1_id}
      * - order2: orders2/{order2_id}
      * - order3: orders3/{order3_id}
+     * - otherReferenceResource: otherReferenceResource/{other_reference_resource}
      * - singlePattern: items1/{item1_id}/items2/{item2_id}
      * - wildcardMultiPattern: items1/{item1_id}
      *
@@ -540,6 +574,28 @@ abstract class ResourceNamesBaseClient
     public function multiPatternMethod(MultiPatternRequest $request, array $callOptions = []): PlaceholderResponse
     {
         return $this->startApiCall('MultiPatternMethod', $request, $callOptions)->wait();
+    }
+
+    /**
+     * The async variant is {@see self::nestedReferenceMethodAsync()} .
+     *
+     * @param NestedReferenceRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PlaceholderResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function nestedReferenceMethod(NestedReferenceRequest $request, array $callOptions = []): PlaceholderResponse
+    {
+        return $this->startApiCall('NestedReferenceMethod', $request, $callOptions)->wait();
     }
 
     /**

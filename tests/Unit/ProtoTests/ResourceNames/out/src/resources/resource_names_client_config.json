@@ -35,6 +35,11 @@
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
+                "NestedReferenceMethod": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
                 "SinglePatternMethod": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",

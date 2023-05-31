@@ -15,6 +15,10 @@ return [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\ResourceNames\PlaceholderResponse',
             ],
+            'NestedReferenceMethod' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Testing\ResourceNames\PlaceholderResponse',
+            ],
             'SinglePatternMethod' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Testing\ResourceNames\PlaceholderResponse',
@@ -47,9 +51,11 @@ return [
                 'item3Id' => 'items3/{item3_id}',
                 'item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id' => 'items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}',
                 'multiPattern' => 'items1/{item1_id}/items2/{item2_id}',
+                'nestedReferenceMessage' => 'nestedReferenceMessages/{nested_reference_message}',
                 'order1' => 'orders1/{order1_id}',
                 'order2' => 'orders2/{order2_id}',
                 'order3' => 'orders3/{order3_id}',
+                'otherReferenceResource' => 'otherReferenceResource/{other_reference_resource}',
                 'singlePattern' => 'items1/{item1_id}/items2/{item2_id}',
                 'wildcardMultiPattern' => 'items1/{item1_id}',
             ],

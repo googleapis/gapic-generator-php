@@ -18,6 +18,11 @@ return [
                 'uriTemplate' => '/path:multiPatternMethod',
                 'body' => '*',
             ],
+            'NestedReferenceMethod' => [
+                'method' => 'post',
+                'uriTemplate' => '/path:nestedReferenceMethod',
+                'body' => '*',
+            ],
             'SinglePatternMethod' => [
                 'method' => 'post',
                 'uriTemplate' => '/path:singlePatternMethod',
