@@ -255,9 +255,8 @@ class ServiceDetails
                 return substr($fd->fullname, 0, 1) === '.' ? substr($fd->fullname, 1) : $fd->fullname;
             };
             $fieldResourceRefs = $fieldDetails
-            ->filter(fn ($x) => $x->isRequired
-                && $x->isMessage
-                && !is_null($x->fullname))
+                ->filter(fn ($x) => $x->isMessage
+                    && !is_null($x->fullname))
                 ->map(fn ($x) => $catalog->msgResourcesByFullname->get($fullnameFn($x), null))
                 ->filter(fn ($x) => !is_null($x));
             $typeFieldRefResourceDefs = $fieldResourceRefs

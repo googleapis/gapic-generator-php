@@ -36,6 +36,8 @@ use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest\Nested1;
 use Testing\ResourceNames\MultiPatternRequest;
+use Testing\ResourceNames\NestedReferenceMessage;
+use Testing\ResourceNames\NestedReferenceRequest;
 use Testing\ResourceNames\PlaceholderResponse;
 use Testing\ResourceNames\SinglePatternRequest;
 use Testing\ResourceNames\WildcardChildReferenceRequest;
@@ -109,11 +111,15 @@ class ResourceNamesGapicClient
 
     private static $multiPatternNameTemplate;
 
+    private static $nestedReferenceMessageNameTemplate;
+
     private static $order1NameTemplate;
 
     private static $order2NameTemplate;
 
     private static $order3NameTemplate;
+
+    private static $otherReferenceResourceNameTemplate;
 
     private static $singlePatternNameTemplate;
 
@@ -239,6 +245,15 @@ class ResourceNamesGapicClient
         return self::$multiPatternNameTemplate;
     }
 
+    private static function getNestedReferenceMessageNameTemplate()
+    {
+        if (self::$nestedReferenceMessageNameTemplate == null) {
+            self::$nestedReferenceMessageNameTemplate = new PathTemplate('nestedReferenceMessages/{nested_reference_message}');
+        }
+
+        return self::$nestedReferenceMessageNameTemplate;
+    }
+
     private static function getOrder1NameTemplate()
     {
         if (self::$order1NameTemplate == null) {
@@ -264,6 +279,15 @@ class ResourceNamesGapicClient
         }
 
         return self::$order3NameTemplate;
+    }
+
+    private static function getOtherReferenceResourceNameTemplate()
+    {
+        if (self::$otherReferenceResourceNameTemplate == null) {
+            self::$otherReferenceResourceNameTemplate = new PathTemplate('otherReferenceResource/{other_reference_resource}');
+        }
+
+        return self::$otherReferenceResourceNameTemplate;
     }
 
     private static function getSinglePatternNameTemplate()
@@ -299,9 +323,11 @@ class ResourceNamesGapicClient
                 'item3Id' => self::getItem3IdNameTemplate(),
                 'item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id' => self::getItem4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6IdNameTemplate(),
                 'multiPattern' => self::getMultiPatternNameTemplate(),
+                'nestedReferenceMessage' => self::getNestedReferenceMessageNameTemplate(),
                 'order1' => self::getOrder1NameTemplate(),
                 'order2' => self::getOrder2NameTemplate(),
                 'order3' => self::getOrder3NameTemplate(),
+                'otherReferenceResource' => self::getOtherReferenceResourceNameTemplate(),
                 'singlePattern' => self::getSinglePatternNameTemplate(),
                 'wildcardMultiPattern' => self::getWildcardMultiPatternNameTemplate(),
             ];
@@ -492,6 +518,21 @@ class ResourceNamesGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * nested_reference_message resource.
+     *
+     * @param string $nestedReferenceMessage
+     *
+     * @return string The formatted nested_reference_message resource.
+     */
+    public static function nestedReferenceMessageName($nestedReferenceMessage)
+    {
+        return self::getNestedReferenceMessageNameTemplate()->render([
+            'nested_reference_message' => $nestedReferenceMessage,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a order1
      * resource.
      *
@@ -533,6 +574,21 @@ class ResourceNamesGapicClient
     {
         return self::getOrder3NameTemplate()->render([
             'order3_id' => $order3Id,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * other_reference_resource resource.
+     *
+     * @param string $otherReferenceResource
+     *
+     * @return string The formatted other_reference_resource resource.
+     */
+    public static function otherReferenceResourceName($otherReferenceResource)
+    {
+        return self::getOtherReferenceResourceNameTemplate()->render([
+            'other_reference_resource' => $otherReferenceResource,
         ]);
     }
 
@@ -583,9 +639,11 @@ class ResourceNamesGapicClient
      * - item3Id: items3/{item3_id}
      * - item4IdItem5aIdItem5bIdItem5cIdItem5dIdItem5eIdItem6Id: items4/{item4_id}/items5/{item5a_id}_{item5b_id}-{item5c_id}.{item5d_id}~{item5e_id}/items6/{item6_id}
      * - multiPattern: items1/{item1_id}/items2/{item2_id}
+     * - nestedReferenceMessage: nestedReferenceMessages/{nested_reference_message}
      * - order1: orders1/{order1_id}
      * - order2: orders2/{order2_id}
      * - order3: orders3/{order3_id}
+     * - otherReferenceResource: otherReferenceResource/{other_reference_resource}
      * - singlePattern: items1/{item1_id}/items2/{item2_id}
      * - wildcardMultiPattern: items1/{item1_id}
      *
@@ -820,6 +878,42 @@ class ResourceNamesGapicClient
         }
 
         return $this->startCall('MultiPatternMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     *
+     * Sample code:
+     * ```
+     * $resourceNamesClient = new ResourceNamesClient();
+     * try {
+     *     $response = $resourceNamesClient->nestedReferenceMethod();
+     * } finally {
+     *     $resourceNamesClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type NestedReferenceMessage $nestedReferenceMessage
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Testing\ResourceNames\PlaceholderResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function nestedReferenceMethod(array $optionalArgs = [])
+    {
+        $request = new NestedReferenceRequest();
+        if (isset($optionalArgs['nestedReferenceMessage'])) {
+            $request->setNestedReferenceMessage($optionalArgs['nestedReferenceMessage']);
+        }
+
+        return $this->startCall('NestedReferenceMethod', PlaceholderResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**

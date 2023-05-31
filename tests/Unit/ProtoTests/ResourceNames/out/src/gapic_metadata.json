@@ -25,6 +25,11 @@
                                 "multiPatternMethod"
                             ]
                         },
+                        "NestedReferenceMethod": {
+                            "methods": [
+                                "nestedReferenceMethod"
+                            ]
+                        },
                         "SinglePatternMethod": {
                             "methods": [
                                 "singlePatternMethod"
