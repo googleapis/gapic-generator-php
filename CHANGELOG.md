@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.6](https://github.com/googleapis/gapic-generator-php/compare/v1.7.5...v1.7.6) (2023-05-31)
+
+
+### Bug Fixes
+
+* Include non-required resource fields in helpers ([#635](https://github.com/googleapis/gapic-generator-php/issues/635)) ([bd1be34](https://github.com/googleapis/gapic-generator-php/commit/bd1be349e6c75e6e529572f9948189dfbc1f8df1))
+* Increase php memory limit ([#631](https://github.com/googleapis/gapic-generator-php/issues/631)) ([685b419](https://github.com/googleapis/gapic-generator-php/commit/685b419f2220e2d19c74e7f1464067f995cf1a95))
+* Update PHP prebuilt binary, version 8.1.13 ([#634](https://github.com/googleapis/gapic-generator-php/issues/634)) ([29be36e](https://github.com/googleapis/gapic-generator-php/commit/29be36e9541a15edbee4dd037489de41ca6f7180))
+
 ## [1.7.5](https://github.com/googleapis/gapic-generator-php/compare/v1.7.4...v1.7.5) (2023-05-10)
 
 
