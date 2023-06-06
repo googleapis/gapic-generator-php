@@ -166,6 +166,8 @@ abstract class BasicOneofNewBaseClient
      *
      * The async variant is {@see self::aMethodAsync()} .
      *
+     * @example samples/BasicOneofNewClient/a_method.php
+     *
      * @param Request $request     A request to house fields associated with the call.
      * @param array   $callOptions {
      *     Optional.

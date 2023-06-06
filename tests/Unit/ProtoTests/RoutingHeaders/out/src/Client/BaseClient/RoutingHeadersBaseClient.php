@@ -174,6 +174,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::deleteMethodAsync()} .
      *
+     * @example samples/RoutingHeadersClient/delete_method.php
+     *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
      *     Optional.
@@ -195,6 +197,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::getMethodAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/get_method.php
      *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
@@ -218,6 +222,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::getNoPlaceholdersMethodAsync()} .
      *
+     * @example samples/RoutingHeadersClient/get_no_placeholders_method.php
+     *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
      *     Optional.
@@ -239,6 +245,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::getNoTemplateMethodAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/get_no_template_method.php
      *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
@@ -262,6 +270,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::nestedMethodAsync()} .
      *
+     * @example samples/RoutingHeadersClient/nested_method.php
+     *
      * @param NestedRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
      *     Optional.
@@ -283,6 +293,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::nestedMultiMethodAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/nested_multi_method.php
      *
      * @param NestedRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
@@ -306,6 +318,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::orderingMethodAsync()} .
      *
+     * @example samples/RoutingHeadersClient/ordering_method.php
+     *
      * @param OrderRequest $request     A request to house fields associated with the call.
      * @param array        $callOptions {
      *     Optional.
@@ -327,6 +341,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::patchMethodAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/patch_method.php
      *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
@@ -350,6 +366,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::postMethodAsync()} .
      *
+     * @example samples/RoutingHeadersClient/post_method.php
+     *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
      *     Optional.
@@ -371,6 +389,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::putMethodAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/put_method.php
      *
      * @param SimpleRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
@@ -394,6 +414,8 @@ abstract class RoutingHeadersBaseClient
     /**
      * The async variant is {@see self::routingRuleWithOutParametersAsync()} .
      *
+     * @example samples/RoutingHeadersClient/routing_rule_with_out_parameters.php
+     *
      * @param NestedRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
      *     Optional.
@@ -415,6 +437,8 @@ abstract class RoutingHeadersBaseClient
 
     /**
      * The async variant is {@see self::routingRuleWithParametersAsync()} .
+     *
+     * @example samples/RoutingHeadersClient/routing_rule_with_parameters.php
      *
      * @param NestedRequest $request     A request to house fields associated with the call.
      * @param array         $callOptions {
