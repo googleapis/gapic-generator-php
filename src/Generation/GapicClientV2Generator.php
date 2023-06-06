@@ -38,6 +38,8 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
@@ -682,6 +684,9 @@ class GapicClientV2Generator
                                 AST::method($method->methodName . 'Async'))(),
                             '.')
                         : null,
+                    in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::NEW_SURFACE_ONLY])
+                        ? PhpDoc::sample($this->snippetPathForMethod($method))
+                        : null,
                     $usesRequest
                         ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
                         : null,
@@ -749,5 +754,14 @@ class GapicClientV2Generator
       }
 
       return $call;
+    }
+
+    private function snippetPathForMethod(MethodDetails $method): string
+    {
+        $methodName = Helpers::toSnakeCase($method->name);
+        $version = Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace);
+        $emptyClientName = $this->serviceDetails->emptyClientV2Type->name;
+
+        return "samples/{$version}{$emptyClientName}/{$methodName}.php";
     }
 }
