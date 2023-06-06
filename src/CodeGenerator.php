@@ -345,7 +345,7 @@ class CodeGenerator
             // [Start V2 GAPIC surface generation]
             if ($migrationMode != MigrationMode::PRE_MIGRATION_SURFACE_ONLY) {
                 $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
-                $file = GapicClientV2Generator::generate($ctx, $service);
+                $file = GapicClientV2Generator::generate($ctx, $service, $generateSnippets);
                 $code = $file->toCode();
                 $code = Formatter::format($code);
                 yield ["src/{$version}Client/BaseClient/{$service->gapicClientV2Type->name}.php", $code];
