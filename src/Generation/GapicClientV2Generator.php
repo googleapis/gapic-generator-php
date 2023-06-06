@@ -38,6 +38,8 @@ use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
@@ -47,18 +49,21 @@ class GapicClientV2Generator
 {
     private const CALL_OPTIONS_VAR = 'callOptions';
 
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets): PhpFile
     {
-        return (new GapicClientV2Generator($ctx, $serviceDetails))->generateImpl();
+        return (new GapicClientV2Generator($ctx, $serviceDetails, $generateSnippets))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
+    // TODO(v2): This can be cleaned up after the v2 migration is complete.
+    private bool $generateSnippets;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
+        $this->generateSnippets = $generateSnippets;
     }
 
     private function generateImpl(): PhpFile
@@ -682,6 +687,12 @@ class GapicClientV2Generator
                                 AST::method($method->methodName . 'Async'))(),
                             '.')
                         : null,
+                    $this->generateSnippets && in_array(
+                        $this->serviceDetails->migrationMode,
+                        [MigrationMode::MIGRATING, MigrationMode::NEW_SURFACE_ONLY]
+                    )
+                        ? PhpDoc::sample($this->snippetPathForMethod($method))
+                        : null,
                     $usesRequest
                         ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
                         : null,
@@ -749,5 +760,17 @@ class GapicClientV2Generator
       }
 
       return $call;
+    }
+
+    private function snippetPathForMethod(MethodDetails $method): string
+    {
+        $methodName = Helpers::toSnakeCase($method->name);
+        $version = Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace);
+        if ($version !== '') {
+            $version .= '/';
+        }
+        $emptyClientName = $this->serviceDetails->emptyClientV2Type->name;
+
+        return "samples/{$version}{$emptyClientName}/{$methodName}.php";
     }
 }

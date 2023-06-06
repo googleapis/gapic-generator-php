@@ -443,8 +443,31 @@ abstract class PhpDoc
         };
     }
 
+    /**
+     * Add a code example to the PHP doc block via the @example tag.
+     *
+     * @param string $sampleFile The relative path to the generated sample file
+     *
+     * @return PhpDoc
+     */
+    public static function sample(string $sampleFile): PhpDoc
+    {
+        return new class($sampleFile) extends PhpDoc {
+            public function __construct($sampleFile)
+            {
+                $this->sampleFile = $sampleFile;
+                $this->isMethodDoc = true;
+            }
+            protected function toLines(Map $info = null): Vector
+            {
+                // @example samples/V1/ExampleClient/create_instance.php
+                return Vector::new(["@example {$this->sampleFile}", ""]);
+            }
+        };
+    }
+
     public static function method(string $name, string $response, string $request): PhpDoc
-    { 
+    {
         return new class($name, $response, $request) extends PhpDoc {
             public function __construct($name, $response, $request)
             {

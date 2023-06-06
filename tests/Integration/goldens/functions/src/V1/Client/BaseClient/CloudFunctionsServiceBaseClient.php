@@ -297,6 +297,8 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * The async variant is {@see self::callFunctionAsync()} .
      *
+     * @example samples/V1/CloudFunctionsServiceClient/call_function.php
+     *
      * @param CallFunctionRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -323,6 +325,8 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * The async variant is {@see self::createFunctionAsync()} .
      *
+     * @example samples/V1/CloudFunctionsServiceClient/create_function.php
+     *
      * @param CreateFunctionRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -348,6 +352,8 @@ abstract class CloudFunctionsServiceBaseClient
      * remove this function.
      *
      * The async variant is {@see self::deleteFunctionAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/delete_function.php
      *
      * @param DeleteFunctionRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -376,6 +382,8 @@ abstract class CloudFunctionsServiceBaseClient
      * https://cloud.google.com/storage/docs/access-control/signed-urls
      *
      * The async variant is {@see self::generateDownloadUrlAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/generate_download_url.php
      *
      * @param GenerateDownloadUrlRequest $request     A request to house fields associated with the call.
      * @param array                      $callOptions {
@@ -425,6 +433,8 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * The async variant is {@see self::generateUploadUrlAsync()} .
      *
+     * @example samples/V1/CloudFunctionsServiceClient/generate_upload_url.php
+     *
      * @param GenerateUploadUrlRequest $request     A request to house fields associated with the call.
      * @param array                    $callOptions {
      *     Optional.
@@ -448,6 +458,8 @@ abstract class CloudFunctionsServiceBaseClient
      * Returns a function with the given name from the requested project.
      *
      * The async variant is {@see self::getFunctionAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/get_function.php
      *
      * @param GetFunctionRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
@@ -475,6 +487,8 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * The async variant is {@see self::getIamPolicyAsync()} .
      *
+     * @example samples/V1/CloudFunctionsServiceClient/get_iam_policy.php
+     *
      * @param GetIamPolicyRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -498,6 +512,8 @@ abstract class CloudFunctionsServiceBaseClient
      * Returns a list of functions that belong to the requested project.
      *
      * The async variant is {@see self::listFunctionsAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/list_functions.php
      *
      * @param ListFunctionsRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
@@ -523,6 +539,8 @@ abstract class CloudFunctionsServiceBaseClient
      * Replaces any existing policy.
      *
      * The async variant is {@see self::setIamPolicyAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/set_iam_policy.php
      *
      * @param SetIamPolicyRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
@@ -551,6 +569,8 @@ abstract class CloudFunctionsServiceBaseClient
      *
      * The async variant is {@see self::testIamPermissionsAsync()} .
      *
+     * @example samples/V1/CloudFunctionsServiceClient/test_iam_permissions.php
+     *
      * @param TestIamPermissionsRequest $request     A request to house fields associated with the call.
      * @param array                     $callOptions {
      *     Optional.
@@ -574,6 +594,8 @@ abstract class CloudFunctionsServiceBaseClient
      * Updates existing function.
      *
      * The async variant is {@see self::updateFunctionAsync()} .
+     *
+     * @example samples/V1/CloudFunctionsServiceClient/update_function.php
      *
      * @param UpdateFunctionRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {

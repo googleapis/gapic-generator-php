@@ -168,6 +168,8 @@ abstract class BasicBaseClient
      *
      * The async variant is {@see self::aMethodAsync()} .
      *
+     * @example samples/BasicClient/a_method.php
+     *
      * @param Request $request     A request to house fields associated with the call.
      * @param array   $callOptions {
      *     Optional.
@@ -191,6 +193,8 @@ abstract class BasicBaseClient
      * Test including method args.
      *
      * The async variant is {@see self::methodWithArgsAsync()} .
+     *
+     * @example samples/BasicClient/method_with_args.php
      *
      * @param RequestWithArgs $request     A request to house fields associated with the call.
      * @param array           $callOptions {
