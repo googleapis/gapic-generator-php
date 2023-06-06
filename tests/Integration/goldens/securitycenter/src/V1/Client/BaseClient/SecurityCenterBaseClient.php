@@ -666,6 +666,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::createFindingAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/create_finding.php
+     *
      * @param CreateFindingRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
      *     Optional.
@@ -689,6 +691,8 @@ abstract class SecurityCenterBaseClient
      * Creates a notification config.
      *
      * The async variant is {@see self::createNotificationConfigAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/create_notification_config.php
      *
      * @param CreateNotificationConfigRequest $request     A request to house fields associated with the call.
      * @param array                           $callOptions {
@@ -714,6 +718,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::createSourceAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/create_source.php
+     *
      * @param CreateSourceRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -738,6 +744,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::deleteNotificationConfigAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/delete_notification_config.php
+     *
      * @param DeleteNotificationConfigRequest $request     A request to house fields associated with the call.
      * @param array                           $callOptions {
      *     Optional.
@@ -759,6 +767,8 @@ abstract class SecurityCenterBaseClient
      * Gets the access control policy on the specified Source.
      *
      * The async variant is {@see self::getIamPolicyAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/get_iam_policy.php
      *
      * @param GetIamPolicyRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
@@ -784,6 +794,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::getNotificationConfigAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/get_notification_config.php
+     *
      * @param GetNotificationConfigRequest $request     A request to house fields associated with the call.
      * @param array                        $callOptions {
      *     Optional.
@@ -807,6 +819,8 @@ abstract class SecurityCenterBaseClient
      * Gets the settings for an organization.
      *
      * The async variant is {@see self::getOrganizationSettingsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/get_organization_settings.php
      *
      * @param GetOrganizationSettingsRequest $request     A request to house fields associated with the call.
      * @param array                          $callOptions {
@@ -832,6 +846,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::getSourceAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/get_source.php
+     *
      * @param GetSourceRequest $request     A request to house fields associated with the call.
      * @param array            $callOptions {
      *     Optional.
@@ -856,6 +872,8 @@ abstract class SecurityCenterBaseClient
      * properties.
      *
      * The async variant is {@see self::groupAssetsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/group_assets.php
      *
      * @param GroupAssetsRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
@@ -887,6 +905,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::groupFindingsAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/group_findings.php
+     *
      * @param GroupFindingsRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
      *     Optional.
@@ -910,6 +930,8 @@ abstract class SecurityCenterBaseClient
      * Lists an organization's assets.
      *
      * The async variant is {@see self::listAssetsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/list_assets.php
      *
      * @param ListAssetsRequest $request     A request to house fields associated with the call.
      * @param array             $callOptions {
@@ -938,6 +960,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::listFindingsAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/list_findings.php
+     *
      * @param ListFindingsRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -962,6 +986,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::listNotificationConfigsAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/list_notification_configs.php
+     *
      * @param ListNotificationConfigsRequest $request     A request to house fields associated with the call.
      * @param array                          $callOptions {
      *     Optional.
@@ -985,6 +1011,8 @@ abstract class SecurityCenterBaseClient
      * Lists all sources belonging to an organization.
      *
      * The async variant is {@see self::listSourcesAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/list_sources.php
      *
      * @param ListSourcesRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
@@ -1015,6 +1043,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::runAssetDiscoveryAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/run_asset_discovery.php
+     *
      * @param RunAssetDiscoveryRequest $request     A request to house fields associated with the call.
      * @param array                    $callOptions {
      *     Optional.
@@ -1038,6 +1068,8 @@ abstract class SecurityCenterBaseClient
      * Updates the state of a finding.
      *
      * The async variant is {@see self::setFindingStateAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/set_finding_state.php
      *
      * @param SetFindingStateRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
@@ -1063,6 +1095,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::setIamPolicyAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/set_iam_policy.php
+     *
      * @param SetIamPolicyRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -1086,6 +1120,8 @@ abstract class SecurityCenterBaseClient
      * Returns the permissions that a caller has on the specified source.
      *
      * The async variant is {@see self::testIamPermissionsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/test_iam_permissions.php
      *
      * @param TestIamPermissionsRequest $request     A request to house fields associated with the call.
      * @param array                     $callOptions {
@@ -1111,6 +1147,8 @@ abstract class SecurityCenterBaseClient
      * finding creation to succeed.
      *
      * The async variant is {@see self::updateFindingAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_finding.php
      *
      * @param UpdateFindingRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
@@ -1138,6 +1176,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::updateNotificationConfigAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/update_notification_config.php
+     *
      * @param UpdateNotificationConfigRequest $request     A request to house fields associated with the call.
      * @param array                           $callOptions {
      *     Optional.
@@ -1161,6 +1201,8 @@ abstract class SecurityCenterBaseClient
      * Updates an organization's settings.
      *
      * The async variant is {@see self::updateOrganizationSettingsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_organization_settings.php
      *
      * @param UpdateOrganizationSettingsRequest $request     A request to house fields associated with the call.
      * @param array                             $callOptions {
@@ -1186,6 +1228,8 @@ abstract class SecurityCenterBaseClient
      *
      * The async variant is {@see self::updateSecurityMarksAsync()} .
      *
+     * @example samples/V1/SecurityCenterClient/update_security_marks.php
+     *
      * @param UpdateSecurityMarksRequest $request     A request to house fields associated with the call.
      * @param array                      $callOptions {
      *     Optional.
@@ -1209,6 +1253,8 @@ abstract class SecurityCenterBaseClient
      * Updates a source.
      *
      * The async variant is {@see self::updateSourceAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_source.php
      *
      * @param UpdateSourceRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {

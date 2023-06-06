@@ -760,6 +760,9 @@ class GapicClientV2Generator
     {
         $methodName = Helpers::toSnakeCase($method->name);
         $version = Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace);
+        if ($version !== '') {
+            $version .= '/';
+        }
         $emptyClientName = $this->serviceDetails->emptyClientV2Type->name;
 
         return "samples/{$version}{$emptyClientName}/{$methodName}.php";
