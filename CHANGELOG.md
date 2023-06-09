@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/gapic-generator-php/compare/v1.7.6...v1.8.0) (2023-06-09)
+
+
+### Features
+
+* Add phpdoc examples tag ([#636](https://github.com/googleapis/gapic-generator-php/issues/636)) ([500e006](https://github.com/googleapis/gapic-generator-php/commit/500e006795bf97a3d70a4bd70b46bbda59aff552))
+* **docs:** Add migration information to service class descriptions ([2e1f6d3](https://github.com/googleapis/gapic-generator-php/commit/2e1f6d3116ac6302e30b15f7de60f05bcd208fbe))
+
 ## [1.7.6](https://github.com/googleapis/gapic-generator-php/compare/v1.7.5...v1.7.6) (2023-05-31)
 
 
