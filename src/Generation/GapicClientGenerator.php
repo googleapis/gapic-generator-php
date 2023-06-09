@@ -42,6 +42,7 @@ use Google\Generator\Ast\PhpParam;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
@@ -119,6 +120,12 @@ class GapicClientGenerator
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                      ),
+                // If this service contains both client surfaces, link to the new surface.
+                in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
+                    ? PhpDoc::text(
+                        'This service has a new (beta) implementation. See {@see ' .
+                        $this->serviceDetails->emptyClientV2Type->getFullname() . '} to use the new surface.'
+                    ) : null,
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
             ))
