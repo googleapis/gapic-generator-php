@@ -52,6 +52,9 @@ use Testing\RoutingHeaders\SimpleRequest;
  *     $routingHeadersClient->close();
  * }
  * ```
+ *
+ * This service has a new (beta) implementation. See {@see
+ * \Testing\RoutingHeaders\Client\RoutingHeadersClient} to use the new surface.
  */
 class RoutingHeadersGapicClient
 {

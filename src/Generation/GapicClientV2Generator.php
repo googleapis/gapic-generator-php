@@ -129,7 +129,16 @@ class GapicClientV2Generator
                     ),
                 // TODO(#594): Uncomment this and remove the following two lines when stable.
                 // $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                PhpDoc::text('This class is currently experimental and may be subject to changes.'),
+                PhpDoc::text(
+                    'This class is currently experimental and may be subject to changes.' .
+                    // If this service is GA and contains both client surfaces, link to the stable surface.
+                    ($this->serviceDetails->isGa() && in_array(
+                        $this->serviceDetails->migrationMode,
+                        [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED]
+                    )
+                        ? ' See {@see ' . $this->serviceDetails->emptyClientType->getFullname() . '} for the stable implementation'
+                        : '')
+                ),
                 PhpDoc::experimental(),
                 PhpDoc::internal(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
