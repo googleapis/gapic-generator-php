@@ -26,7 +26,7 @@ use Microsoft\PhpParser\DiagnosticsProvider;
 use LogicException;
 use ParseError;
 
-class FragmentInjectionProcessor implements Processor
+class FragmentInjectionProcessor implements ProcessorInterface
 {
     private ClassDeclaration $classNode;
 
@@ -38,7 +38,7 @@ class FragmentInjectionProcessor implements Processor
         foreach($fragmentItr as $finding) {
             $fragmentPath = $finding[0];
             $protoPath = str_replace(['fragments', '.build.txt'], ['proto/src', '.php'], $fragmentPath);
-            
+
             self::inject($fragmentPath, $protoPath);
         }
     }
