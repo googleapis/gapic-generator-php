@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Google\PostProcessor;
 
-interface Processor
+interface ProcessorInterface
 {
     public static function run(string $inputDir);
 }
