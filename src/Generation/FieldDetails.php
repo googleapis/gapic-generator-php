@@ -138,6 +138,7 @@ class FieldDetails
      * AFTER a package's 1.0 release, back to being optional.
      */
     private static $optionalToRequiredFixes = [
+        'google.analytics.admin.v1beta.UpdateMeasurementProtocolSecretRequest' => ['updateMask'],
         'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
         'google.logging.v2.GetCmekSettingsRequest' => ['name'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
