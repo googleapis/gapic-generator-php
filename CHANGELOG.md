@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/gapic-generator-php/compare/v1.8.0...v1.8.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* Optional-to-required field for Cloud DMS ([#649](https://github.com/googleapis/gapic-generator-php/issues/649)) ([613baec](https://github.com/googleapis/gapic-generator-php/commit/613baec2d7c99002f734580583f52ac7cba8ee15))
+
 ## [1.8.0](https://github.com/googleapis/gapic-generator-php/compare/v1.7.6...v1.8.0) (2023-06-09)
 
 
