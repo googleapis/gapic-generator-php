@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/gapic-generator-php/compare/v1.8.1...v1.8.2) (2023-09-11)
+
+
+### Bug Fixes
+
+* ImportMappingRules optional-to-required parameters for DMS ([#651](https://github.com/googleapis/gapic-generator-php/issues/651)) ([c4059a9](https://github.com/googleapis/gapic-generator-php/commit/c4059a98bc13f5c0a0797a9e9798a916413dfa97))
+
 ## [1.8.1](https://github.com/googleapis/gapic-generator-php/compare/v1.8.0...v1.8.1) (2023-09-07)
 
 
