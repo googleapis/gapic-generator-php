@@ -132,6 +132,7 @@ class GapicClientGenerator
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
+            ->withMembers(Vector::new($this->hasServiceAddressTemplate() ? [$this->serviceAddressTemplate()] : []))
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
@@ -156,8 +157,29 @@ class GapicClientGenerator
     private function serviceAddress(): PhpClassMember
     {
         return AST::constant('SERVICE_ADDRESS')
-            ->withPhpDocText('The default address of the service.')
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text("The default address of the service."),
+                $this->hasServiceAddressTemplate()
+                    ? PhpDoc::deprecated('SERVICE_ADDRESS_TEMPLATE should be used instead.')
+                    : null
+            ))
             ->withValue($this->serviceDetails->defaultHost);
+    }
+
+    private function hasServiceAddressTemplate(): bool
+    {
+        return str_contains($this->serviceDetails->defaultHost, '.googleapis.com');
+    }
+
+    private function serviceAddressTemplate(): PhpClassMember
+    {
+        // Replace ".googleapis.com" with .UNIVERSE_DOMAIN to create a template
+        // in the client libraries (e.x. "storage.googleapis.com" becomes "storage.UNIVERSE_DOMAIN")
+        $template = str_replace('.googleapis.com', '.UNIVERSE_DOMAIN', $this->serviceDetails->defaultHost);
+        return AST::constant('SERVICE_ADDRESS_TEMPLATE')
+            ->withPhpDocText('The address template of the service.')
+            ->withAccess(Access::PRIVATE)
+            ->withValue($template);
     }
 
     private function servicePort(): PhpClassMember
