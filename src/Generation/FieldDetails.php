@@ -115,6 +115,7 @@ class FieldDetails
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
         'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['content_type', 'read_time_window'],
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
+        'google.cloud.networkconnectivity.v1.CreatePolicyBasedRouteRequest' => ['policy_based_route_id'],
         'google.cloud.scheduler.v1.UpdateJobRequest' => ['update_mask'],
         'google.datastore.v1.CommitRequest' => ['mode', 'mutations'],
         'google.datastore.v1.RunQueryRequest' => ['partition_id'],
