@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/googleapis/gapic-generator-php/compare/v1.8.3...v1.8.4) (2023-09-15)
+
+
+### Bug Fixes
+
+* Optional-to-required CreateRepositoryRequest fields ([#656](https://github.com/googleapis/gapic-generator-php/issues/656)) ([aabc46e](https://github.com/googleapis/gapic-generator-php/commit/aabc46e1f58ef3ac2ac6810193c4b37df0992538))
+
 ## [1.8.3](https://github.com/googleapis/gapic-generator-php/compare/v1.8.2...v1.8.3) (2023-09-15)
 
 
