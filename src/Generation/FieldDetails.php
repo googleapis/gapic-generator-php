@@ -145,6 +145,7 @@ class FieldDetails
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
         'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
         'google.devtools.artifactregistry.v1beta2.GetFileRequest' => ['name'],
+        'google.devtools.artifactregistry.v1.CreateRepositoryRequest' => ['repository', 'repository_id'],
         'google.firestore.v1.BatchWriteRequest' => ['database'],
         'google.firestore.v1.PartitionQueryRequest' => ['parent'],
         'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
