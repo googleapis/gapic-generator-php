@@ -119,8 +119,15 @@ abstract class SecurityCenterBaseClient
     /** The name of the service. */
     private const SERVICE_NAME = 'google.cloud.securitycenter.v1.SecurityCenter';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     *
+     * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
+     */
     private const SERVICE_ADDRESS = 'securitycenter.googleapis.com';
+
+    /** The address template of the service. */
+    private const SERVICE_ADDRESS_TEMPLATE = 'securitycenter.UNIVERSE_DOMAIN';
 
     /** The default port of the service. */
     private const DEFAULT_SERVICE_PORT = 443;
