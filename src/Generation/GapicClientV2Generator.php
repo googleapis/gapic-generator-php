@@ -105,7 +105,7 @@ class GapicClientV2Generator
     {
         return AST::class(
                 $this->serviceDetails->gapicClientV2Type,
-                abstract: true)
+                final: true)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)
@@ -415,15 +415,15 @@ class GapicClientV2Generator
                 ':',
                 AST::access(AST::SELF, $this->servicePort())
             ),
-            'clientConfig' => AST::concat(AST::__DIR__, "/../../resources/$clientConfigFilename"),
-            'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../../resources/$descriptorConfigFilename"),
+            'clientConfig' => AST::concat(AST::__DIR__, "/../resources/$clientConfigFilename"),
+            'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/$descriptorConfigFilename"),
         ];
 
         // TODO: Consolidate setting all the known array values together.
         // We do this here to maintain the existing sensible ordering.
         if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
             $clientDefaultValues['gcpApiConfigPath'] =
-                AST::concat(AST::__DIR__, "/../../resources/{$this->serviceDetails->grpcConfigFilename}");
+                AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
 
         $credentialsConfig = [
@@ -436,7 +436,7 @@ class GapicClientV2Generator
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
         $clientDefaultValues['transportConfig'] = AST::array([
             'rest' => AST::array([
-                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../../resources/{$this->serviceDetails->restConfigFilename}"),
+                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
             ])
         ]);
         if ($this->serviceDetails->hasCustomOp) {
@@ -778,7 +778,7 @@ class GapicClientV2Generator
         if ($version !== '') {
             $version .= '/';
         }
-        $emptyClientName = $this->serviceDetails->emptyClientV2Type->name;
+        $emptyClientName = $this->serviceDetails->gapicClientV2Type->name;
 
         return "samples/{$version}{$emptyClientName}/{$methodName}.php";
     }

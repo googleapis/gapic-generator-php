@@ -124,7 +124,7 @@ class GapicClientGenerator
                 in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
                     ? PhpDoc::text(
                         'This service has a new (beta) implementation. See {@see ' .
-                        $this->serviceDetails->emptyClientV2Type->getFullname() . '} to use the new surface.'
+                        $this->serviceDetails->gapicClientV2Type->getFullname() . '} to use the new surface.'
                     ) : null,
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)

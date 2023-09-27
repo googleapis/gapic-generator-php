@@ -54,9 +54,6 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
 
-    /** @var Type *Readonly* The type of the empty client V2 class. */
-    public Type $emptyClientV2Type;
-
     /** @var Type *Readonly* The type of the gRPC client. */
     public Type $grpcClientType;
 
@@ -126,7 +123,7 @@ class ServiceDetails
 
     /** @var bool *Readonly* Whether this service makes use of resources. */
     public bool $hasResources;
-    
+
     /** @var Vector *Readonly* Vector of ResourcePart; all unique resources and patterns, in alphabetical order. */
     public Vector $resourceParts;
 
@@ -166,8 +163,7 @@ class ServiceDetails
         $this->transportType = $transportType;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
-        $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\BaseClient\\{$desc->getName()}BaseClient");
-        $this->emptyClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
+        $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?
