@@ -142,8 +142,15 @@ class LibraryGapicClient
     /** The name of the service. */
     const SERVICE_NAME = 'google.example.library.v1.Library';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     *
+     * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
+     */
     const SERVICE_ADDRESS = 'library-example.googleapis.com:1234';
+
+    /** The address template of the service. */
+    private const SERVICE_ADDRESS_TEMPLATE = 'library-example.UNIVERSE_DOMAIN:1234';
 
     /** The default port of the service. */
     const DEFAULT_SERVICE_PORT = 443;
