@@ -46,8 +46,6 @@ use Testing\Basic\Response;
  *
  * @experimental
  *
- * @internal
- *
  * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
  * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */

@@ -140,7 +140,6 @@ class GapicClientV2Generator
                         : '')
                 ),
                 PhpDoc::experimental(),
-                PhpDoc::internal(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))

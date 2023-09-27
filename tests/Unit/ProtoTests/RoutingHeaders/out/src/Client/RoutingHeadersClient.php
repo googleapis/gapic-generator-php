@@ -48,8 +48,6 @@ use Testing\RoutingHeaders\SimpleRequest;
  *
  * @experimental
  *
- * @internal
- *
  * @method PromiseInterface deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])

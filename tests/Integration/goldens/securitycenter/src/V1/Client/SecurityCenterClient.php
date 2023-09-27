@@ -85,8 +85,6 @@ use GuzzleHttp\Promise\PromiseInterface;
  *
  * @experimental
  *
- * @internal
- *
  * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])

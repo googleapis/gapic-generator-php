@@ -45,8 +45,6 @@ use Testing\BasicOneofNew\Response;
  *
  * @experimental
  *
- * @internal
- *
  * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
  */
 final class BasicOneofNewClient
