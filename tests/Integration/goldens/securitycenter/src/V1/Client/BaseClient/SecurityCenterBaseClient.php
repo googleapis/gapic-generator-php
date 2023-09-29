@@ -666,7 +666,7 @@ abstract class SecurityCenterBaseClient
      * Creates a finding. The corresponding source must exist for finding creation
      * to succeed.
      *
-     * The async variant is {@see self::createFindingAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::createFindingAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/create_finding.php
      *
@@ -692,7 +692,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Creates a notification config.
      *
-     * The async variant is {@see self::createNotificationConfigAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::createNotificationConfigAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/create_notification_config.php
      *
@@ -718,7 +719,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Creates a source.
      *
-     * The async variant is {@see self::createSourceAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::createSourceAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/create_source.php
      *
@@ -744,7 +745,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Deletes a notification config.
      *
-     * The async variant is {@see self::deleteNotificationConfigAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::deleteNotificationConfigAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/delete_notification_config.php
      *
@@ -768,7 +770,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Gets the access control policy on the specified Source.
      *
-     * The async variant is {@see self::getIamPolicyAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::getIamPolicyAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/get_iam_policy.php
      *
@@ -794,7 +796,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Gets a notification config.
      *
-     * The async variant is {@see self::getNotificationConfigAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::getNotificationConfigAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/get_notification_config.php
      *
@@ -820,7 +823,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Gets the settings for an organization.
      *
-     * The async variant is {@see self::getOrganizationSettingsAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::getOrganizationSettingsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/get_organization_settings.php
      *
@@ -846,7 +850,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Gets a source.
      *
-     * The async variant is {@see self::getSourceAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::getSourceAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/get_source.php
      *
@@ -873,7 +877,7 @@ abstract class SecurityCenterBaseClient
      * Filters an organization's assets and  groups them by their specified
      * properties.
      *
-     * The async variant is {@see self::groupAssetsAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::groupAssetsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/group_assets.php
      *
@@ -905,7 +909,7 @@ abstract class SecurityCenterBaseClient
      * /v1/folders/{folder_id}/sources/-/findings,
      * /v1/projects/{project_id}/sources/-/findings
      *
-     * The async variant is {@see self::groupFindingsAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::groupFindingsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/group_findings.php
      *
@@ -931,7 +935,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Lists an organization's assets.
      *
-     * The async variant is {@see self::listAssetsAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::listAssetsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/list_assets.php
      *
@@ -960,7 +964,7 @@ abstract class SecurityCenterBaseClient
      * To list across all sources provide a `-` as the source id.
      * Example: /v1/organizations/{organization_id}/sources/-/findings
      *
-     * The async variant is {@see self::listFindingsAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::listFindingsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/list_findings.php
      *
@@ -986,7 +990,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Lists notification configs.
      *
-     * The async variant is {@see self::listNotificationConfigsAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::listNotificationConfigsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/list_notification_configs.php
      *
@@ -1012,7 +1017,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Lists all sources belonging to an organization.
      *
-     * The async variant is {@see self::listSourcesAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::listSourcesAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/list_sources.php
      *
@@ -1043,7 +1048,8 @@ abstract class SecurityCenterBaseClient
      * it is called too frequently the caller will receive a TOO_MANY_REQUESTS
      * error.
      *
-     * The async variant is {@see self::runAssetDiscoveryAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::runAssetDiscoveryAsync()}
+     * .
      *
      * @example samples/V1/SecurityCenterClient/run_asset_discovery.php
      *
@@ -1069,7 +1075,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Updates the state of a finding.
      *
-     * The async variant is {@see self::setFindingStateAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::setFindingStateAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/set_finding_state.php
      *
@@ -1095,7 +1101,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Sets the access control policy on the specified Source.
      *
-     * The async variant is {@see self::setIamPolicyAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::setIamPolicyAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/set_iam_policy.php
      *
@@ -1121,7 +1127,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Returns the permissions that a caller has on the specified source.
      *
-     * The async variant is {@see self::testIamPermissionsAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::testIamPermissionsAsync()}
+     * .
      *
      * @example samples/V1/SecurityCenterClient/test_iam_permissions.php
      *
@@ -1148,7 +1155,7 @@ abstract class SecurityCenterBaseClient
      * Creates or updates a finding. The corresponding source must exist for a
      * finding creation to succeed.
      *
-     * The async variant is {@see self::updateFindingAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::updateFindingAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/update_finding.php
      *
@@ -1176,7 +1183,8 @@ abstract class SecurityCenterBaseClient
      * Updates a notification config. The following update
      * fields are allowed: description, pubsub_topic, streaming_config.filter
      *
-     * The async variant is {@see self::updateNotificationConfigAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::updateNotificationConfigAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/update_notification_config.php
      *
@@ -1202,7 +1210,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Updates an organization's settings.
      *
-     * The async variant is {@see self::updateOrganizationSettingsAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::updateOrganizationSettingsAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/update_organization_settings.php
      *
@@ -1228,7 +1237,8 @@ abstract class SecurityCenterBaseClient
     /**
      * Updates security marks.
      *
-     * The async variant is {@see self::updateSecurityMarksAsync()} .
+     * The async variant is
+     * {@see SecurityCenterGapicClient::updateSecurityMarksAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/update_security_marks.php
      *
@@ -1254,7 +1264,7 @@ abstract class SecurityCenterBaseClient
     /**
      * Updates a source.
      *
-     * The async variant is {@see self::updateSourceAsync()} .
+     * The async variant is {@see SecurityCenterGapicClient::updateSourceAsync()} .
      *
      * @example samples/V1/SecurityCenterClient/update_source.php
      *
