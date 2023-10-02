@@ -173,7 +173,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::deleteMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::deleteMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/delete_method.php
      *
@@ -197,7 +197,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::getMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::getMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/get_method.php
      *
@@ -221,7 +221,8 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::getNoPlaceholdersMethodAsync()} .
+     * The async variant is
+     * {@see RoutingHeadersGapicClient::getNoPlaceholdersMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/get_no_placeholders_method.php
      *
@@ -245,7 +246,8 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::getNoTemplateMethodAsync()} .
+     * The async variant is
+     * {@see RoutingHeadersGapicClient::getNoTemplateMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/get_no_template_method.php
      *
@@ -269,7 +271,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::nestedMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::nestedMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/nested_method.php
      *
@@ -293,7 +295,8 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::nestedMultiMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::nestedMultiMethodAsync()}
+     * .
      *
      * @example samples/RoutingHeadersClient/nested_multi_method.php
      *
@@ -317,7 +320,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::orderingMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::orderingMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/ordering_method.php
      *
@@ -341,7 +344,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::patchMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::patchMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/patch_method.php
      *
@@ -365,7 +368,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::postMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::postMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/post_method.php
      *
@@ -389,7 +392,7 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::putMethodAsync()} .
+     * The async variant is {@see RoutingHeadersGapicClient::putMethodAsync()} .
      *
      * @example samples/RoutingHeadersClient/put_method.php
      *
@@ -413,7 +416,8 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::routingRuleWithOutParametersAsync()} .
+     * The async variant is
+     * {@see RoutingHeadersGapicClient::routingRuleWithOutParametersAsync()} .
      *
      * @example samples/RoutingHeadersClient/routing_rule_with_out_parameters.php
      *
@@ -437,7 +441,8 @@ abstract class RoutingHeadersBaseClient
     }
 
     /**
-     * The async variant is {@see self::routingRuleWithParametersAsync()} .
+     * The async variant is
+     * {@see RoutingHeadersGapicClient::routingRuleWithParametersAsync()} .
      *
      * @example samples/RoutingHeadersClient/routing_rule_with_parameters.php
      *
