@@ -510,7 +510,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::fileLevelChildTypeRefMethodAsync()} .
+     * The async variant is
+     * {@see ResourceNamesGapicClient::fileLevelChildTypeRefMethodAsync()} .
      *
      * @param FileLevelChildTypeRefRequest $request     A request to house fields associated with the call.
      * @param array                        $callOptions {
@@ -532,7 +533,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::fileLevelTypeRefMethodAsync()} .
+     * The async variant is
+     * {@see ResourceNamesGapicClient::fileLevelTypeRefMethodAsync()} .
      *
      * @param FileLevelTypeRefRequest $request     A request to house fields associated with the call.
      * @param array                   $callOptions {
@@ -554,7 +556,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::multiPatternMethodAsync()} .
+     * The async variant is {@see ResourceNamesGapicClient::multiPatternMethodAsync()}
+     * .
      *
      * @param MultiPatternRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
@@ -576,7 +579,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::nestedReferenceMethodAsync()} .
+     * The async variant is
+     * {@see ResourceNamesGapicClient::nestedReferenceMethodAsync()} .
      *
      * @param NestedReferenceRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
@@ -598,7 +602,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::singlePatternMethodAsync()} .
+     * The async variant is {@see ResourceNamesGapicClient::singlePatternMethodAsync()}
+     * .
      *
      * @param SinglePatternRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
@@ -620,7 +625,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::wildcardChildReferenceMethodAsync()} .
+     * The async variant is
+     * {@see ResourceNamesGapicClient::wildcardChildReferenceMethodAsync()} .
      *
      * @param WildcardChildReferenceRequest $request     A request to house fields associated with the call.
      * @param array                         $callOptions {
@@ -642,7 +648,7 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::wildcardMethodAsync()} .
+     * The async variant is {@see ResourceNamesGapicClient::wildcardMethodAsync()} .
      *
      * @param WildcardPatternRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
@@ -664,7 +670,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::wildcardMultiMethodAsync()} .
+     * The async variant is {@see ResourceNamesGapicClient::wildcardMultiMethodAsync()}
+     * .
      *
      * @param WildcardMultiPatternRequest $request     A request to house fields associated with the call.
      * @param array                       $callOptions {
@@ -686,7 +693,8 @@ final class ResourceNamesClient
     }
 
     /**
-     * The async variant is {@see self::wildcardReferenceMethodAsync()} .
+     * The async variant is
+     * {@see ResourceNamesGapicClient::wildcardReferenceMethodAsync()} .
      *
      * @param WildcardReferenceRequest $request     A request to house fields associated with the call.
      * @param array                    $callOptions {
