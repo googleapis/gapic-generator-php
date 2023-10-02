@@ -384,7 +384,7 @@ class SnippetGenerator
         );
         $clientType = $preMigrationSurface ?
             $this->serviceDetails->emptyClientType :
-            $this->serviceDetails->emptyClientV2Type;
+            $this->serviceDetails->gapicClientV2Type;
 
         $sampleFn = AST::fn($sampleName)
             ->withParams($snippetDetails->sampleParams)
