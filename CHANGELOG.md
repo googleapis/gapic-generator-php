@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/gapic-generator-php/compare/v1.8.4...v1.9.0) (2023-10-04)
+
+
+### Features
+
+* Consolidate BaseClient classes in V2 generator ([#659](https://github.com/googleapis/gapic-generator-php/issues/659)) ([67375ee](https://github.com/googleapis/gapic-generator-php/commit/67375ee09163666122564efbd4685ccfce962795))
+
+
+### Bug Fixes
+
+* **docs:** Invalid self references for async methods ([#662](https://github.com/googleapis/gapic-generator-php/issues/662)) ([8fa9a47](https://github.com/googleapis/gapic-generator-php/commit/8fa9a4788fd57fa0fa3a990920a14247c0c15ea4))
+
 ## [1.8.4](https://github.com/googleapis/gapic-generator-php/compare/v1.8.3...v1.8.4) (2023-09-15)
 
 
