@@ -162,7 +162,7 @@ final class BasicOneofNewClient
     /**
      * Test including method args with required oneofs.
      *
-     * The async variant is {@see BasicOneofNewGapicClient::aMethodAsync()} .
+     * The async variant is {@see BasicOneofNewClient::aMethodAsync()} .
      *
      * @example samples/BasicOneofNewClient/a_method.php
      *
