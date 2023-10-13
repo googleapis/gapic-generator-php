@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/gapic-generator-php/compare/v1.9.0...v1.9.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* Phpdoc ref for async methods ([#664](https://github.com/googleapis/gapic-generator-php/issues/664)) ([9e7e19d](https://github.com/googleapis/gapic-generator-php/commit/9e7e19d53341f14f868123d661ec48fd4d5aa313))
+
 ## [1.9.0](https://github.com/googleapis/gapic-generator-php/compare/v1.8.4...v1.9.0) (2023-10-04)
 
 
