@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/gapic-generator-php/compare/v1.9.1...v1.9.2) (2023-11-03)
+
+
+### Bug Fixes
+
+* Prevent duplicate fragment gen ([#669](https://github.com/googleapis/gapic-generator-php/issues/669)) ([b25acf0](https://github.com/googleapis/gapic-generator-php/commit/b25acf0a88daad899a7b30956d9ac3f537eb5ac6))
+
 ## [1.9.1](https://github.com/googleapis/gapic-generator-php/compare/v1.9.0...v1.9.1) (2023-10-13)
 
 
