@@ -363,7 +363,7 @@ class CodeGenerator
                 $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
                 $buildMethodFragments = BuildMethodFragmentGenerator::generate($ctx, $service);
                 foreach ($buildMethodFragments as [$fragmentName, $buildMethodFragment]) {
-                    if ($fragmentsGenerated->offsetExists($fragmentName)) {
+                    if ($fragmentsGenerated[$fragmentName]) {
                         continue;
                     }
                     $buildMethodFragmentCode = BuildMethodFragmentGenerator::format(
