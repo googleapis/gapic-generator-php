@@ -300,8 +300,7 @@ final class CloudFunctionsServiceClient
      * the actual limits, refer to
      * [Rate Limits](https://cloud.google.com/functions/quotas#rate_limits).
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::callFunctionAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::callFunctionAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/call_function.php
      *
@@ -329,8 +328,7 @@ final class CloudFunctionsServiceClient
      * the specified project, the long running operation will return
      * `ALREADY_EXISTS` error.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::createFunctionAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::createFunctionAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/create_function.php
      *
@@ -358,8 +356,7 @@ final class CloudFunctionsServiceClient
      * given function is used by some trigger, the trigger will be updated to
      * remove this function.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::deleteFunctionAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::deleteFunctionAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/delete_function.php
      *
@@ -390,7 +387,7 @@ final class CloudFunctionsServiceClient
      * https://cloud.google.com/storage/docs/access-control/signed-urls
      *
      * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::generateDownloadUrlAsync()} .
+     * {@see CloudFunctionsServiceClient::generateDownloadUrlAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/generate_download_url.php
      *
@@ -441,7 +438,7 @@ final class CloudFunctionsServiceClient
      * * `Authorization: Bearer YOUR_TOKEN`
      *
      * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::generateUploadUrlAsync()} .
+     * {@see CloudFunctionsServiceClient::generateUploadUrlAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/generate_upload_url.php
      *
@@ -467,8 +464,7 @@ final class CloudFunctionsServiceClient
     /**
      * Returns a function with the given name from the requested project.
      *
-     * The async variant is {@see CloudFunctionsServiceGapicClient::getFunctionAsync()}
-     * .
+     * The async variant is {@see CloudFunctionsServiceClient::getFunctionAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/get_function.php
      *
@@ -496,8 +492,7 @@ final class CloudFunctionsServiceClient
      * Returns an empty policy if the function exists and does not have a policy
      * set.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::getIamPolicyAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::getIamPolicyAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/get_iam_policy.php
      *
@@ -523,8 +518,7 @@ final class CloudFunctionsServiceClient
     /**
      * Returns a list of functions that belong to the requested project.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::listFunctionsAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::listFunctionsAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/list_functions.php
      *
@@ -551,8 +545,7 @@ final class CloudFunctionsServiceClient
      * Sets the IAM access control policy on the specified function.
      * Replaces any existing policy.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::setIamPolicyAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::setIamPolicyAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/set_iam_policy.php
      *
@@ -582,7 +575,7 @@ final class CloudFunctionsServiceClient
      * permissions, not a NOT_FOUND error.
      *
      * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::testIamPermissionsAsync()} .
+     * {@see CloudFunctionsServiceClient::testIamPermissionsAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/test_iam_permissions.php
      *
@@ -608,8 +601,7 @@ final class CloudFunctionsServiceClient
     /**
      * Updates existing function.
      *
-     * The async variant is
-     * {@see CloudFunctionsServiceGapicClient::updateFunctionAsync()} .
+     * The async variant is {@see CloudFunctionsServiceClient::updateFunctionAsync()} .
      *
      * @example samples/V1/CloudFunctionsServiceClient/update_function.php
      *

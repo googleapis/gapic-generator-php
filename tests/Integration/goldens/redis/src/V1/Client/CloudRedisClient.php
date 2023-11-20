@@ -314,7 +314,7 @@ final class CloudRedisClient
      * The returned operation is automatically deleted after a few hours, so there
      * is no need to call DeleteOperation.
      *
-     * The async variant is {@see CloudRedisGapicClient::createInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::createInstanceAsync()} .
      *
      * @param CreateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -339,7 +339,7 @@ final class CloudRedisClient
      * Deletes a specific Redis instance.  Instance stops serving and data is
      * deleted.
      *
-     * The async variant is {@see CloudRedisGapicClient::deleteInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::deleteInstanceAsync()} .
      *
      * @param DeleteInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -368,7 +368,7 @@ final class CloudRedisClient
      * The returned operation is automatically deleted after a few hours, so
      * there is no need to call DeleteOperation.
      *
-     * The async variant is {@see CloudRedisGapicClient::exportInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::exportInstanceAsync()} .
      *
      * @param ExportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -393,7 +393,7 @@ final class CloudRedisClient
      * Initiates a failover of the master node to current replica node for a
      * specific STANDARD tier Cloud Memorystore for Redis instance.
      *
-     * The async variant is {@see CloudRedisGapicClient::failoverInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::failoverInstanceAsync()} .
      *
      * @param FailoverInstanceRequest $request     A request to house fields associated with the call.
      * @param array                   $callOptions {
@@ -417,7 +417,7 @@ final class CloudRedisClient
     /**
      * Gets the details of a specific Redis instance.
      *
-     * The async variant is {@see CloudRedisGapicClient::getInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::getInstanceAsync()} .
      *
      * @param GetInstanceRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
@@ -448,7 +448,7 @@ final class CloudRedisClient
      * The returned operation is automatically deleted after a few hours, so
      * there is no need to call DeleteOperation.
      *
-     * The async variant is {@see CloudRedisGapicClient::importInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::importInstanceAsync()} .
      *
      * @param ImportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -480,7 +480,7 @@ final class CloudRedisClient
      * If `location_id` is specified as `-` (wildcard), then all regions
      * available to the project are queried, and the results are aggregated.
      *
-     * The async variant is {@see CloudRedisGapicClient::listInstancesAsync()} .
+     * The async variant is {@see CloudRedisClient::listInstancesAsync()} .
      *
      * @param ListInstancesRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
@@ -508,7 +508,7 @@ final class CloudRedisClient
      * in the response field. The returned operation is automatically deleted
      * after a few hours, so there is no need to call DeleteOperation.
      *
-     * The async variant is {@see CloudRedisGapicClient::updateInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::updateInstanceAsync()} .
      *
      * @param UpdateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -533,7 +533,7 @@ final class CloudRedisClient
      * Upgrades Redis instance to the newer Redis version specified in the
      * request.
      *
-     * The async variant is {@see CloudRedisGapicClient::upgradeInstanceAsync()} .
+     * The async variant is {@see CloudRedisClient::upgradeInstanceAsync()} .
      *
      * @param UpgradeInstanceRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {

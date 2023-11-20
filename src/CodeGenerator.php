@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator;
 
 use Google\Generator\Collections\Map;
+use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Generation\SnippetGenerator;
 use Google\Generator\Generation\BuildMethodFragmentGenerator;
@@ -281,6 +282,7 @@ class CodeGenerator
         bool $generateSnippets = true
     ) {
         $versionToNamespace = [];
+        $fragmentsGenerated = Set::new();
         foreach ($servicesToGenerate as $service) {
             $migrationMode = $service->migrationMode;
 
@@ -361,9 +363,13 @@ class CodeGenerator
                 $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
                 $buildMethodFragments = BuildMethodFragmentGenerator::generate($ctx, $service);
                 foreach ($buildMethodFragments as [$fragmentName, $buildMethodFragment]) {
+                    if ($fragmentsGenerated[$fragmentName]) {
+                        continue;
+                    }
                     $buildMethodFragmentCode = BuildMethodFragmentGenerator::format(
                         $buildMethodFragment->reduce('', fn ($v, $i) => $v . $i->toCode())
                     );
+                    $fragmentsGenerated = $fragmentsGenerated->add($fragmentName);
                     yield ["fragments/{$fragmentName}.build.txt", $buildMethodFragmentCode];
                 }
             }

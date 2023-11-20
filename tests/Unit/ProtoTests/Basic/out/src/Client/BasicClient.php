@@ -164,7 +164,7 @@ final class BasicClient
     /**
      * Test summary text for AMethod
      *
-     * The async variant is {@see BasicGapicClient::aMethodAsync()} .
+     * The async variant is {@see BasicClient::aMethodAsync()} .
      *
      * @example samples/BasicClient/a_method.php
      *
@@ -190,7 +190,7 @@ final class BasicClient
     /**
      * Test including method args.
      *
-     * The async variant is {@see BasicGapicClient::methodWithArgsAsync()} .
+     * The async variant is {@see BasicClient::methodWithArgsAsync()} .
      *
      * @example samples/BasicClient/method_with_args.php
      *

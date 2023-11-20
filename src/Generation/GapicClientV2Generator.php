@@ -713,7 +713,7 @@ class GapicClientV2Generator
                         ? PhpDoc::text(
                             'The async variant is',
                             AST::staticCall( // use staticCall for PHP Doc :: syntax
-                                $this->ctx->type($this->serviceDetails->gapicClientType),
+                                $this->ctx->type($this->serviceDetails->gapicClientV2Type),
                                 AST::method($method->methodName . 'Async'))(),
                             '.')
                         : null,
