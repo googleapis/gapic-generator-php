@@ -80,9 +80,42 @@ We'll be using **PHP 7.4** for the setup.
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
 
--   Updating unit test goldens:
+-   Bazel integration tests.
 
-    You will need to update the golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
+    -   Running:
+
+        ```
+        bazel test tests/Integration:asset
+        ```
+
+    -   Running all tests:
+
+        ```
+        bash tests/scripts/run_bazel_tests.sh
+        ```
+
+        _Note: Running `bazel` commands may require removing the `composer.lock` and
+        `vendor/` directory._
+
+    -  Debugging in `googleapis`:
+
+        In [`googleapis/WORKSPACE`](https://github.com/googleapis/googleapis/blob/86fa44cc5ee2136e87c312f153113d4dd8e9c4de/WORKSPACE#L397-L401),
+        replace the `http_archive` downloading the generator with a
+        `local_repository` target pointing to the locally modified version of the
+        generator:
+
+        ```
+        local_repository(
+            name = "gapic_generator_php",
+            path = "/absolute/path/to/local/generator",
+        )
+        ```
+
+## Updating tests
+
+You will need to update the golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable_).
+
+-   Updating unit test goldens:
 
     ```
     php tests/Unit/ProtoTests/GoldenUpdateMain.php
@@ -90,78 +123,28 @@ We'll be using **PHP 7.4** for the setup.
 
     Then follow the prompts for which tests to update.
 
-    If a new unit test case is added, make sure to add it to the `UNIT_TESTS` list in [GoldenUpdateMain.php](tests/Unit/ProtoTests/GoldenUpdateMain.php).
+    __NOTE__: If a new unit test case is added, make sure to add it to the `UNIT_TESTS` list in [GoldenUpdateMain.php](tests/Unit/ProtoTests/GoldenUpdateMain.php).
 
--   Bazel integration tests.
-
-    -   Running:
+-   Updating integration test goldens:
 
     ```
-    bazel test tests/Integration:asset
+    bash tests/scripts/run_bazel_updates.sh --expunge
     ```
 
-    -   Running all tests:
-
-    ```
-    bazel test //tests/Integration:asset && \
-        bazel test //tests/Integration:compute_small && \
-        bazel test //tests/Integration:container && \
-        bazel test //tests/Integration:dataproc && \
-        bazel test //tests/Integration:functions && \
-        bazel test //tests/Integration:kms && \
-        bazel test //tests/Integration:iam && \
-        bazel test //tests/Integration:logging && \
-        bazel test //tests/Integration:redis && \
-        bazel test //tests/Integration:retail && \
-        bazel test //tests/Integration:speech && \
-        bazel test //tests/Integration:securitycenter && \
-        bazel test //tests/Integration:talent && \
-        bazel test //tests/Integration:videointelligence
-    ```
-
-    -   Updating goldens:
+    Integration tests can be updated individually as well:
 
     ```
     bazel run tests/Integration:asset_update
     ```
 
-    -   Updating integration test goldens:
-    
-    You will need to update the integration golden test files if you change something in the generation process that modifies the output (_for example, renaming a variable).
+    __NOTE__: If a new integration test case is added, make sure to add it the list in [run_bazel_tests.sh](tests/scripts/run_bazel_tests.sh) and [run_bazel_updates.sh](tests/scripts/run_bazel_updates.sh).
+
+- Update all goldens (unit and integration)
+
+    Run the composer script `update-all-tests` to update all goldens at once:
 
     ```
-    bazel clean --expunge && \
-        bazel run //tests/Integration:asset_update && \
-        bazel run //tests/Integration:compute_small_update && \
-        bazel run //tests/Integration:container_update && \
-        bazel run //tests/Integration:dataproc_update && \
-        bazel run //tests/Integration:functions_update && \
-        bazel run //tests/Integration:kms_update && \
-        bazel run //tests/Integration:iam_update && \
-        bazel run //tests/Integration:logging_update && \
-        bazel run //tests/Integration:redis_update && \
-        bazel run //tests/Integration:retail_update && \
-        bazel run //tests/Integration:speech_update && \
-        bazel run //tests/Integration:securitycenter_update && \
-        bazel run //tests/Integration:talent_update && \
-        bazel run //tests/Integration:videointelligence_update
-    ```
-
-    _Note: Running `bazel` commands may require removing the `composer.lock` and
-    `vendor/` directory._
-
-    -  Debugging in `googleapis`:
-
-    In [`googleapis/WORKSPACE`](https://github.com/googleapis/googleapis/blob/86fa44cc5ee2136e87c312f153113d4dd8e9c4de/WORKSPACE#L397-L401),
-    replace the `http_archive` downloading the generator with a
-    `local_repository` target pointing to the locally modified version of the
-    generator:
-
-    ```
-    local_repository(
-        name = "gapic_generator_php",
-        path = "/absolute/path/to/local/generator",
-    )
+    composer update-all-tests
     ```
 
 ## Rotating the bazel cache key

@@ -174,10 +174,10 @@ class UnitTestsV2Generator
                 AST::binaryOp($options->var, '+=', AST::array([
                     'credentials' => AST::call(AST::THIS, $this->createCredentials())()
                 ])),
-                AST::return(AST::new($this->ctx->type($this->serviceDetails->emptyClientV2Type, false, $brokenNoImport))($options->var))
+                AST::return(AST::new($this->ctx->type($this->serviceDetails->gapicClientV2Type, false, $brokenNoImport))($options->var))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::return($this->ctx->type($this->serviceDetails->emptyClientV2Type, false, $brokenNoImport))
+                PhpDoc::return($this->ctx->type($this->serviceDetails->gapicClientV2Type, false, $brokenNoImport))
             ));
     }
 

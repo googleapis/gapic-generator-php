@@ -138,15 +138,18 @@ class FieldDetails
      * AFTER a package's 1.0 release, back to being optional.
      */
     private static $optionalToRequiredFixes = [
-        'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
-        'google.logging.v2.GetCmekSettingsRequest' => ['name'],
+        'google.cloud.clouddms.v1.DescribeDatabaseEntitiesRequest' => ['tree'],
+        'google.cloud.clouddms.v1.ImportMappingRulesRequest' => ['rules_format', 'rules_files', 'auto_commit'],
+        'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
-        'google.firestore.v1.BatchWriteRequest' => ['database'],
-        'google.firestore.v1.PartitionQueryRequest' => ['parent'],
-        'google.spanner.v1.CreateSessionRequest' => ['session'],
         'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
         'google.devtools.artifactregistry.v1beta2.GetFileRequest' => ['name'],
-        'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
+        'google.devtools.artifactregistry.v1.CreateRepositoryRequest' => ['repository', 'repository_id'],
+        'google.firestore.v1.BatchWriteRequest' => ['database'],
+        'google.firestore.v1.PartitionQueryRequest' => ['parent'],
+        'google.logging.v2.UpdateCmekSettingsRequest' => ['name', 'cmek_settings'],
+        'google.logging.v2.GetCmekSettingsRequest' => ['name'],
+        'google.spanner.v1.CreateSessionRequest' => ['session'],
     ];
 
     public function __construct(ProtoCatalog $catalog, DescriptorProto $containingMessage, FieldDescriptorProto $field, ?Vector $docLinesOverride = null)

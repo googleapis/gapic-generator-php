@@ -77,7 +77,7 @@ class SnippetDetailsV2 extends SnippetDetails
         $this->callSampleAssignments = Vector::new();
         $this->sampleArguments = Vector::new();
         $this->serviceClientVar = AST::var($serviceDetails->clientVarName);
-        $this->emptyClientType = $serviceDetails->emptyClientV2Type;
+        $this->emptyClientType = $serviceDetails->gapicClientV2Type;
 
         $this->initialize();
     }

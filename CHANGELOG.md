@@ -1,5 +1,59 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/gapic-generator-php/compare/v1.9.1...v1.9.2) (2023-11-03)
+
+
+### Bug Fixes
+
+* Prevent duplicate fragment gen ([#669](https://github.com/googleapis/gapic-generator-php/issues/669)) ([b25acf0](https://github.com/googleapis/gapic-generator-php/commit/b25acf0a88daad899a7b30956d9ac3f537eb5ac6))
+
+## [1.9.1](https://github.com/googleapis/gapic-generator-php/compare/v1.9.0...v1.9.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* Phpdoc ref for async methods ([#664](https://github.com/googleapis/gapic-generator-php/issues/664)) ([9e7e19d](https://github.com/googleapis/gapic-generator-php/commit/9e7e19d53341f14f868123d661ec48fd4d5aa313))
+
+## [1.9.0](https://github.com/googleapis/gapic-generator-php/compare/v1.8.4...v1.9.0) (2023-10-04)
+
+
+### Features
+
+* Consolidate BaseClient classes in V2 generator ([#659](https://github.com/googleapis/gapic-generator-php/issues/659)) ([67375ee](https://github.com/googleapis/gapic-generator-php/commit/67375ee09163666122564efbd4685ccfce962795))
+
+
+### Bug Fixes
+
+* **docs:** Invalid self references for async methods ([#662](https://github.com/googleapis/gapic-generator-php/issues/662)) ([8fa9a47](https://github.com/googleapis/gapic-generator-php/commit/8fa9a4788fd57fa0fa3a990920a14247c0c15ea4))
+
+## [1.8.4](https://github.com/googleapis/gapic-generator-php/compare/v1.8.3...v1.8.4) (2023-09-15)
+
+
+### Bug Fixes
+
+* Optional-to-required CreateRepositoryRequest fields ([#656](https://github.com/googleapis/gapic-generator-php/issues/656)) ([aabc46e](https://github.com/googleapis/gapic-generator-php/commit/aabc46e1f58ef3ac2ac6810193c4b37df0992538))
+
+## [1.8.3](https://github.com/googleapis/gapic-generator-php/compare/v1.8.2...v1.8.3) (2023-09-15)
+
+
+### Bug Fixes
+
+* Optional-to-required parameter in NetworkConnectivity policy bas… ([#653](https://github.com/googleapis/gapic-generator-php/issues/653)) ([b303efe](https://github.com/googleapis/gapic-generator-php/commit/b303efe78fae116a3b3cfd71eee295d162b24c9f))
+
+## [1.8.2](https://github.com/googleapis/gapic-generator-php/compare/v1.8.1...v1.8.2) (2023-09-11)
+
+
+### Bug Fixes
+
+* ImportMappingRules optional-to-required parameters for DMS ([#651](https://github.com/googleapis/gapic-generator-php/issues/651)) ([c4059a9](https://github.com/googleapis/gapic-generator-php/commit/c4059a98bc13f5c0a0797a9e9798a916413dfa97))
+
+## [1.8.1](https://github.com/googleapis/gapic-generator-php/compare/v1.8.0...v1.8.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* Optional-to-required field for Cloud DMS ([#649](https://github.com/googleapis/gapic-generator-php/issues/649)) ([613baec](https://github.com/googleapis/gapic-generator-php/commit/613baec2d7c99002f734580583f52ac7cba8ee15))
+
 ## [1.8.0](https://github.com/googleapis/gapic-generator-php/compare/v1.7.6...v1.8.0) (2023-06-09)
 
 
