@@ -66,6 +66,8 @@ use Testing\BasicPaginated\Response;
  *     $basicPaginatedClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class BasicPaginatedGapicClient
 {

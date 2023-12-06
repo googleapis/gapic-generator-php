@@ -120,14 +120,14 @@ class GapicClientGenerator
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                      ),
-                // If this service contains both client surfaces, link to the new surface.
-                in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
-                    ? PhpDoc::text(
-                        'This service has a new (beta) implementation. See {@see ' .
-                        $this->serviceDetails->gapicClientV2Type->getFullname() . '} to use the new surface.'
-                    ) : null,
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG)
+                PhpDoc::deprecated(
+                    // If this service contains both client surfaces, link to the new surface.
+                    (in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
+                    ? 'Please use the new service client {@see ' .
+                        $this->serviceDetails->gapicClientV2Type->getFullname() . '}.'
+                    : ServiceDetails::DEPRECATED_MSG)
+                )
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withMember($this->serviceName())

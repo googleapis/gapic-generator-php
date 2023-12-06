@@ -53,8 +53,7 @@ use Testing\RoutingHeaders\SimpleRequest;
  * }
  * ```
  *
- * This service has a new (beta) implementation. See {@see
- * \Testing\RoutingHeaders\Client\RoutingHeadersClient} to use the new surface.
+ * @deprecated Please use the new service client {@see \Testing\RoutingHeaders\Client\RoutingHeadersClient}.
  */
 class RoutingHeadersGapicClient
 {

@@ -70,8 +70,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * This service has a new (beta) implementation. See {@see
- * \Testing\ResourceNames\Client\ResourceNamesClient} to use the new surface.
+ * @deprecated Please use the new service client {@see \Testing\ResourceNames\Client\ResourceNamesClient}.
  */
 class ResourceNamesGapicClient
 {
