@@ -123,10 +123,9 @@ class GapicClientGenerator
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 PhpDoc::deprecated(
                     // If this service contains both client surfaces, link to the new surface.
-                    (in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
-                    ? 'Please use the new service client {@see ' .
-                        $this->serviceDetails->gapicClientV2Type->getFullname() . '}.'
-                    : ServiceDetails::DEPRECATED_MSG)
+                    in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
+                        ? 'Please use the new service client {@see ' . $this->serviceDetails->gapicClientV2Type->getFullname() . '}.'
+                        : ServiceDetails::DEPRECATED_MSG
                 )
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
