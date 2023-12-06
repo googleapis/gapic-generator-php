@@ -49,6 +49,8 @@ use Testing\DisableSnippets\Response;
  *     $disableSnippetsClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class DisableSnippetsGapicClient
 {

@@ -79,6 +79,8 @@ use Google\LongRunning\Operation;
  *     $videoIntelligenceServiceClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class VideoIntelligenceServiceGapicClient
 {

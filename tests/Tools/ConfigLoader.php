@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Tools;
 
-trait ConfigLoader
+class ConfigLoader
 {
     /**
      * Load a config file from the specified path, which must be relative to the `tests/Unit` directory.

@@ -53,6 +53,8 @@ use Testing\BasicServerStreaming\Response;
  *     $basicServerStreamingClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class BasicServerStreamingGapicClient
 {

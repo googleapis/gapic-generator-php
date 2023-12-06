@@ -54,6 +54,8 @@ use Testing\BasicOneof\Response;
  *     $basicOneofClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class BasicOneofGapicClient
 {

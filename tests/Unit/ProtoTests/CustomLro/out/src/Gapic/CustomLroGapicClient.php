@@ -75,6 +75,8 @@ use Testing\CustomLro\CustomOperationResponse;
  *     $customLroClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class CustomLroGapicClient
 {

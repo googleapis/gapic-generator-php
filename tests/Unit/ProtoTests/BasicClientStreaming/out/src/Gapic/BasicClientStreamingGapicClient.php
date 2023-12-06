@@ -69,6 +69,8 @@ use Testing\BasicClientStreaming\Response;
  *     $basicClientStreamingClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class BasicClientStreamingGapicClient
 {
