@@ -64,6 +64,8 @@ use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class CompletionGapicClient
 {

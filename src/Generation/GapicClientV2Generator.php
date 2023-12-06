@@ -127,19 +127,7 @@ class GapicClientV2Generator
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
                     ),
-                // TODO(#594): Uncomment this and remove the following two lines when stable.
-                // $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                PhpDoc::text(
-                    'This class is currently experimental and may be subject to changes.' .
-                    // If this service is GA and contains both client surfaces, link to the stable surface.
-                    ($this->serviceDetails->isGa() && in_array(
-                        $this->serviceDetails->migrationMode,
-                        [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED]
-                    )
-                        ? ' See {@see ' . $this->serviceDetails->emptyClientType->getFullname() . '} for the stable implementation'
-                        : '')
-                ),
-                PhpDoc::experimental(),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))

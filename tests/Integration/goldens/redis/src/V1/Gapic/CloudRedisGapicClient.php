@@ -113,8 +113,7 @@ use Google\Protobuf\FieldMask;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * This service has a new (beta) implementation. See {@see
- * \Google\Cloud\Redis\V1\Client\CloudRedisClient} to use the new surface.
+ * @deprecated Please use the new service client {@see \Google\Cloud\Redis\V1\Client\CloudRedisClient}.
  */
 class CloudRedisGapicClient
 {

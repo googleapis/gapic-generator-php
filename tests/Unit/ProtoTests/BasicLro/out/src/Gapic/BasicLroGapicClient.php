@@ -75,6 +75,8 @@ use Testing\BasicLro\Request;
  *     $basicLroClient->close();
  * }
  * ```
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class BasicLroGapicClient
 {
