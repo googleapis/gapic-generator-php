@@ -83,6 +83,8 @@ use Google\Cloud\Retail\V2alpha\UserInfo;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class SearchServiceGapicClient
 {

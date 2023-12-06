@@ -72,6 +72,8 @@ use Google\LongRunning\Operation;
  * contained within formatted names that are returned by the API.
  *
  * @experimental
+ *
+ * @deprecated This class will be removed in the next major version update.
  */
 class UserEventServiceGapicClient
 {
