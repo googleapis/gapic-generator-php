@@ -136,7 +136,7 @@ class GapicClientV2Generator
                 $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null)
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
-            ->withMembers(Vector::new($this->hasServiceAddressTemplate() ? [$this->serviceAddressTemplate()] : []))
+            ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
             ->withMember($this->serviceScopes())
