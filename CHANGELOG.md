@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/gapic-generator-php/compare/v1.9.2...v1.10.0) (2023-12-14)
+
+
+### Features
+
+* Add support for Universe Domain via service address template ([#658](https://github.com/googleapis/gapic-generator-php/issues/658)) ([26661dd](https://github.com/googleapis/gapic-generator-php/commit/26661dd0090a6edc88684d1803c619a32dae7dbe))
+* Mark new surface GA and previous surface deprecated ([#674](https://github.com/googleapis/gapic-generator-php/issues/674)) ([e45bf0e](https://github.com/googleapis/gapic-generator-php/commit/e45bf0efb754581f84d08fb37364345e7dbdc794))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency symplify/coding-standard to v9.4.70 ([#586](https://github.com/googleapis/gapic-generator-php/issues/586)) ([a015824](https://github.com/googleapis/gapic-generator-php/commit/a015824e4156e67ba87bac04024a0a344b085ee5))
+
 ## [1.9.2](https://github.com/googleapis/gapic-generator-php/compare/v1.9.1...v1.9.2) (2023-11-03)
 
 
