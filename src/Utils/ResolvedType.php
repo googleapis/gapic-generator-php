@@ -55,6 +55,20 @@ class ResolvedType
     }
 
     /**
+     * A type of union types
+     *
+     * @param array<ResolvedType> $types
+     * @return ResolvedType
+     */
+    public static function union(array $types): ResolvedType
+    {
+        return new ResolvedType(Type::mixed(), fn () => implode('|', array_map(
+            fn (ResolvedType $type) => $type->toCode(),
+            $types,
+        )));
+    }
+
+    /**
      * The 'self' built-in identifier.
      *
      * @return ResolvedType
