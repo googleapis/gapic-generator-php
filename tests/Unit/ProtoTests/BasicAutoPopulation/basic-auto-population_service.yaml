@@ -1,0 +1,23 @@
+type: google.api.Service
+config_version: 3
+
+apis:
+- name: testing.basicautopopulation.BasicAutoPopulation
+
+title: Basic Auto Population Service
+
+name: testing.basicautopopulation.BasicAutoPopulation
+
+authentication:
+  rules:
+  - selector: 'testing.basicautopopulation.BasicAutoPopulation.*'
+    oauth:
+      canonical_scopes: |-
+        scope1,
+        scope2
+
+publishing:
+  method_settings:
+  - selector: testing.basicautopopulation.BasicAutoPopulation.CreateFoo
+    auto_populated_fields:
+    - request_id
