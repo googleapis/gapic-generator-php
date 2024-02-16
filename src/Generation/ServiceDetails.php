@@ -25,6 +25,7 @@ use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
+use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\GPBType;
@@ -147,12 +148,21 @@ class ServiceDetails
     /** @var string *Readonly* MigrationMode to use during generation. */
     public string $migrationMode;
 
+    /**
+     * @var ServiceYamlConfig *ReadOnly* Service yaml config to read custom
+     *      settings while for library generation. For example:
+     *      Read Google\Api\MethodSettings under Google\Api|Publishing and
+     *      configure methods as described (eg: auto population of requestId)
+     */
+    public ServiceYamlConfig $serviceYamlConfig;
+
     public function __construct(
         ProtoCatalog $catalog,
         string $namespace,
         string $package,
         ServiceDescriptorProto $desc,
         FileDescriptorProto $fileDesc,
+        ServiceYamlConfig $serviceYamlConfig,
         int $transportType = Transport::GRPC_REST,
         string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
@@ -161,6 +171,7 @@ class ServiceDetails
         $this->namespace = $namespace;
         $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
+        $this->serviceYamlConfig = $serviceYamlConfig;
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");

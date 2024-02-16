@@ -144,7 +144,7 @@ class ResourcesGenerator
                     }
                     break;
             }
-            
+
             if ($method->headerParams && !$preMigrationOnly) {
                 $descriptor['headerParams'] = $method->headerParams;
             }
@@ -256,6 +256,7 @@ class ResourcesGenerator
                 $opFile->getPackage(),
                 $opService,
                 $opFile,
+                $serviceYamlConfig,
                 $serviceDetails->transportType
             );
             $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
@@ -269,7 +270,7 @@ class ResourcesGenerator
         if ($numericEnums) {
             $config['numericEnums'] = true;
         }
-        
+
         $return = AST::return(
             AST::array($config)
         );

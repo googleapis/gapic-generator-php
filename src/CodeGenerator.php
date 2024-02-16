@@ -183,7 +183,16 @@ class CodeGenerator
             foreach ($singlePackageFileDescs as $fileDesc) {
                 foreach ($fileDesc->getService() as $index => $service) {
                     $serviceDetails =
-                        new ServiceDetails($catalog, $namespaces[0], $fileDesc->getPackage(), $service, $fileDesc, $transportType, $migrationMode);
+                        new ServiceDetails(
+                            $catalog,
+                            $namespaces[0],
+                            $fileDesc->getPackage(),
+                            $service,
+                            $fileDesc,
+                            $serviceYamlConfig,
+                            $transportType,
+                            $migrationMode
+                        );
                     $serviceName = $serviceDetails->serviceName;
                     // Do not generate GAPICs for mixin services unless the mixin is the only service in the service.yaml
                     $generateNormalGapic = !in_array($serviceName, self::MIXIN_SERVICES)

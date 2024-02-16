@@ -58,6 +58,7 @@ class ServiceYamlConfig
         $this->documentationRules = Vector::new([]);
         $this->backendRules = Vector::new([]);
         $this->apiNames = Vector::new([]);
+        $this->methodSettings = Vector::new([]);
         if (!is_null($serviceYaml)) {
             $service = new Service();
             $serviceYaml = static::fixYaml($serviceYaml);
@@ -81,6 +82,11 @@ class ServiceYamlConfig
             if (!is_null($apis)) {
                 $this->apiNames = Vector::new($apis)->map(fn ($a) => $a->getName());
             }
+
+            $publishing = $service->getPublishing();
+            if (!is_null($publishing)) {
+                $this->methodSettings = Vector::new($publishing->getMethodSettings());
+            }
         }
     }
 
@@ -95,4 +101,7 @@ class ServiceYamlConfig
 
     /** @var Vector *Readonly* Vector of API names. */
     public Vector $apiNames;
+
+    /** @var Vector *Readonly* Vector of Method Settings of  \Google\Api\Publishing */
+    public Vector $methodSettings;
 }
