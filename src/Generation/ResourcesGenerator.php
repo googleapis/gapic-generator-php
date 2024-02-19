@@ -153,6 +153,11 @@ class ResourcesGenerator
                 $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
             }
 
+            $autoPopulatedFields = self::getFieldsToAutoPopulate($method, $serviceDetails);
+            if (!empty($autoPopulatedFields)) {
+                $descriptor['autoPopulatedFields'] =  $autoPopulatedFields;
+            }
+
             return Map::new($descriptor);
         };
 
@@ -507,5 +512,51 @@ class ResourcesGenerator
                 ->filter(fn ($f) => $f->name !== $httpRule->getBody() && !$nameSegments->contains($f->name))
                 ->map(fn ($f) => $f->name);
         return $queryParams;
+    }
+
+    /**
+     * For a given method and service, returns any fields that are available
+     * for autopopulation given the restrictions below.
+     * The field is a top-level string field of a unary method's request message.
+     * The field is not annotated with `google.api.field_behavior = REQUIRED`.
+     * The field name is listed in `google.api.publishing.method_settings.auto_populated_fields`.
+     * The field is annotated with `google.api.field_info.format = UUID4`.
+     *
+     * @return array<string> Fields to autopopulate in GAX if unset by user
+     */
+    private static function getFieldsToAutoPopulate(
+        MethodDetails $method,
+        ServiceDetails $serviceDetails
+    ): array {
+        $autoPopulatedFields = Vector::new([]);
+
+        $methodSettings = $serviceDetails->serviceYamlConfig->methodSettings;
+        foreach ($methodSettings as $methodSetting) {
+            $autoPopulatedFieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
+            if (!empty($autoPopulatedFieldNames)) {
+
+                // Check if the $methodSetting is for this particular $method
+                $splitMethodName = explode('.', $methodSetting->getSelector());
+                $methodName = $splitMethodName[array_key_last($splitMethodName)];
+                if ($methodName !== $method->name) {
+                    continue;
+                }
+
+                // Process only if the method is unary
+                if (!$method->isStreaming()) {
+                    $autoPopulatedFields = $method->optionalFields
+                        ->filter(
+                            // Filter out field names to autopopulate from all fields of the method
+                            fn ($f) => in_array($f->name, $autoPopulatedFieldNames)
+                        )
+                        ->filter(
+                            // Filter for optional field and uuid4 format
+                            fn ($f) => !$f->isRequired && $f->isUuid4
+                        );
+                }
+            }
+        }
+        $autoPopulatedFields = $autoPopulatedFields->map(fn ($x) => $x->camelName);
+        return $autoPopulatedFields->toArray();
     }
 }

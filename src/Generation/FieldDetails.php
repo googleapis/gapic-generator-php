@@ -107,6 +107,12 @@ class FieldDetails
     public Vector $requiredSubFields;
 
     /**
+     * @var bool *Readonly* Whether this field'as format is UUID or not. Returns `false`
+     *      when (google.api.field_info).format annotation isn't set.
+     */
+    public bool $isUuid4;
+
+    /**
      * Reverts fields which were previously required, but were made optional
      * AFTER a package's 1.0 release, back to being required.
      */
@@ -212,6 +218,7 @@ class FieldDetails
                 }
             }
         }
+        $this->isUuid4 = $this->isFieldInfoUuid($field);
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
@@ -234,6 +241,15 @@ class FieldDetails
             }
         }
         return $isRequired;
+    }
+
+    private function isFieldInfoUuid(FieldDescriptorProto $field)
+    {
+        $fieldInfo = ProtoHelpers::fieldInfo($field)->firstOrNull();
+        if ($fieldInfo) {
+            return $fieldInfo->getFormat() === 1;
+        }
+        return false;
     }
 
     public function toOneofWrapperType(string $serviceNamespace): ?Type

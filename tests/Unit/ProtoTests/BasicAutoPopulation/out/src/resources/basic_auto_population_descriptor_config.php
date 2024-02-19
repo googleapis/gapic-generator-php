@@ -2,6 +2,12 @@
 
 return [
     'interfaces' => [
-        'testing.basicautopopulation.BasicAutoPopulation' => [],
+        'testing.basicautopopulation.BasicAutoPopulation' => [
+            'CreateFoo' => [
+                'autoPopulatedFields' => [
+                    'requestId',
+                ],
+            ],
+        ],
     ],
 ];
