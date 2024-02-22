@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,21 +32,21 @@ use Google\Cloud\Retail\V2alpha\SearchServiceClient;
  * Performs a search.
  *
  * This feature is only available for users who have Retail Search enabled.
- * Please submit a form [here](https://cloud.google.com/contact) to contact
- * cloud sales if you are interested in using Retail Search.
+ * Enable Retail Search on Cloud Console before using this feature.
  *
- * @param string $placement The resource name of the search engine placement, such as
+ * @param string $placement The resource name of the Retail Search serving config, such as
+ *                          `projects/&#42;/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config`
+ *                          or the name of the legacy placement resource, such as
  *                          `projects/&#42;/locations/global/catalogs/default_catalog/placements/default_search`.
- *                          This field is used to identify the set of models that will be used to make
- *                          the search.
- *
- *                          We currently support one placement with the following ID:
- *
- *                          * `default_search`.
+ *                          This field is used to identify the serving config name and the set
+ *                          of models that will be used to make the search.
  * @param string $visitorId A unique identifier for tracking visitors. For example, this
  *                          could be implemented with an HTTP cookie, which should be able to uniquely
  *                          identify a visitor on a single device. This unique identifier should not
  *                          change if the visitor logs in or out of the website.
+ *
+ *                          This should be the same identifier as
+ *                          [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id].
  *
  *                          The field must be a UTF-8 encoded string with a length limit of 128
  *                          characters. Otherwise, an INVALID_ARGUMENT error is returned.

@@ -37,6 +37,17 @@ return [
                     ],
                 ],
             ],
+            'CheckAutopilotCompatibility' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=projects/*/locations/*/clusters/*}:checkAutopilotCompatibility',
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'CompleteIPRotation' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{name=projects/*/locations/*/clusters/*}:completeIpRotation',
@@ -67,6 +78,18 @@ return [
                     'zone' => [
                         'getters' => [
                             'getZone',
+                        ],
+                    ],
+                ],
+            ],
+            'CompleteNodePoolUpgrade' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:completeUpgrade',
+                'body' => '*',
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
                         ],
                     ],
                 ],

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,35 +35,36 @@ use Google\Rpc\Status;
  * could take hours or days to complete. To test a filter, use the list
  * command first.
  *
- * @param string $parent The resource name of the catalog under which the events are
- *                       created. The format is
- *                       `projects/${projectId}/locations/global/catalogs/${catalogId}`
- * @param string $filter The filter string to specify the events to be deleted with a
- *                       length limit of 5,000 characters. Empty string filter is not allowed. The
- *                       eligible fields for filtering are:
+ * @param string $formattedParent The resource name of the catalog under which the events are
+ *                                created. The format is
+ *                                `projects/${projectId}/locations/global/catalogs/${catalogId}`
+ *                                Please see {@see UserEventServiceClient::catalogName()} for help formatting this field.
+ * @param string $filter          The filter string to specify the events to be deleted with a
+ *                                length limit of 5,000 characters. Empty string filter is not allowed. The
+ *                                eligible fields for filtering are:
  *
- *                       * `eventType`: Double quoted
- *                       [UserEvent.event_type][google.cloud.retail.v2alpha.UserEvent.event_type]
- *                       string.
- *                       * `eventTime`: in ISO 8601 "zulu" format.
- *                       * `visitorId`: Double quoted string. Specifying this will delete all
- *                       events associated with a visitor.
- *                       * `userId`: Double quoted string. Specifying this will delete all events
- *                       associated with a user.
+ *                                * `eventType`: Double quoted
+ *                                [UserEvent.event_type][google.cloud.retail.v2alpha.UserEvent.event_type]
+ *                                string.
+ *                                * `eventTime`: in ISO 8601 "zulu" format.
+ *                                * `visitorId`: Double quoted string. Specifying this will delete all
+ *                                events associated with a visitor.
+ *                                * `userId`: Double quoted string. Specifying this will delete all events
+ *                                associated with a user.
  *
- *                       Examples:
+ *                                Examples:
  *
- *                       * Deleting all events in a time range:
- *                       `eventTime > "2012-04-23T18:25:43.511Z"
- *                       eventTime < "2012-04-23T18:30:43.511Z"`
- *                       * Deleting specific eventType in time range:
- *                       `eventTime > "2012-04-23T18:25:43.511Z" eventType = "detail-page-view"`
- *                       * Deleting all events for a specific visitor:
- *                       `visitorId = "visitor1024"`
+ *                                * Deleting all events in a time range:
+ *                                `eventTime > "2012-04-23T18:25:43.511Z"
+ *                                eventTime < "2012-04-23T18:30:43.511Z"`
+ *                                * Deleting specific eventType in time range:
+ *                                `eventTime > "2012-04-23T18:25:43.511Z" eventType = "detail-page-view"`
+ *                                * Deleting all events for a specific visitor:
+ *                                `visitorId = "visitor1024"`
  *
- *                       The filtering fields are assumed to have an implicit AND.
+ *                                The filtering fields are assumed to have an implicit AND.
  */
-function purge_user_events_sample(string $parent, string $filter): void
+function purge_user_events_sample(string $formattedParent, string $filter): void
 {
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
@@ -71,7 +72,7 @@ function purge_user_events_sample(string $parent, string $filter): void
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->purgeUserEvents($parent, $filter);
+        $response = $userEventServiceClient->purgeUserEvents($formattedParent, $filter);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {
@@ -99,9 +100,9 @@ function purge_user_events_sample(string $parent, string $filter): void
  */
 function callSample(): void
 {
-    $parent = '[PARENT]';
+    $formattedParent = UserEventServiceClient::catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
     $filter = '[FILTER]';
 
-    purge_user_events_sample($parent, $filter);
+    purge_user_events_sample($formattedParent, $filter);
 }
 // [END retail_v2alpha_generated_UserEventService_PurgeUserEvents_sync]

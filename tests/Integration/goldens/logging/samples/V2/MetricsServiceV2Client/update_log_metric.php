@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,11 +46,11 @@ use Google\Cloud\Logging\V2\MetricsServiceV2Client;
  *                                    `_-.,+!*',()%/`. The forward-slash character (`/`) denotes a hierarchy of
  *                                    name pieces, and it cannot be the first character of the name.
  *
- *                                    The metric identifier in this field must not be
- *                                    [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
- *                                    However, when the metric identifier appears as the `[METRIC_ID]` part of a
- *                                    `metric_name` API parameter, then the metric identifier must be
- *                                    URL-encoded. Example: `"projects/my-project/metrics/nginx%2Frequests"`.
+ *                                    This field is the `[METRIC_ID]` part of a metric resource name in the
+ *                                    format "projects/[PROJECT_ID]/metrics/[METRIC_ID]". Example: If the
+ *                                    resource name of a metric is
+ *                                    `"projects/my-project/metrics/nginx%2Frequests"`, this field's value is
+ *                                    `"nginx/requests"`.
  * @param string $metricFilter        An [advanced logs
  *                                    filter](https://cloud.google.com/logging/docs/view/advanced_filters) which
  *                                    is used to match log entries. Example:

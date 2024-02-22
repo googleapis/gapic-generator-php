@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,19 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Deletes a view from a bucket.
+ * Deletes a view on a log bucket.
+ * If an `UNAVAILABLE` error is returned, this indicates that system is not in
+ * a state where it can delete the view. If this occurs, please try again in a
+ * few minutes.
  *
  * @param string $formattedName The full resource name of the view to delete:
  *
  *                              "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
  *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`. Please see
- *                              {@see ConfigServiceV2Client::logViewName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/locations/global/buckets/my-bucket/views/my-view"`
+ *                              Please see {@see ConfigServiceV2Client::logViewName()} for help formatting this field.
  */
 function delete_view_sample(string $formattedName): void
 {

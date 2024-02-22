@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,14 @@ use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 /**
  * Creates a notification config.
  *
- * @param string $formattedParent Resource name of the new notification config's parent. Its format is
- *                                "organizations/[organization_id]". Please see
- *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
+ * @param string $formattedParent Resource name of the new notification config's parent. Its format
+ *                                is "organizations/[organization_id]", "folders/[folder_id]", or
+ *                                "projects/[project_id]". Please see
+ *                                {@see SecurityCenterClient::projectName()} for help formatting this field.
  * @param string $configId        Required.
  *                                Unique identifier provided by the client within the parent scope.
- *                                It must be between 1 and 128 characters, and contains alphanumeric
- *                                characters, underscores or hyphens only.
+ *                                It must be between 1 and 128 characters and contain alphanumeric
+ *                                characters, underscores, or hyphens only.
  */
 function create_notification_config_sample(string $formattedParent, string $configId): void
 {
@@ -72,7 +73,7 @@ function create_notification_config_sample(string $formattedParent, string $conf
  */
 function callSample(): void
 {
-    $formattedParent = SecurityCenterClient::organizationName('[ORGANIZATION]');
+    $formattedParent = SecurityCenterClient::projectName('[PROJECT]');
     $configId = '[CONFIG_ID]';
 
     create_notification_config_sample($formattedParent, $configId);

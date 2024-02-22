@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,11 @@ use Google\Cloud\SecurityCenter\V1\ListAssetsResponse\ListAssetsResult;
 /**
  * Lists an organization's assets.
  *
- * @param string $formattedParent Name of the organization assets should belong to. Its format is
- *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]". Please see
+ * @param string $formattedParent The name of the parent resource that contains the assets. The
+ *                                value that you can specify on parent depends on the method in which you
+ *                                specify parent. You can specify one of the following values:
+ *                                "organizations/[organization_id]", "folders/[folder_id]", or
+ *                                "projects/[project_id]". Please see
  *                                {@see SecurityCenterClient::projectName()} for help formatting this field.
  */
 function list_assets_sample(string $formattedParent): void

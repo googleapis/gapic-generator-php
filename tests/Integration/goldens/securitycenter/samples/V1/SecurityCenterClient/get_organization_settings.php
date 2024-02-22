@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 /**
  * Gets the settings for an organization.
  *
- * @param string $formattedName Name of the organization to get organization settings for. Its format is
- *                              "organizations/[organization_id]/organizationSettings". Please see
+ * @param string $formattedName Name of the organization to get organization settings for. Its
+ *                              format is "organizations/[organization_id]/organizationSettings". Please see
  *                              {@see SecurityCenterClient::organizationSettingsName()} for help formatting this field.
  */
 function get_organization_settings_sample(string $formattedName): void

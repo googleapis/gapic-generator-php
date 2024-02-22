@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -282,28 +282,43 @@ class PredictionServiceGapicClient
      * ```
      *
      * @param string    $placement    Required. Full resource name of the format:
-     *                                {name=projects/&#42;/locations/global/catalogs/default_catalog/placements/*}
-     *                                The ID of the Recommendations AI placement. Before you can request
-     *                                predictions from your model, you must create at least one placement for it.
-     *                                For more information, see [Managing
-     *                                placements](https://cloud.google.com/retail/recommendations-ai/docs/manage-placements).
+     *                                `{placement=projects/&#42;/locations/global/catalogs/default_catalog/servingConfigs/*}`
+     *                                or
+     *                                `{placement=projects/&#42;/locations/global/catalogs/default_catalog/placements/*}`.
+     *                                We recommend using the `servingConfigs` resource. `placements` is a legacy
+     *                                resource.
+     *                                The ID of the Recommendations AI serving config or placement.
+     *                                Before you can request predictions from your model, you must create at
+     *                                least one serving config or placement for it. For more information, see
+     *                                [Manage serving configs]
+     *                                (https://cloud.google.com/retail/docs/manage-configs).
      *
-     *                                The full list of available placements can be seen at
-     *                                https://console.cloud.google.com/recommendation/catalogs/default_catalog/placements
+     *                                The full list of available serving configs can be seen at
+     *                                https://console.cloud.google.com/ai/retail/catalogs/default_catalog/configs
      * @param UserEvent $userEvent    Required. Context about the user, what they are looking at and what action
      *                                they took to trigger the predict request. Note that this user event detail
      *                                won't be ingested to userEvent logs. Thus, a separate userEvent write
      *                                request is required for event logging.
+     *
+     *                                Don't set
+     *                                [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id] or
+     *                                [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id] to the
+     *                                same fixed ID for different users. If you are trying to receive
+     *                                non-personalized recommendations (not recommended; this can negatively
+     *                                impact model performance), instead set
+     *                                [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id] to
+     *                                a random unique ID and leave
+     *                                [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id] unset.
      * @param array     $optionalArgs {
      *     Optional.
      *
      *     @type int $pageSize
-     *           Maximum number of results to return per page. Set this property
-     *           to the number of prediction results needed. If zero, the service will
-     *           choose a reasonable default. The maximum allowed value is 100. Values
-     *           above 100 will be coerced to 100.
+     *           Maximum number of results to return. Set this property to the number of
+     *           prediction results needed. If zero, the service will choose a reasonable
+     *           default. The maximum allowed value is 100. Values above 100 will be coerced
+     *           to 100.
      *     @type string $pageToken
-     *           The previous PredictResponse.next_page_token.
+     *           This field is not used; leave it unset.
      *     @type string $filter
      *           Filter for restricting prediction results with a length limit of 5,000
      *           characters. Accepts values for tags and the `filterOutOfStockItems` flag.
@@ -328,9 +343,22 @@ class PredictionServiceGapicClient
      *           * filterOutOfStockItems  tag=(-"promotional")
      *           * filterOutOfStockItems
      *
-     *           If your filter blocks all prediction results, nothing will be returned. If
-     *           you want generic (unfiltered) popular products to be returned instead, set
-     *           `strictFiltering` to false in `PredictRequest.params`.
+     *           If your filter blocks all prediction results, the API will return *no*
+     *           results. If instead you want empty result sets to return generic
+     *           (unfiltered) popular products, set `strictFiltering` to False in
+     *           `PredictRequest.params`. Note that the API will never return items with
+     *           storageStatus of "EXPIRED" or "DELETED" regardless of filter choices.
+     *
+     *           If `filterSyntaxV2` is set to true under the `params` field, then
+     *           attribute-based expressions are expected instead of the above described
+     *           tag-based syntax. Examples:
+     *
+     *           * (colors: ANY("Red", "Blue")) AND NOT (categories: ANY("Phones"))
+     *           * (availability: ANY("IN_STOCK")) AND
+     *           (colors: ANY("Red") OR categories: ANY("Phones"))
+     *
+     *           For more information, see
+     *           [Filter recommendations](https://cloud.google.com/retail/docs/filter-recs).
      *     @type bool $validateOnly
      *           Use validate only mode for this prediction query. If set to true, a
      *           dummy model will be used that returns arbitrary products.
@@ -347,7 +375,7 @@ class PredictionServiceGapicClient
      *           * `returnScore`: Boolean. If set to true, the prediction 'score'
      *           corresponding to each returned product will be set in the
      *           `results.metadata` field in the prediction response. The given
-     *           'score' indicates the probability of an product being clicked/purchased
+     *           'score' indicates the probability of a product being clicked/purchased
      *           given the user's context and history.
      *           * `strictFiltering`: Boolean. True by default. If set to false, the service
      *           will return generic (unfiltered) popular products instead of empty if
@@ -362,13 +390,15 @@ class PredictionServiceGapicClient
      *           'medium-diversity', 'high-diversity', 'auto-diversity'}. This gives
      *           request-level control and adjusts prediction results based on product
      *           category.
+     *           * `filterSyntaxV2`: Boolean. False by default. If set to true, the `filter`
+     *           field is interpreteted according to the new, attribute-based syntax.
      *     @type array $labels
      *           The labels applied to a resource must meet the following requirements:
      *
      *           * Each resource can have multiple labels, up to a maximum of 64.
      *           * Each label must be a key-value pair.
      *           * Keys have a minimum length of 1 character and a maximum length of 63
-     *           characters, and cannot be empty. Values can be empty, and have a maximum
+     *           characters and cannot be empty. Values can be empty and have a maximum
      *           length of 63 characters.
      *           * Keys and values can contain only lowercase letters, numeric characters,
      *           underscores, and dashes. All characters must use UTF-8 encoding, and

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogExclusion;
 
 /**
- * Gets the description of an exclusion.
+ * Gets the description of an exclusion in the _Default sink.
  *
  * @param string $formattedName The resource name of an existing exclusion:
  *
@@ -37,8 +37,10 @@ use Google\Cloud\Logging\V2\LogExclusion;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
  *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
  *
- *                              Example: `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
- *                              {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/exclusions/my-exclusion"`
+ *                              Please see {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
  */
 function get_exclusion_sample(string $formattedName): void
 {

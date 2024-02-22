@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ use Google\Cloud\Redis\V1\Instance;
 use Google\Rpc\Status;
 
 /**
- * Initiates a failover of the master node to current replica node for a
+ * Initiates a failover of the primary node to current replica node for a
  * specific STANDARD tier Cloud Memorystore for Redis instance.
  *
  * @param string $formattedName Redis instance resource name using the form:

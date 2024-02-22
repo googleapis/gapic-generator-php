@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,8 @@ use Google\Rpc\Status;
  * Instantiates a template and begins execution.
  *
  * This method is equivalent to executing the sequence
- * [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],
+ * [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate],
+ * [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],
  * [DeleteWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate].
  *
  * The returned Operation can be used to track execution of
@@ -74,8 +75,8 @@ use Google\Rpc\Status;
  *
  *                                   The step id is used as prefix for job id, as job
  *                                   `goog-dataproc-workflow-step-id` label, and in
- *                                   [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids] field from other
- *                                   steps.
+ *                                   [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids]
+ *                                   field from other steps.
  *
  *                                   The id must contain only letters (a-z, A-Z), numbers (0-9),
  *                                   underscores (_), and hyphens (-). Cannot begin or end with underscore

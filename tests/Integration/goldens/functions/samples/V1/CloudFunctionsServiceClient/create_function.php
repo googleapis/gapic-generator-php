@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,8 @@ use Google\Rpc\Status;
  * the specified project, the long running operation will return
  * `ALREADY_EXISTS` error.
  *
- * @param string $formattedLocation The project and location in which the function should be created, specified
- *                                  in the format `projects/&#42;/locations/*`
+ * @param string $formattedLocation The project and location in which the function should be created,
+ *                                  specified in the format `projects/&#42;/locations/*`
  *                                  Please see {@see CloudFunctionsServiceClient::locationName()} for help formatting this field.
  */
 function create_function_sample(string $formattedLocation): void
