@@ -80,6 +80,21 @@ abstract class AST
     /** @var string Constant to reference `E_USER_ERROR`. */
     public const E_USER_ERROR = "\0E_USER_ERROR";
 
+    /** @var string Constant to reference `parse_url`. */
+    public const PARSE_URL = "\0parse_url";
+
+    /** @var string Constant to reference `str_replace`. */
+    public const STRING_REPLACE = "\0str_replace";
+
+    /** @var string Constant to reference `createInsecure`. */
+    public const CREATE_INSECURE = "\0createInsecure";
+
+    /** @var string Constant to reference `empty`. */
+    public const EMPTY = "\0empty";
+
+    /** @var string Constant to reference `getenv`. */
+    public const GET_ENV = "\0getenv";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';

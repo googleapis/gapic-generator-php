@@ -148,7 +148,8 @@ class GapicClientV2Generator
             ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
             ->withMember($this->magicMethod())
-            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
+            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
+            ->withMember(EmulatorSupportGenerator::generateEmulatorSupportIfRequired($this->serviceDetails, $this->ctx));
     }
 
     private function serviceName(): PhpClassMember
@@ -562,6 +563,7 @@ class GapicClientV2Generator
             ->withBody(AST::block(
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
+                EmulatorSupportGenerator::generateEmulatorSupportFunctionCallIfRequired($this->serviceDetails),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),

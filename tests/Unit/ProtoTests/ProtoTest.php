@@ -69,6 +69,16 @@ final class ProtoTest extends TestCase
         );
     }
 
+    public function testSpannerAdminClientProto(): void
+    {
+        // test generating the client with only the new surface (no v1 client, v2 samples)
+        $this->runProtoTest(
+            'Spanner/spanner_database_admin.proto',
+            'spanner.cloud.database_v1',
+            migrationMode: MigrationMode::NEW_SURFACE_ONLY
+        );
+    }
+
     public function testBasic0WithNewSurface(): void
     {
         // test generating the client with only the new surface (no v1 client, v2 samples)
