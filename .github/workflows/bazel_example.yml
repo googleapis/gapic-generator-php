@@ -46,7 +46,7 @@ jobs:
     - name: Build example package; all targets
       run: |
         cd bazel_example;
-        bazel build ...
+        bazel build //...
 
     - name: Extract Bazel package output
       run: |
