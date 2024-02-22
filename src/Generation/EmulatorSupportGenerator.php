@@ -30,12 +30,15 @@ class EmulatorSupportGenerator
     /**
      * Map of emulator support required clients and their expected env variables.
      */
-    private static $emulatorSupportFixes = [
+    private static $emulatorSupportClients = [
         '\Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient' => 'SPANNER_EMULATOR_HOST',
         '\Google\Cloud\Spanner\Admin\Instance\V1\Client\InstanceAdminClient' => 'SPANNER_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
     ];
+
+    /** @var string Name of the default emulator config function. */
+    public const DEFAULT_EMULATOR_CONFIG_FN = 'getDefaultEmulatorConfig';
 
     public static function generateEmulatorSupportIfRequired(ServiceDetails $serviceDetails, SourceFileContext $ctx) {
         $fullClassName = $serviceDetails->gapicClientV2Type->getFullName();
@@ -43,16 +46,15 @@ class EmulatorSupportGenerator
         $phpUrlSchemeConst = AST::constant('PHP_URL_SCHEME');
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
-        $argsVar = AST::var('args');
 
-        if (array_key_exists($fullClassName, self::$emulatorSupportFixes)) {
+        if (array_key_exists($fullClassName, self::$emulatorSupportClients)) {
             $ctx->type(Type::fromName(InsecureCredentials::class));
             $ctx->type(Type::fromName(ChannelCredentials::class));
-            return AST::method('setEmulatorConfig')
+            return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
-                AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportFixes[$fullClassName])),
-                AST::if(AST::not(AST::call(AST::EMPTY)($emulatorHostVar)))->then(
+                AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportClients[$fullClassName])),
+                AST::if(AST::call(AST::EMPTY)($emulatorHostVar))->then(AST::return(AST::array([]))),
                 AST::if(AST::assign($schemeVar, AST::call(AST::PARSE_URL)($emulatorHostVar, $phpUrlSchemeConst)))
                     ->then(AST::block(
                         AST::assign($searchVar, AST::binaryOp($schemeVar, '.', '://')),
@@ -66,25 +68,24 @@ class EmulatorSupportGenerator
                                 'stubOpts' => [
                                     'credentials' => AST::staticCall(
                                         $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
-                                        AST::CREATE_INSECURE)()
+                                        AST::method('createInsecure'))()
                                 ]
                             ]
                         ],
                         'credentials' => AST::new($ctx->type((Type::fromName("Google\Auth\Credentials\InsecureCredentials"))))(),
-                    ]))), AST::return(AST::array([]))
-                    ))
+                    ]))), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text("Configure the gapic configuration to use a service emulator."),
-            ));
+            ))
+            ->withReturnType($ctx->type(Type::array()));
         } else {
             return null;
         }
     }
 
-    public static function generateEmulatorSupportFunctionCallIfRequired(ServiceDetails $serviceDetails) {
-        $setEmulatorConfig = AST::method('setEmulatorConfig');
-        $options = AST::var('options');
-        return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportFixes) ?
-                AST::assign($options, Ast::call(AST::ARRAY_MERGE)($options, Ast::call(AST::THIS, $setEmulatorConfig)($options))) : null;
+    public static function generateEmulatorOptionsIfRequired(ServiceDetails $serviceDetails, AST $options) {
+        $getDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
+        return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
+            Ast::binaryOp($options, '+', AST::call(AST::THIS, $getDefaultEmulatorConfig)()) : $options;
     }
 }

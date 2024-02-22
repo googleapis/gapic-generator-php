@@ -144,9 +144,8 @@ final class BasicClient
      */
     public function __construct(array $options = [])
     {
-        $clientOptions = $this->buildClientOptions($options);
+        $clientOptions = $this->buildClientOptions($options + $this->getDefaultEmulatorConfig());
         $this->setClientOptions($clientOptions);
-        $options = array_merge($options, $this->setEmulatorConfig($options));
     }
 
     /** Handles execution of the async variants for each documented method. */
@@ -213,28 +212,28 @@ final class BasicClient
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function setEmulatorConfig()
+    private function getDefaultEmulatorConfig(): array
     {
         $emulatorHost = getenv('BASIC_EMULATOR_HOST');
-        if (!empty($emulatorHost)) {
-            if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
-                $search = $scheme . '://';
-                $emulatorHost = str_replace($search, '', $emulatorHost);
-            }
-
-            return [
-                'apiEndpoint' => $emulatorHost,
-                'transportConfig' => [
-                    'grpc' => [
-                        'stubOpts' => [
-                            'credentials' => ChannelCredentials::createInsecure(),
-                        ],
-                    ],
-                ],
-                'credentials' => new InsecureCredentials(),
-            ];
+        if (empty($emulatorHost)) {
+            return [];
         }
 
-        return [];
+        if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
+            $search = $scheme . '://';
+            $emulatorHost = str_replace($search, '', $emulatorHost);
+        }
+
+        return [
+            'apiEndpoint' => $emulatorHost,
+            'transportConfig' => [
+                'grpc' => [
+                    'stubOpts' => [
+                        'credentials' => ChannelCredentials::createInsecure(),
+                    ],
+                ],
+            ],
+            'credentials' => new InsecureCredentials(),
+        ];
     }
 }

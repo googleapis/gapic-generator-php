@@ -86,9 +86,6 @@ abstract class AST
     /** @var string Constant to reference `str_replace`. */
     public const STRING_REPLACE = "\0str_replace";
 
-    /** @var string Constant to reference `createInsecure`. */
-    public const CREATE_INSECURE = "\0createInsecure";
-
     /** @var string Constant to reference `empty`. */
     public const EMPTY = "\0empty";
 
