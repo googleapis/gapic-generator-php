@@ -146,7 +146,7 @@ final class BasicClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
-        $options = $this->setEmulatorConfig($options);
+        $options = array_merge($options, $this->setEmulatorConfig($options));
     }
 
     /** Handles execution of the async variants for each documented method. */
@@ -217,7 +217,7 @@ final class BasicClient
     {
         $emulatorHost = getenv('BASIC_EMULATOR_HOST');
         if (!empty($emulatorHost)) {
-            if (parse_url($emulatorHost, PHP_URL_SCHEME) === $scheme) {
+            if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
                 $search = $scheme . '://';
                 $emulatorHost = str_replace($search, '', $emulatorHost);
             }

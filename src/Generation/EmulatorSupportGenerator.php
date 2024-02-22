@@ -53,7 +53,7 @@ class EmulatorSupportGenerator
             ->withBody(AST::block(
                 AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportFixes[$fullClassName])),
                 AST::if(AST::not(AST::call(AST::EMPTY)($emulatorHostVar)))->then(
-                AST::if(AST::binaryOp(AST::call(AST::PARSE_URL)($emulatorHostVar, $phpUrlSchemeConst), '===', $schemeVar))
+                AST::if(AST::assign($schemeVar, AST::call(AST::PARSE_URL)($emulatorHostVar, $phpUrlSchemeConst)))
                     ->then(AST::block(
                         AST::assign($searchVar, AST::binaryOp($schemeVar, '.', '://')),
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
@@ -84,6 +84,6 @@ class EmulatorSupportGenerator
         $setEmulatorConfig = AST::method('setEmulatorConfig');
         $options = AST::var('options');
         return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportFixes) ?
-                Ast::assign($options, Ast::call(AST::THIS, $setEmulatorConfig)($options)) : null;
+                AST::assign($options, Ast::call(AST::ARRAY_MERGE)($options, Ast::call(AST::THIS, $setEmulatorConfig)($options))) : null;
     }
 }
