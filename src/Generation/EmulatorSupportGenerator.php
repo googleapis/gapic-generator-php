@@ -71,7 +71,8 @@ class EmulatorSupportGenerator
                             ]
                         ],
                         'credentials' => AST::new($ctx->type((Type::fromName("Google\Auth\Credentials\InsecureCredentials"))))(),
-                    ])))))
+                    ]))), AST::return(AST::array([]))
+                    ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text("Configure the gapic configuration to use a service emulator."),
             ));

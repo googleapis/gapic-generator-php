@@ -234,5 +234,7 @@ final class BasicClient
                 'credentials' => new InsecureCredentials(),
             ];
         }
+
+        return [];
     }
 }
