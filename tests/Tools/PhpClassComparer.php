@@ -45,7 +45,7 @@ class PhpClassComparer
      */
     public static function compare(string $phpClassOne, string $phpClassTwo, bool $printDiffs = true): bool
     {
-        $phpParser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $phpParser = (new ParserFactory)->createForNewestSupportedVersion();
         $astOne = static::parseToAst($phpParser, $phpClassOne, "mono", $printDiffs);
         $astTwo = static::parseToAst($phpParser, $phpClassTwo, "micro", $printDiffs);
 
