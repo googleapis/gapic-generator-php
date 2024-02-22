@@ -48,10 +48,10 @@ class EmulatorSupportGenerator
         if (array_key_exists($fullClassName, self::$emulatorSupportFixes)) {
             $ctx->type(Type::fromName(InsecureCredentials::class));
             $ctx->type(Type::fromName(ChannelCredentials::class));
-            return AST::method('emulatorGapicConfig')
+            return AST::method('setEmulatorConfig')
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
-                AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(AST::literal(self::$emulatorSupportFixes[$fullClassName]))),
+                AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportFixes[$fullClassName])),
                 AST::if(AST::not(AST::call(AST::EMPTY)($emulatorHostVar)))->then(
                 AST::if(AST::binaryOp(AST::call(AST::PARSE_URL)($emulatorHostVar, $phpUrlSchemeConst), '===', $schemeVar))
                     ->then(AST::block(

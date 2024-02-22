@@ -213,9 +213,9 @@ final class BasicClient
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function emulatorGapicConfig()
+    private function setEmulatorConfig()
     {
-        $emulatorHost = getenv(BASIC_EMULATOR_HOST);
+        $emulatorHost = getenv('BASIC_EMULATOR_HOST');
         if (!empty($emulatorHost)) {
             if (parse_url($emulatorHost, PHP_URL_SCHEME) === $scheme) {
                 $search = $scheme . '://';
