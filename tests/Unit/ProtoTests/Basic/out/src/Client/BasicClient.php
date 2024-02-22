@@ -30,7 +30,9 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
+use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\FetchAuthTokenInterface;
+use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
@@ -144,6 +146,7 @@ final class BasicClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
+        $options = $this->setEmulatorConfig($options);
     }
 
     /** Handles execution of the async variants for each documented method. */
@@ -207,5 +210,29 @@ final class BasicClient
     public function methodWithArgs(RequestWithArgs $request, array $callOptions = []): Response
     {
         return $this->startApiCall('MethodWithArgs', $request, $callOptions)->wait();
+    }
+
+    /** Configure the gapic configuration to use a service emulator. */
+    private function emulatorGapicConfig()
+    {
+        $emulatorHost = getenv(BASIC_EMULATOR_HOST);
+        if (!empty($emulatorHost)) {
+            if (parse_url($emulatorHost, PHP_URL_SCHEME) === $scheme) {
+                $search = $scheme . '://';
+                $emulatorHost = str_replace($search, '', $emulatorHost);
+            }
+
+            return [
+                'apiEndpoint' => $emulatorHost,
+                'transportConfig' => [
+                    'grpc' => [
+                        'stubOpts' => [
+                            'credentials' => ChannelCredentials::createInsecure(),
+                        ],
+                    ],
+                ],
+                'credentials' => new InsecureCredentials(),
+            ];
+        }
     }
 }
