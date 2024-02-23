@@ -40,7 +40,17 @@
                 }
             },
             "methods": {
+                "CopyLogEntries": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
+                },
                 "CreateBucket": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
+                },
+                "CreateBucketAsync": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "no_retry_codes",
                     "retry_params_name": "no_retry_params"
@@ -49,6 +59,11 @@
                     "timeout_millis": 120000,
                     "retry_codes_name": "no_retry_2_codes",
                     "retry_params_name": "no_retry_2_params"
+                },
+                "CreateLink": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
                 },
                 "CreateSink": {
                     "timeout_millis": 120000,
@@ -69,6 +84,11 @@
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_3_codes",
                     "retry_params_name": "retry_policy_3_params"
+                },
+                "DeleteLink": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
                 },
                 "DeleteSink": {
                     "timeout_millis": 60000,
@@ -95,6 +115,16 @@
                     "retry_codes_name": "retry_policy_3_codes",
                     "retry_params_name": "retry_policy_3_params"
                 },
+                "GetLink": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
+                },
+                "GetSettings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
+                },
                 "GetSink": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_3_codes",
@@ -114,6 +144,11 @@
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_3_codes",
                     "retry_params_name": "retry_policy_3_params"
+                },
+                "ListLinks": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
                 },
                 "ListSinks": {
                     "timeout_millis": 60000,
@@ -135,6 +170,11 @@
                     "retry_codes_name": "no_retry_codes",
                     "retry_params_name": "no_retry_params"
                 },
+                "UpdateBucketAsync": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
+                },
                 "UpdateCmekSettings": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "no_retry_codes",
@@ -144,6 +184,11 @@
                     "timeout_millis": 120000,
                     "retry_codes_name": "no_retry_2_codes",
                     "retry_params_name": "no_retry_2_params"
+                },
+                "UpdateSettings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "no_retry_codes",
+                    "retry_params_name": "no_retry_params"
                 },
                 "UpdateSink": {
                     "timeout_millis": 60000,

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,20 +32,24 @@ use Google\Cloud\Retail\V2alpha\UserEvent;
  * Makes a recommendation prediction.
  *
  * @param string $placement          Full resource name of the format:
- *                                   {name=projects/&#42;/locations/global/catalogs/default_catalog/placements/*}
- *                                   The ID of the Recommendations AI placement. Before you can request
- *                                   predictions from your model, you must create at least one placement for it.
- *                                   For more information, see [Managing
- *                                   placements](https://cloud.google.com/retail/recommendations-ai/docs/manage-placements).
+ *                                   `{placement=projects/&#42;/locations/global/catalogs/default_catalog/servingConfigs/*}`
+ *                                   or
+ *                                   `{placement=projects/&#42;/locations/global/catalogs/default_catalog/placements/*}`.
+ *                                   We recommend using the `servingConfigs` resource. `placements` is a legacy
+ *                                   resource.
+ *                                   The ID of the Recommendations AI serving config or placement.
+ *                                   Before you can request predictions from your model, you must create at
+ *                                   least one serving config or placement for it. For more information, see
+ *                                   [Manage serving configs]
+ *                                   (https://cloud.google.com/retail/docs/manage-configs).
  *
- *                                   The full list of available placements can be seen at
- *                                   https://console.cloud.google.com/recommendation/catalogs/default_catalog/placements
+ *                                   The full list of available serving configs can be seen at
+ *                                   https://console.cloud.google.com/ai/retail/catalogs/default_catalog/configs
  * @param string $userEventEventType User event type. Allowed values are:
  *
  *                                   * `add-to-cart`: Products being added to cart.
  *                                   * `category-page-view`: Special pages such as sale or promotion pages
  *                                   viewed.
- *                                   * `completion`: Completion query result showed/clicked.
  *                                   * `detail-page-view`: Products detail page viewed.
  *                                   * `home-page-view`: Homepage viewed.
  *                                   * `promotion-offered`: Promotion is offered to a user.
@@ -59,11 +63,15 @@ use Google\Cloud\Retail\V2alpha\UserEvent;
  *                                   able to uniquely identify a visitor on a single device. This unique
  *                                   identifier should not change if the visitor log in/out of the website.
  *
+ *                                   Don't set the field to the same fixed ID for different users. This mixes
+ *                                   the event history of those users together, which results in degraded model
+ *                                   quality.
+ *
  *                                   The field must be a UTF-8 encoded string with a length limit of 128
  *                                   characters. Otherwise, an INVALID_ARGUMENT error is returned.
  *
  *                                   The field should not contain PII or user-data. We recommend to use Google
- *                                   Analystics [Client
+ *                                   Analytics [Client
  *                                   ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId)
  *                                   for this field.
  */

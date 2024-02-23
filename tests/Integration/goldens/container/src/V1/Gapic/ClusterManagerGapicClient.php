@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ namespace Google\Cloud\Container\V1\Gapic;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
@@ -34,19 +35,26 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Container\V1\AddonsConfig;
 use Google\Cloud\Container\V1\CancelOperationRequest;
+use Google\Cloud\Container\V1\CheckAutopilotCompatibilityRequest;
+use Google\Cloud\Container\V1\CheckAutopilotCompatibilityResponse;
 use Google\Cloud\Container\V1\Cluster;
 use Google\Cloud\Container\V1\ClusterUpdate;
 use Google\Cloud\Container\V1\CompleteIPRotationRequest;
+use Google\Cloud\Container\V1\CompleteNodePoolUpgradeRequest;
+use Google\Cloud\Container\V1\ConfidentialNodes;
 use Google\Cloud\Container\V1\CreateClusterRequest;
 use Google\Cloud\Container\V1\CreateNodePoolRequest;
 use Google\Cloud\Container\V1\DeleteClusterRequest;
 use Google\Cloud\Container\V1\DeleteNodePoolRequest;
+use Google\Cloud\Container\V1\FastSocket;
+use Google\Cloud\Container\V1\GcfsConfig;
 use Google\Cloud\Container\V1\GetClusterRequest;
 use Google\Cloud\Container\V1\GetJSONWebKeysRequest;
 use Google\Cloud\Container\V1\GetJSONWebKeysResponse;
 use Google\Cloud\Container\V1\GetNodePoolRequest;
 use Google\Cloud\Container\V1\GetOperationRequest;
 use Google\Cloud\Container\V1\GetServerConfigRequest;
+use Google\Cloud\Container\V1\LinuxNodeConfig;
 use Google\Cloud\Container\V1\ListClustersRequest;
 use Google\Cloud\Container\V1\ListClustersResponse;
 use Google\Cloud\Container\V1\ListNodePoolsRequest;
@@ -58,11 +66,20 @@ use Google\Cloud\Container\V1\ListUsableSubnetworksResponse;
 use Google\Cloud\Container\V1\MaintenancePolicy;
 use Google\Cloud\Container\V1\MasterAuth;
 use Google\Cloud\Container\V1\NetworkPolicy;
+use Google\Cloud\Container\V1\NetworkTags;
+use Google\Cloud\Container\V1\NodeKubeletConfig;
+use Google\Cloud\Container\V1\NodeLabels;
 use Google\Cloud\Container\V1\NodeManagement;
+use Google\Cloud\Container\V1\NodeNetworkConfig;
 use Google\Cloud\Container\V1\NodePool;
 use Google\Cloud\Container\V1\NodePoolAutoscaling;
+use Google\Cloud\Container\V1\NodePoolLoggingConfig;
+use Google\Cloud\Container\V1\NodePool\QueuedProvisioning;
 use Google\Cloud\Container\V1\NodePool\UpgradeSettings;
+use Google\Cloud\Container\V1\NodeTaints;
 use Google\Cloud\Container\V1\Operation;
+use Google\Cloud\Container\V1\ResourceLabels;
+use Google\Cloud\Container\V1\ResourceManagerTags;
 use Google\Cloud\Container\V1\RollbackNodePoolUpgradeRequest;
 use Google\Cloud\Container\V1\ServerConfig;
 use Google\Cloud\Container\V1\SetAddonsConfigRequest;
@@ -82,6 +99,8 @@ use Google\Cloud\Container\V1\StartIPRotationRequest;
 use Google\Cloud\Container\V1\UpdateClusterRequest;
 use Google\Cloud\Container\V1\UpdateMasterRequest;
 use Google\Cloud\Container\V1\UpdateNodePoolRequest;
+use Google\Cloud\Container\V1\VirtualNIC;
+use Google\Cloud\Container\V1\WindowsNodeConfig;
 use Google\Cloud\Container\V1\WorkloadMetadataConfig;
 use Google\Protobuf\GPBEmpty;
 
@@ -99,6 +118,11 @@ use Google\Protobuf\GPBEmpty;
  *     $clusterManagerClient->close();
  * }
  * ```
+ *
+ * Many parameters require resource names to be formatted in a particular way. To
+ * assist with these names, this class includes a format method for each type of
+ * name, and additionally a parseName method to extract the individual identifiers
+ * contained within formatted names that are returned by the API.
  *
  * @deprecated This class will be removed in the next major version update.
  */
@@ -130,6 +154,10 @@ class ClusterManagerGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $topicNameTemplate;
+
+    private static $pathTemplateMap;
+
     private static function getClientDefaults()
     {
         return [
@@ -147,6 +175,84 @@ class ClusterManagerGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getTopicNameTemplate()
+    {
+        if (self::$topicNameTemplate == null) {
+            self::$topicNameTemplate = new PathTemplate('projects/{project}/topics/{topic}');
+        }
+
+        return self::$topicNameTemplate;
+    }
+
+    private static function getPathTemplateMap()
+    {
+        if (self::$pathTemplateMap == null) {
+            self::$pathTemplateMap = [
+                'topic' => self::getTopicNameTemplate(),
+            ];
+        }
+
+        return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a topic
+     * resource.
+     *
+     * @param string $project
+     * @param string $topic
+     *
+     * @return string The formatted topic resource.
+     */
+    public static function topicName($project, $topic)
+    {
+        return self::getTopicNameTemplate()->render([
+            'project' => $project,
+            'topic' => $topic,
+        ]);
+    }
+
+    /**
+     * Parses a formatted name string and returns an associative array of the components in the name.
+     * The following name formats are supported:
+     * Template: Pattern
+     * - topic: projects/{project}/topics/{topic}
+     *
+     * The optional $template argument can be supplied to specify a particular pattern,
+     * and must match one of the templates listed above. If no $template argument is
+     * provided, or if the $template argument does not match one of the templates
+     * listed, then parseName will check each of the supported templates, and return
+     * the first match.
+     *
+     * @param string $formattedName The formatted name string
+     * @param string $template      Optional name of template to match
+     *
+     * @return array An associative array from name component IDs to component values.
+     *
+     * @throws ValidationException If $formattedName could not be matched.
+     */
+    public static function parseName($formattedName, $template = null)
+    {
+        $templateMap = self::getPathTemplateMap();
+        if ($template) {
+            if (!isset($templateMap[$template])) {
+                throw new ValidationException("Template name $template does not exist");
+            }
+
+            return $templateMap[$template]->match($formattedName);
+        }
+
+        foreach ($templateMap as $templateName => $pathTemplate) {
+            try {
+                return $pathTemplate->match($formattedName);
+            } catch (ValidationException $ex) {
+                // Swallow the exception to continue trying other path templates
+            }
+        }
+
+        throw new ValidationException("Input did not match any known format. Input: $formattedName");
     }
 
     /**
@@ -227,7 +333,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -278,6 +384,50 @@ class ClusterManagerGapicClient
     }
 
     /**
+     * Checks the cluster compatibility with Autopilot mode, and returns a list of
+     * compatibility issues.
+     *
+     * Sample code:
+     * ```
+     * $clusterManagerClient = new ClusterManagerClient();
+     * try {
+     *     $response = $clusterManagerClient->checkAutopilotCompatibility();
+     * } finally {
+     *     $clusterManagerClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *           The name (project, location, cluster) of the cluster to retrieve.
+     *           Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Container\V1\CheckAutopilotCompatibilityResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function checkAutopilotCompatibility(array $optionalArgs = [])
+    {
+        $request = new CheckAutopilotCompatibilityRequest();
+        $requestParamHeaders = [];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CheckAutopilotCompatibility', CheckAutopilotCompatibilityResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Completes master IP rotation.
      *
      * Sample code:
@@ -295,7 +445,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -306,7 +456,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the name field.
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to complete IP
+     *           The name (project, location, cluster name) of the cluster to complete IP
      *           rotation. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -348,6 +498,49 @@ class ClusterManagerGapicClient
     }
 
     /**
+     * CompleteNodePoolUpgrade will signal an on-going node pool upgrade to
+     * complete.
+     *
+     * Sample code:
+     * ```
+     * $clusterManagerClient = new ClusterManagerClient();
+     * try {
+     *     $clusterManagerClient->completeNodePoolUpgrade();
+     * } finally {
+     *     $clusterManagerClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *           The name (project, location, cluster, node pool id) of the node pool to
+     *           complete upgrade.
+     *           Specified in the format `projects/&#42;/locations/&#42;/clusters/&#42;/nodePools/*`.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function completeNodePoolUpgrade(array $optionalArgs = [])
+    {
+        $request = new CompleteNodePoolUpgradeRequest();
+        $requestParamHeaders = [];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CompleteNodePoolUpgrade', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Creates a cluster, consisting of the specified number and type of Google
      * Compute Engine instances.
      *
@@ -381,7 +574,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -446,7 +639,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -457,7 +650,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $parent
-     *           The parent (project, location, cluster id) where the node pool will be
+     *           The parent (project, location, cluster name) where the node pool will be
      *           created. Specified in the format
      *           `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
@@ -526,7 +719,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -596,7 +789,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -675,7 +868,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -730,8 +923,6 @@ class ClusterManagerGapicClient
     /**
      * Gets the public component of the cluster signing keys in
      * JSON Web Key format.
-     * This API is not yet intended for general use, and is not available for all
-     * clusters.
      *
      * Sample code:
      * ```
@@ -747,7 +938,7 @@ class ClusterManagerGapicClient
      *     Optional.
      *
      *     @type string $parent
-     *           The cluster (project, location, cluster id) to get keys for. Specified in
+     *           The cluster (project, location, cluster name) to get keys for. Specified in
      *           the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -791,7 +982,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -870,7 +1061,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -940,7 +1131,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1003,7 +1194,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1066,7 +1257,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1077,7 +1268,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $parent
-     *           The parent (project, location, cluster id) where the node pools will be
+     *           The parent (project, location, cluster name) where the node pools will be
      *           listed. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -1136,7 +1327,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the parent field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1281,7 +1472,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1298,6 +1489,9 @@ class ClusterManagerGapicClient
      *           The name (project, location, cluster, node pool id) of the node poll to
      *           rollback upgrade.
      *           Specified in the format `projects/&#42;/locations/&#42;/clusters/&#42;/nodePools/*`.
+     *     @type bool $respectPdb
+     *           Option for rollback to ignore the PodDisruptionBudget.
+     *           Default value is false.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -1337,6 +1531,10 @@ class ClusterManagerGapicClient
             $requestParamHeaders['name'] = $optionalArgs['name'];
         }
 
+        if (isset($optionalArgs['respectPdb'])) {
+            $request->setRespectPdb($optionalArgs['respectPdb']);
+        }
+
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('RollbackNodePoolUpgrade', Operation::class, $optionalArgs, $request)->wait();
@@ -1356,14 +1554,14 @@ class ClusterManagerGapicClient
      * }
      * ```
      *
-     * @param AddonsConfig $addonsConfig Required. The desired configurations for the various addons available to run in the
-     *                                   cluster.
+     * @param AddonsConfig $addonsConfig Required. The desired configurations for the various addons available to
+     *                                   run in the cluster.
      * @param array        $optionalArgs {
      *     Optional.
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1443,7 +1641,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1454,7 +1652,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the name field.
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to set labels.
+     *           The name (project, location, cluster name) of the cluster to set labels.
      *           Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -1517,7 +1715,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1528,8 +1726,8 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster to update.
      *           This field has been deprecated and replaced by the name field.
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to set legacy abac.
-     *           Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
+     *           The name (project, location, cluster name) of the cluster to set legacy
+     *           abac. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -1599,7 +1797,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1684,7 +1882,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1755,7 +1953,7 @@ class ClusterManagerGapicClient
      * ```
      *
      * @param string            $projectId         Required. The Google Developers Console [project ID or project
-     *                                             number](https://support.google.com/cloud/answer/6158840).
+     *                                             number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      * @param string            $zone              Required. The name of the Google Compute Engine
      *                                             [zone](https://cloud.google.com/compute/docs/zones#available) in which the
      *                                             cluster resides.
@@ -1766,8 +1964,8 @@ class ClusterManagerGapicClient
      *     Optional.
      *
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to set maintenance
-     *           policy.
+     *           The name (project, location, cluster name) of the cluster to set
+     *           maintenance policy.
      *           Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -1825,7 +2023,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1909,7 +2107,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1982,7 +2180,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -1993,7 +2191,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the name field.
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to set networking
+     *           The name (project, location, cluster name) of the cluster to set networking
      *           policy. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
@@ -2055,7 +2253,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2137,7 +2335,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2200,7 +2398,9 @@ class ClusterManagerGapicClient
     }
 
     /**
-     * Sets the size for a specific node pool.
+     * Sets the size for a specific node pool. The new size will be used for all
+     * replicas, including future replicas created by modifying
+     * [NodePool.locations][google.container.v1.NodePool.locations].
      *
      * Sample code:
      * ```
@@ -2219,7 +2419,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2299,7 +2499,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://developers.google.com/console/help/new/#projectnumber).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2310,7 +2510,7 @@ class ClusterManagerGapicClient
      *           Deprecated. The name of the cluster.
      *           This field has been deprecated and replaced by the name field.
      *     @type string $name
-     *           The name (project, location, cluster id) of the cluster to start IP
+     *           The name (project, location, cluster name) of the cluster to start IP
      *           rotation. Specified in the format `projects/&#42;/locations/&#42;/clusters/*`.
      *     @type bool $rotateCredentials
      *           Whether to rotate credentials during IP rotation.
@@ -2377,7 +2577,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2459,7 +2659,7 @@ class ClusterManagerGapicClient
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2538,13 +2738,15 @@ class ClusterManagerGapicClient
      *                             - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
      *                             - "1.X.Y-gke.N": picks an explicit Kubernetes version
      *                             - "-": picks the Kubernetes master version
-     * @param string $imageType    Required. The desired image type for the node pool.
+     * @param string $imageType    Required. The desired image type for the node pool. Please see
+     *                             https://cloud.google.com/kubernetes-engine/docs/concepts/node-images for
+     *                             available image types.
      * @param array  $optionalArgs {
      *     Optional.
      *
      *     @type string $projectId
      *           Deprecated. The Google Developers Console [project ID or project
-     *           number](https://support.google.com/cloud/answer/6158840).
+     *           number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
      *           This field has been deprecated and replaced by the name field.
      *     @type string $zone
      *           Deprecated. The name of the Google Compute Engine
@@ -2571,6 +2773,65 @@ class ClusterManagerGapicClient
      *           The desired workload metadata config for the node pool.
      *     @type UpgradeSettings $upgradeSettings
      *           Upgrade settings control disruption and speed of the upgrade.
+     *     @type NetworkTags $tags
+     *           The desired network tags to be applied to all nodes in the node pool.
+     *           If this field is not present, the tags will not be changed. Otherwise,
+     *           the existing network tags will be *replaced* with the provided tags.
+     *     @type NodeTaints $taints
+     *           The desired node taints to be applied to all nodes in the node pool.
+     *           If this field is not present, the taints will not be changed. Otherwise,
+     *           the existing node taints will be *replaced* with the provided taints.
+     *     @type NodeLabels $labels
+     *           The desired node labels to be applied to all nodes in the node pool.
+     *           If this field is not present, the labels will not be changed. Otherwise,
+     *           the existing node labels will be *replaced* with the provided labels.
+     *     @type LinuxNodeConfig $linuxNodeConfig
+     *           Parameters that can be configured on Linux nodes.
+     *     @type NodeKubeletConfig $kubeletConfig
+     *           Node kubelet configs.
+     *     @type NodeNetworkConfig $nodeNetworkConfig
+     *           Node network config.
+     *     @type GcfsConfig $gcfsConfig
+     *           GCFS config.
+     *     @type ConfidentialNodes $confidentialNodes
+     *           Confidential nodes config.
+     *           All the nodes in the node pool will be Confidential VM once enabled.
+     *     @type VirtualNIC $gvnic
+     *           Enable or disable gvnic on the node pool.
+     *     @type string $etag
+     *           The current etag of the node pool.
+     *           If an etag is provided and does not match the current etag of the node
+     *           pool, update will be blocked and an ABORTED error will be returned.
+     *     @type FastSocket $fastSocket
+     *           Enable or disable NCCL fast socket for the node pool.
+     *     @type NodePoolLoggingConfig $loggingConfig
+     *           Logging configuration.
+     *     @type ResourceLabels $resourceLabels
+     *           The resource labels for the node pool to use to annotate any related
+     *           Google Compute Engine resources.
+     *     @type WindowsNodeConfig $windowsNodeConfig
+     *           Parameters that can be configured on Windows nodes.
+     *     @type string $machineType
+     *           Optional. The desired [Google Compute Engine machine
+     *           type](https://cloud.google.com/compute/docs/machine-types) for nodes in the
+     *           node pool. Initiates an upgrade operation that migrates the nodes in the
+     *           node pool to the specified machine type.
+     *     @type string $diskType
+     *           Optional. The desired disk type (e.g. 'pd-standard', 'pd-ssd' or
+     *           'pd-balanced') for nodes in the node pool.
+     *           Initiates an upgrade operation that migrates the nodes in the
+     *           node pool to the specified disk type.
+     *     @type int $diskSizeGb
+     *           Optional. The desired disk size for nodes in the node pool specified in GB.
+     *           The smallest allowed disk size is 10GB.
+     *           Initiates an upgrade operation that migrates the nodes in the
+     *           node pool to the specified disk size.
+     *     @type ResourceManagerTags $resourceManagerTags
+     *           Desired resource manager tag keys and values to be attached to the nodes
+     *           for managing Compute Engine firewalls using Network Firewall Policies.
+     *           Existing tags will be replaced with new values.
+     *     @type QueuedProvisioning $queuedProvisioning
+     *           Specifies the configuration of queued provisioning.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -2622,6 +2883,82 @@ class ClusterManagerGapicClient
 
         if (isset($optionalArgs['upgradeSettings'])) {
             $request->setUpgradeSettings($optionalArgs['upgradeSettings']);
+        }
+
+        if (isset($optionalArgs['tags'])) {
+            $request->setTags($optionalArgs['tags']);
+        }
+
+        if (isset($optionalArgs['taints'])) {
+            $request->setTaints($optionalArgs['taints']);
+        }
+
+        if (isset($optionalArgs['labels'])) {
+            $request->setLabels($optionalArgs['labels']);
+        }
+
+        if (isset($optionalArgs['linuxNodeConfig'])) {
+            $request->setLinuxNodeConfig($optionalArgs['linuxNodeConfig']);
+        }
+
+        if (isset($optionalArgs['kubeletConfig'])) {
+            $request->setKubeletConfig($optionalArgs['kubeletConfig']);
+        }
+
+        if (isset($optionalArgs['nodeNetworkConfig'])) {
+            $request->setNodeNetworkConfig($optionalArgs['nodeNetworkConfig']);
+        }
+
+        if (isset($optionalArgs['gcfsConfig'])) {
+            $request->setGcfsConfig($optionalArgs['gcfsConfig']);
+        }
+
+        if (isset($optionalArgs['confidentialNodes'])) {
+            $request->setConfidentialNodes($optionalArgs['confidentialNodes']);
+        }
+
+        if (isset($optionalArgs['gvnic'])) {
+            $request->setGvnic($optionalArgs['gvnic']);
+        }
+
+        if (isset($optionalArgs['etag'])) {
+            $request->setEtag($optionalArgs['etag']);
+        }
+
+        if (isset($optionalArgs['fastSocket'])) {
+            $request->setFastSocket($optionalArgs['fastSocket']);
+        }
+
+        if (isset($optionalArgs['loggingConfig'])) {
+            $request->setLoggingConfig($optionalArgs['loggingConfig']);
+        }
+
+        if (isset($optionalArgs['resourceLabels'])) {
+            $request->setResourceLabels($optionalArgs['resourceLabels']);
+        }
+
+        if (isset($optionalArgs['windowsNodeConfig'])) {
+            $request->setWindowsNodeConfig($optionalArgs['windowsNodeConfig']);
+        }
+
+        if (isset($optionalArgs['machineType'])) {
+            $request->setMachineType($optionalArgs['machineType']);
+        }
+
+        if (isset($optionalArgs['diskType'])) {
+            $request->setDiskType($optionalArgs['diskType']);
+        }
+
+        if (isset($optionalArgs['diskSizeGb'])) {
+            $request->setDiskSizeGb($optionalArgs['diskSizeGb']);
+        }
+
+        if (isset($optionalArgs['resourceManagerTags'])) {
+            $request->setResourceManagerTags($optionalArgs['resourceManagerTags']);
+        }
+
+        if (isset($optionalArgs['queuedProvisioning'])) {
+            $request->setQueuedProvisioning($optionalArgs['queuedProvisioning']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);

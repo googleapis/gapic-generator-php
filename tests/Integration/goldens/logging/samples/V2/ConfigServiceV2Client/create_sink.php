@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,11 +40,15 @@ use Google\Cloud\Logging\V2\LogSink;
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]"
  *
- *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`. Please see
- *                                {@see ConfigServiceV2Client::projectName()} for help formatting this field.
- * @param string $sinkName        The client-assigned sink identifier, unique within the project. Example:
- *                                `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
- *                                characters and can include only the following characters: upper and
+ *                                For examples:
+ *
+ *                                `"projects/my-project"`
+ *                                `"organizations/123456789"`
+ *                                Please see {@see ConfigServiceV2Client::projectName()} for help formatting this field.
+ * @param string $sinkName        The client-assigned sink identifier, unique within the project.
+ *
+ *                                For example: `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited
+ *                                to 100 characters and can include only the following characters: upper and
  *                                lower-case alphanumeric characters, underscores, hyphens, and periods.
  *                                First character has to be alphanumeric.
  * @param string $sinkDestination The export destination:
@@ -53,9 +57,9 @@ use Google\Cloud\Logging\V2\LogSink;
  *                                "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]"
  *                                "pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]"
  *
- *                                The sink's `writer_identity`, set when the sink is created, must
- *                                have permission to write to the destination or else the log
- *                                entries are not exported. For more information, see
+ *                                The sink's `writer_identity`, set when the sink is created, must have
+ *                                permission to write to the destination or else the log entries are not
+ *                                exported. For more information, see
  *                                [Exporting Logs with
  *                                Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
  */

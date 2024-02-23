@@ -25,6 +25,7 @@ use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Stmt\Function_;
@@ -45,7 +46,7 @@ class PhpClassComparer
      */
     public static function compare(string $phpClassOne, string $phpClassTwo, bool $printDiffs = true): bool
     {
-        $phpParser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $phpParser = (new ParserFactory)->createForVersion(PhpVersion::fromString("7.4"));
         $astOne = static::parseToAst($phpParser, $phpClassOne, "mono", $printDiffs);
         $astTwo = static::parseToAst($phpParser, $phpClassTwo, "micro", $printDiffs);
 

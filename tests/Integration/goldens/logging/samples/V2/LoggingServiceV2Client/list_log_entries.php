@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,18 +37,20 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * @param string $formattedResourceNamesElement Names of one or more parent resources from which to
  *                                              retrieve log entries:
  *
- *                                              "projects/[PROJECT_ID]"
- *                                              "organizations/[ORGANIZATION_ID]"
- *                                              "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                              "folders/[FOLDER_ID]"
+ *                                              *  `projects/[PROJECT_ID]`
+ *                                              *  `organizations/[ORGANIZATION_ID]`
+ *                                              *  `billingAccounts/[BILLING_ACCOUNT_ID]`
+ *                                              *  `folders/[FOLDER_ID]`
  *
- *                                              May alternatively be one or more views
- *                                              projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
- *                                              organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
- *                                              billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
- *                                              folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+ *                                              May alternatively be one or more views:
  *
- *                                              Projects listed in the `project_ids` field are added to this list. Please see
+ *                                              * `projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                              * `organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                              * `billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                              * `folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *
+ *                                              Projects listed in the `project_ids` field are added to this list.
+ *                                              A maximum of 100 resources may be specified in a single request. Please see
  *                                              {@see LoggingServiceV2Client::projectName()} for help formatting this field.
  */
 function list_log_entries_sample(string $formattedResourceNamesElement): void

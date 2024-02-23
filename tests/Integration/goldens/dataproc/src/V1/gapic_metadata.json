@@ -34,6 +34,65 @@
                             "methods": [
                                 "updateAutoscalingPolicy"
                             ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "BatchController": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BatchControllerGapicClient",
+                    "rpcs": {
+                        "CreateBatch": {
+                            "methods": [
+                                "createBatch"
+                            ]
+                        },
+                        "DeleteBatch": {
+                            "methods": [
+                                "deleteBatch"
+                            ]
+                        },
+                        "GetBatch": {
+                            "methods": [
+                                "getBatch"
+                            ]
+                        },
+                        "ListBatches": {
+                            "methods": [
+                                "listBatches"
+                            ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
                         }
                     }
                 }
@@ -83,6 +142,21 @@
                             "methods": [
                                 "updateCluster"
                             ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
                         }
                     }
                 }
@@ -127,6 +201,158 @@
                             "methods": [
                                 "updateJob"
                             ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "NodeGroupController": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "NodeGroupControllerGapicClient",
+                    "rpcs": {
+                        "CreateNodeGroup": {
+                            "methods": [
+                                "createNodeGroup"
+                            ]
+                        },
+                        "GetNodeGroup": {
+                            "methods": [
+                                "getNodeGroup"
+                            ]
+                        },
+                        "ResizeNodeGroup": {
+                            "methods": [
+                                "resizeNodeGroup"
+                            ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "SessionController": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "SessionControllerGapicClient",
+                    "rpcs": {
+                        "CreateSession": {
+                            "methods": [
+                                "createSession"
+                            ]
+                        },
+                        "DeleteSession": {
+                            "methods": [
+                                "deleteSession"
+                            ]
+                        },
+                        "GetSession": {
+                            "methods": [
+                                "getSession"
+                            ]
+                        },
+                        "ListSessions": {
+                            "methods": [
+                                "listSessions"
+                            ]
+                        },
+                        "TerminateSession": {
+                            "methods": [
+                                "terminateSession"
+                            ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "SessionTemplateController": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "SessionTemplateControllerGapicClient",
+                    "rpcs": {
+                        "CreateSessionTemplate": {
+                            "methods": [
+                                "createSessionTemplate"
+                            ]
+                        },
+                        "DeleteSessionTemplate": {
+                            "methods": [
+                                "deleteSessionTemplate"
+                            ]
+                        },
+                        "GetSessionTemplate": {
+                            "methods": [
+                                "getSessionTemplate"
+                            ]
+                        },
+                        "ListSessionTemplates": {
+                            "methods": [
+                                "listSessionTemplates"
+                            ]
+                        },
+                        "UpdateSessionTemplate": {
+                            "methods": [
+                                "updateSessionTemplate"
+                            ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
+                            ]
                         }
                     }
                 }
@@ -170,6 +396,21 @@
                         "UpdateWorkflowTemplate": {
                             "methods": [
                                 "updateWorkflowTemplate"
+                            ]
+                        },
+                        "GetIamPolicy": {
+                            "methods": [
+                                "getIamPolicy"
+                            ]
+                        },
+                        "SetIamPolicy": {
+                            "methods": [
+                                "setIamPolicy"
+                            ]
+                        },
+                        "TestIamPermissions": {
+                            "methods": [
+                                "testIamPermissions"
                             ]
                         }
                     }

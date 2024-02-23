@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Undeletes a bucket. A bucket that has been deleted may be undeleted within
- * the grace period of 7 days.
+ * Undeletes a log bucket. A bucket that has been deleted can be undeleted
+ * within the grace period of 7 days.
  *
  * @param string $formattedName The full resource name of the bucket to undelete.
  *
@@ -37,9 +37,10 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Please see
- *                              {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/locations/global/buckets/my-bucket"`
+ *                              Please see {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
  */
 function undelete_bucket_sample(string $formattedName): void
 {

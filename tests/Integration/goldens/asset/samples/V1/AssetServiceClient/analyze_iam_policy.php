@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ use Google\Cloud\Asset\V1\IamPolicyAnalysisQuery;
  * Analyzes IAM policies to answer which identities have what accesses on
  * which resources.
  *
- * @param string $analysisQueryScope The relative name of the root asset. Only resources and IAM policies within
- *                                   the scope will be analyzed.
+ * @param string $analysisQueryScope The relative name of the root asset. Only resources and IAM
+ *                                   policies within the scope will be analyzed.
  *
  *                                   This can only be an organization number (such as "organizations/123"), a
  *                                   folder number (such as "folders/123"), a project ID (such as

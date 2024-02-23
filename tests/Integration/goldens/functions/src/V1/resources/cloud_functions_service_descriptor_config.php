@@ -167,7 +167,9 @@ return [
             ],
             'templateMap' => [
                 'cloudFunction' => 'projects/{project}/locations/{location}/functions/{function}',
+                'cryptoKey' => 'projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}',
                 'location' => 'projects/{project}/locations/{location}',
+                'repository' => 'projects/{project}/locations/{location}/repositories/{repository}',
             ],
         ],
     ],

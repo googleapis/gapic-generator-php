@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,6 @@ use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
  * Get which branch is currently default branch set by
  * [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
  * method under a specified parent catalog.
- *
- * This feature is only available for users who have Retail Search enabled.
- * Please submit a form [here](https://cloud.google.com/contact) to contact
- * cloud sales if you are interested in using Retail Search.
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:

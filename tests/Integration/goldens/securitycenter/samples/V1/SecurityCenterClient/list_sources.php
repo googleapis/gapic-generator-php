@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@ use Google\Cloud\SecurityCenter\V1\Source;
 /**
  * Lists all sources belonging to an organization.
  *
- * @param string $formattedParent Resource name of the parent of sources to list. Its format should be
- *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]". Please see
+ * @param string $formattedParent Resource name of the parent of sources to list. Its format should
+ *                                be "organizations/[organization_id]", "folders/[folder_id]", or
+ *                                "projects/[project_id]". Please see
  *                                {@see SecurityCenterClient::projectName()} for help formatting this field.
  */
 function list_sources_sample(string $formattedParent): void

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
 
 /**
- * Sets the size for a specific node pool.
+ * Sets the size for a specific node pool. The new size will be used for all
+ * replicas, including future replicas created by modifying
+ * [NodePool.locations][google.container.v1.NodePool.locations].
  *
  * @param int $nodeCount The desired node count for the pool.
  */
