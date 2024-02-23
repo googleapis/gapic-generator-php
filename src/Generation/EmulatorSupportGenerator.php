@@ -18,12 +18,10 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Auth\Credentials\InsecureCredentials;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Utils\Type;
-use \Grpc\ChannelCredentials;
 
 class EmulatorSupportGenerator
 {
@@ -32,7 +30,7 @@ class EmulatorSupportGenerator
      */
     private static $emulatorSupportClients = [
         'Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient' => 'SPANNER_EMULATOR_HOST',
-        '\Google\Cloud\Spanner\Admin\Instance\V1\Client\InstanceAdminClient' => 'SPANNER_EMULATOR_HOST',
+        'Google\Cloud\Spanner\Admin\Instance\V1\Client\InstanceAdminClient' => 'SPANNER_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
     ];
@@ -48,8 +46,6 @@ class EmulatorSupportGenerator
         $searchVar = AST::var('search');
 
         if (array_key_exists($fullClassName, self::$emulatorSupportClients)) {
-            $ctx->type(Type::fromName(InsecureCredentials::class));
-            $ctx->type(Type::fromName(ChannelCredentials::class));
             return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
@@ -72,7 +68,7 @@ class EmulatorSupportGenerator
                                 ]
                             ]
                         ],
-                        'credentials' => AST::new($ctx->type((Type::fromName("Google\Auth\Credentials\InsecureCredentials"))))(),
+                        'credentials' => AST::new($ctx->type((Type::fromName("Google\Cloud\Core\InsecureCredentialsWrapper"))))(),
                     ]))), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text("Configure the gapic configuration to use a service emulator."),

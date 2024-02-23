@@ -30,8 +30,8 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
-use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Core\InsecureCredentialsWrapper;
 use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Basic\Request;
@@ -233,7 +233,7 @@ final class BasicClient
                     ],
                 ],
             ],
-            'credentials' => new InsecureCredentials(),
+            'credentials' => new InsecureCredentialsWrapper(),
         ];
     }
 }
