@@ -26,6 +26,7 @@ INTEGRATION_TEST_LIBRARIES = [
     "logging",  # Singleton resource names.
     "redis",  # sample_code field in gapic.yaml.
     "retail",  # ALpha.
+    "spanner",  # Emulator support.
     "speech",  # sample_code field in gapic.yaml.
     "securitycenter",  # Exercises pathTemplateMap.
     "talent",  # Beta; path template and duplicate name template properties.
@@ -579,4 +580,37 @@ proto_library(
 php_proto_library(
     name = "compliance_php_proto",
     deps = [":compliance_proto"],
+)
+
+# Spanner - Emulator support.
+php_proto_library(
+    name = "spanner_php_proto",
+    deps = ["@com_google_googleapis//google/spanner/admin/database/v1:spanner_database_admin_proto"],
+)
+
+php_grpc_library(
+    name = "spanner_php_grpc",
+    srcs = ["@com_google_googleapis//google/spanner/admin/database/v1:spanner_database_admin_proto"],
+    deps = [":spanner_php_proto"],
+)
+
+php_gapic_library(
+    name = "spanner_php_gapic",
+    migration_mode = "MIGRATING",
+    srcs = ["@com_google_googleapis//google/spanner/admin/database/v1:database_proto_with_info"],
+    service_yaml = "@com_google_googleapis//google/spanner/admin/database/v1:spanner_admin_database.yaml",
+    rest_numeric_enums = True,
+    deps = [
+        ":spanner_php_grpc",
+        ":spanner_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-spanner-admin-database-v1-php",
+    deps = [
+        ":spanner_php_gapic",
+        ":spanner_php_grpc",
+        ":spanner_php_proto",
+    ],
 )

@@ -31,7 +31,7 @@ class EmulatorSupportGenerator
      * Map of emulator support required clients and their expected env variables.
      */
     private static $emulatorSupportClients = [
-        '\Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient' => 'SPANNER_EMULATOR_HOST',
+        'Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient' => 'SPANNER_EMULATOR_HOST',
         '\Google\Cloud\Spanner\Admin\Instance\V1\Client\InstanceAdminClient' => 'SPANNER_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
