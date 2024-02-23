@@ -34,8 +34,8 @@ use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
-use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Core\InsecureCredentialsWrapper;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
@@ -923,7 +923,7 @@ final class DatabaseAdminClient
                     ],
                 ],
             ],
-            'credentials' => new InsecureCredentials(),
+            'credentials' => new InsecureCredentialsWrapper(),
         ];
     }
 }
