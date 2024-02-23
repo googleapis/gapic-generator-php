@@ -45,5 +45,10 @@
             "Google\\Generator\\Tests\\Unit\\ProtoTests\\GoldenUpdateMain::updateAll",
             "bash tests/scripts/run_bazel_updates.sh --expunge"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
     }
 }
