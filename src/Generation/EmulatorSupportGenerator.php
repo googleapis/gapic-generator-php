@@ -84,4 +84,12 @@ class EmulatorSupportGenerator
         return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
             Ast::binaryOp($options, '+', AST::call(AST::THIS, $getDefaultEmulatorConfig)()) : $options;
     }
+
+    public static function generateEmulatorPhpDocIfRequired(ServiceDetails $serviceDetails) {
+        return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
+            PhpDoc::text(sprintf('Setting the "%s" environment variable will automatically set the API Endpoint to ' .
+            'the value specified in the variable, as well as ensure that empty credentials are used in ' .
+            'the transport layer.', self::$emulatorSupportClients[$serviceDetails->gapicClientV2Type->getFullName()])) :
+            null;
+    }
 }

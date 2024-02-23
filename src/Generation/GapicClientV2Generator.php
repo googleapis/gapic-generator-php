@@ -574,6 +574,7 @@ class GapicClientV2Generator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
+                EmulatorSupportGenerator::generateEmulatorPhpDocIfRequired($this->serviceDetails),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
                     PhpDoc::type(
