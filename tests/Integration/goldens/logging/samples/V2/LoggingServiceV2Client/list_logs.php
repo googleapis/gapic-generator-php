@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ use Google\Cloud\Logging\V2\LoggingServiceV2Client;
  * Lists the logs in projects, organizations, folders, or billing accounts.
  * Only logs that have entries are listed.
  *
- * @param string $formattedParent The resource name that owns the logs:
+ * @param string $formattedParent The resource name to list logs for:
  *
- *                                "projects/[PROJECT_ID]"
- *                                "organizations/[ORGANIZATION_ID]"
- *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                "folders/[FOLDER_ID]"
+ *                                *  `projects/[PROJECT_ID]`
+ *                                *  `organizations/[ORGANIZATION_ID]`
+ *                                *  `billingAccounts/[BILLING_ACCOUNT_ID]`
+ *                                *  `folders/[FOLDER_ID]`
  *                                Please see {@see LoggingServiceV2Client::projectName()} for help formatting this field.
  */
 function list_logs_sample(string $formattedParent): void

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ use Google\Cloud\Asset\V1\FeedOutputConfig;
  * @param string $parent   The name of the project/folder/organization where this feed
  *                         should be created in. It can only be an organization number (such as
  *                         "organizations/123"), a folder number (such as "folders/123"), a project ID
- *                         (such as "projects/my-project-id")", or a project number (such as
+ *                         (such as "projects/my-project-id"), or a project number (such as
  *                         "projects/12345").
  * @param string $feedId   This is the client-assigned asset feed identifier and it needs to
  *                         be unique under a specific parent project/folder/organization.

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,11 +73,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
@@ -208,11 +212,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
@@ -342,11 +350,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request

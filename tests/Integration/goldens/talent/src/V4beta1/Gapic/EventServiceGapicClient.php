@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -316,8 +316,8 @@ class EventServiceGapicClient
      *                                  The format is "projects/{project_id}/tenants/{tenant_id}", for example,
      *                                  "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
      *                                  is created, for example, "projects/foo".
-     * @param ClientEvent $clientEvent  Required. Events issued when end user interacts with customer's application that
-     *                                  uses Cloud Talent Solution.
+     * @param ClientEvent $clientEvent  Required. Events issued when end user interacts with customer's application
+     *                                  that uses Cloud Talent Solution.
      * @param array       $optionalArgs {
      *     Optional.
      *

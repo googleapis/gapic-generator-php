@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ use Google\Rpc\Status;
  * it is called too frequently the caller will receive a TOO_MANY_REQUESTS
  * error.
  *
- * @param string $formattedParent Name of the organization to run asset discovery for. Its format is
- *                                "organizations/[organization_id]". Please see
+ * @param string $formattedParent Name of the organization to run asset discovery for. Its format
+ *                                is "organizations/[organization_id]". Please see
  *                                {@see SecurityCenterClient::organizationName()} for help formatting this field.
  */
 function run_asset_discovery_sample(string $formattedParent): void

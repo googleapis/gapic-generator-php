@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ use Google\Cloud\Container\V1\GetJSONWebKeysResponse;
 /**
  * Gets the public component of the cluster signing keys in
  * JSON Web Key format.
- * This API is not yet intended for general use, and is not available for all
- * clusters.
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:

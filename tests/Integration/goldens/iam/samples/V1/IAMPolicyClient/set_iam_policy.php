@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ use Google\Cloud\Iam\V1\Policy;
 /**
  * Sets the access control policy on the specified resource. Replaces any
  * existing policy.
+ *
+ * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
  *
  * @param string $resource REQUIRED: The resource for which the policy is being specified.
  *                         See the operation documentation for the appropriate value for this field.

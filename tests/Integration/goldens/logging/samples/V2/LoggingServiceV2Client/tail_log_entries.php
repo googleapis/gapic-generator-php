@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,16 +35,17 @@ use Google\Cloud\Logging\V2\TailLogEntriesResponse;
  *
  * @param string $resourceNamesElement Name of a parent resource from which to retrieve log entries:
  *
- *                                     "projects/[PROJECT_ID]"
- *                                     "organizations/[ORGANIZATION_ID]"
- *                                     "billingAccounts/[BILLING_ACCOUNT_ID]"
- *                                     "folders/[FOLDER_ID]"
+ *                                     *  `projects/[PROJECT_ID]`
+ *                                     *  `organizations/[ORGANIZATION_ID]`
+ *                                     *  `billingAccounts/[BILLING_ACCOUNT_ID]`
+ *                                     *  `folders/[FOLDER_ID]`
  *
  *                                     May alternatively be one or more views:
- *                                     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
- *                                     "organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
- *                                     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
- *                                     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+ *
+ *                                     * `projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                     * `organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                     * `billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+ *                                     * `folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
  */
 function tail_log_entries_sample(string $resourceNamesElement): void
 {

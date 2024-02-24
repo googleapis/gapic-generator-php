@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
  *                                This field must be a UTF-8 encoded string with a length limit of 1,000
  *                                characters. Otherwise, an INVALID_ARGUMENT error is returned.
  *
- *                                Google Merchant Center property
+ *                                Corresponding properties: Google Merchant Center property
  *                                [title](https://support.google.com/merchants/answer/6324415). Schema.org
  *                                property [Product.name](https://schema.org/name).
  * @param string $productId       The ID to use for the
