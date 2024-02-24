@@ -5,7 +5,7 @@ return [
         'testing.basicautopopulation.BasicAutoPopulation' => [
             'CreateFoo' => [
                 'autoPopulatedFields' => [
-                    'requestId',
+                    'requestId' => 'UUID4',
                 ],
             ],
         ],

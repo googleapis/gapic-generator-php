@@ -153,7 +153,7 @@ class ResourcesGenerator
                 $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
             }
 
-            $autoPopulatedFields = self::getFieldsToAutoPopulate($method, $serviceDetails);
+            $autoPopulatedFields = self::getUuid4FieldsToAutoPopulate($method, $serviceDetails);
             if (!empty($autoPopulatedFields)) {
                 $descriptor['autoPopulatedFields'] =  $autoPopulatedFields;
             }
@@ -522,9 +522,9 @@ class ResourcesGenerator
      * The field name is listed in `google.api.publishing.method_settings.auto_populated_fields`.
      * The field is annotated with `google.api.field_info.format = UUID4`.
      *
-     * @return array<string> Fields to autopopulate in GAX if unset by user
+     * @return array<string, string> Fields to autopopulate in GAX if unset by user
      */
-    private static function getFieldsToAutoPopulate(
+    private static function getUuid4FieldsToAutoPopulate(
         MethodDetails $method,
         ServiceDetails $serviceDetails
     ): array {
@@ -556,7 +556,13 @@ class ResourcesGenerator
                 }
             }
         }
-        $autoPopulatedFields = $autoPopulatedFields->map(fn ($x) => $x->camelName);
-        return $autoPopulatedFields->toArray();
+        $autoPopulatedFields = $autoPopulatedFields->map(fn ($x) => $x->camelName)->toArray();
+
+        // Convert array of field_names to associative array of
+        // field_name => field_type
+        return array_combine(
+            $autoPopulatedFields,
+            array_fill(0, count($autoPopulatedFields), 'UUID4')
+        );
     }
 }
