@@ -12,6 +12,7 @@
     "autoload-dev": {
         "psr-4": {
             "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
+            "Testing\\BasicAutoPopulation\\": "tests/Unit/ProtoTests/BasicAutoPopulation/out/src",
             "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
             "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",
             "Testing\\BasicDiregapic\\": "tests/Unit/ProtoTests/BasicDiregapic/out/src",
