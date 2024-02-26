@@ -33,7 +33,7 @@ use Google\Rpc\Status;
 /**
  * Bulk import of multiple [Product][google.cloud.retail.v2alpha.Product]s.
  *
- * Request processing may be synchronous. No partial updating is supported.
+ * Request processing may be synchronous.
  * Non-existing items are created.
  *
  * Note that it is possible for a subset of the

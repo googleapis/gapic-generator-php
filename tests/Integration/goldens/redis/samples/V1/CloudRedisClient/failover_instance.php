@@ -30,7 +30,7 @@ use Google\Cloud\Redis\V1\Instance;
 use Google\Rpc\Status;
 
 /**
- * Initiates a failover of the master node to current replica node for a
+ * Initiates a failover of the primary node to current replica node for a
  * specific STANDARD tier Cloud Memorystore for Redis instance.
  *
  * @param string $formattedName Redis instance resource name using the form:

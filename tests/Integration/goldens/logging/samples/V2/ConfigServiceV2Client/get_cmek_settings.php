@@ -28,13 +28,14 @@ use Google\Cloud\Logging\V2\CmekSettings;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Gets the Logs Router CMEK settings for the given resource.
+ * Gets the Logging CMEK settings for the given resource.
  *
- * Note: CMEK for the Logs Router can currently only be configured for GCP
- * organizations. Once configured, it applies to all projects and folders in
- * the GCP organization.
+ * Note: CMEK for the Log Router can be configured for Google Cloud projects,
+ * folders, organizations and billing accounts. Once configured for an
+ * organization, it applies to all projects and folders in the Google Cloud
+ * organization.
  *
- * See [Enabling CMEK for Logs
+ * See [Enabling CMEK for Log
  * Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
  * for more information.
  *

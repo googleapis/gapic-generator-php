@@ -34,19 +34,22 @@ use Google\Cloud\Logging\V2\LogSink;
  * The updated sink might also have a new `writer_identity`; see the
  * `unique_writer_identity` field.
  *
- * @param string $formattedSinkName The full resource name of the sink to update, including the parent
- *                                  resource and the sink identifier:
+ * @param string $formattedSinkName The full resource name of the sink to update, including the
+ *                                  parent resource and the sink identifier:
  *
  *                                  "projects/[PROJECT_ID]/sinks/[SINK_ID]"
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
  *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
  *
- *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`. Please see
- *                                  {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
- * @param string $sinkName          The client-assigned sink identifier, unique within the project. Example:
- *                                  `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited to 100
- *                                  characters and can include only the following characters: upper and
+ *                                  For example:
+ *
+ *                                  `"projects/my-project/sinks/my-sink"`
+ *                                  Please see {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
+ * @param string $sinkName          The client-assigned sink identifier, unique within the project.
+ *
+ *                                  For example: `"my-syslog-errors-to-pubsub"`. Sink identifiers are limited
+ *                                  to 100 characters and can include only the following characters: upper and
  *                                  lower-case alphanumeric characters, underscores, hyphens, and periods.
  *                                  First character has to be alphanumeric.
  * @param string $sinkDestination   The export destination:
@@ -55,9 +58,9 @@ use Google\Cloud\Logging\V2\LogSink;
  *                                  "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]"
  *                                  "pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]"
  *
- *                                  The sink's `writer_identity`, set when the sink is created, must
- *                                  have permission to write to the destination or else the log
- *                                  entries are not exported. For more information, see
+ *                                  The sink's `writer_identity`, set when the sink is created, must have
+ *                                  permission to write to the destination or else the log entries are not
+ *                                  exported. For more information, see
  *                                  [Exporting Logs with
  *                                  Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
  */

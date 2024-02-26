@@ -28,7 +28,9 @@ use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\Operation;
 
 /**
- * Sets the size for a specific node pool.
+ * Sets the size for a specific node pool. The new size will be used for all
+ * replicas, including future replicas created by modifying
+ * [NodePool.locations][google.container.v1.NodePool.locations].
  *
  * @param int $nodeCount The desired node count for the pool.
  */

@@ -26,8 +26,12 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
+use Google\Cloud\Retail\V2alpha\AttributesConfig;
+use Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesResponse;
 use Google\Cloud\Retail\V2alpha\Catalog;
+use Google\Cloud\Retail\V2alpha\CatalogAttribute;
 use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\CompletionConfig;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
 use Google\Cloud\Retail\V2alpha\ProductLevelConfig;
@@ -61,6 +65,270 @@ class CatalogServiceClientTest extends GeneratedTest
             'credentials' => $this->createCredentials(),
         ];
         return new CatalogServiceClient($options);
+    }
+
+    /** @test */
+    public function addCatalogAttributeTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $expectedResponse = new AttributesConfig();
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $catalogAttribute = new CatalogAttribute();
+        $catalogAttributeKey = 'catalogAttributeKey-1525777188';
+        $catalogAttribute->setKey($catalogAttributeKey);
+        $response = $gapicClient->addCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/AddCatalogAttribute', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAttributesConfig();
+        $this->assertProtobufEquals($formattedAttributesConfig, $actualValue);
+        $actualValue = $actualRequestObject->getCatalogAttribute();
+        $this->assertProtobufEquals($catalogAttribute, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function addCatalogAttributeExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $catalogAttribute = new CatalogAttribute();
+        $catalogAttributeKey = 'catalogAttributeKey-1525777188';
+        $catalogAttribute->setKey($catalogAttributeKey);
+        try {
+            $gapicClient->addCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function batchRemoveCatalogAttributesTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new BatchRemoveCatalogAttributesResponse();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $attributeKeys = [];
+        $response = $gapicClient->batchRemoveCatalogAttributes($formattedAttributesConfig, $attributeKeys);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/BatchRemoveCatalogAttributes', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAttributesConfig();
+        $this->assertProtobufEquals($formattedAttributesConfig, $actualValue);
+        $actualValue = $actualRequestObject->getAttributeKeys();
+        $this->assertProtobufEquals($attributeKeys, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function batchRemoveCatalogAttributesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $attributeKeys = [];
+        try {
+            $gapicClient->batchRemoveCatalogAttributes($formattedAttributesConfig, $attributeKeys);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function getAttributesConfigTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $expectedResponse = new AttributesConfig();
+        $expectedResponse->setName($name2);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $response = $gapicClient->getAttributesConfig($formattedName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/GetAttributesConfig', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function getAttributesConfigExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        try {
+            $gapicClient->getAttributesConfig($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function getCompletionConfigTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $matchingOrder = 'matchingOrder1035789452';
+        $maxSuggestions = 618824852;
+        $minPrefixLength = 96853510;
+        $autoLearning = true;
+        $lastSuggestionsImportOperation = 'lastSuggestionsImportOperation-470644314';
+        $lastDenylistImportOperation = 'lastDenylistImportOperation-181585959';
+        $lastAllowlistImportOperation = 'lastAllowlistImportOperation723854958';
+        $expectedResponse = new CompletionConfig();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setMatchingOrder($matchingOrder);
+        $expectedResponse->setMaxSuggestions($maxSuggestions);
+        $expectedResponse->setMinPrefixLength($minPrefixLength);
+        $expectedResponse->setAutoLearning($autoLearning);
+        $expectedResponse->setLastSuggestionsImportOperation($lastSuggestionsImportOperation);
+        $expectedResponse->setLastDenylistImportOperation($lastDenylistImportOperation);
+        $expectedResponse->setLastAllowlistImportOperation($lastAllowlistImportOperation);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $gapicClient->completionConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $response = $gapicClient->getCompletionConfig($formattedName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/GetCompletionConfig', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function getCompletionConfigExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $gapicClient->completionConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        try {
+            $gapicClient->getCompletionConfig($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
     }
 
     /** @test */
@@ -188,6 +456,138 @@ class CatalogServiceClientTest extends GeneratedTest
     }
 
     /** @test */
+    public function removeCatalogAttributeTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $expectedResponse = new AttributesConfig();
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $key = 'key106079';
+        $response = $gapicClient->removeCatalogAttribute($formattedAttributesConfig, $key);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/RemoveCatalogAttribute', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAttributesConfig();
+        $this->assertProtobufEquals($formattedAttributesConfig, $actualValue);
+        $actualValue = $actualRequestObject->getKey();
+        $this->assertProtobufEquals($key, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function removeCatalogAttributeExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $key = 'key106079';
+        try {
+            $gapicClient->removeCatalogAttribute($formattedAttributesConfig, $key);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function replaceCatalogAttributeTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $expectedResponse = new AttributesConfig();
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $catalogAttribute = new CatalogAttribute();
+        $catalogAttributeKey = 'catalogAttributeKey-1525777188';
+        $catalogAttribute->setKey($catalogAttributeKey);
+        $response = $gapicClient->replaceCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/ReplaceCatalogAttribute', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAttributesConfig();
+        $this->assertProtobufEquals($formattedAttributesConfig, $actualValue);
+        $actualValue = $actualRequestObject->getCatalogAttribute();
+        $this->assertProtobufEquals($catalogAttribute, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function replaceCatalogAttributeExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedAttributesConfig = $gapicClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $catalogAttribute = new CatalogAttribute();
+        $catalogAttributeKey = 'catalogAttributeKey-1525777188';
+        $catalogAttribute->setKey($catalogAttributeKey);
+        try {
+            $gapicClient->replaceCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
     public function setDefaultBranchTest()
     {
         $transport = $this->createTransport();
@@ -227,6 +627,70 @@ class CatalogServiceClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->setDefaultBranch();
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function updateAttributesConfigTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $expectedResponse = new AttributesConfig();
+        $expectedResponse->setName($name);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $attributesConfig = new AttributesConfig();
+        $attributesConfigName = 'attributesConfigName-1073347164';
+        $attributesConfig->setName($attributesConfigName);
+        $response = $gapicClient->updateAttributesConfig($attributesConfig);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/UpdateAttributesConfig', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAttributesConfig();
+        $this->assertProtobufEquals($attributesConfig, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function updateAttributesConfigExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $attributesConfig = new AttributesConfig();
+        $attributesConfigName = 'attributesConfigName-1073347164';
+        $attributesConfig->setName($attributesConfigName);
+        try {
+            $gapicClient->updateAttributesConfig($attributesConfig);
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -301,6 +765,84 @@ class CatalogServiceClientTest extends GeneratedTest
         $catalog->setProductLevelConfig($catalogProductLevelConfig);
         try {
             $gapicClient->updateCatalog($catalog);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function updateCompletionConfigTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $matchingOrder = 'matchingOrder1035789452';
+        $maxSuggestions = 618824852;
+        $minPrefixLength = 96853510;
+        $autoLearning = true;
+        $lastSuggestionsImportOperation = 'lastSuggestionsImportOperation-470644314';
+        $lastDenylistImportOperation = 'lastDenylistImportOperation-181585959';
+        $lastAllowlistImportOperation = 'lastAllowlistImportOperation723854958';
+        $expectedResponse = new CompletionConfig();
+        $expectedResponse->setName($name);
+        $expectedResponse->setMatchingOrder($matchingOrder);
+        $expectedResponse->setMaxSuggestions($maxSuggestions);
+        $expectedResponse->setMinPrefixLength($minPrefixLength);
+        $expectedResponse->setAutoLearning($autoLearning);
+        $expectedResponse->setLastSuggestionsImportOperation($lastSuggestionsImportOperation);
+        $expectedResponse->setLastDenylistImportOperation($lastDenylistImportOperation);
+        $expectedResponse->setLastAllowlistImportOperation($lastAllowlistImportOperation);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $completionConfig = new CompletionConfig();
+        $completionConfigName = 'completionConfigName2129042921';
+        $completionConfig->setName($completionConfigName);
+        $response = $gapicClient->updateCompletionConfig($completionConfig);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.retail.v2alpha.CatalogService/UpdateCompletionConfig', $actualFuncCall);
+        $actualValue = $actualRequestObject->getCompletionConfig();
+        $this->assertProtobufEquals($completionConfig, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function updateCompletionConfigExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $completionConfig = new CompletionConfig();
+        $completionConfigName = 'completionConfigName2129042921';
+        $completionConfig->setName($completionConfigName);
+        try {
+            $gapicClient->updateCompletionConfig($completionConfig);
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {

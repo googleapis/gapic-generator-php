@@ -1,7 +1,7 @@
 
     /**
-     * @param string                                   $location Required. The project and location in which the function should be created, specified
-     *                                                           in the format `projects/&#42;/locations/*`
+     * @param string                                   $location Required. The project and location in which the function should be created,
+     *                                                           specified in the format `projects/&#42;/locations/*`
      *                                                           Please see {@see CloudFunctionsServiceClient::locationName()} for help formatting this field.
      * @param \Google\Cloud\Functions\V1\CloudFunction $function Required. Function to be created.
      *

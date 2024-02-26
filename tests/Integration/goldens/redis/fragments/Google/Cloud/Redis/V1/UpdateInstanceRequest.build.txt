@@ -8,6 +8,7 @@
      *                                                    *   `labels`
      *                                                    *   `memorySizeGb`
      *                                                    *   `redisConfig`
+     *                                                    *   `replica_count`
      * @param \Google\Cloud\Redis\V1\Instance $instance   Required. Update description.
      *                                                    Only fields specified in update_mask are updated.
      *

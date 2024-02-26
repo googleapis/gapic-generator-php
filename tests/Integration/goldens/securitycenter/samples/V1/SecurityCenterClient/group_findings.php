@@ -46,9 +46,9 @@ use Google\Cloud\SecurityCenter\V1\GroupResult;
  *                                organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
  *                                or projects/{project_id}/sources/-
  *                                Please see {@see SecurityCenterClient::sourceName()} for help formatting this field.
- * @param string $groupBy         Expression that defines what assets fields to use for grouping (including
- *                                `state_change`). The string value should follow SQL syntax: comma separated
- *                                list of fields. For example: "parent,resource_name".
+ * @param string $groupBy         Expression that defines what assets fields to use for grouping
+ *                                (including `state_change`). The string value should follow SQL syntax:
+ *                                comma separated list of fields. For example: "parent,resource_name".
  *
  *                                The following fields are supported:
  *

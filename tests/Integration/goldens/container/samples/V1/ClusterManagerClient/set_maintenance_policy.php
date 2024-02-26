@@ -32,7 +32,7 @@ use Google\Cloud\Container\V1\Operation;
  * Sets the maintenance policy for a cluster.
  *
  * @param string $projectId The Google Developers Console [project ID or project
- *                          number](https://support.google.com/cloud/answer/6158840).
+ *                          number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
  * @param string $zone      The name of the Google Compute Engine
  *                          [zone](https://cloud.google.com/compute/docs/zones#available) in which the
  *                          cluster resides.

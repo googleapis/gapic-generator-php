@@ -28,17 +28,19 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogBucket;
 
 /**
- * Creates a bucket that can be used to store log entries. Once a bucket has
- * been created, the region cannot be changed.
+ * Creates a log bucket that can be used to store log entries. After a bucket
+ * has been created, the bucket's location cannot be changed.
  *
- * @param string $formattedParent The resource in which to create the bucket:
+ * @param string $formattedParent The resource in which to create the log bucket:
  *
  *                                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
  *
- *                                Example: `"projects/my-logging-project/locations/global"`
+ *                                For example:
+ *
+ *                                `"projects/my-project/locations/global"`
  *                                Please see {@see ConfigServiceV2Client::organizationLocationName()} for help formatting this field.
- * @param string $bucketId        A client-assigned identifier such as `"my-bucket"`. Identifiers are
- *                                limited to 100 characters and can include only letters, digits,
+ * @param string $bucketId        A client-assigned identifier such as `"my-bucket"`. Identifiers
+ *                                are limited to 100 characters and can include only letters, digits,
  *                                underscores, hyphens, and periods.
  */
 function create_bucket_sample(string $formattedParent, string $bucketId): void
