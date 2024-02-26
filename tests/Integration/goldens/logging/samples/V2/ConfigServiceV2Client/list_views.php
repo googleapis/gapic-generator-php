@@ -29,7 +29,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogView;
 
 /**
- * Lists views on a bucket.
+ * Lists views on a log bucket.
  *
  * @param string $parent The bucket whose views are to be listed:
  *

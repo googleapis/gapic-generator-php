@@ -15,6 +15,18 @@ return [
                     ],
                 ],
             ],
+            'AddLocalInventories' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2alpha/{product=projects/*/locations/*/catalogs/*/branches/*/products/**}:addLocalInventories',
+                'body' => '*',
+                'placeholders' => [
+                    'product' => [
+                        'getters' => [
+                            'getProduct',
+                        ],
+                    ],
+                ],
+            ],
             'CreateProduct' => [
                 'method' => 'post',
                 'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*/branches/*}/products',
@@ -75,9 +87,33 @@ return [
                     ],
                 ],
             ],
+            'PurgeProducts' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*/branches/*}/products:purge',
+                'body' => '*',
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'RemoveFulfillmentPlaces' => [
                 'method' => 'post',
                 'uriTemplate' => '/v2alpha/{product=projects/*/locations/*/catalogs/*/branches/*/products/**}:removeFulfillmentPlaces',
+                'body' => '*',
+                'placeholders' => [
+                    'product' => [
+                        'getters' => [
+                            'getProduct',
+                        ],
+                    ],
+                ],
+            ],
+            'RemoveLocalInventories' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2alpha/{product=projects/*/locations/*/catalogs/*/branches/*/products/**}:removeLocalInventories',
                 'body' => '*',
                 'placeholders' => [
                     'product' => [
@@ -117,15 +153,23 @@ return [
         'google.longrunning.Operations' => [
             'GetOperation' => [
                 'method' => 'get',
-                'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/operations/*}',
+                'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/operations/*}',
                 'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/places/*/operations/*}',
+                    ],
                     [
                         'method' => 'get',
                         'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*/operations/*}',
                     ],
                     [
                         'method' => 'get',
-                        'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/operations/*}',
+                        'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/operations/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2alpha/{name=projects/*/operations/*}',
                     ],
                 ],
                 'placeholders' => [
@@ -138,11 +182,15 @@ return [
             ],
             'ListOperations' => [
                 'method' => 'get',
-                'uriTemplate' => '/v2alpha/{name=projects/*/locations/*}/operations',
+                'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*}/operations',
                 'additionalBindings' => [
                     [
                         'method' => 'get',
-                        'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*}/operations',
+                        'uriTemplate' => '/v2alpha/{name=projects/*/locations/*}/operations',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2alpha/{name=projects/*}/operations',
                     ],
                 ],
                 'placeholders' => [

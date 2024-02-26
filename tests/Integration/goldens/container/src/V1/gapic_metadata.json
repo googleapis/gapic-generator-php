@@ -15,9 +15,19 @@
                                 "cancelOperation"
                             ]
                         },
+                        "CheckAutopilotCompatibility": {
+                            "methods": [
+                                "checkAutopilotCompatibility"
+                            ]
+                        },
                         "CompleteIPRotation": {
                             "methods": [
                                 "completeIPRotation"
+                            ]
+                        },
+                        "CompleteNodePoolUpgrade": {
+                            "methods": [
+                                "completeNodePoolUpgrade"
                             ]
                         },
                         "CreateCluster": {

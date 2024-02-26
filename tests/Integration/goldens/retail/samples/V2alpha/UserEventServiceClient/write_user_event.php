@@ -37,7 +37,6 @@ use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
  *                                   * `add-to-cart`: Products being added to cart.
  *                                   * `category-page-view`: Special pages such as sale or promotion pages
  *                                   viewed.
- *                                   * `completion`: Completion query result showed/clicked.
  *                                   * `detail-page-view`: Products detail page viewed.
  *                                   * `home-page-view`: Homepage viewed.
  *                                   * `promotion-offered`: Promotion is offered to a user.
@@ -51,11 +50,15 @@ use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
  *                                   able to uniquely identify a visitor on a single device. This unique
  *                                   identifier should not change if the visitor log in/out of the website.
  *
+ *                                   Don't set the field to the same fixed ID for different users. This mixes
+ *                                   the event history of those users together, which results in degraded model
+ *                                   quality.
+ *
  *                                   The field must be a UTF-8 encoded string with a length limit of 128
  *                                   characters. Otherwise, an INVALID_ARGUMENT error is returned.
  *
  *                                   The field should not contain PII or user-data. We recommend to use Google
- *                                   Analystics [Client
+ *                                   Analytics [Client
  *                                   ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId)
  *                                   for this field.
  */

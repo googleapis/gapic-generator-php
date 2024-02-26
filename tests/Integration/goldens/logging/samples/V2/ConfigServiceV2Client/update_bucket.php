@@ -29,16 +29,12 @@ use Google\Cloud\Logging\V2\LogBucket;
 use Google\Protobuf\FieldMask;
 
 /**
- * Updates a bucket. This method replaces the following fields in the
- * existing bucket with values from the new bucket: `retention_period`
+ * Updates a log bucket.
  *
- * If the retention period is decreased and the bucket is locked,
- * FAILED_PRECONDITION will be returned.
+ * If the bucket has a `lifecycle_state` of `DELETE_REQUESTED`, then
+ * `FAILED_PRECONDITION` will be returned.
  *
- * If the bucket has a LifecycleState of DELETE_REQUESTED, FAILED_PRECONDITION
- * will be returned.
- *
- * A buckets region may not be modified after it is created.
+ * After a bucket has been created, the bucket's location cannot be changed.
  *
  * @param string $formattedName The full resource name of the bucket to update.
  *
@@ -47,10 +43,9 @@ use Google\Protobuf\FieldMask;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Also
- *                              requires permission "resourcemanager.projects.updateLiens" to set the
- *                              locked property
+ *                              For example:
+ *
+ *                              `"projects/my-project/locations/global/buckets/my-bucket"`
  *                              Please see {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
  */
 function update_bucket_sample(string $formattedName): void

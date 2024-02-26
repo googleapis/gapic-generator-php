@@ -73,11 +73,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
@@ -208,11 +212,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request
@@ -342,11 +350,15 @@ class MetricsServiceV2ClientTest extends GeneratedTest
         $name = 'name3373707';
         $description = 'description-1724546052';
         $filter = 'filter-1274492040';
+        $bucketName = 'bucketName283610048';
+        $disabled = true;
         $valueExtractor = 'valueExtractor2047672534';
         $expectedResponse = new LogMetric();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
         $expectedResponse->setFilter($filter);
+        $expectedResponse->setBucketName($bucketName);
+        $expectedResponse->setDisabled($disabled);
         $expectedResponse->setValueExtractor($valueExtractor);
         $transport->addResponse($expectedResponse);
         // Mock request

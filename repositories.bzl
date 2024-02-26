@@ -53,8 +53,8 @@ def gapic_generator_php_repositories():
     maybe(
         http_archive,
         name = "com_google_googleapis",
-        strip_prefix = "googleapis-b44c45ca32db478554a3b8e2e04d317ed2f466f4",
+        strip_prefix = "googleapis-ebe079453350f4cd5afea5091522cf97e25f01a1",
         urls = [
-            "https://github.com/googleapis/googleapis/archive/b44c45ca32db478554a3b8e2e04d317ed2f466f4.zip",
+            "https://github.com/googleapis/googleapis/archive/ebe079453350f4cd5afea5091522cf97e25f01a1.zip",
         ],
     )

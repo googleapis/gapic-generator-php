@@ -41,14 +41,30 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use Google\Cloud\SecurityCenter\V1\BigQueryExport;
+use Google\Cloud\SecurityCenter\V1\BulkMuteFindingsRequest;
+use Google\Cloud\SecurityCenter\V1\CreateBigQueryExportRequest;
 use Google\Cloud\SecurityCenter\V1\CreateFindingRequest;
+use Google\Cloud\SecurityCenter\V1\CreateMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest;
+use Google\Cloud\SecurityCenter\V1\CreateSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\CreateSourceRequest;
+use Google\Cloud\SecurityCenter\V1\CustomConfig;
+use Google\Cloud\SecurityCenter\V1\DeleteBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\DeleteMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\DeleteNotificationConfigRequest;
+use Google\Cloud\SecurityCenter\V1\DeleteSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\EffectiveSecurityHealthAnalyticsCustomModule;
+use Google\Cloud\SecurityCenter\V1\ExternalSystem;
 use Google\Cloud\SecurityCenter\V1\Finding;
+use Google\Cloud\SecurityCenter\V1\Finding\Mute;
 use Google\Cloud\SecurityCenter\V1\Finding\State;
+use Google\Cloud\SecurityCenter\V1\GetBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\GetEffectiveSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\GetMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest;
+use Google\Cloud\SecurityCenter\V1\GetSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\GetSourceRequest;
 use Google\Cloud\SecurityCenter\V1\GroupAssetsRequest;
 use Google\Cloud\SecurityCenter\V1\GroupAssetsResponse;
@@ -56,21 +72,41 @@ use Google\Cloud\SecurityCenter\V1\GroupFindingsRequest;
 use Google\Cloud\SecurityCenter\V1\GroupFindingsResponse;
 use Google\Cloud\SecurityCenter\V1\ListAssetsRequest;
 use Google\Cloud\SecurityCenter\V1\ListAssetsResponse;
+use Google\Cloud\SecurityCenter\V1\ListBigQueryExportsRequest;
+use Google\Cloud\SecurityCenter\V1\ListBigQueryExportsResponse;
+use Google\Cloud\SecurityCenter\V1\ListDescendantSecurityHealthAnalyticsCustomModulesRequest;
+use Google\Cloud\SecurityCenter\V1\ListDescendantSecurityHealthAnalyticsCustomModulesResponse;
+use Google\Cloud\SecurityCenter\V1\ListEffectiveSecurityHealthAnalyticsCustomModulesRequest;
+use Google\Cloud\SecurityCenter\V1\ListEffectiveSecurityHealthAnalyticsCustomModulesResponse;
 use Google\Cloud\SecurityCenter\V1\ListFindingsRequest;
 use Google\Cloud\SecurityCenter\V1\ListFindingsResponse;
+use Google\Cloud\SecurityCenter\V1\ListMuteConfigsRequest;
+use Google\Cloud\SecurityCenter\V1\ListMuteConfigsResponse;
 use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest;
 use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse;
+use Google\Cloud\SecurityCenter\V1\ListSecurityHealthAnalyticsCustomModulesRequest;
+use Google\Cloud\SecurityCenter\V1\ListSecurityHealthAnalyticsCustomModulesResponse;
 use Google\Cloud\SecurityCenter\V1\ListSourcesRequest;
 use Google\Cloud\SecurityCenter\V1\ListSourcesResponse;
+use Google\Cloud\SecurityCenter\V1\MuteConfig;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest;
+use Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule;
 use Google\Cloud\SecurityCenter\V1\SecurityMarks;
 use Google\Cloud\SecurityCenter\V1\SetFindingStateRequest;
+use Google\Cloud\SecurityCenter\V1\SetMuteRequest;
+use Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleRequest\SimulatedResource;
+use Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleResponse;
 use Google\Cloud\SecurityCenter\V1\Source;
+use Google\Cloud\SecurityCenter\V1\UpdateBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateExternalSystemRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateFindingRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
@@ -88,10 +124,33 @@ use Google\Protobuf\Timestamp;
  * ```
  * $securityCenterClient = new SecurityCenterClient();
  * try {
- *     $formattedParent = $securityCenterClient->sourceName('[ORGANIZATION]', '[SOURCE]');
- *     $findingId = 'finding_id';
- *     $finding = new Finding();
- *     $response = $securityCenterClient->createFinding($formattedParent, $findingId, $finding);
+ *     $parent = 'parent';
+ *     $operationResponse = $securityCenterClient->bulkMuteFindings($parent);
+ *     $operationResponse->pollUntilComplete();
+ *     if ($operationResponse->operationSucceeded()) {
+ *         $result = $operationResponse->getResult();
+ *         // doSomethingWith($result)
+ *     } else {
+ *         $error = $operationResponse->getError();
+ *         // handleError($error)
+ *     }
+ *     // Alternatively:
+ *     // start the operation, keep the operation name, and resume later
+ *     $operationResponse = $securityCenterClient->bulkMuteFindings($parent);
+ *     $operationName = $operationResponse->getName();
+ *     // ... do other work
+ *     $newOperationResponse = $securityCenterClient->resumeOperation($operationName, 'bulkMuteFindings');
+ *     while (!$newOperationResponse->isDone()) {
+ *         // ... do other work
+ *         $newOperationResponse->reload();
+ *     }
+ *     if ($newOperationResponse->operationSucceeded()) {
+ *         $result = $newOperationResponse->getResult();
+ *         // doSomethingWith($result)
+ *     } else {
+ *         $error = $newOperationResponse->getError();
+ *         // handleError($error)
+ *     }
  * } finally {
  *     $securityCenterClient->close();
  * }
@@ -132,17 +191,41 @@ class SecurityCenterGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $bigQueryExportNameTemplate;
+
+    private static $dlpJobNameTemplate;
+
+    private static $effectiveSecurityHealthAnalyticsCustomModuleNameTemplate;
+
+    private static $externalSystemNameTemplate;
+
     private static $findingNameTemplate;
 
     private static $folderNameTemplate;
 
     private static $folderAssetSecurityMarksNameTemplate;
 
+    private static $folderCustomModuleNameTemplate;
+
+    private static $folderEffectiveCustomModuleNameTemplate;
+
+    private static $folderExportNameTemplate;
+
+    private static $folderMuteConfigNameTemplate;
+
+    private static $folderNotificationConfigNameTemplate;
+
+    private static $folderSecurityHealthAnalyticsSettingsNameTemplate;
+
     private static $folderSourceNameTemplate;
 
     private static $folderSourceFindingNameTemplate;
 
+    private static $folderSourceFindingExternalsystemNameTemplate;
+
     private static $folderSourceFindingSecurityMarksNameTemplate;
+
+    private static $muteConfigNameTemplate;
 
     private static $notificationConfigNameTemplate;
 
@@ -150,11 +233,25 @@ class SecurityCenterGapicClient
 
     private static $organizationAssetSecurityMarksNameTemplate;
 
+    private static $organizationCustomModuleNameTemplate;
+
+    private static $organizationEffectiveCustomModuleNameTemplate;
+
+    private static $organizationExportNameTemplate;
+
+    private static $organizationMuteConfigNameTemplate;
+
+    private static $organizationNotificationConfigNameTemplate;
+
+    private static $organizationSecurityHealthAnalyticsSettingsNameTemplate;
+
     private static $organizationSettingsNameTemplate;
 
     private static $organizationSourceNameTemplate;
 
     private static $organizationSourceFindingNameTemplate;
+
+    private static $organizationSourceFindingExternalsystemNameTemplate;
 
     private static $organizationSourceFindingSecurityMarksNameTemplate;
 
@@ -162,15 +259,43 @@ class SecurityCenterGapicClient
 
     private static $projectAssetSecurityMarksNameTemplate;
 
+    private static $projectCustomModuleNameTemplate;
+
+    private static $projectDlpJobNameTemplate;
+
+    private static $projectEffectiveCustomModuleNameTemplate;
+
+    private static $projectExportNameTemplate;
+
+    private static $projectLocationDlpJobNameTemplate;
+
+    private static $projectLocationTableProfileNameTemplate;
+
+    private static $projectMuteConfigNameTemplate;
+
+    private static $projectNotificationConfigNameTemplate;
+
+    private static $projectSecurityHealthAnalyticsSettingsNameTemplate;
+
     private static $projectSourceNameTemplate;
 
     private static $projectSourceFindingNameTemplate;
 
+    private static $projectSourceFindingExternalsystemNameTemplate;
+
     private static $projectSourceFindingSecurityMarksNameTemplate;
+
+    private static $projectTableProfileNameTemplate;
+
+    private static $securityHealthAnalyticsCustomModuleNameTemplate;
+
+    private static $securityHealthAnalyticsSettingsNameTemplate;
 
     private static $securityMarksNameTemplate;
 
     private static $sourceNameTemplate;
+
+    private static $tableDataProfileNameTemplate;
 
     private static $topicNameTemplate;
 
@@ -195,6 +320,42 @@ class SecurityCenterGapicClient
                 ],
             ],
         ];
+    }
+
+    private static function getBigQueryExportNameTemplate()
+    {
+        if (self::$bigQueryExportNameTemplate == null) {
+            self::$bigQueryExportNameTemplate = new PathTemplate('organizations/{organization}/bigQueryExports/{export}');
+        }
+
+        return self::$bigQueryExportNameTemplate;
+    }
+
+    private static function getDlpJobNameTemplate()
+    {
+        if (self::$dlpJobNameTemplate == null) {
+            self::$dlpJobNameTemplate = new PathTemplate('projects/{project}/dlpJobs/{dlp_job}');
+        }
+
+        return self::$dlpJobNameTemplate;
+    }
+
+    private static function getEffectiveSecurityHealthAnalyticsCustomModuleNameTemplate()
+    {
+        if (self::$effectiveSecurityHealthAnalyticsCustomModuleNameTemplate == null) {
+            self::$effectiveSecurityHealthAnalyticsCustomModuleNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}');
+        }
+
+        return self::$effectiveSecurityHealthAnalyticsCustomModuleNameTemplate;
+    }
+
+    private static function getExternalSystemNameTemplate()
+    {
+        if (self::$externalSystemNameTemplate == null) {
+            self::$externalSystemNameTemplate = new PathTemplate('organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}');
+        }
+
+        return self::$externalSystemNameTemplate;
     }
 
     private static function getFindingNameTemplate()
@@ -224,6 +385,60 @@ class SecurityCenterGapicClient
         return self::$folderAssetSecurityMarksNameTemplate;
     }
 
+    private static function getFolderCustomModuleNameTemplate()
+    {
+        if (self::$folderCustomModuleNameTemplate == null) {
+            self::$folderCustomModuleNameTemplate = new PathTemplate('folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}');
+        }
+
+        return self::$folderCustomModuleNameTemplate;
+    }
+
+    private static function getFolderEffectiveCustomModuleNameTemplate()
+    {
+        if (self::$folderEffectiveCustomModuleNameTemplate == null) {
+            self::$folderEffectiveCustomModuleNameTemplate = new PathTemplate('folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}');
+        }
+
+        return self::$folderEffectiveCustomModuleNameTemplate;
+    }
+
+    private static function getFolderExportNameTemplate()
+    {
+        if (self::$folderExportNameTemplate == null) {
+            self::$folderExportNameTemplate = new PathTemplate('folders/{folder}/bigQueryExports/{export}');
+        }
+
+        return self::$folderExportNameTemplate;
+    }
+
+    private static function getFolderMuteConfigNameTemplate()
+    {
+        if (self::$folderMuteConfigNameTemplate == null) {
+            self::$folderMuteConfigNameTemplate = new PathTemplate('folders/{folder}/muteConfigs/{mute_config}');
+        }
+
+        return self::$folderMuteConfigNameTemplate;
+    }
+
+    private static function getFolderNotificationConfigNameTemplate()
+    {
+        if (self::$folderNotificationConfigNameTemplate == null) {
+            self::$folderNotificationConfigNameTemplate = new PathTemplate('folders/{folder}/notificationConfigs/{notification_config}');
+        }
+
+        return self::$folderNotificationConfigNameTemplate;
+    }
+
+    private static function getFolderSecurityHealthAnalyticsSettingsNameTemplate()
+    {
+        if (self::$folderSecurityHealthAnalyticsSettingsNameTemplate == null) {
+            self::$folderSecurityHealthAnalyticsSettingsNameTemplate = new PathTemplate('folders/{folder}/securityHealthAnalyticsSettings');
+        }
+
+        return self::$folderSecurityHealthAnalyticsSettingsNameTemplate;
+    }
+
     private static function getFolderSourceNameTemplate()
     {
         if (self::$folderSourceNameTemplate == null) {
@@ -242,6 +457,15 @@ class SecurityCenterGapicClient
         return self::$folderSourceFindingNameTemplate;
     }
 
+    private static function getFolderSourceFindingExternalsystemNameTemplate()
+    {
+        if (self::$folderSourceFindingExternalsystemNameTemplate == null) {
+            self::$folderSourceFindingExternalsystemNameTemplate = new PathTemplate('folders/{folder}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}');
+        }
+
+        return self::$folderSourceFindingExternalsystemNameTemplate;
+    }
+
     private static function getFolderSourceFindingSecurityMarksNameTemplate()
     {
         if (self::$folderSourceFindingSecurityMarksNameTemplate == null) {
@@ -249,6 +473,15 @@ class SecurityCenterGapicClient
         }
 
         return self::$folderSourceFindingSecurityMarksNameTemplate;
+    }
+
+    private static function getMuteConfigNameTemplate()
+    {
+        if (self::$muteConfigNameTemplate == null) {
+            self::$muteConfigNameTemplate = new PathTemplate('organizations/{organization}/muteConfigs/{mute_config}');
+        }
+
+        return self::$muteConfigNameTemplate;
     }
 
     private static function getNotificationConfigNameTemplate()
@@ -278,6 +511,60 @@ class SecurityCenterGapicClient
         return self::$organizationAssetSecurityMarksNameTemplate;
     }
 
+    private static function getOrganizationCustomModuleNameTemplate()
+    {
+        if (self::$organizationCustomModuleNameTemplate == null) {
+            self::$organizationCustomModuleNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}');
+        }
+
+        return self::$organizationCustomModuleNameTemplate;
+    }
+
+    private static function getOrganizationEffectiveCustomModuleNameTemplate()
+    {
+        if (self::$organizationEffectiveCustomModuleNameTemplate == null) {
+            self::$organizationEffectiveCustomModuleNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}');
+        }
+
+        return self::$organizationEffectiveCustomModuleNameTemplate;
+    }
+
+    private static function getOrganizationExportNameTemplate()
+    {
+        if (self::$organizationExportNameTemplate == null) {
+            self::$organizationExportNameTemplate = new PathTemplate('organizations/{organization}/bigQueryExports/{export}');
+        }
+
+        return self::$organizationExportNameTemplate;
+    }
+
+    private static function getOrganizationMuteConfigNameTemplate()
+    {
+        if (self::$organizationMuteConfigNameTemplate == null) {
+            self::$organizationMuteConfigNameTemplate = new PathTemplate('organizations/{organization}/muteConfigs/{mute_config}');
+        }
+
+        return self::$organizationMuteConfigNameTemplate;
+    }
+
+    private static function getOrganizationNotificationConfigNameTemplate()
+    {
+        if (self::$organizationNotificationConfigNameTemplate == null) {
+            self::$organizationNotificationConfigNameTemplate = new PathTemplate('organizations/{organization}/notificationConfigs/{notification_config}');
+        }
+
+        return self::$organizationNotificationConfigNameTemplate;
+    }
+
+    private static function getOrganizationSecurityHealthAnalyticsSettingsNameTemplate()
+    {
+        if (self::$organizationSecurityHealthAnalyticsSettingsNameTemplate == null) {
+            self::$organizationSecurityHealthAnalyticsSettingsNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings');
+        }
+
+        return self::$organizationSecurityHealthAnalyticsSettingsNameTemplate;
+    }
+
     private static function getOrganizationSettingsNameTemplate()
     {
         if (self::$organizationSettingsNameTemplate == null) {
@@ -303,6 +590,15 @@ class SecurityCenterGapicClient
         }
 
         return self::$organizationSourceFindingNameTemplate;
+    }
+
+    private static function getOrganizationSourceFindingExternalsystemNameTemplate()
+    {
+        if (self::$organizationSourceFindingExternalsystemNameTemplate == null) {
+            self::$organizationSourceFindingExternalsystemNameTemplate = new PathTemplate('organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}');
+        }
+
+        return self::$organizationSourceFindingExternalsystemNameTemplate;
     }
 
     private static function getOrganizationSourceFindingSecurityMarksNameTemplate()
@@ -332,6 +628,87 @@ class SecurityCenterGapicClient
         return self::$projectAssetSecurityMarksNameTemplate;
     }
 
+    private static function getProjectCustomModuleNameTemplate()
+    {
+        if (self::$projectCustomModuleNameTemplate == null) {
+            self::$projectCustomModuleNameTemplate = new PathTemplate('projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}');
+        }
+
+        return self::$projectCustomModuleNameTemplate;
+    }
+
+    private static function getProjectDlpJobNameTemplate()
+    {
+        if (self::$projectDlpJobNameTemplate == null) {
+            self::$projectDlpJobNameTemplate = new PathTemplate('projects/{project}/dlpJobs/{dlp_job}');
+        }
+
+        return self::$projectDlpJobNameTemplate;
+    }
+
+    private static function getProjectEffectiveCustomModuleNameTemplate()
+    {
+        if (self::$projectEffectiveCustomModuleNameTemplate == null) {
+            self::$projectEffectiveCustomModuleNameTemplate = new PathTemplate('projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}');
+        }
+
+        return self::$projectEffectiveCustomModuleNameTemplate;
+    }
+
+    private static function getProjectExportNameTemplate()
+    {
+        if (self::$projectExportNameTemplate == null) {
+            self::$projectExportNameTemplate = new PathTemplate('projects/{project}/bigQueryExports/{export}');
+        }
+
+        return self::$projectExportNameTemplate;
+    }
+
+    private static function getProjectLocationDlpJobNameTemplate()
+    {
+        if (self::$projectLocationDlpJobNameTemplate == null) {
+            self::$projectLocationDlpJobNameTemplate = new PathTemplate('projects/{project}/locations/{location}/dlpJobs/{dlp_job}');
+        }
+
+        return self::$projectLocationDlpJobNameTemplate;
+    }
+
+    private static function getProjectLocationTableProfileNameTemplate()
+    {
+        if (self::$projectLocationTableProfileNameTemplate == null) {
+            self::$projectLocationTableProfileNameTemplate = new PathTemplate('projects/{project}/locations/{location}/tableProfiles/{table_profile}');
+        }
+
+        return self::$projectLocationTableProfileNameTemplate;
+    }
+
+    private static function getProjectMuteConfigNameTemplate()
+    {
+        if (self::$projectMuteConfigNameTemplate == null) {
+            self::$projectMuteConfigNameTemplate = new PathTemplate('projects/{project}/muteConfigs/{mute_config}');
+        }
+
+        return self::$projectMuteConfigNameTemplate;
+    }
+
+    private static function getProjectNotificationConfigNameTemplate()
+    {
+        if (self::$projectNotificationConfigNameTemplate == null) {
+            self::$projectNotificationConfigNameTemplate = new PathTemplate('projects/{project}/notificationConfigs/{notification_config}');
+        }
+
+        return self::$projectNotificationConfigNameTemplate;
+    }
+
+    private static function getProjectSecurityHealthAnalyticsSettingsNameTemplate()
+    {
+        if (self::$projectSecurityHealthAnalyticsSettingsNameTemplate == null) {
+            self::$projectSecurityHealthAnalyticsSettingsNameTemplate = new PathTemplate('projects/{project}/securityHealthAnalyticsSettings');
+        }
+
+        return self::$projectSecurityHealthAnalyticsSettingsNameTemplate;
+    }
+
     private static function getProjectSourceNameTemplate()
     {
         if (self::$projectSourceNameTemplate == null) {
@@ -350,6 +727,15 @@ class SecurityCenterGapicClient
         return self::$projectSourceFindingNameTemplate;
     }
 
+    private static function getProjectSourceFindingExternalsystemNameTemplate()
+    {
+        if (self::$projectSourceFindingExternalsystemNameTemplate == null) {
+            self::$projectSourceFindingExternalsystemNameTemplate = new PathTemplate('projects/{project}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}');
+        }
+
+        return self::$projectSourceFindingExternalsystemNameTemplate;
+    }
+
     private static function getProjectSourceFindingSecurityMarksNameTemplate()
     {
         if (self::$projectSourceFindingSecurityMarksNameTemplate == null) {
@@ -357,6 +743,33 @@ class SecurityCenterGapicClient
         }
 
         return self::$projectSourceFindingSecurityMarksNameTemplate;
+    }
+
+    private static function getProjectTableProfileNameTemplate()
+    {
+        if (self::$projectTableProfileNameTemplate == null) {
+            self::$projectTableProfileNameTemplate = new PathTemplate('projects/{project}/tableProfiles/{table_profile}');
+        }
+
+        return self::$projectTableProfileNameTemplate;
+    }
+
+    private static function getSecurityHealthAnalyticsCustomModuleNameTemplate()
+    {
+        if (self::$securityHealthAnalyticsCustomModuleNameTemplate == null) {
+            self::$securityHealthAnalyticsCustomModuleNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}');
+        }
+
+        return self::$securityHealthAnalyticsCustomModuleNameTemplate;
+    }
+
+    private static function getSecurityHealthAnalyticsSettingsNameTemplate()
+    {
+        if (self::$securityHealthAnalyticsSettingsNameTemplate == null) {
+            self::$securityHealthAnalyticsSettingsNameTemplate = new PathTemplate('organizations/{organization}/securityHealthAnalyticsSettings');
+        }
+
+        return self::$securityHealthAnalyticsSettingsNameTemplate;
     }
 
     private static function getSecurityMarksNameTemplate()
@@ -377,6 +790,15 @@ class SecurityCenterGapicClient
         return self::$sourceNameTemplate;
     }
 
+    private static function getTableDataProfileNameTemplate()
+    {
+        if (self::$tableDataProfileNameTemplate == null) {
+            self::$tableDataProfileNameTemplate = new PathTemplate('projects/{project}/tableProfiles/{table_profile}');
+        }
+
+        return self::$tableDataProfileNameTemplate;
+    }
+
     private static function getTopicNameTemplate()
     {
         if (self::$topicNameTemplate == null) {
@@ -390,31 +812,136 @@ class SecurityCenterGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
+                'bigQueryExport' => self::getBigQueryExportNameTemplate(),
+                'dlpJob' => self::getDlpJobNameTemplate(),
+                'effectiveSecurityHealthAnalyticsCustomModule' => self::getEffectiveSecurityHealthAnalyticsCustomModuleNameTemplate(),
+                'externalSystem' => self::getExternalSystemNameTemplate(),
                 'finding' => self::getFindingNameTemplate(),
                 'folder' => self::getFolderNameTemplate(),
                 'folderAssetSecurityMarks' => self::getFolderAssetSecurityMarksNameTemplate(),
+                'folderCustomModule' => self::getFolderCustomModuleNameTemplate(),
+                'folderEffectiveCustomModule' => self::getFolderEffectiveCustomModuleNameTemplate(),
+                'folderExport' => self::getFolderExportNameTemplate(),
+                'folderMuteConfig' => self::getFolderMuteConfigNameTemplate(),
+                'folderNotificationConfig' => self::getFolderNotificationConfigNameTemplate(),
+                'folderSecurityHealthAnalyticsSettings' => self::getFolderSecurityHealthAnalyticsSettingsNameTemplate(),
                 'folderSource' => self::getFolderSourceNameTemplate(),
                 'folderSourceFinding' => self::getFolderSourceFindingNameTemplate(),
+                'folderSourceFindingExternalsystem' => self::getFolderSourceFindingExternalsystemNameTemplate(),
                 'folderSourceFindingSecurityMarks' => self::getFolderSourceFindingSecurityMarksNameTemplate(),
+                'muteConfig' => self::getMuteConfigNameTemplate(),
                 'notificationConfig' => self::getNotificationConfigNameTemplate(),
                 'organization' => self::getOrganizationNameTemplate(),
                 'organizationAssetSecurityMarks' => self::getOrganizationAssetSecurityMarksNameTemplate(),
+                'organizationCustomModule' => self::getOrganizationCustomModuleNameTemplate(),
+                'organizationEffectiveCustomModule' => self::getOrganizationEffectiveCustomModuleNameTemplate(),
+                'organizationExport' => self::getOrganizationExportNameTemplate(),
+                'organizationMuteConfig' => self::getOrganizationMuteConfigNameTemplate(),
+                'organizationNotificationConfig' => self::getOrganizationNotificationConfigNameTemplate(),
+                'organizationSecurityHealthAnalyticsSettings' => self::getOrganizationSecurityHealthAnalyticsSettingsNameTemplate(),
                 'organizationSettings' => self::getOrganizationSettingsNameTemplate(),
                 'organizationSource' => self::getOrganizationSourceNameTemplate(),
                 'organizationSourceFinding' => self::getOrganizationSourceFindingNameTemplate(),
+                'organizationSourceFindingExternalsystem' => self::getOrganizationSourceFindingExternalsystemNameTemplate(),
                 'organizationSourceFindingSecurityMarks' => self::getOrganizationSourceFindingSecurityMarksNameTemplate(),
                 'project' => self::getProjectNameTemplate(),
                 'projectAssetSecurityMarks' => self::getProjectAssetSecurityMarksNameTemplate(),
+                'projectCustomModule' => self::getProjectCustomModuleNameTemplate(),
+                'projectDlpJob' => self::getProjectDlpJobNameTemplate(),
+                'projectEffectiveCustomModule' => self::getProjectEffectiveCustomModuleNameTemplate(),
+                'projectExport' => self::getProjectExportNameTemplate(),
+                'projectLocationDlpJob' => self::getProjectLocationDlpJobNameTemplate(),
+                'projectLocationTableProfile' => self::getProjectLocationTableProfileNameTemplate(),
+                'projectMuteConfig' => self::getProjectMuteConfigNameTemplate(),
+                'projectNotificationConfig' => self::getProjectNotificationConfigNameTemplate(),
+                'projectSecurityHealthAnalyticsSettings' => self::getProjectSecurityHealthAnalyticsSettingsNameTemplate(),
                 'projectSource' => self::getProjectSourceNameTemplate(),
                 'projectSourceFinding' => self::getProjectSourceFindingNameTemplate(),
+                'projectSourceFindingExternalsystem' => self::getProjectSourceFindingExternalsystemNameTemplate(),
                 'projectSourceFindingSecurityMarks' => self::getProjectSourceFindingSecurityMarksNameTemplate(),
+                'projectTableProfile' => self::getProjectTableProfileNameTemplate(),
+                'securityHealthAnalyticsCustomModule' => self::getSecurityHealthAnalyticsCustomModuleNameTemplate(),
+                'securityHealthAnalyticsSettings' => self::getSecurityHealthAnalyticsSettingsNameTemplate(),
                 'securityMarks' => self::getSecurityMarksNameTemplate(),
                 'source' => self::getSourceNameTemplate(),
+                'tableDataProfile' => self::getTableDataProfileNameTemplate(),
                 'topic' => self::getTopicNameTemplate(),
             ];
         }
 
         return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * big_query_export resource.
+     *
+     * @param string $organization
+     * @param string $export
+     *
+     * @return string The formatted big_query_export resource.
+     */
+    public static function bigQueryExportName($organization, $export)
+    {
+        return self::getBigQueryExportNameTemplate()->render([
+            'organization' => $organization,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a dlp_job
+     * resource.
+     *
+     * @param string $project
+     * @param string $dlpJob
+     *
+     * @return string The formatted dlp_job resource.
+     */
+    public static function dlpJobName($project, $dlpJob)
+    {
+        return self::getDlpJobNameTemplate()->render([
+            'project' => $project,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * effective_security_health_analytics_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted effective_security_health_analytics_custom_module resource.
+     */
+    public static function effectiveSecurityHealthAnalyticsCustomModuleName($organization, $effectiveCustomModule)
+    {
+        return self::getEffectiveSecurityHealthAnalyticsCustomModuleNameTemplate()->render([
+            'organization' => $organization,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * external_system resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted external_system resource.
+     */
+    public static function externalSystemName($organization, $source, $finding, $externalsystem)
+    {
+        return self::getExternalSystemNameTemplate()->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
     }
 
     /**
@@ -470,6 +997,106 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * folder_custom_module resource.
+     *
+     * @param string $folder
+     * @param string $customModule
+     *
+     * @return string The formatted folder_custom_module resource.
+     */
+    public static function folderCustomModuleName($folder, $customModule)
+    {
+        return self::getFolderCustomModuleNameTemplate()->render([
+            'folder' => $folder,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_effective_custom_module resource.
+     *
+     * @param string $folder
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted folder_effective_custom_module resource.
+     */
+    public static function folderEffectiveCustomModuleName($folder, $effectiveCustomModule)
+    {
+        return self::getFolderEffectiveCustomModuleNameTemplate()->render([
+            'folder' => $folder,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_export resource.
+     *
+     * @param string $folder
+     * @param string $export
+     *
+     * @return string The formatted folder_export resource.
+     */
+    public static function folderExportName($folder, $export)
+    {
+        return self::getFolderExportNameTemplate()->render([
+            'folder' => $folder,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_mute_config resource.
+     *
+     * @param string $folder
+     * @param string $muteConfig
+     *
+     * @return string The formatted folder_mute_config resource.
+     */
+    public static function folderMuteConfigName($folder, $muteConfig)
+    {
+        return self::getFolderMuteConfigNameTemplate()->render([
+            'folder' => $folder,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_notification_config resource.
+     *
+     * @param string $folder
+     * @param string $notificationConfig
+     *
+     * @return string The formatted folder_notification_config resource.
+     */
+    public static function folderNotificationConfigName($folder, $notificationConfig)
+    {
+        return self::getFolderNotificationConfigNameTemplate()->render([
+            'folder' => $folder,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder_securityHealthAnalyticsSettings resource.
+     */
+    public static function folderSecurityHealthAnalyticsSettingsName($folder)
+    {
+        return self::getFolderSecurityHealthAnalyticsSettingsNameTemplate()->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * folder_source resource.
      *
      * @param string $folder
@@ -506,6 +1133,27 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding_externalsystem resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted folder_source_finding_externalsystem resource.
+     */
+    public static function folderSourceFindingExternalsystemName($folder, $source, $finding, $externalsystem)
+    {
+        return self::getFolderSourceFindingExternalsystemNameTemplate()->render([
+            'folder' => $folder,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * folder_source_finding_securityMarks resource.
      *
      * @param string $folder
@@ -520,6 +1168,23 @@ class SecurityCenterGapicClient
             'folder' => $folder,
             'source' => $source,
             'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a mute_config
+     * resource.
+     *
+     * @param string $organization
+     * @param string $muteConfig
+     *
+     * @return string The formatted mute_config resource.
+     */
+    public static function muteConfigName($organization, $muteConfig)
+    {
+        return self::getMuteConfigNameTemplate()->render([
+            'organization' => $organization,
+            'mute_config' => $muteConfig,
         ]);
     }
 
@@ -569,6 +1234,106 @@ class SecurityCenterGapicClient
         return self::getOrganizationAssetSecurityMarksNameTemplate()->render([
             'organization' => $organization,
             'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $customModule
+     *
+     * @return string The formatted organization_custom_module resource.
+     */
+    public static function organizationCustomModuleName($organization, $customModule)
+    {
+        return self::getOrganizationCustomModuleNameTemplate()->render([
+            'organization' => $organization,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_effective_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted organization_effective_custom_module resource.
+     */
+    public static function organizationEffectiveCustomModuleName($organization, $effectiveCustomModule)
+    {
+        return self::getOrganizationEffectiveCustomModuleNameTemplate()->render([
+            'organization' => $organization,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_export resource.
+     *
+     * @param string $organization
+     * @param string $export
+     *
+     * @return string The formatted organization_export resource.
+     */
+    public static function organizationExportName($organization, $export)
+    {
+        return self::getOrganizationExportNameTemplate()->render([
+            'organization' => $organization,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_mute_config resource.
+     *
+     * @param string $organization
+     * @param string $muteConfig
+     *
+     * @return string The formatted organization_mute_config resource.
+     */
+    public static function organizationMuteConfigName($organization, $muteConfig)
+    {
+        return self::getOrganizationMuteConfigNameTemplate()->render([
+            'organization' => $organization,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_notification_config resource.
+     *
+     * @param string $organization
+     * @param string $notificationConfig
+     *
+     * @return string The formatted organization_notification_config resource.
+     */
+    public static function organizationNotificationConfigName($organization, $notificationConfig)
+    {
+        return self::getOrganizationNotificationConfigNameTemplate()->render([
+            'organization' => $organization,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization_securityHealthAnalyticsSettings resource.
+     */
+    public static function organizationSecurityHealthAnalyticsSettingsName($organization)
+    {
+        return self::getOrganizationSecurityHealthAnalyticsSettingsNameTemplate()->render([
+            'organization' => $organization,
         ]);
     }
 
@@ -625,6 +1390,27 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding_externalsystem resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted organization_source_finding_externalsystem resource.
+     */
+    public static function organizationSourceFindingExternalsystemName($organization, $source, $finding, $externalsystem)
+    {
+        return self::getOrganizationSourceFindingExternalsystemNameTemplate()->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * organization_source_finding_securityMarks resource.
      *
      * @param string $organization
@@ -676,6 +1462,161 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * project_custom_module resource.
+     *
+     * @param string $project
+     * @param string $customModule
+     *
+     * @return string The formatted project_custom_module resource.
+     */
+    public static function projectCustomModuleName($project, $customModule)
+    {
+        return self::getProjectCustomModuleNameTemplate()->render([
+            'project' => $project,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_dlp_job resource.
+     *
+     * @param string $project
+     * @param string $dlpJob
+     *
+     * @return string The formatted project_dlp_job resource.
+     */
+    public static function projectDlpJobName($project, $dlpJob)
+    {
+        return self::getProjectDlpJobNameTemplate()->render([
+            'project' => $project,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_effective_custom_module resource.
+     *
+     * @param string $project
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted project_effective_custom_module resource.
+     */
+    public static function projectEffectiveCustomModuleName($project, $effectiveCustomModule)
+    {
+        return self::getProjectEffectiveCustomModuleNameTemplate()->render([
+            'project' => $project,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_export resource.
+     *
+     * @param string $project
+     * @param string $export
+     *
+     * @return string The formatted project_export resource.
+     */
+    public static function projectExportName($project, $export)
+    {
+        return self::getProjectExportNameTemplate()->render([
+            'project' => $project,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_dlp_job resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $dlpJob
+     *
+     * @return string The formatted project_location_dlp_job resource.
+     */
+    public static function projectLocationDlpJobName($project, $location, $dlpJob)
+    {
+        return self::getProjectLocationDlpJobNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_table_profile resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $tableProfile
+     *
+     * @return string The formatted project_location_table_profile resource.
+     */
+    public static function projectLocationTableProfileName($project, $location, $tableProfile)
+    {
+        return self::getProjectLocationTableProfileNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_mute_config resource.
+     *
+     * @param string $project
+     * @param string $muteConfig
+     *
+     * @return string The formatted project_mute_config resource.
+     */
+    public static function projectMuteConfigName($project, $muteConfig)
+    {
+        return self::getProjectMuteConfigNameTemplate()->render([
+            'project' => $project,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_notification_config resource.
+     *
+     * @param string $project
+     * @param string $notificationConfig
+     *
+     * @return string The formatted project_notification_config resource.
+     */
+    public static function projectNotificationConfigName($project, $notificationConfig)
+    {
+        return self::getProjectNotificationConfigNameTemplate()->render([
+            'project' => $project,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project_securityHealthAnalyticsSettings resource.
+     */
+    public static function projectSecurityHealthAnalyticsSettingsName($project)
+    {
+        return self::getProjectSecurityHealthAnalyticsSettingsNameTemplate()->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * project_source resource.
      *
      * @param string $project
@@ -712,6 +1653,27 @@ class SecurityCenterGapicClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding_externalsystem resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted project_source_finding_externalsystem resource.
+     */
+    public static function projectSourceFindingExternalsystemName($project, $source, $finding, $externalsystem)
+    {
+        return self::getProjectSourceFindingExternalsystemNameTemplate()->render([
+            'project' => $project,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * project_source_finding_securityMarks resource.
      *
      * @param string $project
@@ -726,6 +1688,55 @@ class SecurityCenterGapicClient
             'project' => $project,
             'source' => $source,
             'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_table_profile resource.
+     *
+     * @param string $project
+     * @param string $tableProfile
+     *
+     * @return string The formatted project_table_profile resource.
+     */
+    public static function projectTableProfileName($project, $tableProfile)
+    {
+        return self::getProjectTableProfileNameTemplate()->render([
+            'project' => $project,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_health_analytics_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $customModule
+     *
+     * @return string The formatted security_health_analytics_custom_module resource.
+     */
+    public static function securityHealthAnalyticsCustomModuleName($organization, $customModule)
+    {
+        return self::getSecurityHealthAnalyticsCustomModuleNameTemplate()->render([
+            'organization' => $organization,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_health_analytics_settings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted security_health_analytics_settings resource.
+     */
+    public static function securityHealthAnalyticsSettingsName($organization)
+    {
+        return self::getSecurityHealthAnalyticsSettingsNameTemplate()->render([
+            'organization' => $organization,
         ]);
     }
 
@@ -764,6 +1775,23 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * table_data_profile resource.
+     *
+     * @param string $project
+     * @param string $tableProfile
+     *
+     * @return string The formatted table_data_profile resource.
+     */
+    public static function tableDataProfileName($project, $tableProfile)
+    {
+        return self::getTableDataProfileNameTemplate()->render([
+            'project' => $project,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a topic
      * resource.
      *
@@ -784,26 +1812,59 @@ class SecurityCenterGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - bigQueryExport: organizations/{organization}/bigQueryExports/{export}
+     * - dlpJob: projects/{project}/dlpJobs/{dlp_job}
+     * - effectiveSecurityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - externalSystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - finding: organizations/{organization}/sources/{source}/findings/{finding}
      * - folder: folders/{folder}
      * - folderAssetSecurityMarks: folders/{folder}/assets/{asset}/securityMarks
+     * - folderCustomModule: folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - folderEffectiveCustomModule: folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - folderExport: folders/{folder}/bigQueryExports/{export}
+     * - folderMuteConfig: folders/{folder}/muteConfigs/{mute_config}
+     * - folderNotificationConfig: folders/{folder}/notificationConfigs/{notification_config}
+     * - folderSecurityHealthAnalyticsSettings: folders/{folder}/securityHealthAnalyticsSettings
      * - folderSource: folders/{folder}/sources/{source}
      * - folderSourceFinding: folders/{folder}/sources/{source}/findings/{finding}
+     * - folderSourceFindingExternalsystem: folders/{folder}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - folderSourceFindingSecurityMarks: folders/{folder}/sources/{source}/findings/{finding}/securityMarks
+     * - muteConfig: organizations/{organization}/muteConfigs/{mute_config}
      * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
      * - organization: organizations/{organization}
      * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
+     * - organizationCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - organizationEffectiveCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - organizationExport: organizations/{organization}/bigQueryExports/{export}
+     * - organizationMuteConfig: organizations/{organization}/muteConfigs/{mute_config}
+     * - organizationNotificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
+     * - organizationSecurityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
      * - organizationSettings: organizations/{organization}/organizationSettings
      * - organizationSource: organizations/{organization}/sources/{source}
      * - organizationSourceFinding: organizations/{organization}/sources/{source}/findings/{finding}
+     * - organizationSourceFindingExternalsystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
      * - project: projects/{project}
      * - projectAssetSecurityMarks: projects/{project}/assets/{asset}/securityMarks
+     * - projectCustomModule: projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - projectDlpJob: projects/{project}/dlpJobs/{dlp_job}
+     * - projectEffectiveCustomModule: projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - projectExport: projects/{project}/bigQueryExports/{export}
+     * - projectLocationDlpJob: projects/{project}/locations/{location}/dlpJobs/{dlp_job}
+     * - projectLocationTableProfile: projects/{project}/locations/{location}/tableProfiles/{table_profile}
+     * - projectMuteConfig: projects/{project}/muteConfigs/{mute_config}
+     * - projectNotificationConfig: projects/{project}/notificationConfigs/{notification_config}
+     * - projectSecurityHealthAnalyticsSettings: projects/{project}/securityHealthAnalyticsSettings
      * - projectSource: projects/{project}/sources/{source}
      * - projectSourceFinding: projects/{project}/sources/{source}/findings/{finding}
+     * - projectSourceFindingExternalsystem: projects/{project}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - projectSourceFindingSecurityMarks: projects/{project}/sources/{source}/findings/{finding}/securityMarks
+     * - projectTableProfile: projects/{project}/tableProfiles/{table_profile}
+     * - securityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - securityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
      * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - source: organizations/{organization}/sources/{source}
+     * - tableDataProfile: projects/{project}/tableProfiles/{table_profile}
      * - topic: projects/{project}/topics/{topic}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
@@ -932,6 +1993,156 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Kicks off an LRO to bulk mute findings for a parent based on a filter. The
+     * parent can be either an organization, folder or project. The findings
+     * matched by the filter will be muted after the LRO is done.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $parent = 'parent';
+     *     $operationResponse = $securityCenterClient->bulkMuteFindings($parent);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $securityCenterClient->bulkMuteFindings($parent);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $securityCenterClient->resumeOperation($operationName, 'bulkMuteFindings');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The parent, at which bulk action needs to be applied. Its format
+     *                             is "organizations/[organization_id]", "folders/[folder_id]",
+     *                             "projects/[project_id]".
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $filter
+     *           Expression that identifies findings that should be updated.
+     *           The expression is a list of zero or more restrictions combined
+     *           via logical operators `AND` and `OR`. Parentheses are supported, and `OR`
+     *           has higher precedence than `AND`.
+     *
+     *           Restrictions have the form `<field> <operator> <value>` and may have a
+     *           `-` character in front of them to indicate negation. The fields map to
+     *           those defined in the corresponding resource.
+     *
+     *           The supported operators are:
+     *
+     *           * `=` for all value types.
+     *           * `>`, `<`, `>=`, `<=` for integer values.
+     *           * `:`, meaning substring matching, for strings.
+     *
+     *           The supported value types are:
+     *
+     *           * string literals in quotes.
+     *           * integer literals without quotes.
+     *           * boolean literals `true` and `false` without quotes.
+     *     @type string $muteAnnotation
+     *           This can be a mute configuration name or any identifier for mute/unmute
+     *           of findings based on the filter.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function bulkMuteFindings($parent, array $optionalArgs = [])
+    {
+        $request = new BulkMuteFindingsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
+        }
+
+        if (isset($optionalArgs['muteAnnotation'])) {
+            $request->setMuteAnnotation($optionalArgs['muteAnnotation']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('BulkMuteFindings', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Creates a BigQuery export.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
+     *     $bigQueryExport = new BigQueryExport();
+     *     $bigQueryExportId = 'big_query_export_id';
+     *     $response = $securityCenterClient->createBigQueryExport($formattedParent, $bigQueryExport, $bigQueryExportId);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string         $parent           Required. The name of the parent resource of the new BigQuery export. Its
+     *                                         format is "organizations/[organization_id]", "folders/[folder_id]", or
+     *                                         "projects/[project_id]".
+     * @param BigQueryExport $bigQueryExport   Required. The BigQuery export being created.
+     * @param string         $bigQueryExportId Required. Unique identifier provided by the client within the parent scope.
+     *                                         It must consist of only lowercase letters, numbers, and hyphens, must start
+     *                                         with a letter, must end with either a letter or a number, and must be 63
+     *                                         characters or less.
+     * @param array          $optionalArgs     {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\BigQueryExport
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createBigQueryExport($parent, $bigQueryExport, $bigQueryExportId, array $optionalArgs = [])
+    {
+        $request = new CreateBigQueryExportRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setBigQueryExport($bigQueryExport);
+        $request->setBigQueryExportId($bigQueryExportId);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateBigQueryExport', BigQueryExport::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Creates a finding. The corresponding source must exist for finding creation
      * to succeed.
      *
@@ -953,8 +2164,8 @@ class SecurityCenterGapicClient
      * @param string  $findingId    Required. Unique identifier provided by the client within the parent scope.
      *                              It must be alphanumeric and less than or equal to 32 characters and
      *                              greater than 0 characters in length.
-     * @param Finding $finding      Required. The Finding being created. The name and security_marks will be ignored as
-     *                              they are both output only fields on this resource.
+     * @param Finding $finding      Required. The Finding being created. The name and security_marks will be
+     *                              ignored as they are both output only fields on this resource.
      * @param array   $optionalArgs {
      *     Optional.
      *
@@ -982,13 +2193,63 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Creates a mute config.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
+     *     $muteConfig = new MuteConfig();
+     *     $muteConfigId = 'mute_config_id';
+     *     $response = $securityCenterClient->createMuteConfig($formattedParent, $muteConfig, $muteConfigId);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string     $parent       Required. Resource name of the new mute configs's parent. Its format is
+     *                                 "organizations/[organization_id]", "folders/[folder_id]", or
+     *                                 "projects/[project_id]".
+     * @param MuteConfig $muteConfig   Required. The mute config being created.
+     * @param string     $muteConfigId Required. Unique identifier provided by the client within the parent scope.
+     *                                 It must consist of only lowercase letters, numbers, and hyphens, must start
+     *                                 with a letter, must end with either a letter or a number, and must be 63
+     *                                 characters or less.
+     * @param array      $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\MuteConfig
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createMuteConfig($parent, $muteConfig, $muteConfigId, array $optionalArgs = [])
+    {
+        $request = new CreateMuteConfigRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setMuteConfig($muteConfig);
+        $request->setMuteConfigId($muteConfigId);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateMuteConfig', MuteConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Creates a notification config.
      *
      * Sample code:
      * ```
      * $securityCenterClient = new SecurityCenterClient();
      * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
      *     $configId = 'config_id';
      *     $notificationConfig = new NotificationConfig();
      *     $response = $securityCenterClient->createNotificationConfig($formattedParent, $configId, $notificationConfig);
@@ -997,14 +2258,16 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string             $parent             Required. Resource name of the new notification config's parent. Its format is
-     *                                               "organizations/[organization_id]".
+     * @param string             $parent             Required. Resource name of the new notification config's parent. Its format
+     *                                               is "organizations/[organization_id]", "folders/[folder_id]", or
+     *                                               "projects/[project_id]".
      * @param string             $configId           Required.
      *                                               Unique identifier provided by the client within the parent scope.
-     *                                               It must be between 1 and 128 characters, and contains alphanumeric
-     *                                               characters, underscores or hyphens only.
-     * @param NotificationConfig $notificationConfig Required. The notification config being created. The name and the service account
-     *                                               will be ignored as they are both output only fields on this resource.
+     *                                               It must be between 1 and 128 characters and contain alphanumeric
+     *                                               characters, underscores, or hyphens only.
+     * @param NotificationConfig $notificationConfig Required. The notification config being created. The name and the service
+     *                                               account will be ignored as they are both output only fields on this
+     *                                               resource.
      * @param array              $optionalArgs       {
      *     Optional.
      *
@@ -1032,6 +2295,56 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Creates a resident SecurityHealthAnalyticsCustomModule at the scope of the
+     * given CRM parent, and also creates inherited
+     * SecurityHealthAnalyticsCustomModules for all CRM descendants of the given
+     * parent. These modules are enabled by default.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->securityHealthAnalyticsSettingsName('[ORGANIZATION]');
+     *     $securityHealthAnalyticsCustomModule = new SecurityHealthAnalyticsCustomModule();
+     *     $response = $securityCenterClient->createSecurityHealthAnalyticsCustomModule($formattedParent, $securityHealthAnalyticsCustomModule);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string                              $parent                              Required. Resource name of the new custom module's parent. Its format is
+     *                                                                                 "organizations/{organization}/securityHealthAnalyticsSettings",
+     *                                                                                 "folders/{folder}/securityHealthAnalyticsSettings", or
+     *                                                                                 "projects/{project}/securityHealthAnalyticsSettings"
+     * @param SecurityHealthAnalyticsCustomModule $securityHealthAnalyticsCustomModule Required. SecurityHealthAnalytics custom module to create. The provided
+     *                                                                                 name is ignored and reset with provided parent information and
+     *                                                                                 server-generated ID.
+     * @param array                               $optionalArgs                        {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function createSecurityHealthAnalyticsCustomModule($parent, $securityHealthAnalyticsCustomModule, array $optionalArgs = [])
+    {
+        $request = new CreateSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setSecurityHealthAnalyticsCustomModule($securityHealthAnalyticsCustomModule);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('CreateSecurityHealthAnalyticsCustomModule', SecurityHealthAnalyticsCustomModule::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Creates a source.
      *
      * Sample code:
@@ -1048,8 +2361,8 @@ class SecurityCenterGapicClient
      *
      * @param string $parent       Required. Resource name of the new source's parent. Its format should be
      *                             "organizations/[organization_id]".
-     * @param Source $source       Required. The Source being created, only the display_name and description will be
-     *                             used. All other fields will be ignored.
+     * @param Source $source       Required. The Source being created, only the display_name and description
+     *                             will be used. All other fields will be ignored.
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1076,6 +2389,86 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Deletes an existing BigQuery export.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->bigQueryExportName('[ORGANIZATION]', '[EXPORT]');
+     *     $securityCenterClient->deleteBigQueryExport($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. The name of the BigQuery export to delete. Its format is
+     *                             organizations/{organization}/bigQueryExports/{export_id},
+     *                             folders/{folder}/bigQueryExports/{export_id}, or
+     *                             projects/{project}/bigQueryExports/{export_id}
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteBigQueryExport($name, array $optionalArgs = [])
+    {
+        $request = new DeleteBigQueryExportRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteBigQueryExport', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Deletes an existing mute config.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->muteConfigName('[ORGANIZATION]', '[MUTE_CONFIG]');
+     *     $securityCenterClient->deleteMuteConfig($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the mute config to delete. Its format is
+     *                             organizations/{organization}/muteConfigs/{config_id},
+     *                             folders/{folder}/muteConfigs/{config_id}, or
+     *                             projects/{project}/muteConfigs/{config_id}
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteMuteConfig($name, array $optionalArgs = [])
+    {
+        $request = new DeleteMuteConfigRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteMuteConfig', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Deletes a notification config.
      *
      * Sample code:
@@ -1090,7 +2483,9 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $name         Required. Name of the notification config to delete. Its format is
-     *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
+     *                             "organizations/[organization_id]/notificationConfigs/[config_id]",
+     *                             "folders/[folder_id]/notificationConfigs/[config_id]",
+     *                             or "projects/[project_id]/notificationConfigs/[config_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1114,6 +2509,134 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Deletes the specified SecurityHealthAnalyticsCustomModule and all of its
+     * descendants in the CRM hierarchy. This method is only supported for
+     * resident custom modules.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->securityHealthAnalyticsCustomModuleName('[ORGANIZATION]', '[CUSTOM_MODULE]');
+     *     $securityCenterClient->deleteSecurityHealthAnalyticsCustomModule($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the custom module to delete. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+     *                             or
+     *                             "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function deleteSecurityHealthAnalyticsCustomModule($name, array $optionalArgs = [])
+    {
+        $request = new DeleteSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('DeleteSecurityHealthAnalyticsCustomModule', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Gets a BigQuery export.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->bigQueryExportName('[ORGANIZATION]', '[EXPORT]');
+     *     $response = $securityCenterClient->getBigQueryExport($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the BigQuery export to retrieve. Its format is
+     *                             organizations/{organization}/bigQueryExports/{export_id},
+     *                             folders/{folder}/bigQueryExports/{export_id}, or
+     *                             projects/{project}/bigQueryExports/{export_id}
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\BigQueryExport
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getBigQueryExport($name, array $optionalArgs = [])
+    {
+        $request = new GetBigQueryExportRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetBigQueryExport', BigQueryExport::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Retrieves an EffectiveSecurityHealthAnalyticsCustomModule.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->effectiveSecurityHealthAnalyticsCustomModuleName('[ORGANIZATION]', '[EFFECTIVE_CUSTOM_MODULE]');
+     *     $response = $securityCenterClient->getEffectiveSecurityHealthAnalyticsCustomModule($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the effective custom module to get. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+     *                             or
+     *                             "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\EffectiveSecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getEffectiveSecurityHealthAnalyticsCustomModule($name, array $optionalArgs = [])
+    {
+        $request = new GetEffectiveSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetEffectiveSecurityHealthAnalyticsCustomModule', EffectiveSecurityHealthAnalyticsCustomModule::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Gets the access control policy on the specified Source.
      *
      * Sample code:
@@ -1134,7 +2657,7 @@ class SecurityCenterGapicClient
      *
      *     @type GetPolicyOptions $options
      *           OPTIONAL: A `GetPolicyOptions` object for specifying options to
-     *           `GetIamPolicy`. This field is only used by Cloud IAM.
+     *           `GetIamPolicy`.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -1161,6 +2684,48 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Gets a mute config.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->muteConfigName('[ORGANIZATION]', '[MUTE_CONFIG]');
+     *     $response = $securityCenterClient->getMuteConfig($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the mute config to retrieve. Its format is
+     *                             organizations/{organization}/muteConfigs/{config_id},
+     *                             folders/{folder}/muteConfigs/{config_id}, or
+     *                             projects/{project}/muteConfigs/{config_id}
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\MuteConfig
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getMuteConfig($name, array $optionalArgs = [])
+    {
+        $request = new GetMuteConfigRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetMuteConfig', MuteConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Gets a notification config.
      *
      * Sample code:
@@ -1175,7 +2740,9 @@ class SecurityCenterGapicClient
      * ```
      *
      * @param string $name         Required. Name of the notification config to get. Its format is
-     *                             "organizations/[organization_id]/notificationConfigs/[config_id]".
+     *                             "organizations/[organization_id]/notificationConfigs/[config_id]",
+     *                             "folders/[folder_id]/notificationConfigs/[config_id]",
+     *                             or "projects/[project_id]/notificationConfigs/[config_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1214,8 +2781,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $name         Required. Name of the organization to get organization settings for. Its format is
-     *                             "organizations/[organization_id]/organizationSettings".
+     * @param string $name         Required. Name of the organization to get organization settings for. Its
+     *                             format is "organizations/[organization_id]/organizationSettings".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1238,6 +2805,49 @@ class SecurityCenterGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetOrganizationSettings', OrganizationSettings::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Retrieves a SecurityHealthAnalyticsCustomModule.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->securityHealthAnalyticsCustomModuleName('[ORGANIZATION]', '[CUSTOM_MODULE]');
+     *     $response = $securityCenterClient->getSecurityHealthAnalyticsCustomModule($formattedName);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Name of the custom module to get. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+     *                             or
+     *                             "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getSecurityHealthAnalyticsCustomModule($name, array $optionalArgs = [])
+    {
+        $request = new GetSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetSecurityHealthAnalyticsCustomModule', SecurityHealthAnalyticsCustomModule::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -1308,12 +2918,12 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Name of the organization to groupBy. Its format is
-     *                             "organizations/[organization_id], folders/[folder_id], or
-     *                             projects/[project_id]".
-     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping. The string
-     *                             value should follow SQL syntax: comma separated list of fields. For
-     *                             example:
+     * @param string $parent       Required. The name of the parent to group the assets by. Its format is
+     *                             "organizations/[organization_id]", "folders/[folder_id]", or
+     *                             "projects/[project_id]".
+     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping.
+     *                             The string value should follow SQL syntax: comma separated list of fields.
+     *                             For example:
      *                             "security_center_properties.resource_project,security_center_properties.project".
      *
      *                             The following fields are supported when compare_duration is not set:
@@ -1446,6 +3056,8 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function groupAssets($parent, $groupBy, array $optionalArgs = [])
     {
@@ -1519,9 +3131,9 @@ class SecurityCenterGapicClient
      *                             provide a source_id of `-`. For example:
      *                             organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
      *                             or projects/{project_id}/sources/-
-     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping (including
-     *                             `state_change`). The string value should follow SQL syntax: comma separated
-     *                             list of fields. For example: "parent,resource_name".
+     * @param string $groupBy      Required. Expression that defines what assets fields to use for grouping
+     *                             (including `state_change`). The string value should follow SQL syntax:
+     *                             comma separated list of fields. For example: "parent,resource_name".
      *
      *                             The following fields are supported:
      *
@@ -1712,9 +3324,11 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Name of the organization assets should belong to. Its format is
-     *                             "organizations/[organization_id], folders/[folder_id], or
-     *                             projects/[project_id]".
+     * @param string $parent       Required. The name of the parent resource that contains the assets. The
+     *                             value that you can specify on parent depends on the method in which you
+     *                             specify parent. You can specify one of the following values:
+     *                             "organizations/[organization_id]", "folders/[folder_id]", or
+     *                             "projects/[project_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -1855,6 +3469,8 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\PagedListResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function listAssets($parent, array $optionalArgs = [])
     {
@@ -1893,6 +3509,225 @@ class SecurityCenterGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->getPagedListResponse('ListAssets', $optionalArgs, ListAssetsResponse::class, $request);
+    }
+
+    /**
+     * Lists BigQuery exports. Note that when requesting BigQuery exports at a
+     * given level all exports under that level are also returned e.g. if
+     * requesting BigQuery exports under a folder, then all BigQuery exports
+     * immediately under the folder plus the ones created under the projects
+     * within the folder are returned.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $securityCenterClient->listBigQueryExports($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $securityCenterClient->listBigQueryExports($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The parent, which owns the collection of BigQuery exports. Its
+     *                             format is "organizations/[organization_id]", "folders/[folder_id]",
+     *                             "projects/[project_id]".
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listBigQueryExports($parent, array $optionalArgs = [])
+    {
+        $request = new ListBigQueryExportsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListBigQueryExports', $optionalArgs, ListBigQueryExportsResponse::class, $request);
+    }
+
+    /**
+     * Returns a list of all resident SecurityHealthAnalyticsCustomModules under
+     * the given CRM parent and all of the parent’s CRM descendants.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->securityHealthAnalyticsSettingsName('[ORGANIZATION]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $securityCenterClient->listDescendantSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $securityCenterClient->listDescendantSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. Name of parent to list descendant custom modules. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings", or
+     *                             "projects/{project}/securityHealthAnalyticsSettings"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listDescendantSecurityHealthAnalyticsCustomModules($parent, array $optionalArgs = [])
+    {
+        $request = new ListDescendantSecurityHealthAnalyticsCustomModulesRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListDescendantSecurityHealthAnalyticsCustomModules', $optionalArgs, ListDescendantSecurityHealthAnalyticsCustomModulesResponse::class, $request);
+    }
+
+    /**
+     * Returns a list of all EffectiveSecurityHealthAnalyticsCustomModules for the
+     * given parent. This includes resident modules defined at the scope of the
+     * parent, and inherited modules, inherited from CRM ancestors.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->securityHealthAnalyticsSettingsName('[ORGANIZATION]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $securityCenterClient->listEffectiveSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $securityCenterClient->listEffectiveSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. Name of parent to list effective custom modules. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings", or
+     *                             "projects/{project}/securityHealthAnalyticsSettings"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listEffectiveSecurityHealthAnalyticsCustomModules($parent, array $optionalArgs = [])
+    {
+        $request = new ListEffectiveSecurityHealthAnalyticsCustomModulesRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListEffectiveSecurityHealthAnalyticsCustomModules', $optionalArgs, ListEffectiveSecurityHealthAnalyticsCustomModulesResponse::class, $request);
     }
 
     /**
@@ -1995,6 +3830,7 @@ class SecurityCenterGapicClient
      *           * resource.project_display_name: `=`, `:`
      *           * resource.type: `=`, `:`
      *           * resource.folders.resource_folder: `=`, `:`
+     *           * resource.display_name: `=`, `:`
      *     @type string $orderBy
      *           Expression that defines what fields and order to use for sorting. The
      *           string value should follow SQL syntax: comma separated list of fields. For
@@ -2112,13 +3948,83 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Lists mute configs.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $securityCenterClient->listMuteConfigs($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $securityCenterClient->listMuteConfigs($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. The parent, which owns the collection of mute configs. Its format
+     *                             is "organizations/[organization_id]", "folders/[folder_id]",
+     *                             "projects/[project_id]".
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listMuteConfigs($parent, array $optionalArgs = [])
+    {
+        $request = new ListMuteConfigsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListMuteConfigs', $optionalArgs, ListMuteConfigsResponse::class, $request);
+    }
+
+    /**
      * Lists notification configs.
      *
      * Sample code:
      * ```
      * $securityCenterClient = new SecurityCenterClient();
      * try {
-     *     $formattedParent = $securityCenterClient->organizationName('[ORGANIZATION]');
+     *     $formattedParent = $securityCenterClient->projectName('[PROJECT]');
      *     // Iterate over pages of elements
      *     $pagedResponse = $securityCenterClient->listNotificationConfigs($formattedParent);
      *     foreach ($pagedResponse->iteratePages() as $page) {
@@ -2137,8 +4043,9 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Name of the organization to list notification configs.
-     *                             Its format is "organizations/[organization_id]".
+     * @param string $parent       Required. The name of the parent in which to list the notification
+     *                             configurations. Its format is "organizations/[organization_id]",
+     *                             "folders/[folder_id]", or "projects/[project_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -2181,6 +4088,79 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Returns a list of all SecurityHealthAnalyticsCustomModules for the given
+     * parent. This includes resident modules defined at the scope of the parent,
+     * and inherited modules, inherited from CRM ancestors.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedParent = $securityCenterClient->securityHealthAnalyticsSettingsName('[ORGANIZATION]');
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $securityCenterClient->listSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $securityCenterClient->listSecurityHealthAnalyticsCustomModules($formattedParent);
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $parent       Required. Name of parent to list custom modules. Its format is
+     *                             "organizations/{organization}/securityHealthAnalyticsSettings",
+     *                             "folders/{folder}/securityHealthAnalyticsSettings", or
+     *                             "projects/{project}/securityHealthAnalyticsSettings"
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listSecurityHealthAnalyticsCustomModules($parent, array $optionalArgs = [])
+    {
+        $request = new ListSecurityHealthAnalyticsCustomModulesRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListSecurityHealthAnalyticsCustomModules', $optionalArgs, ListSecurityHealthAnalyticsCustomModulesResponse::class, $request);
+    }
+
+    /**
      * Lists all sources belonging to an organization.
      *
      * Sample code:
@@ -2206,9 +4186,9 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Resource name of the parent of sources to list. Its format should be
-     *                             "organizations/[organization_id], folders/[folder_id], or
-     *                             projects/[project_id]".
+     * @param string $parent       Required. Resource name of the parent of sources to list. Its format should
+     *                             be "organizations/[organization_id]", "folders/[folder_id]", or
+     *                             "projects/[project_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -2294,8 +4274,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string $parent       Required. Name of the organization to run asset discovery for. Its format is
-     *                             "organizations/[organization_id]".
+     * @param string $parent       Required. Name of the organization to run asset discovery for. Its format
+     *                             is "organizations/[organization_id]".
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -2308,6 +4288,8 @@ class SecurityCenterGapicClient
      * @return \Google\ApiCore\OperationResponse
      *
      * @throws ApiException if the remote call fails
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function runAssetDiscovery($parent, array $optionalArgs = [])
     {
@@ -2336,10 +4318,12 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param string    $name         Required. The relative resource name of the finding. See:
-     *                                https://cloud.google.com/apis/design/resource_names#relative_resource_name
-     *                                Example:
-     *                                "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
+     * @param string    $name         Required. The [relative resource
+     *                                name](https://cloud.google.com/apis/design/resource_names#relative_resource_name)
+     *                                of the finding. Example:
+     *                                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+     *                                "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+     *                                "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
      * @param int       $state        Required. The desired State of the finding.
      *                                For allowed values, use constants defined on {@see \Google\Cloud\SecurityCenter\V1\Finding\State}
      * @param Timestamp $startTime    Required. The time at which the updated state takes effect.
@@ -2393,6 +4377,12 @@ class SecurityCenterGapicClient
      * @param array  $optionalArgs {
      *     Optional.
      *
+     *     @type FieldMask $updateMask
+     *           OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only
+     *           the fields in the mask will be modified. If no mask is provided, the
+     *           following default mask is used:
+     *
+     *           `paths: "bindings, etag"`
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -2410,9 +4400,110 @@ class SecurityCenterGapicClient
         $request->setResource($resource);
         $request->setPolicy($policy);
         $requestParamHeaders['resource'] = $resource;
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates the mute state of a finding.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $formattedName = $securityCenterClient->findingName('[ORGANIZATION]', '[SOURCE]', '[FINDING]');
+     *     $mute = Mute::MUTE_UNSPECIFIED;
+     *     $response = $securityCenterClient->setMute($formattedName, $mute);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. The [relative resource
+     *                             name](https://cloud.google.com/apis/design/resource_names#relative_resource_name)
+     *                             of the finding. Example:
+     *                             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+     *                             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+     *                             "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+     * @param int    $mute         Required. The desired state of the Mute.
+     *                             For allowed values, use constants defined on {@see \Google\Cloud\SecurityCenter\V1\Finding\Mute}
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\Finding
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function setMute($name, $mute, array $optionalArgs = [])
+    {
+        $request = new SetMuteRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $request->setMute($mute);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetMute', Finding::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Simulates a given SecurityHealthAnalyticsCustomModule and Resource.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $parent = 'parent';
+     *     $customConfig = new CustomConfig();
+     *     $resource = new SimulatedResource();
+     *     $response = $securityCenterClient->simulateSecurityHealthAnalyticsCustomModule($parent, $customConfig, $resource);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param string            $parent       Required. The relative resource name of the organization, project, or
+     *                                        folder. For more information about relative resource names, see [Relative
+     *                                        Resource
+     *                                        Name](https://cloud.google.com/apis/design/resource_names#relative_resource_name)
+     *                                        Example: `organizations/{organization_id}`
+     * @param CustomConfig      $customConfig Required. The custom configuration that you need to test.
+     * @param SimulatedResource $resource     Required. Resource data to simulate custom module against.
+     * @param array             $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function simulateSecurityHealthAnalyticsCustomModule($parent, $customConfig, $resource, array $optionalArgs = [])
+    {
+        $request = new SimulateSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setCustomConfig($customConfig);
+        $request->setResource($resource);
+        $requestParamHeaders['parent'] = $parent;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SimulateSecurityHealthAnalyticsCustomModule', SimulateSecurityHealthAnalyticsCustomModuleResponse::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2462,6 +4553,99 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Updates a BigQuery export.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $bigQueryExport = new BigQueryExport();
+     *     $response = $securityCenterClient->updateBigQueryExport($bigQueryExport);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param BigQueryExport $bigQueryExport Required. The BigQuery export being updated.
+     * @param array          $optionalArgs   {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           The list of fields to be updated.
+     *           If empty all mutable fields will be updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\BigQueryExport
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateBigQueryExport($bigQueryExport, array $optionalArgs = [])
+    {
+        $request = new UpdateBigQueryExportRequest();
+        $requestParamHeaders = [];
+        $request->setBigQueryExport($bigQueryExport);
+        $requestParamHeaders['big_query_export.name'] = $bigQueryExport->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateBigQueryExport', BigQueryExport::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates external system. This is for a given finding.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $externalSystem = new ExternalSystem();
+     *     $response = $securityCenterClient->updateExternalSystem($externalSystem);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param ExternalSystem $externalSystem Required. The external system resource to update.
+     * @param array          $optionalArgs   {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           The FieldMask to use when updating the external system resource.
+     *
+     *           If empty all mutable fields will be updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\ExternalSystem
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateExternalSystem($externalSystem, array $optionalArgs = [])
+    {
+        $request = new UpdateExternalSystemRequest();
+        $requestParamHeaders = [];
+        $request->setExternalSystem($externalSystem);
+        $requestParamHeaders['external_system.name'] = $externalSystem->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateExternalSystem', ExternalSystem::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Creates or updates a finding. The corresponding source must exist for a
      * finding creation to succeed.
      *
@@ -2476,8 +4660,8 @@ class SecurityCenterGapicClient
      * }
      * ```
      *
-     * @param Finding $finding      Required. The finding resource to update or create if it does not already exist.
-     *                              parent, security_marks, and update_time will be ignored.
+     * @param Finding $finding      Required. The finding resource to update or create if it does not already
+     *                              exist. parent, security_marks, and update_time will be ignored.
      *
      *                              In the case of creation, the finding id portion of the name must be
      *                              alphanumeric and less than or equal to 32 characters and greater than 0
@@ -2516,6 +4700,52 @@ class SecurityCenterGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateFinding', Finding::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates a mute config.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $muteConfig = new MuteConfig();
+     *     $response = $securityCenterClient->updateMuteConfig($muteConfig);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param MuteConfig $muteConfig   Required. The mute config being updated.
+     * @param array      $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           The list of fields to be updated.
+     *           If empty all mutable fields will be updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\MuteConfig
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateMuteConfig($muteConfig, array $optionalArgs = [])
+    {
+        $request = new UpdateMuteConfigRequest();
+        $requestParamHeaders = [];
+        $request->setMuteConfig($muteConfig);
+        $requestParamHeaders['mute_config.name'] = $muteConfig->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateMuteConfig', MuteConfig::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -2615,6 +4845,55 @@ class SecurityCenterGapicClient
     }
 
     /**
+     * Updates the SecurityHealthAnalyticsCustomModule under the given name based
+     * on the given update mask. Updating the enablement state is supported on
+     * both resident and inherited modules (though resident modules cannot have an
+     * enablement state of "inherited"). Updating the display name and custom
+     * config of a module is supported on resident modules only.
+     *
+     * Sample code:
+     * ```
+     * $securityCenterClient = new SecurityCenterClient();
+     * try {
+     *     $securityHealthAnalyticsCustomModule = new SecurityHealthAnalyticsCustomModule();
+     *     $response = $securityCenterClient->updateSecurityHealthAnalyticsCustomModule($securityHealthAnalyticsCustomModule);
+     * } finally {
+     *     $securityCenterClient->close();
+     * }
+     * ```
+     *
+     * @param SecurityHealthAnalyticsCustomModule $securityHealthAnalyticsCustomModule Required. The SecurityHealthAnalytics custom module to update.
+     * @param array                               $optionalArgs                        {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           The list of fields to update.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function updateSecurityHealthAnalyticsCustomModule($securityHealthAnalyticsCustomModule, array $optionalArgs = [])
+    {
+        $request = new UpdateSecurityHealthAnalyticsCustomModuleRequest();
+        $requestParamHeaders = [];
+        $request->setSecurityHealthAnalyticsCustomModule($securityHealthAnalyticsCustomModule);
+        $requestParamHeaders['security_health_analytics_custom_module.name'] = $securityHealthAnalyticsCustomModule->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateSecurityHealthAnalyticsCustomModule', SecurityHealthAnalyticsCustomModule::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Updates security marks.
      *
      * Sample code:
@@ -2641,7 +4920,8 @@ class SecurityCenterGapicClient
      *     @type Timestamp $startTime
      *           The time at which the updated SecurityMarks take effect.
      *           If not set uses current server time.  Updates will be applied to the
-     *           SecurityMarks that are active immediately preceding this time.
+     *           SecurityMarks that are active immediately preceding this time. Must be
+     *           earlier or equal to the server time.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on

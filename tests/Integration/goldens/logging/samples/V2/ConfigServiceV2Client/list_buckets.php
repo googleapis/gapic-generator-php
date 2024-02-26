@@ -29,7 +29,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogBucket;
 
 /**
- * Lists buckets.
+ * Lists log buckets.
  *
  * @param string $formattedParent The parent resource whose buckets are to be listed:
  *

@@ -30,6 +30,14 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Rpc\Status;
 
 /**
+ * It is recommended to use the
+ * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+ * method instead of
+ * [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces].
+ * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+ * achieves the same results but provides more fine-grained control over
+ * ingesting local inventory data.
+ *
  * Incrementally adds place IDs to
  * [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
  *
@@ -39,12 +47,18 @@ use Google\Rpc\Status;
  * enqueued and processed downstream. As a consequence, when a response is
  * returned, the added place IDs are not immediately manifested in the
  * [Product][google.cloud.retail.v2alpha.Product] queried by
- * [GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct] or
- * [ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts].
+ * [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct]
+ * or
+ * [ProductService.ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts].
  *
- * This feature is only available for users who have Retail Search enabled.
- * Please submit a form [here](https://cloud.google.com/contact) to contact
- * cloud sales if you are interested in using Retail Search.
+ * The returned [Operation][google.longrunning.Operation]s will be obsolete
+ * after 1 day, and [GetOperation][google.longrunning.Operations.GetOperation]
+ * API will return NOT_FOUND afterwards.
+ *
+ * If conflicting updates are issued, the
+ * [Operation][google.longrunning.Operation]s associated with the stale
+ * updates will not be marked as [done][google.longrunning.Operation.done]
+ * until being obsolete.
  *
  * @param string $formattedProduct Full resource name of
  *                                 [Product][google.cloud.retail.v2alpha.Product], such as
@@ -72,7 +86,8 @@ use Google\Rpc\Status;
  *                                 If this field is set to an invalid value other than these, an
  *                                 INVALID_ARGUMENT error is returned.
  *
- *                                 This field directly corresponds to [Product.fulfillment_info.type][].
+ *                                 This field directly corresponds to
+ *                                 [Product.fulfillment_info.type][google.cloud.retail.v2alpha.FulfillmentInfo.type].
  * @param string $placeIdsElement  The IDs for this
  *                                 [type][google.cloud.retail.v2alpha.AddFulfillmentPlacesRequest.type], such
  *                                 as the store IDs for "pickup-in-store" or the region IDs for
@@ -82,7 +97,7 @@ use Google\Rpc\Status;
  *
  *                                 At least 1 value is required, and a maximum of 2000 values are allowed.
  *                                 Each value must be a string with a length limit of 10 characters, matching
- *                                 the pattern [a-zA-Z0-9_-]+, such as "store1" or "REGION-2". Otherwise, an
+ *                                 the pattern `[a-zA-Z0-9_-]+`, such as "store1" or "REGION-2". Otherwise, an
  *                                 INVALID_ARGUMENT error is returned.
  *
  *                                 If the total number of place IDs exceeds 2000 for this

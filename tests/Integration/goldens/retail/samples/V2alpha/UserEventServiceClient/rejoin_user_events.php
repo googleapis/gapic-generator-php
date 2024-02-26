@@ -30,13 +30,14 @@ use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**
- * Triggers a user event rejoin operation with latest product catalog. Events
- * will not be annotated with detailed product information if product is
- * missing from the catalog at the time the user event is ingested, and these
- * events are stored as unjoined events with a limited usage on training and
- * serving. This API can be used to trigger a 'join' operation on specified
- * events with latest version of product catalog. It can also be used to
- * correct events joined with wrong product catalog.
+ * Starts a user-event rejoin operation with latest product catalog. Events
+ * are not annotated with detailed product information for products that are
+ * missing from the catalog when the user event is ingested. These
+ * events are stored as unjoined events with limited usage on training and
+ * serving. You can use this method to start a join operation on specified
+ * events with the latest version of product catalog. You can also use this
+ * method to correct events joined with the wrong product catalog. A rejoin
+ * operation can take hours or days to complete.
  *
  * @param string $parent The parent catalog resource name, such as
  *                       `projects/1234/locations/global/catalogs/default_catalog`.

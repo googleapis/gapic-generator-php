@@ -30,16 +30,18 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * Deletes a sink. If the sink has a unique `writer_identity`, then that
  * service account is also deleted.
  *
- * @param string $formattedSinkName The full resource name of the sink to delete, including the parent
- *                                  resource and the sink identifier:
+ * @param string $formattedSinkName The full resource name of the sink to delete, including the
+ *                                  parent resource and the sink identifier:
  *
  *                                  "projects/[PROJECT_ID]/sinks/[SINK_ID]"
  *                                  "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
  *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
  *
- *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`. Please see
- *                                  {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
+ *                                  For example:
+ *
+ *                                  `"projects/my-project/sinks/my-sink"`
+ *                                  Please see {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
  */
 function delete_sink_sample(string $formattedSinkName): void
 {

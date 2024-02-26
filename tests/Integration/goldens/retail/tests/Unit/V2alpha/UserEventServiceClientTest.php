@@ -296,9 +296,9 @@ class UserEventServiceClientTest extends GeneratedTest
         $completeOperation->setResponse($anyResponse);
         $operationsTransport->addResponse($completeOperation);
         // Mock request
-        $parent = 'parent-995424086';
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $filter = 'filter-1274492040';
-        $response = $gapicClient->purgeUserEvents($parent, $filter);
+        $response = $gapicClient->purgeUserEvents($formattedParent, $filter);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $apiRequests = $transport->popReceivedCalls();
@@ -309,7 +309,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $actualApiRequestObject = $apiRequests[0]->getRequestObject();
         $this->assertSame('/google.cloud.retail.v2alpha.UserEventService/PurgeUserEvents', $actualApiFuncCall);
         $actualValue = $actualApiRequestObject->getParent();
-        $this->assertProtobufEquals($parent, $actualValue);
+        $this->assertProtobufEquals($formattedParent, $actualValue);
         $actualValue = $actualApiRequestObject->getFilter();
         $this->assertProtobufEquals($filter, $actualValue);
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -363,9 +363,9 @@ class UserEventServiceClientTest extends GeneratedTest
         ], JSON_PRETTY_PRINT);
         $operationsTransport->addResponse(null, $status);
         // Mock request
-        $parent = 'parent-995424086';
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         $filter = 'filter-1274492040';
-        $response = $gapicClient->purgeUserEvents($parent, $filter);
+        $response = $gapicClient->purgeUserEvents($formattedParent, $filter);
         $this->assertFalse($response->isDone());
         $this->assertNull($response->getResult());
         $expectedOperationsRequestObject = new GetOperationRequest();
@@ -527,6 +527,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $uri = 'uri116076';
         $referrerUri = 'referrerUri-2093856436';
         $pageViewId = 'pageViewId948896581';
+        $entity = 'entity-1298275357';
         $expectedResponse = new UserEvent();
         $expectedResponse->setEventType($eventType);
         $expectedResponse->setVisitorId($visitorId);
@@ -540,6 +541,7 @@ class UserEventServiceClientTest extends GeneratedTest
         $expectedResponse->setUri($uri);
         $expectedResponse->setReferrerUri($referrerUri);
         $expectedResponse->setPageViewId($pageViewId);
+        $expectedResponse->setEntity($entity);
         $transport->addResponse($expectedResponse);
         // Mock request
         $parent = 'parent-995424086';

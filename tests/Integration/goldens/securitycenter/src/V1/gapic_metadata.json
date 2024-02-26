@@ -10,9 +10,24 @@
                 "grpc": {
                     "libraryClient": "SecurityCenterGapicClient",
                     "rpcs": {
+                        "BulkMuteFindings": {
+                            "methods": [
+                                "bulkMuteFindings"
+                            ]
+                        },
+                        "CreateBigQueryExport": {
+                            "methods": [
+                                "createBigQueryExport"
+                            ]
+                        },
                         "CreateFinding": {
                             "methods": [
                                 "createFinding"
+                            ]
+                        },
+                        "CreateMuteConfig": {
+                            "methods": [
+                                "createMuteConfig"
                             ]
                         },
                         "CreateNotificationConfig": {
@@ -20,9 +35,24 @@
                                 "createNotificationConfig"
                             ]
                         },
+                        "CreateSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "createSecurityHealthAnalyticsCustomModule"
+                            ]
+                        },
                         "CreateSource": {
                             "methods": [
                                 "createSource"
+                            ]
+                        },
+                        "DeleteBigQueryExport": {
+                            "methods": [
+                                "deleteBigQueryExport"
+                            ]
+                        },
+                        "DeleteMuteConfig": {
+                            "methods": [
+                                "deleteMuteConfig"
                             ]
                         },
                         "DeleteNotificationConfig": {
@@ -30,9 +60,29 @@
                                 "deleteNotificationConfig"
                             ]
                         },
+                        "DeleteSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "deleteSecurityHealthAnalyticsCustomModule"
+                            ]
+                        },
+                        "GetBigQueryExport": {
+                            "methods": [
+                                "getBigQueryExport"
+                            ]
+                        },
+                        "GetEffectiveSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "getEffectiveSecurityHealthAnalyticsCustomModule"
+                            ]
+                        },
                         "GetIamPolicy": {
                             "methods": [
                                 "getIamPolicy"
+                            ]
+                        },
+                        "GetMuteConfig": {
+                            "methods": [
+                                "getMuteConfig"
                             ]
                         },
                         "GetNotificationConfig": {
@@ -43,6 +93,11 @@
                         "GetOrganizationSettings": {
                             "methods": [
                                 "getOrganizationSettings"
+                            ]
+                        },
+                        "GetSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "getSecurityHealthAnalyticsCustomModule"
                             ]
                         },
                         "GetSource": {
@@ -65,14 +120,39 @@
                                 "listAssets"
                             ]
                         },
+                        "ListBigQueryExports": {
+                            "methods": [
+                                "listBigQueryExports"
+                            ]
+                        },
+                        "ListDescendantSecurityHealthAnalyticsCustomModules": {
+                            "methods": [
+                                "listDescendantSecurityHealthAnalyticsCustomModules"
+                            ]
+                        },
+                        "ListEffectiveSecurityHealthAnalyticsCustomModules": {
+                            "methods": [
+                                "listEffectiveSecurityHealthAnalyticsCustomModules"
+                            ]
+                        },
                         "ListFindings": {
                             "methods": [
                                 "listFindings"
                             ]
                         },
+                        "ListMuteConfigs": {
+                            "methods": [
+                                "listMuteConfigs"
+                            ]
+                        },
                         "ListNotificationConfigs": {
                             "methods": [
                                 "listNotificationConfigs"
+                            ]
+                        },
+                        "ListSecurityHealthAnalyticsCustomModules": {
+                            "methods": [
+                                "listSecurityHealthAnalyticsCustomModules"
                             ]
                         },
                         "ListSources": {
@@ -95,14 +175,39 @@
                                 "setIamPolicy"
                             ]
                         },
+                        "SetMute": {
+                            "methods": [
+                                "setMute"
+                            ]
+                        },
+                        "SimulateSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "simulateSecurityHealthAnalyticsCustomModule"
+                            ]
+                        },
                         "TestIamPermissions": {
                             "methods": [
                                 "testIamPermissions"
                             ]
                         },
+                        "UpdateBigQueryExport": {
+                            "methods": [
+                                "updateBigQueryExport"
+                            ]
+                        },
+                        "UpdateExternalSystem": {
+                            "methods": [
+                                "updateExternalSystem"
+                            ]
+                        },
                         "UpdateFinding": {
                             "methods": [
                                 "updateFinding"
+                            ]
+                        },
+                        "UpdateMuteConfig": {
+                            "methods": [
+                                "updateMuteConfig"
                             ]
                         },
                         "UpdateNotificationConfig": {
@@ -113,6 +218,11 @@
                         "UpdateOrganizationSettings": {
                             "methods": [
                                 "updateOrganizationSettings"
+                            ]
+                        },
+                        "UpdateSecurityHealthAnalyticsCustomModule": {
+                            "methods": [
+                                "updateSecurityHealthAnalyticsCustomModule"
                             ]
                         },
                         "UpdateSecurityMarks": {

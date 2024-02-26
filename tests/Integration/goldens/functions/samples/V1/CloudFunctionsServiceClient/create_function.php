@@ -35,8 +35,8 @@ use Google\Rpc\Status;
  * the specified project, the long running operation will return
  * `ALREADY_EXISTS` error.
  *
- * @param string $formattedLocation The project and location in which the function should be created, specified
- *                                  in the format `projects/&#42;/locations/*`
+ * @param string $formattedLocation The project and location in which the function should be created,
+ *                                  specified in the format `projects/&#42;/locations/*`
  *                                  Please see {@see CloudFunctionsServiceClient::locationName()} for help formatting this field.
  */
 function create_function_sample(string $formattedLocation): void

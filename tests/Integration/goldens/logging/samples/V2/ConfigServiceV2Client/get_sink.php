@@ -37,8 +37,10 @@ use Google\Cloud\Logging\V2\LogSink;
  *                                  "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
  *                                  "folders/[FOLDER_ID]/sinks/[SINK_ID]"
  *
- *                                  Example: `"projects/my-project-id/sinks/my-sink-id"`. Please see
- *                                  {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
+ *                                  For example:
+ *
+ *                                  `"projects/my-project/sinks/my-sink"`
+ *                                  Please see {@see ConfigServiceV2Client::logSinkName()} for help formatting this field.
  */
 function get_sink_sample(string $formattedSinkName): void
 {

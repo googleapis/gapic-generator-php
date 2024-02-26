@@ -27,7 +27,7 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Deletes an exclusion.
+ * Deletes an exclusion in the _Default sink.
  *
  * @param string $formattedName The resource name of an existing exclusion to delete:
  *
@@ -36,8 +36,10 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
  *                              "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
  *
- *                              Example: `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
- *                              {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/exclusions/my-exclusion"`
+ *                              Please see {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
  */
 function delete_exclusion_sample(string $formattedName): void
 {
