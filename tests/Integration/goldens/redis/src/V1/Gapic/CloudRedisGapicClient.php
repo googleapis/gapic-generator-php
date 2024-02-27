@@ -25,6 +25,7 @@
 namespace Google\Cloud\Redis\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -35,21 +36,30 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Location\GetLocationRequest;
+use Google\Cloud\Location\ListLocationsRequest;
+use Google\Cloud\Location\ListLocationsResponse;
+use Google\Cloud\Location\Location;
 use Google\Cloud\Redis\V1\CreateInstanceRequest;
 use Google\Cloud\Redis\V1\DeleteInstanceRequest;
 use Google\Cloud\Redis\V1\ExportInstanceRequest;
 use Google\Cloud\Redis\V1\FailoverInstanceRequest;
+use Google\Cloud\Redis\V1\GetInstanceAuthStringRequest;
 use Google\Cloud\Redis\V1\GetInstanceRequest;
 use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\InputConfig;
 use Google\Cloud\Redis\V1\Instance;
+use Google\Cloud\Redis\V1\InstanceAuthString;
 use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\ListInstancesResponse;
 use Google\Cloud\Redis\V1\OutputConfig;
+use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest;
+use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest\RescheduleType;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\FieldMask;
+use Google\Protobuf\Timestamp;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -598,7 +608,7 @@ class CloudRedisGapicClient
     }
 
     /**
-     * Initiates a failover of the master node to current replica node for a
+     * Initiates a failover of the primary node to current replica node for a
      * specific STANDARD tier Cloud Memorystore for Redis instance.
      *
      * Sample code:
@@ -711,6 +721,49 @@ class CloudRedisGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('GetInstance', Instance::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Gets the AUTH string for a Redis instance. If AUTH is not enabled for the
+     * instance the response will be empty. This information is not included in
+     * the details returned to GetInstance.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
+     *     $response = $cloudRedisClient->getInstanceAuthString($formattedName);
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Redis instance resource name using the form:
+     *                             `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                             where `location_id` refers to a GCP region.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Redis\V1\InstanceAuthString
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getInstanceAuthString($name, array $optionalArgs = [])
+    {
+        $request = new GetInstanceAuthStringRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetInstanceAuthString', InstanceAuthString::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -868,6 +921,86 @@ class CloudRedisGapicClient
     }
 
     /**
+     * Reschedule maintenance for a given instance in a given project and
+     * location.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $formattedName = $cloudRedisClient->instanceName('[PROJECT]', '[LOCATION]', '[INSTANCE]');
+     *     $rescheduleType = RescheduleType::RESCHEDULE_TYPE_UNSPECIFIED;
+     *     $operationResponse = $cloudRedisClient->rescheduleMaintenance($formattedName, $rescheduleType);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $cloudRedisClient->rescheduleMaintenance($formattedName, $rescheduleType);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $cloudRedisClient->resumeOperation($operationName, 'rescheduleMaintenance');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param string $name           Required. Redis instance resource name using the form:
+     *                               `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+     *                               where `location_id` refers to a GCP region.
+     * @param int    $rescheduleType Required. If reschedule type is SPECIFIC_TIME, must set up schedule_time as
+     *                               well.
+     *                               For allowed values, use constants defined on {@see \Google\Cloud\Redis\V1\RescheduleMaintenanceRequest\RescheduleType}
+     * @param array  $optionalArgs   {
+     *     Optional.
+     *
+     *     @type Timestamp $scheduleTime
+     *           Optional. Timestamp when the maintenance shall be rescheduled to if
+     *           reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
+     *           example `2012-11-15T16:19:00.094Z`.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function rescheduleMaintenance($name, $rescheduleType, array $optionalArgs = [])
+    {
+        $request = new RescheduleMaintenanceRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $request->setRescheduleType($rescheduleType);
+        $requestParamHeaders['name'] = $name;
+        if (isset($optionalArgs['scheduleTime'])) {
+            $request->setScheduleTime($optionalArgs['scheduleTime']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('RescheduleMaintenance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
      * Updates the metadata and configuration of a specific Redis instance.
      *
      * Completed longrunning.Operation will contain the new instance object
@@ -919,6 +1052,7 @@ class CloudRedisGapicClient
      *                                *   `labels`
      *                                *   `memorySizeGb`
      *                                *   `redisConfig`
+     *                                *   `replica_count`
      * @param Instance  $instance     Required. Update description.
      *                                Only fields specified in update_mask are updated.
      * @param array     $optionalArgs {
@@ -1014,5 +1148,124 @@ class CloudRedisGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startOperationsCall('UpgradeInstance', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
+     * Gets information about a location.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     $response = $cloudRedisClient->getLocation();
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *           Resource name for the location.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Location\Location
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getLocation(array $optionalArgs = [])
+    {
+        $request = new GetLocationRequest();
+        $requestParamHeaders = [];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetLocation', Location::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.cloud.location.Locations')->wait();
+    }
+
+    /**
+     * Lists information about the supported locations for this service.
+     *
+     * Sample code:
+     * ```
+     * $cloudRedisClient = new CloudRedisClient();
+     * try {
+     *     // Iterate over pages of elements
+     *     $pagedResponse = $cloudRedisClient->listLocations();
+     *     foreach ($pagedResponse->iteratePages() as $page) {
+     *         foreach ($page as $element) {
+     *             // doSomethingWith($element);
+     *         }
+     *     }
+     *     // Alternatively:
+     *     // Iterate through all elements
+     *     $pagedResponse = $cloudRedisClient->listLocations();
+     *     foreach ($pagedResponse->iterateAllElements() as $element) {
+     *         // doSomethingWith($element);
+     *     }
+     * } finally {
+     *     $cloudRedisClient->close();
+     * }
+     * ```
+     *
+     * @param array $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $name
+     *           The resource that owns the locations collection, if applicable.
+     *     @type string $filter
+     *           The standard list filter.
+     *     @type int $pageSize
+     *           The maximum number of resources contained in the underlying API
+     *           response. The API may return fewer values in a page, even if
+     *           there are additional values to be retrieved.
+     *     @type string $pageToken
+     *           A page token is used to specify a page of values to be returned.
+     *           If no page token is specified (the default), the first page
+     *           of values will be returned. Any page token used here must have
+     *           been generated by a previous call to the API.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\PagedListResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function listLocations(array $optionalArgs = [])
+    {
+        $request = new ListLocationsRequest();
+        $requestParamHeaders = [];
+        if (isset($optionalArgs['name'])) {
+            $request->setName($optionalArgs['name']);
+            $requestParamHeaders['name'] = $optionalArgs['name'];
+        }
+
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
+        }
+
+        if (isset($optionalArgs['pageSize'])) {
+            $request->setPageSize($optionalArgs['pageSize']);
+        }
+
+        if (isset($optionalArgs['pageToken'])) {
+            $request->setPageToken($optionalArgs['pageToken']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->getPagedListResponse('ListLocations', $optionalArgs, ListLocationsResponse::class, $request, 'google.cloud.location.Locations');
     }
 }

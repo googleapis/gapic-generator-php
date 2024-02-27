@@ -29,7 +29,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogExclusion;
 
 /**
- * Lists all the exclusions in a parent resource.
+ * Lists all the exclusions on the _Default sink in a parent resource.
  *
  * @param string $formattedParent The parent resource whose exclusions are to be listed.
  *

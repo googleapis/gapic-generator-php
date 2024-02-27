@@ -28,15 +28,19 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogView;
 
 /**
- * Updates a view. This method replaces the following fields in the existing
- * view with values from the new view: `filter`.
+ * Updates a view on a log bucket. This method replaces the following fields
+ * in the existing view with values from the new view: `filter`.
+ * If an `UNAVAILABLE` error is returned, this indicates that system is not in
+ * a state where it can update the view. If this occurs, please try again in a
+ * few minutes.
  *
  * @param string $name The full resource name of the view to update
  *
  *                     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
  *
- *                     Example:
- *                     `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
+ *                     For example:
+ *
+ *                     `"projects/my-project/locations/global/buckets/my-bucket/views/my-view"`
  */
 function update_view_sample(string $name): void
 {

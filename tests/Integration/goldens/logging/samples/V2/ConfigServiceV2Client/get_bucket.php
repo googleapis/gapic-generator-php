@@ -28,7 +28,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogBucket;
 
 /**
- * Gets a bucket.
+ * Gets a log bucket.
  *
  * @param string $formattedName The resource name of the bucket:
  *
@@ -37,9 +37,10 @@ use Google\Cloud\Logging\V2\LogBucket;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Please see
- *                              {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/locations/global/buckets/my-bucket"`
+ *                              Please see {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
  */
 function get_bucket_sample(string $formattedName): void
 {

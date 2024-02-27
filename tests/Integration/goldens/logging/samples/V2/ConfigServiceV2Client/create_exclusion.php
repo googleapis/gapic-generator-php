@@ -28,9 +28,9 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogExclusion;
 
 /**
- * Creates a new exclusion in a specified parent resource.
- * Only log entries belonging to that resource can be excluded.
- * You can have up to 10 exclusions in a resource.
+ * Creates a new exclusion in the _Default sink in a specified parent
+ * resource. Only log entries belonging to that resource can be excluded. You
+ * can have up to 10 exclusions in a resource.
  *
  * @param string $formattedParent The parent resource in which to create the exclusion:
  *
@@ -39,21 +39,25 @@ use Google\Cloud\Logging\V2\LogExclusion;
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]"
  *                                "folders/[FOLDER_ID]"
  *
- *                                Examples: `"projects/my-logging-project"`, `"organizations/123456789"`. Please see
- *                                {@see ConfigServiceV2Client::projectName()} for help formatting this field.
- * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
- *                                Identifiers are limited to 100 characters and can include only letters,
- *                                digits, underscores, hyphens, and periods. First character has to be
- *                                alphanumeric.
+ *                                For examples:
+ *
+ *                                `"projects/my-logging-project"`
+ *                                `"organizations/123456789"`
+ *                                Please see {@see ConfigServiceV2Client::projectName()} for help formatting this field.
+ * @param string $exclusionName   A client-assigned identifier, such as
+ *                                `"load-balancer-exclusion"`. Identifiers are limited to 100 characters and
+ *                                can include only letters, digits, underscores, hyphens, and periods. First
+ *                                character has to be alphanumeric.
  * @param string $exclusionFilter An [advanced logs
  *                                filter](https://cloud.google.com/logging/docs/view/advanced-queries) that
  *                                matches the log entries to be excluded. By using the [sample
  *                                function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),
  *                                you can exclude less than 100% of the matching log entries.
- *                                For example, the following query matches 99% of low-severity log
- *                                entries from Google Cloud Storage buckets:
  *
- *                                `"resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"`
+ *                                For example, the following query matches 99% of low-severity log entries
+ *                                from Google Cloud Storage buckets:
+ *
+ *                                `resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)`
  */
 function create_exclusion_sample(
     string $formattedParent,

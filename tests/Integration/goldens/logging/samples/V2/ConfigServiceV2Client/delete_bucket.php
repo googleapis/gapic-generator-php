@@ -27,10 +27,11 @@ use Google\ApiCore\ApiException;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Deletes a bucket.
- * Moves the bucket to the DELETE_REQUESTED state. After 7 days, the
- * bucket will be purged and all logs in the bucket will be permanently
- * deleted.
+ * Deletes a log bucket.
+ *
+ * Changes the bucket's `lifecycle_state` to the `DELETE_REQUESTED` state.
+ * After 7 days, the bucket will be purged and all log entries in the bucket
+ * will be permanently deleted.
  *
  * @param string $formattedName The full resource name of the bucket to delete.
  *
@@ -39,9 +40,10 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  *                              "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *                              "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
  *
- *                              Example:
- *                              `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Please see
- *                              {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
+ *                              For example:
+ *
+ *                              `"projects/my-project/locations/global/buckets/my-bucket"`
+ *                              Please see {@see ConfigServiceV2Client::logBucketName()} for help formatting this field.
  */
 function delete_bucket_sample(string $formattedName): void
 {

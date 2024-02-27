@@ -33,13 +33,13 @@ use Google\Cloud\SecurityCenter\V1\GroupResult;
  * Filters an organization's assets and  groups them by their specified
  * properties.
  *
- * @param string $formattedParent Name of the organization to groupBy. Its format is
- *                                "organizations/[organization_id], folders/[folder_id], or
- *                                projects/[project_id]". Please see
+ * @param string $formattedParent The name of the parent to group the assets by. Its format is
+ *                                "organizations/[organization_id]", "folders/[folder_id]", or
+ *                                "projects/[project_id]". Please see
  *                                {@see SecurityCenterClient::projectName()} for help formatting this field.
- * @param string $groupBy         Expression that defines what assets fields to use for grouping. The string
- *                                value should follow SQL syntax: comma separated list of fields. For
- *                                example:
+ * @param string $groupBy         Expression that defines what assets fields to use for grouping.
+ *                                The string value should follow SQL syntax: comma separated list of fields.
+ *                                For example:
  *                                "security_center_properties.resource_project,security_center_properties.project".
  *
  *                                The following fields are supported when compare_duration is not set:

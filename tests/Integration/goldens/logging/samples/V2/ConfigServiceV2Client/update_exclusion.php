@@ -29,7 +29,8 @@ use Google\Cloud\Logging\V2\LogExclusion;
 use Google\Protobuf\FieldMask;
 
 /**
- * Changes one or more properties of an existing exclusion.
+ * Changes one or more properties of an existing exclusion in the _Default
+ * sink.
  *
  * @param string $formattedName   The resource name of the exclusion to update:
  *
@@ -38,21 +39,24 @@ use Google\Protobuf\FieldMask;
  *                                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
  *                                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
  *
- *                                Example: `"projects/my-project-id/exclusions/my-exclusion-id"`. Please see
- *                                {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
- * @param string $exclusionName   A client-assigned identifier, such as `"load-balancer-exclusion"`.
- *                                Identifiers are limited to 100 characters and can include only letters,
- *                                digits, underscores, hyphens, and periods. First character has to be
- *                                alphanumeric.
+ *                                For example:
+ *
+ *                                `"projects/my-project/exclusions/my-exclusion"`
+ *                                Please see {@see ConfigServiceV2Client::logExclusionName()} for help formatting this field.
+ * @param string $exclusionName   A client-assigned identifier, such as
+ *                                `"load-balancer-exclusion"`. Identifiers are limited to 100 characters and
+ *                                can include only letters, digits, underscores, hyphens, and periods. First
+ *                                character has to be alphanumeric.
  * @param string $exclusionFilter An [advanced logs
  *                                filter](https://cloud.google.com/logging/docs/view/advanced-queries) that
  *                                matches the log entries to be excluded. By using the [sample
  *                                function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),
  *                                you can exclude less than 100% of the matching log entries.
- *                                For example, the following query matches 99% of low-severity log
- *                                entries from Google Cloud Storage buckets:
  *
- *                                `"resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"`
+ *                                For example, the following query matches 99% of low-severity log entries
+ *                                from Google Cloud Storage buckets:
+ *
+ *                                `resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)`
  */
 function update_exclusion_sample(
     string $formattedName,

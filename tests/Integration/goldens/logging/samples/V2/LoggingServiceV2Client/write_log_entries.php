@@ -51,12 +51,13 @@ use Google\Cloud\Logging\V2\WriteLogEntriesResponse;
  *
  *                               `[LOG_ID]` must be URL-encoded within `log_name`. Example:
  *                               `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
+ *
  *                               `[LOG_ID]` must be less than 512 characters long and can only include the
  *                               following characters: upper and lower case alphanumeric characters,
  *                               forward-slash, underscore, hyphen, and period.
  *
  *                               For backward compatibility, if `log_name` begins with a forward-slash, such
- *                               as `/projects/...`, then the log entry is ingested as usual but the
+ *                               as `/projects/...`, then the log entry is ingested as usual, but the
  *                               forward-slash is removed. Listing the log entry will not show the leading
  *                               slash and filtering for a log name with a leading slash will never return
  *                               any results.

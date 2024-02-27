@@ -26,7 +26,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Cloud\Dataproc\V1\Cluster;
-use Google\Cloud\Dataproc\V1\ClusterConfig;
 use Google\Cloud\Dataproc\V1\ClusterControllerClient;
 use Google\Protobuf\FieldMask;
 use Google\Rpc\Status;
@@ -35,7 +34,8 @@ use Google\Rpc\Status;
  * Updates a cluster in a project. The returned
  * [Operation.metadata][google.longrunning.Operation.metadata] will be
  * [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
- * The cluster must be in a [`RUNNING`][google.cloud.dataproc.v1.ClusterStatus.State] state or an error
+ * The cluster must be in a
+ * [`RUNNING`][google.cloud.dataproc.v1.ClusterStatus.State] state or an error
  * is returned.
  *
  * @param string $projectId          The ID of the Google Cloud Platform project the
@@ -43,8 +43,10 @@ use Google\Rpc\Status;
  * @param string $region             The Dataproc region in which to handle the request.
  * @param string $clusterName        The cluster name.
  * @param string $clusterProjectId   The Google Cloud Platform project ID that the cluster belongs to.
- * @param string $clusterClusterName The cluster name. Cluster names within a project must be
- *                                   unique. Names of deleted clusters can be reused.
+ * @param string $clusterClusterName The cluster name, which must be unique within a project.
+ *                                   The name must start with a lowercase letter, and can contain
+ *                                   up to 51 lowercase letters, numbers, and hyphens. It cannot end
+ *                                   with a hyphen. The name of a deleted cluster can be reused.
  */
 function update_cluster_sample(
     string $projectId,
@@ -57,11 +59,9 @@ function update_cluster_sample(
     $clusterControllerClient = new ClusterControllerClient();
 
     // Prepare any non-scalar elements to be passed along with the request.
-    $clusterConfig = new ClusterConfig();
     $cluster = (new Cluster())
         ->setProjectId($clusterProjectId)
-        ->setClusterName($clusterClusterName)
-        ->setConfig($clusterConfig);
+        ->setClusterName($clusterClusterName);
     $updateMask = new FieldMask();
 
     // Call the API and handle any network failures.

@@ -13,6 +13,15 @@ return [
                     'resourcesGetMethod' => 'getPolicies',
                 ],
             ],
+            'GetIamPolicy' => [
+                'interfaceOverride' => 'google.iam.v1.IAMPolicy',
+            ],
+            'SetIamPolicy' => [
+                'interfaceOverride' => 'google.iam.v1.IAMPolicy',
+            ],
+            'TestIamPermissions' => [
+                'interfaceOverride' => 'google.iam.v1.IAMPolicy',
+            ],
         ],
     ],
 ];

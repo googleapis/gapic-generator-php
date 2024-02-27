@@ -27,6 +27,7 @@ use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Container\V1\AddonsConfig;
+use Google\Cloud\Container\V1\CheckAutopilotCompatibilityResponse;
 use Google\Cloud\Container\V1\Cluster;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\ClusterUpdate;
@@ -129,6 +130,60 @@ class ClusterManagerClientTest extends GeneratedTest
     }
 
     /** @test */
+    public function checkAutopilotCompatibilityTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $summary = 'summary-1857640538';
+        $expectedResponse = new CheckAutopilotCompatibilityResponse();
+        $expectedResponse->setSummary($summary);
+        $transport->addResponse($expectedResponse);
+        $response = $gapicClient->checkAutopilotCompatibility();
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.container.v1.ClusterManager/CheckAutopilotCompatibility', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function checkAutopilotCompatibilityExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $gapicClient->checkAutopilotCompatibility();
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
     public function completeIPRotationTest()
     {
         $transport = $this->createTransport();
@@ -187,6 +242,57 @@ class ClusterManagerClientTest extends GeneratedTest
         $transport->addResponse(null, $status);
         try {
             $gapicClient->completeIPRotation();
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function completeNodePoolUpgradeTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        $gapicClient->completeNodePoolUpgrade();
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.container.v1.ClusterManager/CompleteNodePoolUpgrade', $actualFuncCall);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function completeNodePoolUpgradeExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        try {
+            $gapicClient->completeNodePoolUpgrade();
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -524,6 +630,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $location = 'location1901043637';
         $enableTpu = false;
         $tpuIpv4CidrBlock = 'tpuIpv4CidrBlock1137906646';
+        $id = 'id3355';
+        $etag = 'etag3123477';
         $expectedResponse = new Cluster();
         $expectedResponse->setName($name2);
         $expectedResponse->setDescription($description);
@@ -550,6 +658,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setLocation($location);
         $expectedResponse->setEnableTpu($enableTpu);
         $expectedResponse->setTpuIpv4CidrBlock($tpuIpv4CidrBlock);
+        $expectedResponse->setId($id);
+        $expectedResponse->setEtag($etag);
         $transport->addResponse($expectedResponse);
         $response = $gapicClient->getCluster();
         $this->assertEquals($expectedResponse, $response);
@@ -659,6 +769,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $version = 'version351608024';
         $statusMessage = 'statusMessage-239442758';
         $podIpv4CidrSize = 1098768716;
+        $etag = 'etag3123477';
         $expectedResponse = new NodePool();
         $expectedResponse->setName($name2);
         $expectedResponse->setInitialNodeCount($initialNodeCount);
@@ -666,6 +777,7 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setVersion($version);
         $expectedResponse->setStatusMessage($statusMessage);
         $expectedResponse->setPodIpv4CidrSize($podIpv4CidrSize);
+        $expectedResponse->setEtag($etag);
         $transport->addResponse($expectedResponse);
         $response = $gapicClient->getNodePool();
         $this->assertEquals($expectedResponse, $response);

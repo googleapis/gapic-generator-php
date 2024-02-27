@@ -185,7 +185,7 @@ php_grpc_library(
 php_gapic_library(
     name = "dataproc_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/dataproc/v1:dataproc_proto_with_info"],
-    gapic_yaml = "@com_google_googleapis//google/cloud/dataproc/v1:dataproc_gapic.yaml",
+    gapic_yaml = "apis/dataproc/v1/dataproc_gapic.yaml",
     grpc_service_config = "@com_google_googleapis//google/cloud/dataproc/v1:dataproc_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/dataproc/v1:dataproc_v1.yaml",
     deps = [
@@ -350,7 +350,7 @@ php_grpc_library(
 php_gapic_library(
     name = "redis_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/redis/v1:redis_proto_with_info"],
-    gapic_yaml = "@com_google_googleapis//google/cloud/redis/v1:redis_gapic.yaml",
+    gapic_yaml = "apis/redis/v1/redis_gapic.yaml",
     grpc_service_config = "@com_google_googleapis//google/cloud/redis/v1:redis_grpc_service_config.json",
     service_yaml = "@com_google_googleapis//google/cloud/redis/v1:redis_v1.yaml",
     migration_mode = "MIGRATION_MODE_UNSPECIFIED",
@@ -550,7 +550,7 @@ php_gapic_library(
     name = "talent_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/talent/v4beta1:talent_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/talent/v4beta1:talent_grpc_service_config.json",
-    service_yaml = "@com_google_googleapis//google/cloud/talent:talent_v4beta1.yaml",
+    service_yaml = "@com_google_googleapis//google/cloud/talent/v4beta1:jobs_v4beta1.yaml",
     deps = [
         ":talent_php_grpc",
         ":talent_php_proto",

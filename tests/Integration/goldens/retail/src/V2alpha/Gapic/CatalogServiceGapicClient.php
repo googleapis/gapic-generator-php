@@ -35,13 +35,25 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Retail\V2alpha\AddCatalogAttributeRequest;
+use Google\Cloud\Retail\V2alpha\AttributesConfig;
+use Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesRequest;
+use Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesResponse;
 use Google\Cloud\Retail\V2alpha\Catalog;
+use Google\Cloud\Retail\V2alpha\CatalogAttribute;
+use Google\Cloud\Retail\V2alpha\CompletionConfig;
+use Google\Cloud\Retail\V2alpha\GetAttributesConfigRequest;
+use Google\Cloud\Retail\V2alpha\GetCompletionConfigRequest;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchRequest;
 use Google\Cloud\Retail\V2alpha\GetDefaultBranchResponse;
 use Google\Cloud\Retail\V2alpha\ListCatalogsRequest;
 use Google\Cloud\Retail\V2alpha\ListCatalogsResponse;
+use Google\Cloud\Retail\V2alpha\RemoveCatalogAttributeRequest;
+use Google\Cloud\Retail\V2alpha\ReplaceCatalogAttributeRequest;
 use Google\Cloud\Retail\V2alpha\SetDefaultBranchRequest;
+use Google\Cloud\Retail\V2alpha\UpdateAttributesConfigRequest;
 use Google\Cloud\Retail\V2alpha\UpdateCatalogRequest;
+use Google\Cloud\Retail\V2alpha\UpdateCompletionConfigRequest;
 use Google\Protobuf\FieldMask;
 use Google\Protobuf\GPBEmpty;
 
@@ -54,7 +66,9 @@ use Google\Protobuf\GPBEmpty;
  * ```
  * $catalogServiceClient = new CatalogServiceClient();
  * try {
- *     $response = $catalogServiceClient->getDefaultBranch();
+ *     $formattedAttributesConfig = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+ *     $catalogAttribute = new CatalogAttribute();
+ *     $response = $catalogServiceClient->addCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
  * } finally {
  *     $catalogServiceClient->close();
  * }
@@ -97,9 +111,13 @@ class CatalogServiceGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
+    private static $attributesConfigNameTemplate;
+
     private static $branchNameTemplate;
 
     private static $catalogNameTemplate;
+
+    private static $completionConfigNameTemplate;
 
     private static $locationNameTemplate;
 
@@ -124,6 +142,15 @@ class CatalogServiceGapicClient
         ];
     }
 
+    private static function getAttributesConfigNameTemplate()
+    {
+        if (self::$attributesConfigNameTemplate == null) {
+            self::$attributesConfigNameTemplate = new PathTemplate('projects/{project}/locations/{location}/catalogs/{catalog}/attributesConfig');
+        }
+
+        return self::$attributesConfigNameTemplate;
+    }
+
     private static function getBranchNameTemplate()
     {
         if (self::$branchNameTemplate == null) {
@@ -142,6 +169,15 @@ class CatalogServiceGapicClient
         return self::$catalogNameTemplate;
     }
 
+    private static function getCompletionConfigNameTemplate()
+    {
+        if (self::$completionConfigNameTemplate == null) {
+            self::$completionConfigNameTemplate = new PathTemplate('projects/{project}/locations/{location}/catalogs/{catalog}/completionConfig');
+        }
+
+        return self::$completionConfigNameTemplate;
+    }
+
     private static function getLocationNameTemplate()
     {
         if (self::$locationNameTemplate == null) {
@@ -155,13 +191,36 @@ class CatalogServiceGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
+                'attributesConfig' => self::getAttributesConfigNameTemplate(),
                 'branch' => self::getBranchNameTemplate(),
                 'catalog' => self::getCatalogNameTemplate(),
+                'completionConfig' => self::getCompletionConfigNameTemplate(),
                 'location' => self::getLocationNameTemplate(),
             ];
         }
 
         return self::$pathTemplateMap;
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * attributes_config resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     *
+     * @return string The formatted attributes_config resource.
+     *
+     * @experimental
+     */
+    public static function attributesConfigName($project, $location, $catalog)
+    {
+        return self::getAttributesConfigNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+        ]);
     }
 
     /**
@@ -209,6 +268,27 @@ class CatalogServiceGapicClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * completion_config resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $catalog
+     *
+     * @return string The formatted completion_config resource.
+     *
+     * @experimental
+     */
+    public static function completionConfigName($project, $location, $catalog)
+    {
+        return self::getCompletionConfigNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'catalog' => $catalog,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a location
      * resource.
      *
@@ -231,8 +311,10 @@ class CatalogServiceGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - attributesConfig: projects/{project}/locations/{location}/catalogs/{catalog}/attributesConfig
      * - branch: projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}
      * - catalog: projects/{project}/locations/{location}/catalogs/{catalog}
+     * - completionConfig: projects/{project}/locations/{location}/catalogs/{catalog}/completionConfig
      * - location: projects/{project}/locations/{location}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
@@ -335,13 +417,194 @@ class CatalogServiceGapicClient
     }
 
     /**
+     * Adds the specified
+     * [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to the
+     * [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+     *
+     * If the [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to
+     * add already exists, an ALREADY_EXISTS error is returned.
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedAttributesConfig = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $catalogAttribute = new CatalogAttribute();
+     *     $response = $catalogServiceClient->addCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string           $attributesConfig Required. Full AttributesConfig resource name. Format:
+     *                                           `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+     * @param CatalogAttribute $catalogAttribute Required. The
+     *                                           [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to add.
+     * @param array            $optionalArgs     {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AttributesConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function addCatalogAttribute($attributesConfig, $catalogAttribute, array $optionalArgs = [])
+    {
+        $request = new AddCatalogAttributeRequest();
+        $requestParamHeaders = [];
+        $request->setAttributesConfig($attributesConfig);
+        $request->setCatalogAttribute($catalogAttribute);
+        $requestParamHeaders['attributes_config'] = $attributesConfig;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('AddCatalogAttribute', AttributesConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Removes all specified
+     * [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s from the
+     * [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedAttributesConfig = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $attributeKeys = [];
+     *     $response = $catalogServiceClient->batchRemoveCatalogAttributes($formattedAttributesConfig, $attributeKeys);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string   $attributesConfig Required. The attributes config resource shared by all catalog attributes
+     *                                   being deleted. Format:
+     *                                   `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+     * @param string[] $attributeKeys    Required. The attribute name keys of the
+     *                                   [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s to
+     *                                   delete. A maximum of 1000 catalog attributes can be deleted in a batch.
+     * @param array    $optionalArgs     {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function batchRemoveCatalogAttributes($attributesConfig, $attributeKeys, array $optionalArgs = [])
+    {
+        $request = new BatchRemoveCatalogAttributesRequest();
+        $requestParamHeaders = [];
+        $request->setAttributesConfig($attributesConfig);
+        $request->setAttributeKeys($attributeKeys);
+        $requestParamHeaders['attributes_config'] = $attributesConfig;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('BatchRemoveCatalogAttributes', BatchRemoveCatalogAttributesResponse::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Gets an [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedName = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $response = $catalogServiceClient->getAttributesConfig($formattedName);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Full AttributesConfig resource name. Format:
+     *                             `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AttributesConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function getAttributesConfig($name, array $optionalArgs = [])
+    {
+        $request = new GetAttributesConfigRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetAttributesConfig', AttributesConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Gets a [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig].
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedName = $catalogServiceClient->completionConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $response = $catalogServiceClient->getCompletionConfig($formattedName);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $name         Required. Full CompletionConfig resource name. Format:
+     *                             `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig`
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\CompletionConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function getCompletionConfig($name, array $optionalArgs = [])
+    {
+        $request = new GetCompletionConfigRequest();
+        $requestParamHeaders = [];
+        $request->setName($name);
+        $requestParamHeaders['name'] = $name;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetCompletionConfig', CompletionConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Get which branch is currently default branch set by
      * [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
      * method under a specified parent catalog.
-     *
-     * This feature is only available for users who have Retail Search enabled.
-     * Please submit a form [here](https://cloud.google.com/contact) to contact
-     * cloud sales if you are interested in using Retail Search.
      *
      * Sample code:
      * ```
@@ -462,6 +725,122 @@ class CatalogServiceGapicClient
     }
 
     /**
+     * Removes the specified
+     * [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] from the
+     * [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+     *
+     * If the [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to
+     * remove does not exist, a NOT_FOUND error is returned.
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedAttributesConfig = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $key = 'key';
+     *     $response = $catalogServiceClient->removeCatalogAttribute($formattedAttributesConfig, $key);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $attributesConfig Required. Full AttributesConfig resource name. Format:
+     *                                 `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+     * @param string $key              Required. The attribute name key of the
+     *                                 [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to remove.
+     * @param array  $optionalArgs     {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AttributesConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function removeCatalogAttribute($attributesConfig, $key, array $optionalArgs = [])
+    {
+        $request = new RemoveCatalogAttributeRequest();
+        $requestParamHeaders = [];
+        $request->setAttributesConfig($attributesConfig);
+        $request->setKey($key);
+        $requestParamHeaders['attributes_config'] = $attributesConfig;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('RemoveCatalogAttribute', AttributesConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Replaces the specified
+     * [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] in the
+     * [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig] by
+     * updating the catalog attribute with the same
+     * [CatalogAttribute.key][google.cloud.retail.v2alpha.CatalogAttribute.key].
+     *
+     * If the [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to
+     * replace does not exist, a NOT_FOUND error is returned.
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $formattedAttributesConfig = $catalogServiceClient->attributesConfigName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $catalogAttribute = new CatalogAttribute();
+     *     $response = $catalogServiceClient->replaceCatalogAttribute($formattedAttributesConfig, $catalogAttribute);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string           $attributesConfig Required. Full AttributesConfig resource name. Format:
+     *                                           `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+     * @param CatalogAttribute $catalogAttribute Required. The updated
+     *                                           [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute].
+     * @param array            $optionalArgs     {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           Indicates which fields in the provided
+     *           [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute] to update.
+     *           The following are NOT supported:
+     *
+     *           * [CatalogAttribute.key][google.cloud.retail.v2alpha.CatalogAttribute.key]
+     *
+     *           If not set, all supported fields are updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AttributesConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function replaceCatalogAttribute($attributesConfig, $catalogAttribute, array $optionalArgs = [])
+    {
+        $request = new ReplaceCatalogAttributeRequest();
+        $requestParamHeaders = [];
+        $request->setAttributesConfig($attributesConfig);
+        $request->setCatalogAttribute($catalogAttribute);
+        $requestParamHeaders['attributes_config'] = $attributesConfig;
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('ReplaceCatalogAttribute', AttributesConfig::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
      * Set a specified branch id as default branch. API methods such as
      * [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search],
      * [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct],
@@ -496,10 +875,6 @@ class CatalogServiceGapicClient
      * * UserEventService will only join events with products from branch
      * {newBranch}.
      *
-     * This feature is only available for users who have Retail Search enabled.
-     * Please submit a form [here](https://cloud.google.com/contact) to contact
-     * cloud sales if you are interested in using Retail Search.
-     *
      * Sample code:
      * ```
      * $catalogServiceClient = new CatalogServiceClient();
@@ -521,6 +896,10 @@ class CatalogServiceGapicClient
      *
      *           This field must be one of "0", "1" or "2". Otherwise, an INVALID_ARGUMENT
      *           error is returned.
+     *
+     *           If there are no sufficient active products in the targeted branch and
+     *           [force][google.cloud.retail.v2alpha.SetDefaultBranchRequest.force] is not
+     *           set, a FAILED_PRECONDITION error is returned.
      *     @type string $note
      *           Some note on this request, this can be retrieved by
      *           [CatalogService.GetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.GetDefaultBranch]
@@ -528,6 +907,10 @@ class CatalogServiceGapicClient
      *
      *           This field must be a UTF-8 encoded string with a length limit of 1,000
      *           characters. Otherwise, an INVALID_ARGUMENT error is returned.
+     *     @type bool $force
+     *           If set to true, it permits switching to a branch with
+     *           [branch_id][google.cloud.retail.v2alpha.SetDefaultBranchRequest.branch_id]
+     *           even if it has no sufficient active products.
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -555,9 +938,75 @@ class CatalogServiceGapicClient
             $request->setNote($optionalArgs['note']);
         }
 
+        if (isset($optionalArgs['force'])) {
+            $request->setForce($optionalArgs['force']);
+        }
+
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('SetDefaultBranch', GPBEmpty::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates the
+     * [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+     *
+     * The catalog attributes in the request will be updated in the catalog, or
+     * inserted if they do not exist. Existing catalog attributes not included in
+     * the request will remain unchanged. Attributes that are assigned to
+     * products, but do not exist at the catalog level, are always included in the
+     * response. The product attribute is assigned default values for missing
+     * catalog attribute fields, e.g., searchable and dynamic facetable options.
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $attributesConfig = new AttributesConfig();
+     *     $response = $catalogServiceClient->updateAttributesConfig($attributesConfig);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param AttributesConfig $attributesConfig Required. The
+     *                                           [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig] to update.
+     * @param array            $optionalArgs     {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           Indicates which fields in the provided
+     *           [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig] to update.
+     *           The following is the only supported field:
+     *
+     *           * [AttributesConfig.catalog_attributes][google.cloud.retail.v2alpha.AttributesConfig.catalog_attributes]
+     *
+     *           If not set, all supported fields are updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AttributesConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function updateAttributesConfig($attributesConfig, array $optionalArgs = [])
+    {
+        $request = new UpdateAttributesConfigRequest();
+        $requestParamHeaders = [];
+        $request->setAttributesConfig($attributesConfig);
+        $requestParamHeaders['attributes_config.name'] = $attributesConfig->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateAttributesConfig', AttributesConfig::class, $optionalArgs, $request)->wait();
     }
 
     /**
@@ -616,5 +1065,70 @@ class CatalogServiceGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateCatalog', Catalog::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Updates the
+     * [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig]s.
+     *
+     * Sample code:
+     * ```
+     * $catalogServiceClient = new CatalogServiceClient();
+     * try {
+     *     $completionConfig = new CompletionConfig();
+     *     $response = $catalogServiceClient->updateCompletionConfig($completionConfig);
+     * } finally {
+     *     $catalogServiceClient->close();
+     * }
+     * ```
+     *
+     * @param CompletionConfig $completionConfig Required. The
+     *                                           [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig] to update.
+     *
+     *                                           If the caller does not have permission to update the
+     *                                           [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig], then a
+     *                                           PERMISSION_DENIED error is returned.
+     *
+     *                                           If the [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig] to
+     *                                           update does not exist, a NOT_FOUND error is returned.
+     * @param array            $optionalArgs     {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           Indicates which fields in the provided
+     *           [CompletionConfig][google.cloud.retail.v2alpha.CompletionConfig] to update.
+     *           The following are the only supported fields:
+     *
+     *           * [CompletionConfig.matching_order][google.cloud.retail.v2alpha.CompletionConfig.matching_order]
+     *           * [CompletionConfig.max_suggestions][google.cloud.retail.v2alpha.CompletionConfig.max_suggestions]
+     *           * [CompletionConfig.min_prefix_length][google.cloud.retail.v2alpha.CompletionConfig.min_prefix_length]
+     *           * [CompletionConfig.auto_learning][google.cloud.retail.v2alpha.CompletionConfig.auto_learning]
+     *
+     *           If not set, all supported fields are updated.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Retail\V2alpha\CompletionConfig
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function updateCompletionConfig($completionConfig, array $optionalArgs = [])
+    {
+        $request = new UpdateCompletionConfigRequest();
+        $requestParamHeaders = [];
+        $request->setCompletionConfig($completionConfig);
+        $requestParamHeaders['completion_config.name'] = $completionConfig->getName();
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('UpdateCompletionConfig', CompletionConfig::class, $optionalArgs, $request)->wait();
     }
 }

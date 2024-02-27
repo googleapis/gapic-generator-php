@@ -25,6 +25,7 @@
 namespace Google\Cloud\Dataproc\V1\Gapic;
 
 use Google\ApiCore\ApiException;
+use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
@@ -45,7 +46,14 @@ use Google\Cloud\Dataproc\V1\ListWorkflowTemplatesResponse;
 use Google\Cloud\Dataproc\V1\UpdateWorkflowTemplateRequest;
 use Google\Cloud\Dataproc\V1\WorkflowMetadata;
 use Google\Cloud\Dataproc\V1\WorkflowTemplate;
+use Google\Cloud\Iam\V1\GetIamPolicyRequest;
+use Google\Cloud\Iam\V1\GetPolicyOptions;
+use Google\Cloud\Iam\V1\Policy;
+use Google\Cloud\Iam\V1\SetIamPolicyRequest;
+use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
+use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\LongRunning\Operation;
+use Google\Protobuf\FieldMask;
 use Google\Protobuf\GPBEmpty;
 
 /**
@@ -101,9 +109,11 @@ class WorkflowTemplateServiceGapicClient
         'https://www.googleapis.com/auth/cloud-platform',
     ];
 
-    private static $clusterNameTemplate;
+    private static $clusterRegionNameTemplate;
 
     private static $locationNameTemplate;
+
+    private static $nodeGroupNameTemplate;
 
     private static $projectLocationWorkflowTemplateNameTemplate;
 
@@ -138,13 +148,13 @@ class WorkflowTemplateServiceGapicClient
         ];
     }
 
-    private static function getClusterNameTemplate()
+    private static function getClusterRegionNameTemplate()
     {
-        if (self::$clusterNameTemplate == null) {
-            self::$clusterNameTemplate = new PathTemplate('projects/{project}/locations/{location}/clusters/{cluster}');
+        if (self::$clusterRegionNameTemplate == null) {
+            self::$clusterRegionNameTemplate = new PathTemplate('projects/{project}/regions/{region}/clusters/{cluster}');
         }
 
-        return self::$clusterNameTemplate;
+        return self::$clusterRegionNameTemplate;
     }
 
     private static function getLocationNameTemplate()
@@ -154,6 +164,15 @@ class WorkflowTemplateServiceGapicClient
         }
 
         return self::$locationNameTemplate;
+    }
+
+    private static function getNodeGroupNameTemplate()
+    {
+        if (self::$nodeGroupNameTemplate == null) {
+            self::$nodeGroupNameTemplate = new PathTemplate('projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}');
+        }
+
+        return self::$nodeGroupNameTemplate;
     }
 
     private static function getProjectLocationWorkflowTemplateNameTemplate()
@@ -205,8 +224,9 @@ class WorkflowTemplateServiceGapicClient
     {
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
-                'cluster' => self::getClusterNameTemplate(),
+                'clusterRegion' => self::getClusterRegionNameTemplate(),
                 'location' => self::getLocationNameTemplate(),
+                'nodeGroup' => self::getNodeGroupNameTemplate(),
                 'projectLocationWorkflowTemplate' => self::getProjectLocationWorkflowTemplateNameTemplate(),
                 'projectRegionWorkflowTemplate' => self::getProjectRegionWorkflowTemplateNameTemplate(),
                 'region' => self::getRegionNameTemplate(),
@@ -219,20 +239,20 @@ class WorkflowTemplateServiceGapicClient
     }
 
     /**
-     * Formats a string containing the fully-qualified path to represent a cluster
-     * resource.
+     * Formats a string containing the fully-qualified path to represent a
+     * cluster_region resource.
      *
      * @param string $project
-     * @param string $location
+     * @param string $region
      * @param string $cluster
      *
-     * @return string The formatted cluster resource.
+     * @return string The formatted cluster_region resource.
      */
-    public static function clusterName($project, $location, $cluster)
+    public static function clusterRegionName($project, $region, $cluster)
     {
-        return self::getClusterNameTemplate()->render([
+        return self::getClusterRegionNameTemplate()->render([
             'project' => $project,
-            'location' => $location,
+            'region' => $region,
             'cluster' => $cluster,
         ]);
     }
@@ -251,6 +271,27 @@ class WorkflowTemplateServiceGapicClient
         return self::getLocationNameTemplate()->render([
             'project' => $project,
             'location' => $location,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a node_group
+     * resource.
+     *
+     * @param string $project
+     * @param string $region
+     * @param string $cluster
+     * @param string $nodeGroup
+     *
+     * @return string The formatted node_group resource.
+     */
+    public static function nodeGroupName($project, $region, $cluster, $nodeGroup)
+    {
+        return self::getNodeGroupNameTemplate()->render([
+            'project' => $project,
+            'region' => $region,
+            'cluster' => $cluster,
+            'node_group' => $nodeGroup,
         ]);
     }
 
@@ -351,8 +392,9 @@ class WorkflowTemplateServiceGapicClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
-     * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
+     * - clusterRegion: projects/{project}/regions/{region}/clusters/{cluster}
      * - location: projects/{project}/locations/{location}
+     * - nodeGroup: projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}
      * - projectLocationWorkflowTemplate: projects/{project}/locations/{location}/workflowTemplates/{workflow_template}
      * - projectRegionWorkflowTemplate: projects/{project}/regions/{region}/workflowTemplates/{workflow_template}
      * - region: projects/{project}/regions/{region}
@@ -502,7 +544,7 @@ class WorkflowTemplateServiceGapicClient
      * @param string           $parent       Required. The resource name of the region or location, as described
      *                                       in https://cloud.google.com/apis/design/resource_names.
      *
-     *                                       * For `projects.regions.workflowTemplates,create`, the resource name of the
+     *                                       * For `projects.regions.workflowTemplates.create`, the resource name of the
      *                                       region has the following format:
      *                                       `projects/{project_id}/regions/{region}`
      *
@@ -653,7 +695,8 @@ class WorkflowTemplateServiceGapicClient
      * Instantiates a template and begins execution.
      *
      * This method is equivalent to executing the sequence
-     * [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],
+     * [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate],
+     * [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],
      * [DeleteWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate].
      *
      * The returned Operation can be used to track execution of
@@ -999,5 +1042,165 @@ class WorkflowTemplateServiceGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('UpdateWorkflowTemplate', WorkflowTemplate::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Gets the access control policy for a resource. Returns an empty policy
+    if the resource exists and does not have a policy set.
+     *
+     * Sample code:
+     * ```
+     * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
+     * try {
+     *     $resource = 'resource';
+     *     $response = $workflowTemplateServiceClient->getIamPolicy($resource);
+     * } finally {
+     *     $workflowTemplateServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $resource     REQUIRED: The resource for which the policy is being requested.
+     *                             See the operation documentation for the appropriate value for this field.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type GetPolicyOptions $options
+     *           OPTIONAL: A `GetPolicyOptions` object for specifying options to
+     *           `GetIamPolicy`.
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Iam\V1\Policy
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function getIamPolicy($resource, array $optionalArgs = [])
+    {
+        $request = new GetIamPolicyRequest();
+        $requestParamHeaders = [];
+        $request->setResource($resource);
+        $requestParamHeaders['resource'] = $resource;
+        if (isset($optionalArgs['options'])) {
+            $request->setOptions($optionalArgs['options']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('GetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
+    }
+
+    /**
+     * Sets the access control policy on the specified resource. Replaces
+    any existing policy.
+
+    Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED`
+    errors.
+     *
+     * Sample code:
+     * ```
+     * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
+     * try {
+     *     $resource = 'resource';
+     *     $policy = new Policy();
+     *     $response = $workflowTemplateServiceClient->setIamPolicy($resource, $policy);
+     * } finally {
+     *     $workflowTemplateServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string $resource     REQUIRED: The resource for which the policy is being specified.
+     *                             See the operation documentation for the appropriate value for this field.
+     * @param Policy $policy       REQUIRED: The complete policy to be applied to the `resource`. The size of
+     *                             the policy is limited to a few 10s of KB. An empty policy is a
+     *                             valid policy but certain Cloud Platform services (such as Projects)
+     *                             might reject them.
+     * @param array  $optionalArgs {
+     *     Optional.
+     *
+     *     @type FieldMask $updateMask
+     *           OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only
+     *           the fields in the mask will be modified. If no mask is provided, the
+     *           following default mask is used:
+     *
+     *           `paths: "bindings, etag"`
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Iam\V1\Policy
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function setIamPolicy($resource, $policy, array $optionalArgs = [])
+    {
+        $request = new SetIamPolicyRequest();
+        $requestParamHeaders = [];
+        $request->setResource($resource);
+        $request->setPolicy($policy);
+        $requestParamHeaders['resource'] = $resource;
+        if (isset($optionalArgs['updateMask'])) {
+            $request->setUpdateMask($optionalArgs['updateMask']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('SetIamPolicy', Policy::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
+    }
+
+    /**
+     * Returns permissions that a caller has on the specified resource. If the
+    resource does not exist, this will return an empty set of
+    permissions, not a `NOT_FOUND` error.
+
+    Note: This operation is designed to be used for building
+    permission-aware UIs and command-line tools, not for authorization
+    checking. This operation may "fail open" without warning.
+     *
+     * Sample code:
+     * ```
+     * $workflowTemplateServiceClient = new WorkflowTemplateServiceClient();
+     * try {
+     *     $resource = 'resource';
+     *     $permissions = [];
+     *     $response = $workflowTemplateServiceClient->testIamPermissions($resource, $permissions);
+     * } finally {
+     *     $workflowTemplateServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string   $resource     REQUIRED: The resource for which the policy detail is being requested.
+     *                               See the operation documentation for the appropriate value for this field.
+     * @param string[] $permissions  The set of permissions to check for the `resource`. Permissions with
+     *                               wildcards (such as '*' or 'storage.*') are not allowed. For more
+     *                               information see
+     *                               [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
+     * @param array    $optionalArgs {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\Cloud\Iam\V1\TestIamPermissionsResponse
+     *
+     * @throws ApiException if the remote call fails
+     */
+    public function testIamPermissions($resource, $permissions, array $optionalArgs = [])
+    {
+        $request = new TestIamPermissionsRequest();
+        $requestParamHeaders = [];
+        $request->setResource($resource);
+        $request->setPermissions($permissions);
+        $requestParamHeaders['resource'] = $resource;
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startCall('TestIamPermissions', TestIamPermissionsResponse::class, $optionalArgs, $request, Call::UNARY_CALL, 'google.iam.v1.IAMPolicy')->wait();
     }
 }

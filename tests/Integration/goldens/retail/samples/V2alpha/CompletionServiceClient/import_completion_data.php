@@ -34,11 +34,13 @@ use Google\Rpc\Status;
 /**
  * Bulk import of processed completion dataset.
  *
- * Request processing may be synchronous. Partial updating is not supported.
+ * Request processing is asynchronous. Partial updating is not supported.
+ *
+ * The operation is successfully finished only after the imported suggestions
+ * are indexed successfully and ready for serving. The process takes hours.
  *
  * This feature is only available for users who have Retail Search enabled.
- * Please submit a form [here](https://cloud.google.com/contact) to contact
- * cloud sales if you are interested in using Retail Search.
+ * Enable Retail Search on Cloud Console before using this feature.
  *
  * @param string $formattedParent                    The catalog which the suggestions dataset belongs to.
  *
