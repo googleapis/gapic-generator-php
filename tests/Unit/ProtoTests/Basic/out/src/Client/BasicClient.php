@@ -148,7 +148,8 @@ final class BasicClient
      */
     public function __construct(array $options = [])
     {
-        $clientOptions = $this->buildClientOptions($options + $this->getDefaultEmulatorConfig());
+        $clientOptions = $this->buildClientOptions($options);
+        $clientOptions = $clientOptions + $this->getDefaultEmulatorConfig();
         $this->setClientOptions($clientOptions);
     }
 

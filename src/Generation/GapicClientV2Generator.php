@@ -149,7 +149,7 @@ class GapicClientV2Generator
             ->withMember($this->construct())
             ->withMember($this->magicMethod())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
-            ->withMember(EmulatorSupportGenerator::generateEmulatorSupportIfRequired($this->serviceDetails, $this->ctx));
+            ->withMember(EmulatorSupportGenerator::generateEmulatorSupport($this->serviceDetails, $this->ctx));
     }
 
     private function serviceName(): PhpClassMember
@@ -561,9 +561,8 @@ class GapicClientV2Generator
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
-                Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)(
-                    EmulatorSupportGenerator::generateEmulatorOptionsIfRequired($this->serviceDetails, $options)
-                )),
+                Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
+                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $clientOptions),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
@@ -574,7 +573,7 @@ class GapicClientV2Generator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
-                EmulatorSupportGenerator::generateEmulatorPhpDocIfRequired($this->serviceDetails),
+                EmulatorSupportGenerator::generateEmulatorPhpDoc($this->serviceDetails),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
                     PhpDoc::type(

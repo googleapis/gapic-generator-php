@@ -38,15 +38,19 @@ class EmulatorSupportGenerator
     /** @var string Name of the default emulator config function. */
     public const DEFAULT_EMULATOR_CONFIG_FN = 'getDefaultEmulatorConfig';
 
-    public static function generateEmulatorSupportIfRequired(ServiceDetails $serviceDetails, SourceFileContext $ctx) {
+    public static function generateEmulatorSupport(ServiceDetails $serviceDetails, SourceFileContext $ctx)
+    {
         $fullClassName = $serviceDetails->gapicClientV2Type->getFullName();
         $emulatorHostVar = AST::var('emulatorHost');
         $phpUrlSchemeConst = AST::constant('PHP_URL_SCHEME');
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
 
-        if (array_key_exists($fullClassName, self::$emulatorSupportClients)) {
-            return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
+        if (!array_key_exists($fullClassName, self::$emulatorSupportClients)) {
+            return null;
+        }
+
+        return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
                 AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportClients[$fullClassName])),
@@ -64,28 +68,34 @@ class EmulatorSupportGenerator
                                 'stubOpts' => [
                                     'credentials' => AST::staticCall(
                                         $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
-                                        AST::method('createInsecure'))()
+                                        AST::method('createInsecure')
+                                    )()
                                 ]
                             ]
                         ],
                         'credentials' => AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))(),
-                    ]))), AST::return(AST::array([])))
+                    ])
+                )
+            ), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("Configure the gapic configuration to use a service emulator."),
+                PhpDoc::text("Configure the gapic configuration to use a service emulator.")
             ))
             ->withReturnType($ctx->type(Type::array()));
-        } else {
+    }
+
+    public static function generateEmulatorOptions(ServiceDetails $serviceDetails, AST $options)
+    {
+        $getDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
+
+        if (!array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients)) {
             return null;
         }
+
+        return Ast::assign($options, Ast::binaryOp($options, '+', AST::call(AST::THIS, $getDefaultEmulatorConfig)()));
     }
 
-    public static function generateEmulatorOptionsIfRequired(ServiceDetails $serviceDetails, AST $options) {
-        $getDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
-        return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
-            Ast::binaryOp($options, '+', AST::call(AST::THIS, $getDefaultEmulatorConfig)()) : $options;
-    }
-
-    public static function generateEmulatorPhpDocIfRequired(ServiceDetails $serviceDetails) {
+    public static function generateEmulatorPhpDoc(ServiceDetails $serviceDetails)
+    {
         return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
             PhpDoc::text(sprintf('Setting the "%s" environment variable will automatically set the API Endpoint to ' .
             'the value specified in the variable, as well as ensure that empty credentials are used in ' .
