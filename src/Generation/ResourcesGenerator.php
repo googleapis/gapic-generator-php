@@ -153,7 +153,7 @@ class ResourcesGenerator
                 $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
             }
 
-            $autoPopulatedFields = self::getUuid4FieldsToAutoPopulate($method, $serviceDetails);
+            $autoPopulatedFields = self::getAutoPopulatedUuid4Fields($method, $serviceDetails);
             if (!empty($autoPopulatedFields)) {
                 $descriptor['autoPopulatedFields'] =  $autoPopulatedFields;
             }
@@ -524,45 +524,33 @@ class ResourcesGenerator
      *
      * @return array<string, string> Fields to autopopulate in GAX if unset by user
      */
-    private static function getUuid4FieldsToAutoPopulate(
+    private static function getAutoPopulatedUuid4Fields(
         MethodDetails $method,
-        ServiceDetails $serviceDetails
+        ServiceDetails $service
     ): array {
-        $autoPopulatedFields = Vector::new([]);
+        $result = Map::new();
 
-        $methodSettings = $serviceDetails->serviceYamlConfig->methodSettings;
-        foreach ($methodSettings as $methodSetting) {
-            $autoPopulatedFieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
-            if (!empty($autoPopulatedFieldNames)) {
-
-                // Check if the $methodSetting is for this particular $method
-                $splitMethodName = explode('.', $methodSetting->getSelector());
-                $methodName = $splitMethodName[array_key_last($splitMethodName)];
-                if ($methodName !== $method->name) {
-                    continue;
-                }
-
-                // Process only if the method is unary
-                if (!$method->isStreaming()) {
-                    $autoPopulatedFields = $method->optionalFields
-                        ->filter(
-                            // Filter out field names to autopopulate from all fields of the method
-                            fn ($f) => in_array($f->name, $autoPopulatedFieldNames)
-                        )
-                        ->filter(
-                            // Filter for optional field and uuid4 format
-                            fn ($f) => !$f->isRequired && $f->isUuid4
-                        );
-                }
-            }
+        if ($method->isStreaming()) {
+            return [];
         }
-        $autoPopulatedFields = $autoPopulatedFields->map(fn ($x) => $x->camelName)->toArray();
 
-        // Convert array of field_names to associative array of
-        // field_name => field_type
+        $methodSetting = $service->serviceYamlConfig->methodSettings
+            ->filter(function ($x) use ($method) {
+                $splitName = explode('.', $x->getSelector());
+                return $method->name == $splitName[array_key_last($splitName)];
+            })->firstOrNull();
+
+        if (!is_null($methodSetting) && count($methodSetting->getAutoPopulatedFields())) {
+            $fieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
+            $result = $method->optionalFields
+                ->filter(fn ($x) => in_array($x->name, $fieldNames))
+                ->filter(fn ($x) => $x->isUuid4)
+                ->toMap(fn ($x) => $x->camelName, fn ($x) => 'UUID4');
+        }
+
         return array_combine(
-            $autoPopulatedFields,
-            array_fill(0, count($autoPopulatedFields), 'UUID4')
+            $result->keys()->toArray(),
+            $result->values()->toArray()
         );
     }
 }

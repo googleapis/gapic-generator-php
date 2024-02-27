@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\FieldInfo\Format;
 use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
@@ -218,7 +219,7 @@ class FieldDetails
                 }
             }
         }
-        $this->isUuid4 = $this->isFieldInfoUuid($field);
+        $this->isUuid4 = $this->isFormatUuid4($field);
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
@@ -243,11 +244,11 @@ class FieldDetails
         return $isRequired;
     }
 
-    private function isFieldInfoUuid(FieldDescriptorProto $field)
+    private function isFormatUuid4(FieldDescriptorProto $field)
     {
         $fieldInfo = ProtoHelpers::fieldInfo($field)->firstOrNull();
         if ($fieldInfo) {
-            return $fieldInfo->getFormat() === 1;
+            return $fieldInfo->getFormat() === Format::UUID4;
         }
         return false;
     }
