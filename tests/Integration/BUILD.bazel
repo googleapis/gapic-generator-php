@@ -598,7 +598,7 @@ php_gapic_library(
     name = "spanner_php_gapic",
     migration_mode = "MIGRATING",
     srcs = ["@com_google_googleapis//google/spanner/admin/database/v1:database_proto_with_info"],
-    service_yaml = "@com_google_googleapis//google/spanner/admin/database/v1:spanner_admin_database_gapic.yaml",
+    service_yaml = "@com_google_googleapis//google/spanner/admin/database/v1:spanner.yaml",
     rest_numeric_enums = True,
     deps = [
         ":spanner_php_grpc",
