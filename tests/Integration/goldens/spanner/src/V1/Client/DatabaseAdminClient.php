@@ -42,6 +42,8 @@ use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
 use Google\Cloud\Spanner\Admin\Database\V1\Backup;
+use Google\Cloud\Spanner\Admin\Database\V1\CopyBackupMetadata;
+use Google\Cloud\Spanner\Admin\Database\V1\CopyBackupRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateBackupMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateBackupRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateDatabaseMetadata;
@@ -56,12 +58,15 @@ use Google\Cloud\Spanner\Admin\Database\V1\GetDatabaseRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListBackupOperationsRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListBackupsRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseOperationsRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseRolesRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListDatabasesRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\RestoreDatabaseMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\RestoreDatabaseRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateBackupRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseMetadata;
+use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseRequest;
 use Google\LongRunning\Operation;
 use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -69,10 +74,11 @@ use GuzzleHttp\Promise\PromiseInterface;
 /**
  * Service Description: Cloud Spanner Database Admin API
  *
- * The Cloud Spanner Database Admin API can be used to create, drop, and
- * list databases. It also enables updating the schema of pre-existing
- * databases. It can be also used to create, delete and list backups for a
- * database and to restore from an existing backup.
+ * The Cloud Spanner Database Admin API can be used to:
+ * * create, drop, and list databases
+ * * update the schema of pre-existing databases
+ * * create, delete and list backups for a database
+ * * restore a database from an existing backup
  *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
@@ -82,6 +88,7 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @method PromiseInterface copyBackupAsync(CopyBackupRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createBackupAsync(CreateBackupRequest $request, array $optionalArgs = [])
  * @method PromiseInterface createDatabaseAsync(CreateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface deleteBackupAsync(DeleteBackupRequest $request, array $optionalArgs = [])
@@ -93,11 +100,13 @@ use GuzzleHttp\Promise\PromiseInterface;
  * @method PromiseInterface listBackupOperationsAsync(ListBackupOperationsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listBackupsAsync(ListBackupsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listDatabaseOperationsAsync(ListDatabaseOperationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface listDatabaseRolesAsync(ListDatabaseRolesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface listDatabasesAsync(ListDatabasesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface restoreDatabaseAsync(RestoreDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateBackupAsync(UpdateBackupRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface updateDatabaseAsync(UpdateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface updateDatabaseDdlAsync(UpdateDatabaseDdlRequest $request, array $optionalArgs = [])
  */
 final class DatabaseAdminClient
@@ -367,8 +376,8 @@ final class DatabaseAdminClient
      */
     public function __construct(array $options = [])
     {
+        $options = $options + $this->getDefaultEmulatorConfig();
         $clientOptions = $this->buildClientOptions($options);
-        $clientOptions = $clientOptions + $this->getDefaultEmulatorConfig();
         $this->setClientOptions($clientOptions);
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
@@ -382,6 +391,43 @@ final class DatabaseAdminClient
 
         array_unshift($args, substr($method, 0, -5));
         return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
+    /**
+     * Starts copying a Cloud Spanner Backup.
+     * The returned backup [long-running operation][google.longrunning.Operation]
+     * will have a name of the format
+     * `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>`
+     * and can be used to track copying of the backup. The operation is associated
+     * with the destination backup.
+     * The [metadata][google.longrunning.Operation.metadata] field type is
+     * [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
+     * The [response][google.longrunning.Operation.response] field type is
+     * [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
+     * copying and delete the backup.
+     * Concurrent CopyBackup requests can run on the same source backup.
+     *
+     * The async variant is {@see DatabaseAdminClient::copyBackupAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/copy_backup.php
+     *
+     * @param CopyBackupRequest $request     A request to house fields associated with the call.
+     * @param array             $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return OperationResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function copyBackup(CopyBackupRequest $request, array $callOptions = []): OperationResponse
+    {
+        return $this->startApiCall('CopyBackup', $request, $callOptions)->wait();
     }
 
     /**
@@ -482,6 +528,8 @@ final class DatabaseAdminClient
      * Drops (aka deletes) a Cloud Spanner database.
      * Completed backups for the database will be retained according to their
      * `expire_time`.
+     * Note: Cloud Spanner might continue to accept requests for a few seconds
+     * after the database has been deleted.
      *
      * The async variant is {@see DatabaseAdminClient::dropDatabaseAsync()} .
      *
@@ -714,6 +762,32 @@ final class DatabaseAdminClient
     }
 
     /**
+     * Lists Cloud Spanner database roles.
+     *
+     * The async variant is {@see DatabaseAdminClient::listDatabaseRolesAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/list_database_roles.php
+     *
+     * @param ListDatabaseRolesRequest $request     A request to house fields associated with the call.
+     * @param array                    $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listDatabaseRoles(ListDatabaseRolesRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListDatabaseRoles', $request, $callOptions);
+    }
+
+    /**
      * Lists Cloud Spanner databases.
      *
      * The async variant is {@see DatabaseAdminClient::listDatabasesAsync()} .
@@ -872,6 +946,67 @@ final class DatabaseAdminClient
     public function updateBackup(UpdateBackupRequest $request, array $callOptions = []): Backup
     {
         return $this->startApiCall('UpdateBackup', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates a Cloud Spanner database. The returned
+     * [long-running operation][google.longrunning.Operation] can be used to track
+     * the progress of updating the database. If the named database does not
+     * exist, returns `NOT_FOUND`.
+     *
+     * While the operation is pending:
+     *
+     * * The database's
+     * [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+     * field is set to true.
+     * * Cancelling the operation is best-effort. If the cancellation succeeds,
+     * the operation metadata's
+     * [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
+     * is set, the updates are reverted, and the operation terminates with a
+     * `CANCELLED` status.
+     * * New UpdateDatabase requests will return a `FAILED_PRECONDITION` error
+     * until the pending operation is done (returns successfully or with
+     * error).
+     * * Reading the database via the API continues to give the pre-request
+     * values.
+     *
+     * Upon completion of the returned operation:
+     *
+     * * The new values are in effect and readable via the API.
+     * * The database's
+     * [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+     * field becomes false.
+     *
+     * The returned [long-running operation][google.longrunning.Operation] will
+     * have a name of the format
+     * `projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>`
+     * and can be used to track the database modification. The
+     * [metadata][google.longrunning.Operation.metadata] field type is
+     * [UpdateDatabaseMetadata][google.spanner.admin.database.v1.UpdateDatabaseMetadata].
+     * The [response][google.longrunning.Operation.response] field type is
+     * [Database][google.spanner.admin.database.v1.Database], if successful.
+     *
+     * The async variant is {@see DatabaseAdminClient::updateDatabaseAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/update_database.php
+     *
+     * @param UpdateDatabaseRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return OperationResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateDatabase(UpdateDatabaseRequest $request, array $callOptions = []): OperationResponse
+    {
+        return $this->startApiCall('UpdateDatabase', $request, $callOptions)->wait();
     }
 
     /**

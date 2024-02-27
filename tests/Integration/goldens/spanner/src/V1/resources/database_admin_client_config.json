@@ -20,6 +20,11 @@
                 }
             },
             "methods": {
+                "CopyBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
                 "CreateBackup": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -75,6 +80,11 @@
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
+                "ListDatabaseRoles": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
                 "ListDatabases": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -96,6 +106,11 @@
                     "retry_params_name": "default"
                 },
                 "UpdateBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "UpdateDatabase": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"

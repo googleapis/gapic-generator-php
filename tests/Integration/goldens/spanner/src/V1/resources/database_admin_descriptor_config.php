@@ -3,6 +3,25 @@
 return [
     'interfaces' => [
         'google.spanner.admin.database.v1.DatabaseAdmin' => [
+            'CopyBackup' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Spanner\Admin\Database\V1\Backup',
+                    'metadataReturnType' => '\Google\Cloud\Spanner\Admin\Database\V1\CopyBackupMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'CreateBackup' => [
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Spanner\Admin\Database\V1\Backup',
@@ -56,6 +75,26 @@ return [
                         'keyName' => 'parent',
                         'fieldAccessors' => [
                             'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateDatabase' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Spanner\Admin\Database\V1\Database',
+                    'metadataReturnType' => '\Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'headerParams' => [
+                    [
+                        'keyName' => 'database.name',
+                        'fieldAccessors' => [
+                            'getDatabase',
+                            'getName',
                         ],
                     ],
                 ],
@@ -202,6 +241,26 @@ return [
                 ],
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
                 'responseType' => 'Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseOperationsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListDatabaseRoles' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getDatabaseRoles',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseRolesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',

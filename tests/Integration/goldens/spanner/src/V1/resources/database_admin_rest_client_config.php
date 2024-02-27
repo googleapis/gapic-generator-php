@@ -2,77 +2,19 @@
 
 return [
     'interfaces' => [
-        'google.longrunning.Operations' => [
-            'GetOperation' => [
-                'method' => 'get',
-                'uriTemplate' => '/v1/{name=projects/*/instances/*/databases/*/operations/*}',
-                'additionalBindings' => [
-                    [
-                        'method' => 'get',
-                        'uriTemplate' => '/v1/{name=projects/*/instances/*/operations/*}',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
-            'ListOperations' => [
-                'method' => 'get',
-                'uriTemplate' => '/v1/{name=projects/*/instances/*/databases/*/operations}',
-                'additionalBindings' => [
-                    [
-                        'method' => 'get',
-                        'uriTemplate' => '/v1/{name=projects/*/instances/*/operations}',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
-            'CancelOperation' => [
-                'method' => 'post',
-                'uriTemplate' => '/v1/{name=projects/*/instances/*/databases/*/operations/*}:cancel',
-                'additionalBindings' => [
-                    [
-                        'method' => 'post',
-                        'uriTemplate' => '/v1/{name=projects/*/instances/*/operations/*}:cancel',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
-            'DeleteOperation' => [
-                'method' => 'delete',
-                'uriTemplate' => '/v1/{name=projects/*/instances/*/databases/*/operations/*}',
-                'additionalBindings' => [
-                    [
-                        'method' => 'delete',
-                        'uriTemplate' => '/v1/{name=projects/*/instances/*/operations/*}',
-                    ],
-                ],
-                'placeholders' => [
-                    'name' => [
-                        'getters' => [
-                            'getName',
-                        ],
-                    ],
-                ],
-            ],
-        ],
         'google.spanner.admin.database.v1.DatabaseAdmin' => [
+            'CopyBackup' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=projects/*/instances/*}/backups:copy',
+                'body' => '*',
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'CreateBackup' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{parent=projects/*/instances/*}/backups',
@@ -207,6 +149,17 @@ return [
                     ],
                 ],
             ],
+            'ListDatabaseRoles' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=projects/*/instances/*/databases/*}/databaseRoles',
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'ListDatabases' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/{parent=projects/*/instances/*}/databases',
@@ -259,6 +212,11 @@ return [
                         'uriTemplate' => '/v1/{resource=projects/*/instances/*/backups/*}:testIamPermissions',
                         'body' => '*',
                     ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{resource=projects/*/instances/*/databases/*/databaseRoles/*}:testIamPermissions',
+                        'body' => '*',
+                    ],
                 ],
                 'placeholders' => [
                     'resource' => [
@@ -276,6 +234,22 @@ return [
                     'backup.name' => [
                         'getters' => [
                             'getBackup',
+                            'getName',
+                        ],
+                    ],
+                ],
+                'queryParams' => [
+                    'update_mask',
+                ],
+            ],
+            'UpdateDatabase' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v1/{database.name=projects/*/instances/*/databases/*}',
+                'body' => 'database',
+                'placeholders' => [
+                    'database.name' => [
+                        'getters' => [
+                            'getDatabase',
                             'getName',
                         ],
                     ],

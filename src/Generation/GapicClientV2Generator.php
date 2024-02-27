@@ -561,8 +561,8 @@ class GapicClientV2Generator
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
+                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $options),
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
-                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $clientOptions),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(

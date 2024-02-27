@@ -22,34 +22,39 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START spanner_v1_generated_DatabaseAdmin_DropDatabase_sync]
+// [START spanner_v1_generated_DatabaseAdmin_ListDatabaseRoles_sync]
 use Google\ApiCore\ApiException;
+use Google\ApiCore\PagedListResponse;
 use Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient;
-use Google\Cloud\Spanner\Admin\Database\V1\DropDatabaseRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\DatabaseRole;
+use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseRolesRequest;
 
 /**
- * Drops (aka deletes) a Cloud Spanner database.
- * Completed backups for the database will be retained according to their
- * `expire_time`.
- * Note: Cloud Spanner might continue to accept requests for a few seconds
- * after the database has been deleted.
+ * Lists Cloud Spanner database roles.
  *
- * @param string $formattedDatabase The database to be dropped. Please see
- *                                  {@see DatabaseAdminClient::databaseName()} for help formatting this field.
+ * @param string $formattedParent The database whose roles should be listed.
+ *                                Values are of the form
+ *                                `projects/<project>/instances/<instance>/databases/<database>/databaseRoles`. Please see
+ *                                {@see DatabaseAdminClient::databaseName()} for help formatting this field.
  */
-function drop_database_sample(string $formattedDatabase): void
+function list_database_roles_sample(string $formattedParent): void
 {
     // Create a client.
     $databaseAdminClient = new DatabaseAdminClient();
 
     // Prepare the request message.
-    $request = (new DropDatabaseRequest())
-        ->setDatabase($formattedDatabase);
+    $request = (new ListDatabaseRolesRequest())
+        ->setParent($formattedParent);
 
     // Call the API and handle any network failures.
     try {
-        $databaseAdminClient->dropDatabase($request);
-        printf('Call completed successfully.' . PHP_EOL);
+        /** @var PagedListResponse $response */
+        $response = $databaseAdminClient->listDatabaseRoles($request);
+
+        /** @var DatabaseRole $element */
+        foreach ($response as $element) {
+            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
+        }
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
@@ -66,8 +71,8 @@ function drop_database_sample(string $formattedDatabase): void
  */
 function callSample(): void
 {
-    $formattedDatabase = DatabaseAdminClient::databaseName('[PROJECT]', '[INSTANCE]', '[DATABASE]');
+    $formattedParent = DatabaseAdminClient::databaseName('[PROJECT]', '[INSTANCE]', '[DATABASE]');
 
-    drop_database_sample($formattedDatabase);
+    list_database_roles_sample($formattedParent);
 }
-// [END spanner_v1_generated_DatabaseAdmin_DropDatabase_sync]
+// [END spanner_v1_generated_DatabaseAdmin_ListDatabaseRoles_sync]
