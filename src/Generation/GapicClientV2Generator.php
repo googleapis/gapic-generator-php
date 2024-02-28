@@ -143,12 +143,13 @@ class GapicClientV2Generator
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
             ->withMember($this->defaultTransport())
-            ->withMember($this->getSupportedTransports())
+            ->withMember($this->supportedTransports())
             ->withMembers($this->operationMethods())
             ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
             ->withMember($this->magicMethod())
-            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
+            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
+            ->withMember(EmulatorSupportGenerator::generateEmulatorSupport($this->serviceDetails, $this->ctx));
     }
 
     private function serviceName(): PhpClassMember
@@ -475,13 +476,13 @@ class GapicClientV2Generator
             ));
     }
 
-    private function getSupportedTransports()
+    private function supportedTransports()
     {
         if ($this->serviceDetails->transportType !== Transport::REST) {
             return null;
         }
-        return AST::method('getSupportedTransports')
-            ->withPhpDocText('Implements GapicClientTrait::getSupportedTransports.')
+        return AST::method('supportedTransports')
+            ->withPhpDocText('Implements GapicClientTrait::supportedTransports.')
             ->withAccess(Access::PRIVATE, Access::STATIC)
             ->withBody(AST::block(
                 AST::return(AST::array(['rest']))
@@ -560,6 +561,7 @@ class GapicClientV2Generator
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
+                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $options),
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
@@ -571,6 +573,7 @@ class GapicClientV2Generator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
+                EmulatorSupportGenerator::generateEmulatorPhpDoc($this->serviceDetails),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
                     PhpDoc::type(
