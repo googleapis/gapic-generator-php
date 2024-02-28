@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Google\Api\FieldInfo;
 use Google\Api\HttpRule;
 use Google\Api\ResourceDescriptor;
 use Google\Api\ResourceReference;
@@ -169,10 +170,10 @@ class ProtoHelpers
 
         // Include the list of segment matchers for a parsing rule.
         $paramDescs = $paramDescs->map(fn($p) =>
-            isset($matchersByKey[$p['keyName']]) ? 
+            isset($matchersByKey[$p['keyName']]) ?
                 array_merge($p, ['matchers' => $matchersByKey[$p['keyName']]]) :
                 $p);
-        
+
         return $paramDescs->toArray();
     }
 
@@ -453,6 +454,11 @@ class ProtoHelpers
     {
         return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
             ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+    }
+
+    public static function fieldInfo(FieldDescriptorProto $field)
+    {
+        return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDINFO, FieldInfo::class);
     }
 
     public static function operationService(MethodDescriptorProto $method)

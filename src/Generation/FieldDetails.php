@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\FieldInfo\Format;
 use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
@@ -105,6 +106,12 @@ class FieldDetails
      * is a message. Will be empty otherwise.
      */
     public Vector $requiredSubFields;
+
+    /**
+     * @var bool *Readonly* Whether this field'as format is UUID or not. Returns `false`
+     *      when (google.api.field_info).format annotation isn't set.
+     */
+    public bool $isUuid4;
 
     /**
      * Reverts fields which were previously required, but were made optional
@@ -212,6 +219,7 @@ class FieldDetails
                 }
             }
         }
+        $this->isUuid4 = $this->isFormatUuid4($field);
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
@@ -234,6 +242,15 @@ class FieldDetails
             }
         }
         return $isRequired;
+    }
+
+    private function isFormatUuid4(FieldDescriptorProto $field)
+    {
+        $fieldInfo = ProtoHelpers::fieldInfo($field)->firstOrNull();
+        if ($fieldInfo) {
+            return $fieldInfo->getFormat() === Format::UUID4;
+        }
+        return false;
     }
 
     public function toOneofWrapperType(string $serviceNamespace): ?Type

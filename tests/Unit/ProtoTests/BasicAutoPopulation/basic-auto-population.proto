@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package testing.basicautopopulation;
+
+option php_namespace = "Testing\\BasicAutoPopulation";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/field_info.proto";
+
+service BasicAutoPopulation {
+  option (google.api.default_host) = "autopopulation.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  rpc CreateFoo(Request) returns (Response) {
+    option (google.api.http) = {
+      post: "/foo"
+      body: "*"
+    };
+  }
+  rpc GetFoo(Request) returns (Response) {
+    option (google.api.http) = {
+      get: "/foo"
+    };
+  }
+}
+
+// a_field has no docs, to test that fields without docs
+// are generated correctly.
+message Request {
+  string a_field = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // A unique identifier for this request.
+  string request_id = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_info).format = UUID4
+  ];
+}
+
+message Response {}

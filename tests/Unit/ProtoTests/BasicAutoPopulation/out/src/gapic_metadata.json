@@ -1,0 +1,28 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.basicautopopulation",
+    "libraryPackage": "Testing\\BasicAutoPopulation",
+    "services": {
+        "BasicAutoPopulation": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BasicAutoPopulationGapicClient",
+                    "rpcs": {
+                        "CreateFoo": {
+                            "methods": [
+                                "createFoo"
+                            ]
+                        },
+                        "GetFoo": {
+                            "methods": [
+                                "getFoo"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

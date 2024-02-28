@@ -144,13 +144,18 @@ class ResourcesGenerator
                     }
                     break;
             }
-            
+
             if ($method->headerParams && !$preMigrationOnly) {
                 $descriptor['headerParams'] = $method->headerParams;
             }
 
             if ($method->isMixin()) {
                 $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
+            }
+
+            $autoPopulatedFields = self::getAutoPopulatedUuid4Fields($method, $serviceDetails);
+            if (!empty($autoPopulatedFields)) {
+                $descriptor['autoPopulatedFields'] =  $autoPopulatedFields;
             }
 
             return Map::new($descriptor);
@@ -256,6 +261,7 @@ class ResourcesGenerator
                 $opFile->getPackage(),
                 $opService,
                 $opFile,
+                $serviceYamlConfig,
                 $serviceDetails->transportType
             );
             $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
@@ -269,7 +275,7 @@ class ResourcesGenerator
         if ($numericEnums) {
             $config['numericEnums'] = true;
         }
-        
+
         $return = AST::return(
             AST::array($config)
         );
@@ -506,5 +512,45 @@ class ResourcesGenerator
                 ->filter(fn ($f) => $f->name !== $httpRule->getBody() && !$nameSegments->contains($f->name))
                 ->map(fn ($f) => $f->name);
         return $queryParams;
+    }
+
+    /**
+     * For a given method and service, returns any fields that are available
+     * for autopopulation given the restrictions below.
+     * The field is a top-level string field of a unary method's request message.
+     * The field is not annotated with `google.api.field_behavior = REQUIRED`.
+     * The field name is listed in `google.api.publishing.method_settings.auto_populated_fields`.
+     * The field is annotated with `google.api.field_info.format = UUID4`.
+     *
+     * @return array<string, string> Fields to autopopulate in GAX if unset by user
+     */
+    private static function getAutoPopulatedUuid4Fields(
+        MethodDetails $method,
+        ServiceDetails $service
+    ): array {
+        if ($method->isStreaming()) {
+            return [];
+        }
+
+        $methodSetting = $service->serviceYamlConfig->methodSettings
+            ->filter(function ($x) use ($method) {
+                $splitName = explode('.', $x->getSelector());
+                return $method->name == $splitName[array_key_last($splitName)];
+            })->firstOrNull();
+
+        if (is_null($methodSetting) || !count($methodSetting->getAutoPopulatedFields())) {
+            return [];
+        }
+
+        $fieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
+        $result = $method->optionalFields
+            ->filter(fn ($x) => in_array($x->name, $fieldNames))
+            ->filter(fn ($x) => $x->isUuid4)
+            ->toMap(
+                fn ($x) => $x->camelName,
+                fn ($x) => AST::literal('\Google\Api\FieldInfo\Format::UUID4')
+            )->toAssociativeArray();
+
+        return $result;
     }
 }
