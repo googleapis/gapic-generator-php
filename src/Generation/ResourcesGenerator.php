@@ -528,8 +528,6 @@ class ResourcesGenerator
         MethodDetails $method,
         ServiceDetails $service
     ): array {
-        $result = [];
-
         if ($method->isStreaming()) {
             return [];
         }
@@ -551,7 +549,7 @@ class ResourcesGenerator
             ->toMap(
                 fn ($x) => $x->camelName,
                 fn ($x) => AST::literal('\Google\Api\FieldInfo\Format::UUID4')
-            )->toArray();
+            )->toAssociativeArray();
 
         return $result;
     }

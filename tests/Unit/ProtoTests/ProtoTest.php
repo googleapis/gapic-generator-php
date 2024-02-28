@@ -151,7 +151,8 @@ final class ProtoTest extends TestCase
         );
     }
 
-    public function testBasicAutoPopulation(): void {
+    public function testBasicAutoPopulation(): void
+    {
         $this->runProtoTest('BasicAutoPopulation/basic-auto-population.proto', 'testing.basicautopopulation');
     }
 }

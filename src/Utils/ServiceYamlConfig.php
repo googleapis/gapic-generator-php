@@ -83,8 +83,7 @@ class ServiceYamlConfig
                 $this->apiNames = Vector::new($apis)->map(fn ($a) => $a->getName());
             }
 
-            $publishing = $service->getPublishing();
-            if (!is_null($publishing)) {
+            if ($publishing = $service->getPublishing()) {
                 $this->methodSettings = Vector::new($publishing->getMethodSettings());
             }
         }

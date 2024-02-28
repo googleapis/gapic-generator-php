@@ -272,7 +272,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return array<mixed, mixed>
      */
-    public function toArray()
+    public function toAssociativeArray(): array
     {
         return array_combine(
             $this->keys()->toArray(),

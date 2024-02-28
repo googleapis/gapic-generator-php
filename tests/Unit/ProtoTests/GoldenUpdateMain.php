@@ -152,6 +152,6 @@ class GoldenUpdateMain
 }
 
 if (isset($argv)) {
-    $selection = (int)($argv[1] ?? -1);
+    $selection = (int) ($argv[1] ?? -1);
     GoldenUpdateMain::update($selection);
 }
