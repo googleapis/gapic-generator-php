@@ -548,8 +548,10 @@ class ResourcesGenerator
         $result = $method->optionalFields
             ->filter(fn ($x) => in_array($x->name, $fieldNames))
             ->filter(fn ($x) => $x->isUuid4)
-            ->toMap(fn ($x) => $x->camelName, fn ($x) => 'UUID4')
-            ->toArray();
+            ->toMap(
+                fn ($x) => $x->camelName,
+                fn ($x) => AST::literal('\Google\Api\FieldInfo\Format::UUID4')
+            )->toArray();
 
         return $result;
     }

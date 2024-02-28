@@ -5,7 +5,7 @@ return [
         'testing.basicautopopulation.BasicAutoPopulation' => [
             'CreateFoo' => [
                 'autoPopulatedFields' => [
-                    'requestId' => 'UUID4',
+                    'requestId' => \Google\Api\FieldInfo\Format::UUID4,
                 ],
             ],
         ],
