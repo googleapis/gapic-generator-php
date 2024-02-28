@@ -27,10 +27,12 @@ namespace Testing\Basic\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
@@ -89,6 +91,10 @@ final class BasicClient
     /**
      * Constructor.
      *
+     * Setting the "BASIC_EMULATOR_HOST" environment variable will automatically set
+     * the API Endpoint to the value specified in the variable, as well as ensure that
+     * empty credentials are used in the transport layer.
+     *
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
      *
@@ -142,6 +148,7 @@ final class BasicClient
      */
     public function __construct(array $options = [])
     {
+        $options = $options + $this->getDefaultEmulatorConfig();
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
     }
@@ -207,5 +214,31 @@ final class BasicClient
     public function methodWithArgs(RequestWithArgs $request, array $callOptions = []): Response
     {
         return $this->startApiCall('MethodWithArgs', $request, $callOptions)->wait();
+    }
+
+    /** Configure the gapic configuration to use a service emulator. */
+    private function getDefaultEmulatorConfig(): array
+    {
+        $emulatorHost = getenv('BASIC_EMULATOR_HOST');
+        if (empty($emulatorHost)) {
+            return [];
+        }
+
+        if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
+            $search = $scheme . '://';
+            $emulatorHost = str_replace($search, '', $emulatorHost);
+        }
+
+        return [
+            'apiEndpoint' => $emulatorHost,
+            'transportConfig' => [
+                'grpc' => [
+                    'stubOpts' => [
+                        'credentials' => ChannelCredentials::createInsecure(),
+                    ],
+                ],
+            ],
+            'credentials' => new InsecureCredentialsWrapper(),
+        ];
     }
 }
