@@ -266,4 +266,17 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         [$exists, $value] = static::apply($this->data, $key, 0, null);
         return $exists ? $value : $default;
     }
+
+    /**
+     * Returns a copy of Map as PHP associative array.
+     *
+     * @return array<mixed, mixed>
+     */
+    public function toArray()
+    {
+        return array_combine(
+            $this->keys()->toArray(),
+            $this->values()->toArray()
+        );
+    }
 }

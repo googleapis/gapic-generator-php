@@ -528,7 +528,7 @@ class ResourcesGenerator
         MethodDetails $method,
         ServiceDetails $service
     ): array {
-        $result = Map::new();
+        $result = [];
 
         if ($method->isStreaming()) {
             return [];
@@ -540,17 +540,17 @@ class ResourcesGenerator
                 return $method->name == $splitName[array_key_last($splitName)];
             })->firstOrNull();
 
-        if (!is_null($methodSetting) && count($methodSetting->getAutoPopulatedFields())) {
-            $fieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
-            $result = $method->optionalFields
-                ->filter(fn ($x) => in_array($x->name, $fieldNames))
-                ->filter(fn ($x) => $x->isUuid4)
-                ->toMap(fn ($x) => $x->camelName, fn ($x) => 'UUID4');
+        if (is_null($methodSetting) || !count($methodSetting->getAutoPopulatedFields())) {
+            return [];
         }
 
-        return array_combine(
-            $result->keys()->toArray(),
-            $result->values()->toArray()
-        );
+        $fieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
+        $result = $method->optionalFields
+            ->filter(fn ($x) => in_array($x->name, $fieldNames))
+            ->filter(fn ($x) => $x->isUuid4)
+            ->toMap(fn ($x) => $x->camelName, fn ($x) => 'UUID4')
+            ->toArray();
+
+        return $result;
     }
 }
