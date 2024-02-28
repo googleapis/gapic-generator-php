@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/gapic-generator-php/compare/v1.10.0...v1.11.0) (2024-02-28)
+
+
+### Features
+
+* Support configuring emulators from environment variable ([#687](https://github.com/googleapis/gapic-generator-php/issues/687)) ([5409e38](https://github.com/googleapis/gapic-generator-php/commit/5409e389714a511253608288de4028787611e58b))
+* UUID auto-generation for fields listed for auto population in service.yaml ([#686](https://github.com/googleapis/gapic-generator-php/issues/686)) ([57bef7c](https://github.com/googleapis/gapic-generator-php/commit/57bef7c61582708f5daae6559b9e66810bfbef69))
+
+
+### Bug Fixes
+
+* Correct method for supportedTransports ([#692](https://github.com/googleapis/gapic-generator-php/issues/692)) ([e7e08da](https://github.com/googleapis/gapic-generator-php/commit/e7e08da23a4a7b013f94ab65e0855e2f26ebe946))
+* Remove PhpFactory::create from PhpClassComparer ([#688](https://github.com/googleapis/gapic-generator-php/issues/688)) ([106d3ee](https://github.com/googleapis/gapic-generator-php/commit/106d3ee4038d708d8e2b3e3caa6f899180401a72))
+
 ## [1.10.0](https://github.com/googleapis/gapic-generator-php/compare/v1.9.2...v1.10.0) (2023-12-14)
 
 
