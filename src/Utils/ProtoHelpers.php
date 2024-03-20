@@ -530,7 +530,7 @@ class ProtoHelpers
         }
         // Prepend '.' to indicate the name is fully-qualified.
         if (!static::strStartsWith($opServ, '.')) {
-            $opServ = '.' . $opServ;
+            $opServ = Helpers::prependDot($opServ);
         }
 
         return $catalog->servicesByFullname[$opServ];
