@@ -432,7 +432,7 @@ class CodeGenerator
         foreach ($enumsToGenerate as $enum) {
             // Use the PHP namespace of the file that the enum belongs to and convert it
             // to the "in code" form using only single backslashes.
-            $parent = $catalog->enumsToFile['.' . $enum->desc->getFullName()];
+            $parent = $catalog->enumsToFile[Helpers::prependDot($enum->desc->getFullName())];
             $pkgNamespace = ProtoHelpers::getNamespace($parent);
             $pkgNamespace = str_replace('\\\\', '\\', $pkgNamespace);
 
