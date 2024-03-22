@@ -172,7 +172,7 @@ class ResourcesGenerator
                 ->toArray(fn($x) => $x->getNameCamelCase(), fn($x) => $x->getPattern());
         }
 
-        $return = AST::return(
+        $codeBlock = AST::return(
             AST::array([
                 'interfaces' => AST::array([
                     $serviceDetails->serviceName => AST::array($serviceDescriptor)
@@ -180,7 +180,13 @@ class ResourcesGenerator
             ])
         );
 
-        return "<?php\n\n{$return->toCode()};";
+        $currentYear = (int)date("Y");
+
+        return AST::file(null)
+            ->withApacheLicense($currentYear)
+            ->withGeneratedCodeWarning()
+            ->withBlock($codeBlock)
+            ->toCode() . ";"; 
     }
 
     public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
@@ -276,10 +282,17 @@ class ResourcesGenerator
             $config['numericEnums'] = true;
         }
 
-        $return = AST::return(
+        $codeBlock = AST::return(
             AST::array($config)
         );
-        return "<?php\n\n{$return->toCode()};";
+
+        $currentYear = (int)date("Y");
+        
+        return AST::file(null)
+            ->withApacheLicense($currentYear)
+            ->withGeneratedCodeWarning()
+            ->withBlock($codeBlock)
+            ->toCode() . ';';
     }
 
     private static function compileRestConfigInterfaces(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig)

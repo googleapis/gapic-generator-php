@@ -40,7 +40,7 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->uses = $uses);
     }
 
-    public function withApacheLicense(int $year)
+    public function withApacheLicense(int $year): PhpFile
     {
         $license = <<<EOF
             /*
@@ -64,7 +64,7 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($license));
     }
 
-    public function withGeneratedCodeWarning()
+    public function withGeneratedCodeWarning(): PhpFile
     {
         $warning = <<<'EOF'
             /*
@@ -77,7 +77,7 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
-    public function withGeneratedFromProtoCodeWarning(string $filePath, bool $isGa)
+    public function withGeneratedFromProtoCodeWarning(string $filePath, bool $isGa): PhpFile
     {
         $warning = <<<EOF
             /*
@@ -94,7 +94,7 @@ final class PhpFile extends AST
         return $this->clone(fn ($clone) => $clone->headerLines = $clone->headerLines->concat($warning));
     }
 
-    public function withBlock($block)
+    public function withBlock($block): PhpFile
     {
         if ($this->class) {
             throw new \RuntimeException('Cannot add a code block when the file already has a class configured.');
