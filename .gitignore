@@ -1,5 +1,7 @@
 vendor/
 bazel-*
+MODULE.bazel.lock
+MODULE.bazel
 
 # PHP
 .php_cs.cache
