@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/gapic-generator-php/compare/v1.11.0...v1.11.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* Add license and generated code headers to generated resource files ([#696](https://github.com/googleapis/gapic-generator-php/issues/696)) ([8409511](https://github.com/googleapis/gapic-generator-php/commit/8409511b8acc296f502694e26e1b0b8a5e52a262))
+
 ## [1.11.0](https://github.com/googleapis/gapic-generator-php/compare/v1.10.0...v1.11.0) (2024-02-28)
 
 
