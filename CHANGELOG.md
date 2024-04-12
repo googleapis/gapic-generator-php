@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/gapic-generator-php/compare/v1.11.0...v1.12.0) (2024-04-12)
+
+
+### Features
+
+* Add patches for bigtable required to optional changes ([#702](https://github.com/googleapis/gapic-generator-php/issues/702)) ([207191c](https://github.com/googleapis/gapic-generator-php/commit/207191c1f3a07a24338b47735c39bf31a01794ee))
+
+
+### Bug Fixes
+
+* Add license and generated code headers to generated resource files ([#696](https://github.com/googleapis/gapic-generator-php/issues/696)) ([8409511](https://github.com/googleapis/gapic-generator-php/commit/8409511b8acc296f502694e26e1b0b8a5e52a262))
+
 ## [1.11.0](https://github.com/googleapis/gapic-generator-php/compare/v1.10.0...v1.11.0) (2024-02-28)
 
 
