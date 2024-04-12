@@ -120,6 +120,12 @@ class FieldDetails
     private static $requiredToOptionalFixes = [
         'google.bigtable.admin.v2.Cluster' => ['name', 'serve_nodes'],
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
+        'google.bigtable.v2.CheckAndMutateRowRequest' => ['table_name', 'row_key'],
+        'google.bigtable.v2.MutateRowRequest' => ['table_name', 'row_key', 'mutations'],
+        'google.bigtable.v2.MutateRowsRequest' => ['table_name', 'entries'],
+        'google.bigtable.v2.ReadModifyWriteRowRequest' => ['table_name', 'row_key', 'rules'],
+        'google.bigtable.v2.ReadRowsRequest' => ['table_name'],
+        'google.bigtable.v2.SampleRowKeysRequest' => ['table_name'],
         'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['content_type', 'read_time_window'],
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
         'google.cloud.scheduler.v1.UpdateJobRequest' => ['update_mask'],
