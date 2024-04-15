@@ -151,6 +151,9 @@ class FieldDetails
      * AFTER a package's 1.0 release, back to being optional.
      */
     private static $optionalToRequiredFixes = [
+        'google.cloud.bigquery.datatransfer.v1.EnrollDataSourcesRequest' => [],
+        'google.cloud.bigquery.datatransfer.v1.UnenrollDataSourcesRequest' => [],
+        'google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest' => [],
         'google.cloud.clouddms.v1.DescribeDatabaseEntitiesRequest' => ['tree'],
         'google.cloud.clouddms.v1.ImportMappingRulesRequest' => ['rules_format', 'rules_files', 'auto_commit'],
         'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
