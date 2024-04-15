@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/gapic-generator-php/compare/v1.12.0...v1.12.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* Patch optional to required changes in BigQueryDataTransfer ([#703](https://github.com/googleapis/gapic-generator-php/issues/703)) ([ccfc769](https://github.com/googleapis/gapic-generator-php/commit/ccfc769d89442d411ffa1c62f8c0f340a4407ded))
+
 ## [1.12.0](https://github.com/googleapis/gapic-generator-php/compare/v1.11.0...v1.12.0) (2024-04-12)
 
 
