@@ -24,6 +24,7 @@ class Transport
     // supported in the future (e.g. gRPC only).
     public const GRPC_REST = 1;
     public const REST = 2;
+    public const GRPC = 3;
 
     /**
      *  Returns true if the given transport string indicates that grpc+rest transports

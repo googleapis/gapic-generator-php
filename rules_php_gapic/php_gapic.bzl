@@ -69,9 +69,7 @@ def php_gapic_srcjar(
     # Transport.
     if transport == None:
         transport = "grpc+rest"
-    if transport == "grpc":
-        fail("Error: gRPC-only PHP GAPIC libraries are not yet supported")
-    if transport != "grpc+rest" and transport != "rest":
+    if transport != "grpc+rest" and transport != "rest" and transport != "grpc":
         fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
 
     # Set plugin arguments.

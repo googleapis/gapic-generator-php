@@ -478,15 +478,23 @@ class GapicClientV2Generator
 
     private function supportedTransports()
     {
-        if ($this->serviceDetails->transportType !== Transport::REST) {
-            return null;
-        }
-        return AST::method('supportedTransports')
-            ->withPhpDocText('Implements GapicClientTrait::supportedTransports.')
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            return AST::method('supportedTransports')
+            ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
             ->withAccess(Access::PRIVATE, Access::STATIC)
             ->withBody(AST::block(
                 AST::return(AST::array(['rest']))
             ));
+        }
+
+        if ($this->serviceDetails->transportType === Transport::GRPC) {
+            return AST::method('supportedTransports')
+            ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+            ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withBody(AST::block(
+                AST::return(AST::array(['grpc', 'grpc-fallback']))
+            ));
+        }
     }
 
     private function construct(): PhpClassMember
