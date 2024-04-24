@@ -39,7 +39,7 @@ class Transport
             return static::REST;
         }
         if ($transport === "grpc") {
-            throw new \Exception("gRPC-only PHP clients are not supported at this time");
+            return static::GRPC;
         }
 
         throw new \Exception("Transport $transport not supported");

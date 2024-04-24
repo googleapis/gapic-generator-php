@@ -70,7 +70,7 @@ def php_gapic_srcjar(
     if transport == None:
         transport = "grpc+rest"
     if transport != "grpc+rest" and transport != "rest" and transport != "grpc":
-        fail("Error: Only 'grpc+rest' or 'rest' transports are supported")
+        fail("Error: Only 'grpc+rest', 'rest' or `grpc` transports are supported")
 
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.

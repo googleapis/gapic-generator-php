@@ -480,20 +480,20 @@ class GapicClientV2Generator
     {
         if ($this->serviceDetails->transportType === Transport::REST) {
             return AST::method('supportedTransports')
-            ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
-            ->withAccess(Access::PRIVATE, Access::STATIC)
-            ->withBody(AST::block(
-                AST::return(AST::array(['rest']))
-            ));
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['rest']))
+                ));
         }
 
         if ($this->serviceDetails->transportType === Transport::GRPC) {
             return AST::method('supportedTransports')
-            ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
-            ->withAccess(Access::PRIVATE, Access::STATIC)
-            ->withBody(AST::block(
-                AST::return(AST::array(['grpc', 'grpc-fallback']))
-            ));
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['grpc', 'grpc-fallback']))
+                ));
         }
     }
 
