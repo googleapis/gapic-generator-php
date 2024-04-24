@@ -113,7 +113,7 @@ final class BasicGrpcOnlyClient
      *           provided in the resources folder.
      *     @type string|TransportInterface $transport
      *           The transport used for executing network requests. At the moment, supports only
-     *           `rest`. *Advanced usage*: Additionally, it is possible to pass in an already
+     *           `grpc`. *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
      *           $apiEndpoint setting, will be ignored.
@@ -122,9 +122,9 @@ final class BasicGrpcOnlyClient
      *           each supported transport type should be passed in a key for that transport. For
      *           example:
      *           $transportConfig = [
-     *               'rest' => [...],
+     *               'grpc' => [...],
      *           ];
-     *           See the {@see \Google\ApiCore\Transport\RestTransport::build()} method for the
+     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} method for the
      *           supported options.
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to

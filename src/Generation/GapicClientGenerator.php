@@ -443,7 +443,7 @@ class GapicClientGenerator
 
         // TODO: Consolidate setting all the known array values together.
         // We do this here to maintain the existing sensible ordering.
-        if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             $clientDefaultValues['gcpApiConfigPath'] =
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }

@@ -44,4 +44,24 @@ class Transport
 
         throw new \Exception("Transport $transport not supported");
     }
+
+    public static function isRestOnly(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::REST, $transport);
+    }
+
+    public static function isGrpcOnly(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::GRPC, $transport);
+    }
+
+    public static function isGRPCRest(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::GRPC_REST, $transport);
+    }
+
+    private static function compareTransports(int $transportA, int $transportB): bool
+    {
+        return $transportA === $transportB;
+    }
 }

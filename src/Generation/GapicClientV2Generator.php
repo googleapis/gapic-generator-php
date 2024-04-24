@@ -506,30 +506,30 @@ class GapicClientV2Generator
         $options = AST::var('options');
         $optionsParam = AST::param(ResolvedType::array(), $options, AST::array([]));
         $clientOptions = AST::var('clientOptions');
+        $transportType = $this->serviceDetails->transportType;
 
-        // Assumes there are only two transport types.
-        $isGrpcRest = $this->serviceDetails->transportType === Transport::GRPC_REST;
-
-        $restTransportDocText = 'At the moment, supports only `rest`.';
-        $grpcTransportDocText = 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
         $transportDocText =
             PhpDoc::text(
                 'The transport used for executing network requests. ',
-                $isGrpcRest ? $grpcTransportDocText : $restTransportDocText,
+                $this->transportDocText($transportType),
                 '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
                 // TODO(vNext): Don't use a fully-qualified type here.
                 $ctx->type(Type::fromName(TransportInterface::class), true),
                 'object. Note that when this object is provided, any settings in $transportConfig, and any $apiEndpoint',
                 'setting, will be ignored.'
             );
+        
+        $transportConfigSampleValues = [
+            'grpc' => AST::arrayEllipsis(),
+            'rest' => AST::arrayEllipsis()
+        ];
 
-        $transportConfigSampleValues = [];
-        if ($isGrpcRest) {
-            $transportConfigSampleValues['grpc'] = AST::arrayEllipsis();
+        if (Transport::isGrpcOnly($transportType)) {
+            unset($transportConfigSampleValues['rest']);
+        } elseif (Transport::isRestOnly($transportType)) {
+            unset($transportConfigSampleValues['grpc']);
         }
-        // Set this value here, don't initialize it, so we can maintain alphabetical order
-        // for the resulting printed doc.
-        $transportConfigSampleValues['rest'] = AST::arrayEllipsis();
+
         $transportConfigDocText =
             PhpDoc::text(
                 'Configuration options that will be used to construct the transport. Options for',
@@ -547,14 +547,18 @@ class GapicClientV2Generator
                 'See the',
                 AST::call(
                     $ctx->type(
-                        Type::fromName($isGrpcRest ? GrpcTransport::class : RestTransport::class),
+                        Type::fromName(
+                            Transport::isRestOnly($transportType) ? 
+                                RestTransport::class :
+                                GrpcTransport::class
+                        ),
                         true
                     ),
                     AST::method('build')
                 )(),
-                $isGrpcRest ? 'and' : '',
-                $isGrpcRest
-                    ? AST::call(
+                Transport::isGRPCRest($transportType) ? 'and' : '',
+                Transport::isGRPCRest($transportType) ? 
+                    AST::call(
                         $ctx->type(
                             Type::fromName(RestTransport::class),
                             true
@@ -562,7 +566,7 @@ class GapicClientV2Generator
                         AST::method('build')
                     )()
                     : '',
-                $isGrpcRest ? 'methods ' : 'method ',
+                Transport::isGRPCRest($transportType) ? 'methods ' : 'method ',
                 'for the supported options.'
             );
         return AST::method('__construct')
@@ -667,6 +671,19 @@ class GapicClientV2Generator
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
             ));
+    }
+
+    private function transportDocText(int $transportType): string
+    {
+        if (Transport::isRestOnly($transportType)) {
+            return 'At the moment, supports only `rest`.';
+        }
+
+        if (Transport::isGrpcOnly($transportType)) {
+            return 'At the moment, supports only `grpc`.';
+        }
+
+        return 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';;
     }
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
