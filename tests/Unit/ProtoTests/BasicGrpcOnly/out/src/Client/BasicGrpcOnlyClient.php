@@ -66,11 +66,6 @@ final class BasicGrpcOnlyClient
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/basic_grpc_only_rest_client_config.php',
-                ],
-            ],
         ];
     }
 

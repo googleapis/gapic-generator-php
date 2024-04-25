@@ -135,11 +135,6 @@ final class CloudRedisClient
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/cloud_redis_rest_client_config.php',
-                ],
-            ],
         ];
     }
 
