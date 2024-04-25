@@ -24,6 +24,7 @@ class Transport
     // supported in the future (e.g. gRPC only).
     public const GRPC_REST = 1;
     public const REST = 2;
+    public const GRPC = 3;
 
     /**
      *  Returns true if the given transport string indicates that grpc+rest transports
@@ -38,9 +39,29 @@ class Transport
             return static::REST;
         }
         if ($transport === "grpc") {
-            throw new \Exception("gRPC-only PHP clients are not supported at this time");
+            return static::GRPC;
         }
 
         throw new \Exception("Transport $transport not supported");
+    }
+
+    public static function isRestOnly(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::REST, $transport);
+    }
+
+    public static function isGrpcOnly(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::GRPC, $transport);
+    }
+
+    public static function isGrpcRest(int $transport): bool
+    {
+        return Transport::compareTransports(Transport::GRPC_REST, $transport);
+    }
+
+    private static function compareTransports(int $transportA, int $transportB): bool
+    {
+        return $transportA === $transportB;
     }
 }

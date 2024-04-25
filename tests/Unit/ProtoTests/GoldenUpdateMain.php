@@ -98,6 +98,12 @@ class GoldenUpdateMain
         16 => [
             'name' => 'BasicAutoPopulation',
             'protoPath' => 'BasicAutoPopulation/basic-auto-population.proto'
+        ],
+        17 => [
+            'name' => 'BasicGrpcOnlyClient',
+            'protoPath' => 'BasicGrpcOnly/basic-grpc-only.proto',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
+            'transport' => 'grpc'
         ]
     ];
 

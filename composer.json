@@ -16,6 +16,7 @@
             "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
             "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",
             "Testing\\BasicDiregapic\\": "tests/Unit/ProtoTests/BasicDiregapic/out/src",
+            "Testing\\BasicGrpcOnly\\": "tests/Unit/ProtoTests/BasicGrpcOnly/out/src",
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
             "Testing\\BasicOneofNew\\": "tests/Unit/ProtoTests/BasicOneofNew/out/src",
