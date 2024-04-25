@@ -62,6 +62,7 @@ final class BasicGrpcOnlyClient
             'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/basic_grpc_only_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/basic_grpc_only_descriptor_config.php',
+            'gcpApiConfigPath' => __DIR__ . '/../resources/basic_grpc_only_grpc_config.json',
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],

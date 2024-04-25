@@ -131,6 +131,7 @@ final class CloudRedisClient
             'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/cloud_redis_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/cloud_redis_descriptor_config.php',
+            'gcpApiConfigPath' => __DIR__ . '/../resources/cloud_redis_grpc_config.json',
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
@@ -326,6 +327,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::createInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/create_instance.php
+     *
      * @param CreateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -350,6 +353,8 @@ final class CloudRedisClient
      * deleted.
      *
      * The async variant is {@see CloudRedisClient::deleteInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/delete_instance.php
      *
      * @param DeleteInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -380,6 +385,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::exportInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/export_instance.php
+     *
      * @param ExportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -405,6 +412,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::failoverInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/failover_instance.php
+     *
      * @param FailoverInstanceRequest $request     A request to house fields associated with the call.
      * @param array                   $callOptions {
      *     Optional.
@@ -428,6 +437,8 @@ final class CloudRedisClient
      * Gets the details of a specific Redis instance.
      *
      * The async variant is {@see CloudRedisClient::getInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/get_instance.php
      *
      * @param GetInstanceRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
@@ -454,6 +465,8 @@ final class CloudRedisClient
      * the details returned to GetInstance.
      *
      * The async variant is {@see CloudRedisClient::getInstanceAuthStringAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/get_instance_auth_string.php
      *
      * @param GetInstanceAuthStringRequest $request     A request to house fields associated with the call.
      * @param array                        $callOptions {
@@ -485,6 +498,8 @@ final class CloudRedisClient
      * there is no need to call DeleteOperation.
      *
      * The async variant is {@see CloudRedisClient::importInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/import_instance.php
      *
      * @param ImportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -518,6 +533,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::listInstancesAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/list_instances.php
+     *
      * @param ListInstancesRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
      *     Optional.
@@ -542,6 +559,8 @@ final class CloudRedisClient
      * location.
      *
      * The async variant is {@see CloudRedisClient::rescheduleMaintenanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/reschedule_maintenance.php
      *
      * @param RescheduleMaintenanceRequest $request     A request to house fields associated with the call.
      * @param array                        $callOptions {
@@ -571,6 +590,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::updateInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/update_instance.php
+     *
      * @param UpdateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -596,6 +617,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::upgradeInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/upgrade_instance.php
+     *
      * @param UpgradeInstanceRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
      *     Optional.
@@ -620,6 +643,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::getLocationAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/get_location.php
+     *
      * @param GetLocationRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
      *     Optional.
@@ -643,6 +668,8 @@ final class CloudRedisClient
      * Lists information about the supported locations for this service.
      *
      * The async variant is {@see CloudRedisClient::listLocationsAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/list_locations.php
      *
      * @param ListLocationsRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {

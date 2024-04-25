@@ -431,7 +431,7 @@ class GapicClientV2Generator
 
         // TODO: Consolidate setting all the known array values together.
         // We do this here to maintain the existing sensible ordering.
-        if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             $clientDefaultValues['gcpApiConfigPath'] =
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
@@ -548,7 +548,7 @@ class GapicClientV2Generator
                 AST::call(
                     $ctx->type(
                         Type::fromName(
-                            Transport::isRestOnly($transportType) ? 
+                            Transport::isRestOnly($transportType) ?
                                 RestTransport::class :
                                 GrpcTransport::class
                         ),
@@ -556,8 +556,8 @@ class GapicClientV2Generator
                     ),
                     AST::method('build')
                 )(),
-                Transport::isGRPCRest($transportType) ? 'and' : '',
-                Transport::isGRPCRest($transportType) ? 
+                Transport::isGrpcRest($transportType) ? 'and' : '',
+                Transport::isGrpcRest($transportType) ?
                     AST::call(
                         $ctx->type(
                             Type::fromName(RestTransport::class),
@@ -566,7 +566,7 @@ class GapicClientV2Generator
                         AST::method('build')
                     )()
                     : '',
-                Transport::isGRPCRest($transportType) ? 'methods ' : 'method ',
+                Transport::isGrpcRest($transportType) ? 'methods ' : 'method ',
                 'for the supported options.'
             );
         return AST::method('__construct')

@@ -55,7 +55,7 @@ class Transport
         return Transport::compareTransports(Transport::GRPC, $transport);
     }
 
-    public static function isGRPCRest(int $transport): bool
+    public static function isGrpcRest(int $transport): bool
     {
         return Transport::compareTransports(Transport::GRPC_REST, $transport);
     }
