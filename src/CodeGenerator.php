@@ -408,8 +408,8 @@ class CodeGenerator
             // Resource: rest_client_config.php
             if ($service->transportType !== Transport::GRPC) {
                 $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
-            $code = Formatter::format($code);
-            yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
+                $code = Formatter::format($code);
+                yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
             }
             
             // Resource: client_config.json

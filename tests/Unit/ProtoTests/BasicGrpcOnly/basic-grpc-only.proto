@@ -10,5 +10,5 @@ import "google/api/field_behavior.proto";
 
 // This is a basicGrpcOnly service.
 service BasicGrpcOnly {
-  option (google.api.default_host) = "basicGrpcOnly.example.com";
+  option (google.api.default_host) = "basicgrpconly.example.com";
 }

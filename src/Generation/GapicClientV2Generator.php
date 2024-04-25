@@ -687,7 +687,7 @@ class GapicClientV2Generator
             return 'At the moment, supports only `grpc`.';
         }
 
-        return 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';;
+        return 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
     }
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
