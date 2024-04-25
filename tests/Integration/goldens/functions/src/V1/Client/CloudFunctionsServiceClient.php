@@ -120,11 +120,6 @@ final class CloudFunctionsServiceClient
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/cloud_functions_service_rest_client_config.php',
-                ],
-            ],
         ];
     }
 

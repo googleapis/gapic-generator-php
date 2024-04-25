@@ -404,10 +404,13 @@ class CodeGenerator
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);
             $code = Formatter::format($code);
             yield ["src/{$version}resources/{$service->descriptorConfigFilename}", $code];
-            // Resource: rest_client_config.php
-            $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
-            $code = Formatter::format($code);
-            yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
+
+            if ($service->transportType !== Transport::GRPC) {
+                // Resource: rest_client_config.php
+                $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
+                $code = Formatter::format($code);
+                yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
+            }
             // Resource: client_config.json
             $json = ResourcesGenerator::generateClientConfig($service, $gapicYamlConfig, $grpcServiceConfig);
             yield ["src/{$version}resources/{$service->clientConfigFilename}", $json];

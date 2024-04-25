@@ -444,11 +444,14 @@ class GapicClientV2Generator
             $credentialsConfig['useJwtAccessWithScope'] = false;
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
-        $clientDefaultValues['transportConfig'] = AST::array([
-            'rest' => AST::array([
-                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
-            ])
-        ]);
+        // Only add REST transport config for REST-compatible APIs
+        if ($this->serviceDetails->transportType !== Transport::GRPC) {
+            $clientDefaultValues['transportConfig'] = AST::array([
+                'rest' => AST::array([
+                    'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
+                ])
+            ]);
+        }
         if ($this->serviceDetails->hasCustomOp) {
             $clientDefaultValues['operationsClientClass'] = AST::access(
                 $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
