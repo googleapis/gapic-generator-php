@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/gapic-generator-php/compare/v1.12.1...v1.13.0) (2024-04-25)
+
+
+### Features
+
+* Add support for grpc-only gapic clients ([#707](https://github.com/googleapis/gapic-generator-php/issues/707)) ([5783c98](https://github.com/googleapis/gapic-generator-php/commit/5783c98c13215969eb35696b17d55a00ed711b1b))
+
 ## [1.12.1](https://github.com/googleapis/gapic-generator-php/compare/v1.12.0...v1.12.1) (2024-04-15)
 
 
