@@ -55,7 +55,7 @@ def php_gapic_srcjar(
         rest_numeric_enums = False,
         generate_snippets = True,
         # Supported values validated and specified in src/Utils/MigrationMode.php.
-        migration_mode = "PRE_MIGRATION_SURFACE_ONLY", 
+        migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
     plugin_file_args = {}
@@ -71,12 +71,14 @@ def php_gapic_srcjar(
         transport = "grpc+rest"
     if transport != "grpc+rest" and transport != "rest" and transport != "grpc":
         fail("Error: Only 'grpc+rest', 'rest' or `grpc` transports are supported")
+    if transport == "grpc" and migration_mode != "NEW_SURFACE_ONLY":
+        fail("Error: 'grpc' transport is only supported with 'NEW_SURFACE_ONLY' migration mode")
 
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
     plugin_args.append("migration-mode=%s" % migration_mode)
-    
+
     # Generate REGAPIC param for requesting response enums be JSON-encoded as numbers, not strings.
     if rest_numeric_enums:
         plugin_args.append("rest-numeric-enums")

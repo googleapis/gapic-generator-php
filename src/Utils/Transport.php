@@ -47,21 +47,16 @@ class Transport
 
     public static function isRestOnly(int $transport): bool
     {
-        return Transport::compareTransports(Transport::REST, $transport);
+        return $transport === Transport::REST;
     }
 
     public static function isGrpcOnly(int $transport): bool
     {
-        return Transport::compareTransports(Transport::GRPC, $transport);
+        return $transport === Transport::GRPC;
     }
 
-    public static function isGRPCRest(int $transport): bool
+    public static function isGrpcRest(int $transport): bool
     {
-        return Transport::compareTransports(Transport::GRPC_REST, $transport);
-    }
-
-    private static function compareTransports(int $transportA, int $transportB): bool
-    {
-        return $transportA === $transportB;
+        return $transport === Transport::GRPC_REST;
     }
 }
