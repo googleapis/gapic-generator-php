@@ -44,7 +44,7 @@ final class BasicGrpcOnlyClient
     private const SERVICE_NAME = 'testing.basicgrpconly.BasicGrpcOnly';
 
     /** The default address of the service. */
-    private const SERVICE_ADDRESS = 'basicGrpcOnly.example.com';
+    private const SERVICE_ADDRESS = 'basicgrpconly.example.com';
 
     /** The default port of the service. */
     private const DEFAULT_SERVICE_PORT = 443;
@@ -86,7 +86,7 @@ final class BasicGrpcOnlyClient
      *
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'basicGrpcOnly.example.com:443'.
+     *           as "<uri>:<port>". Default 'basicgrpconly.example.com:443'.
      *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
      *           The credentials to be used by the client to authorize API calls. This option
      *           accepts either a path to a credentials file, or a decoded credentials file as a

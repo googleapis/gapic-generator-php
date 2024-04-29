@@ -32,6 +32,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\TypeDeclaration;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
@@ -139,6 +140,7 @@ class GapicClientV2Generator
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
+            ->withMember($this->apiVersion())
             ->withMember($this->serviceScopes())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
@@ -158,6 +160,19 @@ class GapicClientV2Generator
             ->withPhpDocText('The name of the service.')
             ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->serviceName);
+    }
+
+    private function apiVersion()
+    {
+        if (is_null($this->serviceDetails->apiVersion)) {
+            return;
+        }
+
+        return AST::property('apiVersion')
+            ->withPhpDocText('The api version of the service')
+            ->withAccess(Access::PRIVATE)
+            ->withType(ResolvedType::string())
+            ->withValue(AST::literal("'" . $this->serviceDetails->apiVersion . "'"));
     }
 
     private function serviceAddress(): PhpClassMember

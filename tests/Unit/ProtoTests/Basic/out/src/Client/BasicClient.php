@@ -63,6 +63,9 @@ final class BasicClient
     /** The name of the code generator, to be included in the agent header. */
     private const CODEGEN_NAME = 'gapic';
 
+    /** The api version of the service */
+    private string $apiVersion = 'v1_20240418';
+
     /** The default scopes required by the service. */
     public static $serviceScopes = [
         'scope1',

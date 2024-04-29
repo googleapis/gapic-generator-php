@@ -43,6 +43,9 @@ class ServiceDetails
     /** @var string *Readonly* The proto package name for this service. */
     public string $package;
 
+    /** @var string *Readonly* The api version for this service */
+    public ?string $apiVersion;
+
     /** @var string *Readonly* The PHP namespace for this service.  */
     public string $namespace;
 
@@ -172,6 +175,7 @@ class ServiceDetails
         $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
         $this->serviceYamlConfig = $serviceYamlConfig;
+        $this->apiVersion = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_VERSION);
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
