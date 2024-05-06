@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/gapic-generator-php/compare/v1.13.0...v1.14.0) (2024-04-29)
+
+
+### Features
+
+* Add support for the API version header ([#706](https://github.com/googleapis/gapic-generator-php/issues/706)) ([28a3161](https://github.com/googleapis/gapic-generator-php/commit/28a31618bf50d192ce81cf8bfd5be3200152d481))
+
 ## [1.13.0](https://github.com/googleapis/gapic-generator-php/compare/v1.12.1...v1.13.0) (2024-04-25)
 
 
