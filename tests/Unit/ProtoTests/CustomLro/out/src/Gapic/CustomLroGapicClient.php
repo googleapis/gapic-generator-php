@@ -163,6 +163,9 @@ class CustomLroGapicClient
             'operationNameMethod' => 'getName',
             'operationStatusMethod' => 'getStatus',
             'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
+            'getOperationRequest' => '\Testing\CustomLro\GetOperationRequest',
+            'cancelOperationRequest' => '\Testing\CustomLro\CancelOperationRequest',
+            'deleteOperationRequest' => '\Testing\CustomLro\DeleteOperationRequest',
         ];
     }
 
