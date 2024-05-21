@@ -292,7 +292,7 @@ final class CloudRedisClient
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
-        $this->operationsClient = $this->createOperationsClient($clientOptions);
+        $this->operationsClient = $this->createNewSurfaceOperationsClient($clientOptions);
     }
 
     /** Handles execution of the async variants for each documented method. */
