@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/cloud/extended_operations.proto";
+import "google/protobuf/empty.proto";
+
+package testing.customlronew;
+
+option php_namespace = "Testing\\CustomLroNew";
+
+service CustomLro {
+    option (google.api.default_host) = "customlro.example.com";
+    option (google.api.oauth_scopes) = "scope1,scope2";
+    rpc CreateFoo(CreateFooRequest) returns (CustomOperationResponse) {
+        option (google.api.http) = {
+            post: "/foo"
+            body: "*"
+        };
+        option (google.cloud.operation_service) = "CustomLroOperations";
+    }
+}
+
+service CustomLroOperations {
+    option (google.api.default_host) = "customlro.example.com";
+    option (google.api.oauth_scopes) = "scope1,scope2";
+    rpc Get(GetOperationRequest) returns (CustomOperationResponse) {
+        option (google.api.http) = {
+            get: "/operation"
+        };
+        option (google.cloud.operation_polling_method) = true;
+        option (google.api.method_signature) = 'operation,project,region';
+    }
+
+    rpc Cancel(CancelOperationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/operation"
+        };
+    }
+
+    rpc Delete(DeleteOperationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/operation"
+        };
+    }
+}
+
+message CustomOperationResponse {
+    optional string name = 1 [(google.cloud.operation_field) = NAME];
+
+    optional string http_error_message = 2 [(google.cloud.operation_field) = ERROR_MESSAGE];
+
+    optional int32 http_error_status_code = 3 [(google.cloud.operation_field) = ERROR_CODE];
+
+    enum Status {
+        // A value indicating that the enum field is not set.
+        UNDEFINED_STATUS = 0;
+
+        DONE = 1;
+
+        PENDING = 2;
+
+        RUNNING = 3;
+    }
+
+    optional Status status = 4 [(google.cloud.operation_field) = STATUS];
+}
+
+message CreateFooRequest {
+    string foo = 1 [(google.cloud.operation_request_field) = "foo"];
+
+    string project = 2 [
+        (google.cloud.operation_request_field) = "project",
+        (google.api.field_behavior) = REQUIRED];
+
+    string region = 3 [
+        (google.cloud.operation_request_field) = "region",
+        (google.api.field_behavior) = REQUIRED];
+}
+
+message GetOperationRequest {
+    // Name of the Operations resource to return.
+  string operation = 1 [
+      (google.cloud.operation_response_field) = "name",
+      (google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Name of the region for this request.
+  string region = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // The foo from the initial request.
+  string foo = 4 [(google.api.field_behavior) = REQUIRED];
+}
+
+message CancelOperationRequest {
+    // Name of th Operations resource to cancel.
+    string operation = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message DeleteOperationRequest {
+    // Name of th Operations resource to delete.
+    string operation = 1 [(google.api.field_behavior) = REQUIRED];
+}

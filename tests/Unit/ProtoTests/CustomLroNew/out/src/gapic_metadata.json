@@ -1,0 +1,47 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.customlronew",
+    "libraryPackage": "Testing\\CustomLroNew",
+    "services": {
+        "CustomLro": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "CustomLroGapicClient",
+                    "rpcs": {
+                        "CreateFoo": {
+                            "methods": [
+                                "createFoo"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "CustomLroOperations": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "CustomLroOperationsGapicClient",
+                    "rpcs": {
+                        "Cancel": {
+                            "methods": [
+                                "cancel"
+                            ]
+                        },
+                        "Delete": {
+                            "methods": [
+                                "delete"
+                            ]
+                        },
+                        "Get": {
+                            "methods": [
+                                "get"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
