@@ -151,6 +151,24 @@ final class CustomLroClient
     }
 
     /**
+     * Resume an existing long running operation that was previously started
+     *
+     * @param array $options ClientOptions for the client.
+     *
+     * @return CustomLroOperationsClient
+     */
+    private function createOperationsClient(array $options)
+    {
+        $this->pluckArray([
+            'serviceName',
+            'clientConfig',
+            'descriptorsConfigPath',
+        ], $options);
+
+        return new CustomLroOperationsClient($options);
+    }
+
+    /**
      * Constructor.
      *
      * @param array $options {

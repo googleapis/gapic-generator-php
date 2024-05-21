@@ -388,7 +388,7 @@ class GapicClientV2Generator
                 ))
                 ->withPhpDoc(PhpDoc::block(
                     PhpDoc::text(
-                        'Resume an existing long running operation that was previously started',
+                        'Create the default operation client for the service.',
                     ),
                     PhpDoc::param(
                         AST::param(ResolvedType::array(), $options),

@@ -158,6 +158,24 @@ final class CloudFunctionsServiceClient
     }
 
     /**
+     * Create the default operation client for the service.
+     *
+     * @param array $options ClientOptions for the client.
+     *
+     * @return \Google\LongRunning\Client\OperationsClient
+     */
+    private function createOperationsClient(array $options)
+    {
+        $this->pluckArray([
+            'serviceName',
+            'clientConfig',
+            'descriptorsConfigPath',
+        ], $options);
+
+        return new \Google\LongRunning\Client\OperationsClient($options);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a
      * cloud_function resource.
      *
