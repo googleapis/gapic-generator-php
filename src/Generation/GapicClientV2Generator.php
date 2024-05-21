@@ -20,7 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\LongRunning\OperationsClient as LegacyOperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
@@ -44,6 +44,7 @@ use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Client\OperationsClient;
 use GuzzleHttp\Promise\PromiseInterface;
 
 class GapicClientV2Generator
@@ -288,7 +289,7 @@ class GapicClientV2Generator
 
         $ctype = $this->serviceDetails->hasCustomOp ?
             $this->serviceDetails->customOperationServiceClientType :
-            Type::fromName(OperationsClient::class);
+            Type::fromName(LegacyOperationsClient::class);
         $methods = Vector::new([]);
 
         // getOperationsClient returns the operation client instance.
@@ -367,6 +368,36 @@ class GapicClientV2Generator
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
             ));
         $methods = $methods->append($resumeOperation);
+
+        if ($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY) {
+            // write createOperationsClient method for new surface clients
+            $operationsClientType = $this->serviceDetails->hasCustomOp
+                ? $this->ctx->type($this->serviceDetails->customOperationServiceClientType)
+                : $this->ctx->type(Type::fromName(OperationsClient::class));
+            $createOperationsClient = AST::method('createOperationsClient')
+                ->withAccess(Access::PRIVATE)
+                ->withParams(AST::param(ResolvedType::array(), $options))
+                ->withBody(AST::block(
+                    AST::call(AST::THIS, AST::method('pluckArray'))(AST::array([
+                        'serviceName',
+                        'clientConfig',
+                        'descriptorsConfigPath',
+                    ]), $options),
+                    PHP_EOL,
+                    AST::return(AST::new($operationsClientType)($options))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text(
+                        'Resume an existing long running operation that was previously started',
+                    ),
+                    PhpDoc::param(
+                        AST::param(ResolvedType::array(), $options),
+                        PhpDoc::text('ClientOptions for the client.')
+                    ),
+                    PhpDoc::return($operationsClientType)
+                ));
+            $methods = $methods->append($createOperationsClient);
+        }
 
         return $methods;
     }
@@ -459,7 +490,7 @@ class GapicClientV2Generator
             $credentialsConfig['useJwtAccessWithScope'] = false;
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
-        
+
         if ($this->serviceDetails->transportType !== Transport::GRPC) {
             $clientDefaultValues['transportConfig'] = AST::array([
                 'rest' => AST::array([
@@ -467,7 +498,7 @@ class GapicClientV2Generator
                 ])
             ]);
         }
-        
+
         if ($this->serviceDetails->hasCustomOp) {
             $clientDefaultValues['operationsClientClass'] = AST::access(
                 $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
@@ -537,7 +568,7 @@ class GapicClientV2Generator
                 'object. Note that when this object is provided, any settings in $transportConfig, and any $apiEndpoint',
                 'setting, will be ignored.'
             );
-        
+
         $transportConfigSampleValues = [
             'grpc' => AST::arrayEllipsis(),
             'rest' => AST::arrayEllipsis()
