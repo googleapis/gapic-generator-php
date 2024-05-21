@@ -459,7 +459,7 @@ class GapicClientV2Generator
             $credentialsConfig['useJwtAccessWithScope'] = false;
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
-        
+
         if ($this->serviceDetails->transportType !== Transport::GRPC) {
             $clientDefaultValues['transportConfig'] = AST::array([
                 'rest' => AST::array([
@@ -467,7 +467,7 @@ class GapicClientV2Generator
                 ])
             ]);
         }
-        
+
         if ($this->serviceDetails->hasCustomOp) {
             $clientDefaultValues['operationsClientClass'] = AST::access(
                 $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
@@ -537,7 +537,7 @@ class GapicClientV2Generator
                 'object. Note that when this object is provided, any settings in $transportConfig, and any $apiEndpoint',
                 'setting, will be ignored.'
             );
-        
+
         $transportConfigSampleValues = [
             'grpc' => AST::arrayEllipsis(),
             'rest' => AST::arrayEllipsis()
@@ -598,7 +598,9 @@ class GapicClientV2Generator
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
-                        AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
+                        $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+                            ? AST::call(AST::THIS, AST::method('createNewSurfaceOperationsClient'))($clientOptions)
+                            : AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
                     )
                     : null
             ))
