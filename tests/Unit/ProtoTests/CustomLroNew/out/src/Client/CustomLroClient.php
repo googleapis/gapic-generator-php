@@ -128,6 +128,9 @@ final class CustomLroClient
             'operationNameMethod' => 'getName',
             'operationStatusMethod' => 'getStatus',
             'operationStatusDoneValue' => \Testing\CustomLroNew\CustomOperationResponse\Status::DONE,
+            'getOperationRequest' => '\Testing\CustomLroNew\GetOperationRequest',
+            'cancelOperationRequest' => '\Testing\CustomLroNew\CancelOperationRequest',
+            'deleteOperationRequest' => '\Testing\CustomLroNew\DeleteOperationRequest',
         ];
     }
 
@@ -159,11 +162,11 @@ final class CustomLroClient
      */
     private function createOperationsClient(array $options)
     {
-        $this->pluckArray([
-            'serviceName',
-            'clientConfig',
-            'descriptorsConfigPath',
-        ], $options);
+        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
+
+        if (isset($options['operationsClient'])) {
+            return $options['operationsClient'];
+        }
 
         return new CustomLroOperationsClient($options);
     }

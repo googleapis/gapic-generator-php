@@ -381,11 +381,14 @@ class GapicClientV2Generator
                 ->withAccess(Access::PRIVATE)
                 ->withParams(AST::param(ResolvedType::array(), $options))
                 ->withBody(AST::block(
-                    AST::call(AST::THIS, AST::method('pluckArray'))(AST::array([
-                        'serviceName',
-                        'clientConfig',
-                        'descriptorsConfigPath',
-                    ]), $options),
+                    AST::call(AST::method('unset'))(
+                        AST::index($options, 'serviceName'),
+                        AST::index($options, 'clientConfig'),
+                        AST::index($options, 'descriptorsConfigPath'),
+                    ),
+                    PHP_EOL,
+                    AST::if(AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
+                        )->then(AST::return(AST::index($options, 'operationsClient'))),
                     PHP_EOL,
                     AST::return(AST::new($operationsClientType)($options))
                 ))

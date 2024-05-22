@@ -166,11 +166,11 @@ final class CloudFunctionsServiceClient
      */
     private function createOperationsClient(array $options)
     {
-        $this->pluckArray([
-            'serviceName',
-            'clientConfig',
-            'descriptorsConfigPath',
-        ], $options);
+        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
+
+        if (isset($options['operationsClient'])) {
+            return $options['operationsClient'];
+        }
 
         return new OperationsClient($options);
     }
