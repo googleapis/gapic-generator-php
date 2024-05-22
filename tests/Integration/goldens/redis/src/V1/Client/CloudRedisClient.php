@@ -27,7 +27,6 @@ namespace Google\Cloud\Redis\V1\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
@@ -51,6 +50,7 @@ use Google\Cloud\Redis\V1\ListInstancesRequest;
 use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 
@@ -181,7 +181,7 @@ final class CloudRedisClient
      *
      * @param array $options ClientOptions for the client.
      *
-     * @return \Google\LongRunning\Client\OperationsClient
+     * @return OperationsClient
      */
     private function createOperationsClient(array $options)
     {
@@ -191,7 +191,7 @@ final class CloudRedisClient
             'descriptorsConfigPath',
         ], $options);
 
-        return new \Google\LongRunning\Client\OperationsClient($options);
+        return new OperationsClient($options);
     }
 
     /**

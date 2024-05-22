@@ -287,9 +287,12 @@ class GapicClientV2Generator
             return Vector::new([]);
         }
 
-        $ctype = $this->serviceDetails->hasCustomOp ?
-            $this->serviceDetails->customOperationServiceClientType :
-            Type::fromName(LegacyOperationsClient::class);
+        $ctype = $this->serviceDetails->hasCustomOp
+            ? $this->serviceDetails->customOperationServiceClientType
+            : Type::fromName($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+                ? OperationsClient::class
+                : Type::fromName(LegacyOperationsClient::class)
+            );
         $methods = Vector::new([]);
 
         // getOperationsClient returns the operation client instance.

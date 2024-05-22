@@ -27,7 +27,6 @@ namespace Google\Cloud\Functions\V1\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
@@ -52,6 +51,7 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 
@@ -162,7 +162,7 @@ final class CloudFunctionsServiceClient
      *
      * @param array $options ClientOptions for the client.
      *
-     * @return \Google\LongRunning\Client\OperationsClient
+     * @return OperationsClient
      */
     private function createOperationsClient(array $options)
     {
@@ -172,7 +172,7 @@ final class CloudFunctionsServiceClient
             'descriptorsConfigPath',
         ], $options);
 
-        return new \Google\LongRunning\Client\OperationsClient($options);
+        return new OperationsClient($options);
     }
 
     /**

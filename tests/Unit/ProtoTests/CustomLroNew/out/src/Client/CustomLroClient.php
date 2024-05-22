@@ -151,7 +151,7 @@ final class CustomLroClient
     }
 
     /**
-     * Resume an existing long running operation that was previously started
+     * Create the default operation client for the service.
      *
      * @param array $options ClientOptions for the client.
      *
