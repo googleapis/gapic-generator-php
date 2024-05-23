@@ -286,12 +286,11 @@ class GapicClientV2Generator
         if (!$this->serviceDetails->hasLro && !$this->serviceDetails->hasCustomOp) {
             return Vector::new([]);
         }
-
         $ctype = $this->serviceDetails->hasCustomOp
             ? $this->serviceDetails->customOperationServiceClientType
             : Type::fromName($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
                 ? OperationsClient::class
-                : Type::fromName(LegacyOperationsClient::class)
+                : LegacyOperationsClient::class
             );
         $methods = Vector::new([]);
 
