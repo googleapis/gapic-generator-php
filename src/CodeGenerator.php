@@ -267,7 +267,7 @@ class CodeGenerator
             $result[] = $file;
         }
 
-        if ($transportType === Transport::REST) {
+        if ($transportType === Transport::REST && $migrationMode !== MigrationMode::NEW_SURFACE_ONLY) {
             foreach (static::generateEnumConstants(
                 $byPackage,
                 $catalog,
@@ -404,14 +404,14 @@ class CodeGenerator
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);
             $code = Formatter::format($code);
             yield ["src/{$version}resources/{$service->descriptorConfigFilename}", $code];
-            
+
             // Resource: rest_client_config.php
             if ($service->transportType !== Transport::GRPC) {
                 $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
                 $code = Formatter::format($code);
                 yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
             }
-            
+
             // Resource: client_config.json
             $json = ResourcesGenerator::generateClientConfig($service, $gapicYamlConfig, $grpcServiceConfig);
             yield ["src/{$version}resources/{$service->clientConfigFilename}", $json];

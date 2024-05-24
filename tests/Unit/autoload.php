@@ -71,6 +71,24 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
             $pos = $colon2 + 1 + $valueLen;
         }
     }
+
+    // Used to create the requests for custom build methods.
+    public static function build(): self
+    {
+        $self = new self();
+        foreach (func_get_args() as $pos => $arg) {
+            if ($pos === 0) {
+                $self->setOperation($arg);
+            } elseif (!empty($arg)) {
+                $parts = explode('-', $arg);
+                $setter = 'set' . ucwords($parts[0]);
+                $self->$setter($arg);
+            } else {
+                $self->setFoo($arg);
+            }
+        }
+        return $self;
+    }
 }
 
 function protosOnDemandLoader($class)

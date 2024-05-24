@@ -128,6 +128,9 @@ final class CustomLroClient
             'operationNameMethod' => 'getName',
             'operationStatusMethod' => 'getStatus',
             'operationStatusDoneValue' => \Testing\CustomLroNew\CustomOperationResponse\Status::DONE,
+            'getOperationRequest' => '\Testing\CustomLroNew\GetOperationRequest',
+            'cancelOperationRequest' => '\Testing\CustomLroNew\CancelOperationRequest',
+            'deleteOperationRequest' => '\Testing\CustomLroNew\DeleteOperationRequest',
         ];
     }
 
