@@ -166,6 +166,7 @@ final class CloudFunctionsServiceClient
      */
     private function createOperationsClient(array $options)
     {
+        // Unset client-specific configuration options
         unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
 
         if (isset($options['operationsClient'])) {

@@ -380,6 +380,7 @@ class GapicClientV2Generator
                 ->withAccess(Access::PRIVATE)
                 ->withParams(AST::param(ResolvedType::array(), $options))
                 ->withBody(AST::block(
+                    '// Unset client-specific configuration options',
                     AST::call(AST::method('unset'))(
                         AST::index($options, 'serviceName'),
                         AST::index($options, 'clientConfig'),
