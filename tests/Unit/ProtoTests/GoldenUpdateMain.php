@@ -104,7 +104,7 @@ class GoldenUpdateMain
             'protoPath' => 'BasicGrpcOnly/basic-grpc-only.proto',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
             'transport' => 'grpc'
-        ],
+        ]
     ];
 
     public static function updateAll()
