@@ -121,9 +121,9 @@ class ServiceDetails
     /** @var Type *Readonly* The Type of the service's operations_service client. */
     public Type $customOperationServiceClientType;
 
-    public ?MethodDetails $customOpDelete;
+    public bool $hasCustomOpDelete;
 
-    public ?MethodDetails $customOpCancel;
+    public bool $hasCustomOpCancel;
 
     /** @var bool *Readonly* Whether this service makes use of resources. */
     public bool $hasResources;
@@ -209,16 +209,9 @@ class ServiceDetails
             // but for simplicity we will assume they are all the same and use the first.
             $this->customOperationService = $customOperations[0]->operationService;
 
-            // Find if there is a "Delete" or "Cancel" method on the operation service.
-            // If so, assume these are the "delete" and "cancel" methods respectively.
-            $operationCancel = Vector::new($this->customOperationService->getMethod())
-                ->filter(fn ($x) => $x->getName() === 'Cancel');
-            $operationDelete = Vector::new($this->customOperationService->getMethod())
-                ->filter(fn ($x) => $x->getName() === 'Delete');
-
             // Determine if the operation service implements the Cancel and/or the Delete RPCs.
-            $this->customOpCancel = $operationCancel->count() !== 0 ? MethodDetails::create($this, $operationCancel->firstOrNull()) : null;
-            $this->customOpDelete = $operationDelete->count() !== 0 ? MethodDetails::create($this, $operationDelete->firstOrNull()) : null;
+            $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Cancel');
+            $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Delete');
 
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';

@@ -203,20 +203,13 @@ class ResourcesGenerator
                     ->map(fn ($x) => $x->getter->getName())->toArray()
             ),
             'getOperationMethod' => $method->operationPollingMethod->methodName,
-            'cancelOperationMethod' => $serviceDetails->customOpCancel ? 'cancel': AST::NULL,
-            'deleteOperationMethod' => $serviceDetails->customOpDelete ? 'delete': AST::NULL,
+            'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
+            'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
             'operationErrorCodeMethod' => $errorCode->getter->getName(),
             'operationErrorMessageMethod' => $errorMessage->getter->getName(),
             'operationNameMethod' => $name->getter->getName(),
             'operationStatusMethod' => $status->getter->getName(),
             'operationStatusDoneValue' => $doneValue,
-            'getOperationRequest' => $method->operationPollingMethod->requestType->getFullname(),
-            'cancelOperationRequest' => $serviceDetails->customOpCancel
-                ? $serviceDetails->customOpCancel->requestType->getFullname()
-                : AST::NULL,
-            'deleteOperationRequest' => $serviceDetails->customOpDelete
-                ? $serviceDetails->customOpDelete->requestType->getFullname()
-                : AST::NULL,
         ]);
     }
 

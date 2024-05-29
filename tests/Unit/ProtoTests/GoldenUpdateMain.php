@@ -105,13 +105,6 @@ class GoldenUpdateMain
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
             'transport' => 'grpc'
         ],
-        18 => [
-            'name' => 'CustomLro (new surface only)',
-            'protoPath' => 'CustomLroNew/custom_lro_new.proto',
-            'package' => 'testing.customlronew',
-            'transport' => 'rest',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
-        ],
     ];
 
     public static function updateAll()

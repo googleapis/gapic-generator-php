@@ -141,11 +141,6 @@ final class ProtoTest extends TestCase
         $this->runProtoTest('CustomLro/custom_lro.proto', 'testing.customlro', 'rest');
     }
 
-    public function testCustomLroNew(): void
-    {
-        $this->runProtoTest('CustomLroNew/custom_lro_new.proto', 'testing.customlronew', 'rest', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
-    }
-
     public function testDisableSnippetGeneration(): void
     {
         $this->runProtoTest(
