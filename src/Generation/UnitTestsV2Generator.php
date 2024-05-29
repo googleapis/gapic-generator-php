@@ -65,6 +65,7 @@ class UnitTestsV2Generator
     private $assertInstanceOf;
     private $assertArrayHasKey;
     private $fail;
+    private $operationsClientClass;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
@@ -79,16 +80,16 @@ class UnitTestsV2Generator
         $this->assertInstanceOf = AST::call(AST::THIS, AST::method('assertInstanceOf'));
         $this->assertArrayHasKey = AST::call(AST::THIS, AST::method('assertArrayHasKey'));
         $this->fail = AST::call(AST::THIS, AST::method('fail'));
+        $this->operationsClientClass = $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+            ? OperationsClient::class
+            : LegacyOperationsClient::class;
     }
 
     private function generateImpl(): PhpFile
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
-        // $operationsClientClass = $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
-        //     ? OperationsClient::class
-        //     : LegacyOperationsClient::class;
         $this->ctx->type(Type::fromName(BidiStream::class));
-        // $this->ctx->type(Type::fromName($operationsClientClass));
+        $this->ctx->type(Type::fromName($this->operationsClientClass));
         $this->ctx->type(Type::fromName(ServerStream::class));
         $this->ctx->type(Type::fromName(GetOperationRequest::class));
         $this->ctx->type(Type::fromName(Any::class));
@@ -485,18 +486,15 @@ class UnitTestsV2Generator
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $incompleteOperation = AST::var('incompleteOperation');
-        $operationsClientClass = $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
-            ? OperationsClient::class
-            : LegacyOperationsClient::class;
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName($operationsClientClass)))(AST::array([
+            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName($this->operationsClientClass)))(AST::array([
                 'apiEndpoint' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),
             AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($client, AST::call(AST::THIS, $this->createClient($operationsClientClass))(AST::array([
+            AST::assign($client, AST::call(AST::THIS, $this->createClient($this->operationsClientClass))(AST::array([
                 'transport' => $transport,
                 'operationsClient' => $operationsClient,
             ]))),

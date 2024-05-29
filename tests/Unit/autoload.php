@@ -84,5 +84,3 @@ function protosOnDemandLoader($class)
 
 // Use a custom autoloader to produce fake proto message classes for tests.
 spl_autoload_register('protosOnDemandLoader', true);
-
-require_once __DIR__ . '/../../vendor/autoload.php';
