@@ -22,7 +22,7 @@
 
 return [
     'interfaces' => [
-        'testing.customlro.CustomLro' => [
+        'testing.customlronew.CustomLro' => [
             'CreateFoo' => [
                 'longRunning' => [
                     'additionalArgumentMethods' => [
@@ -37,11 +37,13 @@ return [
                     'operationErrorMessageMethod' => 'getHttpErrorMessage',
                     'operationNameMethod' => 'getName',
                     'operationStatusMethod' => 'getStatus',
-                    'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
-                    'getOperationRequest' => '\Testing\CustomLro\GetOperationRequest',
-                    'cancelOperationRequest' => '\Testing\CustomLro\CancelOperationRequest',
-                    'deleteOperationRequest' => '\Testing\CustomLro\DeleteOperationRequest',
+                    'operationStatusDoneValue' => \Testing\CustomLroNew\CustomOperationResponse\Status::DONE,
+                    'getOperationRequest' => '\Testing\CustomLroNew\GetOperationRequest',
+                    'cancelOperationRequest' => '\Testing\CustomLroNew\CancelOperationRequest',
+                    'deleteOperationRequest' => '\Testing\CustomLroNew\DeleteOperationRequest',
                 ],
+                'responseType' => 'Testing\CustomLroNew\CustomOperationResponse',
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
             ],
         ],
     ],
