@@ -186,7 +186,7 @@ class ResourcesGenerator
             ->withApacheLicense($currentYear)
             ->withGeneratedCodeWarning()
             ->withBlock($codeBlock)
-            ->toCode() . ";"; 
+            ->toCode() . ";";
     }
 
     public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
@@ -287,7 +287,7 @@ class ResourcesGenerator
         );
 
         $currentYear = (int)date("Y");
-        
+
         return AST::file(null)
             ->withApacheLicense($currentYear)
             ->withGeneratedCodeWarning()

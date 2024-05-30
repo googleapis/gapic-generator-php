@@ -24,7 +24,6 @@ namespace Google\Cloud\Redis\Tests\Unit\V1\Client;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Location\GetLocationRequest;
@@ -50,6 +49,7 @@ use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest;
 use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest\RescheduleType;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;

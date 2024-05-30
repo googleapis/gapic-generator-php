@@ -215,7 +215,9 @@ class ServiceDetails
 
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';
-            $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\{$cname}");
+            $this->customOperationServiceClientType = $this->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+                ? Type::fromName("{$this->namespace}\\Client\\{$cname}")
+                : Type::fromName("{$this->namespace}\\{$cname}");
         }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();

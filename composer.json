@@ -40,7 +40,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "^1.19.1"
+        "google/gax": "^1.34"
     },
     "scripts": {
         "update-all-tests": [
