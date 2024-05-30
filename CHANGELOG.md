@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/gapic-generator-php/compare/v1.14.0...v1.15.0) (2024-05-30)
+
+
+### Features
+
+* New surface custom LROs ([#712](https://github.com/googleapis/gapic-generator-php/issues/712)) ([0afff0f](https://github.com/googleapis/gapic-generator-php/commit/0afff0f74e88e5097a2be33e6004b0367ecc7b6d))
+* New surface LROs for new surface clients ([#714](https://github.com/googleapis/gapic-generator-php/issues/714)) ([908d92f](https://github.com/googleapis/gapic-generator-php/commit/908d92f3ef8c0f26cffc65e8b5eb9987eba813a8))
+
 ## [1.14.0](https://github.com/googleapis/gapic-generator-php/compare/v1.13.0...v1.14.0) (2024-04-29)
 
 
