@@ -71,24 +71,6 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
             $pos = $colon2 + 1 + $valueLen;
         }
     }
-
-    // Used to create the requests for custom build methods.
-    public static function build(): self
-    {
-        $self = new self();
-        foreach (func_get_args() as $pos => $arg) {
-            if ($pos === 0) {
-                $self->setOperation($arg);
-            } elseif (!empty($arg)) {
-                $parts = explode('-', $arg);
-                $setter = 'set' . ucwords($parts[0]);
-                $self->$setter($arg);
-            } else {
-                $self->setFoo($arg);
-            }
-        }
-        return $self;
-    }
 }
 
 function protosOnDemandLoader($class)
@@ -96,7 +78,18 @@ function protosOnDemandLoader($class)
     if (substr($class, 0, 8) === 'Testing\\' &&
         (strpos($class, 'Request') !== false || strpos($class, 'Response') !== false)) {
         // Create an alias to `FakeMessage` for any non-existant class that looks like it's a proto message class.
-        class_alias(FakeMessage::class, $class);
+        $classAlias = FakeMessage::class;
+
+        // if a "build" fragment exists, create an anonymous class with the build method
+        $parts = explode('\\', $class);
+        $fragment = sprintf('%s/ProtoTests/%s/out/fragments/%s.build.txt', __DIR__, $parts[1], implode('/', $parts));
+        if (file_exists($fragment)) {
+            $classAlias = get_class(eval(sprintf(
+                'return new class() extends FakeMessage { %s };',
+                file_get_contents($fragment)
+            )));
+        }
+        class_alias($classAlias, $class);
     }
 }
 

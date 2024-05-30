@@ -505,7 +505,8 @@ class GapicClientV2Generator
             ]);
         }
 
-        if ($this->serviceDetails->hasCustomOp) {
+        if ($this->serviceDetails->hasCustomOp && $this->serviceDetails->migrationMode !== MigrationMode::NEW_SURFACE_ONLY) {
+            // This is only needed for legacy custom operations clients.
             $clientDefaultValues['operationsClientClass'] = AST::access(
                 $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
                 AST::CLS

@@ -83,7 +83,6 @@ final class CustomLroClient
                     'restClientConfigPath' => __DIR__ . '/../resources/custom_lro_rest_client_config.php',
                 ],
             ],
-            'operationsClientClass' => CustomLroOperationsClient::class,
         ];
     }
 
@@ -151,6 +150,25 @@ final class CustomLroClient
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
+    }
+
+    /**
+     * Create the default operation client for the service.
+     *
+     * @param array $options ClientOptions for the client.
+     *
+     * @return CustomLroOperationsClient
+     */
+    private function createOperationsClient(array $options)
+    {
+        // Unset client-specific configuration options
+        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
+
+        if (isset($options['operationsClient'])) {
+            return $options['operationsClient'];
+        }
+
+        return new CustomLroOperationsClient($options);
     }
 
     /**

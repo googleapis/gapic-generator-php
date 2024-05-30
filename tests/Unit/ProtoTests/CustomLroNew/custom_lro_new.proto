@@ -30,7 +30,7 @@ service CustomLroOperations {
             get: "/operation"
         };
         option (google.cloud.operation_polling_method) = true;
-        option (google.api.method_signature) = 'operation,project,region';
+        option (google.api.method_signature) = 'operation,project,region,foo';
     }
 
     rpc Cancel(CancelOperationRequest) returns (google.protobuf.Empty) {
