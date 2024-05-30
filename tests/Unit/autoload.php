@@ -80,9 +80,10 @@ function protosOnDemandLoader($class)
         // Create an alias to `FakeMessage` for any non-existant class that looks like it's a proto message class.
         $classAlias = FakeMessage::class;
 
-        // if a "build" fragment exists, create an anonymous class with the build method
         $parts = explode('\\', $class);
         $fragment = sprintf('%s/ProtoTests/%s/out/fragments/%s.build.txt', __DIR__, $parts[1], implode('/', $parts));
+
+        // if a "build" fragment exists, create an anonymous class with the build method
         if (file_exists($fragment)) {
             $classAlias = get_class(eval(sprintf(
                 'return new class() extends FakeMessage { %s };',

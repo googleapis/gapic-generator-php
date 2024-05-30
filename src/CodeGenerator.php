@@ -267,6 +267,7 @@ class CodeGenerator
             $result[] = $file;
         }
 
+        // GAPIC enums are only needed for legacy DIREGAPICs
         if ($transportType === Transport::REST && $migrationMode !== MigrationMode::NEW_SURFACE_ONLY) {
             foreach (static::generateEnumConstants(
                 $byPackage,
