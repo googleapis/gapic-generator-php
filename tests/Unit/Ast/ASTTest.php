@@ -85,4 +85,11 @@ final class ASTTest extends TestCase
         $ast = AST::Access(AST::SELF, "\0property2");
         $this->assertEquals('self::property2', $ast->toCode());
     }
+
+    public function testNullCoalescingAssign(): void
+    {
+        $xIndex = AST::index(AST::var('x'), 'foo');
+        $ast = AST::nullCoalescingAssign($xIndex, 'bar');
+        $this->assertEquals('$x[\'foo\'] ??= \'bar\'', $ast->toCode());
+    }
 }
