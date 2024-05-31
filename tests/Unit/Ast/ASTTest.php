@@ -90,6 +90,6 @@ final class ASTTest extends TestCase
     {
         $xIndex = AST::index(AST::var('x'), 'foo');
         $ast = AST::nullCoalescingAssign($xIndex, 'bar');
-        $this->assertEquals('$x[\'foo\'] ??= \'bar\'', $ast->toCode());
+        $this->assertEquals("\$x['foo'] ??= 'bar'", $ast->toCode());
     }
 }

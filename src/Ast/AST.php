@@ -796,7 +796,7 @@ abstract class AST
     }
 
     /**
-     * Create a '??=' (noal-coallescing assignment) expression.
+     * Create a '??=' (noal-coalescing assignment) expression.
      *
      * @param AST $to Assign a value to this.
      * @param mixed $from Assign from this.
