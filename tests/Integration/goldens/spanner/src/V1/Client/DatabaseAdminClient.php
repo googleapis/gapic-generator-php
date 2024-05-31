@@ -1054,9 +1054,9 @@ final class DatabaseAdminClient
             $emulatorHost = str_replace($search, '', $emulatorHost);
         }
 
-        $options['apiEndpoint'] = $emulatorHost;
-        $options['transportConfig']['grpc']['stubOpts']['credentials'] = ChannelCredentials::createInsecure();
-        $options['credentials'] = new InsecureCredentialsWrapper();
+        $options['apiEndpoint'] ??= $emulatorHost;
+        $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
+        $options['credentials'] ??= new InsecureCredentialsWrapper();
         return $options;
     }
 }
