@@ -1042,7 +1042,7 @@ final class DatabaseAdminClient
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function setDefaultEmulatorConfig(): array
+    private function setDefaultEmulatorConfig(array $options): array
     {
         $emulatorHost = getenv('SPANNER_EMULATOR_HOST');
         if (empty($emulatorHost)) {
