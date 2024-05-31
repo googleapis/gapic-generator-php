@@ -151,7 +151,7 @@ final class BasicClient
      */
     public function __construct(array $options = [])
     {
-        $options = $options + $this->getDefaultEmulatorConfig();
+        $options = $this->setDefaultEmulatorConfig($options);
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
     }
@@ -220,11 +220,11 @@ final class BasicClient
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function getDefaultEmulatorConfig(): array
+    private function setDefaultEmulatorConfig(array $options): array
     {
         $emulatorHost = getenv('BASIC_EMULATOR_HOST');
         if (empty($emulatorHost)) {
-            return [];
+            return $options;
         }
 
         if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
@@ -232,16 +232,9 @@ final class BasicClient
             $emulatorHost = str_replace($search, '', $emulatorHost);
         }
 
-        return [
-            'apiEndpoint' => $emulatorHost,
-            'transportConfig' => [
-                'grpc' => [
-                    'stubOpts' => [
-                        'credentials' => ChannelCredentials::createInsecure(),
-                    ],
-                ],
-            ],
-            'credentials' => new InsecureCredentialsWrapper(),
-        ];
+        $options['apiEndpoint'] ??= $emulatorHost;
+        $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
+        $options['credentials'] ??= new InsecureCredentialsWrapper();
+        return $options;
     }
 }
