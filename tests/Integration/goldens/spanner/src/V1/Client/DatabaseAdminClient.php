@@ -1046,7 +1046,7 @@ final class DatabaseAdminClient
     {
         $emulatorHost = getenv('SPANNER_EMULATOR_HOST');
         if (empty($emulatorHost)) {
-            return [];
+            return $options;
         }
 
         if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
