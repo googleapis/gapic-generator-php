@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/gapic-generator-php/compare/v1.15.0...v1.16.0) (2024-06-04)
+
+
+### Features
+
+* Add emulator support for Bigtable and Spanner clients ([#719](https://github.com/googleapis/gapic-generator-php/issues/719)) ([83b772b](https://github.com/googleapis/gapic-generator-php/commit/83b772b63ca454542ef4a3f07590e082f18abab8))
+* Add null coalescing assign ([#720](https://github.com/googleapis/gapic-generator-php/issues/720)) ([46f8670](https://github.com/googleapis/gapic-generator-php/commit/46f86705ea170345ea77cdfc65492733e343806d))
+
 ## [1.15.0](https://github.com/googleapis/gapic-generator-php/compare/v1.14.0...v1.15.0) (2024-05-30)
 
 
