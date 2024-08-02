@@ -27,9 +27,9 @@ protobuf_deps()
 
 http_archive(
     name = "com_github_grpc_grpc",
-    sha256 = "4b64cbc454cc4fd0801a2823111e1d99f519c765dfa116905740f7ca2256d085",
-    strip_prefix = "grpc-1.51.1",
-    urls = ["https://github.com/grpc/grpc/archive/v1.51.1.zip"],
+    sha256 = "d8aa3b32866d6a0ffc18f913e7315a68f2bc067cc98c6ec5c5abdd92febbd45b",
+    strip_prefix = "grpc-1.65.4",
+    urls = ["https://github.com/grpc/grpc/archive/v1.65.4.zip"],
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
