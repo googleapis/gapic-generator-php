@@ -156,6 +156,7 @@ class FieldDetails
         'google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest' => ['parent'],
         'google.cloud.clouddms.v1.DescribeDatabaseEntitiesRequest' => ['tree'],
         'google.cloud.clouddms.v1.ImportMappingRulesRequest' => ['rules_format', 'rules_files', 'auto_commit'],
+        'google.cloud.dialogflow.v2.SearchKnowledgeRequest' => ['parent', 'session_id'],
         'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
         'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
