@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/gapic-generator-php/compare/v1.16.0...v1.16.1) (2024-08-08)
+
+
+### Bug Fixes
+
+* Revert two optional to required fields for dialogflow ([#723](https://github.com/googleapis/gapic-generator-php/issues/723)) ([307d871](https://github.com/googleapis/gapic-generator-php/commit/307d871d55240dfb99ca837a4993f4db574fa1f8))
+
 ## [1.16.0](https://github.com/googleapis/gapic-generator-php/compare/v1.15.0...v1.16.0) (2024-06-04)
 
 
