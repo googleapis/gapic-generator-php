@@ -73,9 +73,10 @@ class GapicClientV2Generator
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
+        $this->ctx->type(Type::fromName(\Google\ApiCore\Options\ClientOptions::class));
         $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
-        if ($this->serviceDetails->hasLro) {
+    if ($this->serviceDetails->hasLro) {
             $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
             foreach ($this->serviceDetails->methods as $method) {
                 if ($method->methodType === MethodDetails::LRO) {
@@ -561,7 +562,14 @@ class GapicClientV2Generator
         $buildClientOptions = AST::method('buildClientOptions');
         $setClientOptions = AST::method('setClientOptions');
         $options = AST::var('options');
-        $optionsParam = AST::param(ResolvedType::array(), $options, AST::array([]));
+        $optionsParam = AST::param(
+            ResolvedType::union(
+                Type::array(),
+                Type::fromName(\Google\ApiCore\Options\ClientOptions::class)
+            ),
+            $options,
+            AST::array([])
+        );
         $clientOptions = AST::var('clientOptions');
         $transportType = $this->serviceDetails->transportType;
 

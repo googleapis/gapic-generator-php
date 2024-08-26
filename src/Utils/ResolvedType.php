@@ -82,6 +82,22 @@ class ResolvedType
     }
 
     /**
+     * The 'union' built-in type for multiple types
+     *
+     * @return ResolvedType
+     */
+    public static function union(Type ...$types): ResolvedType
+    {
+        return new ResolvedType(
+            Type::union($types),
+            fn () => implode(
+                '|',
+                array_map(fn (Type $type) => $type->name, $types)
+            )
+        );
+    }
+
+    /**
      * Construct a ResolvedType.
      *
      * @param string $typeName The resolved name of the type.
