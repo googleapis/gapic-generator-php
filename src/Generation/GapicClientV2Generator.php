@@ -76,7 +76,7 @@ class GapicClientV2Generator
         $this->ctx->type(Type::fromName(\Google\ApiCore\Options\ClientOptions::class));
         $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
-    if ($this->serviceDetails->hasLro) {
+        if ($this->serviceDetails->hasLro) {
             $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
             foreach ($this->serviceDetails->methods as $method) {
                 if ($method->methodType === MethodDetails::LRO) {

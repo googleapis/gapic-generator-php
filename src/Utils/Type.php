@@ -100,8 +100,8 @@ class Type implements Equality
         return new Type(Vector::new([]), 'stdClass');
     }
 
-    /** The build-in 'union' type for multiple types */
-    public static function union(array $types): Type
+    /** Combines multiple types into a single union type */
+    public static function union(Type ...$types): Type
     {
         return new Type(
             null,
