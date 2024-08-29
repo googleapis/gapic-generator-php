@@ -101,14 +101,11 @@ class Type implements Equality
     }
 
     /** Combines multiple types into a single union type */
-    public static function union(Type ...$types): Type
+    public static function union(string $types): Type
     {
         return new Type(
             null,
-            implode(
-                '|',
-                array_map(fn (Type $type) => $type->name, $types)
-            )
+            $types
         );
     }
 

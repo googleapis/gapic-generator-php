@@ -88,12 +88,14 @@ class ResolvedType
      */
     public static function union(Type ...$types): ResolvedType
     {
+        $typesString = implode(
+            '|',
+            array_map(fn (Type $type) => $type->name, $types)
+        );
+
         return new ResolvedType(
-            Type::union(...$types),
-            fn () => implode(
-                '|',
-                array_map(fn (Type $type) => $type->name, $types)
-            )
+            Type::union($typesString),
+            fn () => $typesString
         );
     }
 
