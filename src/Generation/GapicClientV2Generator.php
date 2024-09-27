@@ -46,6 +46,7 @@ use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\Client\OperationsClient;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 class GapicClientV2Generator
 {
@@ -722,6 +723,16 @@ class GapicClientV2Generator
                         PhpDoc::text(
                             'A callable which returns the client cert as a string. This can be used to provide',
                             'a certificate and private key to the transport layer for mTLS.'
+                        )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::false()),
+                            $ctx->type(Type::fromName(LoggerInterface::class))
+                        ]),
+                        'logger',
+                        PhpDoc::text(
+                            'A PSR-3 compliant logger. If set to false logging is disabled ignoring the \'OOGLE_SDK_DEBUG_LOGGING\' flag'
                         )
                     )
                 )),
