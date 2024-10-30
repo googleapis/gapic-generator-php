@@ -33,6 +33,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 use Testing\CustomLroNew\CreateFooRequest;
 
 /**
@@ -218,6 +219,9 @@ final class CustomLroClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false logging is disabled ignoring the
+     *           'OOGLE_SDK_DEBUG_LOGGING' flag
      * }
      *
      * @throws ValidationException
