@@ -880,9 +880,9 @@ class GapicClientV2Generator
     private function asyncReturnType(MethodDetails $method): string
     {
         $returnType = $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name;
-        $nestedType = ($method->hasEmptyResponse) ?
-            'void' :
-            $this->ctx->type($method->methodReturnType)->type->name;
+        $nestedType = ($method->hasEmptyResponse)
+            ? 'void'
+            : $this->ctx->type($method->methodReturnType)->type->name;
 
         return sprintf('%s<%s>', $returnType, $nestedType);
     }
