@@ -66,17 +66,17 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface callFunctionAsync(CallFunctionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createFunctionAsync(CreateFunctionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteFunctionAsync(DeleteFunctionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface generateDownloadUrlAsync(GenerateDownloadUrlRequest $request, array $optionalArgs = [])
- * @method PromiseInterface generateUploadUrlAsync(GenerateUploadUrlRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getFunctionAsync(GetFunctionRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listFunctionsAsync(ListFunctionsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<CallFunctionResponse> callFunctionAsync(CallFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> createFunctionAsync(CreateFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> deleteFunctionAsync(DeleteFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<GenerateDownloadUrlResponse> generateDownloadUrlAsync(GenerateDownloadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<GenerateUploadUrlResponse> generateUploadUrlAsync(GenerateUploadUrlRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<CloudFunction> getFunctionAsync(GetFunctionRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listFunctionsAsync(ListFunctionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
  */
 final class CloudFunctionsServiceClient
 {

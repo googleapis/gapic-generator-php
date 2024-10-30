@@ -55,15 +55,15 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
- * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
- * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedReferenceMethodAsync(NestedReferenceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> nestedReferenceMethodAsync(NestedReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 final class ResourceNamesClient
 {
