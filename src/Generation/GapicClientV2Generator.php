@@ -414,7 +414,7 @@ class GapicClientV2Generator
             return Vector::new();
         }
         $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
-        $template = AST::param(ResolvedType::string(), AST::var('template'), AST::NULL);
+        $template = AST::param(ResolvedType::string(true), AST::var('template'), AST::NULL);
 
         return $this->serviceDetails->resourceParts
             ->map(fn ($x) => $x->getFormatMethod()

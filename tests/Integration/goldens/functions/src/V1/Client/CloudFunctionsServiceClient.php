@@ -267,14 +267,14 @@ final class CloudFunctionsServiceClient
      * listed, then parseName will check each of the supported templates, and return
      * the first match.
      *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
+     * @param string  $formattedName The formatted name string
+     * @param ?string $template      Optional name of template to match
      *
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName(string $formattedName, string $template = null): array
+    public static function parseName(string $formattedName, ?string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
