@@ -75,8 +75,8 @@ class ResolvedType
         /** @var Type *Readonly* The type of this resolved-type. */
         public ReadOnly Type $type,
         private Closure $fnToCode,
-        private bool $optional = false)
-    {
+        private bool $optional = false
+    ) {
     }
 
     public function toCode(): string
