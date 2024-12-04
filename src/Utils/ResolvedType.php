@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Closure;
+
 /**
  * Represent a resolved type, ready to use in code output.
  * This class is required to allow a resolved type to be differentiated from other plain strings.
@@ -72,7 +74,7 @@ class ResolvedType
     public function __construct(
         /** @var Type *Readonly* The type of this resolved-type. */
         public ReadOnly Type $type,
-        private \Closure $fnToCode,
+        private Closure $fnToCode,
         private bool $optional = false)
     {
     }
