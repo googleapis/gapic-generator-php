@@ -44,18 +44,18 @@ use Testing\RoutingHeaders\SimpleRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNoTemplateMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedMethodAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedMultiMethodAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface orderingMethodAsync(OrderRequest $request, array $optionalArgs = [])
- * @method PromiseInterface patchMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface postMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface putMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getNoTemplateMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> nestedMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> nestedMultiMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> orderingMethodAsync(OrderRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> patchMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> postMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> putMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
  */
 final class RoutingHeadersClient
 {

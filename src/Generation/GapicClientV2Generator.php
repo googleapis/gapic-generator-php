@@ -236,7 +236,7 @@ class GapicClientV2Generator
             ->filter(fn($m) => !$m->isStreaming())
             ->map(fn($m) => PhpDoc::method(
                 $m->methodName . "Async",
-                $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name,
+                $this->asyncReturnType($m),
                 $m->requestType->name, // the request type will already be imported for the sync variants
             ));
         return PhpDoc::block($methodDocs);
@@ -415,7 +415,7 @@ class GapicClientV2Generator
             return Vector::new();
         }
         $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
-        $template = AST::param(ResolvedType::string(), AST::var('template'), AST::NULL);
+        $template = AST::param(ResolvedType::string(true), AST::var('template'), AST::NULL);
 
         return $this->serviceDetails->resourceParts
             ->map(fn ($x) => $x->getFormatMethod()
@@ -887,5 +887,15 @@ class GapicClientV2Generator
         $emptyClientName = $this->serviceDetails->gapicClientV2Type->name;
 
         return "samples/{$version}{$emptyClientName}/{$methodName}.php";
+    }
+
+    private function asyncReturnType(MethodDetails $method): string
+    {
+        $returnType = $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name;
+        $nestedType = ($method->hasEmptyResponse)
+            ? 'void'
+            : $this->ctx->type($method->methodReturnType)->type->name;
+
+        return sprintf('%s<%s>', $returnType, $nestedType);
     }
 }
