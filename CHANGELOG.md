@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/gapic-generator-php/compare/v1.16.1...v1.17.0) (2024-10-30)
+
+
+### Features
+
+* Generic type for docs in async magic methods ([#732](https://github.com/googleapis/gapic-generator-php/issues/732)) ([68c88ed](https://github.com/googleapis/gapic-generator-php/commit/68c88eddcef45e100d357218e7f141d4f3b92a4d))
+
 ## [1.16.1](https://github.com/googleapis/gapic-generator-php/compare/v1.16.0...v1.16.1) (2024-08-08)
 
 

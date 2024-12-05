@@ -42,7 +42,7 @@ use Testing\BasicOneofNew\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> aMethodAsync(Request $request, array $optionalArgs = [])
  */
 final class BasicOneofNewClient
 {
