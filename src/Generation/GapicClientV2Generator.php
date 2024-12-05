@@ -732,7 +732,8 @@ class GapicClientV2Generator
                         ]),
                         'logger',
                         PhpDoc::text(
-                            'A PSR-3 compliant logger. If set to false logging is disabled ignoring the \'OOGLE_SDK_DEBUG_LOGGING\' flag'
+                            'A PSR-3 compliant logger. If set to false, logging is disabled,',
+                            'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
                         )
                     )
                 )),
