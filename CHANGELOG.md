@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/gapic-generator-php/compare/v1.17.0...v1.18.0) (2024-12-06)
+
+
+### Features
+
+* Add compatibility for PHP 8.4 ([#736](https://github.com/googleapis/gapic-generator-php/issues/736)) ([0d7b5eb](https://github.com/googleapis/gapic-generator-php/commit/0d7b5ebb54a3bc805647fa1a9feb5a46a8acec91))
+* Add documentation for the Logger option inside the options array ([#731](https://github.com/googleapis/gapic-generator-php/issues/731)) ([4a2bdb1](https://github.com/googleapis/gapic-generator-php/commit/4a2bdb19c7894c9cd3f3a10d11ebaaef8b781c46))
+
 ## [1.17.0](https://github.com/googleapis/gapic-generator-php/compare/v1.16.1...v1.17.0) (2024-10-30)
 
 
