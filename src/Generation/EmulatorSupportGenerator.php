@@ -36,6 +36,9 @@ class EmulatorSupportGenerator
         '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableInstanceAdminClient' => 'BIGTABLE_EMULATOR_HOST',
         '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableTableAdminClient' => 'BIGTABLE_EMULATOR_HOST',
         '\Google\Cloud\Bigtable\V2\Client\BigtableClient' => 'BIGTABLE_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\PublisherClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SubscriberClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SchemaServiceClient' => 'PUBSUB_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
     ];
