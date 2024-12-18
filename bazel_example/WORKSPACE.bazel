@@ -42,11 +42,11 @@ grpc_extra_deps()
 
 http_archive(
     name = "rules_proto",
-    sha256 = "2b0f9c9314edcf7e0937f6b68124494c58643df763fd59e37fb5dc742e0202d4",
-    strip_prefix = "rules_proto-557db790e7a71993ff85bf523099dfd25060ae2f",
+    sha256 = "03c8d2df1ec7e8f7202795310cff07ee0c02afee4f949ea293507f8dc9dc22f0",
+    strip_prefix = "rules_proto-4904e1ca79182d5a3779ecbd23273285ccd70e5c",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/557db790e7a71993ff85bf523099dfd25060ae2f.tar.gz",
-        "https://github.com/bazelbuild/rules_proto/archive/557db790e7a71993ff85bf523099dfd25060ae2f.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/4904e1ca79182d5a3779ecbd23273285ccd70e5c.tar.gz",
+        "https://github.com/bazelbuild/rules_proto/archive/4904e1ca79182d5a3779ecbd23273285ccd70e5c.tar.gz",
     ],
 )
 
