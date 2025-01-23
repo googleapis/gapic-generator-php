@@ -10,6 +10,9 @@
       <directory suffix=".php">*/src</directory>
       <directory suffix=".php">src</directory>
     </include>
+  <report>
+        <html outputDirectory="build"/>
+</report>
   </coverage>
   <testsuites>
     <testsuite name="Unit Tests">
