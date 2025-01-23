@@ -128,8 +128,8 @@ class CustomLroGapicClient
         return 'rest';
     }
 
-    /** Implements GapicClientTrait::getSupportedTransports. */
-    private static function getSupportedTransports()
+    /** Implements GapicClientTrait::supportedTransports. */
+    private static function supportedTransports()
     {
         return [
             'rest',
@@ -163,6 +163,9 @@ class CustomLroGapicClient
             'operationNameMethod' => 'getName',
             'operationStatusMethod' => 'getStatus',
             'operationStatusDoneValue' => \Testing\CustomLro\CustomOperationResponse\Status::DONE,
+            'getOperationRequest' => '\Testing\CustomLro\GetOperationRequest',
+            'cancelOperationRequest' => '\Testing\CustomLro\CancelOperationRequest',
+            'deleteOperationRequest' => '\Testing\CustomLro\DeleteOperationRequest',
         ];
     }
 

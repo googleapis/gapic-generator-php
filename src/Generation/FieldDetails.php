@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\Api\FieldInfo\Format;
 use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
@@ -107,12 +108,24 @@ class FieldDetails
     public Vector $requiredSubFields;
 
     /**
+     * @var bool *Readonly* Whether this field'as format is UUID or not. Returns `false`
+     *      when (google.api.field_info).format annotation isn't set.
+     */
+    public bool $isUuid4;
+
+    /**
      * Reverts fields which were previously required, but were made optional
      * AFTER a package's 1.0 release, back to being required.
      */
     private static $requiredToOptionalFixes = [
         'google.bigtable.admin.v2.Cluster' => ['name', 'serve_nodes'],
         'google.bigtable.admin.v2.Instance' => ['name', 'type', 'labels'],
+        'google.bigtable.v2.CheckAndMutateRowRequest' => ['table_name', 'row_key'],
+        'google.bigtable.v2.MutateRowRequest' => ['table_name', 'row_key', 'mutations'],
+        'google.bigtable.v2.MutateRowsRequest' => ['table_name', 'entries'],
+        'google.bigtable.v2.ReadModifyWriteRowRequest' => ['table_name', 'row_key', 'rules'],
+        'google.bigtable.v2.ReadRowsRequest' => ['table_name'],
+        'google.bigtable.v2.SampleRowKeysRequest' => ['table_name'],
         'google.cloud.asset.v1.BatchGetAssetsHistoryRequest' => ['content_type', 'read_time_window'],
         'google.cloud.datacatalog.v1.SearchCatalogRequest' => ['query'],
         'google.cloud.scheduler.v1.UpdateJobRequest' => ['update_mask'],
@@ -138,8 +151,12 @@ class FieldDetails
      * AFTER a package's 1.0 release, back to being optional.
      */
     private static $optionalToRequiredFixes = [
+        'google.cloud.bigquery.datatransfer.v1.EnrollDataSourcesRequest' => ['name'],
+        'google.cloud.bigquery.datatransfer.v1.UnenrollDataSourcesRequest' => ['name'],
+        'google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest' => ['parent'],
         'google.cloud.clouddms.v1.DescribeDatabaseEntitiesRequest' => ['tree'],
         'google.cloud.clouddms.v1.ImportMappingRulesRequest' => ['rules_format', 'rules_files', 'auto_commit'],
+        'google.cloud.dialogflow.v2.SearchKnowledgeRequest' => ['parent', 'session_id'],
         'google.cloud.texttospeech.v1.SynthesizeLongAudioRequest' => ['output_gcs_uri', 'voice'],
         'google.cloud.videointelligence.v1.AnnotateVideoRequest' => ['features'],
         'google.devtools.artifactregistry.v1beta2.ListFilesRequest' => ['parent'],
@@ -212,6 +229,7 @@ class FieldDetails
                 }
             }
         }
+        $this->isUuid4 = $this->isFormatUuid4($field);
     }
 
     private function determineIsRequired(DescriptorProto $containingMessage, FieldDescriptorProto $field)
@@ -234,6 +252,15 @@ class FieldDetails
             }
         }
         return $isRequired;
+    }
+
+    private function isFormatUuid4(FieldDescriptorProto $field)
+    {
+        $fieldInfo = ProtoHelpers::fieldInfo($field)->firstOrNull();
+        if ($fieldInfo) {
+            return $fieldInfo->getFormat() === Format::UUID4;
+        }
+        return false;
     }
 
     public function toOneofWrapperType(string $serviceNamespace): ?Type

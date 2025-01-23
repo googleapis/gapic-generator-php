@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,11 @@ use Google\Cloud\Logging\V2\CmekSettings;
 use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 
 /**
- * Updates the Logs Router CMEK settings for the given resource.
+ * Updates the Log Router CMEK settings for the given resource.
  *
- * Note: CMEK for the Logs Router can currently only be configured for GCP
- * organizations. Once configured, it applies to all projects and folders in
- * the GCP organization.
+ * Note: CMEK for the Log Router can currently only be configured for Google
+ * Cloud organizations. Once configured, it applies to all projects and
+ * folders in the Google Cloud organization.
  *
  * [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
  * will fail if 1) `kms_key_name` is invalid, or 2) the associated service
@@ -40,7 +40,7 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
  * `roles/cloudkms.cryptoKeyEncrypterDecrypter` role assigned for the key, or
  * 3) access to the key is disabled.
  *
- * See [Enabling CMEK for Logs
+ * See [Enabling CMEK for Log
  * Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
  * for more information.
  *

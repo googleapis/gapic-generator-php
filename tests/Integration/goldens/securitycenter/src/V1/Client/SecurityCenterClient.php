@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,33 +40,62 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use Google\Cloud\SecurityCenter\V1\BigQueryExport;
+use Google\Cloud\SecurityCenter\V1\BulkMuteFindingsRequest;
+use Google\Cloud\SecurityCenter\V1\CreateBigQueryExportRequest;
 use Google\Cloud\SecurityCenter\V1\CreateFindingRequest;
+use Google\Cloud\SecurityCenter\V1\CreateMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\CreateNotificationConfigRequest;
+use Google\Cloud\SecurityCenter\V1\CreateSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\CreateSourceRequest;
+use Google\Cloud\SecurityCenter\V1\DeleteBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\DeleteMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\DeleteNotificationConfigRequest;
+use Google\Cloud\SecurityCenter\V1\DeleteSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\EffectiveSecurityHealthAnalyticsCustomModule;
+use Google\Cloud\SecurityCenter\V1\ExternalSystem;
 use Google\Cloud\SecurityCenter\V1\Finding;
+use Google\Cloud\SecurityCenter\V1\GetBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\GetEffectiveSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\GetMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\GetNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\GetOrganizationSettingsRequest;
+use Google\Cloud\SecurityCenter\V1\GetSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\GetSourceRequest;
 use Google\Cloud\SecurityCenter\V1\GroupAssetsRequest;
 use Google\Cloud\SecurityCenter\V1\GroupFindingsRequest;
 use Google\Cloud\SecurityCenter\V1\ListAssetsRequest;
+use Google\Cloud\SecurityCenter\V1\ListBigQueryExportsRequest;
+use Google\Cloud\SecurityCenter\V1\ListDescendantSecurityHealthAnalyticsCustomModulesRequest;
+use Google\Cloud\SecurityCenter\V1\ListEffectiveSecurityHealthAnalyticsCustomModulesRequest;
 use Google\Cloud\SecurityCenter\V1\ListFindingsRequest;
+use Google\Cloud\SecurityCenter\V1\ListMuteConfigsRequest;
 use Google\Cloud\SecurityCenter\V1\ListNotificationConfigsRequest;
+use Google\Cloud\SecurityCenter\V1\ListSecurityHealthAnalyticsCustomModulesRequest;
 use Google\Cloud\SecurityCenter\V1\ListSourcesRequest;
+use Google\Cloud\SecurityCenter\V1\MuteConfig;
 use Google\Cloud\SecurityCenter\V1\NotificationConfig;
 use Google\Cloud\SecurityCenter\V1\OrganizationSettings;
 use Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryRequest;
+use Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule;
 use Google\Cloud\SecurityCenter\V1\SecurityMarks;
 use Google\Cloud\SecurityCenter\V1\SetFindingStateRequest;
+use Google\Cloud\SecurityCenter\V1\SetMuteRequest;
+use Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleRequest;
+use Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleResponse;
 use Google\Cloud\SecurityCenter\V1\Source;
+use Google\Cloud\SecurityCenter\V1\UpdateBigQueryExportRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateExternalSystemRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateFindingRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateMuteConfigRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateNotificationConfigRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateOrganizationSettingsRequest;
+use Google\Cloud\SecurityCenter\V1\UpdateSecurityHealthAnalyticsCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: V1 APIs for Security Center service.
@@ -79,29 +108,51 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> bulkMuteFindingsAsync(BulkMuteFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> createBigQueryExportAsync(CreateBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> createMuteConfigAsync(CreateMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> createSecurityHealthAnalyticsCustomModuleAsync(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteBigQueryExportAsync(DeleteBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteMuteConfigAsync(DeleteMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteSecurityHealthAnalyticsCustomModuleAsync(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> getBigQueryExportAsync(GetBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<EffectiveSecurityHealthAnalyticsCustomModule> getEffectiveSecurityHealthAnalyticsCustomModuleAsync(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> getMuteConfigAsync(GetMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OrganizationSettings> getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> getSecurityHealthAnalyticsCustomModuleAsync(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listBigQueryExportsAsync(ListBigQueryExportsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listDescendantSecurityHealthAnalyticsCustomModulesAsync(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listEffectiveSecurityHealthAnalyticsCustomModulesAsync(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listMuteConfigsAsync(ListMuteConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listSecurityHealthAnalyticsCustomModulesAsync(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> setMuteAsync(SetMuteRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SimulateSecurityHealthAnalyticsCustomModuleResponse> simulateSecurityHealthAnalyticsCustomModuleAsync(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> updateBigQueryExportAsync(UpdateBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<ExternalSystem> updateExternalSystemAsync(UpdateExternalSystemRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> updateMuteConfigAsync(UpdateMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OrganizationSettings> updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> updateSecurityHealthAnalyticsCustomModuleAsync(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityMarks> updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
 final class SecurityCenterClient
 {
@@ -183,6 +234,78 @@ final class SecurityCenterClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * big_query_export resource.
+     *
+     * @param string $organization
+     * @param string $export
+     *
+     * @return string The formatted big_query_export resource.
+     */
+    public static function bigQueryExportName(string $organization, string $export): string
+    {
+        return self::getPathTemplate('bigQueryExport')->render([
+            'organization' => $organization,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a dlp_job
+     * resource.
+     *
+     * @param string $project
+     * @param string $dlpJob
+     *
+     * @return string The formatted dlp_job resource.
+     */
+    public static function dlpJobName(string $project, string $dlpJob): string
+    {
+        return self::getPathTemplate('dlpJob')->render([
+            'project' => $project,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * effective_security_health_analytics_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted effective_security_health_analytics_custom_module resource.
+     */
+    public static function effectiveSecurityHealthAnalyticsCustomModuleName(string $organization, string $effectiveCustomModule): string
+    {
+        return self::getPathTemplate('effectiveSecurityHealthAnalyticsCustomModule')->render([
+            'organization' => $organization,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * external_system resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted external_system resource.
+     */
+    public static function externalSystemName(string $organization, string $source, string $finding, string $externalsystem): string
+    {
+        return self::getPathTemplate('externalSystem')->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a finding
      * resource.
      *
@@ -235,6 +358,106 @@ final class SecurityCenterClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * folder_custom_module resource.
+     *
+     * @param string $folder
+     * @param string $customModule
+     *
+     * @return string The formatted folder_custom_module resource.
+     */
+    public static function folderCustomModuleName(string $folder, string $customModule): string
+    {
+        return self::getPathTemplate('folderCustomModule')->render([
+            'folder' => $folder,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_effective_custom_module resource.
+     *
+     * @param string $folder
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted folder_effective_custom_module resource.
+     */
+    public static function folderEffectiveCustomModuleName(string $folder, string $effectiveCustomModule): string
+    {
+        return self::getPathTemplate('folderEffectiveCustomModule')->render([
+            'folder' => $folder,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_export resource.
+     *
+     * @param string $folder
+     * @param string $export
+     *
+     * @return string The formatted folder_export resource.
+     */
+    public static function folderExportName(string $folder, string $export): string
+    {
+        return self::getPathTemplate('folderExport')->render([
+            'folder' => $folder,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_mute_config resource.
+     *
+     * @param string $folder
+     * @param string $muteConfig
+     *
+     * @return string The formatted folder_mute_config resource.
+     */
+    public static function folderMuteConfigName(string $folder, string $muteConfig): string
+    {
+        return self::getPathTemplate('folderMuteConfig')->render([
+            'folder' => $folder,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_notification_config resource.
+     *
+     * @param string $folder
+     * @param string $notificationConfig
+     *
+     * @return string The formatted folder_notification_config resource.
+     */
+    public static function folderNotificationConfigName(string $folder, string $notificationConfig): string
+    {
+        return self::getPathTemplate('folderNotificationConfig')->render([
+            'folder' => $folder,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * folder_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $folder
+     *
+     * @return string The formatted folder_securityHealthAnalyticsSettings resource.
+     */
+    public static function folderSecurityHealthAnalyticsSettingsName(string $folder): string
+    {
+        return self::getPathTemplate('folderSecurityHealthAnalyticsSettings')->render([
+            'folder' => $folder,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * folder_source resource.
      *
      * @param string $folder
@@ -271,6 +494,27 @@ final class SecurityCenterClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * folder_source_finding_externalsystem resource.
+     *
+     * @param string $folder
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted folder_source_finding_externalsystem resource.
+     */
+    public static function folderSourceFindingExternalsystemName(string $folder, string $source, string $finding, string $externalsystem): string
+    {
+        return self::getPathTemplate('folderSourceFindingExternalsystem')->render([
+            'folder' => $folder,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * folder_source_finding_securityMarks resource.
      *
      * @param string $folder
@@ -285,6 +529,23 @@ final class SecurityCenterClient
             'folder' => $folder,
             'source' => $source,
             'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a mute_config
+     * resource.
+     *
+     * @param string $organization
+     * @param string $muteConfig
+     *
+     * @return string The formatted mute_config resource.
+     */
+    public static function muteConfigName(string $organization, string $muteConfig): string
+    {
+        return self::getPathTemplate('muteConfig')->render([
+            'organization' => $organization,
+            'mute_config' => $muteConfig,
         ]);
     }
 
@@ -334,6 +595,106 @@ final class SecurityCenterClient
         return self::getPathTemplate('organizationAssetSecurityMarks')->render([
             'organization' => $organization,
             'asset' => $asset,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $customModule
+     *
+     * @return string The formatted organization_custom_module resource.
+     */
+    public static function organizationCustomModuleName(string $organization, string $customModule): string
+    {
+        return self::getPathTemplate('organizationCustomModule')->render([
+            'organization' => $organization,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_effective_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted organization_effective_custom_module resource.
+     */
+    public static function organizationEffectiveCustomModuleName(string $organization, string $effectiveCustomModule): string
+    {
+        return self::getPathTemplate('organizationEffectiveCustomModule')->render([
+            'organization' => $organization,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_export resource.
+     *
+     * @param string $organization
+     * @param string $export
+     *
+     * @return string The formatted organization_export resource.
+     */
+    public static function organizationExportName(string $organization, string $export): string
+    {
+        return self::getPathTemplate('organizationExport')->render([
+            'organization' => $organization,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_mute_config resource.
+     *
+     * @param string $organization
+     * @param string $muteConfig
+     *
+     * @return string The formatted organization_mute_config resource.
+     */
+    public static function organizationMuteConfigName(string $organization, string $muteConfig): string
+    {
+        return self::getPathTemplate('organizationMuteConfig')->render([
+            'organization' => $organization,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_notification_config resource.
+     *
+     * @param string $organization
+     * @param string $notificationConfig
+     *
+     * @return string The formatted organization_notification_config resource.
+     */
+    public static function organizationNotificationConfigName(string $organization, string $notificationConfig): string
+    {
+        return self::getPathTemplate('organizationNotificationConfig')->render([
+            'organization' => $organization,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * organization_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted organization_securityHealthAnalyticsSettings resource.
+     */
+    public static function organizationSecurityHealthAnalyticsSettingsName(string $organization): string
+    {
+        return self::getPathTemplate('organizationSecurityHealthAnalyticsSettings')->render([
+            'organization' => $organization,
         ]);
     }
 
@@ -390,6 +751,27 @@ final class SecurityCenterClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * organization_source_finding_externalsystem resource.
+     *
+     * @param string $organization
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted organization_source_finding_externalsystem resource.
+     */
+    public static function organizationSourceFindingExternalsystemName(string $organization, string $source, string $finding, string $externalsystem): string
+    {
+        return self::getPathTemplate('organizationSourceFindingExternalsystem')->render([
+            'organization' => $organization,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * organization_source_finding_securityMarks resource.
      *
      * @param string $organization
@@ -441,6 +823,161 @@ final class SecurityCenterClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * project_custom_module resource.
+     *
+     * @param string $project
+     * @param string $customModule
+     *
+     * @return string The formatted project_custom_module resource.
+     */
+    public static function projectCustomModuleName(string $project, string $customModule): string
+    {
+        return self::getPathTemplate('projectCustomModule')->render([
+            'project' => $project,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_dlp_job resource.
+     *
+     * @param string $project
+     * @param string $dlpJob
+     *
+     * @return string The formatted project_dlp_job resource.
+     */
+    public static function projectDlpJobName(string $project, string $dlpJob): string
+    {
+        return self::getPathTemplate('projectDlpJob')->render([
+            'project' => $project,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_effective_custom_module resource.
+     *
+     * @param string $project
+     * @param string $effectiveCustomModule
+     *
+     * @return string The formatted project_effective_custom_module resource.
+     */
+    public static function projectEffectiveCustomModuleName(string $project, string $effectiveCustomModule): string
+    {
+        return self::getPathTemplate('projectEffectiveCustomModule')->render([
+            'project' => $project,
+            'effective_custom_module' => $effectiveCustomModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_export resource.
+     *
+     * @param string $project
+     * @param string $export
+     *
+     * @return string The formatted project_export resource.
+     */
+    public static function projectExportName(string $project, string $export): string
+    {
+        return self::getPathTemplate('projectExport')->render([
+            'project' => $project,
+            'export' => $export,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_dlp_job resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $dlpJob
+     *
+     * @return string The formatted project_location_dlp_job resource.
+     */
+    public static function projectLocationDlpJobName(string $project, string $location, string $dlpJob): string
+    {
+        return self::getPathTemplate('projectLocationDlpJob')->render([
+            'project' => $project,
+            'location' => $location,
+            'dlp_job' => $dlpJob,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_location_table_profile resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $tableProfile
+     *
+     * @return string The formatted project_location_table_profile resource.
+     */
+    public static function projectLocationTableProfileName(string $project, string $location, string $tableProfile): string
+    {
+        return self::getPathTemplate('projectLocationTableProfile')->render([
+            'project' => $project,
+            'location' => $location,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_mute_config resource.
+     *
+     * @param string $project
+     * @param string $muteConfig
+     *
+     * @return string The formatted project_mute_config resource.
+     */
+    public static function projectMuteConfigName(string $project, string $muteConfig): string
+    {
+        return self::getPathTemplate('projectMuteConfig')->render([
+            'project' => $project,
+            'mute_config' => $muteConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_notification_config resource.
+     *
+     * @param string $project
+     * @param string $notificationConfig
+     *
+     * @return string The formatted project_notification_config resource.
+     */
+    public static function projectNotificationConfigName(string $project, string $notificationConfig): string
+    {
+        return self::getPathTemplate('projectNotificationConfig')->render([
+            'project' => $project,
+            'notification_config' => $notificationConfig,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_securityHealthAnalyticsSettings resource.
+     *
+     * @param string $project
+     *
+     * @return string The formatted project_securityHealthAnalyticsSettings resource.
+     */
+    public static function projectSecurityHealthAnalyticsSettingsName(string $project): string
+    {
+        return self::getPathTemplate('projectSecurityHealthAnalyticsSettings')->render([
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * project_source resource.
      *
      * @param string $project
@@ -477,6 +1014,27 @@ final class SecurityCenterClient
 
     /**
      * Formats a string containing the fully-qualified path to represent a
+     * project_source_finding_externalsystem resource.
+     *
+     * @param string $project
+     * @param string $source
+     * @param string $finding
+     * @param string $externalsystem
+     *
+     * @return string The formatted project_source_finding_externalsystem resource.
+     */
+    public static function projectSourceFindingExternalsystemName(string $project, string $source, string $finding, string $externalsystem): string
+    {
+        return self::getPathTemplate('projectSourceFindingExternalsystem')->render([
+            'project' => $project,
+            'source' => $source,
+            'finding' => $finding,
+            'externalsystem' => $externalsystem,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
      * project_source_finding_securityMarks resource.
      *
      * @param string $project
@@ -491,6 +1049,55 @@ final class SecurityCenterClient
             'project' => $project,
             'source' => $source,
             'finding' => $finding,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * project_table_profile resource.
+     *
+     * @param string $project
+     * @param string $tableProfile
+     *
+     * @return string The formatted project_table_profile resource.
+     */
+    public static function projectTableProfileName(string $project, string $tableProfile): string
+    {
+        return self::getPathTemplate('projectTableProfile')->render([
+            'project' => $project,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_health_analytics_custom_module resource.
+     *
+     * @param string $organization
+     * @param string $customModule
+     *
+     * @return string The formatted security_health_analytics_custom_module resource.
+     */
+    public static function securityHealthAnalyticsCustomModuleName(string $organization, string $customModule): string
+    {
+        return self::getPathTemplate('securityHealthAnalyticsCustomModule')->render([
+            'organization' => $organization,
+            'custom_module' => $customModule,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a
+     * security_health_analytics_settings resource.
+     *
+     * @param string $organization
+     *
+     * @return string The formatted security_health_analytics_settings resource.
+     */
+    public static function securityHealthAnalyticsSettingsName(string $organization): string
+    {
+        return self::getPathTemplate('securityHealthAnalyticsSettings')->render([
+            'organization' => $organization,
         ]);
     }
 
@@ -529,6 +1136,23 @@ final class SecurityCenterClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * table_data_profile resource.
+     *
+     * @param string $project
+     * @param string $tableProfile
+     *
+     * @return string The formatted table_data_profile resource.
+     */
+    public static function tableDataProfileName(string $project, string $tableProfile): string
+    {
+        return self::getPathTemplate('tableDataProfile')->render([
+            'project' => $project,
+            'table_profile' => $tableProfile,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a topic
      * resource.
      *
@@ -549,26 +1173,59 @@ final class SecurityCenterClient
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
+     * - bigQueryExport: organizations/{organization}/bigQueryExports/{export}
+     * - dlpJob: projects/{project}/dlpJobs/{dlp_job}
+     * - effectiveSecurityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - externalSystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - finding: organizations/{organization}/sources/{source}/findings/{finding}
      * - folder: folders/{folder}
      * - folderAssetSecurityMarks: folders/{folder}/assets/{asset}/securityMarks
+     * - folderCustomModule: folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - folderEffectiveCustomModule: folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - folderExport: folders/{folder}/bigQueryExports/{export}
+     * - folderMuteConfig: folders/{folder}/muteConfigs/{mute_config}
+     * - folderNotificationConfig: folders/{folder}/notificationConfigs/{notification_config}
+     * - folderSecurityHealthAnalyticsSettings: folders/{folder}/securityHealthAnalyticsSettings
      * - folderSource: folders/{folder}/sources/{source}
      * - folderSourceFinding: folders/{folder}/sources/{source}/findings/{finding}
+     * - folderSourceFindingExternalsystem: folders/{folder}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - folderSourceFindingSecurityMarks: folders/{folder}/sources/{source}/findings/{finding}/securityMarks
+     * - muteConfig: organizations/{organization}/muteConfigs/{mute_config}
      * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
      * - organization: organizations/{organization}
      * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
+     * - organizationCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - organizationEffectiveCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - organizationExport: organizations/{organization}/bigQueryExports/{export}
+     * - organizationMuteConfig: organizations/{organization}/muteConfigs/{mute_config}
+     * - organizationNotificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
+     * - organizationSecurityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
      * - organizationSettings: organizations/{organization}/organizationSettings
      * - organizationSource: organizations/{organization}/sources/{source}
      * - organizationSourceFinding: organizations/{organization}/sources/{source}/findings/{finding}
+     * - organizationSourceFindingExternalsystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
      * - project: projects/{project}
      * - projectAssetSecurityMarks: projects/{project}/assets/{asset}/securityMarks
+     * - projectCustomModule: projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - projectDlpJob: projects/{project}/dlpJobs/{dlp_job}
+     * - projectEffectiveCustomModule: projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
+     * - projectExport: projects/{project}/bigQueryExports/{export}
+     * - projectLocationDlpJob: projects/{project}/locations/{location}/dlpJobs/{dlp_job}
+     * - projectLocationTableProfile: projects/{project}/locations/{location}/tableProfiles/{table_profile}
+     * - projectMuteConfig: projects/{project}/muteConfigs/{mute_config}
+     * - projectNotificationConfig: projects/{project}/notificationConfigs/{notification_config}
+     * - projectSecurityHealthAnalyticsSettings: projects/{project}/securityHealthAnalyticsSettings
      * - projectSource: projects/{project}/sources/{source}
      * - projectSourceFinding: projects/{project}/sources/{source}/findings/{finding}
+     * - projectSourceFindingExternalsystem: projects/{project}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
      * - projectSourceFindingSecurityMarks: projects/{project}/sources/{source}/findings/{finding}/securityMarks
+     * - projectTableProfile: projects/{project}/tableProfiles/{table_profile}
+     * - securityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
+     * - securityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
      * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
      * - source: organizations/{organization}/sources/{source}
+     * - tableDataProfile: projects/{project}/tableProfiles/{table_profile}
      * - topic: projects/{project}/topics/{topic}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
@@ -577,14 +1234,14 @@ final class SecurityCenterClient
      * listed, then parseName will check each of the supported templates, and return
      * the first match.
      *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
+     * @param string  $formattedName The formatted name string
+     * @param ?string $template      Optional name of template to match
      *
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName(string $formattedName, string $template = null): array
+    public static function parseName(string $formattedName, ?string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -639,6 +1296,9 @@ final class SecurityCenterClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
      * }
      *
      * @throws ValidationException
@@ -659,6 +1319,60 @@ final class SecurityCenterClient
 
         array_unshift($args, substr($method, 0, -5));
         return call_user_func_array([$this, 'startAsyncCall'], $args);
+    }
+
+    /**
+     * Kicks off an LRO to bulk mute findings for a parent based on a filter. The
+     * parent can be either an organization, folder or project. The findings
+     * matched by the filter will be muted after the LRO is done.
+     *
+     * The async variant is {@see SecurityCenterClient::bulkMuteFindingsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/bulk_mute_findings.php
+     *
+     * @param BulkMuteFindingsRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return OperationResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function bulkMuteFindings(BulkMuteFindingsRequest $request, array $callOptions = []): OperationResponse
+    {
+        return $this->startApiCall('BulkMuteFindings', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Creates a BigQuery export.
+     *
+     * The async variant is {@see SecurityCenterClient::createBigQueryExportAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/create_big_query_export.php
+     *
+     * @param CreateBigQueryExportRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BigQueryExport
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createBigQueryExport(CreateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
+    {
+        return $this->startApiCall('CreateBigQueryExport', $request, $callOptions)->wait();
     }
 
     /**
@@ -689,6 +1403,32 @@ final class SecurityCenterClient
     }
 
     /**
+     * Creates a mute config.
+     *
+     * The async variant is {@see SecurityCenterClient::createMuteConfigAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/create_mute_config.php
+     *
+     * @param CreateMuteConfigRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return MuteConfig
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createMuteConfig(CreateMuteConfigRequest $request, array $callOptions = []): MuteConfig
+    {
+        return $this->startApiCall('CreateMuteConfig', $request, $callOptions)->wait();
+    }
+
+    /**
      * Creates a notification config.
      *
      * The async variant is
@@ -713,6 +1453,36 @@ final class SecurityCenterClient
     public function createNotificationConfig(CreateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
     {
         return $this->startApiCall('CreateNotificationConfig', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Creates a resident SecurityHealthAnalyticsCustomModule at the scope of the
+     * given CRM parent, and also creates inherited
+     * SecurityHealthAnalyticsCustomModules for all CRM descendants of the given
+     * parent. These modules are enabled by default.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::createSecurityHealthAnalyticsCustomModuleAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/create_security_health_analytics_custom_module.php
+     *
+     * @param CreateSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                            $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createSecurityHealthAnalyticsCustomModule(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
+    {
+        return $this->startApiCall('CreateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
     }
 
     /**
@@ -742,6 +1512,54 @@ final class SecurityCenterClient
     }
 
     /**
+     * Deletes an existing BigQuery export.
+     *
+     * The async variant is {@see SecurityCenterClient::deleteBigQueryExportAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/delete_big_query_export.php
+     *
+     * @param DeleteBigQueryExportRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function deleteBigQueryExport(DeleteBigQueryExportRequest $request, array $callOptions = []): void
+    {
+        $this->startApiCall('DeleteBigQueryExport', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Deletes an existing mute config.
+     *
+     * The async variant is {@see SecurityCenterClient::deleteMuteConfigAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/delete_mute_config.php
+     *
+     * @param DeleteMuteConfigRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function deleteMuteConfig(DeleteMuteConfigRequest $request, array $callOptions = []): void
+    {
+        $this->startApiCall('DeleteMuteConfig', $request, $callOptions)->wait();
+    }
+
+    /**
      * Deletes a notification config.
      *
      * The async variant is
@@ -764,6 +1582,87 @@ final class SecurityCenterClient
     public function deleteNotificationConfig(DeleteNotificationConfigRequest $request, array $callOptions = []): void
     {
         $this->startApiCall('DeleteNotificationConfig', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Deletes the specified SecurityHealthAnalyticsCustomModule and all of its
+     * descendants in the CRM hierarchy. This method is only supported for
+     * resident custom modules.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::deleteSecurityHealthAnalyticsCustomModuleAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/delete_security_health_analytics_custom_module.php
+     *
+     * @param DeleteSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                            $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function deleteSecurityHealthAnalyticsCustomModule(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): void
+    {
+        $this->startApiCall('DeleteSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Gets a BigQuery export.
+     *
+     * The async variant is {@see SecurityCenterClient::getBigQueryExportAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/get_big_query_export.php
+     *
+     * @param GetBigQueryExportRequest $request     A request to house fields associated with the call.
+     * @param array                    $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BigQueryExport
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getBigQueryExport(GetBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
+    {
+        return $this->startApiCall('GetBigQueryExport', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Retrieves an EffectiveSecurityHealthAnalyticsCustomModule.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::getEffectiveSecurityHealthAnalyticsCustomModuleAsync()}
+     * .
+     *
+     * @example samples/V1/SecurityCenterClient/get_effective_security_health_analytics_custom_module.php
+     *
+     * @param GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                                  $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return EffectiveSecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getEffectiveSecurityHealthAnalyticsCustomModule(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): EffectiveSecurityHealthAnalyticsCustomModule
+    {
+        return $this->startApiCall('GetEffectiveSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
     }
 
     /**
@@ -790,6 +1689,32 @@ final class SecurityCenterClient
     public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
     {
         return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Gets a mute config.
+     *
+     * The async variant is {@see SecurityCenterClient::getMuteConfigAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/get_mute_config.php
+     *
+     * @param GetMuteConfigRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return MuteConfig
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getMuteConfig(GetMuteConfigRequest $request, array $callOptions = []): MuteConfig
+    {
+        return $this->startApiCall('GetMuteConfig', $request, $callOptions)->wait();
     }
 
     /**
@@ -846,6 +1771,33 @@ final class SecurityCenterClient
     }
 
     /**
+     * Retrieves a SecurityHealthAnalyticsCustomModule.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::getSecurityHealthAnalyticsCustomModuleAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/get_security_health_analytics_custom_module.php
+     *
+     * @param GetSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                         $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getSecurityHealthAnalyticsCustomModule(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
+    {
+        return $this->startApiCall('GetSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
+    }
+
+    /**
      * Gets a source.
      *
      * The async variant is {@see SecurityCenterClient::getSourceAsync()} .
@@ -892,6 +1844,8 @@ final class SecurityCenterClient
      * @return PagedListResponse
      *
      * @throws ApiException Thrown if the API call fails.
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function groupAssets(GroupAssetsRequest $request, array $callOptions = []): PagedListResponse
     {
@@ -950,10 +1904,101 @@ final class SecurityCenterClient
      * @return PagedListResponse
      *
      * @throws ApiException Thrown if the API call fails.
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function listAssets(ListAssetsRequest $request, array $callOptions = []): PagedListResponse
     {
         return $this->startApiCall('ListAssets', $request, $callOptions);
+    }
+
+    /**
+     * Lists BigQuery exports. Note that when requesting BigQuery exports at a
+     * given level all exports under that level are also returned e.g. if
+     * requesting BigQuery exports under a folder, then all BigQuery exports
+     * immediately under the folder plus the ones created under the projects
+     * within the folder are returned.
+     *
+     * The async variant is {@see SecurityCenterClient::listBigQueryExportsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/list_big_query_exports.php
+     *
+     * @param ListBigQueryExportsRequest $request     A request to house fields associated with the call.
+     * @param array                      $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listBigQueryExports(ListBigQueryExportsRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListBigQueryExports', $request, $callOptions);
+    }
+
+    /**
+     * Returns a list of all resident SecurityHealthAnalyticsCustomModules under
+     * the given CRM parent and all of the parent’s CRM descendants.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::listDescendantSecurityHealthAnalyticsCustomModulesAsync()}
+     * .
+     *
+     * @example samples/V1/SecurityCenterClient/list_descendant_security_health_analytics_custom_modules.php
+     *
+     * @param ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request     A request to house fields associated with the call.
+     * @param array                                                     $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listDescendantSecurityHealthAnalyticsCustomModules(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListDescendantSecurityHealthAnalyticsCustomModules', $request, $callOptions);
+    }
+
+    /**
+     * Returns a list of all EffectiveSecurityHealthAnalyticsCustomModules for the
+     * given parent. This includes resident modules defined at the scope of the
+     * parent, and inherited modules, inherited from CRM ancestors.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::listEffectiveSecurityHealthAnalyticsCustomModulesAsync()}
+     * .
+     *
+     * @example samples/V1/SecurityCenterClient/list_effective_security_health_analytics_custom_modules.php
+     *
+     * @param ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request     A request to house fields associated with the call.
+     * @param array                                                    $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listEffectiveSecurityHealthAnalyticsCustomModules(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListEffectiveSecurityHealthAnalyticsCustomModules', $request, $callOptions);
     }
 
     /**
@@ -986,6 +2031,32 @@ final class SecurityCenterClient
     }
 
     /**
+     * Lists mute configs.
+     *
+     * The async variant is {@see SecurityCenterClient::listMuteConfigsAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/list_mute_configs.php
+     *
+     * @param ListMuteConfigsRequest $request     A request to house fields associated with the call.
+     * @param array                  $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listMuteConfigs(ListMuteConfigsRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListMuteConfigs', $request, $callOptions);
+    }
+
+    /**
      * Lists notification configs.
      *
      * The async variant is {@see SecurityCenterClient::listNotificationConfigsAsync()}
@@ -1010,6 +2081,35 @@ final class SecurityCenterClient
     public function listNotificationConfigs(ListNotificationConfigsRequest $request, array $callOptions = []): PagedListResponse
     {
         return $this->startApiCall('ListNotificationConfigs', $request, $callOptions);
+    }
+
+    /**
+     * Returns a list of all SecurityHealthAnalyticsCustomModules for the given
+     * parent. This includes resident modules defined at the scope of the parent,
+     * and inherited modules, inherited from CRM ancestors.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::listSecurityHealthAnalyticsCustomModulesAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/list_security_health_analytics_custom_modules.php
+     *
+     * @param ListSecurityHealthAnalyticsCustomModulesRequest $request     A request to house fields associated with the call.
+     * @param array                                           $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listSecurityHealthAnalyticsCustomModules(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListSecurityHealthAnalyticsCustomModules', $request, $callOptions);
     }
 
     /**
@@ -1063,6 +2163,8 @@ final class SecurityCenterClient
      * @return OperationResponse
      *
      * @throws ApiException Thrown if the API call fails.
+     *
+     * @deprecated This method will be removed in the next major version update.
      */
     public function runAssetDiscovery(RunAssetDiscoveryRequest $request, array $callOptions = []): OperationResponse
     {
@@ -1122,6 +2224,60 @@ final class SecurityCenterClient
     }
 
     /**
+     * Updates the mute state of a finding.
+     *
+     * The async variant is {@see SecurityCenterClient::setMuteAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/set_mute.php
+     *
+     * @param SetMuteRequest $request     A request to house fields associated with the call.
+     * @param array          $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return Finding
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function setMute(SetMuteRequest $request, array $callOptions = []): Finding
+    {
+        return $this->startApiCall('SetMute', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Simulates a given SecurityHealthAnalyticsCustomModule and Resource.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::simulateSecurityHealthAnalyticsCustomModuleAsync()}
+     * .
+     *
+     * @example samples/V1/SecurityCenterClient/simulate_security_health_analytics_custom_module.php
+     *
+     * @param SimulateSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                              $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return SimulateSecurityHealthAnalyticsCustomModuleResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function simulateSecurityHealthAnalyticsCustomModule(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SimulateSecurityHealthAnalyticsCustomModuleResponse
+    {
+        return $this->startApiCall('SimulateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
+    }
+
+    /**
      * Returns the permissions that a caller has on the specified source.
      *
      * The async variant is {@see SecurityCenterClient::testIamPermissionsAsync()} .
@@ -1145,6 +2301,58 @@ final class SecurityCenterClient
     public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
     {
         return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates a BigQuery export.
+     *
+     * The async variant is {@see SecurityCenterClient::updateBigQueryExportAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_big_query_export.php
+     *
+     * @param UpdateBigQueryExportRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BigQueryExport
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateBigQueryExport(UpdateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
+    {
+        return $this->startApiCall('UpdateBigQueryExport', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates external system. This is for a given finding.
+     *
+     * The async variant is {@see SecurityCenterClient::updateExternalSystemAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_external_system.php
+     *
+     * @param UpdateExternalSystemRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return ExternalSystem
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateExternalSystem(UpdateExternalSystemRequest $request, array $callOptions = []): ExternalSystem
+    {
+        return $this->startApiCall('UpdateExternalSystem', $request, $callOptions)->wait();
     }
 
     /**
@@ -1172,6 +2380,32 @@ final class SecurityCenterClient
     public function updateFinding(UpdateFindingRequest $request, array $callOptions = []): Finding
     {
         return $this->startApiCall('UpdateFinding', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates a mute config.
+     *
+     * The async variant is {@see SecurityCenterClient::updateMuteConfigAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_mute_config.php
+     *
+     * @param UpdateMuteConfigRequest $request     A request to house fields associated with the call.
+     * @param array                   $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return MuteConfig
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateMuteConfig(UpdateMuteConfigRequest $request, array $callOptions = []): MuteConfig
+    {
+        return $this->startApiCall('UpdateMuteConfig', $request, $callOptions)->wait();
     }
 
     /**
@@ -1228,6 +2462,37 @@ final class SecurityCenterClient
     public function updateOrganizationSettings(UpdateOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings
     {
         return $this->startApiCall('UpdateOrganizationSettings', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates the SecurityHealthAnalyticsCustomModule under the given name based
+     * on the given update mask. Updating the enablement state is supported on
+     * both resident and inherited modules (though resident modules cannot have an
+     * enablement state of "inherited"). Updating the display name and custom
+     * config of a module is supported on resident modules only.
+     *
+     * The async variant is
+     * {@see SecurityCenterClient::updateSecurityHealthAnalyticsCustomModuleAsync()} .
+     *
+     * @example samples/V1/SecurityCenterClient/update_security_health_analytics_custom_module.php
+     *
+     * @param UpdateSecurityHealthAnalyticsCustomModuleRequest $request     A request to house fields associated with the call.
+     * @param array                                            $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return SecurityHealthAnalyticsCustomModule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateSecurityHealthAnalyticsCustomModule(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
+    {
+        return $this->startApiCall('UpdateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
     }
 
     /**

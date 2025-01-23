@@ -5,11 +5,45 @@
     "protoPackage": "google.cloud.retail.v2alpha",
     "libraryPackage": "Google\\Cloud\\Retail\\V2alpha",
     "services": {
+        "AnalyticsService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "AnalyticsServiceGapicClient",
+                    "rpcs": {
+                        "ExportAnalyticsMetrics": {
+                            "methods": [
+                                "exportAnalyticsMetrics"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "CatalogService": {
             "clients": {
                 "grpc": {
                     "libraryClient": "CatalogServiceGapicClient",
                     "rpcs": {
+                        "AddCatalogAttribute": {
+                            "methods": [
+                                "addCatalogAttribute"
+                            ]
+                        },
+                        "BatchRemoveCatalogAttributes": {
+                            "methods": [
+                                "batchRemoveCatalogAttributes"
+                            ]
+                        },
+                        "GetAttributesConfig": {
+                            "methods": [
+                                "getAttributesConfig"
+                            ]
+                        },
+                        "GetCompletionConfig": {
+                            "methods": [
+                                "getCompletionConfig"
+                            ]
+                        },
                         "GetDefaultBranch": {
                             "methods": [
                                 "getDefaultBranch"
@@ -20,14 +54,48 @@
                                 "listCatalogs"
                             ]
                         },
+                        "RemoveCatalogAttribute": {
+                            "methods": [
+                                "removeCatalogAttribute"
+                            ]
+                        },
+                        "ReplaceCatalogAttribute": {
+                            "methods": [
+                                "replaceCatalogAttribute"
+                            ]
+                        },
                         "SetDefaultBranch": {
                             "methods": [
                                 "setDefaultBranch"
                             ]
                         },
+                        "UpdateAttributesConfig": {
+                            "methods": [
+                                "updateAttributesConfig"
+                            ]
+                        },
                         "UpdateCatalog": {
                             "methods": [
                                 "updateCatalog"
+                            ]
+                        },
+                        "UpdateCompletionConfig": {
+                            "methods": [
+                                "updateCompletionConfig"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "SearchService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "SearchServiceGapicClient",
+                    "rpcs": {
+                        "Search": {
+                            "methods": [
+                                "search"
                             ]
                         }
                     }
@@ -47,6 +115,113 @@
                         "ImportCompletionData": {
                             "methods": [
                                 "importCompletionData"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "ControlService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ControlServiceGapicClient",
+                    "rpcs": {
+                        "CreateControl": {
+                            "methods": [
+                                "createControl"
+                            ]
+                        },
+                        "DeleteControl": {
+                            "methods": [
+                                "deleteControl"
+                            ]
+                        },
+                        "GetControl": {
+                            "methods": [
+                                "getControl"
+                            ]
+                        },
+                        "ListControls": {
+                            "methods": [
+                                "listControls"
+                            ]
+                        },
+                        "UpdateControl": {
+                            "methods": [
+                                "updateControl"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "MerchantCenterAccountLinkService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "MerchantCenterAccountLinkServiceGapicClient",
+                    "rpcs": {
+                        "CreateMerchantCenterAccountLink": {
+                            "methods": [
+                                "createMerchantCenterAccountLink"
+                            ]
+                        },
+                        "DeleteMerchantCenterAccountLink": {
+                            "methods": [
+                                "deleteMerchantCenterAccountLink"
+                            ]
+                        },
+                        "ListMerchantCenterAccountLinks": {
+                            "methods": [
+                                "listMerchantCenterAccountLinks"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "ModelService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ModelServiceGapicClient",
+                    "rpcs": {
+                        "CreateModel": {
+                            "methods": [
+                                "createModel"
+                            ]
+                        },
+                        "DeleteModel": {
+                            "methods": [
+                                "deleteModel"
+                            ]
+                        },
+                        "GetModel": {
+                            "methods": [
+                                "getModel"
+                            ]
+                        },
+                        "ListModels": {
+                            "methods": [
+                                "listModels"
+                            ]
+                        },
+                        "PauseModel": {
+                            "methods": [
+                                "pauseModel"
+                            ]
+                        },
+                        "ResumeModel": {
+                            "methods": [
+                                "resumeModel"
+                            ]
+                        },
+                        "TuneModel": {
+                            "methods": [
+                                "tuneModel"
+                            ]
+                        },
+                        "UpdateModel": {
+                            "methods": [
+                                "updateModel"
                             ]
                         }
                     }
@@ -77,6 +252,11 @@
                                 "addFulfillmentPlaces"
                             ]
                         },
+                        "AddLocalInventories": {
+                            "methods": [
+                                "addLocalInventories"
+                            ]
+                        },
                         "CreateProduct": {
                             "methods": [
                                 "createProduct"
@@ -102,9 +282,19 @@
                                 "listProducts"
                             ]
                         },
+                        "PurgeProducts": {
+                            "methods": [
+                                "purgeProducts"
+                            ]
+                        },
                         "RemoveFulfillmentPlaces": {
                             "methods": [
                                 "removeFulfillmentPlaces"
+                            ]
+                        },
+                        "RemoveLocalInventories": {
+                            "methods": [
+                                "removeLocalInventories"
                             ]
                         },
                         "SetInventory": {
@@ -121,14 +311,44 @@
                 }
             }
         },
-        "SearchService": {
+        "ServingConfigService": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "SearchServiceGapicClient",
+                    "libraryClient": "ServingConfigServiceGapicClient",
                     "rpcs": {
-                        "Search": {
+                        "AddControl": {
                             "methods": [
-                                "search"
+                                "addControl"
+                            ]
+                        },
+                        "CreateServingConfig": {
+                            "methods": [
+                                "createServingConfig"
+                            ]
+                        },
+                        "DeleteServingConfig": {
+                            "methods": [
+                                "deleteServingConfig"
+                            ]
+                        },
+                        "GetServingConfig": {
+                            "methods": [
+                                "getServingConfig"
+                            ]
+                        },
+                        "ListServingConfigs": {
+                            "methods": [
+                                "listServingConfigs"
+                            ]
+                        },
+                        "RemoveControl": {
+                            "methods": [
+                                "removeControl"
+                            ]
+                        },
+                        "UpdateServingConfig": {
+                            "methods": [
+                                "updateServingConfig"
                             ]
                         }
                     }

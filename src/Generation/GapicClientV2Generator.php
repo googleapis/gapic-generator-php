@@ -20,7 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\LongRunning\OperationsClient as LegacyOperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
@@ -32,6 +32,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\TypeDeclaration;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
@@ -43,7 +44,9 @@ use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Client\OperationsClient;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 class GapicClientV2Generator
 {
@@ -139,16 +142,18 @@ class GapicClientV2Generator
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
+            ->withMember($this->apiVersion())
             ->withMember($this->serviceScopes())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
             ->withMember($this->defaultTransport())
-            ->withMember($this->getSupportedTransports())
+            ->withMember($this->supportedTransports())
             ->withMembers($this->operationMethods())
             ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
             ->withMember($this->magicMethod())
-            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
+            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
+            ->withMember(EmulatorSupportGenerator::generateEmulatorSupport($this->serviceDetails, $this->ctx));
     }
 
     private function serviceName(): PhpClassMember
@@ -157,6 +162,19 @@ class GapicClientV2Generator
             ->withPhpDocText('The name of the service.')
             ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->serviceName);
+    }
+
+    private function apiVersion()
+    {
+        if (is_null($this->serviceDetails->apiVersion)) {
+            return;
+        }
+
+        return AST::property('apiVersion')
+            ->withPhpDocText('The api version of the service')
+            ->withAccess(Access::PRIVATE)
+            ->withType(ResolvedType::string())
+            ->withValue(AST::literal("'" . $this->serviceDetails->apiVersion . "'"));
     }
 
     private function serviceAddress(): PhpClassMember
@@ -218,7 +236,7 @@ class GapicClientV2Generator
             ->filter(fn($m) => !$m->isStreaming())
             ->map(fn($m) => PhpDoc::method(
                 $m->methodName . "Async",
-                $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name,
+                $this->asyncReturnType($m),
                 $m->requestType->name, // the request type will already be imported for the sync variants
             ));
         return PhpDoc::block($methodDocs);
@@ -269,10 +287,12 @@ class GapicClientV2Generator
         if (!$this->serviceDetails->hasLro && !$this->serviceDetails->hasCustomOp) {
             return Vector::new([]);
         }
-
-        $ctype = $this->serviceDetails->hasCustomOp ?
-            $this->serviceDetails->customOperationServiceClientType :
-            Type::fromName(OperationsClient::class);
+        $ctype = $this->serviceDetails->hasCustomOp
+            ? $this->serviceDetails->customOperationServiceClientType
+            : Type::fromName($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+                ? OperationsClient::class
+                : LegacyOperationsClient::class
+            );
         $methods = Vector::new([]);
 
         // getOperationsClient returns the operation client instance.
@@ -352,6 +372,40 @@ class GapicClientV2Generator
             ));
         $methods = $methods->append($resumeOperation);
 
+        if ($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY) {
+            // write createOperationsClient method for new surface clients
+            $operationsClientType = $this->serviceDetails->hasCustomOp
+                ? $this->ctx->type($this->serviceDetails->customOperationServiceClientType)
+                : $this->ctx->type(Type::fromName(OperationsClient::class));
+            $createOperationsClient = AST::method('createOperationsClient')
+                ->withAccess(Access::PRIVATE)
+                ->withParams(AST::param(ResolvedType::array(), $options))
+                ->withBody(AST::block(
+                    '// Unset client-specific configuration options',
+                    AST::call(AST::method('unset'))(
+                        AST::index($options, 'serviceName'),
+                        AST::index($options, 'clientConfig'),
+                        AST::index($options, 'descriptorsConfigPath'),
+                    ),
+                    PHP_EOL,
+                    AST::if(AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
+                        )->then(AST::return(AST::index($options, 'operationsClient'))),
+                    PHP_EOL,
+                    AST::return(AST::new($operationsClientType)($options))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text(
+                        'Create the default operation client for the service.',
+                    ),
+                    PhpDoc::param(
+                        AST::param(ResolvedType::array(), $options),
+                        PhpDoc::text('ClientOptions for the client.')
+                    ),
+                    PhpDoc::return($operationsClientType)
+                ));
+            $methods = $methods->append($createOperationsClient);
+        }
+
         return $methods;
     }
 
@@ -361,7 +415,7 @@ class GapicClientV2Generator
             return Vector::new();
         }
         $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
-        $template = AST::param(ResolvedType::string(), AST::var('template'), AST::NULL);
+        $template = AST::param(ResolvedType::string(true), AST::var('template'), AST::NULL);
 
         return $this->serviceDetails->resourceParts
             ->map(fn ($x) => $x->getFormatMethod()
@@ -430,7 +484,7 @@ class GapicClientV2Generator
 
         // TODO: Consolidate setting all the known array values together.
         // We do this here to maintain the existing sensible ordering.
-        if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             $clientDefaultValues['gcpApiConfigPath'] =
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
@@ -443,12 +497,17 @@ class GapicClientV2Generator
             $credentialsConfig['useJwtAccessWithScope'] = false;
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
-        $clientDefaultValues['transportConfig'] = AST::array([
-            'rest' => AST::array([
-                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
-            ])
-        ]);
-        if ($this->serviceDetails->hasCustomOp) {
+
+        if ($this->serviceDetails->transportType !== Transport::GRPC) {
+            $clientDefaultValues['transportConfig'] = AST::array([
+                'rest' => AST::array([
+                    'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
+                ])
+            ]);
+        }
+
+        if ($this->serviceDetails->hasCustomOp && $this->serviceDetails->migrationMode !== MigrationMode::NEW_SURFACE_ONLY) {
+            // This is only needed for legacy custom operations clients.
             $clientDefaultValues['operationsClientClass'] = AST::access(
                 $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
                 AST::CLS
@@ -475,17 +534,25 @@ class GapicClientV2Generator
             ));
     }
 
-    private function getSupportedTransports()
+    private function supportedTransports()
     {
-        if ($this->serviceDetails->transportType !== Transport::REST) {
-            return null;
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            return AST::method('supportedTransports')
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['rest']))
+                ));
         }
-        return AST::method('getSupportedTransports')
-            ->withPhpDocText('Implements GapicClientTrait::getSupportedTransports.')
-            ->withAccess(Access::PRIVATE, Access::STATIC)
-            ->withBody(AST::block(
-                AST::return(AST::array(['rest']))
-            ));
+
+        if ($this->serviceDetails->transportType === Transport::GRPC) {
+            return AST::method('supportedTransports')
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['grpc', 'grpc-fallback']))
+                ));
+        }
     }
 
     private function construct(): PhpClassMember
@@ -497,16 +564,12 @@ class GapicClientV2Generator
         $options = AST::var('options');
         $optionsParam = AST::param(ResolvedType::array(), $options, AST::array([]));
         $clientOptions = AST::var('clientOptions');
+        $transportType = $this->serviceDetails->transportType;
 
-        // Assumes there are only two transport types.
-        $isGrpcRest = $this->serviceDetails->transportType === Transport::GRPC_REST;
-
-        $restTransportDocText = 'At the moment, supports only `rest`.';
-        $grpcTransportDocText = 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
         $transportDocText =
             PhpDoc::text(
                 'The transport used for executing network requests. ',
-                $isGrpcRest ? $grpcTransportDocText : $restTransportDocText,
+                $this->transportDocText($transportType),
                 '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
                 // TODO(vNext): Don't use a fully-qualified type here.
                 $ctx->type(Type::fromName(TransportInterface::class), true),
@@ -514,13 +577,17 @@ class GapicClientV2Generator
                 'setting, will be ignored.'
             );
 
-        $transportConfigSampleValues = [];
-        if ($isGrpcRest) {
-            $transportConfigSampleValues['grpc'] = AST::arrayEllipsis();
+        $transportConfigSampleValues = [
+            'grpc' => AST::arrayEllipsis(),
+            'rest' => AST::arrayEllipsis()
+        ];
+
+        if (Transport::isGrpcOnly($transportType)) {
+            unset($transportConfigSampleValues['rest']);
+        } elseif (Transport::isRestOnly($transportType)) {
+            unset($transportConfigSampleValues['grpc']);
         }
-        // Set this value here, don't initialize it, so we can maintain alphabetical order
-        // for the resulting printed doc.
-        $transportConfigSampleValues['rest'] = AST::arrayEllipsis();
+
         $transportConfigDocText =
             PhpDoc::text(
                 'Configuration options that will be used to construct the transport. Options for',
@@ -538,14 +605,18 @@ class GapicClientV2Generator
                 'See the',
                 AST::call(
                     $ctx->type(
-                        Type::fromName($isGrpcRest ? GrpcTransport::class : RestTransport::class),
+                        Type::fromName(
+                            Transport::isRestOnly($transportType) ?
+                                RestTransport::class :
+                                GrpcTransport::class
+                        ),
                         true
                     ),
                     AST::method('build')
                 )(),
-                $isGrpcRest ? 'and' : '',
-                $isGrpcRest
-                    ? AST::call(
+                Transport::isGrpcRest($transportType) ? 'and' : '',
+                Transport::isGrpcRest($transportType) ?
+                    AST::call(
                         $ctx->type(
                             Type::fromName(RestTransport::class),
                             true
@@ -553,13 +624,14 @@ class GapicClientV2Generator
                         AST::method('build')
                     )()
                     : '',
-                $isGrpcRest ? 'methods ' : 'method ',
+                Transport::isGrpcRest($transportType) ? 'methods ' : 'method ',
                 'for the supported options.'
             );
         return AST::method('__construct')
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
+                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $options),
                 Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 Ast::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
@@ -571,6 +643,7 @@ class GapicClientV2Generator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
+                EmulatorSupportGenerator::generateEmulatorPhpDoc($this->serviceDetails),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
                     PhpDoc::type(
@@ -651,11 +724,35 @@ class GapicClientV2Generator
                             'A callable which returns the client cert as a string. This can be used to provide',
                             'a certificate and private key to the transport layer for mTLS.'
                         )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::false()),
+                            $ctx->type(Type::fromName(LoggerInterface::class))
+                        ]),
+                        'logger',
+                        PhpDoc::text(
+                            'A PSR-3 compliant logger. If set to false, logging is disabled,',
+                            'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
             ));
+    }
+
+    private function transportDocText(int $transportType): string
+    {
+        if (Transport::isRestOnly($transportType)) {
+            return 'At the moment, supports only `rest`.';
+        }
+
+        if (Transport::isGrpcOnly($transportType)) {
+            return 'At the moment, supports only `grpc`.';
+        }
+
+        return 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
     }
 
     private function rpcMethod(MethodDetails $method): PhpClassMember
@@ -790,5 +887,15 @@ class GapicClientV2Generator
         $emptyClientName = $this->serviceDetails->gapicClientV2Type->name;
 
         return "samples/{$version}{$emptyClientName}/{$methodName}.php";
+    }
+
+    private function asyncReturnType(MethodDetails $method): string
+    {
+        $returnType = $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name;
+        $nestedType = ($method->hasEmptyResponse)
+            ? 'void'
+            : $this->ctx->type($method->methodReturnType)->type->name;
+
+        return sprintf('%s<%s>', $returnType, $nestedType);
     }
 }

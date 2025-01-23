@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ namespace Google\Cloud\Functions\Tests\Unit\V1\Client;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Functions\V1\CallFunctionRequest;
@@ -46,6 +45,7 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
@@ -186,8 +186,14 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $versionId = 670497310;
         $network = 'network1843485230';
         $maxInstances = 330682013;
+        $minInstances = 1491624145;
         $vpcConnector = 'vpcConnector1732864119';
+        $kmsKeyName = 'kmsKeyName2094986649';
+        $buildWorkerPool = 'buildWorkerPool1575447532';
         $buildId = 'buildId-1430655860';
+        $buildName = 'buildName-470597188';
+        $sourceToken = 'sourceToken1671283925';
+        $dockerRepository = 'dockerRepository-1273385271';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
@@ -199,8 +205,14 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setVersionId($versionId);
         $expectedResponse->setNetwork($network);
         $expectedResponse->setMaxInstances($maxInstances);
+        $expectedResponse->setMinInstances($minInstances);
         $expectedResponse->setVpcConnector($vpcConnector);
+        $expectedResponse->setKmsKeyName($kmsKeyName);
+        $expectedResponse->setBuildWorkerPool($buildWorkerPool);
         $expectedResponse->setBuildId($buildId);
+        $expectedResponse->setBuildName($buildName);
+        $expectedResponse->setSourceToken($sourceToken);
+        $expectedResponse->setDockerRepository($dockerRepository);
         $anyResponse = new Any();
         $anyResponse->setValue($expectedResponse->serializeToString());
         $completeOperation = new Operation();
@@ -555,11 +567,17 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $runtime = 'runtime1550962648';
         $availableMemoryMb = 1964533661;
         $serviceAccountEmail = 'serviceAccountEmail-1300473088';
-        $versionId = 670497310;
+        $versionId2 = 102817515;
         $network = 'network1843485230';
         $maxInstances = 330682013;
+        $minInstances = 1491624145;
         $vpcConnector = 'vpcConnector1732864119';
+        $kmsKeyName = 'kmsKeyName2094986649';
+        $buildWorkerPool = 'buildWorkerPool1575447532';
         $buildId = 'buildId-1430655860';
+        $buildName = 'buildName-470597188';
+        $sourceToken = 'sourceToken1671283925';
+        $dockerRepository = 'dockerRepository-1273385271';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name2);
         $expectedResponse->setDescription($description);
@@ -568,11 +586,17 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setRuntime($runtime);
         $expectedResponse->setAvailableMemoryMb($availableMemoryMb);
         $expectedResponse->setServiceAccountEmail($serviceAccountEmail);
-        $expectedResponse->setVersionId($versionId);
+        $expectedResponse->setVersionId($versionId2);
         $expectedResponse->setNetwork($network);
         $expectedResponse->setMaxInstances($maxInstances);
+        $expectedResponse->setMinInstances($minInstances);
         $expectedResponse->setVpcConnector($vpcConnector);
+        $expectedResponse->setKmsKeyName($kmsKeyName);
+        $expectedResponse->setBuildWorkerPool($buildWorkerPool);
         $expectedResponse->setBuildId($buildId);
+        $expectedResponse->setBuildName($buildName);
+        $expectedResponse->setSourceToken($sourceToken);
+        $expectedResponse->setDockerRepository($dockerRepository);
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
@@ -926,8 +950,14 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $versionId = 670497310;
         $network = 'network1843485230';
         $maxInstances = 330682013;
+        $minInstances = 1491624145;
         $vpcConnector = 'vpcConnector1732864119';
+        $kmsKeyName = 'kmsKeyName2094986649';
+        $buildWorkerPool = 'buildWorkerPool1575447532';
         $buildId = 'buildId-1430655860';
+        $buildName = 'buildName-470597188';
+        $sourceToken = 'sourceToken1671283925';
+        $dockerRepository = 'dockerRepository-1273385271';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
@@ -939,8 +969,14 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setVersionId($versionId);
         $expectedResponse->setNetwork($network);
         $expectedResponse->setMaxInstances($maxInstances);
+        $expectedResponse->setMinInstances($minInstances);
         $expectedResponse->setVpcConnector($vpcConnector);
+        $expectedResponse->setKmsKeyName($kmsKeyName);
+        $expectedResponse->setBuildWorkerPool($buildWorkerPool);
         $expectedResponse->setBuildId($buildId);
+        $expectedResponse->setBuildName($buildName);
+        $expectedResponse->setSourceToken($sourceToken);
+        $expectedResponse->setDockerRepository($dockerRepository);
         $anyResponse = new Any();
         $anyResponse->setValue($expectedResponse->serializeToString());
         $completeOperation = new Operation();

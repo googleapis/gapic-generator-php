@@ -1,8 +1,47 @@
 <?php
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * GENERATED CODE WARNING
+ * This file was automatically generated - do not edit!
+ */
 
 return [
     'interfaces' => [
         'google.cloud.securitycenter.v1.SecurityCenter' => [
+            'BulkMuteFindings' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\SecurityCenter\V1\BulkMuteFindingsResponse',
+                    'metadataReturnType' => '\Google\Protobuf\GPBEmpty',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'RunAssetDiscovery' => [
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\SecurityCenter\V1\RunAssetDiscoveryResponse',
@@ -13,6 +52,18 @@ return [
                     'totalPollTimeoutMillis' => '300000',
                 ],
                 'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'CreateBigQueryExport' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\BigQueryExport',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -34,9 +85,33 @@ return [
                     ],
                 ],
             ],
+            'CreateMuteConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\MuteConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'CreateNotificationConfig' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\NotificationConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'CreateSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -58,9 +133,69 @@ return [
                     ],
                 ],
             ],
+            'DeleteBigQueryExport' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'DeleteMuteConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'DeleteNotificationConfig' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'DeleteSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Protobuf\GPBEmpty',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetBigQueryExport' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\BigQueryExport',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetEffectiveSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\EffectiveSecurityHealthAnalyticsCustomModule',
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -82,6 +217,18 @@ return [
                     ],
                 ],
             ],
+            'GetMuteConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\MuteConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'GetNotificationConfig' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\NotificationConfig',
@@ -97,6 +244,18 @@ return [
             'GetOrganizationSettings' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\OrganizationSettings',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule',
                 'headerParams' => [
                     [
                         'keyName' => 'name',
@@ -178,6 +337,66 @@ return [
                     ],
                 ],
             ],
+            'ListBigQueryExports' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getBigQueryExports',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListBigQueryExportsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListDescendantSecurityHealthAnalyticsCustomModules' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getSecurityHealthAnalyticsCustomModules',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListDescendantSecurityHealthAnalyticsCustomModulesResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListEffectiveSecurityHealthAnalyticsCustomModules' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getEffectiveSecurityHealthAnalyticsCustomModules',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListEffectiveSecurityHealthAnalyticsCustomModulesResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'ListFindings' => [
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
@@ -198,6 +417,26 @@ return [
                     ],
                 ],
             ],
+            'ListMuteConfigs' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getMuteConfigs',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListMuteConfigsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'ListNotificationConfigs' => [
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
@@ -209,6 +448,26 @@ return [
                 ],
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\ListNotificationConfigsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListSecurityHealthAnalyticsCustomModules' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getSecurityHealthAnalyticsCustomModules',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ListSecurityHealthAnalyticsCustomModulesResponse',
                 'headerParams' => [
                     [
                         'keyName' => 'parent',
@@ -262,6 +521,30 @@ return [
                     ],
                 ],
             ],
+            'SetMute' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\Finding',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'SimulateSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\SimulateSecurityHealthAnalyticsCustomModuleResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'TestIamPermissions' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\Iam\V1\TestIamPermissionsResponse',
@@ -274,6 +557,32 @@ return [
                     ],
                 ],
             ],
+            'UpdateBigQueryExport' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\BigQueryExport',
+                'headerParams' => [
+                    [
+                        'keyName' => 'big_query_export.name',
+                        'fieldAccessors' => [
+                            'getBigQueryExport',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateExternalSystem' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\ExternalSystem',
+                'headerParams' => [
+                    [
+                        'keyName' => 'external_system.name',
+                        'fieldAccessors' => [
+                            'getExternalSystem',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'UpdateFinding' => [
                 'callType' => \Google\ApiCore\Call::UNARY_CALL,
                 'responseType' => 'Google\Cloud\SecurityCenter\V1\Finding',
@@ -282,6 +591,19 @@ return [
                         'keyName' => 'finding.name',
                         'fieldAccessors' => [
                             'getFinding',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateMuteConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\MuteConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'mute_config.name',
+                        'fieldAccessors' => [
+                            'getMuteConfig',
                             'getName',
                         ],
                     ],
@@ -308,6 +630,19 @@ return [
                         'keyName' => 'organization_settings.name',
                         'fieldAccessors' => [
                             'getOrganizationSettings',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateSecurityHealthAnalyticsCustomModule' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule',
+                'headerParams' => [
+                    [
+                        'keyName' => 'security_health_analytics_custom_module.name',
+                        'fieldAccessors' => [
+                            'getSecurityHealthAnalyticsCustomModule',
                             'getName',
                         ],
                     ],
@@ -340,26 +675,59 @@ return [
                 ],
             ],
             'templateMap' => [
+                'bigQueryExport' => 'organizations/{organization}/bigQueryExports/{export}',
+                'dlpJob' => 'projects/{project}/dlpJobs/{dlp_job}',
+                'effectiveSecurityHealthAnalyticsCustomModule' => 'organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}',
+                'externalSystem' => 'organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}',
                 'finding' => 'organizations/{organization}/sources/{source}/findings/{finding}',
                 'folder' => 'folders/{folder}',
                 'folderAssetSecurityMarks' => 'folders/{folder}/assets/{asset}/securityMarks',
+                'folderCustomModule' => 'folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}',
+                'folderEffectiveCustomModule' => 'folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}',
+                'folderExport' => 'folders/{folder}/bigQueryExports/{export}',
+                'folderMuteConfig' => 'folders/{folder}/muteConfigs/{mute_config}',
+                'folderNotificationConfig' => 'folders/{folder}/notificationConfigs/{notification_config}',
+                'folderSecurityHealthAnalyticsSettings' => 'folders/{folder}/securityHealthAnalyticsSettings',
                 'folderSource' => 'folders/{folder}/sources/{source}',
                 'folderSourceFinding' => 'folders/{folder}/sources/{source}/findings/{finding}',
+                'folderSourceFindingExternalsystem' => 'folders/{folder}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}',
                 'folderSourceFindingSecurityMarks' => 'folders/{folder}/sources/{source}/findings/{finding}/securityMarks',
+                'muteConfig' => 'organizations/{organization}/muteConfigs/{mute_config}',
                 'notificationConfig' => 'organizations/{organization}/notificationConfigs/{notification_config}',
                 'organization' => 'organizations/{organization}',
                 'organizationAssetSecurityMarks' => 'organizations/{organization}/assets/{asset}/securityMarks',
+                'organizationCustomModule' => 'organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}',
+                'organizationEffectiveCustomModule' => 'organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}',
+                'organizationExport' => 'organizations/{organization}/bigQueryExports/{export}',
+                'organizationMuteConfig' => 'organizations/{organization}/muteConfigs/{mute_config}',
+                'organizationNotificationConfig' => 'organizations/{organization}/notificationConfigs/{notification_config}',
+                'organizationSecurityHealthAnalyticsSettings' => 'organizations/{organization}/securityHealthAnalyticsSettings',
                 'organizationSettings' => 'organizations/{organization}/organizationSettings',
                 'organizationSource' => 'organizations/{organization}/sources/{source}',
                 'organizationSourceFinding' => 'organizations/{organization}/sources/{source}/findings/{finding}',
+                'organizationSourceFindingExternalsystem' => 'organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}',
                 'organizationSourceFindingSecurityMarks' => 'organizations/{organization}/sources/{source}/findings/{finding}/securityMarks',
                 'project' => 'projects/{project}',
                 'projectAssetSecurityMarks' => 'projects/{project}/assets/{asset}/securityMarks',
+                'projectCustomModule' => 'projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}',
+                'projectDlpJob' => 'projects/{project}/dlpJobs/{dlp_job}',
+                'projectEffectiveCustomModule' => 'projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}',
+                'projectExport' => 'projects/{project}/bigQueryExports/{export}',
+                'projectLocationDlpJob' => 'projects/{project}/locations/{location}/dlpJobs/{dlp_job}',
+                'projectLocationTableProfile' => 'projects/{project}/locations/{location}/tableProfiles/{table_profile}',
+                'projectMuteConfig' => 'projects/{project}/muteConfigs/{mute_config}',
+                'projectNotificationConfig' => 'projects/{project}/notificationConfigs/{notification_config}',
+                'projectSecurityHealthAnalyticsSettings' => 'projects/{project}/securityHealthAnalyticsSettings',
                 'projectSource' => 'projects/{project}/sources/{source}',
                 'projectSourceFinding' => 'projects/{project}/sources/{source}/findings/{finding}',
+                'projectSourceFindingExternalsystem' => 'projects/{project}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}',
                 'projectSourceFindingSecurityMarks' => 'projects/{project}/sources/{source}/findings/{finding}/securityMarks',
+                'projectTableProfile' => 'projects/{project}/tableProfiles/{table_profile}',
+                'securityHealthAnalyticsCustomModule' => 'organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}',
+                'securityHealthAnalyticsSettings' => 'organizations/{organization}/securityHealthAnalyticsSettings',
                 'securityMarks' => 'organizations/{organization}/assets/{asset}/securityMarks',
                 'source' => 'organizations/{organization}/sources/{source}',
+                'tableDataProfile' => 'projects/{project}/tableProfiles/{table_profile}',
                 'topic' => 'projects/{project}/topics/{topic}',
             ],
         ],

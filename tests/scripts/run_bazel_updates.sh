@@ -28,6 +28,7 @@ bazel run //tests/Integration:iam_update && \
 bazel run //tests/Integration:logging_update && \
 bazel run //tests/Integration:redis_update && \
 bazel run //tests/Integration:retail_update && \
+bazel run //tests/Integration:spanner_update && \
 bazel run //tests/Integration:speech_update && \
 bazel run //tests/Integration:securitycenter_update && \
 bazel run //tests/Integration:talent_update && \

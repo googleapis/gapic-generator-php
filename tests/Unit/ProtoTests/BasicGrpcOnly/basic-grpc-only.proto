@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package testing.basicgrpconly;
+
+// php_namespace option not included; to test generating namespace from proto package.
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+// This is a basicGrpcOnly service.
+service BasicGrpcOnly {
+  option (google.api.default_host) = "basicgrpconly.example.com";
+}

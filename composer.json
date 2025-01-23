@@ -12,15 +12,18 @@
     "autoload-dev": {
         "psr-4": {
             "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
+            "Testing\\BasicAutoPopulation\\": "tests/Unit/ProtoTests/BasicAutoPopulation/out/src",
             "Testing\\BasicBidiStreaming\\": "tests/Unit/ProtoTests/BasicBidiStreaming/out/src",
             "Testing\\BasicClientStreaming\\": "tests/Unit/ProtoTests/BasicClientStreaming/out/src",
             "Testing\\BasicDiregapic\\": "tests/Unit/ProtoTests/BasicDiregapic/out/src",
+            "Testing\\BasicGrpcOnly\\": "tests/Unit/ProtoTests/BasicGrpcOnly/out/src",
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
             "Testing\\BasicOneofNew\\": "tests/Unit/ProtoTests/BasicOneofNew/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
+            "Testing\\CustomLroNew\\": "tests/Unit/ProtoTests/CustomLroNew/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
@@ -38,12 +41,17 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "^1.19.1"
+        "google/gax": "^1.34"
     },
     "scripts": {
         "update-all-tests": [
             "Google\\Generator\\Tests\\Unit\\ProtoTests\\GoldenUpdateMain::updateAll",
             "bash tests/scripts/run_bazel_updates.sh --expunge"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
     }
 }

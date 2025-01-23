@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,16 +28,19 @@ use Google\Cloud\Logging\V2\ConfigServiceV2Client;
 use Google\Cloud\Logging\V2\LogView;
 
 /**
- * Creates a view over logs in a bucket. A bucket may contain a maximum of
- * 50 views.
+ * Creates a view over log entries in a log bucket. A bucket may contain a
+ * maximum of 30 views.
  *
  * @param string $parent The bucket in which to create the view
  *
- *                       "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+ *                       `"projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"`
  *
- *                       Example:
- *                       `"projects/my-logging-project/locations/my-location/buckets/my-bucket"`
- * @param string $viewId The id to use for this view.
+ *                       For example:
+ *
+ *                       `"projects/my-project/locations/global/buckets/my-bucket"`
+ * @param string $viewId A client-assigned identifier such as `"my-view"`. Identifiers are
+ *                       limited to 100 characters and can include only letters, digits,
+ *                       underscores, hyphens, and periods.
  */
 function create_view_sample(string $parent, string $viewId): void
 {

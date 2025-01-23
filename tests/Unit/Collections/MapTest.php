@@ -148,4 +148,12 @@ final class MapTest extends TestCase
         $this->assertContains('one', $v);
         $this->assertContains('two', $v);
     }
+
+    public function testToAssociativeArray(): void
+    {
+        $m = Map::new()->set(1, 'one')->set(2, 'two');
+        $a = $m->toAssociativeArray();
+        $this->assertCount(2, $a);
+        $this->assertEquals([1 => 'one', 2 => 'two'], $a);
+    }
 }

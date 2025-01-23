@@ -27,11 +27,14 @@ namespace Testing\Basic\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -42,8 +45,8 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
- * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> aMethodAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */
 final class BasicClient
 {
@@ -60,6 +63,9 @@ final class BasicClient
 
     /** The name of the code generator, to be included in the agent header. */
     private const CODEGEN_NAME = 'gapic';
+
+    /** The api version of the service */
+    private string $apiVersion = 'v1_20240418';
 
     /** The default scopes required by the service. */
     public static $serviceScopes = [
@@ -88,6 +94,10 @@ final class BasicClient
 
     /**
      * Constructor.
+     *
+     * Setting the "BASIC_EMULATOR_HOST" environment variable will automatically set
+     * the API Endpoint to the value specified in the variable, as well as ensure that
+     * empty credentials are used in the transport layer.
      *
      * @param array $options {
      *     Optional. Options for configuring the service API wrapper.
@@ -136,12 +146,16 @@ final class BasicClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
      * }
      *
      * @throws ValidationException
      */
     public function __construct(array $options = [])
     {
+        $options = $this->setDefaultEmulatorConfig($options);
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
     }
@@ -207,5 +221,24 @@ final class BasicClient
     public function methodWithArgs(RequestWithArgs $request, array $callOptions = []): Response
     {
         return $this->startApiCall('MethodWithArgs', $request, $callOptions)->wait();
+    }
+
+    /** Configure the gapic configuration to use a service emulator. */
+    private function setDefaultEmulatorConfig(array $options): array
+    {
+        $emulatorHost = getenv('BASIC_EMULATOR_HOST');
+        if (empty($emulatorHost)) {
+            return $options;
+        }
+
+        if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
+            $search = $scheme . '://';
+            $emulatorHost = str_replace($search, '', $emulatorHost);
+        }
+
+        $options['apiEndpoint'] ??= $emulatorHost;
+        $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
+        $options['credentials'] ??= new InsecureCredentialsWrapper();
+        return $options;
     }
 }

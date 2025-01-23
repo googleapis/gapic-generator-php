@@ -12,6 +12,7 @@ import "google/api/field_behavior.proto";
 service Basic {
   option (google.api.default_host) = "basic.example.com";
   option (google.api.oauth_scopes) = "scope1,scope2";
+  option (google.api.api_version) = "v1_20240418";
 
   // Test summary text for AMethod
   rpc AMethod(Request) returns(Response) {

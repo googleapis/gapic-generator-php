@@ -95,6 +95,23 @@ class GoldenUpdateMain
             'protoPath' => 'BasicOneofNew/basic-oneof-new.proto',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
         ],
+        16 => [
+            'name' => 'BasicAutoPopulation',
+            'protoPath' => 'BasicAutoPopulation/basic-auto-population.proto'
+        ],
+        17 => [
+            'name' => 'BasicGrpcOnlyClient',
+            'protoPath' => 'BasicGrpcOnly/basic-grpc-only.proto',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
+            'transport' => 'grpc'
+        ],
+        18 => [
+            'name' => 'CustomLro (new surface only)',
+            'protoPath' => 'CustomLroNew/custom_lro_new.proto',
+            'package' => 'testing.customlronew',
+            'transport' => 'rest',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
+        ],
     ];
 
     public static function updateAll()
@@ -148,6 +165,6 @@ class GoldenUpdateMain
 }
 
 if (isset($argv)) {
-    $selection = $argv[1] ?? -1;
+    $selection = (int) ($argv[1] ?? -1);
     GoldenUpdateMain::update($selection);
 }

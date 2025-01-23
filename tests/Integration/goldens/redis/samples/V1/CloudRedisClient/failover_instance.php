@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_FailoverInstance_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Redis\V1\CloudRedisClient;
+use Google\Cloud\Redis\V1\Client\CloudRedisClient;
+use Google\Cloud\Redis\V1\FailoverInstanceRequest;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Rpc\Status;
 
 /**
- * Initiates a failover of the master node to current replica node for a
+ * Initiates a failover of the primary node to current replica node for a
  * specific STANDARD tier Cloud Memorystore for Redis instance.
  *
  * @param string $formattedName Redis instance resource name using the form:
@@ -43,10 +44,14 @@ function failover_instance_sample(string $formattedName): void
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
+    // Prepare the request message.
+    $request = (new FailoverInstanceRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->failoverInstance($formattedName);
+        $response = $cloudRedisClient->failoverInstance($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ namespace Google\Cloud\Redis\V1\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
@@ -35,18 +34,26 @@ use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Cloud\Location\GetLocationRequest;
+use Google\Cloud\Location\ListLocationsRequest;
+use Google\Cloud\Location\Location;
 use Google\Cloud\Redis\V1\CreateInstanceRequest;
 use Google\Cloud\Redis\V1\DeleteInstanceRequest;
 use Google\Cloud\Redis\V1\ExportInstanceRequest;
 use Google\Cloud\Redis\V1\FailoverInstanceRequest;
+use Google\Cloud\Redis\V1\GetInstanceAuthStringRequest;
 use Google\Cloud\Redis\V1\GetInstanceRequest;
 use Google\Cloud\Redis\V1\ImportInstanceRequest;
 use Google\Cloud\Redis\V1\Instance;
+use Google\Cloud\Redis\V1\InstanceAuthString;
 use Google\Cloud\Redis\V1\ListInstancesRequest;
+use Google\Cloud\Redis\V1\RescheduleMaintenanceRequest;
 use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -73,15 +80,19 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface createInstanceAsync(CreateInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteInstanceAsync(DeleteInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface exportInstanceAsync(ExportInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface failoverInstanceAsync(FailoverInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getInstanceAsync(GetInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface importInstanceAsync(ImportInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listInstancesAsync(ListInstancesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateInstanceAsync(UpdateInstanceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface upgradeInstanceAsync(UpgradeInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> createInstanceAsync(CreateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> deleteInstanceAsync(DeleteInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> exportInstanceAsync(ExportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> failoverInstanceAsync(FailoverInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Instance> getInstanceAsync(GetInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<InstanceAuthString> getInstanceAuthStringAsync(GetInstanceAuthStringRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> importInstanceAsync(ImportInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listInstancesAsync(ListInstancesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> rescheduleMaintenanceAsync(RescheduleMaintenanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> updateInstanceAsync(UpdateInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> upgradeInstanceAsync(UpgradeInstanceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Location> getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
 final class CloudRedisClient
 {
@@ -125,11 +136,15 @@ final class CloudRedisClient
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/cloud_redis_rest_client_config.php',
-                ],
-            ],
+        ];
+    }
+
+    /** Implements ClientOptionsTrait::supportedTransports. */
+    private static function supportedTransports()
+    {
+        return [
+            'grpc',
+            'grpc-fallback',
         ];
     }
 
@@ -160,6 +175,25 @@ final class CloudRedisClient
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
+    }
+
+    /**
+     * Create the default operation client for the service.
+     *
+     * @param array $options ClientOptions for the client.
+     *
+     * @return OperationsClient
+     */
+    private function createOperationsClient(array $options)
+    {
+        // Unset client-specific configuration options
+        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
+
+        if (isset($options['operationsClient'])) {
+            return $options['operationsClient'];
+        }
+
+        return new OperationsClient($options);
     }
 
     /**
@@ -211,14 +245,14 @@ final class CloudRedisClient
      * listed, then parseName will check each of the supported templates, and return
      * the first match.
      *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
+     * @param string  $formattedName The formatted name string
+     * @param ?string $template      Optional name of template to match
      *
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName(string $formattedName, string $template = null): array
+    public static function parseName(string $formattedName, ?string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -253,9 +287,8 @@ final class CloudRedisClient
      *           default this settings points to the default client config file, which is
      *           provided in the resources folder.
      *     @type string|TransportInterface $transport
-     *           The transport used for executing network requests. May be either the string
-     *           `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.
-     *           *Advanced usage*: Additionally, it is possible to pass in an already
+     *           The transport used for executing network requests. At the moment, supports only
+     *           `grpc`. *Advanced usage*: Additionally, it is possible to pass in an already
      *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
      *           that when this object is provided, any settings in $transportConfig, and any
      *           $apiEndpoint setting, will be ignored.
@@ -265,14 +298,15 @@ final class CloudRedisClient
      *           example:
      *           $transportConfig = [
      *               'grpc' => [...],
-     *               'rest' => [...],
      *           ];
-     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} and
-     *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
+     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} method for the
      *           supported options.
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
      * }
      *
      * @throws ValidationException
@@ -311,6 +345,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::createInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/create_instance.php
+     *
      * @param CreateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -335,6 +371,8 @@ final class CloudRedisClient
      * deleted.
      *
      * The async variant is {@see CloudRedisClient::deleteInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/delete_instance.php
      *
      * @param DeleteInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -365,6 +403,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::exportInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/export_instance.php
+     *
      * @param ExportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
      *     Optional.
@@ -385,10 +425,12 @@ final class CloudRedisClient
     }
 
     /**
-     * Initiates a failover of the master node to current replica node for a
+     * Initiates a failover of the primary node to current replica node for a
      * specific STANDARD tier Cloud Memorystore for Redis instance.
      *
      * The async variant is {@see CloudRedisClient::failoverInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/failover_instance.php
      *
      * @param FailoverInstanceRequest $request     A request to house fields associated with the call.
      * @param array                   $callOptions {
@@ -414,6 +456,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::getInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/get_instance.php
+     *
      * @param GetInstanceRequest $request     A request to house fields associated with the call.
      * @param array              $callOptions {
      *     Optional.
@@ -434,6 +478,34 @@ final class CloudRedisClient
     }
 
     /**
+     * Gets the AUTH string for a Redis instance. If AUTH is not enabled for the
+     * instance the response will be empty. This information is not included in
+     * the details returned to GetInstance.
+     *
+     * The async variant is {@see CloudRedisClient::getInstanceAuthStringAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/get_instance_auth_string.php
+     *
+     * @param GetInstanceAuthStringRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return InstanceAuthString
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getInstanceAuthString(GetInstanceAuthStringRequest $request, array $callOptions = []): InstanceAuthString
+    {
+        return $this->startApiCall('GetInstanceAuthString', $request, $callOptions)->wait();
+    }
+
+    /**
      * Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
      *
      * Redis may stop serving during this operation. Instance state will be
@@ -444,6 +516,8 @@ final class CloudRedisClient
      * there is no need to call DeleteOperation.
      *
      * The async variant is {@see CloudRedisClient::importInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/import_instance.php
      *
      * @param ImportInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -477,6 +551,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::listInstancesAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/list_instances.php
+     *
      * @param ListInstancesRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
      *     Optional.
@@ -497,6 +573,33 @@ final class CloudRedisClient
     }
 
     /**
+     * Reschedule maintenance for a given instance in a given project and
+     * location.
+     *
+     * The async variant is {@see CloudRedisClient::rescheduleMaintenanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/reschedule_maintenance.php
+     *
+     * @param RescheduleMaintenanceRequest $request     A request to house fields associated with the call.
+     * @param array                        $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return OperationResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function rescheduleMaintenance(RescheduleMaintenanceRequest $request, array $callOptions = []): OperationResponse
+    {
+        return $this->startApiCall('RescheduleMaintenance', $request, $callOptions)->wait();
+    }
+
+    /**
      * Updates the metadata and configuration of a specific Redis instance.
      *
      * Completed longrunning.Operation will contain the new instance object
@@ -504,6 +607,8 @@ final class CloudRedisClient
      * after a few hours, so there is no need to call DeleteOperation.
      *
      * The async variant is {@see CloudRedisClient::updateInstanceAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/update_instance.php
      *
      * @param UpdateInstanceRequest $request     A request to house fields associated with the call.
      * @param array                 $callOptions {
@@ -530,6 +635,8 @@ final class CloudRedisClient
      *
      * The async variant is {@see CloudRedisClient::upgradeInstanceAsync()} .
      *
+     * @example samples/V1/CloudRedisClient/upgrade_instance.php
+     *
      * @param UpgradeInstanceRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
      *     Optional.
@@ -547,5 +654,57 @@ final class CloudRedisClient
     public function upgradeInstance(UpgradeInstanceRequest $request, array $callOptions = []): OperationResponse
     {
         return $this->startApiCall('UpgradeInstance', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Gets information about a location.
+     *
+     * The async variant is {@see CloudRedisClient::getLocationAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/get_location.php
+     *
+     * @param GetLocationRequest $request     A request to house fields associated with the call.
+     * @param array              $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return Location
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getLocation(GetLocationRequest $request, array $callOptions = []): Location
+    {
+        return $this->startApiCall('GetLocation', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Lists information about the supported locations for this service.
+     *
+     * The async variant is {@see CloudRedisClient::listLocationsAsync()} .
+     *
+     * @example samples/V1/CloudRedisClient/list_locations.php
+     *
+     * @param ListLocationsRequest $request     A request to house fields associated with the call.
+     * @param array                $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listLocations(ListLocationsRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListLocations', $request, $callOptions);
     }
 }

@@ -80,6 +80,18 @@ abstract class AST
     /** @var string Constant to reference `E_USER_ERROR`. */
     public const E_USER_ERROR = "\0E_USER_ERROR";
 
+    /** @var string Constant to reference `parse_url`. */
+    public const PARSE_URL = "\0parse_url";
+
+    /** @var string Constant to reference `str_replace`. */
+    public const STRING_REPLACE = "\0str_replace";
+
+    /** @var string Constant to reference `empty`. */
+    public const EMPTY = "\0empty";
+
+    /** @var string Constant to reference `getenv`. */
+    public const GET_ENV = "\0getenv";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';
@@ -416,7 +428,7 @@ abstract class AST
                 if ($this->oneLine) {
                     $itemsStr = $items->skipLast(1)->map(fn ($x) => "{$x}, ")->join();
                     $itemsStr = $itemsStr . "{$items->last()}";
-                    return "[{$itemsStr}]";    
+                    return "[{$itemsStr}]";
                 }
                 $itemsStr = $items->map(fn ($x) => "{$x},\n")->join();
                 $firstNl = count($items) === 0 ? '' : "\n";
@@ -761,10 +773,10 @@ abstract class AST
 
     /**
      * Create a '??' expression.
-     * 
+     *
      * @param Expression $expr The expression to check \isset and !\is_null, as well as the value to return if true.
      * @param Expression $false The expresion to return if $expr is not set or is null.
-     * 
+     *
      * @return Expression
      */
     public static function nullCoalescing(Expression $expr, Expression $false): Expression
@@ -779,6 +791,30 @@ abstract class AST
             {
                 return static::toPhp($this->expr) .
                     ' ?? ' . static::toPhp($this->false);
+            }
+        };
+    }
+
+    /**
+     * Create a '??=' (noal-coalescing assignment) expression.
+     *
+     * @param AST $to Assign a value to this.
+     * @param mixed $from Assign from this.
+     *
+     * @return Expression
+     */
+    public static function nullCoalescingAssign(AST $to, $from): Expression
+    {
+        return new class($to, $from) extends Expression {
+            public function __construct($to, $from)
+            {
+                $this->to = $to;
+                $this->from = $from;
+            }
+            public function toCode(): string
+            {
+                return static::toPhp($this->to) .
+                    ' ??= ' . static::toPhp($this->from);
             }
         };
     }

@@ -1,8 +1,33 @@
 <?php
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * GENERATED CODE WARNING
+ * This file was automatically generated - do not edit!
+ */
 
 return [
     'interfaces' => [
         'google.logging.v2.ConfigServiceV2' => [
+            'CopyLogEntries' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2/entries:copy',
+                'body' => '*',
+            ],
             'CreateBucket' => [
                 'method' => 'post',
                 'uriTemplate' => '/v2/{parent=*/*/locations/*}/buckets',
@@ -52,6 +77,40 @@ return [
                     'bucket_id',
                 ],
             ],
+            'CreateBucketAsync' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2/{parent=*/*/locations/*}/buckets:createAsync',
+                'body' => 'bucket',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=projects/*/locations/*}/buckets:createAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=organizations/*/locations/*}/buckets:createAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=folders/*/locations/*}/buckets:createAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=billingAccounts/*/locations/*}/buckets:createAsync',
+                        'body' => 'bucket',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'CreateExclusion' => [
                 'method' => 'post',
                 'uriTemplate' => '/v2/{parent=*/*}/exclusions',
@@ -84,6 +143,55 @@ return [
                             'getParent',
                         ],
                     ],
+                ],
+            ],
+            'CreateLink' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2/{parent=*/*/locations/*/buckets/*}/links',
+                'body' => 'link',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=projects/*/locations/*/buckets/*}/links',
+                        'body' => 'link',
+                        'queryParams' => [
+                            'link_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=organizations/*/locations/*/buckets/*}/links',
+                        'body' => 'link',
+                        'queryParams' => [
+                            'link_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=folders/*/locations/*/buckets/*}/links',
+                        'body' => 'link',
+                        'queryParams' => [
+                            'link_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{parent=billingAccounts/*/locations/*/buckets/*}/links',
+                        'body' => 'link',
+                        'queryParams' => [
+                            'link_id',
+                        ],
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+                'queryParams' => [
+                    'link_id',
                 ],
             ],
             'CreateSink' => [
@@ -227,6 +335,35 @@ return [
                     ],
                 ],
             ],
+            'DeleteLink' => [
+                'method' => 'delete',
+                'uriTemplate' => '/v2/{name=*/*/locations/*/buckets/*/links/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v2/{name=projects/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v2/{name=organizations/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v2/{name=folders/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*/links/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'DeleteSink' => [
                 'method' => 'delete',
                 'uriTemplate' => '/v2/{sink_name=*/*/sinks/*}',
@@ -303,7 +440,7 @@ return [
                     ],
                     [
                         'method' => 'get',
-                        'uriTemplate' => '/v2/{name=billingAccounts/*/buckets/*}',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*}',
                     ],
                 ],
                 'placeholders' => [
@@ -320,7 +457,19 @@ return [
                 'additionalBindings' => [
                     [
                         'method' => 'get',
+                        'uriTemplate' => '/v2/{name=projects/*}/cmekSettings',
+                    ],
+                    [
+                        'method' => 'get',
                         'uriTemplate' => '/v2/{name=organizations/*}/cmekSettings',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=folders/*}/cmekSettings',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*}/cmekSettings',
                     ],
                 ],
                 'placeholders' => [
@@ -350,6 +499,64 @@ return [
                     [
                         'method' => 'get',
                         'uriTemplate' => '/v2/{name=billingAccounts/*/exclusions/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetLink' => [
+                'method' => 'get',
+                'uriTemplate' => '/v2/{name=*/*/locations/*/buckets/*/links/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=projects/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=organizations/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=folders/*/locations/*/buckets/*/links/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*/links/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetSettings' => [
+                'method' => 'get',
+                'uriTemplate' => '/v2/{name=*/*}/settings',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=projects/*}/settings',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=organizations/*}/settings',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=folders/*}/settings',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*}/settings',
                     ],
                 ],
                 'placeholders' => [
@@ -407,7 +614,7 @@ return [
                     ],
                     [
                         'method' => 'get',
-                        'uriTemplate' => '/v2/{name=billingAccounts/*/buckets/*/views/*}',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*/views/*}',
                     ],
                 ],
                 'placeholders' => [
@@ -466,6 +673,35 @@ return [
                     [
                         'method' => 'get',
                         'uriTemplate' => '/v2/{parent=billingAccounts/*}/exclusions',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListLinks' => [
+                'method' => 'get',
+                'uriTemplate' => '/v2/{parent=*/*/locations/*/buckets/*}/links',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{parent=projects/*/locations/*/buckets/*}/links',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{parent=organizations/*/locations/*/buckets/*}/links',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{parent=folders/*/locations/*/buckets/*}/links',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v2/{parent=billingAccounts/*/locations/*/buckets/*}/links',
                     ],
                 ],
                 'placeholders' => [
@@ -617,6 +853,40 @@ return [
                     'update_mask',
                 ],
             ],
+            'UpdateBucketAsync' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2/{name=*/*/locations/*/buckets/*}:updateAsync',
+                'body' => 'bucket',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{name=projects/*/locations/*/buckets/*}:updateAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{name=organizations/*/locations/*/buckets/*}:updateAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{name=folders/*/locations/*/buckets/*}:updateAsync',
+                        'body' => 'bucket',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2/{name=billingAccounts/*/locations/*/buckets/*}:updateAsync',
+                        'body' => 'bucket',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'UpdateCmekSettings' => [
                 'method' => 'patch',
                 'uriTemplate' => '/v2/{name=*/*}/cmekSettings',
@@ -683,6 +953,30 @@ return [
                 ],
                 'queryParams' => [
                     'update_mask',
+                ],
+            ],
+            'UpdateSettings' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v2/{name=*/*}/settings',
+                'body' => 'settings',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v2/{name=organizations/*}/settings',
+                        'body' => 'settings',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v2/{name=folders/*}/settings',
+                        'body' => 'settings',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
                 ],
             ],
             'UpdateSink' => [

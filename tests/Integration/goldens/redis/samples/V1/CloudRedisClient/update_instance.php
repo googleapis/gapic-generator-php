@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START redis_v1_generated_CloudRedis_UpdateInstance_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Redis\V1\CloudRedisClient;
+use Google\Cloud\Redis\V1\Client\CloudRedisClient;
 use Google\Cloud\Redis\V1\Instance;
 use Google\Cloud\Redis\V1\Instance\Tier;
+use Google\Cloud\Redis\V1\UpdateInstanceRequest;
 use Google\Protobuf\FieldMask;
 use Google\Rpc\Status;
 
@@ -45,8 +46,10 @@ use Google\Rpc\Status;
  *                                     Note: Redis instances are managed and addressed at regional level so
  *                                     location_id here refers to a GCP region; however, users may choose which
  *                                     specific zone (or collection of zones for cross-zone instances) an instance
- *                                     should be provisioned in. Refer to [location_id][google.cloud.redis.v1.Instance.location_id] and
- *                                     [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id] fields for more details.
+ *                                     should be provisioned in. Refer to
+ *                                     [location_id][google.cloud.redis.v1.Instance.location_id] and
+ *                                     [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id]
+ *                                     fields for more details.
  * @param int    $instanceTier         The service tier of the instance.
  * @param int    $instanceMemorySizeGb Redis memory size in GiB.
  */
@@ -58,17 +61,20 @@ function update_instance_sample(
     // Create a client.
     $cloudRedisClient = new CloudRedisClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $updateMask = new FieldMask();
     $instance = (new Instance())
         ->setName($instanceName)
         ->setTier($instanceTier)
         ->setMemorySizeGb($instanceMemorySizeGb);
+    $request = (new UpdateInstanceRequest())
+        ->setUpdateMask($updateMask)
+        ->setInstance($instance);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $cloudRedisClient->updateInstance($updateMask, $instance);
+        $response = $cloudRedisClient->updateInstance($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

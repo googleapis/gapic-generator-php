@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Utils;
 
 use Google\Generator\Collections\Vector;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Collections\Map;
 use Google\Protobuf\Internal\DescriptorProto;
 
@@ -100,21 +101,21 @@ class ProtoCatalog
         $allMsgs = $fileDescs
             ->flatMap(fn ($x) => Vector::new($x->getMessageType()))
             ->flatMap(fn ($x) => static::msgPlusNested($x));
-        $this->msgsByFullname = $allMsgs->toMap(fn ($x) => '.' . $x->desc->getFullName());
+        $this->msgsByFullname = $allMsgs->toMap(fn ($x) => Helpers::prependDot($x->desc->getFullName()));
 
         $allEnums = $fileDescs
             ->flatMap(fn ($x) => Vector::new($x->getEnumType()))
             ->concat($allMsgs->flatMap(fn ($x) => Vector::new($x->getEnumType())));
-        $this->enumsByFullname = $allEnums->toMap(fn ($x) => '.' . $x->desc->getFullName());
+        $this->enumsByFullname = $allEnums->toMap(fn ($x) => Helpers::prependDot($x->desc->getFullName()));
 
         // Map each message to its parent file.
         $this->msgsToFile = Map::new([]);
         foreach ($fileDescs as $file) {
             foreach ($file->getMessageType() as $msg) {
                 foreach (static::msgPlusNested($msg) as $nested) {
-                    $this->msgsToFile = $this->msgsToFile->set('.' . $nested->desc->getFullName(), $file);
+                    $this->msgsToFile = $this->msgsToFile->set(Helpers::prependDot($nested->desc->getFullName()), $file);
                 }
-                $this->msgsToFile = $this->msgsToFile->set('.' . $msg->desc->getFullName(), $file);
+                $this->msgsToFile = $this->msgsToFile->set(Helpers::prependDot($msg->desc->getFullName()), $file);
             }
         }
 
@@ -122,13 +123,13 @@ class ProtoCatalog
         $this->enumsToFile = Map::new([]);
         foreach ($fileDescs as $file) {
             foreach ($file->getEnumType() as $enum) {
-                $this->enumsToFile = $this->enumsToFile->set('.' . $enum->desc->getFullName(), $file);
+                $this->enumsToFile = $this->enumsToFile->set(Helpers::prependDot($enum->desc->getFullName()), $file);
             }
         }
         foreach ($allMsgs as $msg) {
-            $file = $this->msgsToFile['.' . $msg->desc->getFullName()];
+            $file = $this->msgsToFile[Helpers::prependDot($msg->desc->getFullName())];
             foreach ($msg->getenumType() as $enum) {
-                $this->enumsToFile = $this->enumsToFile->set('.' . $enum->desc->getFullName(), $file);
+                $this->enumsToFile = $this->enumsToFile->set(Helpers::prependDot($enum->desc->getFullName()), $file);
             }
         }
 

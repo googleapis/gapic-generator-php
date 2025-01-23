@@ -144,13 +144,18 @@ class ResourcesGenerator
                     }
                     break;
             }
-            
+
             if ($method->headerParams && !$preMigrationOnly) {
                 $descriptor['headerParams'] = $method->headerParams;
             }
 
             if ($method->isMixin()) {
                 $descriptor['interfaceOverride'] = $method->mixinServiceFullname;
+            }
+
+            $autoPopulatedFields = self::getAutoPopulatedUuid4Fields($method, $serviceDetails);
+            if (!empty($autoPopulatedFields)) {
+                $descriptor['autoPopulatedFields'] =  $autoPopulatedFields;
             }
 
             return Map::new($descriptor);
@@ -167,7 +172,7 @@ class ResourcesGenerator
                 ->toArray(fn($x) => $x->getNameCamelCase(), fn($x) => $x->getPattern());
         }
 
-        $return = AST::return(
+        $codeBlock = AST::return(
             AST::array([
                 'interfaces' => AST::array([
                     $serviceDetails->serviceName => AST::array($serviceDescriptor)
@@ -175,7 +180,13 @@ class ResourcesGenerator
             ])
         );
 
-        return "<?php\n\n{$return->toCode()};";
+        $currentYear = (int)date("Y");
+
+        return AST::file(null)
+            ->withApacheLicense($currentYear)
+            ->withGeneratedCodeWarning()
+            ->withBlock($codeBlock)
+            ->toCode() . ";";
     }
 
     public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
@@ -192,13 +203,20 @@ class ResourcesGenerator
                     ->map(fn ($x) => $x->getter->getName())->toArray()
             ),
             'getOperationMethod' => $method->operationPollingMethod->methodName,
-            'cancelOperationMethod' => $serviceDetails->hasCustomOpCancel ? 'cancel': AST::NULL,
-            'deleteOperationMethod' => $serviceDetails->hasCustomOpDelete ? 'delete': AST::NULL,
+            'cancelOperationMethod' => $serviceDetails->customOpCancel ? 'cancel': AST::NULL,
+            'deleteOperationMethod' => $serviceDetails->customOpDelete ? 'delete': AST::NULL,
             'operationErrorCodeMethod' => $errorCode->getter->getName(),
             'operationErrorMessageMethod' => $errorMessage->getter->getName(),
             'operationNameMethod' => $name->getter->getName(),
             'operationStatusMethod' => $status->getter->getName(),
             'operationStatusDoneValue' => $doneValue,
+            'getOperationRequest' => $method->operationPollingMethod->requestType->getFullname(),
+            'cancelOperationRequest' => $serviceDetails->customOpCancel
+                ? $serviceDetails->customOpCancel->requestType->getFullname()
+                : AST::NULL,
+            'deleteOperationRequest' => $serviceDetails->customOpDelete
+                ? $serviceDetails->customOpDelete->requestType->getFullname()
+                : AST::NULL,
         ]);
     }
 
@@ -256,6 +274,7 @@ class ResourcesGenerator
                 $opFile->getPackage(),
                 $opService,
                 $opFile,
+                $serviceYamlConfig,
                 $serviceDetails->transportType
             );
             $opInter = static::compileRestConfigInterfaces($customOpDetails, $serviceYamlConfig);
@@ -269,11 +288,18 @@ class ResourcesGenerator
         if ($numericEnums) {
             $config['numericEnums'] = true;
         }
-        
-        $return = AST::return(
+
+        $codeBlock = AST::return(
             AST::array($config)
         );
-        return "<?php\n\n{$return->toCode()};";
+
+        $currentYear = (int)date("Y");
+
+        return AST::file(null)
+            ->withApacheLicense($currentYear)
+            ->withGeneratedCodeWarning()
+            ->withBlock($codeBlock)
+            ->toCode() . ';';
     }
 
     private static function compileRestConfigInterfaces(ServiceDetails $serviceDetails, ServiceYamlConfig $serviceYamlConfig)
@@ -506,5 +532,45 @@ class ResourcesGenerator
                 ->filter(fn ($f) => $f->name !== $httpRule->getBody() && !$nameSegments->contains($f->name))
                 ->map(fn ($f) => $f->name);
         return $queryParams;
+    }
+
+    /**
+     * For a given method and service, returns any fields that are available
+     * for autopopulation given the restrictions below.
+     * The field is a top-level string field of a unary method's request message.
+     * The field is not annotated with `google.api.field_behavior = REQUIRED`.
+     * The field name is listed in `google.api.publishing.method_settings.auto_populated_fields`.
+     * The field is annotated with `google.api.field_info.format = UUID4`.
+     *
+     * @return array<string, string> Fields to autopopulate in GAX if unset by user
+     */
+    private static function getAutoPopulatedUuid4Fields(
+        MethodDetails $method,
+        ServiceDetails $service
+    ): array {
+        if ($method->isStreaming()) {
+            return [];
+        }
+
+        $methodSetting = $service->serviceYamlConfig->methodSettings
+            ->filter(function ($x) use ($method) {
+                $splitName = explode('.', $x->getSelector());
+                return $method->name == $splitName[array_key_last($splitName)];
+            })->firstOrNull();
+
+        if (is_null($methodSetting) || !count($methodSetting->getAutoPopulatedFields())) {
+            return [];
+        }
+
+        $fieldNames = iterator_to_array($methodSetting->getAutoPopulatedFields());
+        $result = $method->optionalFields
+            ->filter(fn ($x) => in_array($x->name, $fieldNames))
+            ->filter(fn ($x) => $x->isUuid4)
+            ->toMap(
+                fn ($x) => $x->camelName,
+                fn ($x) => AST::literal('\Google\Api\FieldInfo\Format::UUID4')
+            )->toAssociativeArray();
+
+        return $result;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ use Google\Cloud\Retail\V2alpha\CompletionServiceClient;
  * Completes the specified prefix with keyword suggestions.
  *
  * This feature is only available for users who have Retail Search enabled.
- * Please submit a form [here](https://cloud.google.com/contact) to contact
- * cloud sales if you are interested in using Retail Search.
+ * Enable Retail Search on Cloud Console before using this feature.
  *
  * @param string $formattedCatalog Catalog for which the completion is performed.
  *

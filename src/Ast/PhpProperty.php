@@ -18,13 +18,18 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Google\Generator\Utils\ResolvedType;
+
 /** A property within a class. */
 final class PhpProperty extends PhpClassMember
 {
+    private ?ResolvedType $type;
+    
     public function __construct(string $name)
     {
         $this->name = $name;
         $this->value = null;
+        $this->type = null;
     }
 
     /**
@@ -39,6 +44,18 @@ final class PhpProperty extends PhpClassMember
         return $this->clone(fn ($clone) => $clone->value = $value);
     }
 
+    /**
+     * Adds a type declaration to the property
+     * 
+     * @param ResolvedType $type The type of the property
+     * 
+     * @return PhpProperty
+     */
+    public function withType(ResolvedType $type): PhpProperty
+    {
+        return $this->clone(fn ($clone) => $clone->type = $type);
+    } 
+
     public function getName(): string
     {
         return $this->name;
@@ -49,7 +66,13 @@ final class PhpProperty extends PhpClassMember
         return
             $this->phpDocToCode() .
             $this->accessToCode() .
+            $this->typeToCode() .
             '$' . $this->name .
             (is_null($this->value) ? ';' : ' = ' . static::toPhp($this->value) . ';');
+    }
+
+    private function typeToCode(): string
+    {
+        return $this->type ? $this->type->toCode() . ' ' : '';
     }
 }

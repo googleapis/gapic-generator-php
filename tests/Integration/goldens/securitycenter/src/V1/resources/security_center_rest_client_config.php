@@ -1,8 +1,85 @@
 <?php
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * GENERATED CODE WARNING
+ * This file was automatically generated - do not edit!
+ */
 
 return [
     'interfaces' => [
         'google.cloud.securitycenter.v1.SecurityCenter' => [
+            'BulkMuteFindings' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=organizations/*}/findings:bulkMute',
+                'body' => '*',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*}/findings:bulkMute',
+                        'body' => '*',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*}/findings:bulkMute',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'CreateBigQueryExport' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=organizations/*}/bigQueryExports',
+                'body' => 'big_query_export',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*}/bigQueryExports',
+                        'body' => 'big_query_export',
+                        'queryParams' => [
+                            'big_query_export_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*}/bigQueryExports',
+                        'body' => 'big_query_export',
+                        'queryParams' => [
+                            'big_query_export_id',
+                        ],
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+                'queryParams' => [
+                    'big_query_export_id',
+                ],
+            ],
             'CreateFinding' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{parent=organizations/*/sources/*}/findings',
@@ -18,10 +95,61 @@ return [
                     'finding_id',
                 ],
             ],
+            'CreateMuteConfig' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=organizations/*}/muteConfigs',
+                'body' => 'mute_config',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*}/muteConfigs',
+                        'body' => 'mute_config',
+                        'queryParams' => [
+                            'mute_config_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*}/muteConfigs',
+                        'body' => 'mute_config',
+                        'queryParams' => [
+                            'mute_config_id',
+                        ],
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+                'queryParams' => [
+                    'mute_config_id',
+                ],
+            ],
             'CreateNotificationConfig' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{parent=organizations/*}/notificationConfigs',
                 'body' => 'notification_config',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*}/notificationConfigs',
+                        'body' => 'notification_config',
+                        'queryParams' => [
+                            'config_id',
+                        ],
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*}/notificationConfigs',
+                        'body' => 'notification_config',
+                        'queryParams' => [
+                            'config_id',
+                        ],
+                    ],
+                ],
                 'placeholders' => [
                     'parent' => [
                         'getters' => [
@@ -31,6 +159,30 @@ return [
                 ],
                 'queryParams' => [
                     'config_id',
+                ],
+            ],
+            'CreateSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules',
+                'body' => 'security_health_analytics_custom_module',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules',
+                        'body' => 'security_health_analytics_custom_module',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules',
+                        'body' => 'security_health_analytics_custom_module',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
                 ],
             ],
             'CreateSource' => [
@@ -45,9 +197,124 @@ return [
                     ],
                 ],
             ],
+            'DeleteBigQueryExport' => [
+                'method' => 'delete',
+                'uriTemplate' => '/v1/{name=organizations/*/bigQueryExports/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=folders/*/bigQueryExports/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=projects/*/bigQueryExports/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'DeleteMuteConfig' => [
+                'method' => 'delete',
+                'uriTemplate' => '/v1/{name=organizations/*/muteConfigs/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=folders/*/muteConfigs/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=projects/*/muteConfigs/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'DeleteNotificationConfig' => [
                 'method' => 'delete',
                 'uriTemplate' => '/v1/{name=organizations/*/notificationConfigs/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=folders/*/notificationConfigs/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=projects/*/notificationConfigs/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'DeleteSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'delete',
+                'uriTemplate' => '/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}',
+                    ],
+                    [
+                        'method' => 'delete',
+                        'uriTemplate' => '/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetBigQueryExport' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=organizations/*/bigQueryExports/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=folders/*/bigQueryExports/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=projects/*/bigQueryExports/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetEffectiveSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=organizations/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=folders/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=projects/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}',
+                    ],
+                ],
                 'placeholders' => [
                     'name' => [
                         'getters' => [
@@ -68,9 +335,40 @@ return [
                     ],
                 ],
             ],
+            'GetMuteConfig' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=organizations/*/muteConfigs/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=folders/*/muteConfigs/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=projects/*/muteConfigs/*}',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'GetNotificationConfig' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/{name=organizations/*/notificationConfigs/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=folders/*/notificationConfigs/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=projects/*/notificationConfigs/*}',
+                    ],
+                ],
                 'placeholders' => [
                     'name' => [
                         'getters' => [
@@ -82,6 +380,27 @@ return [
             'GetOrganizationSettings' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/{name=organizations/*/organizationSettings}',
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}',
+                    ],
+                ],
                 'placeholders' => [
                     'name' => [
                         'getters' => [
@@ -170,6 +489,69 @@ return [
                     ],
                 ],
             ],
+            'ListBigQueryExports' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=organizations/*}/bigQueryExports',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*}/bigQueryExports',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*}/bigQueryExports',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListDescendantSecurityHealthAnalyticsCustomModules' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:listDescendant',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules:listDescendant',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules:listDescendant',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListEffectiveSecurityHealthAnalyticsCustomModules' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/effectiveCustomModules',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*/securityHealthAnalyticsSettings}/effectiveCustomModules',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*/securityHealthAnalyticsSettings}/effectiveCustomModules',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'ListFindings' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/{parent=organizations/*/sources/*}/findings',
@@ -191,9 +573,61 @@ return [
                     ],
                 ],
             ],
+            'ListMuteConfigs' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=organizations/*}/muteConfigs',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*}/muteConfigs',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*}/muteConfigs',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'ListNotificationConfigs' => [
                 'method' => 'get',
                 'uriTemplate' => '/v1/{parent=organizations/*}/notificationConfigs',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*}/notificationConfigs',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*}/notificationConfigs',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ListSecurityHealthAnalyticsCustomModules' => [
+                'method' => 'get',
+                'uriTemplate' => '/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules',
+                'additionalBindings' => [
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules',
+                    ],
+                    [
+                        'method' => 'get',
+                        'uriTemplate' => '/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules',
+                    ],
+                ],
                 'placeholders' => [
                     'parent' => [
                         'getters' => [
@@ -271,6 +705,54 @@ return [
                     ],
                 ],
             ],
+            'SetMute' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{name=organizations/*/sources/*/findings/*}:setMute',
+                'body' => '*',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{name=folders/*/sources/*/findings/*}:setMute',
+                        'body' => '*',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{name=projects/*/sources/*/findings/*}:setMute',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'name' => [
+                        'getters' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'SimulateSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'post',
+                'uriTemplate' => '/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:simulate',
+                'body' => '*',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules:simulate',
+                        'body' => '*',
+                    ],
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules:simulate',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'TestIamPermissions' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{resource=organizations/*/sources/*}:testIamPermissions',
@@ -279,6 +761,56 @@ return [
                     'resource' => [
                         'getters' => [
                             'getResource',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateBigQueryExport' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v1/{big_query_export.name=organizations/*/bigQueryExports/*}',
+                'body' => 'big_query_export',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{big_query_export.name=folders/*/bigQueryExports/*}',
+                        'body' => 'big_query_export',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{big_query_export.name=projects/*/bigQueryExports/*}',
+                        'body' => 'big_query_export',
+                    ],
+                ],
+                'placeholders' => [
+                    'big_query_export.name' => [
+                        'getters' => [
+                            'getBigQueryExport',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateExternalSystem' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v1/{external_system.name=organizations/*/sources/*/findings/*/externalSystems/*}',
+                'body' => 'external_system',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{external_system.name=folders/*/sources/*/findings/*/externalSystems/*}',
+                        'body' => 'external_system',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{external_system.name=projects/*/sources/*/findings/*/externalSystems/*}',
+                        'body' => 'external_system',
+                    ],
+                ],
+                'placeholders' => [
+                    'external_system.name' => [
+                        'getters' => [
+                            'getExternalSystem',
+                            'getName',
                         ],
                     ],
                 ],
@@ -308,10 +840,47 @@ return [
                     ],
                 ],
             ],
+            'UpdateMuteConfig' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v1/{mute_config.name=organizations/*/muteConfigs/*}',
+                'body' => 'mute_config',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{mute_config.name=folders/*/muteConfigs/*}',
+                        'body' => 'mute_config',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{mute_config.name=projects/*/muteConfigs/*}',
+                        'body' => 'mute_config',
+                    ],
+                ],
+                'placeholders' => [
+                    'mute_config.name' => [
+                        'getters' => [
+                            'getMuteConfig',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
             'UpdateNotificationConfig' => [
                 'method' => 'patch',
                 'uriTemplate' => '/v1/{notification_config.name=organizations/*/notificationConfigs/*}',
                 'body' => 'notification_config',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{notification_config.name=folders/*/notificationConfigs/*}',
+                        'body' => 'notification_config',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{notification_config.name=projects/*/notificationConfigs/*}',
+                        'body' => 'notification_config',
+                    ],
+                ],
                 'placeholders' => [
                     'notification_config.name' => [
                         'getters' => [
@@ -329,6 +898,31 @@ return [
                     'organization_settings.name' => [
                         'getters' => [
                             'getOrganizationSettings',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateSecurityHealthAnalyticsCustomModule' => [
+                'method' => 'patch',
+                'uriTemplate' => '/v1/{security_health_analytics_custom_module.name=organizations/*/securityHealthAnalyticsSettings/customModules/*}',
+                'body' => 'security_health_analytics_custom_module',
+                'additionalBindings' => [
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{security_health_analytics_custom_module.name=folders/*/securityHealthAnalyticsSettings/customModules/*}',
+                        'body' => 'security_health_analytics_custom_module',
+                    ],
+                    [
+                        'method' => 'patch',
+                        'uriTemplate' => '/v1/{security_health_analytics_custom_module.name=projects/*/securityHealthAnalyticsSettings/customModules/*}',
+                        'body' => 'security_health_analytics_custom_module',
+                    ],
+                ],
+                'placeholders' => [
+                    'security_health_analytics_custom_module.name' => [
+                        'getters' => [
+                            'getSecurityHealthAnalyticsCustomModule',
                             'getName',
                         ],
                     ],
@@ -392,7 +986,6 @@ return [
             'CancelOperation' => [
                 'method' => 'post',
                 'uriTemplate' => '/v1/{name=organizations/*/operations/*}:cancel',
-                'body' => '*',
                 'placeholders' => [
                     'name' => [
                         'getters' => [
