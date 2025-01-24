@@ -672,7 +672,14 @@ class GapicClientV2Generator
                             'object or',
                             // TODO(vNext): Don't use a fully-qualified type here.
                             $ctx->type(Type::fromName(CredentialsWrapper::class), true),
-                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.'
+                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.',
+                            PhpDoc::newLine(),
+                            '*Important*: If you accept a credential configuration (credential JSON/File/Stream)',
+                            'from an external source for authentication to Google Cloud Platform, you must',
+                            'validate it before providing it to any Google API or library. Providing an',
+                            'unvalidated credential configuration to Google APIs can compromise the security of',
+                            'your systems and data. For more information',
+                            '{@see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}'
                         )
                     ),
                     PhpDoc::type(
