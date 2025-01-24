@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/googleapis/gapic-generator-php/compare/v1.18.0...v1.18.1) (2025-01-24)
+
+
+### Bug Fixes
+
+* Add emulator support for pubsub clients ([#734](https://github.com/googleapis/gapic-generator-php/issues/734)) ([652ae4b](https://github.com/googleapis/gapic-generator-php/commit/652ae4b2162c357c0d369f9551e3cab94b92b38c))
+
 ## [1.18.0](https://github.com/googleapis/gapic-generator-php/compare/v1.17.0...v1.18.0) (2024-12-06)
 
 
