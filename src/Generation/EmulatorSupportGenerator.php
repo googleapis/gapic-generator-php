@@ -75,10 +75,15 @@ class EmulatorSupportGenerator
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
                     )),
                 AST::nullCoalescingAssign(AST::index($optionsVar, 'apiEndpoint'), $emulatorHostVar),
-                AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
-                    $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
-                    AST::method('createInsecure')
-                )()),
+                AST::if(AST::call(AST::CLASS_EXISTS)(
+                    AST::access($ctx->type(Type::fromName("Grpc\ChannelCredentials")), AST::CLS)
+                ))
+                    ->then(AST::block(
+                        AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
+                            $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
+                            AST::method('createInsecure')
+                        )()),
+                    )),
                 AST::nullCoalescingAssign(
                     AST::index($optionsVar,'credentials'),
                     AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
