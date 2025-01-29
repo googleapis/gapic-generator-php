@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.2](https://github.com/googleapis/gapic-generator-php/compare/v1.18.1...v1.18.2) (2025-01-28)
+
+
+### Bug Fixes
+
+* Ensure ChannelCredentials class exists ([#743](https://github.com/googleapis/gapic-generator-php/issues/743)) ([02b24e8](https://github.com/googleapis/gapic-generator-php/commit/02b24e8e1340958fbd93fa1b5c658f3d33eeba90))
+
 ## [1.18.1](https://github.com/googleapis/gapic-generator-php/compare/v1.18.0...v1.18.1) (2025-01-24)
 
 
