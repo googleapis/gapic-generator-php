@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.3](https://github.com/googleapis/gapic-generator-php/compare/v1.18.2...v1.18.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Ensure hash is int to prevent loss of precision error ([#746](https://github.com/googleapis/gapic-generator-php/issues/746)) ([3e3d435](https://github.com/googleapis/gapic-generator-php/commit/3e3d43597904f8bfbf82410462dcab7bea34a3c4))
+
 ## [1.18.2](https://github.com/googleapis/gapic-generator-php/compare/v1.18.1...v1.18.2) (2025-01-28)
 
 
