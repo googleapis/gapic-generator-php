@@ -350,7 +350,7 @@ final class VectorTest extends TestCase
 
     public function testGetHashDoesNotLosePrecision()
     {
-        // ensure that get hash always returns an int regardless of size
+        // ensure that get hash always returns an int in case of overflow
         // @see https://github.com/googleapis/gapic-generator-php/pull/746
         $data = array_fill(0, 20, 1);
         $v = Vector::new($data);
