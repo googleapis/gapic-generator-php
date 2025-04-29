@@ -21,37 +21,49 @@ namespace Google\Generator\Tests\Conformance;
 use PHPUnit\Framework\TestCase;
 use Google\Showcase\V1beta1\Client\EchoClient;
 use Google\Showcase\V1beta1\FailEchoWithDetailsRequest;
+use Google\ApiCore\ApiException;
+use Google\ApiCore\KnownTypes;
 use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\InsecureRequestBuilder;
 use Google\ApiCore\Transport\GrpcTransport;
+use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\Transport\RestTransport;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Grpc\ChannelCredentials;
 
 final class ShowcaseTest extends TestCase
 {
-    public function testFailWithDetailsRest(): void
+    public function provideTransport()
     {
+
+        // build gRPC transport
+        $grpc = GrpcTransport::build(
+            'localhost:7469',
+            ['stubOpts' => ['credentials' => ChannelCredentials::createInsecure()]]
+        );
+
+        // build REST transport
         $restConfigPath = __DIR__ . '/src/Showcase/V1beta1/resources/echo_rest_client_config.php';
         $requestBuilder = new InsecureRequestBuilder('localhost:7469', $restConfigPath);
         $httpHandler = HttpHandlerFactory::build();
-        $transport = new RestTransport($requestBuilder, [$httpHandler, 'async']);
-        $echoClient = new EchoClient([
-            'apiEndpoint' => 'localhost:7469',
-            'credentials' => new InsecureCredentialsWrapper(),
-            'transport' => $transport,
-        ]);
-        $response = $echoClient->failEchoWithDetails(new FailEchoWithDetailsRequest());
+        $rest = new RestTransport($requestBuilder, [$httpHandler, 'async']);
+
+        return [[$grpc], [$rest]];
     }
 
-    public function testFailWithDetailsGrpc(): void
+    /** @dataProvider provideTransport **/
+    public function testFailWithDetails(TransportInterface $transport): void
     {
-        $transport = GrpcTransport::build('localhost:7469', ['stubOpts' => ['credentials' => ChannelCredentials::createInsecure()]]);
         $echoClient = new EchoClient([
-            //'apiEndpoint' => 'localhost:7469',
             'credentials' => new InsecureCredentialsWrapper(),
             'transport' => $transport,
         ]);
-        $response = $echoClient->failEchoWithDetails(new FailEchoWithDetailsRequest());
+        try {
+            $echoClient->failEchoWithDetails(new FailEchoWithDetailsRequest());
+        } catch (ApiException $e) {
+            foreach ($e->getErrorDetails() as $detail) {
+                var_dump($detail);
+            }
+        }
     }
 }
