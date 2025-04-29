@@ -23,12 +23,14 @@ use Google\Showcase\V1beta1\Client\EchoClient;
 use Google\Showcase\V1beta1\FailEchoWithDetailsRequest;
 use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\InsecureRequestBuilder;
+use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
+use Grpc\ChannelCredentials;
 
 final class ShowcaseTest extends TestCase
 {
-    public function testFailWithDetails(): void
+    public function testFailWithDetailsRest(): void
     {
         $restConfigPath = __DIR__ . '/src/Showcase/V1beta1/resources/echo_rest_client_config.php';
         $requestBuilder = new InsecureRequestBuilder('localhost:7469', $restConfigPath);
@@ -40,6 +42,16 @@ final class ShowcaseTest extends TestCase
             'transport' => $transport,
         ]);
         $response = $echoClient->failEchoWithDetails(new FailEchoWithDetailsRequest());
-        var_dump($response);
+    }
+
+    public function testFailWithDetailsGrpc(): void
+    {
+        $transport = GrpcTransport::build('localhost:7469', ['stubOpts' => ['credentials' => ChannelCredentials::createInsecure()]]);
+        $echoClient = new EchoClient([
+            //'apiEndpoint' => 'localhost:7469',
+            'credentials' => new InsecureCredentialsWrapper(),
+            'transport' => $transport,
+        ]);
+        $response = $echoClient->failEchoWithDetails(new FailEchoWithDetailsRequest());
     }
 }
