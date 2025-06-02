@@ -92,6 +92,9 @@ abstract class AST
     /** @var string Constant to reference `getenv`. */
     public const GET_ENV = "\0getenv";
 
+    /** @var string Constant to reference `class_exists`. */
+    public const CLASS_EXISTS = "\0class_exists";
+
     protected static function deref($obj): string
     {
         return $obj === static::SELF || $obj instanceof ResolvedType ? '::' : '->';

@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.18.3](https://github.com/googleapis/gapic-generator-php/compare/v1.18.2...v1.18.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Ensure hash is int to prevent loss of precision error ([#746](https://github.com/googleapis/gapic-generator-php/issues/746)) ([3e3d435](https://github.com/googleapis/gapic-generator-php/commit/3e3d43597904f8bfbf82410462dcab7bea34a3c4))
+
+## [1.18.2](https://github.com/googleapis/gapic-generator-php/compare/v1.18.1...v1.18.2) (2025-01-28)
+
+
+### Bug Fixes
+
+* Ensure ChannelCredentials class exists ([#743](https://github.com/googleapis/gapic-generator-php/issues/743)) ([02b24e8](https://github.com/googleapis/gapic-generator-php/commit/02b24e8e1340958fbd93fa1b5c658f3d33eeba90))
+
+## [1.18.1](https://github.com/googleapis/gapic-generator-php/compare/v1.18.0...v1.18.1) (2025-01-24)
+
+
+### Bug Fixes
+
+* Add emulator support for pubsub clients ([#734](https://github.com/googleapis/gapic-generator-php/issues/734)) ([652ae4b](https://github.com/googleapis/gapic-generator-php/commit/652ae4b2162c357c0d369f9551e3cab94b92b38c))
+
+## [1.18.0](https://github.com/googleapis/gapic-generator-php/compare/v1.17.0...v1.18.0) (2024-12-06)
+
+
+### Features
+
+* Add compatibility for PHP 8.4 ([#736](https://github.com/googleapis/gapic-generator-php/issues/736)) ([0d7b5eb](https://github.com/googleapis/gapic-generator-php/commit/0d7b5ebb54a3bc805647fa1a9feb5a46a8acec91))
+* Add documentation for the Logger option inside the options array ([#731](https://github.com/googleapis/gapic-generator-php/issues/731)) ([4a2bdb1](https://github.com/googleapis/gapic-generator-php/commit/4a2bdb19c7894c9cd3f3a10d11ebaaef8b781c46))
+
+## [1.17.0](https://github.com/googleapis/gapic-generator-php/compare/v1.16.1...v1.17.0) (2024-10-30)
+
+
+### Features
+
+* Generic type for docs in async magic methods ([#732](https://github.com/googleapis/gapic-generator-php/issues/732)) ([68c88ed](https://github.com/googleapis/gapic-generator-php/commit/68c88eddcef45e100d357218e7f141d4f3b92a4d))
+
 ## [1.16.1](https://github.com/googleapis/gapic-generator-php/compare/v1.16.0...v1.16.1) (2024-08-08)
 
 

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Closure;
+
 /**
  * Represent a resolved type, ready to use in code output.
  * This class is required to allow a resolved type to be differentiated from other plain strings.
@@ -29,9 +31,9 @@ class ResolvedType
      *
      * @return ResolvedType
      */
-    public static function array(): ResolvedType
+    public static function array(bool $optional = false): ResolvedType
     {
-        return new ResolvedType(Type::array(), fn () => 'array');
+        return new ResolvedType(Type::array(), fn () => 'array', $optional);
     }
 
     /**
@@ -39,9 +41,9 @@ class ResolvedType
      *
      * @return ResolvedType
      */
-    public static function string(): ResolvedType
+    public static function string(bool $optional = false): ResolvedType
     {
-        return new ResolvedType(Type::string(), fn () => 'string');
+        return new ResolvedType(Type::string(), fn () => 'string', $optional);
     }
 
     /**
@@ -69,19 +71,16 @@ class ResolvedType
      *
      * @param string $typeName The resolved name of the type.
      */
-    public function __construct(Type $type, \Closure $fnToCode)
-    {
-        $this->type = $type;
-        $this->fnToCode = $fnToCode;
+    public function __construct(
+        /** @var Type *Readonly* The type of this resolved-type. */
+        public ReadOnly Type $type,
+        private Closure $fnToCode,
+        private bool $optional = false
+    ) {
     }
-
-    /** @var Type *Readonly* The type of this resolved-type. */
-    public Type $type;
-
-    private \Closure $fnToCode;
 
     public function toCode(): string
     {
-        return ($this->fnToCode)();
+        return ($this->optional ? '?' : '') . ($this->fnToCode)();
     }
 }

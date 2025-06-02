@@ -144,7 +144,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     {
         $hash = 1;
         foreach ($this->data as $item) {
-            $hash *= 13;
+            $hash = (int) ($hash * 13);
             $hash ^= static::hash($item);
         }
         return $hash;

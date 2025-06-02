@@ -347,4 +347,17 @@ final class VectorTest extends TestCase
         $a = $v->toArray(fn ($x) => "key_{$x}", fn ($x) => $x * 10);
         $this->assertEquals(['key_1' => 10, 'key_2' => 20], $a);
     }
+
+    public function testGetHashDoesNotLosePrecision()
+    {
+        // ensure that get hash always returns an int in case of overflow
+        // @see https://github.com/googleapis/gapic-generator-php/pull/746
+        $data = array_fill(0, 20, 1);
+        $v = Vector::new($data);
+        ob_start();
+        $hash = $v->getHash();
+        $output = ob_get_clean();
+        $this->assertEquals('', $output);
+        $this->assertTrue(is_int($hash));
+    }
 }
