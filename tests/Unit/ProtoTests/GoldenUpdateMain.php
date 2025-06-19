@@ -41,77 +41,81 @@ class GoldenUpdateMain
             'protoPath' => 'BasicPaginated/basic-paginated.proto'
         ],
         5 => [
+            'name' => 'BasicPaginatedException',
+            'protoPath' => 'BasicPaginatedException/basic-paginated-exception.proto'
+        ],
+        6 => [
             'name' => 'BasicBidiStreaming',
             'protoPath' => 'BasicBidiStreaming/basic-bidi-streaming.proto'
         ],
-        6 => [
+        7 => [
             'name' => 'BasicServerStreaming',
             'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto'
         ],
-        7 => [
+        8 => [
             'name' => 'BasicClientStreaming',
             'protoPath' => 'BasicClientStreaming/basic-client-streaming.proto'
         ],
-        8 => [
+        9 => [
             'name' => 'GrpcServiceConfig',
             'protoPath' => 'GrpcServiceConfig/grpc-service-config1.proto',
             'package' => 'testing.grpcserviceconfig'
         ],
-        9 => [
+        10 => [
             'name' => 'RoutingHeaders',
             'protoPath' => 'RoutingHeaders/routing-headers.proto',
             'migrationMode' => MigrationMode::MIGRATING
         ],
-        10 => [
+        11 => [
             'name' => 'DeprecatedService',
             'protoPath' => 'DeprecatedService/deprecated_service.proto'
         ],
-        11 => [
+        12 => [
             'name' => 'BasicDiregapic',
             'protoPath' => 'BasicDiregapic/library_rest.proto',
             'package' => 'google.example.library.v1',
             'transport' => 'rest',
             'migrationMode' => MigrationMode::PRE_MIGRATION_SURFACE_ONLY
         ],
-        12 => [
+        13 => [
             'name' => 'ResourceNames',
             'protoPath' => 'ResourceNames/resource-names.proto',
             'migrationMode' => MigrationMode::MIGRATION_MODE_UNSPECIFIED
         ],
-        13 => [
+        14 => [
             'name' => 'CustomLro',
             'protoPath' => 'CustomLro/custom_lro.proto',
             'package' => 'testing.customlro',
             'transport' => 'rest'
         ],
-        14 => [
+        15 => [
             'name' => 'DisableSnippets',
             'protoPath' => 'DisableSnippets/disable_snippets.proto',
             'package' => 'testing.disablesnippets',
             'generateSnippets' => false
         ],
-        15 => [
+        16 => [
             'name' => 'BasicOneof (new surface only)',
             'protoPath' => 'BasicOneofNew/basic-oneof-new.proto',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
         ],
-        16 => [
+        17 => [
             'name' => 'BasicAutoPopulation',
             'protoPath' => 'BasicAutoPopulation/basic-auto-population.proto'
         ],
-        17 => [
+        18 => [
             'name' => 'BasicGrpcOnlyClient',
             'protoPath' => 'BasicGrpcOnly/basic-grpc-only.proto',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
             'transport' => 'grpc'
         ],
-        18 => [
+        19 => [
             'name' => 'CustomLro (new surface only)',
             'protoPath' => 'CustomLroNew/custom_lro_new.proto',
             'package' => 'testing.customlronew',
             'transport' => 'rest',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
-        ],
+        ]
     ];
 
     public static function updateAll()

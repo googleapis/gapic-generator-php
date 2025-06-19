@@ -1,0 +1,23 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.basicpaginatedexception",
+    "libraryPackage": "Testing\\BasicPaginatedException",
+    "services": {
+        "BasicExceptionPaginated": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BasicExceptionPaginatedGapicClient",
+                    "rpcs": {
+                        "MethodPaginatedException": {
+                            "methods": [
+                                "methodPaginatedException"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package testing.basicpaginatedexception;
+
+option php_namespace = "Testing\\BasicPaginatedException";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+service BasicExceptionPaginated {
+  option (google.api.default_host) = "paginatedexception.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  rpc MethodPaginatedException(ExceptionRequest) returns (ExceptionResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginatedException"
+      body: "*"
+    };
+  }
+}
+
+message PartOfRequestA {}
+message PartOfRequestB {}
+message PartOfRequestC {}
+
+// a_field has no docs, to test that fields without docs
+// are generated correctly.
+message ExceptionRequest {
+  string a_field = 1 [(google.api.field_behavior) = REQUIRED];
+  // Docs on this optional standard page_size field will be ignored.
+  int32 page_size = 2;
+  // Docs on this required standard page_token field will be ignored.
+  string page_token = 3  [(google.api.field_behavior) = REQUIRED];
+  // Monolithic adds an import for a paginated method with a repeated message-typed field (!).
+  repeated PartOfRequestA part_of_request_a = 4 [(google.api.field_behavior) = REQUIRED];
+  repeated PartOfRequestB part_of_request_b = 5;
+  PartOfRequestC part_of_request_c = 6;
+}
+
+// Includes various extra fields in response, to check they
+// are handled correctly in the generated unit-tests.
+// This also includes an extra repeated field to test the
+// PaginationExceptions utility class.
+message ExceptionResponse {
+  repeated string the_results = 1;
+  int32 page_size = 2;
+  string next_page_token = 3;
+  int32 page_token = 4;
+  bool a_field = 5;
+  string another_field = 6;
+  repeated string the_real_results = 7;
+}
