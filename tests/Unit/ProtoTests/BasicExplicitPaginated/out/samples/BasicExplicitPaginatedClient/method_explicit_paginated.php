@@ -22,7 +22,7 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START explicitpaginated_generated_BasicExplicitPaginated_methodExplicitPaginated_sync]
+// [START explicitpaginated_generated_BasicExplicitPaginated_MethodExplicitPaginated_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
 use Testing\BasicExplicitPaginated\Client\BasicExplicitPaginatedClient;
@@ -78,4 +78,4 @@ function callSample(): void
 
     method_explicit_paginated_sample($aField, $pageToken);
 }
-// [END explicitpaginated_generated_BasicExplicitPaginated_methodExplicitPaginated_sync]
+// [END explicitpaginated_generated_BasicExplicitPaginated_MethodExplicitPaginated_sync]

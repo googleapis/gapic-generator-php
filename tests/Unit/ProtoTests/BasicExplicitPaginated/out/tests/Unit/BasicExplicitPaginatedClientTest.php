@@ -98,7 +98,7 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basicexplicitpaginated.BasicExplicitPaginated/methodExplicitPaginated', $actualFuncCall);
+        $this->assertSame('/testing.basicexplicitpaginated.BasicExplicitPaginated/MethodExplicitPaginated', $actualFuncCall);
         $actualValue = $actualRequestObject->getAField();
         $this->assertProtobufEquals($aField, $actualValue);
         $actualValue = $actualRequestObject->getPageToken();

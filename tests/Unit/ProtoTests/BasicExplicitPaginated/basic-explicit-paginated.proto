@@ -12,7 +12,7 @@ service BasicExplicitPaginated {
   option (google.api.default_host) = "explicitpaginated.example.com";
   option (google.api.oauth_scopes) = "scope1,scope2";
 
-  rpc methodExplicitPaginated(ExplicitRequest) returns (ExplicitResponse) {
+  rpc MethodExplicitPaginated(ExplicitRequest) returns (ExplicitResponse) {
     option (google.api.http) = {
       post: "/path:methodExplicitPaginated"
       body: "*"

@@ -187,6 +187,6 @@ final class BasicExplicitPaginatedClient
      */
     public function methodExplicitPaginated(ExplicitRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('methodExplicitPaginated', $request, $callOptions);
+        return $this->startApiCall('MethodExplicitPaginated', $request, $callOptions);
     }
 }

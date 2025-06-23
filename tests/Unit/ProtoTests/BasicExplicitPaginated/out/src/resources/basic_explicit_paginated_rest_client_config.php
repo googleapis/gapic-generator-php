@@ -23,7 +23,7 @@
 return [
     'interfaces' => [
         'testing.basicexplicitpaginated.BasicExplicitPaginated' => [
-            'methodExplicitPaginated' => [
+            'MethodExplicitPaginated' => [
                 'method' => 'post',
                 'uriTemplate' => '/path:methodExplicitPaginated',
                 'body' => '*',

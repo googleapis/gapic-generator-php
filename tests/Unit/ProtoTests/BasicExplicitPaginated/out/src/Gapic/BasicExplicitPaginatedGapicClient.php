@@ -240,6 +240,6 @@ class BasicExplicitPaginatedGapicClient
             $request->setPartOfRequestC($optionalArgs['partOfRequestC']);
         }
 
-        return $this->getPagedListResponse('methodExplicitPaginated', $optionalArgs, ExplicitResponse::class, $request);
+        return $this->getPagedListResponse('MethodExplicitPaginated', $optionalArgs, ExplicitResponse::class, $request);
     }
 }

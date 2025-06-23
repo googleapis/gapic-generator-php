@@ -10,7 +10,7 @@
                 "grpc": {
                     "libraryClient": "BasicExplicitPaginatedGapicClient",
                     "rpcs": {
-                        "methodExplicitPaginated": {
+                        "MethodExplicitPaginated": {
                             "methods": [
                                 "methodExplicitPaginated"
                             ]

@@ -23,7 +23,7 @@
 return [
     'interfaces' => [
         'testing.basicexplicitpaginated.BasicExplicitPaginated' => [
-            'methodExplicitPaginated' => [
+            'MethodExplicitPaginated' => [
                 'pageStreaming' => [
                     'requestPageTokenGetMethod' => 'getPageToken',
                     'requestPageTokenSetMethod' => 'setPageToken',
