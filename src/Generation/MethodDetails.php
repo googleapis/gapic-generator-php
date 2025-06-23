@@ -141,7 +141,7 @@ abstract class MethodDetails
 
         // If we have the type inside the ExplicitPagination class,
         // use the field stored in the paginations array
-        if (ExplicitPagination::exists($outputMsg->getName())) {
+        if (ExplicitPagination::exists($outputMsg->desc->getFullName())) {
             $resources = $outputMsg->desc
                 ->getFieldByName(
                     ExplicitPagination::getPagination($outputMsg->getName())
