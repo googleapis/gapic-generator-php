@@ -22,13 +22,19 @@
 
 return [
     'interfaces' => [
-        'testing.basicpaginatedexception.BasicExceptionPaginated' => [
-            'MethodPaginatedException' => [
-                'method' => 'post',
-                'uriTemplate' => '/path:methodPaginatedException',
-                'body' => '*',
+        'testing.basicexplicitpaginated.BasicExplicitPaginated' => [
+            'methodExplicitPaginated' => [
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getTheResults',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Testing\BasicExplicitPaginated\ExplicitResponse',
             ],
         ],
     ],
-    'numericEnums' => true,
 ];

@@ -1,6 +1,6 @@
 {
     "interfaces": {
-        "testing.basicpaginatedexception.BasicExceptionPaginated": {
+        "testing.basicexplicitpaginated.BasicExplicitPaginated": {
             "retry_codes": {
                 "idempotent": [
                     "DEADLINE_EXCEEDED",
@@ -20,7 +20,7 @@
                 }
             },
             "methods": {
-                "MethodPaginatedException": {
+                "methodExplicitPaginated": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"

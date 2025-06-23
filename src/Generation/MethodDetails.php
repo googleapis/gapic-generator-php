@@ -35,7 +35,7 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\PaginationExceptions;
+use Google\Generator\Utils\ExplicitPagination;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
@@ -139,11 +139,12 @@ abstract class MethodDetails
         // Find the resoures field. Although AIP states that the resource field should be field number 1,
         // this isn't always the case.
 
-        // If we have the type inside the PaginationException class, use the field stored in the paginationException
-        if (PaginationExceptions::exists($outputMsg->getName())) {
+        // If we have the type inside the ExplicitPagination class,
+        // use the field stored in the paginations array
+        if (ExplicitPagination::exists($outputMsg->getName())) {
             $resources = $outputMsg->desc
                 ->getFieldByName(
-                    PaginationExceptions::getException($outputMsg->getName())
+                    ExplicitPagination::getPagination($outputMsg->getName())
                 );
         } else {
             $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor

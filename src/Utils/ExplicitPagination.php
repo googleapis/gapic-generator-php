@@ -19,49 +19,39 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-class PaginationExceptions
+class ExplicitPagination
 {
     /**
-     * This is a list of exceptions for the pagination heuristics.
+     * This is a list of explicit pagination for the pagination heuristics.
      * If there is a proto that has multiple repeated fields and we want to
      * manually override which of the repeated fields is the one should be paginated on
      * should be added to this list
      */
-    private static array $exceptions = [
+    private static array $paginations = [
         'UsableSubnetworksAggregatedList' => 'items',
         'ExceptionResponse' => 'the_results'
     ];
 
     /**
-     * Returns the entire array of exceptions for paginated fields.
-     *
-     * @return array
-     */
-    public static function getExceptions(): array
-    {
-        return self::$exceptions;
-    }
-
-    /**
-     * Returns the corresponding pagination field if exists in the exceptions array.
+     * Returns the corresponding pagination field if exists in the paginations array.
      * Returns null otherwise.
      *
      * @param string $name
      * @return null|string
      */
-    public static function getException(string $name): null|string
+    public static function getPagination(string $name): null|string
     {
-        return self::$exceptions[$name] ?? null;
+        return self::$paginations[$name] ?? null;
     }
 
     /**
-     * Checks if the given field is contained in the exceptions array.
+     * Checks if the given field is contained in the paginations array.
      *
      * @param string $name
      * @return bool
      */
     public static function exists(string $name): bool
     {
-        return isset(self::$exceptions[$name]);
+        return isset(self::$paginations[$name]);
     }
 }

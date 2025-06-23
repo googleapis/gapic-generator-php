@@ -20,23 +20,24 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Testing\BasicPaginatedException\Tests\Unit;
+namespace Testing\BasicExplicitPaginated\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use Testing\BasicPaginatedException\BasicExceptionPaginatedClient;
-use Testing\BasicPaginatedException\ExceptionResponse;
+use Testing\BasicExplicitPaginated\Client\BasicExplicitPaginatedClient;
+use Testing\BasicExplicitPaginated\ExplicitRequest;
+use Testing\BasicExplicitPaginated\ExplicitResponse;
 use stdClass;
 
 /**
- * @group basicpaginatedexception
+ * @group basicexplicitpaginated
  *
  * @group gapic
  */
-class BasicExceptionPaginatedClientTest extends GeneratedTest
+class BasicExplicitPaginatedClientTest extends GeneratedTest
 {
     /** @return TransportInterface */
     private function createTransport($deserialize = null)
@@ -50,17 +51,17 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicExceptionPaginatedClient */
+    /** @return BasicExplicitPaginatedClient */
     private function createClient(array $options = [])
     {
         $options += [
             'credentials' => $this->createCredentials(),
         ];
-        return new BasicExceptionPaginatedClient($options);
+        return new BasicExplicitPaginatedClient($options);
     }
 
     /** @test */
-    public function methodPaginatedExceptionTest()
+    public function methodExplicitPaginatedTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
@@ -77,7 +78,7 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         $theResults = [
             $theResultsElement,
         ];
-        $expectedResponse = new ExceptionResponse();
+        $expectedResponse = new ExplicitResponse();
         $expectedResponse->setPageSize($pageSize2);
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setPageToken($pageToken2);
@@ -89,7 +90,11 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
         $partOfRequestA = [];
-        $response = $gapicClient->methodPaginatedException($aField, $pageToken, $partOfRequestA);
+        $request = (new ExplicitRequest())
+            ->setAField($aField)
+            ->setPageToken($pageToken)
+            ->setPartOfRequestA($partOfRequestA);
+        $response = $gapicClient->methodExplicitPaginated($request);
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
@@ -98,7 +103,7 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basicpaginatedexception.BasicExceptionPaginated/MethodPaginatedException', $actualFuncCall);
+        $this->assertSame('/testing.basicexplicitpaginated.BasicExplicitPaginated/methodExplicitPaginated', $actualFuncCall);
         $actualValue = $actualRequestObject->getAField();
         $this->assertProtobufEquals($aField, $actualValue);
         $actualValue = $actualRequestObject->getPageToken();
@@ -109,7 +114,7 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
     }
 
     /** @test */
-    public function methodPaginatedExceptionExceptionTest()
+    public function methodExplicitPaginatedExceptionTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
@@ -130,8 +135,12 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
         $partOfRequestA = [];
+        $request = (new ExplicitRequest())
+            ->setAField($aField)
+            ->setPageToken($pageToken)
+            ->setPartOfRequestA($partOfRequestA);
         try {
-            $gapicClient->methodPaginatedException($aField, $pageToken, $partOfRequestA);
+            $gapicClient->methodExplicitPaginated($request);
             // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -140,6 +149,59 @@ class BasicExceptionPaginatedClientTest extends GeneratedTest
         }
         // Call popReceivedCalls to ensure the stub is exhausted
         $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function methodExplicitPaginatedAsyncTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $pageSize2 = 1024500956;
+        $nextPageToken = '';
+        $pageToken2 = 649316932;
+        $aField2 = false;
+        $anotherField = 'anotherField1551924414';
+        $theResultsElement = 'theResultsElement-1546403867';
+        $theResults = [
+            $theResultsElement,
+        ];
+        $expectedResponse = new ExplicitResponse();
+        $expectedResponse->setPageSize($pageSize2);
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setPageToken($pageToken2);
+        $expectedResponse->setAField($aField2);
+        $expectedResponse->setAnotherField($anotherField);
+        $expectedResponse->setTheResults($theResults);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $aField = 'aField-1289259108';
+        $pageToken = 'pageToken1630607433';
+        $partOfRequestA = [];
+        $request = (new ExplicitRequest())
+            ->setAField($aField)
+            ->setPageToken($pageToken)
+            ->setPartOfRequestA($partOfRequestA);
+        $response = $gapicClient->methodExplicitPaginatedAsync($request)->wait();
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getTheResults()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/testing.basicexplicitpaginated.BasicExplicitPaginated/methodExplicitPaginated', $actualFuncCall);
+        $actualValue = $actualRequestObject->getAField();
+        $this->assertProtobufEquals($aField, $actualValue);
+        $actualValue = $actualRequestObject->getPageToken();
+        $this->assertProtobufEquals($pageToken, $actualValue);
+        $actualValue = $actualRequestObject->getPartOfRequestA();
+        $this->assertProtobufEquals($partOfRequestA, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 }

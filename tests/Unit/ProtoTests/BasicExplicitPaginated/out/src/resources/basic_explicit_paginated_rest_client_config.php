@@ -22,17 +22,13 @@
 
 return [
     'interfaces' => [
-        'testing.basicpaginatedexception.BasicExceptionPaginated' => [
-            'MethodPaginatedException' => [
-                'pageStreaming' => [
-                    'requestPageTokenGetMethod' => 'getPageToken',
-                    'requestPageTokenSetMethod' => 'setPageToken',
-                    'requestPageSizeGetMethod' => 'getPageSize',
-                    'requestPageSizeSetMethod' => 'setPageSize',
-                    'responsePageTokenGetMethod' => 'getNextPageToken',
-                    'resourcesGetMethod' => 'getTheResults',
-                ],
+        'testing.basicexplicitpaginated.BasicExplicitPaginated' => [
+            'methodExplicitPaginated' => [
+                'method' => 'post',
+                'uriTemplate' => '/path:methodExplicitPaginated',
+                'body' => '*',
             ],
         ],
     ],
+    'numericEnums' => true,
 ];

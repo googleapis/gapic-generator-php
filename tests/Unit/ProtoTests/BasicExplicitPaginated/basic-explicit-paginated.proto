@@ -1,20 +1,20 @@
 syntax = "proto3";
 
-package testing.basicpaginatedexception;
+package testing.basicexplicitpaginated;
 
-option php_namespace = "Testing\\BasicPaginatedException";
+option php_namespace = "Testing\\BasicExplicitPaginated";
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 
-service BasicExceptionPaginated {
-  option (google.api.default_host) = "paginatedexception.example.com";
+service BasicExplicitPaginated {
+  option (google.api.default_host) = "explicitpaginated.example.com";
   option (google.api.oauth_scopes) = "scope1,scope2";
 
-  rpc MethodPaginatedException(ExceptionRequest) returns (ExceptionResponse) {
+  rpc methodExplicitPaginated(ExplicitRequest) returns (ExplicitResponse) {
     option (google.api.http) = {
-      post: "/path:methodPaginatedException"
+      post: "/path:methodExplicitPaginated"
       body: "*"
     };
   }
@@ -26,7 +26,7 @@ message PartOfRequestC {}
 
 // a_field has no docs, to test that fields without docs
 // are generated correctly.
-message ExceptionRequest {
+message ExplicitRequest {
   string a_field = 1 [(google.api.field_behavior) = REQUIRED];
   // Docs on this optional standard page_size field will be ignored.
   int32 page_size = 2;
@@ -41,8 +41,8 @@ message ExceptionRequest {
 // Includes various extra fields in response, to check they
 // are handled correctly in the generated unit-tests.
 // This also includes an extra repeated field to test the
-// PaginationExceptions utility class.
-message ExceptionResponse {
+// ExplicitPagination utility class.
+message ExplicitResponse {
   repeated string the_results = 1;
   int32 page_size = 2;
   string next_page_token = 3;

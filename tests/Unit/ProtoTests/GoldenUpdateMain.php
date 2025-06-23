@@ -41,8 +41,9 @@ class GoldenUpdateMain
             'protoPath' => 'BasicPaginated/basic-paginated.proto'
         ],
         5 => [
-            'name' => 'BasicPaginatedException',
-            'protoPath' => 'BasicPaginatedException/basic-paginated-exception.proto'
+            'name' => 'BasicExplicitPaginated',
+            'protoPath' => 'BasicExplicitPaginated/basic-explicit-paginated.proto',
+            'migrationMode' => MigrationMode::MIGRATING
         ],
         6 => [
             'name' => 'BasicBidiStreaming',
