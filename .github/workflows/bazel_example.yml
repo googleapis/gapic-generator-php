@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     container: gcr.io/gapic-images/googleapis:latest
 
     steps:
@@ -19,37 +19,37 @@ jobs:
     - uses: bazel-contrib/setup-bazel@0.15.0
       with:
         # Avoid downloading Bazel every time.
-        bazelisk-cache: true
+        #bazelisk-cache: true
         # Store build cache per workflow.
-        disk-cache: ${{ github.workflow }}
+        #disk-cache: ${{ github.workflow }}
         # Share repository cache between workflows.
-        repository-cache: true
+        #repository-cache: true
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
-    - name: Bazel File Cache Setup
-      id: cache-bazel
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/bazel
-        key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+    #- name: Bazel File Cache Setup
+    #  id: cache-bazel
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: ~/.cache/bazel
+    #    key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
 
-    - name: Bazel Cache Not Found
-      if: steps.cache-bazel.outputs.cache-hit != 'true'
-      run: |
-        echo "No cache found."
-    - name: Bazel Cache Found
-      if: steps.cache-bazel.outputs.cache-hit == 'true'
-      run: |
-        echo -n "Cache found. Cache size: "
-        du -sh ~/.cache/bazel
-        echo "If the cache seems broken, update the CACHE_VERSION secret in"
-        echo "https://github.com/googleapis/gapic-generator-php/settings/secrets/actions"
-        echo "(use any random string, any GUID will work)"
-        echo "and it will start over with a clean cache."
-        echo "The old one will disappear after 7 days."
+    #- name: Bazel Cache Not Found
+    #  if: steps.cache-bazel.outputs.cache-hit != 'true'
+    #  run: |
+    #    echo "No cache found."
+    #- name: Bazel Cache Found
+    #  if: steps.cache-bazel.outputs.cache-hit == 'true'
+    #  run: |
+    #    echo -n "Cache found. Cache size: "
+    #    du -sh ~/.cache/bazel
+    #    echo "If the cache seems broken, update the CACHE_VERSION secret in"
+    #    echo "https://github.com/googleapis/gapic-generator-php/settings/secrets/actions"
+    #    echo "(use any random string, any GUID will work)"
+    #    echo "and it will start over with a clean cache."
+    #    echo "The old one will disappear after 7 days."
 
     - name: Show bazel version
       run: |
@@ -59,6 +59,7 @@ jobs:
     - name: Build example package; all targets
       run: |
         cd bazel_example;
+        ulimit -n 4096
         bazelisk clean --expunge
         bazelisk build ...
 
