@@ -25,13 +25,13 @@ def gapic_generator_php_repositories():
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
 
-    _php_version = "8.1.13"
+    _php_version = "8.4.8"
     maybe(
         php,
         name = "php_micro",
-        #prebuilt_phps = [
-        #    "@gapic_generator_php//:rules_php_gapic/resources/php-%s_linux_x86_64.tar.gz" % _php_version,
-        #],
+        prebuilt_phps = [
+            "@gapic_generator_php//:rules_php_gapic/resources/php-%s_linux_x86_64.tar.gz" % _php_version,
+        ],
         urls = ["https://www.php.net/distributions/php-%s.tar.gz" % _php_version ],
         strip_prefix = "php-%s" % _php_version,
     )
