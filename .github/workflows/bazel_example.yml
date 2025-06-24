@@ -17,7 +17,7 @@ jobs:
         apt update
         apt install -y git
     - uses: bazel-contrib/setup-bazel@0.15.0
-      with:
+    #  with:
         # Avoid downloading Bazel every time.
         #bazelisk-cache: true
         # Store build cache per workflow.
