@@ -27,6 +27,7 @@ namespace Testing\BasicExplicitPaginated\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
@@ -34,7 +35,6 @@ use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Log\LoggerInterface;
 use Testing\BasicExplicitPaginated\ExplicitRequest;
-use Testing\BasicExplicitPaginated\ExplicitResponse;
 
 /**
  * Service Description:
@@ -42,7 +42,7 @@ use Testing\BasicExplicitPaginated\ExplicitResponse;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface<ExplicitResponse> methodExplicitPaginatedAsync(ExplicitRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> methodExplicitPaginatedAsync(ExplicitRequest $request, array $optionalArgs = [])
  */
 final class BasicExplicitPaginatedClient
 {
@@ -181,12 +181,12 @@ final class BasicExplicitPaginatedClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return ExplicitResponse
+     * @return PagedListResponse
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function methodExplicitPaginated(ExplicitRequest $request, array $callOptions = []): ExplicitResponse
+    public function methodExplicitPaginated(ExplicitRequest $request, array $callOptions = []): PagedListResponse
     {
-        return $this->startApiCall('MethodExplicitPaginated', $request, $callOptions)->wait();
+        return $this->startApiCall('MethodExplicitPaginated', $request, $callOptions);
     }
 }

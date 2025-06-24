@@ -144,7 +144,7 @@ abstract class MethodDetails
         if (ExplicitPagination::exists($outputMsg->desc->getFullName())) {
             $resources = $outputMsg->desc
                 ->getFieldByName(
-                    ExplicitPagination::getPagination($outputMsg->getName())
+                    ExplicitPagination::getPagination($outputMsg->desc->getFullName())
                 );
         } else {
             $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor

@@ -69,23 +69,31 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock response
         $pageSize2 = 1024500956;
-        $nextPageToken = 'nextPageToken-1530815211';
+        $nextPageToken = '';
         $pageToken2 = 649316932;
         $aField2 = false;
         $anotherField = 'anotherField1551924414';
+        $theRealResultsElement = 'theRealResultsElement-1510860256';
+        $theRealResults = [
+            $theRealResultsElement,
+        ];
         $expectedResponse = new ExplicitResponse();
         $expectedResponse->setPageSize($pageSize2);
         $expectedResponse->setNextPageToken($nextPageToken);
         $expectedResponse->setPageToken($pageToken2);
         $expectedResponse->setAField($aField2);
         $expectedResponse->setAnotherField($anotherField);
+        $expectedResponse->setTheRealResults($theRealResults);
         $transport->addResponse($expectedResponse);
         // Mock request
         $aField = 'aField-1289259108';
         $pageToken = 'pageToken1630607433';
         $partOfRequestA = [];
         $response = $gapicClient->methodExplicitPaginated($aField, $pageToken, $partOfRequestA);
-        $this->assertEquals($expectedResponse, $response);
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getTheRealResults()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();

@@ -24,7 +24,15 @@ return [
     'interfaces' => [
         'testing.basicexplicitpaginated.BasicExplicitPaginated' => [
             'MethodExplicitPaginated' => [
-                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'pageStreaming' => [
+                    'requestPageTokenGetMethod' => 'getPageToken',
+                    'requestPageTokenSetMethod' => 'setPageToken',
+                    'requestPageSizeGetMethod' => 'getPageSize',
+                    'requestPageSizeSetMethod' => 'setPageSize',
+                    'responsePageTokenGetMethod' => 'getNextPageToken',
+                    'resourcesGetMethod' => 'getTheRealResults',
+                ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
                 'responseType' => 'Testing\BasicExplicitPaginated\ExplicitResponse',
             ],
         ],
