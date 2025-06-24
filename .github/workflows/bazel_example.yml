@@ -36,7 +36,7 @@ jobs:
         BAZEL_OUTPUT_BASE=$(bazelisk info output_base 2>/dev/null || true)
         if [ -n "$BAZEL_OUTPUT_BASE" ]; then
           echo "Deleting Bazel output base: $BAZEL_OUTPUT_BASE"
-          sudo rm -rf "$BAZEL_OUTPUT_BASE"
+          rm -rf "$BAZEL_OUTPUT_BASE"
         else
           echo "Could not determine Bazel output base. It might not have been created yet, or Bazel is too stuck."
         fi
