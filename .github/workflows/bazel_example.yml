@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container: gcr.io/gapic-images/googleapis:latest
 
     steps:
@@ -59,6 +59,7 @@ jobs:
     - name: Build example package; all targets
       run: |
         cd bazel_example;
+        bazelisk clean --expunge
         bazelisk build ...
 
     - name: Extract Bazel package output
