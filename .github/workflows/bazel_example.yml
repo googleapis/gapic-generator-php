@@ -53,6 +53,7 @@ jobs:
 
     - name: Show bazel version
       run: |
+        cd bazel_example;
         bazelisk --version
 
     - name: Build example package; all targets
