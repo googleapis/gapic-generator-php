@@ -28,6 +28,30 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
+    # Forcefully delete Bazel and Bazelisk caches
+    - name: Aggressive Bazel Cache Cleanup
+      run: |
+        echo "Attempting aggressive Bazel cache cleanup..."
+        # Determine Bazel's output base (where it stores build artifacts)
+        BAZEL_OUTPUT_BASE=$(bazelisk info output_base 2>/dev/null || true)
+        if [ -n "$BAZEL_OUTPUT_BASE" ]; then
+          echo "Deleting Bazel output base: $BAZEL_OUTPUT_BASE"
+          sudo rm -rf "$BAZEL_OUTPUT_BASE"
+        else
+          echo "Could not determine Bazel output base. It might not have been created yet, or Bazel is too stuck."
+        fi
+
+        # Delete Bazel's home directory cache
+        echo "Deleting user's .bazel home directory cache..."
+        rm -rf ~/.bazel || true # `|| true` to prevent failure if directory doesn't exist
+
+        # Delete Bazelisk's local cache for downloaded Bazel versions
+        echo "Deleting Bazelisk's cache..."
+        rm -rf ~/.cache/bazelisk || true
+
+        echo "Aggressive cleanup complete."
+      shell: sh -e {0} # Explicitly specify shell for clarity
+       # No env var needed for this step unless output_base path depends on it
 
     #- name: Bazel File Cache Setup
     #  id: cache-bazel
@@ -59,8 +83,6 @@ jobs:
     - name: Build example package; all targets
       run: |
         cd bazel_example;
-        ulimit -n 4096
-        bazelisk clean --expunge
         bazelisk build ...
 
     - name: Extract Bazel package output
