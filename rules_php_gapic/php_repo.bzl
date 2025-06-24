@@ -37,7 +37,8 @@ def _php_impl(ctx):
 exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
      """
 
-    os_name = ctx.os.name
+    os_name = ctx.os.platform
+    print "THIS IS A TEST************"
     print os_name
 
     # First try using the prebuilt version
