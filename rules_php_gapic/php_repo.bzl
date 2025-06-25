@@ -13,22 +13,15 @@
 # limitations under the License.
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load(
+  ":private/utils.bzl",
+  _execute_log_action = "execute_log_action",
+)
 
-def _execute_and_check_result(ctx, command, **kwargs):
-    res = ctx.execute(command, **kwargs)
-    if res.return_code != 0:
-        fail("""
-Failed to execute command: `{command}`
-Exit Code: {code}
-STDOUT: {stdout}
-STDERR: {stderr}
-        """.format(
-            command = command,
-            code = res.return_code,
-            stdout = res.stdout,
-            stderr = res.stderr,
-        ))
-    return res
+load(
+  ":private/utils.bzl",
+  _execute_and_check_result = "execute_and_check_result",
+)
 
 def _php_impl(ctx):
     root_path = ctx.path(".")
@@ -46,7 +39,12 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
         tmp = "php_tmp"
         _execute_and_check_result(ctx, ["mkdir", tmp], quiet = False)
         ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix, output = tmp)
-        res = ctx.execute(["bin/php", "--version"], working_directory = tmp)
+        res, _str = _execute_log_action(
+            ctx,
+            "prebuilt_php_test.log",
+            ["bin/php", "-r", "\"exit(extension_loaded('libxml') && extension_loaded('curl') && extension_loaded('openssl') ? 0:1);\""],
+            working_directory = tmp)
+
         _execute_and_check_result(ctx, ["rm", "-rf", tmp], quiet = False)
         if res.return_code == 0:
             ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix)
@@ -61,32 +59,39 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
         stripPrefix = ctx.attr.strip_prefix,
         output = srcs_dir,
     )
-    _execute_and_check_result(
-        ctx,
-        ["./configure",
-            "--enable-static",
-            "--disable-all",
-            "--without-pear",
-            "--enable-phar",
-            "--enable-json",
-            "--enable-filter",
-            "--enable-tokenizer",
-            "--with-curl",
-            "--with-libxml",
-            "--enable-xml",
-            "--enable-dom",
-            "--enable-xmlwriter",
-            "--enable-mbstring",
-            "--disable-mbregex",
-            "--with-openssl",
-            "--enable-bcmath",
-            "--prefix=%s" % root_path.realpath],
-        working_directory = srcs_dir,
-        quiet = False,
-    )
-    _execute_and_check_result(ctx, ["make", "-j10"], working_directory = srcs_dir, quiet = False)
-    _execute_and_check_result(ctx, ["make", "install"], working_directory = srcs_dir, quiet = False)
+
+    configure_opts = ["./configure",
+        "--enable-static",
+        "--disable-all",
+        "--without-pear",
+        "--enable-phar",
+        "--enable-json",
+        "--enable-filter",
+        "--enable-tokenizer",
+        "--with-curl",
+        "--with-libxml",
+        "--enable-xml",
+        "--enable-dom",
+        "--enable-xmlwriter",
+        "--enable-mbstring",
+        "--disable-mbregex",
+        "--with-openssl",
+        "--with-openssl-dir=/usr",
+        "--enable-bcmath",
+        "--prefix=%s" % root_path.realpath]
+
+    ctx.file("configure_opts.log", " ".join(configure_opts))
+    _execute_log_action(ctx, "configure.log", configure_opts, working_directory = srcs_dir, quiet = False)
+
+    _execute_log_action(ctx, "make.log", ["make", "-j10"], working_directory = srcs_dir, quiet = False)
+    _execute_log_action(ctx, "make_install.log", ["make", "install"], working_directory = srcs_dir, quiet = False)
     _execute_and_check_result(ctx, ["rm", "-rf", srcs_dir], quiet = False)
+
+    res, _str = _execute_log_action(
+        ctx,
+        "just_built_php_test.log",
+        ["bin/php", "-r", "\"exit(extension_loaded('libxml') && extension_loaded('curl') && extension_loaded('openssl') ? 0:1);\""]
+    )
 
     ctx.file("BUILD.bazel", build_bazel)
 
