@@ -17,63 +17,11 @@ jobs:
         apt update
         apt install -y git
     - uses: bazel-contrib/setup-bazel@0.15.0
-    #  with:
-        # Avoid downloading Bazel every time.
-        #bazelisk-cache: true
-        # Store build cache per workflow.
-        #disk-cache: ${{ github.workflow }}
-        # Share repository cache between workflows.
-        #repository-cache: true
+
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
-    # Forcefully delete Bazel and Bazelisk caches
-    - name: Aggressive Bazel Cache Cleanup
-      run: |
-        echo "Attempting aggressive Bazel cache cleanup..."
-        # Determine Bazel's output base (where it stores build artifacts)
-        BAZEL_OUTPUT_BASE=$(bazelisk info output_base 2>/dev/null || true)
-        if [ -n "$BAZEL_OUTPUT_BASE" ]; then
-          echo "Deleting Bazel output base: $BAZEL_OUTPUT_BASE"
-          rm -rf "$BAZEL_OUTPUT_BASE"
-        else
-          echo "Could not determine Bazel output base. It might not have been created yet, or Bazel is too stuck."
-        fi
-
-        # Delete Bazel's home directory cache
-        echo "Deleting user's .bazel home directory cache..."
-        rm -rf ~/.bazel || true # `|| true` to prevent failure if directory doesn't exist
-
-        # Delete Bazelisk's local cache for downloaded Bazel versions
-        echo "Deleting Bazelisk's cache..."
-        rm -rf ~/.cache/bazelisk || true
-
-        echo "Aggressive cleanup complete."
-      shell: sh -e {0} # Explicitly specify shell for clarity
-       # No env var needed for this step unless output_base path depends on it
-
-    #- name: Bazel File Cache Setup
-    #  id: cache-bazel
-    #  uses: actions/cache@v3
-    #  with:
-    #    path: ~/.cache/bazel
-    #    key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
-
-    #- name: Bazel Cache Not Found
-    #  if: steps.cache-bazel.outputs.cache-hit != 'true'
-    #  run: |
-    #    echo "No cache found."
-    #- name: Bazel Cache Found
-    #  if: steps.cache-bazel.outputs.cache-hit == 'true'
-    #  run: |
-    #    echo -n "Cache found. Cache size: "
-    #    du -sh ~/.cache/bazel
-    #    echo "If the cache seems broken, update the CACHE_VERSION secret in"
-    #    echo "https://github.com/googleapis/gapic-generator-php/settings/secrets/actions"
-    #    echo "(use any random string, any GUID will work)"
-    #    echo "and it will start over with a clean cache."
-    #    echo "The old one will disappear after 7 days."
 
     - name: Show bazel version
       run: |
@@ -84,7 +32,6 @@ jobs:
       run: |
         cd bazel_example;
         bazelisk build ... --verbose_failures --show_progress
-
 
     - name: Extract Bazel package output
       run: |

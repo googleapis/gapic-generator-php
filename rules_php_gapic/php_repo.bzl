@@ -41,18 +41,18 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
     print("DEBUG: THE NAME OF THE OS IS =", os_name)
 
     # First try using the prebuilt version
-    for prebuilt_php in ctx.attr.prebuilt_phps:
-        if prebuilt_php.name.find(os_name) < 0:
-            continue
-        tmp = "php_tmp"
-        _execute_and_check_result(ctx, ["mkdir", tmp], quiet = False)
-        ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix, output = tmp)
-        res = ctx.execute(["bin/php", "--version"], working_directory = tmp)
-        _execute_and_check_result(ctx, ["rm", "-rf", tmp], quiet = False)
-        if res.return_code == 0:
-            ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix)
-            ctx.file("BUILD.bazel", build_bazel)
-            return
+    #for prebuilt_php in ctx.attr.prebuilt_phps:
+    #    if prebuilt_php.name.find(os_name) < 0:
+    #        continue
+    #    tmp = "php_tmp"
+    #    _execute_and_check_result(ctx, ["mkdir", tmp], quiet = False)
+    #    ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix, output = tmp)
+    #    res = ctx.execute(["bin/php", "--version"], working_directory = tmp)
+    #    _execute_and_check_result(ctx, ["rm", "-rf", tmp], quiet = False)
+    #    if res.return_code == 0:
+    #        ctx.extract(archive = prebuilt_php, stripPrefix = ctx.attr.strip_prefix)
+    #        ctx.file("BUILD.bazel", build_bazel)
+    #        return
 
     # If none of the prebuilt versions worked, fallback to building the php
     # interpreter from sources
