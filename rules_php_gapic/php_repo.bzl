@@ -38,6 +38,7 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
      """
 
     os_name = ctx.os.name
+    print("DEBUG: THE NAME OF THE OS IS =", os_name)
 
     # First try using the prebuilt version
     for prebuilt_php in ctx.attr.prebuilt_phps:
