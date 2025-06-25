@@ -81,16 +81,16 @@ switched_rules_by_language(
 )
 
 # Use the following to use the bazel rules defined in github.
-http_archive(
-    name = "gapic_generator_php",
-    strip_prefix = "gapic-generator-php-1.0.2",
-    urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.2.zip"],
-)
+# http_archive(
+#     name = "gapic_generator_php",
+#     strip_prefix = "gapic-generator-php-1.0.2",
+#     urls = ["https://github.com/googleapis/gapic-generator-php/archive/v1.0.2.zip"],
+# )
 # Use the following to use the bazel rules defined locally, rather than fetched from github.
-#local_repository(
-#    name = "gapic_generator_php",
-#    path = "../",
-#)
+local_repository(
+    name = "gapic_generator_php",
+    path = "../",
+)
 
 load("@gapic_generator_php//:repositories.bzl", "gapic_generator_php_repositories")
 
