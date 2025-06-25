@@ -18,13 +18,13 @@ load("//rules_php_gapic:php_repo.bzl", "php", "php_composer_install")
 
 def gapic_generator_php_repositories():
     _rules_gapic_version = "0.5.4"
-    maybe(
-        http_archive,
-        name = "rules_gapic",
-        strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
-        urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
-    )
-
+#    maybe(
+#        http_archive,
+#        name = "rules_gapic",
+#        strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
+#        urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
+#    )
+#
     _php_version = "8.4.8"
     maybe(
         php,
