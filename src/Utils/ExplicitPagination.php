@@ -28,7 +28,7 @@ class ExplicitPagination
      * should be added to this list
      */
     private static array $paginations = [
-        'google.cloud.compute.v1small.UsableSubnetworksAggregatedList' => 'items',
+        'google.cloud.compute.v1.UsableSubnetworksAggregatedList' => 'items',
         'testing.basicexplicitpaginated.ExplicitResponse' => 'the_real_results'
     ];
 
