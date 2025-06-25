@@ -25,7 +25,6 @@ load(
 
 def _php_impl(ctx):
     root_path = ctx.path(".")
-    ctx.file("test", "quick brown fox")
 
     build_bazel = """
 exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
