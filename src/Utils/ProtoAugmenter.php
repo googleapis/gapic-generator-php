@@ -78,7 +78,7 @@ class ProtoAugmenter
             foreach ($enums as $enumIndex => [$enumProto, $enumDesc]) {
                 // Link proto and desc in both directions.
                 $enumProto->desc = $enumDesc;
-                $enumDesc->underlyingProto = $enumProto;
+                $enumDesc = new AugmentedDescriptor($enumDesc, $enumProto);
                 // Link proto comments.
                 $enumPath = $path->concat(Vector::new([$pathId, $enumIndex]));
                 $enumLocations = $locsByPath->get($enumPath, null);
@@ -90,7 +90,8 @@ class ProtoAugmenter
         $fnMergeMsgs = function (Vector $msgPath, DescriptorProto $msgProto, Descriptor $msgDesc) use (&$fnMergeMsgs, $locsByPath, $fnLeadingComments, $fnTrailingComments, $fnMergeEnums) {
             // Link proto and desc in both directions.
             $msgProto->desc = $msgDesc;
-            $msgDesc->underlyingProto = $msgProto;
+            $msgDesc = new AugmentedDescriptor($msgDesc, $msgProto);
+
             // Link proto comments.
             $msgLocations = $locsByPath->get($msgPath, null);
             $msgProto->leadingComments = static::getComments($msgLocations, $fnLeadingComments);
@@ -105,7 +106,7 @@ class ProtoAugmenter
             foreach ($fields as $fieldIndex => [$fieldProto, $fieldDesc]) {
                 // Link proto and desc in both directions.
                 $fieldProto->desc = $fieldDesc;
-                $fieldDesc->underlyingProto = $fieldProto;
+                $fieldDesc = new AugmentedDescriptor($fieldDesc, $fieldProto);
                 // Link proto comments.
                 $fieldPath = $msgPath->concat(Vector::new([static::MESSAGE_FIELD, $fieldIndex]));
                 $fieldLocations = $locsByPath->get($fieldPath, null);

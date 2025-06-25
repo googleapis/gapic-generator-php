@@ -386,10 +386,10 @@ class ProtoHelpers
         return $repeated ? Vector::new($values) : null;
     }
 
-    private static function conformMessage($message): Message
+    private static function conformMessage(Message|AugmentedDescriptor $message): Message
     {
-        if (isset($message->underlyingProto)) {
-            $message = $message->underlyingProto;
+        if ($message instanceof AugmentedDescriptor) {
+            $message = $message->getUnderlyingProto();
         }
         if (!($message instanceof Message)) {
             throw new \Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
