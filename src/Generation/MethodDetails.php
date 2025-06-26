@@ -142,10 +142,9 @@ abstract class MethodDetails
         // If we have the type inside the ExplicitPagination class,
         // use the field stored in the paginations array
         if (ExplicitPagination::exists($outputMsg->desc->getFullName())) {
-            $resources = $outputMsg->desc
-                ->getFieldByName(
-                    ExplicitPagination::getPagination($outputMsg->desc->getFullName())
-                );
+            $resources = $outputMsg->desc->getFieldByName(
+                ExplicitPagination::getPagination($outputMsg->desc->getFullName())
+            );
         } else {
             $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor
             $resourceCandidates = Vector::new(array_keys($rawFields))
