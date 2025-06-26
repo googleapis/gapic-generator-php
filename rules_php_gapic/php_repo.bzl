@@ -77,6 +77,7 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
         "--disable-mbregex",
         "--with-openssl",
         "--with-openssl-dir=/usr",
+        "--with-iconv",
         "--enable-bcmath",
         "--prefix=%s" % root_path.realpath]
 
