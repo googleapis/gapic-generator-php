@@ -108,7 +108,6 @@ class AugmentedDescriptor extends Descriptor
     public function setClass($klass)
     {
         $this->desc->setClass($klass);
-        $this->klass = $klass;
     }
 
     public function getClass()

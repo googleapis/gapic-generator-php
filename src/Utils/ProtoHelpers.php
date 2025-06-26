@@ -386,9 +386,13 @@ class ProtoHelpers
         return $repeated ? Vector::new($values) : null;
     }
 
-    private static function conformMessage(Message|AugmentedDescriptor $message): Message
-    {
-        if ($message instanceof AugmentedDescriptor) {
+    private static function conformMessage(
+        Message|AugmentedDescriptor|AugmentedFieldDescriptor|AugmentedEnumDescriptor $message
+    ): Message {
+        if ($message instanceof AugmentedDescriptor
+            || $message instanceof AugmentedFieldDescriptor
+            || $message instanceof AugmentedEnumDescriptor
+        ) {
             $message = $message->getUnderlyingProto();
         }
         if (!($message instanceof Message)) {
