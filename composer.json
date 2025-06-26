@@ -33,7 +33,7 @@
     },
     "require": {
         "php": "^8.1",
-        "google/protobuf": "^3.18",
+        "google/protobuf": "^4.26.1",
         "friendsofphp/php-cs-fixer": "^3",
         "symfony/yaml": "^5.2",
         "symplify/coding-standard": "9.4.70",
