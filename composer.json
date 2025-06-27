@@ -41,7 +41,7 @@
         "microsoft/tolerant-php-parser": "^0.1.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^12.0",
         "google/gax": "^1.34"
     },
     "scripts": {
