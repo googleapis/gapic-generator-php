@@ -153,19 +153,7 @@ abstract class MethodDetails
             $resourceByNumber = $resourceCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
 
             if ($isRestOnly) {
-                $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
-                $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
-
-                // If there are more than one of either, do not generate a paginated method.
-                if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
-                    return null;
-                }
-
-                // A map field takes precedence over a repeated (i.e. list) field.
-                $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-                if (is_null($resourceByNumber)) {
-                    $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-                }
+                $resourceByNumber = self::getCandidate($resourceCandidates, $catalog);
             }
 
             $resourceByPosition = $resourceCandidates->firstOrNull();
@@ -284,6 +272,47 @@ abstract class MethodDetails
             /** @var FieldDetails *Readonly* The resources field. */
             public FieldDetails $resourcesField;
         };
+    }
+
+    private static function getCandidate(Vector $resourceCandidates, ProtoCatalog $catalog): null|array
+    {
+        $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
+        $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
+
+        // If only one map exists, return it.
+        if (count($resourceMapCandidates) === 1) {
+            return $resourceMapCandidates->firstOrNull();
+        }
+
+        // If there are more than one repeated field,
+        // search for a non primitive one.
+        if (count($resourceListCandidates) > 1) {
+            $resourceCandidateIndex = null;
+
+            foreach ($resourceListCandidates as $index => $candidate) {
+                $descriptor = $candidate[1];
+
+                // If is a primitive type, we cannot use it for pagination.
+                // Search for another one.
+                if (!$descriptor->getType() !== GPBType::MESSAGE) {
+                    continue;
+                }
+
+                // If we already find a non primitive type
+                // then we have more than one.
+                // unable to paginate.
+                if (!is_null($resourceCandidateIndex)) {
+                    return null;
+                }
+
+                $resourceCandidateIndex = $index;
+            }
+
+            return $resourceListCandidates[$index];
+        }
+
+        // If is 1 or 0, return the first one or null non map candidate.
+        return $resourceListCandidates->firstOrNull();
     }
 
     private static function maybeCreateLro(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
