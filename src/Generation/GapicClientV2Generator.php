@@ -785,7 +785,14 @@ class GapicClientV2Generator
         } else {
             $startCall = AST::return($startCall);
             $returnType = $this->ctx->type($method->methodReturnType);
-            $phpDocReturnType = PhpDoc::return($this->ctx->type($method->methodReturnType));
+            $phpdocReturn = $returnType;
+            if ($method->methodType === MethodDetails::LRO) {
+                $typeArgument = $method->hasEmptyLroResponse
+                    ? Type::null()
+                    : $method->lroResponseType;
+                $phpdocReturn = ResolvedType::generic($method->methodReturnType, $typeArgument);
+            }
+            $phpDocReturnType = PhpDoc::return($phpdocReturn);
         }
 
         return AST::method($method->methodName)

@@ -88,6 +88,12 @@ class Type implements Equality
         return new Type(null, 'void');
     }
 
+    /** Null type, for use in union types and generics. */
+    public static function null(): Type
+    {
+        return new Type(null, 'null');
+    }
+
     /** The built-in 'stdClass' type. */
     public static function stdClass(): Type
     {
@@ -180,6 +186,15 @@ class Type implements Equality
             default:
                 throw new \Exception("Cannot get field type of type: {$desc->getType()}");
         }
+    }
+
+    /** Combines multiple types into a single union type */
+    public static function generic(string $typeString): Type
+    {
+        return new Type(
+            null,
+            $typeString
+        );
     }
 
     private function __construct(?Vector $namespaceParts, string $name)
