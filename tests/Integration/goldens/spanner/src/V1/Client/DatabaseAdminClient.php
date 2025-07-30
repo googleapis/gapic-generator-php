@@ -431,7 +431,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Backup>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -468,7 +468,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Backup>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -501,7 +501,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -856,7 +856,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -1010,7 +1010,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -1042,7 +1042,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<null>
      *
      * @throws ApiException Thrown if the API call fails.
      */

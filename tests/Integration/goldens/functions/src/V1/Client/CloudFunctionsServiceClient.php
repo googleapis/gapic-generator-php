@@ -409,7 +409,7 @@ final class CloudFunctionsServiceClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<CloudFunction>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -437,7 +437,7 @@ final class CloudFunctionsServiceClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<null>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -682,7 +682,7 @@ final class CloudFunctionsServiceClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<CloudFunction>
      *
      * @throws ApiException Thrown if the API call fails.
      */

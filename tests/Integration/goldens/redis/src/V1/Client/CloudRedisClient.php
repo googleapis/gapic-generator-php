@@ -363,7 +363,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -390,7 +390,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<null>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -421,7 +421,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -448,7 +448,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -535,7 +535,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -596,7 +596,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -626,7 +626,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -653,7 +653,7 @@ final class CloudRedisClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Instance>
      *
      * @throws ApiException Thrown if the API call fails.
      */
