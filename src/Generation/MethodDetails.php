@@ -436,6 +436,14 @@ abstract class MethodDetails
         };
     }
 
+    /**
+     * Determine if the method should paginated for DIREGAPICs, which do not have annotations for pagination
+     * yet. The following heuristic is used for selecting the field for pagination:
+     *   1. If exactly one map field exists, select that field
+     *   2. If exactly one list field exists, select that field
+     *   3. If more than one list field exists, but exactly one of those fields is a message, select that field
+     *   4. Otherwise, do not paginate
+     */
     private static function getCandidate(Vector $resourceCandidates, ProtoCatalog $catalog): null|array
     {
         $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
@@ -444,6 +452,10 @@ abstract class MethodDetails
         // If only one map exists, return it.
         if (count($resourceMapCandidates) === 1) {
             return $resourceMapCandidates->firstOrNull();
+        }
+
+        if (count($resourceListCandidates) === 1) {
+            return $resourceListCandidates->firstOrNull();
         }
 
         // If there are more than one repeated field,
