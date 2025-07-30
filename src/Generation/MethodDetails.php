@@ -127,9 +127,9 @@ abstract class MethodDetails
         $catalog = $svc->catalog;
         $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
         $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
-        $isRestOnly = $svc->transportType === Transport::REST;
+        $isDireGapic = $svc->transportType === Transport::REST;
         $pageSize = $inputMsg->desc->getFieldByName('page_size');
-        if ($isRestOnly && is_null($pageSize)) {
+        if ($isDireGapic && is_null($pageSize)) {
             $pageSize = $inputMsg->desc->getFieldByName('max_results');
         }
 
@@ -152,7 +152,7 @@ abstract class MethodDetails
                 ->filter(fn ($x) => $x[1]->isRepeated());
             $resourceByNumber = $resourceCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
 
-            if ($isRestOnly) {
+            if ($isDireGapic) {
                 $resourceByNumber = self::getCandidate($resourceCandidates, $catalog);
             }
 
@@ -164,7 +164,7 @@ abstract class MethodDetails
         $resourceFieldValid = !is_null($resources);
 
         // Leverage short-circuting.
-        if ($resourceFieldValid && !$isRestOnly) {
+        if ($resourceFieldValid && !$isDireGapic) {
             $resourceFieldValid &= !ProtoHelpers::isMap($catalog, $resources)
                 && $resourceByNumber[0] === $resourceByPosition[0];
         }
@@ -174,13 +174,13 @@ abstract class MethodDetails
         }
 
         $isValidPageSize = !$pageSize->isRepeated();
-        if ($isRestOnly) {
+        if ($isDireGapic) {
             $isValidPageSize = $pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32;
         } else {
             $isValidPageSize = $pageSize->getType() === GPBType::INT32;
         }
         if (!$isValidPageSize) {
-            throw new \Exception("page_size field must be of type " . ($isRestOnly ? "uint32 or int32" : "int32") . ".");
+            throw new \Exception("page_size field must be of type " . ($isDireGapic ? "uint32 or int32" : "int32") . ".");
         }
         if ($pageToken->isRepeated() || $pageToken->getType() !== GPBType::STRING) {
             throw new \Exception("page_token field must be of type string.");
@@ -189,7 +189,7 @@ abstract class MethodDetails
             throw new \Exception("next_page_token field must be of type string.");
         }
         if (!$resourceFieldValid) {
-            if ($isRestOnly) {
+            if ($isDireGapic) {
                 throw new \Exception("Item resources field must a map or repeated field.");
             }
             throw new \Exception("Item resources field must be the first repeated field by number and position.");
