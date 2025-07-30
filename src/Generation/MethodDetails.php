@@ -454,6 +454,7 @@ abstract class MethodDetails
             return $resourceMapCandidates->firstOrNull();
         }
 
+        // If only one list exists, return it.
         if (count($resourceListCandidates) === 1) {
             return $resourceListCandidates->firstOrNull();
         }
@@ -485,8 +486,8 @@ abstract class MethodDetails
             return $resourceListCandidates[$index];
         }
 
-        // If is 1 or 0, return the first one or null non map candidate.
-        return $resourceListCandidates->firstOrNull();
+        // We cannot determine what is the pagination.
+        return null;
     }
 
     /** @var ServiceDetails  The service that contains this method. */
