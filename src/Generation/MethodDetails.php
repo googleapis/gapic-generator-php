@@ -35,6 +35,7 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
+use Google\Generator\Utils\ExplicitPagination;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Transport;
@@ -134,30 +135,46 @@ abstract class MethodDetails
 
         $pageToken = $inputMsg->desc->getFieldByName('page_token');
         $nextPageToken = $outputMsg->desc->getFieldByName('next_page_token');
+        $resources = null;
         // Find the resoures field. Although AIP states that the resource field should be field number 1,
         // this isn't always the case.
-        $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor
-        $resourceCandidates = Vector::new(array_keys($rawFields))
-            ->map(fn ($k) => [$k, $rawFields[$k]])
-            ->filter(fn ($x) => $x[1]->isRepeated());
-        $resourceByNumber = $resourceCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-        if ($isRestOnly) {
-            $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
-            $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
-            // If there are more than one of either, do not generate a paginated method.
-            if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
-                return null;
+
+        // If we have the type inside the ExplicitPagination class,
+        // use the field stored in the paginations array
+        if (ExplicitPagination::exists($outputMsg->desc->getFullName())) {
+            $resources = $outputMsg->desc->getFieldByName(
+                ExplicitPagination::getPagination($outputMsg->desc->getFullName())
+            );
+        } else {
+            $rawFields = $outputMsg->desc->getField(); // array of field-number -> field descriptor
+            $resourceCandidates = Vector::new(array_keys($rawFields))
+                ->map(fn ($k) => [$k, $rawFields[$k]])
+                ->filter(fn ($x) => $x[1]->isRepeated());
+            $resourceByNumber = $resourceCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+
+            if ($isRestOnly) {
+                $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
+                $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
+
+                // If there are more than one of either, do not generate a paginated method.
+                if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
+                    return null;
+                }
+
+                // A map field takes precedence over a repeated (i.e. list) field.
+                $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+                if (is_null($resourceByNumber)) {
+                    $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
+                }
             }
-            // A map field takes precedence over a repeated (i.e. list) field.
-            $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-            if (is_null($resourceByNumber)) {
-                $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-            }
+
+            $resourceByPosition = $resourceCandidates->firstOrNull();
+            $resources = is_null($resourceByNumber) ? null : $resourceByNumber[1];
         }
-        $resourceByPosition = $resourceCandidates->firstOrNull();
-        $resources = is_null($resourceByNumber) ? null : $resourceByNumber[1];
+
         // Valid if it's the first field by position and number, and is not a map.
         $resourceFieldValid = !is_null($resources);
+
         // Leverage short-circuting.
         if ($resourceFieldValid && !$isRestOnly) {
             $resourceFieldValid &= !ProtoHelpers::isMap($catalog, $resources)

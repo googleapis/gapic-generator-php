@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/gapic-generator-php/compare/v1.18.3...v1.19.0) (2025-06-26)
+
+
+### Features
+
+* Add ExplicitPagination ([#759](https://github.com/googleapis/gapic-generator-php/issues/759)) ([39952d9](https://github.com/googleapis/gapic-generator-php/commit/39952d9a042199a80dd99ae020ca90162cebf736))
+
+
+### Bug Fixes
+
+* Update php build rules ([#764](https://github.com/googleapis/gapic-generator-php/issues/764)) ([aa29f44](https://github.com/googleapis/gapic-generator-php/commit/aa29f445b8b36d3c838025e9bbfc313796705d8d))
+
 ## [1.18.3](https://github.com/googleapis/gapic-generator-php/compare/v1.18.2...v1.18.3) (2025-03-03)
 
 
