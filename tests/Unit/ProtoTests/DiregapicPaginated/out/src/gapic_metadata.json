@@ -1,0 +1,38 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.diregapicpaginated",
+    "libraryPackage": "Testing\\DiregapicPaginated",
+    "services": {
+        "HeuristicPaginationClient": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "HeuristicPaginationClientGapicClient",
+                    "rpcs": {
+                        "ListMethod": {
+                            "methods": [
+                                "listMethod"
+                            ]
+                        },
+                        "MapMethod": {
+                            "methods": [
+                                "mapMethod"
+                            ]
+                        },
+                        "MultipleListMethod": {
+                            "methods": [
+                                "multipleListMethod"
+                            ]
+                        },
+                        "NonPaginatedMethod": {
+                            "methods": [
+                                "nonPaginatedMethod"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

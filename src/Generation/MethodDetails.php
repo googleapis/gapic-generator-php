@@ -469,7 +469,7 @@ abstract class MethodDetails
 
                 // If is a primitive type, we cannot use it for pagination.
                 // Search for another one.
-                if (!$descriptor->getType() !== GPBType::MESSAGE) {
+                if ($descriptor->getType() !== GPBType::MESSAGE) {
                     continue;
                 }
 
@@ -483,7 +483,11 @@ abstract class MethodDetails
                 $resourceCandidateIndex = $index;
             }
 
-            return $resourceListCandidates[$index];
+            if (is_null($resourceCandidateIndex)) {
+                return null;
+            }
+
+            return $resourceListCandidates[$resourceCandidateIndex];
         }
 
         // We cannot determine what is the pagination.

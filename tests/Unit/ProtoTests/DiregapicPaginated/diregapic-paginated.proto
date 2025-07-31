@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package testing.diregapicpaginated;
+
+option php_namespace = "Testing\\DiregapicPaginated";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+/**
+* This test proto is built to test the following heuristics for pagination:
+*   1. If exactly one map field exists, select that field
+*   2. If exactly one list field exists, select that field
+*   3. If more than one list field exists, but exactly one of those fields is a message, select that field
+*   4. Otherwise, do not paginate
+*/
+service HeuristicPaginationClient {
+  option (google.api.default_host) = "diregapic.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  // Tests heuristic #1
+  rpc MapMethod(Request) returns(MapResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+
+  // Tests heuristic 2
+  rpc ListMethod(Request) returns(listResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+
+  // Tests heuristic 3
+  rpc MultipleListMethod(Request) returns(MultipleListResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+
+  // Tests Heuristic 4
+  rpc NonPaginatedMethod(Request) returns(NonPaginatedResponse) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+}
+
+message Request {
+  int32 max_results = 1;
+  string page_token = 2;
+}
+
+message MapResponse {
+  map<int32, string> results = 1;
+  string next_page_token = 2;
+}
+
+message listResponse {
+  repeated string results = 1;
+  string next_page_token = 2;
+}
+
+message MultipleListResponse {
+  repeated string not_paginated = 1;
+  repeated string also_not_paginated = 2;
+  repeated string also_also_not_paginated = 3;
+  repeated RepeatedResource results = 4;
+  string next_page_token = 5;
+}
+
+message NonPaginatedResponse {
+  repeated string not_paginated = 1;
+  repeated string also_not_paginated = 2;
+  repeated string also_also_not_paginated = 3;
+  string next_page_token = 4;
+}
+
+message RepeatedResource {
+  string name = 1;
+}
