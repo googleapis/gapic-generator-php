@@ -24,6 +24,7 @@ use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 /** Base of the PHP code AST. */
+#[\AllowDynamicProperties]
 abstract class AST
 {
     /** @var string Constant to reference `$this`. */
