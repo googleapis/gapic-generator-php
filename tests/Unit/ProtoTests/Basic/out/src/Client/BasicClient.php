@@ -34,6 +34,7 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 use Testing\Basic\Request;
 use Testing\Basic\RequestWithArgs;
 use Testing\Basic\Response;
@@ -44,8 +45,8 @@ use Testing\Basic\Response;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface aMethodAsync(Request $request, array $optionalArgs = [])
- * @method PromiseInterface methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> aMethodAsync(Request $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> methodWithArgsAsync(RequestWithArgs $request, array $optionalArgs = [])
  */
 final class BasicClient
 {
@@ -112,6 +113,12 @@ final class BasicClient
      *           {@see \Google\Auth\FetchAuthTokenInterface} object or
      *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
      *           objects are provided, any settings in $credentialsConfig will be ignored.
+     *           *Important*: If you accept a credential configuration (credential
+     *           JSON/File/Stream) from an external source for authentication to Google Cloud
+     *           Platform, you must validate it before providing it to any Google API or library.
+     *           Providing an unvalidated credential configuration to Google APIs can compromise
+     *           the security of your systems and data. For more information {@see
+     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
@@ -145,6 +152,11 @@ final class BasicClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException
@@ -233,7 +245,10 @@ final class BasicClient
         }
 
         $options['apiEndpoint'] ??= $emulatorHost;
-        $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
+        if (class_exists(ChannelCredentials::class)) {
+            $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
+        }
+
         $options['credentials'] ??= new InsecureCredentialsWrapper();
         return $options;
     }

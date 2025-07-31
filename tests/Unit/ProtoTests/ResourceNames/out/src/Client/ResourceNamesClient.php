@@ -33,6 +33,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 use Testing\ResourceNames\FileLevelChildTypeRefRequest;
 use Testing\ResourceNames\FileLevelTypeRefRequest;
 use Testing\ResourceNames\MultiPatternRequest;
@@ -55,15 +56,15 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
- * @method PromiseInterface fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
- * @method PromiseInterface multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedReferenceMethodAsync(NestedReferenceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
- * @method PromiseInterface wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> fileLevelChildTypeRefMethodAsync(FileLevelChildTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> fileLevelTypeRefMethodAsync(FileLevelTypeRefRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> multiPatternMethodAsync(MultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> nestedReferenceMethodAsync(NestedReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> singlePatternMethodAsync(SinglePatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardChildReferenceMethodAsync(WildcardChildReferenceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardMethodAsync(WildcardPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PlaceholderResponse> wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
 final class ResourceNamesClient
 {
@@ -421,14 +422,14 @@ final class ResourceNamesClient
      * listed, then parseName will check each of the supported templates, and return
      * the first match.
      *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
+     * @param string  $formattedName The formatted name string
+     * @param ?string $template      Optional name of template to match
      *
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName(string $formattedName, string $template = null): array
+    public static function parseName(string $formattedName, ?string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -450,6 +451,12 @@ final class ResourceNamesClient
      *           {@see \Google\Auth\FetchAuthTokenInterface} object or
      *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
      *           objects are provided, any settings in $credentialsConfig will be ignored.
+     *           *Important*: If you accept a credential configuration (credential
+     *           JSON/File/Stream) from an external source for authentication to Google Cloud
+     *           Platform, you must validate it before providing it to any Google API or library.
+     *           Providing an unvalidated credential configuration to Google APIs can compromise
+     *           the security of your systems and data. For more information {@see
+     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
@@ -483,6 +490,11 @@ final class ResourceNamesClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException

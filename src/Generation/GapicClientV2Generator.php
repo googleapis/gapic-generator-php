@@ -46,6 +46,7 @@ use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\Client\OperationsClient;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 class GapicClientV2Generator
 {
@@ -235,7 +236,7 @@ class GapicClientV2Generator
             ->filter(fn($m) => !$m->isStreaming())
             ->map(fn($m) => PhpDoc::method(
                 $m->methodName . "Async",
-                $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name,
+                $this->asyncReturnType($m),
                 $m->requestType->name, // the request type will already be imported for the sync variants
             ));
         return PhpDoc::block($methodDocs);
@@ -413,7 +414,7 @@ class GapicClientV2Generator
             return Vector::new();
         }
         $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
-        $template = AST::param(ResolvedType::string(), AST::var('template'), AST::NULL);
+        $template = AST::param(ResolvedType::string(true), AST::var('template'), AST::NULL);
 
         return $this->serviceDetails->resourceParts
             ->map(fn ($x) => $x->getFormatMethod()
@@ -670,7 +671,14 @@ class GapicClientV2Generator
                             'object or',
                             // TODO(vNext): Don't use a fully-qualified type here.
                             $ctx->type(Type::fromName(CredentialsWrapper::class), true),
-                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.'
+                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.',
+                            PhpDoc::newLine(),
+                            '*Important*: If you accept a credential configuration (credential JSON/File/Stream)',
+                            'from an external source for authentication to Google Cloud Platform, you must',
+                            'validate it before providing it to any Google API or library. Providing an',
+                            'unvalidated credential configuration to Google APIs can compromise the security of',
+                            'your systems and data. For more information',
+                            '{@see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}'
                         )
                     ),
                     PhpDoc::type(
@@ -721,6 +729,26 @@ class GapicClientV2Generator
                         PhpDoc::text(
                             'A callable which returns the client cert as a string. This can be used to provide',
                             'a certificate and private key to the transport layer for mTLS.'
+                        )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::false()),
+                            $ctx->type(Type::fromName(LoggerInterface::class))
+                        ]),
+                        'logger',
+                        PhpDoc::text(
+                            'A PSR-3 compliant logger. If set to false, logging is disabled,',
+                            'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
+                        )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::string()),
+                        ]),
+                        'universeDomain',
+                        PhpDoc::text(
+                            'The service domain for the client. Defaults to \'googleapis.com\'.'
                         )
                     )
                 )),
@@ -874,5 +902,15 @@ class GapicClientV2Generator
         $emptyClientName = $this->serviceDetails->gapicClientV2Type->name;
 
         return "samples/{$version}{$emptyClientName}/{$methodName}.php";
+    }
+
+    private function asyncReturnType(MethodDetails $method): string
+    {
+        $returnType = $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name;
+        $nestedType = ($method->hasEmptyResponse)
+            ? 'void'
+            : $this->ctx->type($method->methodReturnType)->type->name;
+
+        return sprintf('%s<%s>', $returnType, $nestedType);
     }
 }

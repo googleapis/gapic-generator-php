@@ -32,6 +32,7 @@ use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 use Testing\RoutingHeaders\NestedRequest;
 use Testing\RoutingHeaders\OrderRequest;
 use Testing\RoutingHeaders\Response;
@@ -43,18 +44,18 @@ use Testing\RoutingHeaders\SimpleRequest;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *
- * @method PromiseInterface deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNoTemplateMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedMethodAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface nestedMultiMethodAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface orderingMethodAsync(OrderRequest $request, array $optionalArgs = [])
- * @method PromiseInterface patchMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface postMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface putMethodAsync(SimpleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
- * @method PromiseInterface routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getNoPlaceholdersMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> getNoTemplateMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> nestedMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> nestedMultiMethodAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> orderingMethodAsync(OrderRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> patchMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> postMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> putMethodAsync(SimpleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Response> routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
  */
 final class RoutingHeadersClient
 {
@@ -111,6 +112,12 @@ final class RoutingHeadersClient
      *           {@see \Google\Auth\FetchAuthTokenInterface} object or
      *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
      *           objects are provided, any settings in $credentialsConfig will be ignored.
+     *           *Important*: If you accept a credential configuration (credential
+     *           JSON/File/Stream) from an external source for authentication to Google Cloud
+     *           Platform, you must validate it before providing it to any Google API or library.
+     *           Providing an unvalidated credential configuration to Google APIs can compromise
+     *           the security of your systems and data. For more information {@see
+     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
@@ -144,6 +151,11 @@ final class RoutingHeadersClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException

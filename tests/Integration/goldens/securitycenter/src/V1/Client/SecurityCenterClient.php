@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,6 +95,7 @@ use Google\Cloud\SecurityCenter\V1\UpdateSecurityMarksRequest;
 use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: V1 APIs for Security Center service.
@@ -107,51 +108,51 @@ use GuzzleHttp\Promise\PromiseInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
- * @method PromiseInterface bulkMuteFindingsAsync(BulkMuteFindingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createBigQueryExportAsync(CreateBigQueryExportRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createMuteConfigAsync(CreateMuteConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createSecurityHealthAnalyticsCustomModuleAsync(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteBigQueryExportAsync(DeleteBigQueryExportRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteMuteConfigAsync(DeleteMuteConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface deleteSecurityHealthAnalyticsCustomModuleAsync(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getBigQueryExportAsync(GetBigQueryExportRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getEffectiveSecurityHealthAnalyticsCustomModuleAsync(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getMuteConfigAsync(GetMuteConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getSecurityHealthAnalyticsCustomModuleAsync(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
- * @method PromiseInterface groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listBigQueryExportsAsync(ListBigQueryExportsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listDescendantSecurityHealthAnalyticsCustomModulesAsync(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listEffectiveSecurityHealthAnalyticsCustomModulesAsync(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listMuteConfigsAsync(ListMuteConfigsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listSecurityHealthAnalyticsCustomModulesAsync(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
- * @method PromiseInterface runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
- * @method PromiseInterface setMuteAsync(SetMuteRequest $request, array $optionalArgs = [])
- * @method PromiseInterface simulateSecurityHealthAnalyticsCustomModuleAsync(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateBigQueryExportAsync(UpdateBigQueryExportRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateExternalSystemAsync(UpdateExternalSystemRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateMuteConfigAsync(UpdateMuteConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateSecurityHealthAnalyticsCustomModuleAsync(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
- * @method PromiseInterface updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> bulkMuteFindingsAsync(BulkMuteFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> createBigQueryExportAsync(CreateBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> createFindingAsync(CreateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> createMuteConfigAsync(CreateMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> createNotificationConfigAsync(CreateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> createSecurityHealthAnalyticsCustomModuleAsync(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> createSourceAsync(CreateSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteBigQueryExportAsync(DeleteBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteMuteConfigAsync(DeleteMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteNotificationConfigAsync(DeleteNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteSecurityHealthAnalyticsCustomModuleAsync(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> getBigQueryExportAsync(GetBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<EffectiveSecurityHealthAnalyticsCustomModule> getEffectiveSecurityHealthAnalyticsCustomModuleAsync(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> getMuteConfigAsync(GetMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> getNotificationConfigAsync(GetNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OrganizationSettings> getOrganizationSettingsAsync(GetOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> getSecurityHealthAnalyticsCustomModuleAsync(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> getSourceAsync(GetSourceRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> groupAssetsAsync(GroupAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> groupFindingsAsync(GroupFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listAssetsAsync(ListAssetsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listBigQueryExportsAsync(ListBigQueryExportsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listDescendantSecurityHealthAnalyticsCustomModulesAsync(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listEffectiveSecurityHealthAnalyticsCustomModulesAsync(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listFindingsAsync(ListFindingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listMuteConfigsAsync(ListMuteConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listNotificationConfigsAsync(ListNotificationConfigsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listSecurityHealthAnalyticsCustomModulesAsync(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listSourcesAsync(ListSourcesRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OperationResponse> runAssetDiscoveryAsync(RunAssetDiscoveryRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> setFindingStateAsync(SetFindingStateRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> setMuteAsync(SetMuteRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SimulateSecurityHealthAnalyticsCustomModuleResponse> simulateSecurityHealthAnalyticsCustomModuleAsync(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BigQueryExport> updateBigQueryExportAsync(UpdateBigQueryExportRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<ExternalSystem> updateExternalSystemAsync(UpdateExternalSystemRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Finding> updateFindingAsync(UpdateFindingRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<MuteConfig> updateMuteConfigAsync(UpdateMuteConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<NotificationConfig> updateNotificationConfigAsync(UpdateNotificationConfigRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<OrganizationSettings> updateOrganizationSettingsAsync(UpdateOrganizationSettingsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityHealthAnalyticsCustomModule> updateSecurityHealthAnalyticsCustomModuleAsync(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<SecurityMarks> updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<Source> updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
 final class SecurityCenterClient
 {
@@ -1233,14 +1234,14 @@ final class SecurityCenterClient
      * listed, then parseName will check each of the supported templates, and return
      * the first match.
      *
-     * @param string $formattedName The formatted name string
-     * @param string $template      Optional name of template to match
+     * @param string  $formattedName The formatted name string
+     * @param ?string $template      Optional name of template to match
      *
      * @return array An associative array from name component IDs to component values.
      *
      * @throws ValidationException If $formattedName could not be matched.
      */
-    public static function parseName(string $formattedName, string $template = null): array
+    public static function parseName(string $formattedName, ?string $template = null): array
     {
         return self::parseFormattedName($formattedName, $template);
     }
@@ -1262,6 +1263,12 @@ final class SecurityCenterClient
      *           {@see \Google\Auth\FetchAuthTokenInterface} object or
      *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
      *           objects are provided, any settings in $credentialsConfig will be ignored.
+     *           *Important*: If you accept a credential configuration (credential
+     *           JSON/File/Stream) from an external source for authentication to Google Cloud
+     *           Platform, you must validate it before providing it to any Google API or library.
+     *           Providing an unvalidated credential configuration to Google APIs can compromise
+     *           the security of your systems and data. For more information {@see
+     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
@@ -1295,6 +1302,11 @@ final class SecurityCenterClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException

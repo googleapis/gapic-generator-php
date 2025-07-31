@@ -36,6 +36,9 @@ class EmulatorSupportGenerator
         '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableInstanceAdminClient' => 'BIGTABLE_EMULATOR_HOST',
         '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableTableAdminClient' => 'BIGTABLE_EMULATOR_HOST',
         '\Google\Cloud\Bigtable\V2\Client\BigtableClient' => 'BIGTABLE_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\PublisherClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SubscriberClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SchemaServiceClient' => 'PUBSUB_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
     ];
@@ -72,10 +75,15 @@ class EmulatorSupportGenerator
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
                     )),
                 AST::nullCoalescingAssign(AST::index($optionsVar, 'apiEndpoint'), $emulatorHostVar),
-                AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
-                    $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
-                    AST::method('createInsecure')
-                )()),
+                AST::if(AST::call(AST::CLASS_EXISTS)(
+                    AST::access($ctx->type(Type::fromName("Grpc\ChannelCredentials")), AST::CLS)
+                ))
+                    ->then(AST::block(
+                        AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
+                            $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
+                            AST::method('createInsecure')
+                        )()),
+                    )),
                 AST::nullCoalescingAssign(
                     AST::index($optionsVar,'credentials'),
                     AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
