@@ -742,6 +742,15 @@ class GapicClientV2Generator
                             'A PSR-3 compliant logger. If set to false, logging is disabled,',
                             'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
                         )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::string()),
+                        ]),
+                        'universeDomain',
+                        PhpDoc::text(
+                            'The service domain for the client. Defaults to \'googleapis.com\'.'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
