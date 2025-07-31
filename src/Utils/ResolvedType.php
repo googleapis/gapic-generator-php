@@ -67,6 +67,21 @@ class ResolvedType
     }
 
     /**
+     * The 'union' built-in type for multiple types
+     *
+     * @return ResolvedType
+     */
+    public static function generic(Type $genericType, Type $typeArgument): ResolvedType
+    {
+        $typesString = sprintf('%s<%s>', $genericType->name, $typeArgument->name);
+
+        return new ResolvedType(
+            Type::generic($typesString),
+            fn () => $typesString
+        );
+    }
+
+    /**
      * Construct a ResolvedType.
      *
      * @param string $typeName The resolved name of the type.
