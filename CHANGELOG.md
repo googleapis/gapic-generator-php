@@ -1,5 +1,109 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/gapic-generator-php/compare/v1.18.3...v1.19.0) (2025-06-26)
+
+
+### Features
+
+* Add ExplicitPagination ([#759](https://github.com/googleapis/gapic-generator-php/issues/759)) ([39952d9](https://github.com/googleapis/gapic-generator-php/commit/39952d9a042199a80dd99ae020ca90162cebf736))
+
+
+### Bug Fixes
+
+* Update php build rules ([#764](https://github.com/googleapis/gapic-generator-php/issues/764)) ([aa29f44](https://github.com/googleapis/gapic-generator-php/commit/aa29f445b8b36d3c838025e9bbfc313796705d8d))
+
+## [1.18.3](https://github.com/googleapis/gapic-generator-php/compare/v1.18.2...v1.18.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Ensure hash is int to prevent loss of precision error ([#746](https://github.com/googleapis/gapic-generator-php/issues/746)) ([3e3d435](https://github.com/googleapis/gapic-generator-php/commit/3e3d43597904f8bfbf82410462dcab7bea34a3c4))
+
+## [1.18.2](https://github.com/googleapis/gapic-generator-php/compare/v1.18.1...v1.18.2) (2025-01-28)
+
+
+### Bug Fixes
+
+* Ensure ChannelCredentials class exists ([#743](https://github.com/googleapis/gapic-generator-php/issues/743)) ([02b24e8](https://github.com/googleapis/gapic-generator-php/commit/02b24e8e1340958fbd93fa1b5c658f3d33eeba90))
+
+## [1.18.1](https://github.com/googleapis/gapic-generator-php/compare/v1.18.0...v1.18.1) (2025-01-24)
+
+
+### Bug Fixes
+
+* Add emulator support for pubsub clients ([#734](https://github.com/googleapis/gapic-generator-php/issues/734)) ([652ae4b](https://github.com/googleapis/gapic-generator-php/commit/652ae4b2162c357c0d369f9551e3cab94b92b38c))
+
+## [1.18.0](https://github.com/googleapis/gapic-generator-php/compare/v1.17.0...v1.18.0) (2024-12-06)
+
+
+### Features
+
+* Add compatibility for PHP 8.4 ([#736](https://github.com/googleapis/gapic-generator-php/issues/736)) ([0d7b5eb](https://github.com/googleapis/gapic-generator-php/commit/0d7b5ebb54a3bc805647fa1a9feb5a46a8acec91))
+* Add documentation for the Logger option inside the options array ([#731](https://github.com/googleapis/gapic-generator-php/issues/731)) ([4a2bdb1](https://github.com/googleapis/gapic-generator-php/commit/4a2bdb19c7894c9cd3f3a10d11ebaaef8b781c46))
+
+## [1.17.0](https://github.com/googleapis/gapic-generator-php/compare/v1.16.1...v1.17.0) (2024-10-30)
+
+
+### Features
+
+* Generic type for docs in async magic methods ([#732](https://github.com/googleapis/gapic-generator-php/issues/732)) ([68c88ed](https://github.com/googleapis/gapic-generator-php/commit/68c88eddcef45e100d357218e7f141d4f3b92a4d))
+
+## [1.16.1](https://github.com/googleapis/gapic-generator-php/compare/v1.16.0...v1.16.1) (2024-08-08)
+
+
+### Bug Fixes
+
+* Revert two optional to required fields for dialogflow ([#723](https://github.com/googleapis/gapic-generator-php/issues/723)) ([307d871](https://github.com/googleapis/gapic-generator-php/commit/307d871d55240dfb99ca837a4993f4db574fa1f8))
+
+## [1.16.0](https://github.com/googleapis/gapic-generator-php/compare/v1.15.0...v1.16.0) (2024-06-04)
+
+
+### Features
+
+* Add emulator support for Bigtable and Spanner clients ([#719](https://github.com/googleapis/gapic-generator-php/issues/719)) ([83b772b](https://github.com/googleapis/gapic-generator-php/commit/83b772b63ca454542ef4a3f07590e082f18abab8))
+* Add null coalescing assign ([#720](https://github.com/googleapis/gapic-generator-php/issues/720)) ([46f8670](https://github.com/googleapis/gapic-generator-php/commit/46f86705ea170345ea77cdfc65492733e343806d))
+
+## [1.15.0](https://github.com/googleapis/gapic-generator-php/compare/v1.14.0...v1.15.0) (2024-05-30)
+
+
+### Features
+
+* New surface custom LROs ([#712](https://github.com/googleapis/gapic-generator-php/issues/712)) ([0afff0f](https://github.com/googleapis/gapic-generator-php/commit/0afff0f74e88e5097a2be33e6004b0367ecc7b6d))
+* New surface LROs for new surface clients ([#714](https://github.com/googleapis/gapic-generator-php/issues/714)) ([908d92f](https://github.com/googleapis/gapic-generator-php/commit/908d92f3ef8c0f26cffc65e8b5eb9987eba813a8))
+
+## [1.14.0](https://github.com/googleapis/gapic-generator-php/compare/v1.13.0...v1.14.0) (2024-04-29)
+
+
+### Features
+
+* Add support for the API version header ([#706](https://github.com/googleapis/gapic-generator-php/issues/706)) ([28a3161](https://github.com/googleapis/gapic-generator-php/commit/28a31618bf50d192ce81cf8bfd5be3200152d481))
+
+## [1.13.0](https://github.com/googleapis/gapic-generator-php/compare/v1.12.1...v1.13.0) (2024-04-25)
+
+
+### Features
+
+* Add support for grpc-only gapic clients ([#707](https://github.com/googleapis/gapic-generator-php/issues/707)) ([5783c98](https://github.com/googleapis/gapic-generator-php/commit/5783c98c13215969eb35696b17d55a00ed711b1b))
+
+## [1.12.1](https://github.com/googleapis/gapic-generator-php/compare/v1.12.0...v1.12.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* Patch optional to required changes in BigQueryDataTransfer ([#703](https://github.com/googleapis/gapic-generator-php/issues/703)) ([ccfc769](https://github.com/googleapis/gapic-generator-php/commit/ccfc769d89442d411ffa1c62f8c0f340a4407ded))
+
+## [1.12.0](https://github.com/googleapis/gapic-generator-php/compare/v1.11.0...v1.12.0) (2024-04-12)
+
+
+### Features
+
+* Add patches for bigtable required to optional changes ([#702](https://github.com/googleapis/gapic-generator-php/issues/702)) ([207191c](https://github.com/googleapis/gapic-generator-php/commit/207191c1f3a07a24338b47735c39bf31a01794ee))
+
+
+### Bug Fixes
+
+* Add license and generated code headers to generated resource files ([#696](https://github.com/googleapis/gapic-generator-php/issues/696)) ([8409511](https://github.com/googleapis/gapic-generator-php/commit/8409511b8acc296f502694e26e1b0b8a5e52a262))
+
 ## [1.11.0](https://github.com/googleapis/gapic-generator-php/compare/v1.10.0...v1.11.0) (2024-02-28)
 
 

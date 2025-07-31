@@ -1,0 +1,6 @@
+type: google.api.Service
+config_version: 3
+
+authentication:
+  rules:
+  - selector: 'testing.basicGrpcOnly.BasicGrpcOnly.*'

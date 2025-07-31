@@ -22,7 +22,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\ServerStream;
-use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\LongRunning\OperationsClient as LegacyOperationsClient;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -37,7 +37,9 @@ use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoHelpers;
+use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
@@ -63,6 +65,7 @@ class UnitTestsV2Generator
     private $assertInstanceOf;
     private $assertArrayHasKey;
     private $fail;
+    private $operationsClientClass;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
@@ -77,13 +80,16 @@ class UnitTestsV2Generator
         $this->assertInstanceOf = AST::call(AST::THIS, AST::method('assertInstanceOf'));
         $this->assertArrayHasKey = AST::call(AST::THIS, AST::method('assertArrayHasKey'));
         $this->fail = AST::call(AST::THIS, AST::method('fail'));
+        $this->operationsClientClass = $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+            ? OperationsClient::class
+            : LegacyOperationsClient::class;
     }
 
     private function generateImpl(): PhpFile
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(BidiStream::class));
-        $this->ctx->type(Type::fromName(\Google\ApiCore\LongRunning\OperationsClient::class));
+        $this->ctx->type(Type::fromName($this->operationsClientClass));
         $this->ctx->type(Type::fromName(ServerStream::class));
         $this->ctx->type(Type::fromName(GetOperationRequest::class));
         $this->ctx->type(Type::fromName(Any::class));
@@ -482,13 +488,13 @@ class UnitTestsV2Generator
         $incompleteOperation = AST::var('incompleteOperation');
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName(OperationsClient::class)))(AST::array([
+            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName($this->operationsClientClass)))(AST::array([
                 'apiEndpoint' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),
             AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array([
+            AST::assign($client, AST::call(AST::THIS, $this->createClient($this->operationsClientClass))(AST::array([
                 'transport' => $transport,
                 'operationsClient' => $operationsClient,
             ]))),

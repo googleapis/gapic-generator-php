@@ -267,7 +267,8 @@ class CodeGenerator
             $result[] = $file;
         }
 
-        if ($transportType === Transport::REST) {
+        // GAPIC enums are only needed for legacy DIREGAPICs
+        if ($transportType === Transport::REST && $migrationMode !== MigrationMode::NEW_SURFACE_ONLY) {
             foreach (static::generateEnumConstants(
                 $byPackage,
                 $catalog,
@@ -404,10 +405,14 @@ class CodeGenerator
             $code = ResourcesGenerator::generateDescriptorConfig($service, $gapicYamlConfig);
             $code = Formatter::format($code);
             yield ["src/{$version}resources/{$service->descriptorConfigFilename}", $code];
+
             // Resource: rest_client_config.php
-            $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
-            $code = Formatter::format($code);
-            yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
+            if ($service->transportType !== Transport::GRPC) {
+                $code = ResourcesGenerator::generateRestConfig($service, $serviceYamlConfig, $numericEnums);
+                $code = Formatter::format($code);
+                yield ["src/{$version}resources/{$service->restConfigFilename}", $code];
+            }
+
             // Resource: client_config.json
             $json = ResourcesGenerator::generateClientConfig($service, $gapicYamlConfig, $grpcServiceConfig);
             yield ["src/{$version}resources/{$service->clientConfigFilename}", $json];
@@ -432,7 +437,7 @@ class CodeGenerator
         foreach ($enumsToGenerate as $enum) {
             // Use the PHP namespace of the file that the enum belongs to and convert it
             // to the "in code" form using only single backslashes.
-            $parent = $catalog->enumsToFile['.' . $enum->desc->getFullName()];
+            $parent = $catalog->enumsToFile[Helpers::prependDot($enum->desc->getFullName())];
             $pkgNamespace = ProtoHelpers::getNamespace($parent);
             $pkgNamespace = str_replace('\\\\', '\\', $pkgNamespace);
 

@@ -56,4 +56,10 @@ class Helpers
             })
             ->join('/');
     }
+
+    public static function prependDot(string $s): string 
+    {
+        // Prepends a dot to the given string.
+        return ".$s";
+    }
 }

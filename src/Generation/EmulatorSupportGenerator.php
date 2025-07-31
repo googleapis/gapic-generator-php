@@ -21,6 +21,7 @@ namespace Google\Generator\Generation;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\PhpDoc;
+use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
 class EmulatorSupportGenerator
@@ -31,12 +32,19 @@ class EmulatorSupportGenerator
     private static $emulatorSupportClients = [
         '\Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient' => 'SPANNER_EMULATOR_HOST',
         '\Google\Cloud\Spanner\Admin\Instance\V1\Client\InstanceAdminClient' => 'SPANNER_EMULATOR_HOST',
+        '\Google\Cloud\Spanner\V1\Client\SpannerClient' => 'SPANNER_EMULATOR_HOST',
+        '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableInstanceAdminClient' => 'BIGTABLE_EMULATOR_HOST',
+        '\Google\Cloud\Bigtable\Admin\V2\Client\BigtableTableAdminClient' => 'BIGTABLE_EMULATOR_HOST',
+        '\Google\Cloud\Bigtable\V2\Client\BigtableClient' => 'BIGTABLE_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\PublisherClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SubscriberClient' => 'PUBSUB_EMULATOR_HOST',
+        '\Google\Cloud\PubSub\V1\Client\SchemaServiceClient' => 'PUBSUB_EMULATOR_HOST',
         // Added for unittesting
         '\Testing\Basic\Client\BasicClient' => 'BASIC_EMULATOR_HOST'
     ];
 
     /** @var string Name of the default emulator config function. */
-    public const DEFAULT_EMULATOR_CONFIG_FN = 'getDefaultEmulatorConfig';
+    public const DEFAULT_EMULATOR_CONFIG_FN = 'setDefaultEmulatorConfig';
 
     public static function generateEmulatorSupport(ServiceDetails $serviceDetails, SourceFileContext $ctx)
     {
@@ -45,6 +53,11 @@ class EmulatorSupportGenerator
         $phpUrlSchemeConst = AST::constant('PHP_URL_SCHEME');
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
+        $optionsVar = AST::var('options');
+        $transportConfigIndexVar = AST::index(AST::index(AST::index(AST::index(
+            $optionsVar,
+            'transportConfig'
+        ), 'grpc'), 'stubOpts'), 'credentials');
 
         if (!array_key_exists($fullClassName, self::$emulatorSupportClients)) {
             return null;
@@ -52,30 +65,30 @@ class EmulatorSupportGenerator
 
         return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
+            ->withParams(AST::param(ResolvedType::array(), $optionsVar))
             ->withBody(AST::block(
                 AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportClients[$fullClassName])),
-                AST::if(AST::call(AST::EMPTY)($emulatorHostVar))->then(AST::return(AST::array([]))),
+                AST::if(AST::call(AST::EMPTY)($emulatorHostVar))->then(AST::return($optionsVar)),
                 AST::if(AST::assign($schemeVar, AST::call(AST::PARSE_URL)($emulatorHostVar, $phpUrlSchemeConst)))
                     ->then(AST::block(
                         AST::assign($searchVar, AST::binaryOp($schemeVar, '.', '://')),
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
                     )),
-                AST::return(
-                    AST::array([
-                        'apiEndpoint' => $emulatorHostVar,
-                        'transportConfig' => [
-                            'grpc' => [
-                                'stubOpts' => [
-                                    'credentials' => AST::staticCall(
-                                        $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
-                                        AST::method('createInsecure')
-                                    )()
-                                ]
-                            ]
-                        ],
-                        'credentials' => AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))(),
-                    ])
-                )
+                AST::nullCoalescingAssign(AST::index($optionsVar, 'apiEndpoint'), $emulatorHostVar),
+                AST::if(AST::call(AST::CLASS_EXISTS)(
+                    AST::access($ctx->type(Type::fromName("Grpc\ChannelCredentials")), AST::CLS)
+                ))
+                    ->then(AST::block(
+                        AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
+                            $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
+                            AST::method('createInsecure')
+                        )()),
+                    )),
+                AST::nullCoalescingAssign(
+                    AST::index($optionsVar,'credentials'),
+                    AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
+                ),
+                AST::return($optionsVar)
             ), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text("Configure the gapic configuration to use a service emulator.")
@@ -85,13 +98,13 @@ class EmulatorSupportGenerator
 
     public static function generateEmulatorOptions(ServiceDetails $serviceDetails, AST $options)
     {
-        $getDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
+        $setDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
 
         if (!array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients)) {
             return null;
         }
 
-        return Ast::assign($options, Ast::binaryOp($options, '+', AST::call(AST::THIS, $getDefaultEmulatorConfig)()));
+        return Ast::assign($options, AST::call(AST::THIS, $setDefaultEmulatorConfig)($options));
     }
 
     public static function generateEmulatorPhpDoc(ServiceDetails $serviceDetails)

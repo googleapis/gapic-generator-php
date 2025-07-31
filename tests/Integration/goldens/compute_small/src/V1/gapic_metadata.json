@@ -47,6 +47,20 @@
                     }
                 }
             }
+        },
+        "Subnetworks": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "SubnetworksGapicClient",
+                    "rpcs": {
+                        "ListUsable": {
+                            "methods": [
+                                "listUsable"
+                            ]
+                        }
+                    }
+                }
+            }
         }
     }
 }

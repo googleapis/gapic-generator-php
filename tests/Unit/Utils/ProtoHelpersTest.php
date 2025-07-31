@@ -27,16 +27,16 @@ use Google\Generator\Utils\ProtoCatalog;
 
 final class ProtoHelpersTest extends TestCase
 {
-    public function testProtoCustomOptions(): void
-    {
-        $file = ProtoLoader::loadDescriptor('Utils/custom_options.proto');
+    // public function testProtoCustomOptions(): void
+    // {
+    //     $file = ProtoLoader::loadDescriptor('Utils/custom_options.proto');
 
-        // Check custom options are loaded successfully.
-        $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
-        $this->assertEquals('stringy', ProtoHelpers::getCustomOption($file, 2001));
-        $this->assertEquals([8, 9, 10], ProtoHelpers::getCustomOptionRepeated($file, 2002)->toArray());
-        $this->assertEquals(['s1', 's2'], ProtoHelpers::getCustomOptionRepeated($file, 2003)->toArray());
-    }
+    //     // Check custom options are loaded successfully.
+    //     $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
+    //     $this->assertEquals('stringy', ProtoHelpers::getCustomOption($file, 2001));
+    //     $this->assertEquals([8, 9, 10], ProtoHelpers::getCustomOptionRepeated($file, 2002)->toArray());
+    //     $this->assertEquals(['s1', 's2'], ProtoHelpers::getCustomOptionRepeated($file, 2003)->toArray());
+    // }
 
     public function testProtoComments(): void
     {

@@ -1,0 +1,16 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.basicgrpconly",
+    "libraryPackage": "Testing\\Basicgrpconly",
+    "services": {
+        "BasicGrpcOnly": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BasicGrpcOnlyGapicClient"
+                }
+            }
+        }
+    }
+}

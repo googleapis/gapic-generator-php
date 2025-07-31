@@ -43,6 +43,9 @@ class ServiceDetails
     /** @var string *Readonly* The proto package name for this service. */
     public string $package;
 
+    /** @var string *Readonly* The api version for this service */
+    public ?string $apiVersion;
+
     /** @var string *Readonly* The PHP namespace for this service.  */
     public string $namespace;
 
@@ -118,9 +121,9 @@ class ServiceDetails
     /** @var Type *Readonly* The Type of the service's operations_service client. */
     public Type $customOperationServiceClientType;
 
-    public bool $hasCustomOpDelete;
+    public ?MethodDetails $customOpDelete;
 
-    public bool $hasCustomOpCancel;
+    public ?MethodDetails $customOpCancel;
 
     /** @var bool *Readonly* Whether this service makes use of resources. */
     public bool $hasResources;
@@ -172,6 +175,7 @@ class ServiceDetails
         $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
         $this->serviceYamlConfig = $serviceYamlConfig;
+        $this->apiVersion = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_VERSION);
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
@@ -205,13 +209,22 @@ class ServiceDetails
             // but for simplicity we will assume they are all the same and use the first.
             $this->customOperationService = $customOperations[0]->operationService;
 
+            // Find if there is a "Delete" or "Cancel" method on the operation service.
+            // If so, assume these are the "delete" and "cancel" methods respectively.
+            $operationCancel = Vector::new($this->customOperationService->getMethod())
+                ->filter(fn ($x) => $x->getName() === 'Cancel');
+            $operationDelete = Vector::new($this->customOperationService->getMethod())
+                ->filter(fn ($x) => $x->getName() === 'Delete');
+
             // Determine if the operation service implements the Cancel and/or the Delete RPCs.
-            $this->hasCustomOpCancel = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Cancel');
-            $this->hasCustomOpDelete = Vector::new($this->customOperationService->getMethod())->any(fn ($x) => $x->getName() === 'Delete');
+            $this->customOpCancel = $operationCancel->count() !== 0 ? MethodDetails::create($this, $operationCancel->firstOrNull()) : null;
+            $this->customOpDelete = $operationDelete->count() !== 0 ? MethodDetails::create($this, $operationDelete->firstOrNull()) : null;
 
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';
-            $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\{$cname}");
+            $this->customOperationServiceClientType = $this->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+                ? Type::fromName("{$this->namespace}\\Client\\{$cname}")
+                : Type::fromName("{$this->namespace}\\{$cname}");
         }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();
