@@ -338,8 +338,7 @@ class GapicClientV2Generator
             ->withAccess(Access::PUBLIC)
             ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
             ->withBody(AST::block(
-                AST::assign($options, AST::ternary(
-                    AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
+                AST::assign($options, AST::nullCoalescing(
                     AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
                     $default
                 )),
@@ -741,6 +740,15 @@ class GapicClientV2Generator
                         PhpDoc::text(
                             'A PSR-3 compliant logger. If set to false, logging is disabled,',
                             'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
+                        )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::string()),
+                        ]),
+                        'universeDomain',
+                        PhpDoc::text(
+                            'The service domain for the client. Defaults to \'googleapis.com\'.'
                         )
                     )
                 )),

@@ -21,6 +21,7 @@
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
             "Testing\\BasicOneofNew\\": "tests/Unit/ProtoTests/BasicOneofNew/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
+            "Testing\\BasicExplicitPaginated\\": "tests/Unit/ProtoTests/BasicExplicitPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
             "Testing\\CustomLroNew\\": "tests/Unit/ProtoTests/CustomLroNew/out/src",
@@ -33,7 +34,7 @@
     },
     "require": {
         "php": "^8.1",
-        "google/protobuf": "^3.18",
+        "google/protobuf": "^4.0",
         "friendsofphp/php-cs-fixer": "^3",
         "symfony/yaml": "^5.2",
         "symplify/coding-standard": "9.4.70",
