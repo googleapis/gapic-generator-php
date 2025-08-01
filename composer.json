@@ -29,7 +29,8 @@
             "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
-            "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
+            "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src",
+            "Testing\\DiregapicPaginated\\": "tests/Unit/ProtoTests/DiregapicPaginated/out/src"
         }
     },
     "require": {
