@@ -74,9 +74,9 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $pageToken2 = 649316932;
         $aField2 = false;
         $anotherField = 'anotherField1551924414';
-        $theRealResultsElement = 'theRealResultsElement-1510860256';
-        $theRealResults = [
-            $theRealResultsElement,
+        $theResultsElement = 'theResultsElement-1546403867';
+        $theResults = [
+            $theResultsElement,
         ];
         $expectedResponse = new ExplicitResponse();
         $expectedResponse->setPageSize($pageSize2);
@@ -84,7 +84,7 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $expectedResponse->setPageToken($pageToken2);
         $expectedResponse->setAField($aField2);
         $expectedResponse->setAnotherField($anotherField);
-        $expectedResponse->setTheRealResults($theRealResults);
+        $expectedResponse->setTheResults($theResults);
         $transport->addResponse($expectedResponse);
         // Mock request
         $aField = 'aField-1289259108';
@@ -98,7 +98,7 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getTheRealResults()[0], $resources[0]);
+        $this->assertEquals($expectedResponse->getTheResults()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
@@ -166,9 +166,9 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $pageToken2 = 649316932;
         $aField2 = false;
         $anotherField = 'anotherField1551924414';
-        $theRealResultsElement = 'theRealResultsElement-1510860256';
-        $theRealResults = [
-            $theRealResultsElement,
+        $theResultsElement = 'theResultsElement-1546403867';
+        $theResults = [
+            $theResultsElement,
         ];
         $expectedResponse = new ExplicitResponse();
         $expectedResponse->setPageSize($pageSize2);
@@ -176,7 +176,7 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $expectedResponse->setPageToken($pageToken2);
         $expectedResponse->setAField($aField2);
         $expectedResponse->setAnotherField($anotherField);
-        $expectedResponse->setTheRealResults($theRealResults);
+        $expectedResponse->setTheResults($theResults);
         $transport->addResponse($expectedResponse);
         // Mock request
         $aField = 'aField-1289259108';
@@ -190,7 +190,7 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
         $resources = iterator_to_array($response->iterateAllElements());
         $this->assertSame(1, count($resources));
-        $this->assertEquals($expectedResponse->getTheRealResults()[0], $resources[0]);
+        $this->assertEquals($expectedResponse->getTheResults()[0], $resources[0]);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();

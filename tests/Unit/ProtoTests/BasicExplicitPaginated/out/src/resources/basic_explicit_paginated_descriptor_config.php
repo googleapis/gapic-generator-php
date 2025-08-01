@@ -30,7 +30,7 @@ return [
                     'requestPageSizeGetMethod' => 'getPageSize',
                     'requestPageSizeSetMethod' => 'setPageSize',
                     'responsePageTokenGetMethod' => 'getNextPageToken',
-                    'resourcesGetMethod' => 'getTheRealResults',
+                    'resourcesGetMethod' => 'getTheResults',
                 ],
                 'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
                 'responseType' => 'Testing\BasicExplicitPaginated\ExplicitResponse',
