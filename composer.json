@@ -30,7 +30,7 @@
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
             "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src",
-            "Testing\\DiregapicPagination\\": "tests/Unit/ProtoTests/BasicExplicitPaginated/out/src"
+            "Testing\\DiregapicPaginated\\": "tests/Unit/ProtoTests/DiregapicPaginated/out/src"
         }
     },
     "require": {
