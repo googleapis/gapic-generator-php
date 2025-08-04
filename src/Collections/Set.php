@@ -30,7 +30,7 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Set
      */
-    public static function new($data = []) : Set
+    public static function new($data = []): Set
     {
         if ($data instanceof Set) {
             return $data;

@@ -18,12 +18,12 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Protobuf\Internal\GPBType;
+use Google\Generator\Collections\Equality;
+use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
-use Google\Generator\Collections\Equality;
-use Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\GPBType;
 
 /** A fully-specified PHP type. */
 class Type implements Equality
@@ -166,7 +166,7 @@ class Type implements Equality
             case GPBType::SFIXED64: // 16
             case GPBType::SINT32: // 17
             case GPBType::SINT64: // 18
-            return static::int();
+                return static::int();
             case GPBType::BOOL: // 8
                 return static::bool();
             case GPBType::STRING: // 9

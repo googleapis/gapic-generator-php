@@ -21,8 +21,8 @@ namespace Google\Generator\Generation;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\LongRunning\OperationsClient as LegacyOperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -36,8 +36,8 @@ use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\MigrationMode;
+use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\GetOperationRequest;
@@ -121,7 +121,7 @@ class UnitTestsV2Generator
     {
         // Just pick one non-streaming method to generate an async unit test for.
         // This is more of a sanity check than a coverage thing.
-        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
+        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn ($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
 
         return AST::class($this->serviceDetails->unitTestsV2Type, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(

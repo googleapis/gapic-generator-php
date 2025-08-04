@@ -19,11 +19,9 @@ declare(strict_types=1);
 namespace Google\Generator\Generation;
 
 use Google\Api\FieldInfo\Format;
-use Google\Api\ResourceReference;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
@@ -271,8 +269,8 @@ class FieldDetails
 
         // Mirror of the wrapper class typing logic in OneofWrapperGenerator::generateClass.
         $oneofDesc = $this->containingMessage->getOneofDecl()[$this->oneOfIndex];
-        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . "Oneof";
-        $namespace = $serviceNamespace . "\\" . $this->containingMessage->getName();
+        $oneofWrapperClassName = Helpers::toUpperCamelCase($oneofDesc->getName()) . 'Oneof';
+        $namespace = $serviceNamespace . '\\' . $this->containingMessage->getName();
         $generatedOneofWrapperType = Type::fromName("$namespace\\$oneofWrapperClassName");
         return $generatedOneofWrapperType;
     }

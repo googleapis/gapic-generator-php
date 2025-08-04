@@ -18,8 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpParam;

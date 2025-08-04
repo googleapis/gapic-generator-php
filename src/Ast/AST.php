@@ -131,12 +131,12 @@ abstract class AST
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
             return $x->toCode();
-        }  elseif (is_array($x)) {
+        } elseif (is_array($x)) {
             return AST::array($x)->toCode();
-        } else if ($x instanceof Vector) {
+        } elseif ($x instanceof Vector) {
             return AST::array($x->toArray())->toCode();
-        } else if ($x instanceof Map) {
-            throw new \Exception("Cannot convert Map to PHP code.");
+        } elseif ($x instanceof Map) {
+            throw new \Exception('Cannot convert Map to PHP code.');
         } else {
             $t = gettype($x);
             throw new \Exception("Cannot convert $t to PHP code.");
@@ -279,7 +279,7 @@ abstract class AST
      *
      * @return Expression
      */
-    public static function inlineVarDoc(ResolvedType $type, Variable $var, string $comment = null): Expression
+    public static function inlineVarDoc(ResolvedType $type, Variable $var, ?string $comment = null): Expression
     {
         return new class($type, $var, $comment) extends Expression {
             public function __construct(
@@ -624,7 +624,7 @@ abstract class AST
             }
             public function toCode(): string
             {
-                return static::toPhp($this->to) . " = " . static::toPhp($this->from);
+                return static::toPhp($this->to) . ' = ' . static::toPhp($this->from);
             }
         };
     }
@@ -707,16 +707,16 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $elseif = implode("", $this->elseif->map(
+                $elseif = implode('', $this->elseif->map(
                     fn ($arrayCondBlockPair) =>
-                        " elseif (" . static::toPhp($arrayCondBlockPair[0]) . ") {\n"  .
+                        ' elseif (' . static::toPhp($arrayCondBlockPair[0]) . ") {\n" .
                         static::toPhp($arrayCondBlockPair[1]) . "\n" .
-                        "}"
+                        '}'
                 )->toArray());
                 $else = is_null($this->else) ? '' :
                     " else {\n" .
                     static::toPhp($this->else) . "\n" .
-                    "}";
+                    '}';
                 $code = 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
                     "}{$elseif}{$else}";

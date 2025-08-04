@@ -31,8 +31,8 @@ use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Expression;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
@@ -157,7 +157,7 @@ class GapicClientGenerator
     {
         return AST::constant('SERVICE_ADDRESS')
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("The default address of the service."),
+                PhpDoc::text('The default address of the service.'),
                 $this->hasServiceAddressTemplate()
                     ? PhpDoc::deprecated('SERVICE_ADDRESS_TEMPLATE should be used instead.')
                     : null
@@ -374,7 +374,7 @@ class GapicClientGenerator
                     AST::return($defaultOperationDescriptor)
                 ))
                 ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::text("Return the default longrunning operation descriptor config.")
+                    PhpDoc::text('Return the default longrunning operation descriptor config.')
                 ));
             $methods = $methods->append($getDefaultOperationDescriptor);
             $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)());
@@ -858,73 +858,73 @@ class GapicClientGenerator
         $optionalArgs->var
       ];
         switch ($method->methodType) {
-      case MethodDetails::CUSTOM_OP:
-        $startCallArgs = [
-            $method->name,
-            $optionalArgs->var,
-            $request,
-            AST::call(AST::THIS, AST::method('getOperationsClient'))(),
-            AST::NULL,
-            AST::access($this->ctx->type($method->responseType), AST::CLS),
-        ];
-        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-      case MethodDetails::NORMAL:
-        $startCallArgs[] = $request;
-        if ($method->isMixin()) {
-            $startCallArgs[] =
-                AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
-            $startCallArgs[] = $method->mixinServiceFullname;
+            case MethodDetails::CUSTOM_OP:
+                $startCallArgs = [
+                    $method->name,
+                    $optionalArgs->var,
+                    $request,
+                    AST::call(AST::THIS, AST::method('getOperationsClient'))(),
+                    AST::NULL,
+                    AST::access($this->ctx->type($method->responseType), AST::CLS),
+                ];
+                return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+            case MethodDetails::NORMAL:
+                $startCallArgs[] = $request;
+                if ($method->isMixin()) {
+                    $startCallArgs[] =
+                        AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
+            case MethodDetails::LRO:
+                $startCallArgs = [
+                  $method->name,
+                  $optionalArgs->var,
+                  $request,
+                  AST::call(AST::THIS, AST::method('getOperationsClient'))()
+                ];
+                if ($method->isMixin()) {
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
+            case MethodDetails::PAGINATED:
+                $startCallArgs = [
+                  $method->name,
+                  $optionalArgs->var,
+                  AST::access($this->ctx->type($method->responseType), AST::CLS),
+                  $request
+                ];
+                if ($method->isMixin()) {
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
+            case MethodDetails::BIDI_STREAMING:
+                $startCallArgs[] = AST::NULL;
+                $startCallArgs[] =
+                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
+                if ($method->isMixin()) {
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+            case MethodDetails::SERVER_STREAMING:
+                $startCallArgs[] = $request;
+                $startCallArgs[] =
+                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
+                if ($method->isMixin()) {
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+            case MethodDetails::CLIENT_STREAMING:
+                $startCallArgs[] = AST::NULL;
+                $startCallArgs[] =
+                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
+                if ($method->isMixin()) {
+                    $startCallArgs[] = $method->mixinServiceFullname;
+                }
+                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+            default:
+                throw new \Exception("Cannot handle method type: '{$method->methodType}'");
         }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
-      case MethodDetails::LRO:
-        $startCallArgs = [
-          $method->name,
-          $optionalArgs->var,
-          $request,
-          AST::call(AST::THIS, AST::method('getOperationsClient'))()
-        ];
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-      case MethodDetails::PAGINATED:
-        $startCallArgs = [
-          $method->name,
-          $optionalArgs->var,
-          AST::access($this->ctx->type($method->responseType), AST::CLS),
-          $request
-        ];
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
-      case MethodDetails::BIDI_STREAMING:
-        $startCallArgs[] = AST::NULL;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
-      case MethodDetails::SERVER_STREAMING:
-        $startCallArgs[] = $request;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
-      case MethodDetails::CLIENT_STREAMING:
-        $startCallArgs[] = AST::NULL;
-        $startCallArgs[] =
-          AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
-        if ($method->isMixin()) {
-            $startCallArgs[] = $method->mixinServiceFullname;
-        }
-        return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
-      default:
-        throw new \Exception("Cannot handle method type: '{$method->methodType}'");
-      }
     }
 
     /**
@@ -983,13 +983,13 @@ class GapicClientGenerator
             }
 
             // Code: $fooOneof->isBar()
-            $condition = AST::call($param, AST::method($toMethodNameFn("is", $currFieldDescProto)))();
+            $condition = AST::call($param, AST::method($toMethodNameFn('is', $currFieldDescProto)))();
             // Code: $request->setBar($fooOneof->getBar())
             $then = AST::call(
                 $requestVarExpr,
-                AST::method($toMethodNameFn("set", $currFieldDescProto))
+                AST::method($toMethodNameFn('set', $currFieldDescProto))
             )(
-                AST::call($param, AST::method($toMethodNameFn("get", $currFieldDescProto)))()
+                AST::call($param, AST::method($toMethodNameFn('get', $currFieldDescProto)))()
             );
             // First field.
             if ($ifBlock === null) {
@@ -1108,7 +1108,7 @@ class GapicClientGenerator
 
                 // Construct the preg_match expression using the routing header config's capture group regular expression.
                 $key = $routing['key'];
-                $matchesName = Helpers::toCamelCase($key) . "Matches";
+                $matchesName = Helpers::toCamelCase($key) . 'Matches';
                 $matches = AST::var($matchesName);
                 $matcher = null;
 
@@ -1147,7 +1147,7 @@ class GapicClientGenerator
                             fn ($key, $matcher) =>
                             AST::block(
                                 // $fooMatches = []
-                                AST::assign(AST::var(Helpers::toCamelCase($key) . "Matches"), AST::array([])),
+                                AST::assign(AST::var(Helpers::toCamelCase($key) . 'Matches'), AST::array([])),
                                 // if (preg_match(..., $fooMatches))
                                 $matcher
                             )
@@ -1196,7 +1196,7 @@ class GapicClientGenerator
         foreach ($requiredFieldNamesInRoutingHeaders as $header) {
             $requiredFieldToHeaderName[$header] =
                 $requiredRestRoutingKeys->filter(
-                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode(".", $k)[0] : $header === $k
+                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode('.', $k)[0] : $header === $k
                 );
         }
 

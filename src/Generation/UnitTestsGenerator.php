@@ -21,8 +21,8 @@ namespace Google\Generator\Generation;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -261,7 +261,7 @@ class UnitTestsGenerator
                             // Variable of type oneof wrapper, e.g. supplementaryData.
                             AST::call(
                                 AST::var(Helpers::toCamelCase($x->field->getOneofDesc()->getName())),
-                                AST::method("is" . Helpers::toUpperCamelCase($x->field->name))
+                                AST::method('is' . Helpers::toUpperCamelCase($x->field->name))
                             )()
                         )
                 ])),

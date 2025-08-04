@@ -84,7 +84,7 @@ abstract class PhpDoc
      */
     public static function newLine(): PhpDoc
     {
-        return new class extends PhpDoc {
+        return new class() extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new();
@@ -189,7 +189,7 @@ abstract class PhpDoc
      */
     public static function internal(): PhpDoc
     {
-        return new class extends PhpDoc {
+        return new class() extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new(['@internal']);
@@ -204,7 +204,7 @@ abstract class PhpDoc
      */
     public static function experimental(): PhpDoc
     {
-        return new class extends PhpDoc {
+        return new class() extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new(['@experimental']);
@@ -234,7 +234,6 @@ abstract class PhpDoc
         };
     }
 
-
     /**
      * Add the @inheritdoc tag to the PHP doc block.
      *
@@ -242,7 +241,7 @@ abstract class PhpDoc
      */
     public static function inherit(): PhpDoc
     {
-        return new class extends PhpDoc {
+        return new class() extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new(['{@inheritdoc}']);
@@ -257,7 +256,7 @@ abstract class PhpDoc
      */
     public static function test(): PhpDoc
     {
-        return new class extends PhpDoc {
+        return new class() extends PhpDoc {
             protected function toLines(Map $info): Vector
             {
                 return Vector::new(['@test']);
@@ -304,7 +303,7 @@ abstract class PhpDoc
             protected function toLines(Map $info): Vector
             {
                 $doc = is_null($this->doc) ? '' : (' ' . $this->doc->toLines(Map::new())->join(' '));
-                return Vector::new(["@return {$this->type->toCode()}{$doc}" . ($this->nullable ? "|null" : "")]);
+                return Vector::new(["@return {$this->type->toCode()}{$doc}" . ($this->nullable ? '|null' : '')]);
             }
         };
     }
@@ -452,10 +451,10 @@ abstract class PhpDoc
             {
                 $this->isMethodDoc = true;
             }
-            protected function toLines(Map $info = null): Vector
+            protected function toLines(?Map $info = null): Vector
             {
                 // @example samples/V1/ExampleClient/create_instance.php
-                return Vector::new(["@example {$this->sampleFile}", ""]);
+                return Vector::new(["@example {$this->sampleFile}", '']);
             }
         };
     }
@@ -470,7 +469,7 @@ abstract class PhpDoc
             ) {
                 $this->isMethodDoc = true;
             }
-            protected function toLines(Map $info = null): Vector
+            protected function toLines(?Map $info = null): Vector
             {
                 // @method [[static] return type] [name]([[type] [parameter]<, ...>]) [<description>]
                 return Vector::new(["@method {$this->response} {$this->name}({$this->request} \$request, array \$optionalArgs = [])"]);

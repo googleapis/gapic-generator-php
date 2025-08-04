@@ -259,7 +259,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         foreach ($this->data as $index => $item) {
             $mapping = $fnFlatMap($item, $index);
             if (!($mapping instanceof Vector)) {
-                throw new \Exception("flatMap() function must return a Vector");
+                throw new \Exception('flatMap() function must return a Vector');
             }
             $parts[] = $mapping->data;
         }
@@ -397,7 +397,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      *
      * @return Vector
      */
-    public function skipLast(int $n) : Vector
+    public function skipLast(int $n): Vector
     {
         return new Vector(array_slice($this->data, 0, max(0, count($this->data) - $n)));
     }

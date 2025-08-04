@@ -18,9 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\Helpers;
 use Google\Generator\Collections\Map;
+use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\DescriptorProto;
 
 class ProtoCatalog
@@ -82,7 +81,7 @@ class ProtoCatalog
                 // Value: FileDescriptorProto
                 fn ($x) => $x[1]
             );
-        
+
         // Flatten into pairs of [proto package, ServiceDescriptorProto], because each
         // FileDescriptorProto can contain multiple services, so each service must be
         // paired with the parent file proto package.

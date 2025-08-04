@@ -121,7 +121,7 @@ class SnippetDetailsV2 extends SnippetDetails
      * @param FieldDetails $field
      * @param string|null $parentFieldName
      */
-    private function handleField(FieldDetails $field, string $parentFieldName = null): void
+    private function handleField(FieldDetails $field, ?string $parentFieldName = null): void
     {
         // resource based format fields
         if ($field->useResourceTestValue) {
@@ -151,7 +151,7 @@ class SnippetDetailsV2 extends SnippetDetails
      * @param FieldDetails $field
      * @param string|null $parentFieldName
      */
-    private function handleMap(FieldDetails $field, string $parentFieldName = null): void
+    private function handleMap(FieldDetails $field, ?string $parentFieldName = null): void
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
         $this->sampleAssignments = $this->sampleAssignments->append(
@@ -166,7 +166,7 @@ class SnippetDetailsV2 extends SnippetDetails
      * @param FieldDetails $field
      * @param string|null $parentFieldName
      */
-    private function handleMessage(FieldDetails $field, string $parentFieldName = null): void
+    private function handleMessage(FieldDetails $field, ?string $parentFieldName = null): void
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
         $value = AST::new(
@@ -212,7 +212,7 @@ class SnippetDetailsV2 extends SnippetDetails
      * @param FieldDetails $field
      * @param string|null $parentFieldName
      */
-    private function handleScalarAndEnum(FieldDetails $field, string $parentFieldName = null): void
+    private function handleScalarAndEnum(FieldDetails $field, ?string $parentFieldName = null): void
     {
         $fieldVar = $this->buildFieldVar($field->camelName, $parentFieldName);
         $arrayElementVar = null;
@@ -235,7 +235,7 @@ class SnippetDetailsV2 extends SnippetDetails
      */
     private function handleFormattedResource(
         FieldDetails $field,
-        string $parentFieldName = null
+        ?string $parentFieldName = null
     ): void {
         $fieldName = Helpers::toCamelCase("formatted_{$parentFieldName}_{$field->name}");
         $var = AST::var($fieldName);
@@ -305,7 +305,7 @@ class SnippetDetailsV2 extends SnippetDetails
      * @param mixed $value A value override.
      * @param PhpDoc $phpDocText A phpdoc param description override.
      */
-    private function handleSampleParams(FieldDetails $field, Variable $var, $value = null, PhpDoc $phpDocText = null): void
+    private function handleSampleParams(FieldDetails $field, Variable $var, $value = null, ?PhpDoc $phpDocText = null): void
     {
         $paramType = $field->isEnum
             ? Type::int()

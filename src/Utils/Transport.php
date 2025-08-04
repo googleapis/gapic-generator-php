@@ -32,13 +32,13 @@ class Transport
      */
     public static function parseTransport(?string $transport): int
     {
-        if (is_null($transport) || $transport === "grpc+rest") {
+        if (is_null($transport) || $transport === 'grpc+rest') {
             return static::GRPC_REST;
         }
-        if ($transport === "rest") {
+        if ($transport === 'rest') {
             return static::REST;
         }
-        if ($transport === "grpc") {
+        if ($transport === 'grpc') {
             return static::GRPC;
         }
 

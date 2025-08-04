@@ -21,35 +21,35 @@ namespace Google\Generator;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Generation\SnippetGenerator;
 use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\EmptyClientGenerator;
 use Google\Generator\Generation\EnumConstantGenerator;
-use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\GapicClientGenerator;
 use Google\Generator\Generation\GapicClientV2Generator;
+use Google\Generator\Generation\GapicMetadataGenerator;
 use Google\Generator\Generation\OneofWrapperGenerator;
 use Google\Generator\Generation\ResourcesGenerator;
+use Google\Generator\Generation\ServiceDetails;
+use Google\Generator\Generation\SnippetGenerator;
+use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Generation\UnitTestsGenerator;
 use Google\Generator\Generation\UnitTestsV2Generator;
-use Google\Generator\Generation\ServiceDetails;
-use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
-use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\MigrationMode;
+use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
-use Google\Generator\Utils\ProtoAugmenter;
+use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\Protobuf\Internal\FileDescriptorSet;
 
 class CodeGenerator
 {
-    const MIXIN_SERVICES =  ["google.iam.v1.IAMPolicy", "google.longrunning.Operations", "google.cloud.location.Locations"];
+    const MIXIN_SERVICES =  ['google.iam.v1.IAMPolicy', 'google.longrunning.Operations', 'google.cloud.location.Locations'];
 
     /**
      * Generate from a FileSet descriptor; used when evoked from the command-line.
@@ -136,7 +136,7 @@ class CodeGenerator
         string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
         if ($licenseYear < 0) {
-            $licenseYear = (int)date('Y');
+            $licenseYear = (int) date('Y');
         }
         // Augment descriptors; e.g. proto comments; higher-level descriptors; ...
         ProtoAugmenter::augment($fileDescs);
@@ -368,7 +368,6 @@ class CodeGenerator
                 $code = Formatter::format($code);
                 yield ["tests/Unit/{$version}Client/{$service->unitTestsV2Type->name}.php", $code];
 
-
                 // Resource: build_method.txt
                 $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
                 $buildMethodFragments = BuildMethodFragmentGenerator::generate($ctx, $service);
@@ -444,14 +443,14 @@ class CodeGenerator
             // Trim the package namespace from the enum's fullname to get the
             // relative path of the enum.
             $enumFullname = Type::fromEnum($enum->desc)->getFullname(/* omitLeadingBackslash */ true);
-            $relativeNamespace = str_replace($pkgNamespace . "\\", '', $enumFullname);
+            $relativeNamespace = str_replace($pkgNamespace . '\\', '', $enumFullname);
             $filename = str_replace('\\', '/', $relativeNamespace);
             $namespace = $pkgNamespace . '\\Enums\\' . $relativeNamespace;
 
             // Extract the version, if present, from the enum namespace.
             $version = Helpers::nsVersionAndSuffixPath($pkgNamespace);
             if ($version !== '') {
-                $version = explode('/', $version, /* limit */ 1)[0].'/';
+                $version = explode('/', $version, /* limit */ 1)[0] . '/';
             }
             $ctx = new SourceFileContext($namespace, $licenseYear);
             $file = EnumConstantGenerator::generate($ctx, $enum, $namespace, $parent);

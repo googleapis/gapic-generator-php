@@ -18,8 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
@@ -85,13 +85,13 @@ class EmulatorSupportGenerator
                         )()),
                     )),
                 AST::nullCoalescingAssign(
-                    AST::index($optionsVar,'credentials'),
+                    AST::index($optionsVar, 'credentials'),
                     AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
                 ),
                 AST::return($optionsVar)
             ), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("Configure the gapic configuration to use a service emulator.")
+                PhpDoc::text('Configure the gapic configuration to use a service emulator.')
             ))
             ->withReturnType($ctx->type(Type::array()));
     }
