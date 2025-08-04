@@ -29,9 +29,9 @@ class GapicMetadataGenerator
     {
         $gapicMetadata = new GapicMetadata();
         // Initialization.
-        $gapicMetadata->setSchema("1.0");
-        $gapicMetadata->setComment("This file maps proto services/RPCs to the corresponding library clients/methods");
-        $gapicMetadata->setLanguage("php");
+        $gapicMetadata->setSchema('1.0');
+        $gapicMetadata->setComment('This file maps proto services/RPCs to the corresponding library clients/methods');
+        $gapicMetadata->setLanguage('php');
         $gapicMetadata->setLibraryPackage($namespace);
 
         $gapicMetadataServices = [];

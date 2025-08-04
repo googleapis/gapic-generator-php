@@ -401,7 +401,7 @@ class SnippetGenerator
                         $preMigrationSurface
                             ? '// Prepare any non-scalar elements to be passed along with the request.'
                             : '// Prepare the request message.'
-                        ) : null,
+                    ) : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',
@@ -501,7 +501,7 @@ class SnippetGenerator
      */
     private function buildPrintFCall(string $format, string ...$values): AST
     {
-        $valueStr = array_reduce($values, function($carry, $item) {
+        $valueStr = array_reduce($values, function ($carry, $item) {
             return $carry .= "$item, ";
         });
 

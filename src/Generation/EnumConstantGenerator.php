@@ -85,6 +85,6 @@ class EnumConstantGenerator
 
     private static function constName($name): string
     {
-        return in_array(strtolower($name), self::RESERVED_NAMES) ? $name . "_ENUM" : $name;
+        return in_array(strtolower($name), self::RESERVED_NAMES) ? $name . '_ENUM' : $name;
     }
 }

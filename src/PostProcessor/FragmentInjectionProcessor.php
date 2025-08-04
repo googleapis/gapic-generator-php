@@ -18,12 +18,12 @@ declare(strict_types=1);
 
 namespace Google\PostProcessor;
 
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use LogicException;
+use Microsoft\PhpParser\DiagnosticsProvider;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\PositionUtilities;
-use Microsoft\PhpParser\DiagnosticsProvider;
-use LogicException;
 use ParseError;
 
 class FragmentInjectionProcessor implements ProcessorInterface
@@ -35,7 +35,7 @@ class FragmentInjectionProcessor implements ProcessorInterface
         $fragDir = new \RecursiveDirectoryIterator($inputDir);
         $fragDirItr = new \RecursiveIteratorIterator($fragDir);
         $fragmentItr = new \RegexIterator($fragDirItr, '/^.+\.build\.txt$/i', \RecursiveRegexIterator::GET_MATCH);
-        foreach($fragmentItr as $finding) {
+        foreach ($fragmentItr as $finding) {
             $fragmentPath = $finding[0];
             $protoPath = str_replace(['fragments', '.build.txt'], ['proto/src', '.php'], $fragmentPath);
 

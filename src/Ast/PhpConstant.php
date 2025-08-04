@@ -21,9 +21,10 @@ namespace Google\Generator\Ast;
 /** A constant within a class. */
 final class PhpConstant extends PhpClassMember
 {
-    public function __construct(string $name)
+    private mixed $value;
+
+    public function __construct(private string $name)
     {
-        $this->name = $name;
     }
 
     /**
