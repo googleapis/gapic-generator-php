@@ -40,7 +40,7 @@ class OneofWrapperGenerator
      */
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): Vector
     {
-        return (new OneOfWrapperGenerator($ctx, $serviceDetails))->generateImpl();
+        return (new OneofWrapperGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;

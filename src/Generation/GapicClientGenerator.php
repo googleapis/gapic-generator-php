@@ -560,8 +560,8 @@ class GapicClientGenerator
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
-                Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
-                Ast::call(AST::THIS, $setClientOptions)($clientOptions),
+                AST::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
+                AST::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),

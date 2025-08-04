@@ -21,9 +21,8 @@ namespace Google\Generator\Ast;
 /** A comment within a class. */
 final class PhpComment extends PhpClassMember
 {
-    public function __construct(PhpDoc $comment)
+    public function __construct(private PhpDoc $comment)
     {
-        $this->comment = $comment;
     }
 
     public function getName(): string

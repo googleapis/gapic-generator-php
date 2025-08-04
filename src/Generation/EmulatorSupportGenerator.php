@@ -104,7 +104,7 @@ class EmulatorSupportGenerator
             return null;
         }
 
-        return Ast::assign($options, AST::call(AST::THIS, $setDefaultEmulatorConfig)($options));
+        return AST::assign($options, AST::call(AST::THIS, $setDefaultEmulatorConfig)($options));
     }
 
     public static function generateEmulatorPhpDoc(ServiceDetails $serviceDetails)

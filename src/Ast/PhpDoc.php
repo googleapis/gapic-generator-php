@@ -24,8 +24,11 @@ use Google\Generator\Utils\Formatter;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 
+#[\AllowDynamicProperties]
 abstract class PhpDoc
 {
+    protected bool $isMethodDoc;
+
     protected static function cleanComment(string $line): string
     {
         $line = str_replace('*/', '&#42;/', $line);
@@ -50,9 +53,10 @@ abstract class PhpDoc
     public static function block(...$items): PhpDoc
     {
         return new class(Vector::new($items)->flatten()->filter(fn ($x) => !is_null($x))) extends PhpDoc {
-            public function __construct($items)
+            protected bool $isBlock;
+
+            public function __construct(private Vector $items)
             {
-                $this->items = $items;
                 $this->isBlock = true;
             }
             protected function toLines(Map $info): Vector
@@ -99,9 +103,8 @@ abstract class PhpDoc
     public static function preFormattedText(Vector $lines): PhpDoc
     {
         return new class(static::cleanComments($lines)) extends PhpDoc {
-            public function __construct($lines)
+            public function __construct(private Vector $lines)
             {
-                $this->lines = $lines;
             }
             protected function toLines(Map $info): Vector
             {
@@ -122,9 +125,8 @@ abstract class PhpDoc
     public static function text(...$parts): PhpDoc
     {
         return new class(Vector::new($parts)) extends PhpDoc {
-            public function __construct($parts)
+            public function __construct(private Vector $parts)
             {
-                $this->parts = $parts;
             }
             protected function toLines(Map $info): Vector
             {
@@ -218,9 +220,8 @@ abstract class PhpDoc
     public static function deprecated(?string $description): PhpDoc
     {
         return new class($description) extends PhpDoc {
-            public function __construct($description)
+            public function __construct(private string $description)
             {
-                $this->description = $description;
             }
             protected function toLines(Map $info): Vector
             {
@@ -275,10 +276,8 @@ abstract class PhpDoc
     public static function throws(ResolvedType $type, ?PhpDoc $doc = null): PhpDoc
     {
         return new class($type, $doc) extends PhpDoc {
-            public function __construct($type, $doc)
+            public function __construct(private $type, private $doc)
             {
-                $this->type = $type;
-                $this->doc = $doc;
             }
             protected function toLines(Map $info): Vector
             {
@@ -299,11 +298,8 @@ abstract class PhpDoc
     public static function return(ResolvedType $type, ?PhpDoc $doc = null, bool $nullable = false): PhpDoc
     {
         return new class($type, $doc, $nullable) extends PhpDoc {
-            public function __construct($type, $doc, $nullable)
+            public function __construct(private $type, private $doc, private bool $nullable)
             {
-                $this->type = $type;
-                $this->doc = $doc;
-                $this->nullable = $nullable;
             }
             protected function toLines(Map $info): Vector
             {
@@ -318,12 +314,12 @@ abstract class PhpDoc
         return new class($tag, $types, $varOrName, $doc) extends PhpDoc {
             private const K_TYPE = 'param_type';
             private const K_NAME = 'param_name';
-            public function __construct($tag, $types, $varOrName, $doc)
+            private $typesJoined;
+            private $name;
+            private $isParam;
+
+            public function __construct(private $tag, private $types, private $varOrName, private $doc)
             {
-                $this->tag = $tag;
-                $this->types = $types;
-                $this->varOrName = $varOrName;
-                $this->doc = $doc;
                 $this->isParam = true;
             }
             protected function preProcess(Map $info): Map
@@ -416,11 +412,11 @@ abstract class PhpDoc
     public static function example(AST $ast, ?PhpDoc $intro = null, bool $noBackticks = false): PhpDoc
     {
         return new class($ast, $intro, $noBackticks) extends PhpDoc {
-            public function __construct($ast, $intro, $noBackticks)
-            {
-                $this->ast = $ast;
-                $this->intro = $intro;
-                $this->noBackticks = $noBackticks;
+            public function __construct(
+                private AST $ast,
+                private ?PhpDoc $intro,
+                private bool $noBackticks
+            ) {
             }
             protected function toLines(Map $info): Vector
             {
@@ -453,9 +449,8 @@ abstract class PhpDoc
     public static function sample(string $sampleFile): PhpDoc
     {
         return new class($sampleFile) extends PhpDoc {
-            public function __construct($sampleFile)
+            public function __construct(private string $sampleFile)
             {
-                $this->sampleFile = $sampleFile;
                 $this->isMethodDoc = true;
             }
             protected function toLines(Map $info = null): Vector
@@ -469,11 +464,11 @@ abstract class PhpDoc
     public static function method(string $name, string $response, string $request): PhpDoc
     {
         return new class($name, $response, $request) extends PhpDoc {
-            public function __construct($name, $response, $request)
-            {
-                $this->name = $name;
-                $this->response = $response;
-                $this->request = $request;
+            public function __construct(
+                private string $name,
+                private string $response,
+                private string $request
+            ) {
                 $this->isMethodDoc = true;
             }
             protected function toLines(Map $info = null): Vector
@@ -487,9 +482,8 @@ abstract class PhpDoc
     public static function group(string $groupName): PhpDoc
     {
         return new class($groupName) extends PhpDoc {
-            public function __construct($groupName)
+            public function __construct(private string $groupName)
             {
-                $this->groupName = $groupName;
             }
             protected function toLines(Map $info): Vector
             {

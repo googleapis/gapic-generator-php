@@ -31,12 +31,11 @@ final class PhpClass extends AST
 
     public function __construct(
         Type $type,
-        ?ResolvedType $extends,
+        private ?ResolvedType $extends,
         bool $final,
         bool $abstract
     ) {
         $this->type = $type;
-        $this->extends = $extends;
         $this->traits = Set::new();
         $this->members = Vector::new();
         $this->final = $final;
@@ -108,7 +107,7 @@ final class PhpClass extends AST
 
     /**
      * Generates PHP code of the class.
-     * 
+     *
      * @throws RuntimeException When $abstract and $final both are set.
      */
     public function toCode(): string
