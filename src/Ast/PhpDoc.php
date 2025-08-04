@@ -27,7 +27,9 @@ use Google\Generator\Utils\Type;
 #[\AllowDynamicProperties]
 abstract class PhpDoc
 {
-    protected bool $isMethodDoc;
+    protected bool $isMethodDoc = false;
+    protected bool $isBlock = false;
+    protected $isParam = false;
 
     protected static function cleanComment(string $line): string
     {
@@ -53,8 +55,6 @@ abstract class PhpDoc
     public static function block(...$items): PhpDoc
     {
         return new class(Vector::new($items)->flatten()->filter(fn ($x) => !is_null($x))) extends PhpDoc {
-            protected bool $isBlock;
-
             public function __construct(private Vector $items)
             {
                 $this->isBlock = true;
@@ -68,7 +68,7 @@ abstract class PhpDoc
                 return Vector::zip($this->items, $this->items->skip(1)->append(null))->flatMap(function ($x) use ($info) {
                     [$item, $next] = $x;
                     $result = $item->toLines($info);
-                    if (!is_null($next) && !(isset($item->isParam) && isset($next->isParam)) && !isset($item->isMethodDoc)) {
+                    if (!is_null($next) && !($item->isParam && $next->isParam) && !$item->isMethodDoc) {
                         $result = $result->append('');
                     }
                     return $result;
@@ -316,7 +316,6 @@ abstract class PhpDoc
             private const K_NAME = 'param_name';
             private $typesJoined;
             private $name;
-            private $isParam;
 
             public function __construct(private $tag, private $types, private $varOrName, private $doc)
             {
@@ -347,7 +346,7 @@ abstract class PhpDoc
                     if (is_null($this->doc)) {
                         return Vector::new([trim($intro)]);
                     } else {
-                        if (isset($this->doc->isBlock)) {
+                        if ($this->doc->isBlock) {
                             return $lines
                                 ->map(fn ($x) => '    ' . $x)
                                 ->prepend($intro . '{')
