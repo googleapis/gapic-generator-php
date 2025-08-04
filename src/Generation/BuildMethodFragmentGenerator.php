@@ -141,7 +141,7 @@ class BuildMethodFragmentGenerator
         }
 
         $requiredParams = $requiredFields
-            ->map(fn ($f) => $this->toParam($f, $docType));
+            ->map(fn ($f) => $this->toParam($f));
 
         $newSelf = AST::new($this->ctx->type(Type::self()))();
 

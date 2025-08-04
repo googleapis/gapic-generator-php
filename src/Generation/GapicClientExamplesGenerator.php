@@ -73,21 +73,8 @@ class GapicClientExamplesGenerator
     // Return: [Vector of init code, Vector or args to pass to RPC call]
     private function initCallVars(MethodDetails $method): array
     {
-        $fnGetValue = function (FieldDetails $f, string $value) {
-            if ($f->isEnum) {
-                return AST::access($this->ctx->type($f->typeSingular), AST::constant($value));
-            } else {
-                switch ($f->type->name) {
-                    case 'string':
-                        return $value;
-                    default:
-                        throw new \Exception("Cannot handle init-field of type: '{$f->type->name}'");
-                }
-            }
-        };
-
         $result = $method->allFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
-            ->map(function ($f) use ($fnGetValue, $method) {
+            ->map(function ($f) use ($method) {
                 if ($f->isRequired) {
                     $varName = $f->useResourceTestValue
                         ? Helpers::toCamelCase("formatted_{$f->name}")

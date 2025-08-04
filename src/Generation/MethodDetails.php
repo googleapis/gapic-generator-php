@@ -141,6 +141,8 @@ abstract class MethodDetails
 
         // If we have the type inside the ExplicitPagination class,
         // use the field stored in the paginations array
+        $resourceByNumber = null;
+        $resourceByPosition = null;
         if ($isDireGapic && ExplicitPagination::exists($outputMsg->desc->getFullName())) {
             $resources = $outputMsg->desc->getFieldByName(
                 ExplicitPagination::getPagination($outputMsg->desc->getFullName())
@@ -194,8 +196,8 @@ abstract class MethodDetails
             }
             throw new \Exception('Item resources field must be the first repeated field by number and position.');
         }
-        return new class($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg) extends MethodDetails {
-            public function __construct($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources, $inputMsg)
+        return new class($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources) extends MethodDetails {
+            public function __construct($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources)
             {
                 parent::__construct($svc, $desc);
                 $this->methodType = MethodDetails::PAGINATED;

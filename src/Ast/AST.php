@@ -225,9 +225,9 @@ abstract class AST
      *
      * @return PhpFunction
      */
-    public static function fn(string $name, bool $appendNewline = true): PhpFunction
+    public static function fn(string $name): PhpFunction
     {
-        return new PhpFunction($name, $appendNewline);
+        return new PhpFunction($name);
     }
 
     /**

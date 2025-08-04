@@ -23,7 +23,7 @@ use Grpc\Service_config\ServiceConfig;
 
 class GrpcServiceConfig
 {
-    public function __construct(string $serviceName, ?string $json)
+    public function __construct(?string $json)
     {
         if (is_null($json)) {
             $this->isPresent = false;

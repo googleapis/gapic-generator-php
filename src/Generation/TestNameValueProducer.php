@@ -204,7 +204,7 @@ class TestNameValueProducer
             // Only init required subfields that are either not in a oneof or they are the first field in a oneof.
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired && !$x->isOneOf)
                 ->concat($allSubFields->filter(fn ($f) => $f->isRequired && $f->isFirstFieldInOneof()));
-            if (empty($requiredSubFields) && !$field->useResourceTestValue) {
+            if ($requiredSubFields->count() === 0 && !$field->useResourceTestValue) {
                 $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
                 return;
             }

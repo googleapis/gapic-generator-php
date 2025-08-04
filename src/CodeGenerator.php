@@ -309,7 +309,7 @@ class CodeGenerator
 
             $serviceName = $service->serviceName;
             // Load various configs; if they're not provided then defaults will be used.
-            $grpcServiceConfig = new GrpcServiceConfig($serviceName, $grpcServiceConfigJson);
+            $grpcServiceConfig = new GrpcServiceConfig($grpcServiceConfigJson);
             $gapicYamlConfig = new GapicYamlConfig($serviceName, $gapicYaml);
 
             // [Start V1 GAPIC surface generation]

@@ -140,7 +140,7 @@ abstract class PhpDoc
                         $line = '';
                     }
                 };
-                $add = function ($s) use (&$lines, &$line, $lineLen, $commitLine) {
+                $add = function ($s) use (&$line, $lineLen, $commitLine) {
                     if (strlen($line) + 1 + strlen($s) > $lineLen && $line !== '') {
                         $commitLine();
                     }

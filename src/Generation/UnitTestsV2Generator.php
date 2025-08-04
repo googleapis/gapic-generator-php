@@ -494,7 +494,7 @@ class UnitTestsV2Generator
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
             ]))),
             AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($client, AST::call(AST::THIS, $this->createClient($this->operationsClientClass))(AST::array([
+            AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array([
                 'transport' => $transport,
                 'operationsClient' => $operationsClient,
             ]))),
