@@ -387,7 +387,7 @@ abstract class PhpDoc
     /**
      * Add a @type tag to the PHP doc block.
      *
-     * @param Vector $type Vector of ResolvedType; the type(s) of this element.
+     * @param Vector $types Vector of ResolvedType; the type(s) of this element.
      * @param string $name The name of this element.
      * @param PhpDoc $doc The documetation for this element.
      *

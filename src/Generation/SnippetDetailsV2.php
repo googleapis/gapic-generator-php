@@ -242,7 +242,7 @@ class SnippetDetailsV2 extends SnippetDetails
         $arrayElementVar = null;
         $formatMethodArgs = $field->resourceDetails
             ->getParams()
-            ->map(function (array $paramDetails) use ($field) {
+            ->map(function (array $paramDetails) {
                 return strtoupper("[$paramDetails[0]]");
             });
         $clientCall = AST::staticCall(

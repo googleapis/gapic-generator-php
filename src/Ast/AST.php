@@ -221,7 +221,6 @@ abstract class AST
      * Create a function.
      *
      * @param string $name The name of the function.
-     * @param bool $appendNewline Whether a newline should be appended to the end of the function declaration.
      *
      * @return PhpFunction
      */
