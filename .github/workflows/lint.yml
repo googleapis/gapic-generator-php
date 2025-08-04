@@ -1,15 +1,14 @@
 name: Lint
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
     style:
         name: PHP Style Check
         uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@main
