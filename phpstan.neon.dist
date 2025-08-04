@@ -3,3 +3,4 @@ parameters:
     level: 0
     paths:
     - src
+    - tests/Unit/ProtoTests/Basic

@@ -18,3 +18,5 @@ jobs:
     static-analysis:
         name: PHPStan Static Analysis
         uses: GoogleCloudPlatform/php-tools/.github/workflows/static-analysis.yml@main
+        with:
+          autoload-file: tests/Unit/autoload.php
