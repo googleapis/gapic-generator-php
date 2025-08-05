@@ -34,6 +34,7 @@ use Google\Auth\FetchAuthTokenInterface;
 use Psr\Log\LoggerInterface;
 use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Request;
+use Testing\BasicServerStreaming\Response;
 
 /**
  * Service Description:
@@ -138,6 +139,8 @@ final class BasicServerStreamingClient
      *     @type false|LoggerInterface $logger
      *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
      *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException

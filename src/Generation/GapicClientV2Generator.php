@@ -797,6 +797,7 @@ class GapicClientV2Generator
                     ? Type::null()
                     : $method->lroResponseType,
                 MethodDetails::SERVER_STREAMING => $method->responseType,
+                default => null,
             };
             if ($genericType) {
                 // ensure generic type is imported
