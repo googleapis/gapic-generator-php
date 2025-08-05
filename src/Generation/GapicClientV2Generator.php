@@ -338,8 +338,7 @@ class GapicClientV2Generator
             ->withAccess(Access::PUBLIC)
             ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
             ->withBody(AST::block(
-                AST::assign($options, AST::ternary(
-                    AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
+                AST::assign($options, AST::nullCoalescing(
                     AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
                     $default
                 )),
@@ -742,6 +741,15 @@ class GapicClientV2Generator
                             'A PSR-3 compliant logger. If set to false, logging is disabled,',
                             'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
                         )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::string()),
+                        ]),
+                        'universeDomain',
+                        PhpDoc::text(
+                            'The service domain for the client. Defaults to \'googleapis.com\'.'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
@@ -782,20 +790,22 @@ class GapicClientV2Generator
         $returnType = $this->ctx->type(Type::void());
         if (!$method->hasEmptyResponse) {
             $returnType = $this->ctx->type($method->methodReturnType);
+            $phpDocReturnType = PhpDoc::return($returnType);
             $startCall = AST::return($startCall);
-            $phpDocReturnType = PhpDoc::return(match ($method->methodType) {
-                MethodDetails::LRO => ResolvedType::generic(
+            $genericType = match ($method->methodType) {
+                MethodDetails::LRO => $method->hasEmptyLroResponse
+                    ? Type::null()
+                    : $method->lroResponseType,
+                MethodDetails::SERVER_STREAMING => $method->responseType,
+            };
+            if ($genericType) {
+                // ensure generic type is imported
+                $this->ctx->type($genericType);
+                $phpDocReturnType = PhpDoc::return(ResolvedType::generic(
                     $method->methodReturnType,
-                    $method->hasEmptyLroResponse
-                        ? Type::null()
-                        : $method->lroResponseType
-                ),
-                MethodDetails::SERVER_STREAMING => ResolvedType::generic(
-                    $method->methodReturnType,
-                    $method->responseType
-                ),
-                default => $this->ctx->type($method->methodReturnType),
-            });
+                    $genericType
+                ));
+            }
         }
 
         return AST::method($method->methodName)

@@ -22,39 +22,36 @@
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-// [START serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]
+// [START diregapic_generated_HeuristicPaginationClient_NonPaginatedMethod_sync]
 use Google\ApiCore\ApiException;
-use Google\ApiCore\ServerStream;
-use Testing\BasicServerStreaming\Client\BasicServerStreamingClient;
-use Testing\BasicServerStreaming\EmptyRequest;
-use Testing\BasicServerStreaming\Response;
+use Testing\DiregapicPaginated\Client\HeuristicPaginationClientClient;
+use Testing\DiregapicPaginated\NonPaginatedResponse;
+use Testing\DiregapicPaginated\Request;
 
 /**
+ * Tests Heuristic 4
+ *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:
  *  - It may require correct/in-range values for request initialization.
  *  - It may require specifying regional endpoints when creating the service client,
  *    please see the apiEndpoint client configuration option for more details.
  */
-function method_empty_sample(): void
+function non_paginated_method_sample(): void
 {
     // Create a client.
-    $basicServerStreamingClient = new BasicServerStreamingClient();
+    $heuristicPaginationClientClient = new HeuristicPaginationClientClient();
 
     // Prepare the request message.
-    $request = new EmptyRequest();
+    $request = new Request();
 
     // Call the API and handle any network failures.
     try {
-        /** @var ServerStream $stream */
-        $stream = $basicServerStreamingClient->methodEmpty($request);
-
-        /** @var Response $element */
-        foreach ($stream->readAll() as $element) {
-            printf('Element data: %s' . PHP_EOL, $element->serializeToJsonString());
-        }
+        /** @var NonPaginatedResponse $response */
+        $response = $heuristicPaginationClientClient->nonPaginatedMethod($request);
+        printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
     }
 }
-// [END serverstreaming_generated_BasicServerStreaming_MethodEmpty_sync]
+// [END diregapic_generated_HeuristicPaginationClient_NonPaginatedMethod_sync]

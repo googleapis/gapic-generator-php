@@ -51,7 +51,8 @@ class GoldenUpdateMain
         ],
         7 => [
             'name' => 'BasicServerStreaming',
-            'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto'
+            'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
         ],
         8 => [
             'name' => 'BasicClientStreaming',
@@ -116,6 +117,12 @@ class GoldenUpdateMain
             'package' => 'testing.customlronew',
             'transport' => 'rest',
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
+        ],
+        20 => [
+            'name' => 'DiregapicPaginated',
+            'protoPath' => 'DiregapicPaginated/diregapic-paginated.proto',
+            'transport' => 'rest',
+            'migrationMode' => MigrationMode::MIGRATING
         ]
     ];
 

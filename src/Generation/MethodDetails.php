@@ -127,9 +127,9 @@ abstract class MethodDetails
         $catalog = $svc->catalog;
         $inputMsg = $catalog->msgsByFullname[$desc->getInputType()];
         $outputMsg = $catalog->msgsByFullname[$desc->getOutputType()];
-        $isRestOnly = $svc->transportType === Transport::REST;
+        $isDireGapic = $svc->transportType === Transport::REST;
         $pageSize = $inputMsg->desc->getFieldByName('page_size');
-        if ($isRestOnly && is_null($pageSize)) {
+        if ($isDireGapic && is_null($pageSize)) {
             $pageSize = $inputMsg->desc->getFieldByName('max_results');
         }
 
@@ -141,7 +141,7 @@ abstract class MethodDetails
 
         // If we have the type inside the ExplicitPagination class,
         // use the field stored in the paginations array
-        if (ExplicitPagination::exists($outputMsg->desc->getFullName())) {
+        if ($isDireGapic && ExplicitPagination::exists($outputMsg->desc->getFullName())) {
             $resources = $outputMsg->desc->getFieldByName(
                 ExplicitPagination::getPagination($outputMsg->desc->getFullName())
             );
@@ -152,20 +152,8 @@ abstract class MethodDetails
                 ->filter(fn ($x) => $x[1]->isRepeated());
             $resourceByNumber = $resourceCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
 
-            if ($isRestOnly) {
-                $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
-                $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
-
-                // If there are more than one of either, do not generate a paginated method.
-                if (count($resourceListCandidates) > 1 || count($resourceMapCandidates) > 1) {
-                    return null;
-                }
-
-                // A map field takes precedence over a repeated (i.e. list) field.
-                $resourceByNumber = $resourceMapCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-                if (is_null($resourceByNumber)) {
-                    $resourceByNumber = $resourceListCandidates->orderBy(fn ($x) => $x[0])->firstOrNull();
-                }
+            if ($isDireGapic) {
+                $resourceByNumber = self::getCandidate($resourceCandidates, $catalog);
             }
 
             $resourceByPosition = $resourceCandidates->firstOrNull();
@@ -176,7 +164,7 @@ abstract class MethodDetails
         $resourceFieldValid = !is_null($resources);
 
         // Leverage short-circuting.
-        if ($resourceFieldValid && !$isRestOnly) {
+        if ($resourceFieldValid && !$isDireGapic) {
             $resourceFieldValid &= !ProtoHelpers::isMap($catalog, $resources)
                 && ($resourceByNumber[0] ?? null) === ($resourceByPosition[0] ?? null);
         }
@@ -186,13 +174,13 @@ abstract class MethodDetails
         }
 
         $isValidPageSize = !$pageSize->isRepeated();
-        if ($isRestOnly) {
+        if ($isDireGapic) {
             $isValidPageSize = $pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32;
         } else {
             $isValidPageSize = $pageSize->getType() === GPBType::INT32;
         }
         if (!$isValidPageSize) {
-            throw new \Exception("page_size field must be of type " . ($isRestOnly ? "uint32 or int32" : "int32") . ".");
+            throw new \Exception("page_size field must be of type " . ($isDireGapic ? "uint32 or int32" : "int32") . ".");
         }
         if ($pageToken->isRepeated() || $pageToken->getType() !== GPBType::STRING) {
             throw new \Exception("page_token field must be of type string.");
@@ -201,7 +189,7 @@ abstract class MethodDetails
             throw new \Exception("next_page_token field must be of type string.");
         }
         if (!$resourceFieldValid) {
-            if ($isRestOnly) {
+            if ($isDireGapic) {
                 throw new \Exception("Item resources field must a map or repeated field.");
             }
             throw new \Exception("Item resources field must be the first repeated field by number and position.");
@@ -446,6 +434,64 @@ abstract class MethodDetails
                 $this->methodType = MethodDetails::NORMAL;
             }
         };
+    }
+
+    /**
+     * Determine if the method should paginated for DIREGAPICs, which do not have annotations for pagination
+     * yet. The following heuristic is used for selecting the field for pagination:
+     *   1. If exactly one map field exists, select that field
+     *   2. If exactly one list field exists, select that field
+     *   3. If more than one list field exists, but exactly one of those fields is a message, select that field
+     *   4. Otherwise, do not paginate
+     */
+    private static function getCandidate(Vector $resourceCandidates, ProtoCatalog $catalog): null|array
+    {
+        $resourceListCandidates = $resourceCandidates->filter(fn ($x) => !ProtoHelpers::isMap($catalog, $x[1]));
+        $resourceMapCandidates = $resourceCandidates->filter(fn ($x) => ProtoHelpers::isMap($catalog, $x[1]));
+
+        // If only one map exists, return it.
+        if (count($resourceMapCandidates) === 1) {
+            return $resourceMapCandidates->firstOrNull();
+        }
+
+        // If only one list exists, return it.
+        if (count($resourceListCandidates) === 1) {
+            return $resourceListCandidates->firstOrNull();
+        }
+
+        // If there are more than one repeated field,
+        // search for a non primitive one.
+        if (count($resourceListCandidates) > 1) {
+            $resourceCandidateIndex = null;
+
+            foreach ($resourceListCandidates as $index => $candidate) {
+                $descriptor = $candidate[1];
+
+                // If is a primitive type, we cannot use it for pagination.
+                // Search for another one.
+                if ($descriptor->getType() !== GPBType::MESSAGE) {
+                    continue;
+                }
+
+                // If we already find a non primitive type
+                // then we have more than one.
+                // unable to paginate.
+                if (!is_null($resourceCandidateIndex)) {
+                    return null;
+                }
+
+                $resourceCandidateIndex = $index;
+            }
+
+            if (is_null($resourceCandidateIndex)) {
+                return null;
+            }
+
+            return $resourceListCandidates[$resourceCandidateIndex];
+        }
+
+        // We cannot determine what is the pagination.
+        return null;
     }
 
     /** @var ServiceDetails  The service that contains this method. */

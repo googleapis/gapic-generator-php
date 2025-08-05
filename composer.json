@@ -29,12 +29,13 @@
             "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
             "Testing\\ResourceNames\\": "tests/Unit/ProtoTests/ResourceNames/out/src",
-            "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src"
+            "Testing\\RoutingHeaders\\": "tests/Unit/ProtoTests/RoutingHeaders/out/src",
+            "Testing\\DiregapicPaginated\\": "tests/Unit/ProtoTests/DiregapicPaginated/out/src"
         }
     },
     "require": {
         "php": "^8.1",
-        "google/protobuf": "^3.18",
+        "google/protobuf": "^4.0",
         "friendsofphp/php-cs-fixer": "^3",
         "symfony/yaml": "^5.2",
         "symplify/coding-standard": "9.4.70",
