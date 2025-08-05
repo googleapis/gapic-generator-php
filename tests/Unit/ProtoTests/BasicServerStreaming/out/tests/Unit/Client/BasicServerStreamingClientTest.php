@@ -20,7 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Testing\BasicServerStreaming\Tests\Unit;
+namespace Testing\BasicServerStreaming\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
@@ -28,7 +28,8 @@ use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
+use Testing\BasicServerStreaming\Client\BasicServerStreamingClient;
+use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
 use stdClass;
@@ -77,7 +78,8 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $expectedResponse3 = new Response();
         $transport->addResponse($expectedResponse3);
         // Mock request
-        $serverStream = $gapicClient->methodEmpty();
+        $request = new EmptyRequest();
+        $serverStream = $gapicClient->methodEmpty($request);
         $this->assertInstanceOf(ServerStream::class, $serverStream);
         $responses = iterator_to_array($serverStream->readAll());
         $expectedResponses = [];
@@ -112,7 +114,8 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $transport->setStreamingStatus($status);
         $this->assertTrue($transport->isExhausted());
         // Mock request
-        $serverStream = $gapicClient->methodEmpty();
+        $request = new EmptyRequest();
+        $serverStream = $gapicClient->methodEmpty($request);
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);
@@ -144,7 +147,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $transport->addResponse($expectedResponse3);
         // Mock request
         $aNumber = 1071982361;
-        $serverStream = $gapicClient->methodServer($aNumber);
+        $request = (new Request())
+            ->setANumber($aNumber);
+        $serverStream = $gapicClient->methodServer($request);
         $this->assertInstanceOf(ServerStream::class, $serverStream);
         $responses = iterator_to_array($serverStream->readAll());
         $expectedResponses = [];
@@ -182,7 +187,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
         // Mock request
         $aNumber = 1071982361;
-        $serverStream = $gapicClient->methodServer($aNumber);
+        $request = (new Request())
+            ->setANumber($aNumber);
+        $serverStream = $gapicClient->methodServer($request);
         $results = $serverStream->readAll();
         try {
             iterator_to_array($results);

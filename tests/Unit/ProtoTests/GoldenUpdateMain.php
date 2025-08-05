@@ -51,7 +51,8 @@ class GoldenUpdateMain
         ],
         7 => [
             'name' => 'BasicServerStreaming',
-            'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto'
+            'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
         ],
         8 => [
             'name' => 'BasicClientStreaming',
