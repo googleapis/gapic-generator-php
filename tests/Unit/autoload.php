@@ -36,6 +36,10 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         $suffix = substr($name, 3);
         switch ($prefix) {
             case 'set':
+                if (is_array($arguments[0])
+                    && array_keys($arguments[0]) !== range(0, count($arguments[0]) - 1)) {
+                    $arguments[0] = \Google\Protobuf\Internal\GPBUtil::checkMapField($arguments[0], 9, 9);
+                }
                 $this->$suffix = $arguments[0];
                 return $this;
             case 'get':
@@ -76,7 +80,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
 function protosOnDemandLoader($class)
 {
     if (substr($class, 0, 8) === 'Testing\\' &&
-        (strpos($class, 'Request') !== false || strpos($class, 'Response') !== false)) {
+        (strpos($class, 'Request') !== false || strpos($class, 'Response') !== false || strpos($class, 'RepeatedResource') !== false)) {
         // Create an alias to `FakeMessage` for any non-existant class that looks like it's a proto message class.
         $classAlias = FakeMessage::class;
 
