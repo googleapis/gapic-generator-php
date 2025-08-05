@@ -779,20 +779,23 @@ class GapicClientV2Generator
             && !$method->isBidiStreaming();
         $startCall = $this->startCall($method, $callOptions, $request);
         $phpDocReturnType = null;
-        $returnType = null;
-        if ($method->hasEmptyResponse) {
-            $returnType = $this->ctx->type(Type::void());
-        } else {
-            $startCall = AST::return($startCall);
+        $returnType = $this->ctx->type(Type::void());
+        if (!$method->hasEmptyResponse) {
             $returnType = $this->ctx->type($method->methodReturnType);
-            $phpdocReturn = $returnType;
-            if ($method->methodType === MethodDetails::LRO) {
-                $typeArgument = $method->hasEmptyLroResponse
-                    ? Type::null()
-                    : $method->lroResponseType;
-                $phpdocReturn = ResolvedType::generic($method->methodReturnType, $typeArgument);
-            }
-            $phpDocReturnType = PhpDoc::return($phpdocReturn);
+            $startCall = AST::return($startCall);
+            $phpDocReturnType = PhpDoc::return(match ($method->methodType) {
+                MethodDetails::LRO => ResolvedType::generic(
+                    $method->methodReturnType,
+                    $method->hasEmptyLroResponse
+                        ? Type::null()
+                        : $method->lroResponseType
+                ),
+                MethodDetails::SERVER_STREAMING => ResolvedType::generic(
+                    $method->methodReturnType,
+                    $method->responseType
+                ),
+                default => $this->ctx->type($method->methodReturnType),
+            });
         }
 
         return AST::method($method->methodName)
