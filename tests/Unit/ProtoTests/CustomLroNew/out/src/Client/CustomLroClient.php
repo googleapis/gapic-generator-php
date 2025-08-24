@@ -44,7 +44,7 @@ use Testing\CustomLroNew\CreateFooRequest;
  *
  * @method PromiseInterface<OperationResponse> createFooAsync(CreateFooRequest $request, array $optionalArgs = [])
  */
-final class CustomLroClient
+class CustomLroClient
 {
     use GapicClientTrait;
 

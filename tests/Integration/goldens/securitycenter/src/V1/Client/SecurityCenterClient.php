@@ -154,7 +154,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<SecurityMarks> updateSecurityMarksAsync(UpdateSecurityMarksRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Source> updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  */
-final class SecurityCenterClient
+class SecurityCenterClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
