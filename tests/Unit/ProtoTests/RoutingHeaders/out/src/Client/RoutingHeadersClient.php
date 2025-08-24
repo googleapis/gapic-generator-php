@@ -57,7 +57,7 @@ use Testing\RoutingHeaders\SimpleRequest;
  * @method PromiseInterface<Response> routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Response> routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
  */
-final class RoutingHeadersClient
+class RoutingHeadersClient
 {
     use GapicClientTrait;
 

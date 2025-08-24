@@ -94,7 +94,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Location> getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
-final class CloudRedisClient
+class CloudRedisClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

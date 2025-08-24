@@ -79,7 +79,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> updateFunctionAsync(UpdateFunctionRequest $request, array $optionalArgs = [])
  */
-final class CloudFunctionsServiceClient
+class CloudFunctionsServiceClient
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
