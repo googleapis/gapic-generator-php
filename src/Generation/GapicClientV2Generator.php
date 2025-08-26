@@ -108,7 +108,7 @@ class GapicClientV2Generator
     {
         return AST::class(
                 $this->serviceDetails->gapicClientV2Type,
-                final: true)
+                )
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)
