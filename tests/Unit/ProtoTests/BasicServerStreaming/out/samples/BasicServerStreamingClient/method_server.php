@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START serverstreaming_generated_BasicServerStreaming_MethodServer_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ServerStream;
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
+use Testing\BasicServerStreaming\Client\BasicServerStreamingClient;
+use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
 
 /** @param int $aNumber  */
@@ -34,10 +35,14 @@ function method_server_sample(int $aNumber): void
     // Create a client.
     $basicServerStreamingClient = new BasicServerStreamingClient();
 
+    // Prepare the request message.
+    $request = (new Request())
+        ->setANumber($aNumber);
+
     // Call the API and handle any network failures.
     try {
         /** @var ServerStream $stream */
-        $stream = $basicServerStreamingClient->methodServer($aNumber);
+        $stream = $basicServerStreamingClient->methodServer($request);
 
         /** @var Response $element */
         foreach ($stream->readAll() as $element) {
