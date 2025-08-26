@@ -161,7 +161,7 @@ class TestNameValueProducer
             $astAcc = $astAcc->append(
                 AST::call(
                     $fieldVar,
-                    AST::method("set" . Helpers::toUpperCamelCase($field->camelName))
+                    AST::method('set' . Helpers::toUpperCamelCase($field->camelName))
                 )(
                     // TODO(v2): Handle non-primitive types.
                     $this->value($field, $fieldVarName)
@@ -204,13 +204,9 @@ class TestNameValueProducer
             // Only init required subfields that are either not in a oneof or they are the first field in a oneof.
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired && !$x->isOneOf)
                 ->concat($allSubFields->filter(fn ($f) => $f->isRequired && $f->isFirstFieldInOneof()));
-            if (empty($requiredSubFields) && !$field->useResourceTestValue) {
-                $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
-                return;
-            }
 
             foreach ($requiredSubFields as $subField) {
-                $subFieldVarName = Helpers::toCamelCase($field->name . "_" . $subField->name);
+                $subFieldVarName = Helpers::toCamelCase($field->name . '_' . $subField->name);
                 $subFieldVar = AST::var($subFieldVarName);
                 $this->fieldInit($method, $subField, $subFieldVar, $subFieldVarName, $clientVar, $astAcc);
                 $astAcc = $astAcc->append(AST::call($fieldVar, $subField->setter)($subFieldVar));
@@ -230,7 +226,7 @@ class TestNameValueProducer
             $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
         } else {
             // TODO: Better handling of wild-card patterns.
-            $args = $field->name . "-" . hash("md5", $field->name);
+            $args = $field->name . '-' . hash('md5', $field->name);
         }
         $clientVar = $clientVar ?? AST::var(UnitTestsGenerator::CLIENT_VARIABLE);
         // TODO: This should be better merged with FieldDetails.
@@ -285,7 +281,7 @@ class TestNameValueProducer
         switch ($field->desc->getType()) {
             case GPBType::DOUBLE: // 1
             case GPBType::FLOAT: // 2
-                $v = (float)(int)($javaHashCode() / 10);
+                $v = (float) (int) ($javaHashCode() / 10);
                 // See: https://docs.oracle.com/javase/7/docs/api/java/lang/Double.html#toString(double)
                 $vAbs = abs($v);
                 if ($vAbs >= 1e-3 && $vAbs < 1e7) {

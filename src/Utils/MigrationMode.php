@@ -20,10 +20,10 @@ namespace Google\Generator\Utils;
 
 class MigrationMode
 {
-    public const MIGRATION_MODE_UNSPECIFIED = "MIGRATION_MODE_UNSPECIFIED";
-    public const PRE_MIGRATION_SURFACE_ONLY = "PRE_MIGRATION_SURFACE_ONLY";
-    public const NEW_SURFACE_ONLY = "NEW_SURFACE_ONLY";
-    public const MIGRATING = "MIGRATING";
+    public const MIGRATION_MODE_UNSPECIFIED = 'MIGRATION_MODE_UNSPECIFIED';
+    public const PRE_MIGRATION_SURFACE_ONLY = 'PRE_MIGRATION_SURFACE_ONLY';
+    public const NEW_SURFACE_ONLY = 'NEW_SURFACE_ONLY';
+    public const MIGRATING = 'MIGRATING';
 
     /**
      * Validates the supplied migration mode.

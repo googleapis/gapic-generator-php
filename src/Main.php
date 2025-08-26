@@ -189,7 +189,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
     $makePath = function ($path) use ($sideLoadedRootDir) {
         if (strlen($path) > 0 && $path[0] === '/') {
             if (!is_null($sideLoadedRootDir)) {
-                throw new \Exception("Cannot use --side_loaded_root_dir with absolute config paths");
+                throw new \Exception('Cannot use --side_loaded_root_dir with absolute config paths');
             }
             return $path;
         } else {

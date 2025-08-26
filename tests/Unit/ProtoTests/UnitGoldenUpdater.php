@@ -60,7 +60,7 @@ class UnitGoldenUpdater
         foreach ($codeIterator as [$relativeFilename, $code]) {
             print("\twriting $relativeFilename\n");
             $filename = "$outputPath/$relativeFilename";
-            
+
             // Create the directory structure if it does not exist yet.
             $d = dirname($filename);
             if (!is_dir($d)) {
@@ -74,7 +74,7 @@ class UnitGoldenUpdater
     private static function deleteFilesInDir($directoryPath)
     {
         if (!is_dir($directoryPath)) {
-            throw new InvalidArgumentException("$directoryPath must be a directory");
+            throw new \InvalidArgumentException("$directoryPath must be a directory");
         }
         if (substr($directoryPath, strlen($directoryPath) - 1, 1) != '/') {
             $directoryPath .= '/';

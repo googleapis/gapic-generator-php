@@ -73,7 +73,7 @@ class ResolvedType
      */
     public function __construct(
         /** @var Type *Readonly* The type of this resolved-type. */
-        public ReadOnly Type $type,
+        public readonly Type $type,
         private Closure $fnToCode,
         private bool $optional = false
     ) {
