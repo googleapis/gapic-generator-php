@@ -52,7 +52,10 @@ EOL;
 
     public static function run(string $inputDir): void
     {
-        self::inject($inputDir . '/src/V1/Client/FirestoreClient.php');
+        $firestoreClientFile = $inputDir . '/src/V1/Client/FirestoreClient.php';
+        if (file_exists($firestoreClientFile)) {
+            self::inject($firestoreClientFile);
+        }
     }
 
     private static function inject(string $classFile): void
