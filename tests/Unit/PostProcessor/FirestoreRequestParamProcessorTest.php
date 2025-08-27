@@ -82,6 +82,12 @@ EOL;
 
         $this->assertStringContainsString('@type string $database', $newClassContents);
         $this->assertStringContainsString('new \Google\ApiCore\RequestParamsHeaderDescriptor', $newClassContents);
+
+        // Insert again and ensure it's not added twice
+        $firestorePostProcessor->addDatabaseRequestParamToListenMethod();
+        $newClassContents = $firestorePostProcessor->getContents();
+        $this->assertEquals(1, substr_count($newClassContents, '@type string $database'));
+        $this->assertEquals(1, substr_count($newClassContents, 'new \Google\ApiCore\RequestParamsHeaderDescriptor'));
     }
 
     public function testFirestoreRequestParamDoesNotContainSyntaxErrors()
