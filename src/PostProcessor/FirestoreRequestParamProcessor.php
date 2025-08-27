@@ -50,7 +50,7 @@ $requestParams = new \Google\ApiCore\RequestParamsHeaderDescriptor($requestParam
 $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
 EOL;
 
-
+    public static function run(string $inputDir): void
     {
         self::inject($inputDir . '/src/V1/Client/FirestoreClient.php');
     }
