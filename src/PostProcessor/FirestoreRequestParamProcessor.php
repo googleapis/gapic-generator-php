@@ -21,13 +21,36 @@ namespace Google\PostProcessor;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\PositionUtilities;
 use Microsoft\PhpParser\DiagnosticsProvider;
 use LogicException;
 use ParseError;
 
 class FirestoreRequestParamProcessor implements ProcessorInterface
 {
+    // Line to insert the PHP doc param above
+    private const DATABASE_PHPDOC_INSERT_AT =
+        '     *     @type int $timeoutMillis';
+
+    // PHPdoc param to insert
+    private const DATABASE_PHPDOC_PARAM = <<<'EOL'
+     *     @type string $datbase
+     *           Set the database of the call, to be added as a routing header
+EOL;
+
+    // Line to insert the request param code above
+    private const DATABASE_REQUEST_PARAM_INSERT_AT =
+        '        return $this->startApiCall(\'Listen\', null, $callOptions);';
+
+    // Request param code to insert
+    private const DATABASE_REQUEST_PARAM_CODE = <<<'EOL'
+$requestParamHeaders = [];
+if (isset($callOptions['database'])) {
+    $requestParamHeaders['database'] = $callOptions['database'];
+}
+$requestParams = new \Google\ApiCore\RequestParamsHeaderDescriptor($requestParamHeaders);
+$callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
+EOL;
+
     private ClassDeclaration $classNode;
 
     public static function run(string $inputDir): void
@@ -77,36 +100,39 @@ class FirestoreRequestParamProcessor implements ProcessorInterface
      */
     public function addDatabaseRequestParamToListenMethod(): void
     {
+        $contents = $this->classNode->getFileContents();
         $listenMethod = $this->getMethodDeclaration('listen');
 
         // update PHPDoc
-        $lineToReplace = '     *     @type int $timeoutMillis';
-        $newLines = [
-            '     *     @type string $datbase',
-            '     *           Set the database of the call, to be added as a routing header',
-            $lineToReplace,
-        ];
-
         $phpdoc = $listenMethod->getDocCommentText();
-        $newPhpdoc = str_replace($lineToReplace, implode(PHP_EOL, $newLines), $phpdoc);
-        $newContents = str_replace($phpdoc, $newPhpdoc, $this->classNode->getFileContents());
+        if (false === strpos($phpdoc, self::DATABASE_PHPDOC_PARAM)) {
+            $newLines = explode(PHP_EOL, self::DATABASE_PHPDOC_PARAM);
+            $newLines[] = self::DATABASE_PHPDOC_INSERT_AT;
 
-        // update listen method
-        $lineToReplace = '        return $this->startApiCall(\'Listen\', null, $callOptions);';
-        $newLines = [
-            '        $requestParamHeaders = [];',
-            '        if (isset($callOptions[\'database\'])) {',
-            '            $requestParamHeaders[\'database\'] = $callOptions[\'database\'];',
-            '        }',
-            '        $requestParams = new \Google\ApiCore\RequestParamsHeaderDescriptor($requestParamHeaders);',
-            '        $callOptions[\'headers\'] = isset($optionalArgs[\'headers\']) ? array_merge($requestParams->getHeader(), $callOptions[\'headers\']) : $requestParams->getHeader();',
-            $lineToReplace,
-        ];
+
+            $newPhpdoc = str_replace(self::DATABASE_PHPDOC_INSERT_AT, implode(PHP_EOL, $newLines), $phpdoc);
+            $contents = str_replace($phpdoc, $newPhpdoc, $contents);
+        }
+
+        // Update param code
         $methodText = $listenMethod->compoundStatementOrSemicolon->getText();
-        $newMethodText = str_replace($lineToReplace, implode(PHP_EOL, $newLines), $methodText);
-        $newContents = str_replace($methodText, $newMethodText, $newContents);
+        // indent each line 8 spaces
+        $indent = str_repeat(' ', 8);
+        $newLines = array_map(
+            fn ($line) => $indent . $line,
+            explode(PHP_EOL, self::DATABASE_REQUEST_PARAM_CODE)
+        );
+        if (false === strpos($methodText, $newLines[0])) {
+            $newLines[] = self::DATABASE_REQUEST_PARAM_INSERT_AT;
 
-        $this->classNode = self::fromCode($newContents);
+            $newMethodText = str_replace(
+                self::DATABASE_REQUEST_PARAM_INSERT_AT,
+                implode(PHP_EOL, $newLines), $methodText
+            );
+            $contents = str_replace($methodText, $newMethodText, $contents);
+        }
+
+        $this->classNode = self::fromCode($contents);
     }
 
     public function getContents(): string
