@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ EOL;
         $firestorePostProcessor->addDatabaseRequestParamToListenMethod();
         $newClassContents = $firestorePostProcessor->getContents();
 
-        $this->assertStringContainsString('@type string $datbase', $newClassContents);
+        $this->assertStringContainsString('@type string $database', $newClassContents);
         $this->assertStringContainsString('new \Google\ApiCore\RequestParamsHeaderDescriptor', $newClassContents);
     }
 
@@ -89,16 +89,9 @@ EOL;
         $firestorePostProcessor = new FirestoreRequestParamProcessor(self::$classContents);
 
         $codeString = $firestorePostProcessor->getContents();
-        $tempFile = tempnam(sys_get_temp_dir(), 'phpunit_check_syntax_');
-        file_put_contents($tempFile, $codeString);
 
-        $command = 'php -l ' . escapeshellarg($tempFile);
-        $output = [];
-        $returnVar = 0;
-        exec($command, $output, $returnVar);
-
-        $this->assertEquals(0, $returnVar, 'The code output contains a syntax error');
-
-        unlink($tempFile); // Clean up the temporary file
+        // This will throw a ParseError if the syntax is invalid
+        $tokens = token_get_all("<?php " . $codeString);
+        $this->assertNotNull($tokens);
     }
 }

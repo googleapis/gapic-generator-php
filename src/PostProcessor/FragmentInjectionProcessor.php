@@ -18,17 +18,14 @@ declare(strict_types=1);
 
 namespace Google\PostProcessor;
 
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\PositionUtilities;
-use Microsoft\PhpParser\DiagnosticsProvider;
 use LogicException;
 use ParseError;
 
 class FragmentInjectionProcessor implements ProcessorInterface
 {
-    private ClassDeclaration $classNode;
+    use PostProcessorTrait;
 
     public static function run(string $inputDir): void
     {
@@ -62,28 +59,6 @@ class FragmentInjectionProcessor implements ProcessorInterface
         print("Fragment written to $classFile\n");
     }
 
-    private static function fromCode(string $contents): ClassDeclaration
-    {
-        $parser = new Parser();
-        $astNode = $parser->parseSourceFile($contents);
-        if ($errors = DiagnosticsProvider::getDiagnostics($astNode)) {
-            throw new ParseError('Provided contents contains a PHP syntax error');
-        }
-
-        foreach ($astNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof ClassDeclaration) {
-                return $childNode;
-            }
-        }
-
-        throw new LogicException('Provided contents does not contain a PHP class');
-    }
-
-    public function __construct(string $contents)
-    {
-        $this->classNode = self::fromCode($contents);
-    }
-
     /**
      * @throws LogicException
      * @throws ParseError
@@ -98,11 +73,6 @@ class FragmentInjectionProcessor implements ProcessorInterface
         array_splice($lines, $insertLine, 0, $newContent);
         $contents = implode(PHP_EOL, $lines);
         $this->classNode = self::fromCode($contents);
-    }
-
-    public function getContents(): string
-    {
-        return $this->classNode->getFileContents();
     }
 
     private function getLineNumberFromPosition(int $startPosition): int

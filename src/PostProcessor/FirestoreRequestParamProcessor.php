@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,21 @@ declare(strict_types=1);
 
 namespace Google\PostProcessor;
 
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\DiagnosticsProvider;
 use LogicException;
 use ParseError;
 
 class FirestoreRequestParamProcessor implements ProcessorInterface
 {
+    use PostProcessorTrait;
+
     // Line to insert the PHP doc param above
     private const DATABASE_PHPDOC_INSERT_AT =
         '     *     @type int $timeoutMillis';
 
     // PHPdoc param to insert
     private const DATABASE_PHPDOC_PARAM = <<<'EOL'
-     *     @type string $datbase
+     *     @type string $database
      *           Set the database of the call, to be added as a routing header
 EOL;
 
@@ -51,12 +50,9 @@ $requestParams = new \Google\ApiCore\RequestParamsHeaderDescriptor($requestParam
 $callOptions['headers'] = isset($callOptions['headers']) ? array_merge($requestParams->getHeader(), $callOptions['headers']) : $requestParams->getHeader();
 EOL;
 
-    private ClassDeclaration $classNode;
 
-    public static function run(string $inputDir): void
     {
-        $firestoreClientFile = $inputDir . '/src/V1/Client/FirestoreClient.php';
-        self::inject($firestoreClientFile);
+        self::inject($inputDir . '/src/V1/Client/FirestoreClient.php');
     }
 
     private static function inject(string $classFile): void
@@ -70,28 +66,6 @@ EOL;
         // Write the new contents to the class file.
         file_put_contents($classFile, $processor->getContents());
         print("Fragment written to $classFile\n");
-    }
-
-    private static function fromCode(string $contents): ClassDeclaration
-    {
-        $parser = new Parser();
-        $astNode = $parser->parseSourceFile($contents);
-        if ($errors = DiagnosticsProvider::getDiagnostics($astNode)) {
-            throw new ParseError('Provided contents contains a PHP syntax error');
-        }
-
-        foreach ($astNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof ClassDeclaration) {
-                return $childNode;
-            }
-        }
-
-        throw new LogicException('Provided contents does not contain a PHP class');
-    }
-
-    public function __construct(string $contents)
-    {
-        $this->classNode = self::fromCode($contents);
     }
 
     /**
@@ -133,11 +107,6 @@ EOL;
         }
 
         $this->classNode = self::fromCode($contents);
-    }
-
-    public function getContents(): string
-    {
-        return $this->classNode->getFileContents();
     }
 
     private function getMethodDeclaration(string $insertBeforeMethod): MethodDeclaration
