@@ -63,7 +63,7 @@ class GapicClientExamplesGenerator
                 $code = $this->rpcMethodExampleClientStreaming($method);
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
         $this->ctx->finalize(null);
         return $code;

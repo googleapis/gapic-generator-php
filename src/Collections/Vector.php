@@ -42,7 +42,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         } elseif (is_array($data)) {
             return new Vector(array_values($data));
         } else {
-            throw new \Exception('Vector::New accepts a Traversable or an array only');
+            throw new Exception('Vector::New accepts a Traversable or an array only');
         }
     }
 
@@ -128,13 +128,13 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /** @inheritDoc */
     public function offsetSet($offset, $value): void
     {
-        throw new \Exception('Vector is readonly');
+        throw new Exception('Vector is readonly');
     }
 
     /** @inheritDoc */
     public function offsetUnset($offset): void
     {
-        throw new \Exception('Vector is readonly');
+        throw new Exception('Vector is readonly');
     }
 
     // Equality methods
@@ -259,7 +259,7 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         foreach ($this->data as $index => $item) {
             $mapping = $fnFlatMap($item, $index);
             if (!($mapping instanceof Vector)) {
-                throw new \Exception('flatMap() function must return a Vector');
+                throw new Exception('flatMap() function must return a Vector');
             }
             $parts[] = $mapping->data;
         }

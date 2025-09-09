@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Api\ResourceDescriptor;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
@@ -32,7 +33,7 @@ class ResourceDetails implements ResourcePart
         $this->type = $desc->getType();
         $typeParts = explode('/', $this->type);
         if (count($typeParts) !== 2) {
-            throw new \Exception("Resource-name type is illformed: '{$this->type}'");
+            throw new Exception("Resource-name type is illformed: '{$this->type}'");
         }
         $this->nameCamelCase = Helpers::toCamelCase($typeParts[1]);
         $this->nameSnakeCase = Helpers::toSnakeCase($typeParts[1]);

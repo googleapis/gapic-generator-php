@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
 use Google\Api\FieldInfo;
 use Google\Api\HttpRule;
 use Google\Api\ResourceDescriptor;
@@ -291,14 +292,14 @@ class ProtoHelpers
                 // Verify field names.
                 $field = $msg->desc->getFieldByName($fieldName);
                 if (is_null($field)) {
-                    throw new \Exception("Field '{$fieldName}' does not exist.");
+                    throw new Exception("Field '{$fieldName}' does not exist.");
                 }
                 if ($index !== count($fieldList) - 1) {
                     if ($field->isRepeated()) {
-                        throw new \Exception("Field '{$fieldName}' must not be repeated.");
+                        throw new Exception("Field '{$fieldName}' must not be repeated.");
                     }
                     if ($field->getType() !== GPBType::MESSAGE) {
-                        throw new \Exception("Field '{$fieldName}' must be of message type.");
+                        throw new Exception("Field '{$fieldName}' must be of message type.");
                     }
                     $msg = $catalog->msgsByFullname[$field->getMessageType()];
                 }
@@ -323,10 +324,10 @@ class ProtoHelpers
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpRule->getPattern()}");
         $restUriTemplate = $httpRule->$uriTemplateGetter();
         if ($restUriTemplate === '') {
-            throw new \Exception('REST URI must be specified.');
+            throw new Exception('REST URI must be specified.');
         }
         if ($restUriTemplate[0] !== '/') {
-            throw new \Exception("REST URI must be an absolute path starting with '/'");
+            throw new Exception("REST URI must be an absolute path starting with '/'");
         }
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
         $placeholders = Vector::new($segments)
@@ -372,7 +373,7 @@ class ProtoHelpers
                             $unknownStream->readRaw($len, $value);
                             break;
                         default:
-                            throw new \Exception('Cannot read option tag');
+                            throw new Exception('Cannot read option tag');
                     }
                     if (GPBWire::getTagFieldNumber($tag) === $optionId) {
                         if ($repeated) {
@@ -393,7 +394,7 @@ class ProtoHelpers
             $message = $message->underlyingProto;
         }
         if (!($message instanceof Message)) {
-            throw new \Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
+            throw new Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
         }
         return $message;
     }

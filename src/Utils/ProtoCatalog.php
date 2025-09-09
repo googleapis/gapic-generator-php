@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\DescriptorProto;
@@ -183,7 +184,7 @@ class ProtoCatalog
         $skipCount = (strpos($parts[-1], '}') > 0) ? 2 : 1;
         $parts = $parts->skipLast($skipCount);
         if (count($parts) === 0) {
-            throw new \Exception("Resource-name pattern '{$pattern}' has no parent.");
+            throw new Exception("Resource-name pattern '{$pattern}' has no parent.");
         }
         return $parts->join('/');
     }

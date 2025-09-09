@@ -27,7 +27,7 @@ final class PhpComment extends PhpClassMember
 
     public function getName(): string
     {
-        throw new \Exception('Invalid call.');
+        throw new Exception('Invalid call.');
     }
 
     public function toCode(): string

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
+
 class MigrationMode
 {
     public const MIGRATION_MODE_UNSPECIFIED = 'MIGRATION_MODE_UNSPECIFIED';
@@ -37,7 +39,7 @@ class MigrationMode
             && $mode != self::PRE_MIGRATION_SURFACE_ONLY
             && $mode != self::MIGRATING;
         if ($invalid) {
-            throw new \Exception("Invalid migration mode '{$mode}', allowed values are: 'MIGRATION_MODE_UNSPECIFIED', 'PRE_MIGRATION_SURFACE_ONLY',  'NEW_SURFACE_ONLY', 'MIGRATING'");
+            throw new Exception("Invalid migration mode '{$mode}', allowed values are: 'MIGRATION_MODE_UNSPECIFIED', 'PRE_MIGRATION_SURFACE_ONLY',  'NEW_SURFACE_ONLY', 'MIGRATING'");
         }
     }
 }

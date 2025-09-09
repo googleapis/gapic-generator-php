@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\ApiCore\ApiException;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
@@ -97,7 +98,7 @@ class SnippetGenerator
     /**
      * @param SnippetDetails $snippetDetails
      * @return AST
-     * @throws \Exception
+     * @throws Exception
      */
     private function rpcMethodExample(SnippetDetails $snippetDetails): AST
     {
@@ -123,7 +124,7 @@ class SnippetGenerator
                 $code = $this->rpcMethodExampleClientStreaming($snippetDetails);
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
         }
         $snippetDetails->context->finalize(null);
         return $code;

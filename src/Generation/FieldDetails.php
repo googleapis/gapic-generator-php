@@ -193,7 +193,7 @@ class FieldDetails
         $resRef = ProtoHelpers::resourceReference($field);
         if (!is_null($resRef)) {
             if ($resRef->getType() === '' && $resRef->getChildType() === '') {
-                throw new \Exception('type of child_type must be set to a value.');
+                throw new Exception('type of child_type must be set to a value.');
             }
             if ($resRef->getType() !== '' && $resRef->getType() !== '*') {
                 $this->resourceDetails = new ResourceDetails($catalog->resourcesByType[$resRef->getType()]);
@@ -364,7 +364,7 @@ class FieldDetails
                     AST::property($enumValueName)
                 );
             default:
-                throw new \Exception("No exampleValue for type: {$this->desc->getType()}");
+                throw new Exception("No exampleValue for type: {$this->desc->getType()}");
         }
     }
 }

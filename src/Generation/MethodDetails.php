@@ -182,19 +182,19 @@ abstract class MethodDetails
             $isValidPageSize = $pageSize->getType() === GPBType::INT32;
         }
         if (!$isValidPageSize) {
-            throw new \Exception('page_size field must be of type ' . ($isDireGapic ? 'uint32 or int32' : 'int32') . '.');
+            throw new Exception('page_size field must be of type ' . ($isDireGapic ? 'uint32 or int32' : 'int32') . '.');
         }
         if ($pageToken->isRepeated() || $pageToken->getType() !== GPBType::STRING) {
-            throw new \Exception('page_token field must be of type string.');
+            throw new Exception('page_token field must be of type string.');
         }
         if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
-            throw new \Exception('next_page_token field must be of type string.');
+            throw new Exception('next_page_token field must be of type string.');
         }
         if (!$resourceFieldValid) {
             if ($isDireGapic) {
-                throw new \Exception('Item resources field must a map or repeated field.');
+                throw new Exception('Item resources field must a map or repeated field.');
             }
-            throw new \Exception('Item resources field must be the first repeated field by number and position.');
+            throw new Exception('Item resources field must be the first repeated field by number and position.');
         }
         return new class($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources) extends MethodDetails {
             public function __construct($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources)
@@ -290,7 +290,7 @@ abstract class MethodDetails
                     $lroData = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_LONGRUNNING_OPERATIONINFO, OperationInfo::class);
                     if (is_null($lroData)) {
                         // TODO(miraleung): This currently breaks when building a GAPIC for LRO.
-                        throw new \Exception("An LRO method must provide a `google.api.operation` option, missing from {$this->name}.");
+                        throw new Exception("An LRO method must provide a `google.api.operation` option, missing from {$this->name}.");
                     }
                     $responseMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getResponseType())];
                     $metadataMsg = $catalog->msgsByFullname[$svc->packageFullName($lroData->getMetadataType())];
@@ -337,7 +337,7 @@ abstract class MethodDetails
                         ->filter(fn ($x) =>
                             !is_null(ProtoHelpers::operationPollingMethod($x)));
                     if ($polling->count() == 0) {
-                        throw new \Exception("Custom operation service {$this->operationService->getName()} does not provide a polling method marked with `google.cloud.operation_polling_method = true` option.");
+                        throw new Exception("Custom operation service {$this->operationService->getName()} does not provide a polling method marked with `google.cloud.operation_polling_method = true` option.");
                     }
                     $pollingMethod = $polling->firstOrNull();
                     $this->operationPollingMethod = MethodDetails::create($svc, $pollingMethod);

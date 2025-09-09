@@ -137,7 +137,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             return $file;
         });
         $genResponse->setFile($files->toArray());
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $genResponse->setError("Error from PHP gapic generator:\n" . $e->getMessage());
     }
     fwrite(STDOUT, $genResponse->serializeToString());
@@ -189,7 +189,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
     $makePath = function ($path) use ($sideLoadedRootDir) {
         if (strlen($path) > 0 && $path[0] === '/') {
             if (!is_null($sideLoadedRootDir)) {
-                throw new \Exception('Cannot use --side_loaded_root_dir with absolute config paths');
+                throw new Exception('Cannot use --side_loaded_root_dir with absolute config paths');
             }
             return $path;
         } else {
@@ -199,7 +199,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
     if (isset($opts['grpc_service_config'])) {
         $grpcServiceConfigPath = $makePath($opts['grpc_service_config']);
         if (!file_exists($grpcServiceConfigPath)) {
-            throw new \Exception("Specified grpc_service_config file does not exist: '{$grpcServiceConfigPath}'");
+            throw new Exception("Specified grpc_service_config file does not exist: '{$grpcServiceConfigPath}'");
         }
         $grpcServiceConfig = file_get_contents($grpcServiceConfigPath);
     } else {
@@ -209,7 +209,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
     if (isset($opts['gapic_yaml'])) {
         $gapicYamlPath = $makePath($opts['gapic_yaml']);
         if (!file_exists($gapicYamlPath)) {
-            throw new \Exception('Specified gapi_yaml file does not exist.');
+            throw new Exception('Specified gapi_yaml file does not exist.');
         }
         $gapicYaml = file_get_contents($gapicYamlPath);
     } else {
@@ -219,7 +219,7 @@ function readOptions($opts, $sideLoadedRootDir = null)
     if (isset($opts['service_yaml'])) {
         $serviceYamlPath = $makePath($opts['service_yaml']);
         if (!file_exists($serviceYamlPath)) {
-            throw new \Exception('Specified service_yaml file does not exist.');
+            throw new Exception('Specified service_yaml file does not exist.');
         }
         $serviceYaml = file_get_contents($serviceYamlPath);
     } else {

@@ -923,7 +923,7 @@ class GapicClientGenerator
                 }
                 return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
             default:
-                throw new \Exception("Cannot handle method type: '{$method->methodType}'");
+                throw new Exception("Cannot handle method type: '{$method->methodType}'");
         }
     }
 

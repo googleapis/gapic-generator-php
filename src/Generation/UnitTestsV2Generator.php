@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
@@ -220,7 +221,7 @@ class UnitTestsV2Generator
                 // initial release of this micro-generator.
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
     }
 
@@ -240,7 +241,7 @@ class UnitTestsV2Generator
                 return $this->testSuccessCasePaginated($method, true);
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
     }
 

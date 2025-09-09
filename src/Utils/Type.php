@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
 use Google\Generator\Collections\Equality;
 use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\Descriptor;
@@ -178,7 +179,7 @@ class Type implements Equality
             case GPBType::ENUM: // 14
                 return static::fromEnum($catalog->enumsByFullname[$desc->getEnumType()]->desc);
             default:
-                throw new \Exception("Cannot get field type of type: {$desc->getType()}");
+                throw new Exception("Cannot get field type of type: {$desc->getType()}");
         }
     }
 
@@ -212,7 +213,7 @@ class Type implements Equality
     public function getNamespace(): string
     {
         if (!$this->isClass()) {
-            throw new \Exception('Non-class types do not have a namespace');
+            throw new Exception('Non-class types do not have a namespace');
         }
         return $this->namespaceParts->join('\\');
     }

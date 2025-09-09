@@ -151,7 +151,7 @@ class CodeGenerator
             ->filter(fn ($x) => $filesToGenerateSet[$x->getName()])
             ->groupBy(fn ($x) => $x->getPackage());
         if (count($byPackage) === 0) {
-            throw new \Exception('No packages specified to build');
+            throw new Exception('No packages specified to build');
         }
 
         // Mix-in services.
@@ -166,7 +166,7 @@ class CodeGenerator
               ->map(fn ($x) => ProtoHelpers::getNamespace($x))
               ->distinct();
             if (count($namespaces) > 1) {
-                throw new \Exception('All files in the same package must have the same PHP namespace');
+                throw new Exception('All files in the same package must have the same PHP namespace');
             }
 
             // Full protobuf names, e.g. google.cloud.foo.Bar.

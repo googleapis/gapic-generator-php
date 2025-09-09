@@ -73,7 +73,7 @@ final class PhpClass extends AST
             return $this;
         }
         if (!$trait->type->isClass()) {
-            throw new \Exception('Only classes (traits) may be used as a trait.');
+            throw new Exception('Only classes (traits) may be used as a trait.');
         }
         return $this->clone(fn ($clone) => $clone->traits = $clone->traits->add($trait));
     }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Map;
@@ -343,7 +344,7 @@ class TestNameValueProducer
                 $enumValueName = $this->catalog->enumsByFullname[$field->desc->desc->getEnumType()]->getValue()[0]->getName();
                 return AST::access($this->ctx->type(Type::fromField($this->catalog, $field->desc->desc)), AST::property($enumValueName));
             default:
-                throw new \Exception("No testValue for type: {$field->desc->getType()}");
+                throw new Exception("No testValue for type: {$field->desc->getType()}");
         }
     }
 }

@@ -173,7 +173,7 @@ abstract class PhpDoc
                         $word = '{@see ' . $part->ToCode() . '}';
                         $add($word);
                     } else {
-                        throw new \Exception('Cannot convert part to text');
+                        throw new Exception('Cannot convert part to text');
                     }
                 }
                 $commitLine();

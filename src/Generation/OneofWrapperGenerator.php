@@ -100,14 +100,14 @@ class OneofWrapperGenerator
                     // Either all fields in a oneof must be optional or required. Mixing these
                     // is weird and wrong by current (2021/07) AIP standards.
                     if (!$isRequired) {
-                        throw new \Exception('Either all fields, or none, in ' . $containingMessage->getName()
+                        throw new Exception('Either all fields, or none, in ' . $containingMessage->getName()
                             . ' containing oneof ' . $oneofDescProto->getName() . ' must be marked as required, but '
                             . $containingMessageFieldDescProto->getName() . ' was not');
                     }
                     // Assert that this field appears in the method's required fields.
                     if (!$requiredFieldNames->contains($containingMessageFieldDescProto->getName())
                         || $requiredField->oneOfIndex !== $containingMessageFieldDescProto->getOneofIndex()) {
-                        throw new \Exception('Field ' . $containingMessageFieldDescProto->getName()
+                        throw new Exception('Field ' . $containingMessageFieldDescProto->getName()
                             . ' found in containing message ' . $containingMessage->getName()
                             . ' but not in the list of required fields for method ' . $method);
                     }

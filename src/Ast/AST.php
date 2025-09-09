@@ -136,10 +136,10 @@ abstract class AST
         } elseif ($x instanceof Vector) {
             return AST::array($x->toArray())->toCode();
         } elseif ($x instanceof Map) {
-            throw new \Exception('Cannot convert Map to PHP code.');
+            throw new Exception('Cannot convert Map to PHP code.');
         } else {
             $t = gettype($x);
-            throw new \Exception("Cannot convert $t to PHP code.");
+            throw new Exception("Cannot convert $t to PHP code.");
         }
     }
 
@@ -408,7 +408,7 @@ abstract class AST
         } elseif ($data instanceof Map) {
             $keyValues = $data->mapValues(fn ($k, $v) => [$k, $v])->values();
         } else {
-            throw new \Exception('$data must be an array or a Map.');
+            throw new Exception('$data must be an array or a Map.');
         }
         return new class($keyValues, $oneLine) extends Expression {
             public function __construct(private Vector $keyValues, private bool $oneLine)
