@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Api\HttpRule;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\ClientStream;

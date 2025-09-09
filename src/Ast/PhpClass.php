@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
@@ -29,35 +30,27 @@ final class PhpClass extends AST
 {
     use HasPhpDoc;
 
+    /**
+     * @param Type $type *Readonly* The type of this class.
+     * @param ?ResolvedType $extends
+     * @param bool $final *Readonly* Flag indicating if the class is final or not.
+     * @param bool *Readonly* Flag indicating if the class is abtract or not.
+     */
     public function __construct(
-        Type $type,
+        public Type $type,
         private ?ResolvedType $extends,
-        bool $final,
-        bool $abstract
+        public bool $final,
+        public bool $abstract
     ) {
-        $this->type = $type;
         $this->traits = Set::new();
         $this->members = Vector::new();
-        $this->final = $final;
-        $this->abstract = $abstract;
     }
-
-    /** @var Type *Readonly* The type of this class. */
-    public Type $type;
 
     /** @var Set *Readonly* Set of ResolvedType; the traits used by this class. */
     public Set $traits;
 
     /** @var Vector *Readonly* Vector of PhpClassMember; all members of this class. */
     public Vector $members;
-
-    /** @var bool *Readonly* Flag indicating if the class is final or not. */
-    public bool $final;
-
-    /**
-     * @var bool *Readonly* Flag indicating if the class is abtract or not.
-     */
-    public bool $abstract;
 
     /**
      * Create a class with an additional trait.

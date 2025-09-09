@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator;
 
+use Exception;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\MigrationMode;
 use Google\Protobuf\Compiler\CodeGeneratorRequest;

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
 use Traversable;
 
 /** A 1-dimensional, value-only array. */

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
+
 trait EqualityHelper
 {
     private static function hash($k): int

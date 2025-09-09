@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
+
 /** A comment within a class. */
 final class PhpComment extends PhpClassMember
 {

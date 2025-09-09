@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
+
 abstract class Expression extends AST implements \ArrayAccess
 {
     /**

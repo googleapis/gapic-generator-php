@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator;
 
+use Exception;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;

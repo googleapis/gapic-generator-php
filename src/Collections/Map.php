@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
 use Traversable;
 
 /** A map of key->value; Keys can be of any type that supports equality. */

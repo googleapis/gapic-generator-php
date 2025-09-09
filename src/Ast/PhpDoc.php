@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Formatter;
