@@ -102,7 +102,7 @@ final class ProtoTest extends TestCase
 
     public function testServerStreaming(): void
     {
-        $this->runProtoTest('BasicServerStreaming/basic-server-streaming.proto');
+        $this->runProtoTest('BasicServerStreaming/basic-server-streaming.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
     }
 
     public function testClientStreaming(): void
