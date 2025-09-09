@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/gapic-generator-php/compare/v1.19.0...v1.20.0) (2025-09-09)
+
+
+### Features
+
+* **ci:** Add release check for "next release" labels ([#775](https://github.com/googleapis/gapic-generator-php/issues/775)) ([211debc](https://github.com/googleapis/gapic-generator-php/commit/211debcd35423fc7881cafabacbb593784aeadb5))
+* Document universeDomain client option ([9994062](https://github.com/googleapis/gapic-generator-php/commit/99940625a39af1d0f698a97fd9d156e4f84fc528))
+* Generic types for OperationResponse and ServerStream ([#767](https://github.com/googleapis/gapic-generator-php/issues/767)) ([d39b0a5](https://github.com/googleapis/gapic-generator-php/commit/d39b0a588bb53a5eecf71f8eecbfe9e629a3f541))
+* Update pagination rules for compute clients ([#765](https://github.com/googleapis/gapic-generator-php/issues/765)) ([51b22ec](https://github.com/googleapis/gapic-generator-php/commit/51b22ecf1ad1e17208fb7634d08160e013ba0f67))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency google/protobuf to v4 ([#694](https://github.com/googleapis/gapic-generator-php/issues/694)) ([94e2811](https://github.com/googleapis/gapic-generator-php/commit/94e2811898bb3483f5d1bd82bcc16fe71d0686c5))
+
 ## [1.19.0](https://github.com/googleapis/gapic-generator-php/compare/v1.18.3...v1.19.0) (2025-06-26)
 
 
