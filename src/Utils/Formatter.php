@@ -40,13 +40,13 @@ class Formatter
      *
      * @return string The same code as passed in, but formatted.
      */
-    public static function format(string $code, int $lineLength = null): string
+    public static function format(string $code, ?int $lineLength = null): string
     {
         $psr2SingleClassElementPerStatementFixer =
-          new \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
+          new \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer();
         $psr2SingleClassElementPerStatementFixer->configure(['elements' => ['property']]);
         $psr2MethodArgumentSpaceFixer =
-          new \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
+          new \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer();
         $psr2MethodArgumentSpaceFixer->configure(['on_multiline' => 'ensure_fully_multiline']);
         $visibilityFixer = new Fixer\ClassNotation\VisibilityRequiredFixer();
         $visibilityFixer->configure(['elements' => ['property', 'method']]);
@@ -115,7 +115,6 @@ class Formatter
             // This must run last, otherwise it collapses comments immediately succeeding blocks that may have semicolons.
             $semicolonFixer = new Fixer\Semicolon\NoEmptyStatementFixer();
             $semicolonFixer->fix($fakeFile, $tokens);
-
 
             $code = $tokens->generateCode();
             // TODO(vNext): Remove this call.

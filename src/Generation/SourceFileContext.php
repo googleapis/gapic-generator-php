@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Generator\Ast\PhpFile;
 use Google\Generator\Collections\Map;
 use Google\Generator\Utils\ResolvedType;
@@ -46,7 +47,7 @@ class SourceFileContext
     private function checkFinalized(bool $expected): void
     {
         if ($this->isFinalized !== $expected) {
-            throw new \Exception($expected ?
+            throw new Exception($expected ?
                 'This operation is only valid when the source-file-context has been finalized.' :
                 'This operation is only valid when the source-file-context has not been finalized.');
         }

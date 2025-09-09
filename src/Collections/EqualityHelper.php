@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
+
 trait EqualityHelper
 {
     private static function hash($k): int
@@ -33,7 +35,7 @@ trait EqualityHelper
                 return spl_object_id($k);
             }
         }
-        throw new \Exception("Cannot use a map key of type: '" . gettype($k) . "'");
+        throw new Exception("Cannot use a map key of type: '" . gettype($k) . "'");
     }
 
     private static function equal($a, $b): bool
@@ -55,6 +57,6 @@ trait EqualityHelper
         } elseif (is_int($a) && is_int($b)) {
             return $a <=> $b;
         }
-        throw new \Exception('Cannot handle input types in compare()');
+        throw new Exception('Cannot handle input types in compare()');
     }
 }

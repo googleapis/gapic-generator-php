@@ -38,7 +38,7 @@ class PostProcessor
 
     private function execute(): void
     {
-        foreach($this->processors as $processor) {
+        foreach ($this->processors as $processor) {
             $processor::run($this->inputDir);
         }
     }

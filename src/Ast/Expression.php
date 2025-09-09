@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
+
 abstract class Expression extends AST implements \ArrayAccess
 {
     /**
@@ -47,12 +49,12 @@ abstract class Expression extends AST implements \ArrayAccess
 
     public function offsetSet($offset, $value): void
     {
-        throw new \Exception('Invalid operation (may be used later).');
+        throw new Exception('Invalid operation (may be used later).');
     }
 
     public function offsetUnset($offset): void
     {
-        throw new \Exception('Invalid operation.');
+        throw new Exception('Invalid operation.');
     }
 
     // Allow a method-call as a shortcut for AST::call(...)

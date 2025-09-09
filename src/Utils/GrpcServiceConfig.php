@@ -23,7 +23,7 @@ use Grpc\Service_config\ServiceConfig;
 
 class GrpcServiceConfig
 {
-    public function __construct(string $serviceName, ?string $json)
+    public function __construct(?string $json)
     {
         if (is_null($json)) {
             $this->isPresent = false;
@@ -31,7 +31,7 @@ class GrpcServiceConfig
         } else {
             $this->isPresent = true;
             $config = new ServiceConfig();
-            $config->mergeFromJsonString($json, /* ignore_unknown */true);
+            $config->mergeFromJsonString($json, /* ignore_unknown */ true);
             $this->methods = Vector::new($config->getMethodConfig());
         }
     }

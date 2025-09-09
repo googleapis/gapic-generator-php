@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
 use Traversable;
 
 /** A map of key->value; Keys can be of any type that supports equality. */
@@ -47,7 +48,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
             }
             return static::fromPairs($pairs);
         }
-        throw new \Exception('Map::New accepts a Traversable or an array only');
+        throw new Exception('Map::New accepts a Traversable or an array only');
     }
 
     /**
@@ -62,7 +63,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         $data = [];
         foreach ($pairs as [$k, $v]) {
             if (static::apply($data, $k, 1, $v)[0]) {
-                throw new \Exception("Cannot add two items with the same key $k");
+                throw new Exception("Cannot add two items with the same key $k");
             }
         }
         return new Map($data, count($pairs));
@@ -79,7 +80,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     private static function apply(array &$data, $k, int $action, $v): array
     {
         if (is_null($k)) {
-            throw new \Exception('null keys are invalid');
+            throw new Exception('null keys are invalid');
         }
         $hash = static::Hash($k);
         if (isset($data[$hash])) {
@@ -152,21 +153,21 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         if ($exists) {
             return $value;
         }
-        $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $dbt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
-        throw new \Exception("Key $key does not exist, called from $caller");
+        throw new Exception("Key $key does not exist, called from $caller");
     }
 
     /** @inheritDoc */
     public function offsetSet($offset, $value): void
     {
-        throw new \Exception('Map is readonly');
+        throw new Exception('Map is readonly');
     }
 
     /** @inheritDoc */
     public function offsetUnset($offset): void
     {
-        throw new \Exception('Map is readonly');
+        throw new Exception('Map is readonly');
     }
 
     // Normal class methods

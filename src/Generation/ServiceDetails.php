@@ -28,14 +28,14 @@ use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ServiceYamlConfig;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
-use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FileDescriptorProto;
+use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\ServiceDescriptorProto;
 
 class ServiceDetails
 {
-    public const DEPRECATED_MSG = "This class will be removed in the next major version update.";
+    public const DEPRECATED_MSG = 'This class will be removed in the next major version update.';
 
     /** @var ProtoCatalog *Readonly* The proto-catalog containing all source protos. */
     public ProtoCatalog $catalog;
@@ -201,7 +201,7 @@ class ServiceDetails
         $this->restConfigFilename = Helpers::toSnakeCase($desc->getName()) . '_rest_client_config.php';
         $this->methods = Vector::new($desc->getMethod())->map(fn ($x) => MethodDetails::create($this, $x))
                                                         ->orderBy(fn ($x) => $x->name);
-        $this->streamingOnly = !$this->methods->any(fn($m) => !$m->isStreaming());
+        $this->streamingOnly = !$this->methods->any(fn ($m) => !$m->isStreaming());
         $customOperations = $this->methods->filter(fn ($x) => $x->methodType === MethodDetails::CUSTOM_OP);
         $this->hasCustomOp = $customOperations->count() > 0;
         if ($this->hasCustomOp) {
@@ -340,12 +340,12 @@ class ServiceDetails
 
     public function isGa(): bool
     {
-        $ns_components = explode("\\", $this->namespace);
+        $ns_components = explode('\\', $this->namespace);
         $version = strtolower($ns_components[array_key_last($ns_components)]);
         return strpos($version, 'alpha') === false && strpos($version, 'beta') === false;
     }
 
-    public function setMethods(Vector $newMethods) : void
+    public function setMethods(Vector $newMethods): void
     {
         // Note: This seemingly-redundant method exists to enable a future refactoring
         // of all properties labelled as "readonly" to actually be private properties with getters.

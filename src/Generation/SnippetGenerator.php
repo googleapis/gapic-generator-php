@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\ApiCore\ApiException;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
@@ -97,7 +98,7 @@ class SnippetGenerator
     /**
      * @param SnippetDetails $snippetDetails
      * @return AST
-     * @throws \Exception
+     * @throws Exception
      */
     private function rpcMethodExample(SnippetDetails $snippetDetails): AST
     {
@@ -123,7 +124,7 @@ class SnippetGenerator
                 $code = $this->rpcMethodExampleClientStreaming($snippetDetails);
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
         }
         $snippetDetails->context->finalize(null);
         return $code;
@@ -401,7 +402,7 @@ class SnippetGenerator
                         $preMigrationSurface
                             ? '// Prepare any non-scalar elements to be passed along with the request.'
                             : '// Prepare the request message.'
-                        ) : null,
+                    ) : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',
@@ -501,7 +502,7 @@ class SnippetGenerator
      */
     private function buildPrintFCall(string $format, string ...$values): AST
     {
-        $valueStr = array_reduce($values, function($carry, $item) {
+        $valueStr = array_reduce($values, function ($carry, $item) {
             return $carry .= "$item, ";
         });
 

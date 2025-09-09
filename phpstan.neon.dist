@@ -1,0 +1,6 @@
+parameters:
+    treatPhpDocTypesAsCertain: false
+    level: 1
+    paths:
+    - src
+    - tests/Unit/ProtoTests/Basic

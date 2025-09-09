@@ -25,9 +25,9 @@ use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Expression;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
+use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
@@ -169,7 +169,7 @@ class ResourcesGenerator
 
         if ($serviceDetails->hasResources && !$preMigrationOnly) {
             $serviceDescriptor['templateMap'] = $serviceDetails->resourceParts
-                ->toArray(fn($x) => $x->getNameCamelCase(), fn($x) => $x->getPattern());
+                ->toArray(fn ($x) => $x->getNameCamelCase(), fn ($x) => $x->getPattern());
         }
 
         $codeBlock = AST::return(
@@ -180,13 +180,13 @@ class ResourcesGenerator
             ])
         );
 
-        $currentYear = (int)date("Y");
+        $currentYear = (int) date('Y');
 
         return AST::file(null)
             ->withApacheLicense($currentYear)
             ->withGeneratedCodeWarning()
             ->withBlock($codeBlock)
-            ->toCode() . ";";
+            ->toCode() . ';';
     }
 
     public static function customOperationDescriptor(ServiceDetails $serviceDetails, MethodDetails $method)
@@ -293,7 +293,7 @@ class ResourcesGenerator
             AST::array($config)
         );
 
-        $currentYear = (int)date("Y");
+        $currentYear = (int) date('Y');
 
         return AST::file(null)
             ->withApacheLicense($currentYear)
@@ -329,7 +329,7 @@ class ResourcesGenerator
         GrpcServiceConfig $grpcServiceConfig
     ): string {
         $serviceName = $serviceDetails->serviceName;
-        $durationToMillis = fn ($d) => (int)($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
+        $durationToMillis = fn ($d) => (int) ($d->getSeconds() * 1000 + $d->getNanos() / 1e6);
 
         if ($grpcServiceConfig->isPresent) {
             $configsByMethodName = Map::new();
@@ -520,9 +520,9 @@ class ResourcesGenerator
             ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->map(fn ($x) => $x->getKey());
         // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
-        $tokens = explode("/", $uriTemplate);
+        $tokens = explode('/', $uriTemplate);
         $nameSegments = $varSegments;
-        if (substr(end($tokens), 0, 1) !== "{" && substr($uriTemplate, strlen($uriTemplate) - 1) !== "}") {
+        if (substr(end($tokens), 0, 1) !== '{' && substr($uriTemplate, strlen($uriTemplate) - 1) !== '}') {
             $nameSegments = $nameSegments->append(end($tokens));
         }
         // Match the name segments against the required fields in the method.

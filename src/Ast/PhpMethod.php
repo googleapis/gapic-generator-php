@@ -32,6 +32,8 @@ final class PhpMethod extends PhpClassMember
 
     /** @var string *Readonly* The name of this method. */
     public string $name;
+    private Vector $params;
+    protected mixed $body;
 
     /** @var string The return type of the function. */
     private ?ResolvedType $returnType = null;

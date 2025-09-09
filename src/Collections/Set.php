@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Collections;
 
+use Exception;
 use Traversable;
 
 /** A set of values; elements can be of any type that supports equality. */
@@ -30,7 +31,7 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
      *
      * @return Set
      */
-    public static function new($data = []) : Set
+    public static function new($data = []): Set
     {
         if ($data instanceof Set) {
             return $data;
@@ -45,7 +46,7 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
             }
             return new Set(Map::fromPairs($pairs));
         }
-        throw new \Exception('Set::new accepts a Traversable or an array only');
+        throw new Exception('Set::new accepts a Traversable or an array only');
     }
 
     private Map $map;
@@ -92,13 +93,13 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
     /** @inheritDoc */
     public function offsetSet($offset, $value): void
     {
-        throw new \Exception('Set is readonly');
+        throw new Exception('Set is readonly');
     }
 
     /** @inheritDoc */
     public function offsetUnset($offset): void
     {
-        throw new \Exception('Set is readonly');
+        throw new Exception('Set is readonly');
     }
 
     // Normal class methods
