@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
@@ -40,7 +41,7 @@ class OneofWrapperGenerator
      */
     public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): Vector
     {
-        return (new OneOfWrapperGenerator($ctx, $serviceDetails))->generateImpl();
+        return (new OneofWrapperGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
@@ -100,14 +101,14 @@ class OneofWrapperGenerator
                     // Either all fields in a oneof must be optional or required. Mixing these
                     // is weird and wrong by current (2021/07) AIP standards.
                     if (!$isRequired) {
-                        throw new \Exception('Either all fields, or none, in ' . $containingMessage->getName()
-                            . ' containing oneof ' .  $oneofDescProto->getName() . ' must be marked as required, but '
+                        throw new Exception('Either all fields, or none, in ' . $containingMessage->getName()
+                            . ' containing oneof ' . $oneofDescProto->getName() . ' must be marked as required, but '
                             . $containingMessageFieldDescProto->getName() . ' was not');
                     }
                     // Assert that this field appears in the method's required fields.
                     if (!$requiredFieldNames->contains($containingMessageFieldDescProto->getName())
                         || $requiredField->oneOfIndex !== $containingMessageFieldDescProto->getOneofIndex()) {
-                        throw new \Exception('Field ' . $containingMessageFieldDescProto->getName()
+                        throw new Exception('Field ' . $containingMessageFieldDescProto->getName()
                             . ' found in containing message ' . $containingMessage->getName()
                             . ' but not in the list of required fields for method ' . $method);
                     }
@@ -158,7 +159,7 @@ class OneofWrapperGenerator
                 // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
                 PhpDoc::text("Wrapper class for the oneof {$oneofDesc->getName()} defined in message "
                     . "{$containingMessageName}. Only one item should be set on an instance of this "
-                    . "class. If multiple items are set on the instance, the last one is used.")
+                    . 'class. If multiple items are set on the instance, the last one is used.')
             ))
             ->withMembers($this->fieldProperties($oneofDesc))
             ->withMember($this->selectedFieldProperty())
@@ -192,7 +193,7 @@ class OneofWrapperGenerator
         $newValueFormattedName = self::getPhpFieldName($fieldDesc);
         $newValueVar = AST::var($newValueFormattedName);
         $newValueParam = AST::param(null, $newValueVar);
-        return AST::method("set" . Helpers::toUpperCamelCase($fieldDesc->getName()))
+        return AST::method('set' . Helpers::toUpperCamelCase($fieldDesc->getName()))
             ->withAccess(Access::PUBLIC)
             ->withParams($newValueParam)
             ->withBody(AST::block(
@@ -220,7 +221,7 @@ class OneofWrapperGenerator
         $newValueFormattedName = self::getPhpFieldName($fieldDesc);
         $newValueVar = AST::var($newValueFormattedName);
         $newValueParam = AST::param(null, $newValueVar);
-        return AST::method("is" . Helpers::toUpperCamelCase($fieldDesc->getName()))
+        return AST::method('is' . Helpers::toUpperCamelCase($fieldDesc->getName()))
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::return(AST::binaryOp(
@@ -230,7 +231,7 @@ class OneofWrapperGenerator
                 ))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text('Returns true if this oneof is set to the field ' .$fieldDesc->getName() . '.'),
+                PhpDoc::text('Returns true if this oneof is set to the field ' . $fieldDesc->getName() . '.'),
                 PhpDoc::return($this->ctx->type(Type::bool())),
             ));
     }
@@ -241,13 +242,13 @@ class OneofWrapperGenerator
         $newValueVar = AST::var($newValueFormattedName);
         $newValueParam = AST::param(null, $newValueVar);
         $fieldNameUpperCamel = Helpers::toUpperCamelCase($fieldDesc->getName());
-        return AST::method("get" . $fieldNameUpperCamel)
+        return AST::method('get' . $fieldNameUpperCamel)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::return(AST::ternary(
                     AST::call(
                         AST::THIS,
-                        AST::method("is" . $fieldNameUpperCamel)->withAccess(Access::PUBLIC)
+                        AST::method('is' . $fieldNameUpperCamel)->withAccess(Access::PUBLIC)
                     )(),
                     AST::access(AST::THIS, AST::property($newValueFormattedName)),
                     AST::literal('null')

@@ -18,12 +18,13 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Protobuf\Internal\GPBType;
+use Exception;
+use Google\Generator\Collections\Equality;
+use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
-use Google\Generator\Collections\Equality;
-use Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\GPBType;
 
 /** A fully-specified PHP type. */
 class Type implements Equality
@@ -181,7 +182,7 @@ class Type implements Equality
             case GPBType::SFIXED64: // 16
             case GPBType::SINT32: // 17
             case GPBType::SINT64: // 18
-            return static::int();
+                return static::int();
             case GPBType::BOOL: // 8
                 return static::bool();
             case GPBType::STRING: // 9
@@ -193,7 +194,7 @@ class Type implements Equality
             case GPBType::ENUM: // 14
                 return static::fromEnum($catalog->enumsByFullname[$desc->getEnumType()]->desc);
             default:
-                throw new \Exception("Cannot get field type of type: {$desc->getType()}");
+                throw new Exception("Cannot get field type of type: {$desc->getType()}");
         }
     }
 
@@ -236,7 +237,7 @@ class Type implements Equality
     public function getNamespace(): string
     {
         if (!$this->isClass()) {
-            throw new \Exception('Non-class types do not have a namespace');
+            throw new Exception('Non-class types do not have a namespace');
         }
         return $this->namespaceParts->join('\\');
     }

@@ -62,7 +62,7 @@ class ServiceYamlConfig
         if (!is_null($serviceYaml)) {
             $service = new Service();
             $serviceYaml = static::fixYaml($serviceYaml);
-            $service->mergeFromJsonString(json_encode(Yaml::parse($serviceYaml)), /* ignore_unknown */true);
+            $service->mergeFromJsonString(json_encode(Yaml::parse($serviceYaml)), /* ignore_unknown */ true);
             $http = $service->getHttp();
             if (!is_null($http)) {
                 $this->httpRules = Vector::new($http->getRules());

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
 use Google\Api\FieldInfo;
 use Google\Api\HttpRule;
 use Google\Api\ResourceDescriptor;
@@ -28,7 +29,6 @@ use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Generation\MethodDetails;
 use Google\Protobuf\Internal\CodedInputStream;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptor;
@@ -132,7 +132,7 @@ class ProtoHelpers
 
         return $placeholders
             ->keys()
-            ->map(fn($key) => [
+            ->map(fn ($key) => [
                 'keyName' => $key,
                 'fieldAccessors' => $placeholders->get($key, Vector::new())->toArray()
             ])
@@ -144,16 +144,17 @@ class ProtoHelpers
 
         // Organize rules by resulting key name.
         $rulesByKey = Vector::new($routingRule->getRoutingParameters())
-            ->groupBy(fn($x) => static::fieldOrTemplateVariable($x));
+            ->groupBy(fn ($x) => static::fieldOrTemplateVariable($x));
 
         // Organize "compiled" segment matchers by resulting key name.
         $matchersByKey = $rulesByKey->mapValues(
-            fn($key, $routingRules) =>
+            fn ($key, $routingRules) =>
                 $routingRules
-                    ->filter(fn($rule) => static::hasMatcher($rule))
-                    ->map(fn($rule) => static::compileRoutingRegex($rule)))
-            ->filter(fn($key, $matchers) => $matchers->count() > 0)
-            ->mapValues(fn($key, $val) => $val->toArray());
+                    ->filter(fn ($rule) => static::hasMatcher($rule))
+                    ->map(fn ($rule) => static::compileRoutingRegex($rule))
+        )
+            ->filter(fn ($key, $matchers) => $matchers->count() > 0)
+            ->mapValues(fn ($key, $val) => $val->toArray());
 
         // Reduce the rules for each key into one rule, taking first its
         // keyName and fieldAccessors. Note: If multiple fields can be configured
@@ -161,15 +162,16 @@ class ProtoHelpers
         // we only support referring to one field with multiple parsing rules
         // per header key.
         $paramDescs = $rulesByKey->keys()
-            ->map(fn($key) => $rulesByKey->get($key, Vector::new())
-                ->reduce([], fn($val, $rule) => [
+            ->map(
+                fn ($key) => $rulesByKey->get($key, Vector::new())
+                ->reduce([], fn ($val, $rule) => [
                         'keyName' => $val['keyName'] ?? $key,
                         'fieldAccessors' => $val['fieldAccessors'] ?? static::buildGetterChain($catalog, $msg, $rule->getField()),
                 ])
             );
 
         // Include the list of segment matchers for a parsing rule.
-        $paramDescs = $paramDescs->map(fn($p) =>
+        $paramDescs = $paramDescs->map(fn ($p) =>
             isset($matchersByKey[$p['keyName']]) ?
                 array_merge($p, ['matchers' => $matchersByKey[$p['keyName']]]) :
                 $p);
@@ -183,7 +185,7 @@ class ProtoHelpers
         // a segment matcher other than '**' ("match anything"), with the header
         // key override.
         $temp = $routingParam->getPathTemplate();
-        return !empty($temp) && static::strContains($temp, '=') && !static::strEndsWith($temp, "=**}");
+        return !empty($temp) && static::strContains($temp, '=') && !static::strEndsWith($temp, '=**}');
     }
 
     /**
@@ -229,7 +231,7 @@ class ProtoHelpers
         $original = $matches[0];
         // Replace the entire template variable with just the segment matcher,
         // wrapped in a capture group.
-        $pattern = str_replace($original, "(?<" . $key . ">" . $match . ")", $template);
+        $pattern = str_replace($original, '(?<' . $key . '>' . $match . ')', $template);
         // Replace double wild cards with nameless capture groups.
         $pattern = str_replace('/**', '(?:/.*)?', $pattern);
         // Replace single wild cards with single word matchers.
@@ -237,7 +239,7 @@ class ProtoHelpers
         // Escape all forward slashes.
         $pattern = str_replace('/', '\/', $pattern);
 
-        return "/^" . $pattern . "$/";
+        return '/^' . $pattern . '$/';
     }
 
     /**
@@ -290,14 +292,14 @@ class ProtoHelpers
                 // Verify field names.
                 $field = $msg->desc->getFieldByName($fieldName);
                 if (is_null($field)) {
-                    throw new \Exception("Field '{$fieldName}' does not exist.");
+                    throw new Exception("Field '{$fieldName}' does not exist.");
                 }
                 if ($index !== count($fieldList) - 1) {
                     if ($field->isRepeated()) {
-                        throw new \Exception("Field '{$fieldName}' must not be repeated.");
+                        throw new Exception("Field '{$fieldName}' must not be repeated.");
                     }
                     if ($field->getType() !== GPBType::MESSAGE) {
-                        throw new \Exception("Field '{$fieldName}' must be of message type.");
+                        throw new Exception("Field '{$fieldName}' must be of message type.");
                     }
                     $msg = $catalog->msgsByFullname[$field->getMessageType()];
                 }
@@ -322,10 +324,10 @@ class ProtoHelpers
         $uriTemplateGetter = Helpers::toCamelCase("get_{$httpRule->getPattern()}");
         $restUriTemplate = $httpRule->$uriTemplateGetter();
         if ($restUriTemplate === '') {
-            throw new \Exception('REST URI must be specified.');
+            throw new Exception('REST URI must be specified.');
         }
         if ($restUriTemplate[0] !== '/') {
-            throw new \Exception("REST URI must be an absolute path starting with '/'");
+            throw new Exception("REST URI must be an absolute path starting with '/'");
         }
         $segments = Parser::parseSegments(str_replace(':', '/', substr($restUriTemplate, 1)));
         $placeholders = Vector::new($segments)
@@ -371,7 +373,7 @@ class ProtoHelpers
                             $unknownStream->readRaw($len, $value);
                             break;
                         default:
-                            throw new \Exception('Cannot read option tag');
+                            throw new Exception('Cannot read option tag');
                     }
                     if (GPBWire::getTagFieldNumber($tag) === $optionId) {
                         if ($repeated) {
@@ -392,7 +394,7 @@ class ProtoHelpers
             $message = $message->underlyingProto;
         }
         if (!($message instanceof Message)) {
-            throw new \Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
+            throw new Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
         }
         return $message;
     }
@@ -543,12 +545,13 @@ class ProtoHelpers
     }
 
     // TODO: Remove once running on PHP 8.
-    private static function strStartsWith($haystack, $needle) {
-        return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+    private static function strStartsWith($haystack, $needle)
+    {
+        return (string) $needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
     }
 
     // TODO: Remove once running on PHP 8.
-    private static function strContains( $haystack, $needle)
+    private static function strContains($haystack, $needle)
     {
         return $needle !== '' && mb_strpos($haystack, $needle) !== false;
     }

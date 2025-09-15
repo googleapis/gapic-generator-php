@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use Exception;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
@@ -131,15 +132,15 @@ abstract class AST
             return $x->toCode();
         } elseif ($x instanceof ResolvedType) {
             return $x->toCode();
-        }  elseif (is_array($x)) {
+        } elseif (is_array($x)) {
             return AST::array($x)->toCode();
-        } else if ($x instanceof Vector) {
+        } elseif ($x instanceof Vector) {
             return AST::array($x->toArray())->toCode();
-        } else if ($x instanceof Map) {
-            throw new \Exception("Cannot convert Map to PHP code.");
+        } elseif ($x instanceof Map) {
+            throw new Exception('Cannot convert Map to PHP code.');
         } else {
             $t = gettype($x);
-            throw new \Exception("Cannot convert $t to PHP code.");
+            throw new Exception("Cannot convert $t to PHP code.");
         }
     }
 
@@ -221,13 +222,12 @@ abstract class AST
      * Create a function.
      *
      * @param string $name The name of the function.
-     * @param bool $appendNewline Whether a newline should be appended to the end of the function declaration.
      *
      * @return PhpFunction
      */
-    public static function fn(string $name, bool $appendNewline = true): PhpFunction
+    public static function fn(string $name): PhpFunction
     {
-        return new PhpFunction($name, $appendNewline);
+        return new PhpFunction($name);
     }
 
     /**
@@ -279,14 +279,14 @@ abstract class AST
      *
      * @return Expression
      */
-    public static function inlineVarDoc(ResolvedType $type, Variable $var, string $comment = null): Expression
+    public static function inlineVarDoc(ResolvedType $type, Variable $var, ?string $comment = null): Expression
     {
         return new class($type, $var, $comment) extends Expression {
-            public function __construct(ResolvedType $type, Variable $var, string $comment = null)
-            {
-                $this->type = $type;
-                $this->var = $var;
-                $this->comment = $comment;
+            public function __construct(
+                private ResolvedType $type,
+                private Variable $var,
+                private ?string $comment = null
+            ) {
             }
             public function toCode(): string
             {
@@ -308,9 +308,8 @@ abstract class AST
     public static function literal(string $value): Expression
     {
         return new class($value) extends Expression {
-            public function __construct($value)
+            public function __construct(private string $value)
             {
-                $this->value = $value;
             }
             public function toCode(): string
             {
@@ -329,9 +328,8 @@ abstract class AST
     public static function interpolatedString(string $value): Expression
     {
         return new class($value) extends Expression {
-            public function __construct($value)
+            public function __construct(private string $value)
             {
-                $this->value = $value;
             }
             public function toCode(): string
             {
@@ -362,7 +360,7 @@ abstract class AST
     public static function return(Expression $expr): AST
     {
         return new class($expr) extends AST {
-            public function __construct($expr)
+            public function __construct(private mixed $expr)
             {
                 $this->expr = $expr;
             }
@@ -383,7 +381,7 @@ abstract class AST
     public static function throw(Expression $expr): AST
     {
         return new class($expr) extends AST {
-            public function __construct($expr)
+            public function __construct(private mixed $expr)
             {
                 $this->expr = $expr;
             }
@@ -411,13 +409,11 @@ abstract class AST
         } elseif ($data instanceof Map) {
             $keyValues = $data->mapValues(fn ($k, $v) => [$k, $v])->values();
         } else {
-            throw new \Exception('$data must be an array or a Map.');
+            throw new Exception('$data must be an array or a Map.');
         }
         return new class($keyValues, $oneLine) extends Expression {
-            public function __construct($keyValues, $oneLine)
+            public function __construct(private Vector $keyValues, private bool $oneLine)
             {
-                $this->keyValues = $keyValues;
-                $this->oneLine = $oneLine;
             }
             public function toCode(): string
             {
@@ -466,10 +462,8 @@ abstract class AST
     public static function access($obj, $accessee): Expression
     {
         return new class($obj, $accessee) extends Expression {
-            public function __construct($obj, $accessee)
+            public function __construct(private mixed $obj, private mixed $accessee)
             {
-                $this->obj = $obj;
-                $this->accessee = $accessee;
             }
             public function toCode(): string
             {
@@ -490,10 +484,8 @@ abstract class AST
     public static function index($obj, $index): Expression
     {
         return new class($obj, $index) extends Expression {
-            public function __construct($obj, $index)
+            public function __construct(private mixed $obj, private mixed $index)
             {
-                $this->obj = $obj;
-                $this->index = $index;
             }
             public function toCode(): string
             {
@@ -515,10 +507,9 @@ abstract class AST
     public static function call($obj, $callee = null): callable
     {
         return fn (...$args) => new class($obj, $callee, $args) extends Expression {
-            public function __construct($obj, $callee, $args)
+            private Vector $args;
+            public function __construct(private mixed $obj, private mixed $callee, $args)
             {
-                $this->obj = $obj;
-                $this->callee = $callee;
                 $this->args = Vector::new($args)->flatten();
             }
             public function toCode(): string
@@ -559,10 +550,9 @@ abstract class AST
     public static function staticCall(ResolvedType $type, $callee): callable
     {
         return fn (...$args) => new class($type, $callee, $args) extends Expression {
-            public function __construct($type, $callee, $args)
+            private Vector $args;
+            public function __construct(private ResolvedType $type, private mixed $callee, $args)
             {
-                $this->type = $type;
-                $this->callee = $callee;
                 $this->args = Vector::new($args)->flatten();
             }
 
@@ -584,10 +574,8 @@ abstract class AST
     public static function new(ResolvedType $type): callable
     {
         return fn (...$args) => new class($type, Vector::new($args)) extends Expression {
-            public function __construct($type, $args)
+            public function __construct(private ResolvedType $type, private Vector $args)
             {
-                $this->type = $type;
-                $this->args = $args;
             }
 
             public function toCode(): string
@@ -610,9 +598,8 @@ abstract class AST
         $items = Vector::New($items);
         $null = $items->any(fn ($x) => is_null($x));
         return $null ? null : new class($items) extends Expression {
-            public function __construct($items)
+            public function __construct(private Vector $items)
             {
-                $this->items = $items;
             }
             public function toCode(): string
             {
@@ -632,14 +619,12 @@ abstract class AST
     public static function assign(AST $to, $from): Expression
     {
         return new class($to, $from) extends Expression {
-            public function __construct($to, $from)
+            public function __construct(public AST $to, private mixed $from)
             {
-                $this->to = $to;
-                $this->from = $from;
             }
             public function toCode(): string
             {
-                return static::toPhp($this->to) . " = " . static::toPhp($this->from);
+                return static::toPhp($this->to) . ' = ' . static::toPhp($this->from);
             }
         };
     }
@@ -656,11 +641,8 @@ abstract class AST
     public static function binaryOp(AST $lhs, string $op, $rhs): Expression
     {
         return new class($lhs, $op, $rhs) extends Expression {
-            public function __construct($lhs, $op, $rhs)
+            public function __construct(private AST $lhs, private string $op, private mixed $rhs)
             {
-                $this->lhs = $lhs;
-                $this->op = $op;
-                $this->rhs = $rhs;
             }
             public function toCode(): string
             {
@@ -679,9 +661,8 @@ abstract class AST
     public static function not(Expression $operand): Expression
     {
         return new class($operand) extends Expression {
-            public function __construct($operand)
+            public function __construct(private Expression $operand)
             {
-                $this->operand = $operand;
             }
             public function toCode(): string
             {
@@ -701,13 +682,15 @@ abstract class AST
     public static function if(Expression $expr, bool $appendNewline = true): AST
     {
         return new class($expr, $appendNewline) extends AST implements ShouldNotApplySemicolonInterface {
-            public function __construct($expr, $appendNewline)
+            private $then;
+            private $elseif;
+            private $else;
+
+            public function __construct(private Expression $expr, private bool $appendNewline)
             {
-                $this->expr = $expr;
                 $this->then = null;
                 $this->elseif = Vector::new([]);
                 $this->else = null;
-                $this->appendNewline = $appendNewline;
             }
             public function then(...$code)
             {
@@ -724,16 +707,16 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $elseif = implode("", $this->elseif->map(
+                $elseif = implode('', $this->elseif->map(
                     fn ($arrayCondBlockPair) =>
-                        " elseif (" . static::toPhp($arrayCondBlockPair[0]) . ") {\n"  .
+                        ' elseif (' . static::toPhp($arrayCondBlockPair[0]) . ") {\n" .
                         static::toPhp($arrayCondBlockPair[1]) . "\n" .
-                        "}"
+                        '}'
                 )->toArray());
                 $else = is_null($this->else) ? '' :
                     " else {\n" .
                     static::toPhp($this->else) . "\n" .
-                    "}";
+                    '}';
                 $code = 'if (' . static::toPhp($this->expr) . ") {\n" .
                     static::toPhp($this->then) . "\n" .
                     "}{$elseif}{$else}";
@@ -759,11 +742,11 @@ abstract class AST
     public static function ternary(Expression $expr, Expression $true, Expression $false): Expression
     {
         return new class($expr, $true, $false) extends Expression {
-            public function __construct($expr, $true, $false)
-            {
-                $this->expr = $expr;
-                $this->true = $true;
-                $this->false = $false;
+            public function __construct(
+                private Expression $expr,
+                private Expression $true,
+                private Expression $false
+            ) {
             }
             public function toCode(): string
             {
@@ -785,10 +768,8 @@ abstract class AST
     public static function nullCoalescing(Expression $expr, Expression $false): Expression
     {
         return new class($expr, $false) extends Expression {
-            public function __construct($expr, $false)
+            public function __construct(private Expression $expr, private Expression $false)
             {
-                $this->expr = $expr;
-                $this->false = $false;
             }
             public function toCode(): string
             {
@@ -809,10 +790,8 @@ abstract class AST
     public static function nullCoalescingAssign(AST $to, $from): Expression
     {
         return new class($to, $from) extends Expression {
-            public function __construct($to, $from)
+            public function __construct(private AST $to, private mixed $from)
             {
-                $this->to = $to;
-                $this->from = $from;
             }
             public function toCode(): string
             {
@@ -832,9 +811,9 @@ abstract class AST
     public static function while(Expression $condition): callable
     {
         return fn (...$code) => new class($condition, $code) extends AST implements ShouldNotApplySemicolonInterface {
-            public function __construct($condition, $code)
+            private AST $code;
+            public function __construct(private Expression $condition, $code)
             {
-                $this->condition = $condition;
                 $this->code = AST::block(...$code);
             }
             public function toCode(): string
@@ -858,11 +837,13 @@ abstract class AST
     public static function foreach(Expression $expr, Variable $var, ?Variable $indexVar = null): callable
     {
         return fn (...$code) => new class($expr, $var, $indexVar, $code) extends AST implements ShouldNotApplySemicolonInterface {
-            public function __construct($expr, $var, $indexVar, $code)
-            {
-                $this->expr = $expr;
-                $this->var = $var;
-                $this->indexVar = $indexVar;
+            private AST $code;
+            public function __construct(
+                private Expression $expr,
+                private Variable $var,
+                private ?Variable $indexVar,
+                $code
+            ) {
                 $this->code = AST::block(...$code);
             }
             public function toCode(): string
@@ -885,11 +866,13 @@ abstract class AST
     public static function try(...$tryCode): AST
     {
         return new class($tryCode) extends AST implements ShouldNotApplySemicolonInterface {
+            private AST $tryCode;
+            private ?array $catch = null;
+            private ?AST $finallyCode = null;
+
             public function __construct($tryCode)
             {
                 $this->tryCode = AST::block(...$tryCode);
-                $this->catch = null;
-                $this->finallyCode = null;
             }
             public function catch(ResolvedType $type, Variable $var): callable
             {

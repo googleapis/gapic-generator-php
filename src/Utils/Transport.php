@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
+use Exception;
+
 class Transport
 {
     // Consts are used instead of booleans, because there more transport options may be
@@ -32,17 +34,17 @@ class Transport
      */
     public static function parseTransport(?string $transport): int
     {
-        if (is_null($transport) || $transport === "grpc+rest") {
+        if (is_null($transport) || $transport === 'grpc+rest') {
             return static::GRPC_REST;
         }
-        if ($transport === "rest") {
+        if ($transport === 'rest') {
             return static::REST;
         }
-        if ($transport === "grpc") {
+        if ($transport === 'grpc') {
             return static::GRPC;
         }
 
-        throw new \Exception("Transport $transport not supported");
+        throw new Exception("Transport $transport not supported");
     }
 
     public static function isRestOnly(int $transport): bool

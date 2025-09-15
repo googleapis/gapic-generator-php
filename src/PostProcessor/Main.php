@@ -31,7 +31,7 @@ function showUsageAndExit()
 }
 
 // Add new options to the second list as "flag_name:".
-$opts = getopt('', ['input:', "base_dir:"]);
+$opts = getopt('', ['input:', 'base_dir:']);
 if (!isset($opts['input'])) {
     showUsageAndExit();
 }

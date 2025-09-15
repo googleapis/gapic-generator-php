@@ -22,7 +22,6 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient as LegacyOperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
@@ -30,9 +29,8 @@ use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
-use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Access;
-use Google\Generator\Ast\TypeDeclaration;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
@@ -108,8 +106,8 @@ class GapicClientV2Generator
     private function generateClass(): PhpClass
     {
         return AST::class(
-                $this->serviceDetails->gapicClientV2Type,
-                final: true)
+            $this->serviceDetails->gapicClientV2Type,
+            final: true)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)
@@ -137,7 +135,8 @@ class GapicClientV2Generator
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
             ->withTrait(
-                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null)
+                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null
+            )
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
@@ -182,7 +181,7 @@ class GapicClientV2Generator
     {
         return AST::constant('SERVICE_ADDRESS')
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("The default address of the service."),
+                PhpDoc::text('The default address of the service.'),
                 $this->hasServiceAddressTemplate()
                     ? PhpDoc::deprecated('SERVICE_ADDRESS_TEMPLATE should be used instead.')
                     : null
@@ -234,9 +233,9 @@ class GapicClientV2Generator
     private function magicAsyncDocs(): PhpDoc
     {
         $methodDocs = $this->serviceDetails->methods
-            ->filter(fn($m) => !$m->isStreaming())
-            ->map(fn($m) => PhpDoc::method(
-                $m->methodName . "Async",
+            ->filter(fn ($m) => !$m->isStreaming())
+            ->map(fn ($m) => PhpDoc::method(
+                $m->methodName . 'Async',
                 $this->asyncReturnType($m),
                 $m->requestType->name, // the request type will already be imported for the sync variants
             ));
@@ -266,9 +265,11 @@ class GapicClientV2Generator
                     ->then($triggerError),
                 AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
                 AST::return(
-                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar))))
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar)
+                )
+            ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text("Handles execution of the async variants for each documented method."),
+                PhpDoc::text('Handles execution of the async variants for each documented method.'),
             ));
     }
 
@@ -290,7 +291,8 @@ class GapicClientV2Generator
         }
         $ctype = $this->serviceDetails->hasCustomOp
             ? $this->serviceDetails->customOperationServiceClientType
-            : Type::fromName($this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
+            : Type::fromName(
+                $this->serviceDetails->migrationMode === MigrationMode::NEW_SURFACE_ONLY
                 ? OperationsClient::class
                 : LegacyOperationsClient::class
             );
@@ -324,7 +326,7 @@ class GapicClientV2Generator
                     AST::return($defaultOperationDescriptor)
                 ))
                 ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::text("Return the default longrunning operation descriptor config.")
+                    PhpDoc::text('Return the default longrunning operation descriptor config.')
                 ));
             $methods = $methods->append($getDefaultOperationDescriptor);
             $default = AST::access(AST::THIS, AST::call($getDefaultOperationDescriptor)());
@@ -388,8 +390,9 @@ class GapicClientV2Generator
                         AST::index($options, 'descriptorsConfigPath'),
                     ),
                     PHP_EOL,
-                    AST::if(AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
-                        )->then(AST::return(AST::index($options, 'operationsClient'))),
+                    AST::if(
+                        AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
+                    )->then(AST::return(AST::index($options, 'operationsClient'))),
                     PHP_EOL,
                     AST::return(AST::new($operationsClientType)($options))
                 ))
@@ -439,7 +442,8 @@ class GapicClientV2Generator
                     PhpDoc::return(ResolvedType::string(), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
                     $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
                 )))
-            ->append(AST::method('parseName')
+            ->append(
+                AST::method('parseName')
                 ->withAccess(Access::PUBLIC, Access::STATIC)
                 ->withParams($formattedName, $template)
                 ->withReturnType(ResolvedType::array())
@@ -639,8 +643,8 @@ class GapicClientV2Generator
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $options),
-                Ast::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
-                Ast::call(AST::THIS, $setClientOptions)($clientOptions),
+                AST::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
+                AST::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
@@ -835,8 +839,10 @@ class GapicClientV2Generator
                             'The async variant is',
                             AST::staticCall( // use staticCall for PHP Doc :: syntax
                                 $this->ctx->type($this->serviceDetails->gapicClientV2Type),
-                                AST::method($method->methodName . 'Async'))(),
-                            '.')
+                                AST::method($method->methodName . 'Async')
+                            )(),
+                            '.'
+                        )
                         : null,
                     $this->generateSnippets && in_array(
                         $this->serviceDetails->migrationMode,
@@ -847,9 +853,11 @@ class GapicClientV2Generator
                     $usesRequest
                         ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
                         : null,
-                    PhpDoc::param($callOptions, PhpDoc::block(
-                        PhpDoc::Text('Optional.'),
-                        $method->isStreaming()
+                    PhpDoc::param(
+                        $callOptions,
+                        PhpDoc::block(
+                            PhpDoc::Text('Optional.'),
+                            $method->isStreaming()
                             ? PhpDoc::type(
                                 Vector::new([$this->ctx->type(Type::int())]),
                                 'timeoutMillis',
@@ -897,20 +905,21 @@ class GapicClientV2Generator
             case MethodDetails::CLIENT_STREAMING:
                 $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
                 // Fall through to SERVER_STREAMING.
+                // no break
             case MethodDetails::SERVER_STREAMING:
                 // Fall through to PAGINATED.
             case MethodDetails::PAGINATED:
                 $wait = false;
                 break;
             default:
-      }
+        }
 
-      $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
-      if ($wait) {
-        $call = $call->wait();
-      }
+        $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
+        if ($wait) {
+            $call = $call->wait();
+        }
 
-      return $call;
+        return $call;
     }
 
     private function snippetPathForMethod(MethodDetails $method): string
