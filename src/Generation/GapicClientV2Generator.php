@@ -71,6 +71,7 @@ class GapicClientV2Generator
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
+        $this->ctx->type(Type::fromName(\Google\ApiCore\Options\ClientOptions::class));
         $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
         if ($this->serviceDetails->hasLro) {
@@ -565,7 +566,14 @@ class GapicClientV2Generator
         $buildClientOptions = AST::method('buildClientOptions');
         $setClientOptions = AST::method('setClientOptions');
         $options = AST::var('options');
-        $optionsParam = AST::param(ResolvedType::array(), $options, AST::array([]));
+        $optionsParam = AST::param(
+            ResolvedType::union(
+                Type::array(),
+                Type::fromName(\Google\ApiCore\Options\ClientOptions::class)
+            ),
+            $options,
+            AST::array([])
+        );
         $clientOptions = AST::var('clientOptions');
         $transportType = $this->serviceDetails->transportType;
 
@@ -791,13 +799,26 @@ class GapicClientV2Generator
             && !$method->isBidiStreaming();
         $startCall = $this->startCall($method, $callOptions, $request);
         $phpDocReturnType = null;
-        $returnType = null;
-        if ($method->hasEmptyResponse) {
-            $returnType = $this->ctx->type(Type::void());
-        } else {
-            $startCall = AST::return($startCall);
+        $returnType = $this->ctx->type(Type::void());
+        if (!$method->hasEmptyResponse) {
             $returnType = $this->ctx->type($method->methodReturnType);
-            $phpDocReturnType = PhpDoc::return($this->ctx->type($method->methodReturnType));
+            $phpDocReturnType = PhpDoc::return($returnType);
+            $startCall = AST::return($startCall);
+            $genericType = match ($method->methodType) {
+                MethodDetails::LRO => $method->hasEmptyLroResponse
+                    ? Type::null()
+                    : $method->lroResponseType,
+                MethodDetails::SERVER_STREAMING => $method->responseType,
+                default => null,
+            };
+            if ($genericType) {
+                // ensure generic type is imported
+                $this->ctx->type($genericType);
+                $phpDocReturnType = PhpDoc::return(ResolvedType::generic(
+                    $method->methodReturnType,
+                    $genericType
+                ));
+            }
         }
 
         return AST::method($method->methodName)

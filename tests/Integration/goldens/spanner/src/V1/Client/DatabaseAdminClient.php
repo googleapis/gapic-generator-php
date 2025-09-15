@@ -30,6 +30,7 @@ use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
@@ -324,7 +325,7 @@ final class DatabaseAdminClient
      * the API Endpoint to the value specified in the variable, as well as ensure that
      * empty credentials are used in the transport layer.
      *
-     * @param array $options {
+     * @param array|ClientOptions $options {
      *     Optional. Options for configuring the service API wrapper.
      *
      *     @type string $apiEndpoint
@@ -386,7 +387,7 @@ final class DatabaseAdminClient
      *
      * @throws ValidationException
      */
-    public function __construct(array $options = [])
+    public function __construct(array|ClientOptions $options = [])
     {
         $options = $this->setDefaultEmulatorConfig($options);
         $clientOptions = $this->buildClientOptions($options);
@@ -433,7 +434,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Backup>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -470,7 +471,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Backup>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -503,7 +504,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -858,7 +859,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -1012,7 +1013,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<Database>
      *
      * @throws ApiException Thrown if the API call fails.
      */
@@ -1044,7 +1045,7 @@ final class DatabaseAdminClient
      *           {@see RetrySettings} for example usage.
      * }
      *
-     * @return OperationResponse
+     * @return OperationResponse<null>
      *
      * @throws ApiException Thrown if the API call fails.
      */
