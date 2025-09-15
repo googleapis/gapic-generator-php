@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/gapic-generator-php/compare/v1.19.0...v1.20.0) (2025-09-15)
+
+
+### Features
+
+* Add union type to support the ClientOptions class in the client constructor ([#725](https://github.com/googleapis/gapic-generator-php/issues/725)) ([5099c41](https://github.com/googleapis/gapic-generator-php/commit/5099c41f8cf17eabcc0b55582da4d9cb07c7196a))
+* **ci:** Add release check for "next release" labels ([#775](https://github.com/googleapis/gapic-generator-php/issues/775)) ([211debc](https://github.com/googleapis/gapic-generator-php/commit/211debcd35423fc7881cafabacbb593784aeadb5))
+* **ci:** Add style and static analysis workflows ([#770](https://github.com/googleapis/gapic-generator-php/issues/770)) ([930ce71](https://github.com/googleapis/gapic-generator-php/commit/930ce718aeb6b75dae06758c18b39d3e7c4170dc))
+* Document universeDomain client option ([9994062](https://github.com/googleapis/gapic-generator-php/commit/99940625a39af1d0f698a97fd9d156e4f84fc528))
+* Generic types for OperationResponse and ServerStream ([#767](https://github.com/googleapis/gapic-generator-php/issues/767)) ([d39b0a5](https://github.com/googleapis/gapic-generator-php/commit/d39b0a588bb53a5eecf71f8eecbfe9e629a3f541))
+* Update pagination rules for compute clients ([#765](https://github.com/googleapis/gapic-generator-php/issues/765)) ([51b22ec](https://github.com/googleapis/gapic-generator-php/commit/51b22ecf1ad1e17208fb7634d08160e013ba0f67))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency google/protobuf to v4 ([#694](https://github.com/googleapis/gapic-generator-php/issues/694)) ([94e2811](https://github.com/googleapis/gapic-generator-php/commit/94e2811898bb3483f5d1bd82bcc16fe71d0686c5))
+* Remove unnecessary isset and use null coalescing operator instead ([#726](https://github.com/googleapis/gapic-generator-php/issues/726)) ([da44e49](https://github.com/googleapis/gapic-generator-php/commit/da44e491691788f9308c3200ff296e34147e0bcc))
+
 ## [1.19.0](https://github.com/googleapis/gapic-generator-php/compare/v1.18.3...v1.19.0) (2025-06-26)
 
 
