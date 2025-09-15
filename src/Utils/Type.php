@@ -100,6 +100,15 @@ class Type implements Equality
         return new Type(Vector::new([]), 'stdClass');
     }
 
+    /** Combines multiple types into a single union type */
+    public static function union(string $types): Type
+    {
+        return new Type(
+            null,
+            $types
+        );
+    }
+
     /** An array of the specified type, for PhpDoc use only. */
     public static function arrayOf(Type $elementType): Type
     {

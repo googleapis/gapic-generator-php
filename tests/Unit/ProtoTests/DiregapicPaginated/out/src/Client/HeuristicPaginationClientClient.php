@@ -27,6 +27,7 @@ namespace Testing\DiregapicPaginated\Client;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\TransportInterface;
@@ -111,7 +112,7 @@ final class HeuristicPaginationClientClient
     /**
      * Constructor.
      *
-     * @param array $options {
+     * @param array|ClientOptions $options {
      *     Optional. Options for configuring the service API wrapper.
      *
      *     @type string $apiEndpoint
@@ -170,7 +171,7 @@ final class HeuristicPaginationClientClient
      *
      * @throws ValidationException
      */
-    public function __construct(array $options = [])
+    public function __construct(array|ClientOptions $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
