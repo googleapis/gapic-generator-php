@@ -67,7 +67,7 @@ class ResolvedType
     }
 
     /**
-     * The 'union' built-in type for multiple types
+     * The 'generic' built-in type for multiple types
      *
      * @return ResolvedType
      */
