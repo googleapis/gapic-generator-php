@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.1](https://github.com/googleapis/gapic-generator-php/compare/v1.20.0...v1.20.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* **docs:** Add usage deprecation ([#780](https://github.com/googleapis/gapic-generator-php/issues/780)) ([4e33a84](https://github.com/googleapis/gapic-generator-php/commit/4e33a84962f06a3945c62e2c2d68f80e8a59d3fe))
+
 ## [1.20.0](https://github.com/googleapis/gapic-generator-php/compare/v1.19.0...v1.20.0) (2025-09-15)
 
 
