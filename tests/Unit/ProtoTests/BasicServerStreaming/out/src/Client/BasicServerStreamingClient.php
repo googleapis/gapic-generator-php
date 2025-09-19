@@ -92,9 +92,9 @@ final class BasicServerStreamingClient
      *           as "<uri>:<port>". Default 'serverstreaming.example.com:443'.
      *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
      *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} object or {@see CredentialsWrapper} object. Note
-     *           that when one of these objects are provided, any settings in $credentialsConfig
-     *           will be ignored.
+     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
+     *           when one of these objects are provided, any settings in $credentialsConfig will
+     *           be ignored.
      *           **Important**: If you are providing a path to a credentials file, or a decoded
      *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
      *           unvalidated credential configuration to Google APIs can compromise the security

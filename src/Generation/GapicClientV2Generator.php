@@ -674,7 +674,7 @@ class GapicClientV2Generator
                         PhpDoc::text(
                             'This option should only be used with a pre-constructed',
                             $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
-                            'object or',
+                            'or',
                             $ctx->type(Type::fromName(CredentialsWrapper::class)),
                             'object. Note that when one of these objects are provided, any settings in $credentialsConfig',
                             'will be ignored.',
