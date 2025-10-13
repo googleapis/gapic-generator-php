@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -34,7 +34,7 @@ class PriorityLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Messag
      *     Optional. Data for populating the Message object.
      *
      *     @type array|\Google\Protobuf\Internal\MapField $children
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $priorities
+     *     @type string[]|\Google\Protobuf\RepeatedField $priorities
      *           A list of child names in decreasing priority order
      *           (i.e., first element is the highest priority).
      * }
@@ -71,7 +71,7 @@ class PriorityLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Messag
      * (i.e., first element is the highest priority).
      *
      * Generated from protobuf field <code>repeated string priorities = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getPriorities()
     {
@@ -83,7 +83,7 @@ class PriorityLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Messag
      * (i.e., first element is the highest priority).
      *
      * Generated from protobuf field <code>repeated string priorities = 2;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setPriorities($var)

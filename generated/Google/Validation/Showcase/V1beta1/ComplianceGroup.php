@@ -5,7 +5,7 @@
 namespace Google\Validation\Showcase\V1beta1;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -37,8 +37,8 @@ class ComplianceGroup extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $name
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $rpcs
-     *     @type \Google\Validation\Showcase\V1beta1\RepeatRequest[]|\Google\Protobuf\Internal\RepeatedField $requests
+     *     @type string[]|\Google\Protobuf\RepeatedField $rpcs
+     *     @type \Google\Validation\Showcase\V1beta1\RepeatRequest[]|\Google\Protobuf\RepeatedField $requests
      * }
      */
     public function __construct($data = NULL) {
@@ -70,7 +70,7 @@ class ComplianceGroup extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated string rpcs = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getRpcs()
     {
@@ -79,7 +79,7 @@ class ComplianceGroup extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated string rpcs = 2;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setRpcs($var)
@@ -92,7 +92,7 @@ class ComplianceGroup extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.showcase.v1beta1.RepeatRequest requests = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getRequests()
     {
@@ -101,7 +101,7 @@ class ComplianceGroup extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.showcase.v1beta1.RepeatRequest requests = 3;</code>
-     * @param \Google\Validation\Showcase\V1beta1\RepeatRequest[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Validation\Showcase\V1beta1\RepeatRequest[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setRequests($var)

@@ -5,7 +5,7 @@
 namespace Grpc\Service_config\PriorityLoadBalancingPolicyConfig;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -29,7 +29,7 @@ class Child extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $config
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $config
      * }
      */
     public function __construct($data = NULL) {
@@ -39,7 +39,7 @@ class Child extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig config = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getConfig()
     {
@@ -48,7 +48,7 @@ class Child extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig config = 1;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setConfig($var)

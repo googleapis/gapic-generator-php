@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -90,7 +90,7 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Grpc\Service_config\MethodConfig\Name[]|\Google\Protobuf\Internal\RepeatedField $name
+     *     @type \Grpc\Service_config\MethodConfig\Name[]|\Google\Protobuf\RepeatedField $name
      *     @type \Google\Protobuf\BoolValue $wait_for_ready
      *           Whether RPCs sent to this method should wait until the connection is
      *           ready by default. If false, the RPC will abort immediately if there is
@@ -149,7 +149,7 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.MethodConfig.Name name = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getName()
     {
@@ -158,7 +158,7 @@ class MethodConfig extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.MethodConfig.Name name = 1;</code>
-     * @param \Grpc\Service_config\MethodConfig\Name[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\MethodConfig\Name[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setName($var)

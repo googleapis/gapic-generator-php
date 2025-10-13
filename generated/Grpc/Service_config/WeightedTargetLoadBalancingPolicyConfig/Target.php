@@ -5,7 +5,7 @@
 namespace Grpc\Service_config\WeightedTargetLoadBalancingPolicyConfig;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -29,7 +29,7 @@ class Target extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $weight
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $child_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $child_policy
      * }
      */
     public function __construct($data = NULL) {
@@ -61,7 +61,7 @@ class Target extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getChildPolicy()
     {
@@ -70,7 +70,7 @@ class Target extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 2;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setChildPolicy($var)

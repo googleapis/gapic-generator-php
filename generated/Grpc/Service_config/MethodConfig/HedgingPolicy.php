@@ -5,7 +5,7 @@
 namespace Grpc\Service_config\MethodConfig;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -62,7 +62,7 @@ class HedgingPolicy extends \Google\Protobuf\Internal\Message
      *           The first RPC will be sent immediately, but the max_requests-1 subsequent
      *           hedged RPCs will be sent at intervals of every hedging_delay. Set this
      *           to 0 to immediately send all max_requests RPCs.
-     *     @type int[]|\Google\Protobuf\Internal\RepeatedField $non_fatal_status_codes
+     *     @type int[]|\Google\Protobuf\RepeatedField $non_fatal_status_codes
      *           The set of status codes which indicate other hedged RPCs may still
      *           succeed. If a non-fatal status code is returned by the server, hedged
      *           RPCs will continue. Otherwise, outstanding requests will be canceled and
@@ -157,7 +157,7 @@ class HedgingPolicy extends \Google\Protobuf\Internal\Message
      * This field is optional.
      *
      * Generated from protobuf field <code>repeated .google.rpc.Code non_fatal_status_codes = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getNonFatalStatusCodes()
     {
@@ -172,7 +172,7 @@ class HedgingPolicy extends \Google\Protobuf\Internal\Message
      * This field is optional.
      *
      * Generated from protobuf field <code>repeated .google.rpc.Code non_fatal_status_codes = 3;</code>
-     * @param int[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setNonFatalStatusCodes($var)

@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -64,12 +64,12 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      *
      *     @type string $balancer_name
      *           Name of balancer to connect to.
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $child_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $child_policy
      *           Optional.  What LB policy to use for intra-locality routing.
      *           If unset, will use whatever algorithm is specified by the balancer.
      *           Multiple LB policies can be specified; clients will iterate through
      *           the list in order and stop at the first policy that they support.
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $fallback_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $fallback_policy
      *           Optional.  What LB policy to use in fallback mode.  If not
      *           specified, defaults to round_robin.
      *           Multiple LB policies can be specified; clients will iterate through
@@ -122,7 +122,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getChildPolicy()
     {
@@ -136,7 +136,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 2;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setChildPolicy($var)
@@ -154,7 +154,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig fallback_policy = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getFallbackPolicy()
     {
@@ -168,7 +168,7 @@ class XdsConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig fallback_policy = 3;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setFallbackPolicy($var)

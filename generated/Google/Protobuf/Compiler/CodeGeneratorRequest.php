@@ -5,7 +5,7 @@
 namespace Google\Protobuf\Compiler;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -60,13 +60,13 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $file_to_generate
+     *     @type string[]|\Google\Protobuf\RepeatedField $file_to_generate
      *           The .proto files that were explicitly listed on the command-line.  The
      *           code generator should generate code only for these files.  Each file's
      *           descriptor will be included in proto_file, below.
      *     @type string $parameter
      *           The generator parameter passed on the command-line.
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $proto_file
+     *     @type string[]|\Google\Protobuf\RepeatedField $proto_file
      *           FileDescriptorProtos for all files in files_to_generate and everything
      *           they import.  The files will appear in topological order, so each file
      *           appears before any file that imports it.
@@ -95,7 +95,7 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      * descriptor will be included in proto_file, below.
      *
      * Generated from protobuf field <code>repeated string file_to_generate = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getFileToGenerate()
     {
@@ -108,7 +108,7 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      * descriptor will be included in proto_file, below.
      *
      * Generated from protobuf field <code>repeated string file_to_generate = 1;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setFileToGenerate($var)
@@ -161,7 +161,7 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      *repeated FileDescriptorProto proto_file = 15;
      *
      * Generated from protobuf field <code>repeated bytes proto_file = 15;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getProtoFile()
     {
@@ -184,7 +184,7 @@ class CodeGeneratorRequest extends \Google\Protobuf\Internal\Message
      *repeated FileDescriptorProto proto_file = 15;
      *
      * Generated from protobuf field <code>repeated bytes proto_file = 15;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setProtoFile($var)

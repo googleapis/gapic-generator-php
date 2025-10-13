@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -40,7 +40,7 @@ class GrpcLbConfig extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $child_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $child_policy
      *           Optional.  What LB policy to use for routing between the backend
      *           addresses.  If unset, defaults to round_robin.
      *           Currently, the only supported values are round_robin and pick_first.
@@ -66,7 +66,7 @@ class GrpcLbConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getChildPolicy()
     {
@@ -82,7 +82,7 @@ class GrpcLbConfig extends \Google\Protobuf\Internal\Message
      * the list in order and stop at the first policy that they support.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 1;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setChildPolicy($var)
