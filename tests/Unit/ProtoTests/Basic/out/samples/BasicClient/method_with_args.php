@@ -33,8 +33,9 @@ use Testing\Basic\Response;
  * Test including method args.
  *
  * @param string $aString A required field...
+ * @param int    $status  reserved variable name
  */
-function method_with_args_sample(string $aString): void
+function method_with_args_sample(string $aString, int $status): void
 {
     // Create a client.
     $basicClient = new BasicClient();
@@ -43,7 +44,8 @@ function method_with_args_sample(string $aString): void
     $partOfRequestA = [new PartOfRequestA()];
     $request = (new RequestWithArgs())
         ->setAString($aString)
-        ->setPartOfRequestA($partOfRequestA);
+        ->setPartOfRequestA($partOfRequestA)
+        ->setStatus($status);
 
     // Call the API and handle any network failures.
     try {
@@ -67,7 +69,8 @@ function method_with_args_sample(string $aString): void
 function callSample(): void
 {
     $aString = '[A_STRING]';
+    $status = 0;
 
-    method_with_args_sample($aString);
+    method_with_args_sample($aString, $status);
 }
 // [END basic_generated_Basic_MethodWithArgs_sync]

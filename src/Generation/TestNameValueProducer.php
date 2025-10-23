@@ -94,12 +94,12 @@ class TestNameValueProducer
             });
     }
 
-    public function perFieldRequest(MethodDetails $method): array
+    public function perFieldRequest(MethodDetails $method, array $reservedNames = []): array
     {
         // Handle test request value generation.
         $perField = static::filterFirstOneOf($method->allFields)
-            ->map(fn ($f) => new class($this, $method, $f) {
-                public function __construct($prod, $method, $f)
+            ->map(fn ($f) => new class($this, $method, $f, $reservedNames) {
+                public function __construct($prod, $method, $f, $reservedNames)
                 {
                     // This code is arranged in this way, as a name must not be generated
                     // if this field ends up not being used.
@@ -107,7 +107,8 @@ class TestNameValueProducer
                     // TODO: Consider refactoring this.
                     $this->field = $f;
                     $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
-                    $this->var = AST::var(Helpers::toCamelCase($this->name));
+                    $varPrefix = in_array($this->name, $reservedNames) ? 'request_' : '';
+                    $this->var = AST::var(Helpers::toCamelCase($varPrefix . $this->name));
                     $astAcc = Vector::new([]);
                     $prod->fieldInit($method, $f, $this->var, $this->name, null, $astAcc);
                     $this->initCode = $astAcc;
