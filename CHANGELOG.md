@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.2](https://github.com/googleapis/gapic-generator-php/compare/v1.20.1...v1.20.2) (2025-10-27)
+
+
+### Bug Fixes
+
+* Prevent reserved variable names in tests ([#785](https://github.com/googleapis/gapic-generator-php/issues/785)) ([ac546b1](https://github.com/googleapis/gapic-generator-php/commit/ac546b1a9a5535c28ae54c29291a53a9dd206f60))
+
 ## [1.20.1](https://github.com/googleapis/gapic-generator-php/compare/v1.20.0...v1.20.1) (2025-09-19)
 
 
