@@ -48,6 +48,7 @@ message RequestWithArgs {
   repeated PartOfRequestA part_of_request_a = 4 [(google.api.field_behavior) = REQUIRED];
   repeated PartOfRequestB part_of_request_b = 5;
   PartOfRequestC part_of_request_c = 6;
+  int32 status = 7 [(google.api.field_behavior) = REQUIRED]; // reserved variable name
 }
 
 message Response {

@@ -129,9 +129,11 @@ class BasicClientTest extends GeneratedTest
         // Mock request
         $aString = 'aString-929604177';
         $partOfRequestA = [];
+        $status = 892481550;
         $request = (new RequestWithArgs())
             ->setAString($aString)
-            ->setPartOfRequestA($partOfRequestA);
+            ->setPartOfRequestA($partOfRequestA)
+            ->setStatus($status);
         $response = $gapicClient->methodWithArgs($request);
         $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
@@ -143,6 +145,8 @@ class BasicClientTest extends GeneratedTest
         $this->assertProtobufEquals($aString, $actualValue);
         $actualValue = $actualRequestObject->getPartOfRequestA();
         $this->assertProtobufEquals($partOfRequestA, $actualValue);
+        $actualValue = $actualRequestObject->getStatus();
+        $this->assertProtobufEquals($status, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
@@ -167,9 +171,11 @@ class BasicClientTest extends GeneratedTest
         // Mock request
         $aString = 'aString-929604177';
         $partOfRequestA = [];
+        $requestStatus = 892481550;
         $request = (new RequestWithArgs())
             ->setAString($aString)
-            ->setPartOfRequestA($partOfRequestA);
+            ->setPartOfRequestA($partOfRequestA)
+            ->setStatus($requestStatus);
         try {
             $gapicClient->methodWithArgs($request);
             // If the $gapicClient method call did not throw, fail the test

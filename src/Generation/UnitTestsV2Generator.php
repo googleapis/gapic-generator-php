@@ -309,7 +309,7 @@ class UnitTestsV2Generator
         $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
         $expectedExceptionMessage  = AST::var('expectedExceptionMessage ');
-        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method, ['status']);
         $ex = AST::var('ex');
         list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testExceptionMethodName)
