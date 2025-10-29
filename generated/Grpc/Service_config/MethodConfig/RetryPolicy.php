@@ -5,7 +5,7 @@
 namespace Grpc\Service_config\MethodConfig;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -73,7 +73,7 @@ class RetryPolicy extends \Google\Protobuf\Internal\Message
      *           Required. Must be greater than zero.
      *     @type float $backoff_multiplier
      *           Required. Must be greater than zero.
-     *     @type int[]|\Google\Protobuf\Internal\RepeatedField $retryable_status_codes
+     *     @type int[]|\Google\Protobuf\RepeatedField $retryable_status_codes
      *           The set of status codes which may be retried.
      *           This field is required and must be non-empty.
      * }
@@ -224,7 +224,7 @@ class RetryPolicy extends \Google\Protobuf\Internal\Message
      * This field is required and must be non-empty.
      *
      * Generated from protobuf field <code>repeated .google.rpc.Code retryable_status_codes = 5;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getRetryableStatusCodes()
     {
@@ -236,7 +236,7 @@ class RetryPolicy extends \Google\Protobuf\Internal\Message
      * This field is required and must be non-empty.
      *
      * Generated from protobuf field <code>repeated .google.rpc.Code retryable_status_codes = 5;</code>
-     * @param int[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setRetryableStatusCodes($var)

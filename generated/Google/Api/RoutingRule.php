@@ -5,7 +5,7 @@
 namespace Google\Api;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -299,7 +299,7 @@ class RoutingRule extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Google\Api\RoutingParameter[]|\Google\Protobuf\Internal\RepeatedField $routing_parameters
+     *     @type \Google\Api\RoutingParameter[]|\Google\Protobuf\RepeatedField $routing_parameters
      *           A collection of Routing Parameter specifications.
      *           **NOTE:** If multiple Routing Parameters describe the same key
      *           (via the `path_template` field or via the `field` field when
@@ -322,7 +322,7 @@ class RoutingRule extends \Google\Protobuf\Internal\Message
      * See the examples for more details.
      *
      * Generated from protobuf field <code>repeated .google.api.RoutingParameter routing_parameters = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getRoutingParameters()
     {
@@ -338,7 +338,7 @@ class RoutingRule extends \Google\Protobuf\Internal\Message
      * See the examples for more details.
      *
      * Generated from protobuf field <code>repeated .google.api.RoutingParameter routing_parameters = 2;</code>
-     * @param \Google\Api\RoutingParameter[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Api\RoutingParameter[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setRoutingParameters($var)

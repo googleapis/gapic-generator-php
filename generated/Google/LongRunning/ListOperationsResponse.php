@@ -5,7 +5,7 @@
 namespace Google\LongRunning;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -34,7 +34,7 @@ class ListOperationsResponse extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Google\LongRunning\Operation[]|\Google\Protobuf\Internal\RepeatedField $operations
+     *     @type \Google\LongRunning\Operation[]|\Google\Protobuf\RepeatedField $operations
      *           A list of operations that matches the specified filter in the request.
      *     @type string $next_page_token
      *           The standard List next-page token.
@@ -49,7 +49,7 @@ class ListOperationsResponse extends \Google\Protobuf\Internal\Message
      * A list of operations that matches the specified filter in the request.
      *
      * Generated from protobuf field <code>repeated .google.longrunning.Operation operations = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getOperations()
     {
@@ -60,7 +60,7 @@ class ListOperationsResponse extends \Google\Protobuf\Internal\Message
      * A list of operations that matches the specified filter in the request.
      *
      * Generated from protobuf field <code>repeated .google.longrunning.Operation operations = 1;</code>
-     * @param \Google\LongRunning\Operation[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\LongRunning\Operation[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setOperations($var)

@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -63,7 +63,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      *           If set to empty string, load reporting will be sent to the same
      *           server as we are getting xds data from.
      *     @type \Grpc\Service_config\LrsLoadBalancingPolicyConfig\Locality $locality
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $child_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $child_policy
      *           Endpoint-picking policy.
      * }
      */
@@ -192,7 +192,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Endpoint-picking policy.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 5;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getChildPolicy()
     {
@@ -203,7 +203,7 @@ class LrsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Endpoint-picking policy.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig child_policy = 5;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setChildPolicy($var)

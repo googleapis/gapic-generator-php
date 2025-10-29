@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -50,11 +50,11 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $load_balancing_policy
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $load_balancing_config
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $load_balancing_config
      *           Multiple LB policies can be specified; clients will iterate through
      *           the list in order and stop at the first policy that they support. If none
      *           are supported, the service config is considered invalid.
-     *     @type \Grpc\Service_config\MethodConfig[]|\Google\Protobuf\Internal\RepeatedField $method_config
+     *     @type \Grpc\Service_config\MethodConfig[]|\Google\Protobuf\RepeatedField $method_config
      *           Per-method configuration.
      *     @type \Grpc\Service_config\ServiceConfig\RetryThrottlingPolicy $retry_throttling
      *     @type \Grpc\Service_config\ServiceConfig\HealthCheckConfig $health_check_config
@@ -93,7 +93,7 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      * are supported, the service config is considered invalid.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig load_balancing_config = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getLoadBalancingConfig()
     {
@@ -106,7 +106,7 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      * are supported, the service config is considered invalid.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig load_balancing_config = 4;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setLoadBalancingConfig($var)
@@ -121,7 +121,7 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      * Per-method configuration.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.MethodConfig method_config = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getMethodConfig()
     {
@@ -132,7 +132,7 @@ class ServiceConfig extends \Google\Protobuf\Internal\Message
      * Per-method configuration.
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.MethodConfig method_config = 2;</code>
-     * @param \Grpc\Service_config\MethodConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\MethodConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setMethodConfig($var)

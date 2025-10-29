@@ -5,7 +5,7 @@
 namespace Google\Gapic\Metadata\GapicMetadata;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -32,7 +32,7 @@ class MethodList extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $methods
+     *     @type string[]|\Google\Protobuf\RepeatedField $methods
      *           List of methods for a specific proto-service client in the
      *           GAPIC. These names should be formatted as they appear in the
      *           source code.
@@ -49,7 +49,7 @@ class MethodList extends \Google\Protobuf\Internal\Message
      * source code.
      *
      * Generated from protobuf field <code>repeated string methods = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getMethods()
     {
@@ -62,7 +62,7 @@ class MethodList extends \Google\Protobuf\Internal\Message
      * source code.
      *
      * Generated from protobuf field <code>repeated string methods = 1;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setMethods($var)

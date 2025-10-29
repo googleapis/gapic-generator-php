@@ -5,7 +5,7 @@
 namespace Google\Validation\Showcase\V1beta1;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -28,7 +28,7 @@ class ComplianceSuite extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Google\Validation\Showcase\V1beta1\ComplianceGroup[]|\Google\Protobuf\Internal\RepeatedField $group
+     *     @type \Google\Validation\Showcase\V1beta1\ComplianceGroup[]|\Google\Protobuf\RepeatedField $group
      * }
      */
     public function __construct($data = NULL) {
@@ -38,7 +38,7 @@ class ComplianceSuite extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.showcase.v1beta1.ComplianceGroup group = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getGroup()
     {
@@ -47,7 +47,7 @@ class ComplianceSuite extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.showcase.v1beta1.ComplianceGroup group = 1;</code>
-     * @param \Google\Validation\Showcase\V1beta1\ComplianceGroup[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Validation\Showcase\V1beta1\ComplianceGroup[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setGroup($var)

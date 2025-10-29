@@ -5,7 +5,7 @@
 namespace Google\Protobuf\Compiler;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -56,7 +56,7 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
      *     @type int|string $supported_features
      *           A bitmask of supported features that the code generator supports.
      *           This is a bitwise "or" of values from the Feature enum.
-     *     @type \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]|\Google\Protobuf\Internal\RepeatedField $file
+     *     @type \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]|\Google\Protobuf\RepeatedField $file
      * }
      */
     public function __construct($data = NULL) {
@@ -132,7 +132,7 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.protobuf.compiler.CodeGeneratorResponse.File file = 15;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getFile()
     {
@@ -141,7 +141,7 @@ class CodeGeneratorResponse extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>repeated .google.protobuf.compiler.CodeGeneratorResponse.File file = 15;</code>
-     * @param \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setFile($var)

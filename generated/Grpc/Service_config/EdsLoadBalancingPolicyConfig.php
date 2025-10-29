@@ -5,7 +5,7 @@
 namespace Grpc\Service_config;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
@@ -74,14 +74,14 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      *           If unset, no load reporting is done.
      *           If set to empty string, load reporting will be sent to the same
      *           server as we are getting xds data from.
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $locality_picking_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $locality_picking_policy
      *           Locality-picking policy.
      *           This policy's config is expected to be in the format used
      *           by the weighted_target policy.  Note that the config should include
      *           an empty value for the "targets" field; that empty value will be
      *           replaced by one that is dynamically generated based on the EDS data.
      *           Optional; defaults to "weighted_target".
-     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $endpoint_picking_policy
+     *     @type \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $endpoint_picking_policy
      *           Endpoint-picking policy.
      *           This will be configured as the policy for each child in the
      *           locality-policy's config.
@@ -231,7 +231,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Optional; defaults to "weighted_target".
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig locality_picking_policy = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getLocalityPickingPolicy()
     {
@@ -247,7 +247,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Optional; defaults to "weighted_target".
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig locality_picking_policy = 4;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setLocalityPickingPolicy($var)
@@ -265,7 +265,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Optional; defaults to "round_robin".
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig endpoint_picking_policy = 5;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getEndpointPickingPolicy()
     {
@@ -279,7 +279,7 @@ class EdsLoadBalancingPolicyConfig extends \Google\Protobuf\Internal\Message
      * Optional; defaults to "round_robin".
      *
      * Generated from protobuf field <code>repeated .grpc.service_config.LoadBalancingConfig endpoint_picking_policy = 5;</code>
-     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Grpc\Service_config\LoadBalancingConfig[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setEndpointPickingPolicy($var)

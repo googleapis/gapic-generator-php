@@ -35,7 +35,7 @@
     },
     "require": {
         "php": "^8.1",
-        "google/protobuf": "^4.0",
+        "google/protobuf": "^4.31",
         "friendsofphp/php-cs-fixer": "^3",
         "symfony/yaml": "^5.2",
         "symplify/coding-standard": "9.4.70",
