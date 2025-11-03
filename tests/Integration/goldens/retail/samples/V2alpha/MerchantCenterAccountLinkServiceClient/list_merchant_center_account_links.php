@@ -34,7 +34,7 @@ use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLinkServiceClient;
  *
  * @param string $formattedParent The parent Catalog of the resource.
  *                                It must match this format:
- *                                projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}
+ *                                `projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}`
  *                                Please see {@see MerchantCenterAccountLinkServiceClient::catalogName()} for help formatting this field.
  */
 function list_merchant_center_account_links_sample(string $formattedParent): void

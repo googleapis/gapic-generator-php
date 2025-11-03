@@ -1,0 +1,21 @@
+
+    /**
+     * @param \Google\Cloud\Spanner\Admin\Database\V1\BackupSchedule $backupSchedule Required. The backup schedule to update. `backup_schedule.name`, and the
+     *                                                                               fields to be updated as specified by `update_mask` are required. Other
+     *                                                                               fields are ignored.
+     * @param \Google\Protobuf\FieldMask                             $updateMask     Required. A mask specifying which fields in the BackupSchedule resource
+     *                                                                               should be updated. This mask is relative to the BackupSchedule resource,
+     *                                                                               not to the request message. The field mask must always be
+     *                                                                               specified; this prevents any future fields from being erased
+     *                                                                               accidentally.
+     *
+     * @return \Google\Cloud\Spanner\Admin\Database\V1\UpdateBackupScheduleRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Spanner\Admin\Database\V1\BackupSchedule $backupSchedule, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setBackupSchedule($backupSchedule)
+            ->setUpdateMask($updateMask);
+    }

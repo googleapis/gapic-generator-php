@@ -408,7 +408,7 @@ class MerchantCenterAccountLinkServiceGapicClient
      *
      * @param string                    $parent                    Required. The branch resource where this MerchantCenterAccountLink will be
      *                                                             created. Format:
-     *                                                             projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}}
+     *                                                             `projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}`
      * @param MerchantCenterAccountLink $merchantCenterAccountLink Required. The
      *                                                             [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
      *                                                             to create.
@@ -463,7 +463,7 @@ class MerchantCenterAccountLinkServiceGapicClient
      * ```
      *
      * @param string $name         Required. Full resource name. Format:
-     *                             projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}
+     *                             `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}`
      * @param array  $optionalArgs {
      *     Optional.
      *
@@ -506,7 +506,7 @@ class MerchantCenterAccountLinkServiceGapicClient
      *
      * @param string $parent       Required. The parent Catalog of the resource.
      *                             It must match this format:
-     *                             projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}
+     *                             `projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}`
      * @param array  $optionalArgs {
      *     Optional.
      *

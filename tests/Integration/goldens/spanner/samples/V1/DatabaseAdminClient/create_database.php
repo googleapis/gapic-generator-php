@@ -36,8 +36,8 @@ use Google\Rpc\Status;
  * have a name of the format `<database_name>/operations/<operation_id>` and
  * can be used to track preparation of the database. The
  * [metadata][google.longrunning.Operation.metadata] field type is
- * [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
- * [response][google.longrunning.Operation.response] field type is
+ * [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata].
+ * The [response][google.longrunning.Operation.response] field type is
  * [Database][google.spanner.admin.database.v1.Database], if successful.
  *
  * @param string $formattedParent The name of the instance that will serve the new database.

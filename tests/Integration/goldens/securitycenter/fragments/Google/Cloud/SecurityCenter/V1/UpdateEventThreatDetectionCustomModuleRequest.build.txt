@@ -1,0 +1,16 @@
+
+    /**
+     * @param \Google\Cloud\SecurityCenter\V1\EventThreatDetectionCustomModule $eventThreatDetectionCustomModule Required. The module being updated.
+     * @param \Google\Protobuf\FieldMask                                       $updateMask                       The list of fields to be updated.
+     *                                                                                                           If empty all mutable fields will be updated.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\UpdateEventThreatDetectionCustomModuleRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\SecurityCenter\V1\EventThreatDetectionCustomModule $eventThreatDetectionCustomModule, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setEventThreatDetectionCustomModule($eventThreatDetectionCustomModule)
+            ->setUpdateMask($updateMask);
+    }

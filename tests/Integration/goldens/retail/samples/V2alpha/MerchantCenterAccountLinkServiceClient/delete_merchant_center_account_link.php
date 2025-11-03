@@ -34,7 +34,7 @@ use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLinkServiceClient;
  * to delete does not exist, a NOT_FOUND error is returned.
  *
  * @param string $formattedName Full resource name. Format:
- *                              projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}
+ *                              `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}`
  *                              Please see {@see MerchantCenterAccountLinkServiceClient::merchantCenterAccountLinkName()} for help formatting this field.
  */
 function delete_merchant_center_account_link_sample(string $formattedName): void

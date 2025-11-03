@@ -1375,6 +1375,13 @@ class JobServiceGapicClient
      *           [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
      *           if no value is specified.
      *           For allowed values, use constants defined on {@see \Google\Cloud\Talent\V4beta1\SearchJobsRequest\KeywordMatchMode}
+     *     @type int $relevanceThreshold
+     *           Optional. The relevance threshold of the search results.
+     *
+     *           Default to Google defined threshold, leveraging a balance of
+     *           precision and recall to deliver both highly accurate results and
+     *           comprehensive coverage of relevant information.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Talent\V4beta1\SearchJobsRequest\RelevanceThreshold}
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -1448,6 +1455,10 @@ class JobServiceGapicClient
 
         if (isset($optionalArgs['keywordMatchMode'])) {
             $request->setKeywordMatchMode($optionalArgs['keywordMatchMode']);
+        }
+
+        if (isset($optionalArgs['relevanceThreshold'])) {
+            $request->setRelevanceThreshold($optionalArgs['relevanceThreshold']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
@@ -1776,6 +1787,13 @@ class JobServiceGapicClient
      *           [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
      *           if no value is specified.
      *           For allowed values, use constants defined on {@see \Google\Cloud\Talent\V4beta1\SearchJobsRequest\KeywordMatchMode}
+     *     @type int $relevanceThreshold
+     *           Optional. The relevance threshold of the search results.
+     *
+     *           Default to Google defined threshold, leveraging a balance of
+     *           precision and recall to deliver both highly accurate results and
+     *           comprehensive coverage of relevant information.
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Talent\V4beta1\SearchJobsRequest\RelevanceThreshold}
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -1849,6 +1867,10 @@ class JobServiceGapicClient
 
         if (isset($optionalArgs['keywordMatchMode'])) {
             $request->setKeywordMatchMode($optionalArgs['keywordMatchMode']);
+        }
+
+        if (isset($optionalArgs['relevanceThreshold'])) {
+            $request->setRelevanceThreshold($optionalArgs['relevanceThreshold']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);

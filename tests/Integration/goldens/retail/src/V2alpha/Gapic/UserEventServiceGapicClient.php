@@ -39,9 +39,12 @@ use Google\ApiCore\ValidationException;
 use Google\Api\HttpBody;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\CollectUserEventRequest;
+use Google\Cloud\Retail\V2alpha\ExportMetadata;
+use Google\Cloud\Retail\V2alpha\ExportUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\ImportErrorsConfig;
 use Google\Cloud\Retail\V2alpha\ImportMetadata;
 use Google\Cloud\Retail\V2alpha\ImportUserEventsRequest;
+use Google\Cloud\Retail\V2alpha\OutputConfig;
 use Google\Cloud\Retail\V2alpha\PurgeUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\RejoinUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\UserEvent;
@@ -347,8 +350,10 @@ class UserEventServiceGapicClient
     }
 
     /**
-     * Writes a single user event from the browser. This uses a GET request to
-     * due to browser restriction of POST-ing to a 3rd party domain.
+     * Writes a single user event from the browser.
+     *
+     * For larger user event payload over 16 KB, the POST method should be used
+     * instead, otherwise a 400 Bad Request error is returned.
      *
      * This method is used only by the Retail API JavaScript pixel and Google Tag
      * Manager. Users should not call this method directly.
@@ -427,6 +432,121 @@ class UserEventServiceGapicClient
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
         $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
         return $this->startCall('CollectUserEvent', HttpBody::class, $optionalArgs, $request)->wait();
+    }
+
+    /**
+     * Exports user events.
+     *
+     * `Operation.response` is of type `ExportResponse`.
+     * `Operation.metadata` is of type `ExportMetadata`.
+     *
+     * Sample code:
+     * ```
+     * $userEventServiceClient = new UserEventServiceClient();
+     * try {
+     *     $formattedParent = $userEventServiceClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+     *     $outputConfig = new OutputConfig();
+     *     $operationResponse = $userEventServiceClient->exportUserEvents($formattedParent, $outputConfig);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $userEventServiceClient->exportUserEvents($formattedParent, $outputConfig);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $userEventServiceClient->resumeOperation($operationName, 'exportUserEvents');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $userEventServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string       $parent       Required. Resource name of a
+     *                                   [Catalog][google.cloud.retail.v2alpha.Catalog]. For example
+     *                                   `projects/1234/locations/global/catalogs/default_catalog`
+     * @param OutputConfig $outputConfig Required. The output location of the data.
+     * @param array        $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $filter
+     *           A filtering expression to specify restrictions on returned events.
+     *           The expression is a sequence of terms. Each term applies a restriction to
+     *           the returned user events. Use this expression to restrict results to a
+     *           specific time range or to filter events by eventType.
+     *           For example, `eventTime > "2012-04-23T18:25:43.511Z"
+     *           eventsMissingCatalogItems eventTime<"2012-04-23T18:25:43.511Z"
+     *           eventType=search`
+     *
+     *           We expect only three types of fields:
+     *
+     *           * `eventTime`: This can be specified twice, once with a
+     *           less than operator and once with a greater than operator. The
+     *           `eventTime` restriction should result in one, contiguous, valid,
+     *           `eventTime` range.
+     *
+     *           * `eventType`: Boolean operators `OR` and `NOT` are supported if the
+     *           expression is enclosed in parentheses and the operators are separated
+     *           from the tag values by a space.
+     *
+     *           * `eventsMissingCatalogItems`: This restricts results
+     *           to events for which catalog items were not found in the catalog. The
+     *           default behavior is to return only those events for which catalog
+     *           items were found.
+     *
+     *           Some examples of valid filters expressions:
+     *
+     *           * Example 1: `eventTime > "2012-04-23T18:25:43.511Z"
+     *           eventTime < "2012-04-23T18:30:43.511Z"`
+     *           * Example 2: `eventTime > "2012-04-23T18:25:43.511Z"
+     *           eventType = detail-page-view`
+     *           * Example 3: `eventsMissingCatalogItems
+     *           eventType = (NOT search) eventTime <
+     *           "2018-04-23T18:30:43.511Z"`
+     *           * Example 4: `eventTime > "2012-04-23T18:25:43.511Z"`
+     *           * Example 5: `eventType = (detail-page-view OR search)`
+     *           * Example 6: `eventsMissingCatalogItems`
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function exportUserEvents($parent, $outputConfig, array $optionalArgs = [])
+    {
+        $request = new ExportUserEventsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportUserEvents', $optionalArgs, $request, $this->getOperationsClient())->wait();
     }
 
     /**
