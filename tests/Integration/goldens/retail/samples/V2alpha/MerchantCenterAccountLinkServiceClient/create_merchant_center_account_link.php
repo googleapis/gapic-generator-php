@@ -35,17 +35,17 @@ use Google\Rpc\Status;
  *
  * @param string $formattedParent                                  The branch resource where this MerchantCenterAccountLink will be
  *                                                                 created. Format:
- *                                                                 projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}}
+ *                                                                 `projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}`
  *                                                                 Please see {@see MerchantCenterAccountLinkServiceClient::catalogName()} for help formatting this field.
  * @param int    $merchantCenterAccountLinkMerchantCenterAccountId The linked [Merchant center account
  *                                                                 id](https://developers.google.com/shopping-content/guides/accountstatuses).
  *                                                                 The account must be a standalone account or a sub-account of a MCA.
- * @param string $merchantCenterAccountLinkBranchId                The branch id (e.g. 0/1/2) within the catalog that products from
+ * @param string $merchantCenterAccountLinkBranchId                The branch ID (e.g. 0/1/2) within the catalog that products from
  *                                                                 merchant_center_account_id are streamed to. When updating this field, an
  *                                                                 empty value will use the currently configured default branch. However,
  *                                                                 changing the default branch later on won't change the linked branch here.
  *
- *                                                                 A single branch id can only have one linked merchant center account id.
+ *                                                                 A single branch ID can only have one linked Merchant Center account ID.
  */
 function create_merchant_center_account_link_sample(
     string $formattedParent,

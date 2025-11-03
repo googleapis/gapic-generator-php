@@ -37,12 +37,14 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Retail\V2alpha\SearchRequest;
 use Google\Cloud\Retail\V2alpha\SearchRequest\BoostSpec;
+use Google\Cloud\Retail\V2alpha\SearchRequest\ConversationalSearchSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\DynamicFacetSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\FacetSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\PersonalizationSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\QueryExpansionSpec;
 use Google\Cloud\Retail\V2alpha\SearchRequest\RelevanceThreshold;
 use Google\Cloud\Retail\V2alpha\SearchRequest\SpellCorrectionSpec;
+use Google\Cloud\Retail\V2alpha\SearchRequest\TileNavigationSpec;
 use Google\Cloud\Retail\V2alpha\SearchResponse;
 use Google\Cloud\Retail\V2alpha\UserInfo;
 
@@ -321,7 +323,7 @@ class SearchServiceGapicClient
      *                             or the name of the legacy placement resource, such as
      *                             `projects/&#42;/locations/global/catalogs/default_catalog/placements/default_search`.
      *                             This field is used to identify the serving config name and the set
-     *                             of models that will be used to make the search.
+     *                             of models that are used to make the search.
      * @param string $visitorId    Required. A unique identifier for tracking visitors. For example, this
      *                             could be implemented with an HTTP cookie, which should be able to uniquely
      *                             identify a visitor on a single device. This unique identifier should not
@@ -371,8 +373,8 @@ class SearchServiceGapicClient
      *     @type string $filter
      *           The filter syntax consists of an expression language for constructing a
      *           predicate from one or more fields of the products being filtered. Filter
-     *           expression is case-sensitive. See more details at this [user
-     *           guide](https://cloud.google.com/retail/docs/filter-and-order#filter).
+     *           expression is case-sensitive. For more information, see
+     *           [Filter](https://cloud.google.com/retail/docs/filter-and-order#filter).
      *
      *           If this field is unrecognizable, an INVALID_ARGUMENT is returned.
      *     @type string $canonicalFilter
@@ -380,21 +382,20 @@ class SearchServiceGapicClient
      *           checking any filters on the search page.
      *
      *           The filter applied to every search request when quality improvement such as
-     *           query expansion is needed. For example, if a query does not have enough
-     *           results, an expanded query with
-     *           [SearchRequest.canonical_filter][google.cloud.retail.v2alpha.SearchRequest.canonical_filter]
-     *           will be returned as a supplement of the original query. This field is
-     *           strongly recommended to achieve high search quality.
+     *           query expansion is needed. In the case a query does not have a sufficient
+     *           amount of results this filter will be used to determine whether or not to
+     *           enable the query expansion flow. The original filter will still be used for
+     *           the query expanded search.
+     *           This field is strongly recommended to achieve high search quality.
      *
-     *           See
-     *           [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter]
-     *           for more details about filter syntax.
+     *           For more information about filter syntax, see
+     *           [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter].
      *     @type string $orderBy
      *           The order in which products are returned. Products can be ordered by
      *           a field in an [Product][google.cloud.retail.v2alpha.Product] object. Leave
-     *           it unset if ordered by relevance. OrderBy expression is case-sensitive. See
-     *           more details at this [user
-     *           guide](https://cloud.google.com/retail/docs/filter-and-order#order).
+     *           it unset if ordered by relevance. OrderBy expression is case-sensitive. For
+     *           more information, see
+     *           [Order](https://cloud.google.com/retail/docs/filter-and-order#order).
      *
      *           If this field is unrecognizable, an INVALID_ARGUMENT is returned.
      *     @type FacetSpec[] $facetSpecs
@@ -409,8 +410,8 @@ class SearchServiceGapicClient
      *           The specification for dynamically generated facets. Notice that only
      *           textual facets can be dynamically generated.
      *     @type BoostSpec $boostSpec
-     *           Boost specification to boost certain products. See more details at this
-     *           [user guide](https://cloud.google.com/retail/docs/boosting).
+     *           Boost specification to boost certain products. For more information, see
+     *           [Boost results](https://cloud.google.com/retail/docs/boosting).
      *
      *           Notice that if both
      *           [ServingConfig.boost_control_ids][google.cloud.retail.v2alpha.ServingConfig.boost_control_ids]
@@ -421,16 +422,16 @@ class SearchServiceGapicClient
      *           to the sum of the boost scores from all matched boost conditions.
      *     @type QueryExpansionSpec $queryExpansionSpec
      *           The query expansion specification that specifies the conditions under which
-     *           query expansion will occur. See more details at this [user
-     *           guide](https://cloud.google.com/retail/docs/result-size#query_expansion).
+     *           query expansion occurs. For more information, see [Query
+     *           expansion](https://cloud.google.com/retail/docs/result-size#query_expansion).
      *     @type int $relevanceThreshold
      *           The relevance threshold of the search results.
      *
      *           Defaults to
      *           [RelevanceThreshold.HIGH][google.cloud.retail.v2alpha.SearchRequest.RelevanceThreshold.HIGH],
      *           which means only the most relevant results are shown, and the least number
-     *           of results are returned. See more details at this [user
-     *           guide](https://cloud.google.com/retail/docs/result-size#relevance_thresholding).
+     *           of results are returned. For more information, see [Adjust result
+     *           size](https://cloud.google.com/retail/docs/result-size#relevance_thresholding).
      *           For allowed values, use constants defined on {@see \Google\Cloud\Retail\V2alpha\SearchRequest\RelevanceThreshold}
      *     @type string[] $variantRollupKeys
      *           The keys to fetch and rollup the matching
@@ -512,6 +513,8 @@ class SearchServiceGapicClient
      *
      *           If this field is set to an invalid value other than these, an
      *           INVALID_ARGUMENT error is returned.
+     *     @type string $experimentId
+     *           Optional. An ID for the experiment group this search belongs to.
      *     @type string[] $pageCategories
      *           The categories associated with a category page. Must be set for category
      *           navigation queries to achieve good search quality. The format should be
@@ -555,9 +558,9 @@ class SearchServiceGapicClient
      *           key with multiple resources.
      *           * Keys must start with a lowercase letter or international character.
      *
-     *           See [Google Cloud
-     *           Document](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements)
-     *           for more details.
+     *           For more information, see [Requirements for
+     *           labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements)
+     *           in the Resource Manager documentation.
      *     @type SpellCorrectionSpec $spellCorrectionSpec
      *           The spell correction specification that specifies the mode under
      *           which spell correction will take effect.
@@ -568,6 +571,50 @@ class SearchServiceGapicClient
      *           If this is set, it should be exactly matched with
      *           [UserEvent.entity][google.cloud.retail.v2alpha.UserEvent.entity] to get
      *           search results boosted by entity.
+     *     @type ConversationalSearchSpec $conversationalSearchSpec
+     *           Optional. This field specifies all conversational related parameters
+     *           addition to traditional retail search.
+     *     @type TileNavigationSpec $tileNavigationSpec
+     *           Optional. This field specifies tile navigation related parameters.
+     *     @type string $languageCode
+     *           Optional. The BCP-47 language code, such as "en-US" or "sr-Latn"
+     *           [list](https://www.unicode.org/cldr/charts/46/summary/root.html). For more
+     *           information, see [Standardized codes](https://google.aip.dev/143). This
+     *           field helps to better interpret the query. If a value isn't specified, the
+     *           query language code is automatically detected, which may not be accurate.
+     *     @type string $regionCode
+     *           Optional. The Unicode country/region code (CLDR) of a location, such as
+     *           "US" and "419"
+     *           [list](https://www.unicode.org/cldr/charts/46/supplemental/territory_information.html).
+     *           For more information, see [Standardized codes](https://google.aip.dev/143).
+     *           If set, then results will be boosted based on the region_code provided.
+     *     @type string $placeId
+     *           Optional. An id corresponding to a place, such as a store id or region id.
+     *           When specified, we use the price from the local inventory with the matching
+     *           product's
+     *           [LocalInventory.place_id][google.cloud.retail.v2alpha.LocalInventory.place_id]
+     *           for revenue optimization.
+     *     @type array $userAttributes
+     *           Optional. The user attributes that could be used for personalization of
+     *           search results.
+     *           * Populate at most 100 key-value pairs per query.
+     *           * Only supports string keys and repeated string values.
+     *           * Duplicate keys are not allowed within a single query.
+     *
+     *           Example:
+     *           user_attributes: [
+     *           { key: "pets"
+     *           value {
+     *           values: "dog"
+     *           values: "cat"
+     *           }
+     *           },
+     *           { key: "state"
+     *           value {
+     *           values: "CA"
+     *           }
+     *           }
+     *           ]
      *     @type RetrySettings|array $retrySettings
      *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
      *           associative array of retry settings parameters. See the documentation on
@@ -647,6 +694,10 @@ class SearchServiceGapicClient
             $request->setVariantRollupKeys($optionalArgs['variantRollupKeys']);
         }
 
+        if (isset($optionalArgs['experimentId'])) {
+            $request->setExperimentId($optionalArgs['experimentId']);
+        }
+
         if (isset($optionalArgs['pageCategories'])) {
             $request->setPageCategories($optionalArgs['pageCategories']);
         }
@@ -669,6 +720,30 @@ class SearchServiceGapicClient
 
         if (isset($optionalArgs['entity'])) {
             $request->setEntity($optionalArgs['entity']);
+        }
+
+        if (isset($optionalArgs['conversationalSearchSpec'])) {
+            $request->setConversationalSearchSpec($optionalArgs['conversationalSearchSpec']);
+        }
+
+        if (isset($optionalArgs['tileNavigationSpec'])) {
+            $request->setTileNavigationSpec($optionalArgs['tileNavigationSpec']);
+        }
+
+        if (isset($optionalArgs['languageCode'])) {
+            $request->setLanguageCode($optionalArgs['languageCode']);
+        }
+
+        if (isset($optionalArgs['regionCode'])) {
+            $request->setRegionCode($optionalArgs['regionCode']);
+        }
+
+        if (isset($optionalArgs['placeId'])) {
+            $request->setPlaceId($optionalArgs['placeId']);
+        }
+
+        if (isset($optionalArgs['userAttributes'])) {
+            $request->setUserAttributes($optionalArgs['userAttributes']);
         }
 
         $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);

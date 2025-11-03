@@ -1,0 +1,21 @@
+
+    /**
+     * @param string $name Required. The resource name of the effective Event Threat Detection custom
+     *                     module.
+     *
+     *                     Its format is:
+     *
+     *                     * `organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}`.
+     *                     * `folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}`.
+     *                     * `projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}`. Please see
+     *                     {@see SecurityCenterClient::effectiveEventThreatDetectionCustomModuleName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\GetEffectiveEventThreatDetectionCustomModuleRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

@@ -29,7 +29,8 @@ use Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient;
 use Google\Cloud\Spanner\Admin\Database\V1\GetBackupRequest;
 
 /**
- * Gets metadata on a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+ * Gets metadata on a pending or completed
+ * [Backup][google.spanner.admin.database.v1.Backup].
  *
  * @param string $formattedName Name of the backup.
  *                              Values are of the form

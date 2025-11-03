@@ -1,7 +1,9 @@
 
     /**
      * @param \Google\Cloud\SecurityCenter\V1\SecurityHealthAnalyticsCustomModule $securityHealthAnalyticsCustomModule Required. The SecurityHealthAnalytics custom module to update.
-     * @param \Google\Protobuf\FieldMask                                          $updateMask                          The list of fields to update.
+     * @param \Google\Protobuf\FieldMask                                          $updateMask                          The list of fields to be updated. The only fields that can be updated are
+     *                                                                                                                 `enablement_state` and `custom_config`. If empty or set to the wildcard
+     *                                                                                                                 value `*`, both `enablement_state` and `custom_config` are updated.
      *
      * @return \Google\Cloud\SecurityCenter\V1\UpdateSecurityHealthAnalyticsCustomModuleRequest
      *

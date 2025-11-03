@@ -194,6 +194,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $buildName = 'buildName-470597188';
         $sourceToken = 'sourceToken1671283925';
         $dockerRepository = 'dockerRepository-1273385271';
+        $buildServiceAccount = 'buildServiceAccount-1152257326';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
@@ -213,6 +214,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setBuildName($buildName);
         $expectedResponse->setSourceToken($sourceToken);
         $expectedResponse->setDockerRepository($dockerRepository);
+        $expectedResponse->setBuildServiceAccount($buildServiceAccount);
         $anyResponse = new Any();
         $anyResponse->setValue($expectedResponse->serializeToString());
         $completeOperation = new Operation();
@@ -578,6 +580,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $buildName = 'buildName-470597188';
         $sourceToken = 'sourceToken1671283925';
         $dockerRepository = 'dockerRepository-1273385271';
+        $buildServiceAccount = 'buildServiceAccount-1152257326';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name2);
         $expectedResponse->setDescription($description);
@@ -597,6 +600,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setBuildName($buildName);
         $expectedResponse->setSourceToken($sourceToken);
         $expectedResponse->setDockerRepository($dockerRepository);
+        $expectedResponse->setBuildServiceAccount($buildServiceAccount);
         $transport->addResponse($expectedResponse);
         // Mock request
         $formattedName = $gapicClient->cloudFunctionName('[PROJECT]', '[LOCATION]', '[FUNCTION]');
@@ -958,6 +962,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $buildName = 'buildName-470597188';
         $sourceToken = 'sourceToken1671283925';
         $dockerRepository = 'dockerRepository-1273385271';
+        $buildServiceAccount = 'buildServiceAccount-1152257326';
         $expectedResponse = new CloudFunction();
         $expectedResponse->setName($name);
         $expectedResponse->setDescription($description);
@@ -977,6 +982,7 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $expectedResponse->setBuildName($buildName);
         $expectedResponse->setSourceToken($sourceToken);
         $expectedResponse->setDockerRepository($dockerRepository);
+        $expectedResponse->setBuildServiceAccount($buildServiceAccount);
         $anyResponse = new Any();
         $anyResponse->setValue($expectedResponse->serializeToString());
         $completeOperation = new Operation();

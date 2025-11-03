@@ -41,6 +41,7 @@ use Google\Cloud\Retail\V2alpha\AddFulfillmentPlacesRequest;
 use Google\Cloud\Retail\V2alpha\AddLocalInventoriesRequest;
 use Google\Cloud\Retail\V2alpha\CreateProductRequest;
 use Google\Cloud\Retail\V2alpha\DeleteProductRequest;
+use Google\Cloud\Retail\V2alpha\ExportProductsRequest;
 use Google\Cloud\Retail\V2alpha\GetProductRequest;
 use Google\Cloud\Retail\V2alpha\ImportErrorsConfig;
 use Google\Cloud\Retail\V2alpha\ImportProductsRequest;
@@ -48,6 +49,7 @@ use Google\Cloud\Retail\V2alpha\ImportProductsRequest\ReconciliationMode;
 use Google\Cloud\Retail\V2alpha\ListProductsRequest;
 use Google\Cloud\Retail\V2alpha\ListProductsResponse;
 use Google\Cloud\Retail\V2alpha\LocalInventory;
+use Google\Cloud\Retail\V2alpha\OutputConfig;
 use Google\Cloud\Retail\V2alpha\Product;
 use Google\Cloud\Retail\V2alpha\ProductInputConfig;
 use Google\Cloud\Retail\V2alpha\PurgeProductsRequest;
@@ -387,10 +389,11 @@ class ProductServiceGapicClient
     }
 
     /**
-     * It is recommended to use the
+     * We recommend that you use the
      * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
-     * method instead of
-     * [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces].
+     * method instead of the
+     * [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+     * method.
      * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
      * achieves the same results but provides more fine-grained control over
      * ingesting local inventory data.
@@ -823,6 +826,126 @@ class ProductServiceGapicClient
     }
 
     /**
+     * Exports multiple [Product][google.cloud.retail.v2alpha.Product]s.
+     *
+     * Sample code:
+     * ```
+     * $productServiceClient = new ProductServiceClient();
+     * try {
+     *     $formattedParent = $productServiceClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+     *     $outputConfig = new OutputConfig();
+     *     $operationResponse = $productServiceClient->exportProducts($formattedParent, $outputConfig);
+     *     $operationResponse->pollUntilComplete();
+     *     if ($operationResponse->operationSucceeded()) {
+     *         $result = $operationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $operationResponse->getError();
+     *         // handleError($error)
+     *     }
+     *     // Alternatively:
+     *     // start the operation, keep the operation name, and resume later
+     *     $operationResponse = $productServiceClient->exportProducts($formattedParent, $outputConfig);
+     *     $operationName = $operationResponse->getName();
+     *     // ... do other work
+     *     $newOperationResponse = $productServiceClient->resumeOperation($operationName, 'exportProducts');
+     *     while (!$newOperationResponse->isDone()) {
+     *         // ... do other work
+     *         $newOperationResponse->reload();
+     *     }
+     *     if ($newOperationResponse->operationSucceeded()) {
+     *         $result = $newOperationResponse->getResult();
+     *         // doSomethingWith($result)
+     *     } else {
+     *         $error = $newOperationResponse->getError();
+     *         // handleError($error)
+     *     }
+     * } finally {
+     *     $productServiceClient->close();
+     * }
+     * ```
+     *
+     * @param string       $parent       Required. Resource name of a [Branch][google.cloud.retail.v2alpha.Branch],
+     *                                   and `default_branch` for branch_id component is supported. For example
+     *                                   `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
+     * @param OutputConfig $outputConfig Required. The output location of the data.
+     * @param array        $optionalArgs {
+     *     Optional.
+     *
+     *     @type string $filter
+     *           A filtering expression to specify restrictions on returned events.
+     *           The expression is a sequence of terms. Each term applies a restriction to
+     *           the returned products. Use this expression to restrict results to a
+     *           specific time range, tag, or stock state or to filter products by product
+     *           type.
+     *           For example, `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+     *           lastModifiedTime<"2012-04-23T18:25:43.511Z" productType=primary`
+     *
+     *           We expect only four types of fields:
+     *
+     *           * `lastModifiedTime`: This can be specified twice, once with a
+     *           less than operator and once with a greater than operator. The
+     *           `lastModifiedTime` restriction should result in one, contiguous,
+     *           valid, last-modified, time range.
+     *
+     *           * `productType`: Supported values are `primary` and `variant`. The
+     *           Boolean operators `OR` and `NOT` are supported if the expression is
+     *           enclosed in parentheses and must be separated from the
+     *           `productType` values by a space.
+     *
+     *           * `availability`: Supported values are `IN_STOCK`, `OUT_OF_STOCK`,
+     *           `PREORDER`, and `BACKORDER`. Boolean operators `OR` and `NOT` are
+     *           supported if the expression is enclosed in parentheses and must be
+     *           separated from the `availability` values by a space.
+     *
+     *           * `Tag expressions`: Restricts output to products that match all of the
+     *           specified tags. Boolean operators `OR` and `NOT` are supported if the
+     *           expression is enclosed in parentheses and the operators are separated
+     *           from the tag values by a space. Also supported is '`-"tagA"`', which
+     *           is equivalent to '`NOT "tagA"`'. Tag values must be double-quoted,
+     *           UTF-8 encoded strings and have a size limit of 1,000 characters.
+     *
+     *           Some examples of valid filters expressions:
+     *
+     *           * Example 1: `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+     *           lastModifiedTime < "2012-04-23T18:30:43.511Z"`
+     *           * Example 2: `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+     *           productType = "variant"`
+     *           * Example 3: `tag=("Red" OR "Blue") tag="New-Arrival"
+     *           tag=(NOT "promotional")
+     *           productType = "primary" lastModifiedTime <
+     *           "2018-04-23T18:30:43.511Z"`
+     *           * Example 4: `lastModifiedTime > "2012-04-23T18:25:43.511Z"`
+     *           * Example 5: `availability = (IN_STOCK OR BACKORDER)`
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return \Google\ApiCore\OperationResponse
+     *
+     * @throws ApiException if the remote call fails
+     *
+     * @experimental
+     */
+    public function exportProducts($parent, $outputConfig, array $optionalArgs = [])
+    {
+        $request = new ExportProductsRequest();
+        $requestParamHeaders = [];
+        $request->setParent($parent);
+        $request->setOutputConfig($outputConfig);
+        $requestParamHeaders['parent'] = $parent;
+        if (isset($optionalArgs['filter'])) {
+            $request->setFilter($optionalArgs['filter']);
+        }
+
+        $requestParams = new RequestParamsHeaderDescriptor($requestParamHeaders);
+        $optionalArgs['headers'] = isset($optionalArgs['headers']) ? array_merge($requestParams->getHeader(), $optionalArgs['headers']) : $requestParams->getHeader();
+        return $this->startOperationsCall('ExportProducts', $optionalArgs, $request, $this->getOperationsClient())->wait();
+    }
+
+    /**
      * Gets a [Product][google.cloud.retail.v2alpha.Product].
      *
      * Sample code:
@@ -933,7 +1056,8 @@ class ProductServiceGapicClient
      *           The desired location of errors incurred during the Import.
      *     @type FieldMask $updateMask
      *           Indicates which fields in the provided imported `products` to update. If
-     *           not set, all fields are updated.
+     *           not set, all fields are updated. If provided, only the existing product
+     *           fields are updated. Missing products will not be created.
      *     @type int $reconciliationMode
      *           The mode of reconciliation between existing products and the products to be
      *           imported. Defaults to
@@ -948,9 +1072,14 @@ class ProductServiceGapicClient
      *           Format of the Pub/Sub topic is `projects/{project}/topics/{topic}`. It has
      *           to be within the same project as
      *           [ImportProductsRequest.parent][google.cloud.retail.v2alpha.ImportProductsRequest.parent].
-     *           Make sure that `service-<project
-     *           number>&#64;gcp-sa-retail.iam.gserviceaccount.com` has the
-     *           `pubsub.topics.publish` IAM permission on the topic.
+     *           Make sure that both
+     *           `cloud-retail-customer-data-access&#64;system.gserviceaccount.com` and
+     *           `service-<project number>&#64;gcp-sa-retail.iam.gserviceaccount.com`
+     *           have the `pubsub.topics.publish` IAM permission on the topic.
+     *
+     *           Only supported when
+     *           [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
+     *           is set to `FULL`.
      *     @type bool $skipDefaultBranchProtection
      *           If true, this performs the FULL import even if it would delete a large
      *           proportion of the products in the default branch, which could potentially
@@ -1288,10 +1417,11 @@ class ProductServiceGapicClient
     }
 
     /**
-     * It is recommended to use the
+     * We recommend that you use the
      * [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
-     * method instead of
-     * [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces].
+     * method instead of the
+     * [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces]
+     * method.
      * [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
      * achieves the same results but provides more fine-grained control over
      * ingesting local inventory data.
