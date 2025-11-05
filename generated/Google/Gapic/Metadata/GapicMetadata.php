@@ -9,8 +9,8 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Metadata about a GAPIC library for a specific combination of API, version, and
- * computer language.
+ * Metadata about a GAPIC library service for a specific combination of API,
+ * version, and computer language.
  *
  * Generated from protobuf message <code>google.gapic.metadata.GapicMetadata</code>
  */

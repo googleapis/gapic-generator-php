@@ -42,21 +42,30 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use Google\Cloud\Iam\V1\TestIamPermissionsResponse;
+use Google\Cloud\Spanner\Admin\Database\V1\AddSplitPointsRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\AddSplitPointsResponse;
 use Google\Cloud\Spanner\Admin\Database\V1\Backup;
+use Google\Cloud\Spanner\Admin\Database\V1\BackupSchedule;
 use Google\Cloud\Spanner\Admin\Database\V1\CopyBackupMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\CopyBackupRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateBackupMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateBackupRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\CreateBackupScheduleRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateDatabaseMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\CreateDatabaseRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\Database;
 use Google\Cloud\Spanner\Admin\Database\V1\DeleteBackupRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\DeleteBackupScheduleRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\DropDatabaseRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\GetBackupRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\GetBackupScheduleRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\GetDatabaseDdlRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\GetDatabaseDdlResponse;
 use Google\Cloud\Spanner\Admin\Database\V1\GetDatabaseRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\InternalUpdateGraphOperationRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\InternalUpdateGraphOperationResponse;
 use Google\Cloud\Spanner\Admin\Database\V1\ListBackupOperationsRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\ListBackupSchedulesRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListBackupsRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseOperationsRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseRolesRequest;
@@ -64,6 +73,7 @@ use Google\Cloud\Spanner\Admin\Database\V1\ListDatabasesRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\RestoreDatabaseMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\RestoreDatabaseRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateBackupRequest;
+use Google\Cloud\Spanner\Admin\Database\V1\UpdateBackupScheduleRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseMetadata;
@@ -79,7 +89,7 @@ use Psr\Log\LoggerInterface;
  * The Cloud Spanner Database Admin API can be used to:
  * * create, drop, and list databases
  * * update the schema of pre-existing databases
- * * create, delete and list backups for a database
+ * * create, delete, copy and list backups for a database
  * * restore a database from an existing backup
  *
  * This class provides the ability to make remote calls to the backing service through method
@@ -90,16 +100,22 @@ use Psr\Log\LoggerInterface;
  * name, and additionally a parseName method to extract the individual identifiers
  * contained within formatted names that are returned by the API.
  *
+ * @method PromiseInterface<AddSplitPointsResponse> addSplitPointsAsync(AddSplitPointsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> copyBackupAsync(CopyBackupRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> createBackupAsync(CreateBackupRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BackupSchedule> createBackupScheduleAsync(CreateBackupScheduleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> createDatabaseAsync(CreateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<void> deleteBackupAsync(DeleteBackupRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<void> deleteBackupScheduleAsync(DeleteBackupScheduleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<void> dropDatabaseAsync(DropDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Backup> getBackupAsync(GetBackupRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BackupSchedule> getBackupScheduleAsync(GetBackupScheduleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Database> getDatabaseAsync(GetDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<GetDatabaseDdlResponse> getDatabaseDdlAsync(GetDatabaseDdlRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Policy> getIamPolicyAsync(GetIamPolicyRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<InternalUpdateGraphOperationResponse> internalUpdateGraphOperationAsync(InternalUpdateGraphOperationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listBackupOperationsAsync(ListBackupOperationsRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<PagedListResponse> listBackupSchedulesAsync(ListBackupSchedulesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listBackupsAsync(ListBackupsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listDatabaseOperationsAsync(ListDatabaseOperationsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listDatabaseRolesAsync(ListDatabaseRolesRequest $request, array $optionalArgs = [])
@@ -108,6 +124,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Backup> updateBackupAsync(UpdateBackupRequest $request, array $optionalArgs = [])
+ * @method PromiseInterface<BackupSchedule> updateBackupScheduleAsync(UpdateBackupScheduleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> updateDatabaseAsync(UpdateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> updateDatabaseDdlAsync(UpdateDatabaseDdlRequest $request, array $optionalArgs = [])
  */
@@ -211,6 +228,27 @@ final class DatabaseAdminClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * backup_schedule resource.
+     *
+     * @param string $project
+     * @param string $instance
+     * @param string $database
+     * @param string $schedule
+     *
+     * @return string The formatted backup_schedule resource.
+     */
+    public static function backupScheduleName(string $project, string $instance, string $database, string $schedule): string
+    {
+        return self::getPathTemplate('backupSchedule')->render([
+            'project' => $project,
+            'instance' => $instance,
+            'database' => $database,
+            'schedule' => $schedule,
+        ]);
+    }
+
+    /**
      * Formats a string containing the fully-qualified path to represent a crypto_key
      * resource.
      *
@@ -291,14 +329,35 @@ final class DatabaseAdminClient
     }
 
     /**
+     * Formats a string containing the fully-qualified path to represent a
+     * instance_partition resource.
+     *
+     * @param string $project
+     * @param string $instance
+     * @param string $instancePartition
+     *
+     * @return string The formatted instance_partition resource.
+     */
+    public static function instancePartitionName(string $project, string $instance, string $instancePartition): string
+    {
+        return self::getPathTemplate('instancePartition')->render([
+            'project' => $project,
+            'instance' => $instance,
+            'instance_partition' => $instancePartition,
+        ]);
+    }
+
+    /**
      * Parses a formatted name string and returns an associative array of the components in the name.
      * The following name formats are supported:
      * Template: Pattern
      * - backup: projects/{project}/instances/{instance}/backups/{backup}
+     * - backupSchedule: projects/{project}/instances/{instance}/databases/{database}/backupSchedules/{schedule}
      * - cryptoKey: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}
      * - cryptoKeyVersion: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}
      * - database: projects/{project}/instances/{instance}/databases/{database}
      * - instance: projects/{project}/instances/{instance}
+     * - instancePartition: projects/{project}/instances/{instance}/instancePartitions/{instance_partition}
      *
      * The optional $template argument can be supplied to specify a particular pattern,
      * and must match one of the templates listed above. If no $template argument is
@@ -410,6 +469,32 @@ final class DatabaseAdminClient
     }
 
     /**
+     * Adds split points to specified tables, indexes of a database.
+     *
+     * The async variant is {@see DatabaseAdminClient::addSplitPointsAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/add_split_points.php
+     *
+     * @param AddSplitPointsRequest $request     A request to house fields associated with the call.
+     * @param array                 $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return AddSplitPointsResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function addSplitPoints(AddSplitPointsRequest $request, array $callOptions = []): AddSplitPointsResponse
+    {
+        return $this->startApiCall('AddSplitPoints', $request, $callOptions)->wait();
+    }
+
+    /**
      * Starts copying a Cloud Spanner Backup.
      * The returned backup [long-running operation][google.longrunning.Operation]
      * will have a name of the format
@@ -419,9 +504,10 @@ final class DatabaseAdminClient
      * The [metadata][google.longrunning.Operation.metadata] field type is
      * [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
      * The [response][google.longrunning.Operation.response] field type is
-     * [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
-     * copying and delete the backup.
-     * Concurrent CopyBackup requests can run on the same source backup.
+     * [Backup][google.spanner.admin.database.v1.Backup], if successful.
+     * Cancelling the returned operation will stop the copying and delete the
+     * destination backup. Concurrent CopyBackup requests can run on the same
+     * source backup.
      *
      * The async variant is {@see DatabaseAdminClient::copyBackupAsync()} .
      *
@@ -453,12 +539,12 @@ final class DatabaseAdminClient
      * `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>`
      * and can be used to track creation of the backup. The
      * [metadata][google.longrunning.Operation.metadata] field type is
-     * [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]. The
-     * [response][google.longrunning.Operation.response] field type is
-     * [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
-     * creation and delete the backup.
-     * There can be only one pending backup creation per database. Backup creation
-     * of different databases can run concurrently.
+     * [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
+     * The [response][google.longrunning.Operation.response] field type is
+     * [Backup][google.spanner.admin.database.v1.Backup], if successful.
+     * Cancelling the returned operation will stop the creation and delete the
+     * backup. There can be only one pending backup creation per database. Backup
+     * creation of different databases can run concurrently.
      *
      * The async variant is {@see DatabaseAdminClient::createBackupAsync()} .
      *
@@ -484,13 +570,39 @@ final class DatabaseAdminClient
     }
 
     /**
+     * Creates a new backup schedule.
+     *
+     * The async variant is {@see DatabaseAdminClient::createBackupScheduleAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/create_backup_schedule.php
+     *
+     * @param CreateBackupScheduleRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BackupSchedule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function createBackupSchedule(CreateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
+    {
+        return $this->startApiCall('CreateBackupSchedule', $request, $callOptions)->wait();
+    }
+
+    /**
      * Creates a new Cloud Spanner database and starts to prepare it for serving.
      * The returned [long-running operation][google.longrunning.Operation] will
      * have a name of the format `<database_name>/operations/<operation_id>` and
      * can be used to track preparation of the database. The
      * [metadata][google.longrunning.Operation.metadata] field type is
-     * [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
-     * [response][google.longrunning.Operation.response] field type is
+     * [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata].
+     * The [response][google.longrunning.Operation.response] field type is
      * [Database][google.spanner.admin.database.v1.Database], if successful.
      *
      * The async variant is {@see DatabaseAdminClient::createDatabaseAsync()} .
@@ -517,7 +629,8 @@ final class DatabaseAdminClient
     }
 
     /**
-     * Deletes a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+     * Deletes a pending or completed
+     * [Backup][google.spanner.admin.database.v1.Backup].
      *
      * The async variant is {@see DatabaseAdminClient::deleteBackupAsync()} .
      *
@@ -538,6 +651,30 @@ final class DatabaseAdminClient
     public function deleteBackup(DeleteBackupRequest $request, array $callOptions = []): void
     {
         $this->startApiCall('DeleteBackup', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Deletes a backup schedule.
+     *
+     * The async variant is {@see DatabaseAdminClient::deleteBackupScheduleAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/delete_backup_schedule.php
+     *
+     * @param DeleteBackupScheduleRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function deleteBackupSchedule(DeleteBackupScheduleRequest $request, array $callOptions = []): void
+    {
+        $this->startApiCall('DeleteBackupSchedule', $request, $callOptions)->wait();
     }
 
     /**
@@ -569,7 +706,8 @@ final class DatabaseAdminClient
     }
 
     /**
-     * Gets metadata on a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+     * Gets metadata on a pending or completed
+     * [Backup][google.spanner.admin.database.v1.Backup].
      *
      * The async variant is {@see DatabaseAdminClient::getBackupAsync()} .
      *
@@ -592,6 +730,32 @@ final class DatabaseAdminClient
     public function getBackup(GetBackupRequest $request, array $callOptions = []): Backup
     {
         return $this->startApiCall('GetBackup', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Gets backup schedule for the input schedule name.
+     *
+     * The async variant is {@see DatabaseAdminClient::getBackupScheduleAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/get_backup_schedule.php
+     *
+     * @param GetBackupScheduleRequest $request     A request to house fields associated with the call.
+     * @param array                    $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BackupSchedule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function getBackupSchedule(GetBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
+    {
+        return $this->startApiCall('GetBackupSchedule', $request, $callOptions)->wait();
     }
 
     /**
@@ -682,6 +846,34 @@ final class DatabaseAdminClient
     }
 
     /**
+     * This is an internal API called by Spanner Graph jobs. You should never need
+     * to call this API directly.
+     *
+     * The async variant is
+     * {@see DatabaseAdminClient::internalUpdateGraphOperationAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/internal_update_graph_operation.php
+     *
+     * @param InternalUpdateGraphOperationRequest $request     A request to house fields associated with the call.
+     * @param array                               $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return InternalUpdateGraphOperationResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function internalUpdateGraphOperation(InternalUpdateGraphOperationRequest $request, array $callOptions = []): InternalUpdateGraphOperationResponse
+    {
+        return $this->startApiCall('InternalUpdateGraphOperation', $request, $callOptions)->wait();
+    }
+
+    /**
      * Lists the backup [long-running operations][google.longrunning.Operation] in
      * the given instance. A backup operation has a name of the form
      * `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation>`.
@@ -714,6 +906,32 @@ final class DatabaseAdminClient
     public function listBackupOperations(ListBackupOperationsRequest $request, array $callOptions = []): PagedListResponse
     {
         return $this->startApiCall('ListBackupOperations', $request, $callOptions);
+    }
+
+    /**
+     * Lists all the backup schedules for the database.
+     *
+     * The async variant is {@see DatabaseAdminClient::listBackupSchedulesAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/list_backup_schedules.php
+     *
+     * @param ListBackupSchedulesRequest $request     A request to house fields associated with the call.
+     * @param array                      $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return PagedListResponse
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function listBackupSchedules(ListBackupSchedulesRequest $request, array $callOptions = []): PagedListResponse
+    {
+        return $this->startApiCall('ListBackupSchedules', $request, $callOptions);
     }
 
     /**
@@ -939,7 +1157,8 @@ final class DatabaseAdminClient
     }
 
     /**
-     * Updates a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+     * Updates a pending or completed
+     * [Backup][google.spanner.admin.database.v1.Backup].
      *
      * The async variant is {@see DatabaseAdminClient::updateBackupAsync()} .
      *
@@ -962,6 +1181,32 @@ final class DatabaseAdminClient
     public function updateBackup(UpdateBackupRequest $request, array $callOptions = []): Backup
     {
         return $this->startApiCall('UpdateBackup', $request, $callOptions)->wait();
+    }
+
+    /**
+     * Updates a backup schedule.
+     *
+     * The async variant is {@see DatabaseAdminClient::updateBackupScheduleAsync()} .
+     *
+     * @example samples/V1/DatabaseAdminClient/update_backup_schedule.php
+     *
+     * @param UpdateBackupScheduleRequest $request     A request to house fields associated with the call.
+     * @param array                       $callOptions {
+     *     Optional.
+     *
+     *     @type RetrySettings|array $retrySettings
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
+     * }
+     *
+     * @return BackupSchedule
+     *
+     * @throws ApiException Thrown if the API call fails.
+     */
+    public function updateBackupSchedule(UpdateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
+    {
+        return $this->startApiCall('UpdateBackupSchedule', $request, $callOptions)->wait();
     }
 
     /**
@@ -1032,7 +1277,8 @@ final class DatabaseAdminClient
      * the format `<database_name>/operations/<operation_id>` and can be used to
      * track execution of the schema change(s). The
      * [metadata][google.longrunning.Operation.metadata] field type is
-     * [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
+     * [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].
+     * The operation has no response.
      *
      * The async variant is {@see DatabaseAdminClient::updateDatabaseDdlAsync()} .
      *

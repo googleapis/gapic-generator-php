@@ -93,6 +93,7 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $feedLabel = 'feedLabel574920979';
         $languageCode = 'languageCode-412800396';
         $projectId = 'projectId-1969970175';
+        $source = 'source-896505829';
         $expectedResponse = new MerchantCenterAccountLink();
         $expectedResponse->setName($name);
         $expectedResponse->setId($id);
@@ -101,6 +102,7 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $expectedResponse->setFeedLabel($feedLabel);
         $expectedResponse->setLanguageCode($languageCode);
         $expectedResponse->setProjectId($projectId);
+        $expectedResponse->setSource($source);
         $anyResponse = new Any();
         $anyResponse->setValue($expectedResponse->serializeToString());
         $completeOperation = new Operation();

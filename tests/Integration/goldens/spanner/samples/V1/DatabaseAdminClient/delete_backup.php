@@ -28,7 +28,8 @@ use Google\Cloud\Spanner\Admin\Database\V1\Client\DatabaseAdminClient;
 use Google\Cloud\Spanner\Admin\Database\V1\DeleteBackupRequest;
 
 /**
- * Deletes a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+ * Deletes a pending or completed
+ * [Backup][google.spanner.admin.database.v1.Backup].
  *
  * @param string $formattedName Name of the backup to delete.
  *                              Values are of the form

@@ -36,7 +36,8 @@ use Google\Rpc\Status;
  * the format `<database_name>/operations/<operation_id>` and can be used to
  * track execution of the schema change(s). The
  * [metadata][google.longrunning.Operation.metadata] field type is
- * [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
+ * [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].
+ * The operation has no response.
  *
  * @param string $formattedDatabase The database to update. Please see
  *                                  {@see DatabaseAdminClient::databaseName()} for help formatting this field.

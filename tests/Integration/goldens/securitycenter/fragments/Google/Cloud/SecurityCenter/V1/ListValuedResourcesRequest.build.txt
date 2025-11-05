@@ -1,0 +1,19 @@
+
+    /**
+     * @param string $parent Required. Name of parent to list valued resources.
+     *
+     *                       Valid formats:
+     *                       `organizations/{organization}`,
+     *                       `organizations/{organization}/simulations/{simulation}`
+     *                       `organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}`
+     *                       Please see {@see SecurityCenterClient::simulationName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\ListValuedResourcesRequest
+     *
+     * @experimental
+     */
+    public static function build(string $parent): self
+    {
+        return (new self())
+            ->setParent($parent);
+    }

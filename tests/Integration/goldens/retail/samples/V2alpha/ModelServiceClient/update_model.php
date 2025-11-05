@@ -50,7 +50,6 @@ use Google\Cloud\Retail\V2alpha\ModelServiceClient;
  *                                 `frequently-bought-together`, `page-optimization`, `similar-items`,
  *                                 `buy-it-again`, `on-sale-items`, and `recently-viewed`(readonly value).
  *
- *
  *                                 This field together with
  *                                 [optimization_objective][google.cloud.retail.v2alpha.Model.optimization_objective]
  *                                 describe model metadata to use to control model training and serving.

@@ -1,0 +1,16 @@
+
+    /**
+     * @param string $database    Internal field, do not use directly. Please see
+     *                            {@see DatabaseAdminClient::databaseName()} for help formatting this field.
+     * @param string $operationId Internal field, do not use directly.
+     *
+     * @return \Google\Cloud\Spanner\Admin\Database\V1\InternalUpdateGraphOperationRequest
+     *
+     * @experimental
+     */
+    public static function build(string $database, string $operationId): self
+    {
+        return (new self())
+            ->setDatabase($database)
+            ->setOperationId($operationId);
+    }

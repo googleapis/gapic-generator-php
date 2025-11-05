@@ -1,0 +1,18 @@
+
+    /**
+     * @param string                                                             $parent   Required. Resource name of the new ResourceValueConfig's parent.
+     *                                                                                     The parent field in the CreateResourceValueConfigRequest
+     *                                                                                     messages must either be empty or match this field. Please see
+     *                                                                                     {@see SecurityCenterClient::organizationName()} for help formatting this field.
+     * @param \Google\Cloud\SecurityCenter\V1\CreateResourceValueConfigRequest[] $requests Required. The resource value configs to be created.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\BatchCreateResourceValueConfigsRequest
+     *
+     * @experimental
+     */
+    public static function build(string $parent, array $requests): self
+    {
+        return (new self())
+            ->setParent($parent)
+            ->setRequests($requests);
+    }
