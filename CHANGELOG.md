@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.3](https://github.com/googleapis/gapic-generator-php/compare/v1.20.2...v1.20.3) (2025-11-07)
+
+
+### Bug Fixes
+
+* Include api_version in gapic_metadata ([#790](https://github.com/googleapis/gapic-generator-php/issues/790)) ([bea9865](https://github.com/googleapis/gapic-generator-php/commit/bea98659731bfcee1b49fe5c501adb9d32a5176a))
+
 ## [1.20.2](https://github.com/googleapis/gapic-generator-php/compare/v1.20.1...v1.20.2) (2025-10-27)
 
 
