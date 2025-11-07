@@ -56,6 +56,10 @@ class GapicMetadataGenerator
             );
             $transport = new GapicMetadata\ServiceForTransport();
             $transport->setClients(['grpc' => $libraryClient]);
+            if (!is_null($service->apiVersion)) {
+                $transport->setApiVersion($service->apiVersion);
+            }
+
             $gapicMetadataServices[$service->shortName] = $transport;
         }
         $gapicMetadata->setServices($gapicMetadataServices);
