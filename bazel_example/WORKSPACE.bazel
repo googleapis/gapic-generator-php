@@ -26,6 +26,20 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
 http_archive(
+    name = "rules_java",
+    sha256 = "b5c4b526803a5ab8ad3f0455b8a573a7a24f328a31a3a1890d1df481442c4613",
+    strip_prefix = "rules_java-5.1.0",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_java/releases/download/5.1.0/rules_java-5.1.0.tar.gz",
+        "https://github.com/bazelbuild/rules_java/releases/download/5.1.0/rules_java-5.1.0.tar.gz",
+    ],
+)
+
+load("@rules_java//java:repositories.bzl", "java_repositories")
+
+java_repositories()
+
+http_archive(
     name = "com_github_grpc_grpc",
     sha256 = "b09a005da8fa7876c9374f8857b3933242a94e40d67c72e373e8f2ccc3322a06",
     strip_prefix = "grpc-1.76.0",
