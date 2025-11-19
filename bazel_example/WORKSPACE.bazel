@@ -27,7 +27,7 @@ protobuf_deps()
 
 http_archive(
     name = "rules_java",
-    sha256 = "b5c4b526803a5ab8ad3f0455b8a573a7a24f328a31a3a1890d1df481442c4613",
+    sha256 = "d974a2d6e1a534856d1b60ad6a15e57f3970d8596fbb0bb17b9ee26ca209332a",
     strip_prefix = "rules_java-5.1.0",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/rules_java/releases/download/5.1.0/rules_java-5.1.0.tar.gz",
