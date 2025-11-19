@@ -31,6 +31,7 @@ use Google\Cloud\Container\V1\CheckAutopilotCompatibilityResponse;
 use Google\Cloud\Container\V1\Cluster;
 use Google\Cloud\Container\V1\ClusterManagerClient;
 use Google\Cloud\Container\V1\ClusterUpdate;
+use Google\Cloud\Container\V1\ClusterUpgradeInfo;
 use Google\Cloud\Container\V1\GetJSONWebKeysResponse;
 use Google\Cloud\Container\V1\ListClustersResponse;
 use Google\Cloud\Container\V1\ListNodePoolsResponse;
@@ -42,6 +43,7 @@ use Google\Cloud\Container\V1\NetworkPolicy;
 use Google\Cloud\Container\V1\NodeManagement;
 use Google\Cloud\Container\V1\NodePool;
 use Google\Cloud\Container\V1\NodePoolAutoscaling;
+use Google\Cloud\Container\V1\NodePoolUpgradeInfo;
 use Google\Cloud\Container\V1\Operation;
 use Google\Cloud\Container\V1\ServerConfig;
 use Google\Cloud\Container\V1\SetMasterAuthRequest\Action;
@@ -597,6 +599,138 @@ class ClusterManagerClientTest extends GeneratedTest
     }
 
     /** @test */
+    public function fetchClusterUpgradeInfoTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $minorTargetVersion = 'minorTargetVersion1967593972';
+        $patchTargetVersion = 'patchTargetVersion-1029977855';
+        $endOfStandardSupportTimestamp = 'endOfStandardSupportTimestamp5366440';
+        $endOfExtendedSupportTimestamp = 'endOfExtendedSupportTimestamp-1285813724';
+        $expectedResponse = new ClusterUpgradeInfo();
+        $expectedResponse->setMinorTargetVersion($minorTargetVersion);
+        $expectedResponse->setPatchTargetVersion($patchTargetVersion);
+        $expectedResponse->setEndOfStandardSupportTimestamp($endOfStandardSupportTimestamp);
+        $expectedResponse->setEndOfExtendedSupportTimestamp($endOfExtendedSupportTimestamp);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $name = 'name3373707';
+        $response = $gapicClient->fetchClusterUpgradeInfo($name);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.container.v1.ClusterManager/FetchClusterUpgradeInfo', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function fetchClusterUpgradeInfoExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $name = 'name3373707';
+        try {
+            $gapicClient->fetchClusterUpgradeInfo($name);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function fetchNodePoolUpgradeInfoTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $minorTargetVersion = 'minorTargetVersion1967593972';
+        $patchTargetVersion = 'patchTargetVersion-1029977855';
+        $endOfStandardSupportTimestamp = 'endOfStandardSupportTimestamp5366440';
+        $endOfExtendedSupportTimestamp = 'endOfExtendedSupportTimestamp-1285813724';
+        $expectedResponse = new NodePoolUpgradeInfo();
+        $expectedResponse->setMinorTargetVersion($minorTargetVersion);
+        $expectedResponse->setPatchTargetVersion($patchTargetVersion);
+        $expectedResponse->setEndOfStandardSupportTimestamp($endOfStandardSupportTimestamp);
+        $expectedResponse->setEndOfExtendedSupportTimestamp($endOfExtendedSupportTimestamp);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $name = 'name3373707';
+        $response = $gapicClient->fetchNodePoolUpgradeInfo($name);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.container.v1.ClusterManager/FetchNodePoolUpgradeInfo', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($name, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
+    public function fetchNodePoolUpgradeInfoExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $gapicClient = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $name = 'name3373707';
+        try {
+            $gapicClient->fetchNodePoolUpgradeInfo($name);
+            // If the $gapicClient method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /** @test */
     public function getClusterTest()
     {
         $transport = $this->createTransport();
@@ -632,6 +766,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $tpuIpv4CidrBlock = 'tpuIpv4CidrBlock1137906646';
         $id = 'id3355';
         $etag = 'etag3123477';
+        $satisfiesPzs = false;
+        $satisfiesPzi = false;
         $expectedResponse = new Cluster();
         $expectedResponse->setName($name2);
         $expectedResponse->setDescription($description);
@@ -660,6 +796,8 @@ class ClusterManagerClientTest extends GeneratedTest
         $expectedResponse->setTpuIpv4CidrBlock($tpuIpv4CidrBlock);
         $expectedResponse->setId($id);
         $expectedResponse->setEtag($etag);
+        $expectedResponse->setSatisfiesPzs($satisfiesPzs);
+        $expectedResponse->setSatisfiesPzi($satisfiesPzi);
         $transport->addResponse($expectedResponse);
         $response = $gapicClient->getCluster();
         $this->assertEquals($expectedResponse, $response);

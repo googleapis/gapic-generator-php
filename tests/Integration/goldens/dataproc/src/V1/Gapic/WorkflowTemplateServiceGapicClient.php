@@ -111,6 +111,8 @@ class WorkflowTemplateServiceGapicClient
 
     private static $clusterRegionNameTemplate;
 
+    private static $cryptoKeyNameTemplate;
+
     private static $locationNameTemplate;
 
     private static $nodeGroupNameTemplate;
@@ -155,6 +157,15 @@ class WorkflowTemplateServiceGapicClient
         }
 
         return self::$clusterRegionNameTemplate;
+    }
+
+    private static function getCryptoKeyNameTemplate()
+    {
+        if (self::$cryptoKeyNameTemplate == null) {
+            self::$cryptoKeyNameTemplate = new PathTemplate('projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}');
+        }
+
+        return self::$cryptoKeyNameTemplate;
     }
 
     private static function getLocationNameTemplate()
@@ -225,6 +236,7 @@ class WorkflowTemplateServiceGapicClient
         if (self::$pathTemplateMap == null) {
             self::$pathTemplateMap = [
                 'clusterRegion' => self::getClusterRegionNameTemplate(),
+                'cryptoKey' => self::getCryptoKeyNameTemplate(),
                 'location' => self::getLocationNameTemplate(),
                 'nodeGroup' => self::getNodeGroupNameTemplate(),
                 'projectLocationWorkflowTemplate' => self::getProjectLocationWorkflowTemplateNameTemplate(),
@@ -254,6 +266,27 @@ class WorkflowTemplateServiceGapicClient
             'project' => $project,
             'region' => $region,
             'cluster' => $cluster,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a crypto_key
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $keyRing
+     * @param string $cryptoKey
+     *
+     * @return string The formatted crypto_key resource.
+     */
+    public static function cryptoKeyName($project, $location, $keyRing, $cryptoKey)
+    {
+        return self::getCryptoKeyNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'key_ring' => $keyRing,
+            'crypto_key' => $cryptoKey,
         ]);
     }
 
@@ -393,6 +426,7 @@ class WorkflowTemplateServiceGapicClient
      * The following name formats are supported:
      * Template: Pattern
      * - clusterRegion: projects/{project}/regions/{region}/clusters/{cluster}
+     * - cryptoKey: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}
      * - location: projects/{project}/locations/{location}
      * - nodeGroup: projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}
      * - projectLocationWorkflowTemplate: projects/{project}/locations/{location}/workflowTemplates/{workflow_template}

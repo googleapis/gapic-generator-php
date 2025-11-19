@@ -19,6 +19,25 @@
                 }
             }
         },
+        "BranchService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "BranchServiceGapicClient",
+                    "rpcs": {
+                        "GetBranch": {
+                            "methods": [
+                                "getBranch"
+                            ]
+                        },
+                        "ListBranches": {
+                            "methods": [
+                                "listBranches"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "CatalogService": {
             "clients": {
                 "grpc": {
@@ -155,6 +174,54 @@
                 }
             }
         },
+        "ConversationalSearchService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ConversationalSearchServiceGapicClient",
+                    "rpcs": {
+                        "ConversationalSearch": {
+                            "methods": [
+                                "conversationalSearch"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "GenerativeQuestionService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "GenerativeQuestionServiceGapicClient",
+                    "rpcs": {
+                        "BatchUpdateGenerativeQuestionConfigs": {
+                            "methods": [
+                                "batchUpdateGenerativeQuestionConfigs"
+                            ]
+                        },
+                        "GetGenerativeQuestionsFeatureConfig": {
+                            "methods": [
+                                "getGenerativeQuestionsFeatureConfig"
+                            ]
+                        },
+                        "ListGenerativeQuestionConfigs": {
+                            "methods": [
+                                "listGenerativeQuestionConfigs"
+                            ]
+                        },
+                        "UpdateGenerativeQuestionConfig": {
+                            "methods": [
+                                "updateGenerativeQuestionConfig"
+                            ]
+                        },
+                        "UpdateGenerativeQuestionsFeatureConfig": {
+                            "methods": [
+                                "updateGenerativeQuestionsFeatureConfig"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "MerchantCenterAccountLinkService": {
             "clients": {
                 "grpc": {
@@ -267,6 +334,11 @@
                                 "deleteProduct"
                             ]
                         },
+                        "ExportProducts": {
+                            "methods": [
+                                "exportProducts"
+                            ]
+                        },
                         "GetProduct": {
                             "methods": [
                                 "getProduct"
@@ -305,6 +377,55 @@
                         "UpdateProduct": {
                             "methods": [
                                 "updateProduct"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "ProjectService": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ProjectServiceGapicClient",
+                    "rpcs": {
+                        "AcceptTerms": {
+                            "methods": [
+                                "acceptTerms"
+                            ]
+                        },
+                        "EnrollSolution": {
+                            "methods": [
+                                "enrollSolution"
+                            ]
+                        },
+                        "GetAlertConfig": {
+                            "methods": [
+                                "getAlertConfig"
+                            ]
+                        },
+                        "GetLoggingConfig": {
+                            "methods": [
+                                "getLoggingConfig"
+                            ]
+                        },
+                        "GetProject": {
+                            "methods": [
+                                "getProject"
+                            ]
+                        },
+                        "ListEnrolledSolutions": {
+                            "methods": [
+                                "listEnrolledSolutions"
+                            ]
+                        },
+                        "UpdateAlertConfig": {
+                            "methods": [
+                                "updateAlertConfig"
+                            ]
+                        },
+                        "UpdateLoggingConfig": {
+                            "methods": [
+                                "updateLoggingConfig"
                             ]
                         }
                     }
@@ -363,6 +484,11 @@
                         "CollectUserEvent": {
                             "methods": [
                                 "collectUserEvent"
+                            ]
+                        },
+                        "ExportUserEvents": {
+                            "methods": [
+                                "exportUserEvents"
                             ]
                         },
                         "ImportUserEvents": {

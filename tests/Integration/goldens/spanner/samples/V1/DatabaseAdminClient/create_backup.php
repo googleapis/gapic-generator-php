@@ -37,12 +37,12 @@ use Google\Rpc\Status;
  * `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>`
  * and can be used to track creation of the backup. The
  * [metadata][google.longrunning.Operation.metadata] field type is
- * [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]. The
- * [response][google.longrunning.Operation.response] field type is
- * [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
- * creation and delete the backup.
- * There can be only one pending backup creation per database. Backup creation
- * of different databases can run concurrently.
+ * [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
+ * The [response][google.longrunning.Operation.response] field type is
+ * [Backup][google.spanner.admin.database.v1.Backup], if successful.
+ * Cancelling the returned operation will stop the creation and delete the
+ * backup. There can be only one pending backup creation per database. Backup
+ * creation of different databases can run concurrently.
  *
  * @param string $formattedParent The name of the instance in which the backup will be
  *                                created. This must be the same instance that contains the database the

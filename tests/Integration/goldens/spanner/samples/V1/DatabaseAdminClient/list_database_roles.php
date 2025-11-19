@@ -34,7 +34,7 @@ use Google\Cloud\Spanner\Admin\Database\V1\ListDatabaseRolesRequest;
  *
  * @param string $formattedParent The database whose roles should be listed.
  *                                Values are of the form
- *                                `projects/<project>/instances/<instance>/databases/<database>/databaseRoles`. Please see
+ *                                `projects/<project>/instances/<instance>/databases/<database>`. Please see
  *                                {@see DatabaseAdminClient::databaseName()} for help formatting this field.
  */
 function list_database_roles_sample(string $formattedParent): void

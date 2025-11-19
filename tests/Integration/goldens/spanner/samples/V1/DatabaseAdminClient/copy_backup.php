@@ -41,12 +41,13 @@ use Google\Rpc\Status;
  * The [metadata][google.longrunning.Operation.metadata] field type is
  * [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
  * The [response][google.longrunning.Operation.response] field type is
- * [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
- * copying and delete the backup.
- * Concurrent CopyBackup requests can run on the same source backup.
+ * [Backup][google.spanner.admin.database.v1.Backup], if successful.
+ * Cancelling the returned operation will stop the copying and delete the
+ * destination backup. Concurrent CopyBackup requests can run on the same
+ * source backup.
  *
- * @param string $formattedParent       The name of the destination instance that will contain the backup copy.
- *                                      Values are of the form: `projects/<project>/instances/<instance>`. Please see
+ * @param string $formattedParent       The name of the destination instance that will contain the backup
+ *                                      copy. Values are of the form: `projects/<project>/instances/<instance>`. Please see
  *                                      {@see DatabaseAdminClient::instanceName()} for help formatting this field.
  * @param string $backupId              The id of the backup copy.
  *                                      The `backup_id` appended to `parent` forms the full backup_uri of the form

@@ -43,7 +43,6 @@ use Google\Protobuf\FieldMask;
 /**
  * Service Description: API Overview
  *
- *
  * Manages Identity and Access Management (IAM) policies.
  *
  * Any implementation of an API that offers access control features

@@ -26,7 +26,7 @@ class ServiceAsClient extends \Google\Protobuf\Internal\Message
      * methods in library_client that implement it. There can be more
      * than one library_client method for each RPC. RPCs with no
      * library_client methods need not be included.
-     * The key name is the name of the RPC as defined and formated in
+     * The key name is the name of the RPC as defined and formatted in
      * the proto file.
      *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.MethodList> rpcs = 2;</code>
@@ -46,7 +46,7 @@ class ServiceAsClient extends \Google\Protobuf\Internal\Message
      *           methods in library_client that implement it. There can be more
      *           than one library_client method for each RPC. RPCs with no
      *           library_client methods need not be included.
-     *           The key name is the name of the RPC as defined and formated in
+     *           The key name is the name of the RPC as defined and formatted in
      *           the proto file.
      * }
      */
@@ -86,7 +86,7 @@ class ServiceAsClient extends \Google\Protobuf\Internal\Message
      * methods in library_client that implement it. There can be more
      * than one library_client method for each RPC. RPCs with no
      * library_client methods need not be included.
-     * The key name is the name of the RPC as defined and formated in
+     * The key name is the name of the RPC as defined and formatted in
      * the proto file.
      *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.MethodList> rpcs = 2;</code>
@@ -102,7 +102,7 @@ class ServiceAsClient extends \Google\Protobuf\Internal\Message
      * methods in library_client that implement it. There can be more
      * than one library_client method for each RPC. RPCs with no
      * library_client methods need not be included.
-     * The key name is the name of the RPC as defined and formated in
+     * The key name is the name of the RPC as defined and formatted in
      * the proto file.
      *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.MethodList> rpcs = 2;</code>

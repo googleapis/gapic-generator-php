@@ -142,6 +142,8 @@ class ClusterControllerGapicClient
 
     private static $clusterRegionNameTemplate;
 
+    private static $cryptoKeyNameTemplate;
+
     private static $nodeGroupNameTemplate;
 
     private static $serviceNameTemplate;
@@ -187,6 +189,15 @@ class ClusterControllerGapicClient
         return self::$clusterRegionNameTemplate;
     }
 
+    private static function getCryptoKeyNameTemplate()
+    {
+        if (self::$cryptoKeyNameTemplate == null) {
+            self::$cryptoKeyNameTemplate = new PathTemplate('projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}');
+        }
+
+        return self::$cryptoKeyNameTemplate;
+    }
+
     private static function getNodeGroupNameTemplate()
     {
         if (self::$nodeGroupNameTemplate == null) {
@@ -211,6 +222,7 @@ class ClusterControllerGapicClient
             self::$pathTemplateMap = [
                 'cluster' => self::getClusterNameTemplate(),
                 'clusterRegion' => self::getClusterRegionNameTemplate(),
+                'cryptoKey' => self::getCryptoKeyNameTemplate(),
                 'nodeGroup' => self::getNodeGroupNameTemplate(),
                 'service' => self::getServiceNameTemplate(),
             ];
@@ -254,6 +266,27 @@ class ClusterControllerGapicClient
             'project' => $project,
             'region' => $region,
             'cluster' => $cluster,
+        ]);
+    }
+
+    /**
+     * Formats a string containing the fully-qualified path to represent a crypto_key
+     * resource.
+     *
+     * @param string $project
+     * @param string $location
+     * @param string $keyRing
+     * @param string $cryptoKey
+     *
+     * @return string The formatted crypto_key resource.
+     */
+    public static function cryptoKeyName($project, $location, $keyRing, $cryptoKey)
+    {
+        return self::getCryptoKeyNameTemplate()->render([
+            'project' => $project,
+            'location' => $location,
+            'key_ring' => $keyRing,
+            'crypto_key' => $cryptoKey,
         ]);
     }
 
@@ -303,6 +336,7 @@ class ClusterControllerGapicClient
      * Template: Pattern
      * - cluster: projects/{project}/locations/{location}/clusters/{cluster}
      * - clusterRegion: projects/{project}/regions/{region}/clusters/{cluster}
+     * - cryptoKey: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}
      * - nodeGroup: projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}
      * - service: projects/{project}/locations/{location}/services/{service}
      *
@@ -681,9 +715,13 @@ class ClusterControllerGapicClient
      *     Optional.
      *
      *     @type string $tarballGcsDir
-     *           Optional. The output Cloud Storage directory for the diagnostic
+     *           Optional. (Optional) The output Cloud Storage directory for the diagnostic
      *           tarball. If not specified, a task-specific directory in the cluster's
      *           staging bucket will be used.
+     *     @type int $tarballAccess
+     *           Optional. (Optional) The access type to the diagnostic tarball. If not
+     *           specified, falls back to default access of the bucket
+     *           For allowed values, use constants defined on {@see \Google\Cloud\Dataproc\V1\DiagnoseClusterRequest\TarballAccess}
      *     @type Interval $diagnosisInterval
      *           Optional. Time interval in which diagnosis should be carried out on the
      *           cluster.
@@ -715,6 +753,10 @@ class ClusterControllerGapicClient
         $requestParamHeaders['cluster_name'] = $clusterName;
         if (isset($optionalArgs['tarballGcsDir'])) {
             $request->setTarballGcsDir($optionalArgs['tarballGcsDir']);
+        }
+
+        if (isset($optionalArgs['tarballAccess'])) {
+            $request->setTarballAccess($optionalArgs['tarballAccess']);
         }
 
         if (isset($optionalArgs['diagnosisInterval'])) {
@@ -824,12 +866,12 @@ class ClusterControllerGapicClient
      *           where **field** is one of `status.state`, `clusterName`, or `labels.[KEY]`,
      *           and `[KEY]` is a label key. **value** can be `*` to match all values.
      *           `status.state` can be one of the following: `ACTIVE`, `INACTIVE`,
-     *           `CREATING`, `RUNNING`, `ERROR`, `DELETING`, or `UPDATING`. `ACTIVE`
-     *           contains the `CREATING`, `UPDATING`, and `RUNNING` states. `INACTIVE`
-     *           contains the `DELETING` and `ERROR` states.
-     *           `clusterName` is the name of the cluster provided at creation time.
-     *           Only the logical `AND` operator is supported; space-separated items are
-     *           treated as having an implicit `AND` operator.
+     *           `CREATING`, `RUNNING`, `ERROR`, `DELETING`, `UPDATING`, `STOPPING`, or
+     *           `STOPPED`. `ACTIVE` contains the `CREATING`, `UPDATING`, and `RUNNING`
+     *           states. `INACTIVE` contains the `DELETING`, `ERROR`, `STOPPING`, and
+     *           `STOPPED` states. `clusterName` is the name of the cluster provided at
+     *           creation time. Only the logical `AND` operator is supported;
+     *           space-separated items are treated as having an implicit `AND` operator.
      *
      *           Example filter:
      *

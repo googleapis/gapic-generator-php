@@ -1,0 +1,16 @@
+
+    /**
+     * @param string $name Required. The name of the schedule to retrieve.
+     *                     Values are of the form
+     *                     `projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>`. Please see
+     *                     {@see DatabaseAdminClient::backupScheduleName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Spanner\Admin\Database\V1\GetBackupScheduleRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

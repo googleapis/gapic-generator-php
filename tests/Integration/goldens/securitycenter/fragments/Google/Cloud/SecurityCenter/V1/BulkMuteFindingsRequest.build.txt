@@ -1,8 +1,8 @@
 
     /**
      * @param string $parent Required. The parent, at which bulk action needs to be applied. Its format
-     *                       is "organizations/[organization_id]", "folders/[folder_id]",
-     *                       "projects/[project_id]".
+     *                       is `organizations/[organization_id]`, `folders/[folder_id]`,
+     *                       `projects/[project_id]`.
      *
      * @return \Google\Cloud\SecurityCenter\V1\BulkMuteFindingsRequest
      *

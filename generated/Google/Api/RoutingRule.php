@@ -35,7 +35,7 @@ use Google\Protobuf\Internal\GPBUtil;
  * The routing header consists of one or multiple key-value pairs. Every key
  * and value must be percent-encoded, and joined together in the format of
  * `key1=value1&key2=value2`.
- * In the examples below I am skipping the percent-encoding for readablity.
+ * The examples below skip the percent-encoding for readability.
  * Example 1
  * Extracting a field from the request to put into the routing header
  * unchanged, with the key equal to the field name.
@@ -299,7 +299,7 @@ class RoutingRule extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Google\Api\RoutingParameter[]|\Google\Protobuf\Internal\RepeatedField $routing_parameters
+     *     @type array<\Google\Api\RoutingParameter>|\Google\Protobuf\Internal\RepeatedField $routing_parameters
      *           A collection of Routing Parameter specifications.
      *           **NOTE:** If multiple Routing Parameters describe the same key
      *           (via the `path_template` field or via the `field` field when
@@ -338,7 +338,7 @@ class RoutingRule extends \Google\Protobuf\Internal\Message
      * See the examples for more details.
      *
      * Generated from protobuf field <code>repeated .google.api.RoutingParameter routing_parameters = 2;</code>
-     * @param \Google\Api\RoutingParameter[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param array<\Google\Api\RoutingParameter>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setRoutingParameters($var)

@@ -12,17 +12,29 @@ use Google\Protobuf\Internal\GPBUtil;
  * A map from a transport name to ServiceAsClient, which allows
  * listing information about the client objects that implement the
  * parent RPC service for the specified transport.
- * The key name is the transport, lower-cased with no separators
- * (e.g. "grpc", "rest").
  *
  * Generated from protobuf message <code>google.gapic.metadata.GapicMetadata.ServiceForTransport</code>
  */
 class ServiceForTransport extends \Google\Protobuf\Internal\Message
 {
     /**
+     * Map of transport name to ServiceAsClient. The key name is the transport,
+     * lower-cased with no separators (e.g. "grpc", "rest").
+     *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.ServiceAsClient> clients = 1;</code>
      */
     private $clients;
+    /**
+     * The API version for the interface definition found in the
+     * `google.api.api_version` annotation of this proto-defined service during
+     * code generation.
+     * This is the value populated by the client in the API version request
+     * parameter as per
+     * [AIP-4236](https://google.aip.dev/client-libraries/4236).
+     *
+     * Generated from protobuf field <code>string api_version = 2;</code>
+     */
+    protected $api_version = '';
 
     /**
      * Constructor.
@@ -31,6 +43,15 @@ class ServiceForTransport extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type array|\Google\Protobuf\Internal\MapField $clients
+     *           Map of transport name to ServiceAsClient. The key name is the transport,
+     *           lower-cased with no separators (e.g. "grpc", "rest").
+     *     @type string $api_version
+     *           The API version for the interface definition found in the
+     *           `google.api.api_version` annotation of this proto-defined service during
+     *           code generation.
+     *           This is the value populated by the client in the API version request
+     *           parameter as per
+     *           [AIP-4236](https://google.aip.dev/client-libraries/4236).
      * }
      */
     public function __construct($data = NULL) {
@@ -39,6 +60,9 @@ class ServiceForTransport extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * Map of transport name to ServiceAsClient. The key name is the transport,
+     * lower-cased with no separators (e.g. "grpc", "rest").
+     *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.ServiceAsClient> clients = 1;</code>
      * @return \Google\Protobuf\Internal\MapField
      */
@@ -48,6 +72,9 @@ class ServiceForTransport extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * Map of transport name to ServiceAsClient. The key name is the transport,
+     * lower-cased with no separators (e.g. "grpc", "rest").
+     *
      * Generated from protobuf field <code>map<string, .google.gapic.metadata.GapicMetadata.ServiceAsClient> clients = 1;</code>
      * @param array|\Google\Protobuf\Internal\MapField $var
      * @return $this
@@ -56,6 +83,42 @@ class ServiceForTransport extends \Google\Protobuf\Internal\Message
     {
         $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::MESSAGE, \Google\Gapic\Metadata\GapicMetadata\ServiceAsClient::class);
         $this->clients = $arr;
+
+        return $this;
+    }
+
+    /**
+     * The API version for the interface definition found in the
+     * `google.api.api_version` annotation of this proto-defined service during
+     * code generation.
+     * This is the value populated by the client in the API version request
+     * parameter as per
+     * [AIP-4236](https://google.aip.dev/client-libraries/4236).
+     *
+     * Generated from protobuf field <code>string api_version = 2;</code>
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->api_version;
+    }
+
+    /**
+     * The API version for the interface definition found in the
+     * `google.api.api_version` annotation of this proto-defined service during
+     * code generation.
+     * This is the value populated by the client in the API version request
+     * parameter as per
+     * [AIP-4236](https://google.aip.dev/client-libraries/4236).
+     *
+     * Generated from protobuf field <code>string api_version = 2;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setApiVersion($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->api_version = $var;
 
         return $this;
     }

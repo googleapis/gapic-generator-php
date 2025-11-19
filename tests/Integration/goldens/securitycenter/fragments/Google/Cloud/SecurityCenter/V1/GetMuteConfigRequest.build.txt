@@ -1,10 +1,13 @@
 
     /**
      * @param string $name Required. Name of the mute config to retrieve. Its format is
-     *                     organizations/{organization}/muteConfigs/{config_id},
-     *                     folders/{folder}/muteConfigs/{config_id}, or
-     *                     projects/{project}/muteConfigs/{config_id}
-     *                     Please see {@see SecurityCenterClient::muteConfigName()} for help formatting this field.
+     *                     `organizations/{organization}/muteConfigs/{config_id}`,
+     *                     `folders/{folder}/muteConfigs/{config_id}`,
+     *                     `projects/{project}/muteConfigs/{config_id}`,
+     *                     `organizations/{organization}/locations/global/muteConfigs/{config_id}`,
+     *                     `folders/{folder}/locations/global/muteConfigs/{config_id}`, or
+     *                     `projects/{project}/locations/global/muteConfigs/{config_id}`. Please see
+     *                     {@see SecurityCenterClient::muteConfigName()} for help formatting this field.
      *
      * @return \Google\Cloud\SecurityCenter\V1\GetMuteConfigRequest
      *

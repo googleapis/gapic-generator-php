@@ -9,7 +9,8 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * The request message for [Operations.WaitOperation][google.longrunning.Operations.WaitOperation].
+ * The request message for
+ * [Operations.WaitOperation][google.longrunning.Operations.WaitOperation].
  *
  * Generated from protobuf message <code>google.longrunning.WaitOperationRequest</code>
  */
@@ -81,11 +82,21 @@ class WaitOperationRequest extends \Google\Protobuf\Internal\Message
      * If RPC context deadline is also specified, the shorter one will be used.
      *
      * Generated from protobuf field <code>.google.protobuf.Duration timeout = 2;</code>
-     * @return \Google\Protobuf\Duration
+     * @return \Google\Protobuf\Duration|null
      */
     public function getTimeout()
     {
         return $this->timeout;
+    }
+
+    public function hasTimeout()
+    {
+        return isset($this->timeout);
+    }
+
+    public function clearTimeout()
+    {
+        unset($this->timeout);
     }
 
     /**
