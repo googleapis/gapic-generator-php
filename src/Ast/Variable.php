@@ -21,7 +21,7 @@ namespace Google\Generator\Ast;
 /** A variable. */
 final class Variable extends Expression
 {
-    public function __construct($name)
+    public function __construct(public string $name)
     {
         $this->name = $name;
     }

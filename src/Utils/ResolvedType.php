@@ -67,13 +67,46 @@ class ResolvedType
     }
 
     /**
+     * The 'generic' built-in type for multiple types
+     *
+     * @return ResolvedType
+     */
+    public static function generic(Type $genericType, Type $typeArgument): ResolvedType
+    {
+        $typesString = sprintf('%s<%s>', $genericType->name, $typeArgument->name);
+
+        return new ResolvedType(
+            Type::generic($typesString),
+            fn () => $typesString
+        );
+    }
+
+    /**
+     * The 'union' built-in type for multiple types
+     *
+     * @return ResolvedType
+     */
+    public static function union(Type ...$types): ResolvedType
+    {
+        $typesString = implode(
+            '|',
+            array_map(fn (Type $type) => $type->name, $types)
+        );
+
+        return new ResolvedType(
+            Type::union($typesString),
+            fn () => $typesString
+        );
+    }
+
+    /**
      * Construct a ResolvedType.
      *
      * @param string $typeName The resolved name of the type.
      */
     public function __construct(
         /** @var Type *Readonly* The type of this resolved-type. */
-        public ReadOnly Type $type,
+        public readonly Type $type,
         private Closure $fnToCode,
         private bool $optional = false
     ) {

@@ -73,6 +73,18 @@ return [
                     ],
                 ],
             ],
+            'ExportProducts' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*/branches/*}/products:export',
+                'body' => '*',
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
             'GetProduct' => [
                 'method' => 'get',
                 'uriTemplate' => '/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/products/**}',

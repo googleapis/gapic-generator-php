@@ -26,6 +26,25 @@ return [
             'CollectUserEvent' => [
                 'method' => 'get',
                 'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*}/userEvents:collect',
+                'additionalBindings' => [
+                    [
+                        'method' => 'post',
+                        'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*}/userEvents:collect',
+                        'body' => '*',
+                    ],
+                ],
+                'placeholders' => [
+                    'parent' => [
+                        'getters' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'ExportUserEvents' => [
+                'method' => 'post',
+                'uriTemplate' => '/v2alpha/{parent=projects/*/locations/*/catalogs/*}/userEvents:export',
+                'body' => '*',
                 'placeholders' => [
                     'parent' => [
                         'getters' => [

@@ -18,11 +18,12 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\LongRunning\OperationsClient;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -209,7 +210,7 @@ class UnitTestsGenerator
                 // initial release of this micro-generator.
                 break;
             default:
-                throw new \Exception("Cannot handle method-type: '{$method->methodType}'");
+                throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
     }
 
@@ -261,7 +262,7 @@ class UnitTestsGenerator
                             // Variable of type oneof wrapper, e.g. supplementaryData.
                             AST::call(
                                 AST::var(Helpers::toCamelCase($x->field->getOneofDesc()->getName())),
-                                AST::method("is" . Helpers::toUpperCamelCase($x->field->name))
+                                AST::method('is' . Helpers::toUpperCamelCase($x->field->name))
                             )()
                         )
                 ])),

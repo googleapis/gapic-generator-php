@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,25 +20,24 @@
  * This file was automatically generated - do not edit!
  */
 
-namespace Testing\BasicServerStreaming\Tests\Unit;
+namespace Google\Cloud\Retail\Tests\Unit\V2alpha;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
+use Google\Cloud\Retail\V2alpha\Branch;
+use Google\Cloud\Retail\V2alpha\BranchServiceClient;
+use Google\Cloud\Retail\V2alpha\ListBranchesResponse;
 use Google\Rpc\Code;
-use Testing\BasicServerStreaming\BasicServerStreamingClient;
-use Testing\BasicServerStreaming\Request;
-use Testing\BasicServerStreaming\Response;
 use stdClass;
 
 /**
- * @group basicserverstreaming
+ * @group retail
  *
  * @group gapic
  */
-class BasicServerStreamingClientTest extends GeneratedTest
+class BranchServiceClientTest extends GeneratedTest
 {
     /** @return TransportInterface */
     private function createTransport($deserialize = null)
@@ -52,17 +51,17 @@ class BasicServerStreamingClientTest extends GeneratedTest
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicServerStreamingClient */
+    /** @return BranchServiceClient */
     private function createClient(array $options = [])
     {
         $options += [
             'credentials' => $this->createCredentials(),
         ];
-        return new BasicServerStreamingClient($options);
+        return new BranchServiceClient($options);
     }
 
     /** @test */
-    public function methodEmptyTest()
+    public function getBranchTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
@@ -70,53 +69,51 @@ class BasicServerStreamingClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $expectedResponse = new Response();
+        $name2 = 'name2-1052831874';
+        $displayName = 'displayName1615086568';
+        $isDefault = true;
+        $expectedResponse = new Branch();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setDisplayName($displayName);
+        $expectedResponse->setIsDefault($isDefault);
         $transport->addResponse($expectedResponse);
-        $expectedResponse2 = new Response();
-        $transport->addResponse($expectedResponse2);
-        $expectedResponse3 = new Response();
-        $transport->addResponse($expectedResponse3);
         // Mock request
-        $serverStream = $gapicClient->methodEmpty();
-        $this->assertInstanceOf(ServerStream::class, $serverStream);
-        $responses = iterator_to_array($serverStream->readAll());
-        $expectedResponses = [];
-        $expectedResponses[] = $expectedResponse;
-        $expectedResponses[] = $expectedResponse2;
-        $expectedResponses[] = $expectedResponse3;
-        $this->assertEquals($expectedResponses, $responses);
+        $formattedName = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
+        $response = $gapicClient->getBranch($formattedName);
+        $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basicserverstreaming.BasicServerStreaming/MethodEmpty', $actualFuncCall);
+        $this->assertSame('/google.cloud.retail.v2alpha.BranchService/GetBranch', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /** @test */
-    public function methodEmptyExceptionTest()
+    public function getBranchExceptionTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
+        $this->assertTrue($transport->isExhausted());
         $status = new stdClass();
         $status->code = Code::DATA_LOSS;
         $status->details = 'internal error';
-        $expectedExceptionMessage = json_encode([
+        $expectedExceptionMessage  = json_encode([
             'message' => 'internal error',
             'code' => Code::DATA_LOSS,
             'status' => 'DATA_LOSS',
             'details' => [],
         ], JSON_PRETTY_PRINT);
-        $transport->setStreamingStatus($status);
-        $this->assertTrue($transport->isExhausted());
+        $transport->addResponse(null, $status);
         // Mock request
-        $serverStream = $gapicClient->methodEmpty();
-        $results = $serverStream->readAll();
+        $formattedName = $gapicClient->branchName('[PROJECT]', '[LOCATION]', '[CATALOG]', '[BRANCH]');
         try {
-            iterator_to_array($results);
-            // If the close stream method call did not throw, fail the test
+            $gapicClient->getBranch($formattedName);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());
@@ -128,7 +125,7 @@ class BasicServerStreamingClientTest extends GeneratedTest
     }
 
     /** @test */
-    public function methodServerTest()
+    public function listBranchesTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
@@ -136,57 +133,45 @@ class BasicServerStreamingClientTest extends GeneratedTest
         ]);
         $this->assertTrue($transport->isExhausted());
         // Mock response
-        $expectedResponse = new Response();
+        $expectedResponse = new ListBranchesResponse();
         $transport->addResponse($expectedResponse);
-        $expectedResponse2 = new Response();
-        $transport->addResponse($expectedResponse2);
-        $expectedResponse3 = new Response();
-        $transport->addResponse($expectedResponse3);
         // Mock request
-        $aNumber = 1071982361;
-        $serverStream = $gapicClient->methodServer($aNumber);
-        $this->assertInstanceOf(ServerStream::class, $serverStream);
-        $responses = iterator_to_array($serverStream->readAll());
-        $expectedResponses = [];
-        $expectedResponses[] = $expectedResponse;
-        $expectedResponses[] = $expectedResponse2;
-        $expectedResponses[] = $expectedResponse3;
-        $this->assertEquals($expectedResponses, $responses);
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
+        $response = $gapicClient->listBranches($formattedParent);
+        $this->assertEquals($expectedResponse, $response);
         $actualRequests = $transport->popReceivedCalls();
         $this->assertSame(1, count($actualRequests));
         $actualFuncCall = $actualRequests[0]->getFuncCall();
         $actualRequestObject = $actualRequests[0]->getRequestObject();
-        $this->assertSame('/testing.basicserverstreaming.BasicServerStreaming/MethodServer', $actualFuncCall);
-        $actualValue = $actualRequestObject->getANumber();
-        $this->assertProtobufEquals($aNumber, $actualValue);
+        $this->assertSame('/google.cloud.retail.v2alpha.BranchService/ListBranches', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
         $this->assertTrue($transport->isExhausted());
     }
 
     /** @test */
-    public function methodServerExceptionTest()
+    public function listBranchesExceptionTest()
     {
         $transport = $this->createTransport();
         $gapicClient = $this->createClient([
             'transport' => $transport,
         ]);
+        $this->assertTrue($transport->isExhausted());
         $status = new stdClass();
         $status->code = Code::DATA_LOSS;
         $status->details = 'internal error';
-        $expectedExceptionMessage = json_encode([
+        $expectedExceptionMessage  = json_encode([
             'message' => 'internal error',
             'code' => Code::DATA_LOSS,
             'status' => 'DATA_LOSS',
             'details' => [],
         ], JSON_PRETTY_PRINT);
-        $transport->setStreamingStatus($status);
-        $this->assertTrue($transport->isExhausted());
+        $transport->addResponse(null, $status);
         // Mock request
-        $aNumber = 1071982361;
-        $serverStream = $gapicClient->methodServer($aNumber);
-        $results = $serverStream->readAll();
+        $formattedParent = $gapicClient->catalogName('[PROJECT]', '[LOCATION]', '[CATALOG]');
         try {
-            iterator_to_array($results);
-            // If the close stream method call did not throw, fail the test
+            $gapicClient->listBranches($formattedParent);
+            // If the $gapicClient method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
             $this->assertEquals($status->code, $ex->getCode());

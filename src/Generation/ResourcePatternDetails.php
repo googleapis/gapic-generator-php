@@ -20,7 +20,7 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ResourceTemplate\Parser;
 use Google\ApiCore\ResourceTemplate\Segment;
-use Google\Generator\Ast\Ast;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpProperty;
 use Google\Generator\Collections\Vector;
@@ -46,9 +46,9 @@ class ResourcePatternDetails implements ResourcePart
             ->filter(fn ($x) => $x->getSegmentType() === Segment::VARIABLE_SEGMENT)
             ->map(fn ($x) => $x->getKey());
         // Handle singleton resources. Assumes the singleton always resides at the end of a pattern.
-        $tokens = explode("/", $pattern);
+        $tokens = explode('/', $pattern);
         $nameSegments = $varSegments;
-        if (substr(end($tokens), 0, 1) !== "{" && substr($pattern, strlen($pattern) - 1) !== "}") {
+        if (substr(end($tokens), 0, 1) !== '{' && substr($pattern, strlen($pattern) - 1) !== '}') {
             $nameSegments = $nameSegments->append(end($tokens));
         }
         $this->nameSnakeCase = $nameSegments->join('_');

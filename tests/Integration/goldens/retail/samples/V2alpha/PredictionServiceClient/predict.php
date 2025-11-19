@@ -48,12 +48,11 @@ use Google\Cloud\Retail\V2alpha\UserEvent;
  * @param string $userEventEventType User event type. Allowed values are:
  *
  *                                   * `add-to-cart`: Products being added to cart.
+ *                                   * `remove-from-cart`: Products being removed from cart.
  *                                   * `category-page-view`: Special pages such as sale or promotion pages
  *                                   viewed.
  *                                   * `detail-page-view`: Products detail page viewed.
  *                                   * `home-page-view`: Homepage viewed.
- *                                   * `promotion-offered`: Promotion is offered to a user.
- *                                   * `promotion-not-offered`: Promotion is not offered to a user.
  *                                   * `purchase-complete`: User finishing a purchase.
  *                                   * `search`: Product search.
  *                                   * `shopping-cart-page-view`: User viewing a shopping cart.

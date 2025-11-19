@@ -23,6 +23,16 @@
 return [
     'interfaces' => [
         'google.cloud.retail.v2alpha.UserEventService' => [
+            'ExportUserEvents' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ExportUserEventsResponse',
+                    'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\ExportMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+            ],
             'ImportUserEvents' => [
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ImportUserEventsResponse',

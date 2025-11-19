@@ -1,0 +1,16 @@
+
+    /**
+     * @param \Google\Cloud\SecurityCenter\V1\ResourceValueConfig $resourceValueConfig Required. The resource value config being updated.
+     * @param \Google\Protobuf\FieldMask                          $updateMask          The list of fields to be updated.
+     *                                                                                 If empty all mutable fields will be updated.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\UpdateResourceValueConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\SecurityCenter\V1\ResourceValueConfig $resourceValueConfig, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setResourceValueConfig($resourceValueConfig)
+            ->setUpdateMask($updateMask);
+    }

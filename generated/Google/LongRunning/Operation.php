@@ -65,7 +65,7 @@ class Operation extends \Google\Protobuf\Internal\Message
      *     @type \Google\Rpc\Status $error
      *           The error result of the operation in case of failure or cancellation.
      *     @type \Google\Protobuf\Any $response
-     *           The normal response of the operation in case of success.  If the original
+     *           The normal, successful response of the operation.  If the original
      *           method returns no data on success, such as `Delete`, the response is
      *           `google.protobuf.Empty`.  If the original method is standard
      *           `Get`/`Create`/`Update`, the response should be the resource.  For other
@@ -117,11 +117,21 @@ class Operation extends \Google\Protobuf\Internal\Message
      * long-running operation should document the metadata type, if any.
      *
      * Generated from protobuf field <code>.google.protobuf.Any metadata = 2;</code>
-     * @return \Google\Protobuf\Any
+     * @return \Google\Protobuf\Any|null
      */
     public function getMetadata()
     {
         return $this->metadata;
+    }
+
+    public function hasMetadata()
+    {
+        return isset($this->metadata);
+    }
+
+    public function clearMetadata()
+    {
+        unset($this->metadata);
     }
 
     /**
@@ -176,11 +186,16 @@ class Operation extends \Google\Protobuf\Internal\Message
      * The error result of the operation in case of failure or cancellation.
      *
      * Generated from protobuf field <code>.google.rpc.Status error = 4;</code>
-     * @return \Google\Rpc\Status
+     * @return \Google\Rpc\Status|null
      */
     public function getError()
     {
         return $this->readOneof(4);
+    }
+
+    public function hasError()
+    {
+        return $this->hasOneof(4);
     }
 
     /**
@@ -199,7 +214,7 @@ class Operation extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * The normal response of the operation in case of success.  If the original
+     * The normal, successful response of the operation.  If the original
      * method returns no data on success, such as `Delete`, the response is
      * `google.protobuf.Empty`.  If the original method is standard
      * `Get`/`Create`/`Update`, the response should be the resource.  For other
@@ -209,15 +224,20 @@ class Operation extends \Google\Protobuf\Internal\Message
      * `TakeSnapshotResponse`.
      *
      * Generated from protobuf field <code>.google.protobuf.Any response = 5;</code>
-     * @return \Google\Protobuf\Any
+     * @return \Google\Protobuf\Any|null
      */
     public function getResponse()
     {
         return $this->readOneof(5);
     }
 
+    public function hasResponse()
+    {
+        return $this->hasOneof(5);
+    }
+
     /**
-     * The normal response of the operation in case of success.  If the original
+     * The normal, successful response of the operation.  If the original
      * method returns no data on success, such as `Delete`, the response is
      * `google.protobuf.Empty`.  If the original method is standard
      * `Get`/`Create`/`Update`, the response should be the resource.  For other

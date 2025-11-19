@@ -3,11 +3,11 @@
         "google.cloud.retail.v2alpha.ProductService": {
             "retry_codes": {
                 "no_retry_codes": [],
-                "retry_policy_2_codes": [
+                "retry_policy_4_codes": [
                     "UNAVAILABLE",
                     "DEADLINE_EXCEEDED"
                 ],
-                "retry_policy_4_codes": [
+                "retry_policy_6_codes": [
                     "UNAVAILABLE",
                     "DEADLINE_EXCEEDED"
                 ]
@@ -22,7 +22,7 @@
                     "max_rpc_timeout_millis": 0,
                     "total_timeout_millis": 0
                 },
-                "retry_policy_2_params": {
+                "retry_policy_4_params": {
                     "initial_retry_delay_millis": 100,
                     "retry_delay_multiplier": 1.3,
                     "max_retry_delay_millis": 30000,
@@ -31,7 +31,7 @@
                     "max_rpc_timeout_millis": 30000,
                     "total_timeout_millis": 30000
                 },
-                "retry_policy_4_params": {
+                "retry_policy_6_params": {
                     "initial_retry_delay_millis": 100,
                     "retry_delay_multiplier": 1.3,
                     "max_retry_delay_millis": 300000,
@@ -44,63 +44,68 @@
             "methods": {
                 "AddFulfillmentPlaces": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "AddLocalInventories": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "CreateProduct": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "DeleteProduct": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "GetProduct": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
-                },
-                "ImportProducts": {
-                    "timeout_millis": 300000,
                     "retry_codes_name": "retry_policy_4_codes",
                     "retry_params_name": "retry_policy_4_params"
                 },
+                "AddLocalInventories": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
+                },
+                "CreateProduct": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
+                },
+                "DeleteProduct": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
+                },
+                "ExportProducts": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
+                },
+                "GetProduct": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
+                },
+                "ImportProducts": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "retry_policy_6_codes",
+                    "retry_params_name": "retry_policy_6_params"
+                },
                 "ListProducts": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 },
                 "PurgeProducts": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 },
                 "RemoveFulfillmentPlaces": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 },
                 "RemoveLocalInventories": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 },
                 "SetInventory": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 },
                 "UpdateProduct": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "retry_policy_2_codes",
-                    "retry_params_name": "retry_policy_2_params"
+                    "retry_codes_name": "retry_policy_4_codes",
+                    "retry_params_name": "retry_policy_4_params"
                 }
             }
         }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Map;
@@ -93,12 +94,12 @@ class TestNameValueProducer
             });
     }
 
-    public function perFieldRequest(MethodDetails $method): array
+    public function perFieldRequest(MethodDetails $method, array $reservedNames = []): array
     {
         // Handle test request value generation.
         $perField = static::filterFirstOneOf($method->allFields)
-            ->map(fn ($f) => new class($this, $method, $f) {
-                public function __construct($prod, $method, $f)
+            ->map(fn ($f) => new class($this, $method, $f, $reservedNames) {
+                public function __construct($prod, $method, $f, $reservedNames)
                 {
                     // This code is arranged in this way, as a name must not be generated
                     // if this field ends up not being used.
@@ -106,7 +107,8 @@ class TestNameValueProducer
                     // TODO: Consider refactoring this.
                     $this->field = $f;
                     $this->name = ($f->useResourceTestValue ? 'formatted_' : '') . $prod->name($f->name);
-                    $this->var = AST::var(Helpers::toCamelCase($this->name));
+                    $varPrefix = in_array($this->name, $reservedNames) ? 'request_' : '';
+                    $this->var = AST::var(Helpers::toCamelCase($varPrefix . $this->name));
                     $astAcc = Vector::new([]);
                     $prod->fieldInit($method, $f, $this->var, $this->name, null, $astAcc);
                     $this->initCode = $astAcc;
@@ -161,7 +163,7 @@ class TestNameValueProducer
             $astAcc = $astAcc->append(
                 AST::call(
                     $fieldVar,
-                    AST::method("set" . Helpers::toUpperCamelCase($field->camelName))
+                    AST::method('set' . Helpers::toUpperCamelCase($field->camelName))
                 )(
                     // TODO(v2): Handle non-primitive types.
                     $this->value($field, $fieldVarName)
@@ -204,13 +206,9 @@ class TestNameValueProducer
             // Only init required subfields that are either not in a oneof or they are the first field in a oneof.
             $requiredSubFields = $allSubFields->filter(fn ($x) => $x->isRequired && !$x->isOneOf)
                 ->concat($allSubFields->filter(fn ($f) => $f->isRequired && $f->isFirstFieldInOneof()));
-            if (empty($requiredSubFields) && !$field->useResourceTestValue) {
-                $astAcc = $astAcc->append(AST::assign($fieldVar, $this->value($field, $fieldVarName)));
-                return;
-            }
 
             foreach ($requiredSubFields as $subField) {
-                $subFieldVarName = Helpers::toCamelCase($field->name . "_" . $subField->name);
+                $subFieldVarName = Helpers::toCamelCase($field->name . '_' . $subField->name);
                 $subFieldVar = AST::var($subFieldVarName);
                 $this->fieldInit($method, $subField, $subFieldVar, $subFieldVarName, $clientVar, $astAcc);
                 $astAcc = $astAcc->append(AST::call($fieldVar, $subField->setter)($subFieldVar));
@@ -230,7 +228,7 @@ class TestNameValueProducer
             $args = $field->resourceDetails->getParams()->map(fn ($x) => strtoupper("[{$x[0]}]"));
         } else {
             // TODO: Better handling of wild-card patterns.
-            $args = $field->name . "-" . hash("md5", $field->name);
+            $args = $field->name . '-' . hash('md5', $field->name);
         }
         $clientVar = $clientVar ?? AST::var(UnitTestsGenerator::CLIENT_VARIABLE);
         // TODO: This should be better merged with FieldDetails.
@@ -285,7 +283,7 @@ class TestNameValueProducer
         switch ($field->desc->getType()) {
             case GPBType::DOUBLE: // 1
             case GPBType::FLOAT: // 2
-                $v = (float)(int)($javaHashCode() / 10);
+                $v = (float) (int) ($javaHashCode() / 10);
                 // See: https://docs.oracle.com/javase/7/docs/api/java/lang/Double.html#toString(double)
                 $vAbs = abs($v);
                 if ($vAbs >= 1e-3 && $vAbs < 1e7) {
@@ -347,7 +345,7 @@ class TestNameValueProducer
                 $enumValueName = $this->catalog->enumsByFullname[$field->desc->desc->getEnumType()]->getValue()[0]->getName();
                 return AST::access($this->ctx->type(Type::fromField($this->catalog, $field->desc->desc)), AST::property($enumValueName));
             default:
-                throw new \Exception("No testValue for type: {$field->desc->getType()}");
+                throw new Exception("No testValue for type: {$field->desc->getType()}");
         }
     }
 }

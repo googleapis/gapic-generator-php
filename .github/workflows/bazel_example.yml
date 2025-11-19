@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: 'recursive'
 
@@ -81,7 +81,7 @@ jobs:
             tests/Integration:talent \
             tests/Integration:videointelligence --noshow_progress --cache_test_results=no
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       if: ${{ failure() }}
       with:
         name: test-artifacts

@@ -43,6 +43,16 @@ return [
                     'totalPollTimeoutMillis' => '300000',
                 ],
             ],
+            'ExportProducts' => [
+                'longRunning' => [
+                    'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ExportProductsResponse',
+                    'metadataReturnType' => '\Google\Cloud\Retail\V2alpha\ExportMetadata',
+                    'initialPollDelayMillis' => '500',
+                    'pollDelayMultiplier' => '1.5',
+                    'maxPollDelayMillis' => '5000',
+                    'totalPollTimeoutMillis' => '300000',
+                ],
+            ],
             'ImportProducts' => [
                 'longRunning' => [
                     'operationReturnType' => '\Google\Cloud\Retail\V2alpha\ImportProductsResponse',

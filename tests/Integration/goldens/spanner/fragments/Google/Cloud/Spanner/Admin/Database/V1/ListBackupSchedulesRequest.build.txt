@@ -1,0 +1,16 @@
+
+    /**
+     * @param string $parent Required. Database is the parent resource whose backup schedules should be
+     *                       listed. Values are of the form
+     *                       projects/<project>/instances/<instance>/databases/<database>
+     *                       Please see {@see DatabaseAdminClient::databaseName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Spanner\Admin\Database\V1\ListBackupSchedulesRequest
+     *
+     * @experimental
+     */
+    public static function build(string $parent): self
+    {
+        return (new self())
+            ->setParent($parent);
+    }

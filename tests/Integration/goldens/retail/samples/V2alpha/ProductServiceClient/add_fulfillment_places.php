@@ -30,10 +30,11 @@ use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Rpc\Status;
 
 /**
- * It is recommended to use the
+ * We recommend that you use the
  * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
- * method instead of
- * [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces].
+ * method instead of the
+ * [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+ * method.
  * [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
  * achieves the same results but provides more fine-grained control over
  * ingesting local inventory data.

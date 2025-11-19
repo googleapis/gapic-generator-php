@@ -18,8 +18,9 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Exception;
 use Google\Api\ResourceDescriptor;
-use Google\Generator\Ast\Ast;
+use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Ast\PhpProperty;
 use Google\Generator\Collections\Vector;
@@ -32,11 +33,11 @@ class ResourceDetails implements ResourcePart
         $this->type = $desc->getType();
         $typeParts = explode('/', $this->type);
         if (count($typeParts) !== 2) {
-            throw new \Exception("Resource-name type is illformed: '{$this->type}'");
+            throw new Exception("Resource-name type is illformed: '{$this->type}'");
         }
         $this->nameCamelCase = Helpers::toCamelCase($typeParts[1]);
         $this->nameSnakeCase = Helpers::toSnakeCase($typeParts[1]);
-        $this->templateProperty = Ast::property($this->nameCamelCase . 'NameTemplate');
+        $this->templateProperty = AST::property($this->nameCamelCase . 'NameTemplate');
         $this->templateGetterMethod = AST::method(Helpers::toCamelCase('get_' . $typeParts[1]) . 'NameTemplate');
         $this->formatMethod = AST::method($this->nameCamelCase . 'Name');
         $this->patterns = Vector::new($desc->getPattern())

@@ -22,15 +22,17 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
-namespace Testing\BasicServerStreaming\Gapic;
+namespace Testing\BasicServerStreaming\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\Options\ClientOptions;
+use Google\ApiCore\ServerStream;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
+use Psr\Log\LoggerInterface;
 use Testing\BasicServerStreaming\EmptyRequest;
 use Testing\BasicServerStreaming\Request;
 use Testing\BasicServerStreaming\Response;
@@ -39,38 +41,23 @@ use Testing\BasicServerStreaming\Response;
  * Service Description:
  *
  * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods. Sample code to get started:
- *
- * ```
- * $basicServerStreamingClient = new BasicServerStreamingClient();
- * try {
- *     // Read all responses until the stream is complete
- *     $stream = $basicServerStreamingClient->methodEmpty();
- *     foreach ($stream->readAll() as $element) {
- *         // doSomethingWith($element);
- *     }
- * } finally {
- *     $basicServerStreamingClient->close();
- * }
- * ```
- *
- * @deprecated This class will be removed in the next major version update.
+ * calls that map to API methods.
  */
-class BasicServerStreamingGapicClient
+final class BasicServerStreamingClient
 {
     use GapicClientTrait;
 
     /** The name of the service. */
-    const SERVICE_NAME = 'testing.basicserverstreaming.BasicServerStreaming';
+    private const SERVICE_NAME = 'testing.basicserverstreaming.BasicServerStreaming';
 
     /** The default address of the service. */
-    const SERVICE_ADDRESS = 'serverstreaming.example.com';
+    private const SERVICE_ADDRESS = 'serverstreaming.example.com';
 
     /** The default port of the service. */
-    const DEFAULT_SERVICE_PORT = 443;
+    private const DEFAULT_SERVICE_PORT = 443;
 
     /** The name of the code generator, to be included in the agent header. */
-    const CODEGEN_NAME = 'gapic';
+    private const CODEGEN_NAME = 'gapic';
 
     /** The default scopes required by the service. */
     public static $serviceScopes = [];
@@ -97,20 +84,29 @@ class BasicServerStreamingGapicClient
     /**
      * Constructor.
      *
-     * @param array $options {
+     * @param array|ClientOptions $options {
      *     Optional. Options for configuring the service API wrapper.
      *
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'serverstreaming.example.com:443'.
-     *     @type string|array|FetchAuthTokenInterface|CredentialsWrapper $credentials
-     *           The credentials to be used by the client to authorize API calls. This option
-     *           accepts either a path to a credentials file, or a decoded credentials file as a
-     *           PHP array.
-     *           *Advanced usage*: In addition, this option can also accept a pre-constructed
-     *           {@see \Google\Auth\FetchAuthTokenInterface} object or
-     *           {@see \Google\ApiCore\CredentialsWrapper} object. Note that when one of these
-     *           objects are provided, any settings in $credentialsConfig will be ignored.
+     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
+     *           This option should only be used with a pre-constructed
+     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
+     *           when one of these objects are provided, any settings in $credentialsConfig will
+     *           be ignored.
+     *           **Important**: If you are providing a path to a credentials file, or a decoded
+     *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
+     *           unvalidated credential configuration to Google APIs can compromise the security
+     *           of your systems and data. It is recommended to create the credentials explicitly
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           use Testing\BasicServerStreaming\BasicServerStreamingClient;
+     *           $creds = new ServiceAccountCredentials($scopes, $json);
+     *           $options = new BasicServerStreamingClient(['credentials' => $creds]);
+     *           ```
+     *           {@see
+     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
@@ -144,87 +140,58 @@ class BasicServerStreamingGapicClient
      *     @type callable $clientCertSource
      *           A callable which returns the client cert as a string. This can be used to
      *           provide a certificate and private key to the transport layer for mTLS.
+     *     @type false|LoggerInterface $logger
+     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
+     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
+     *     @type string $universeDomain
+     *           The service domain for the client. Defaults to 'googleapis.com'.
      * }
      *
      * @throws ValidationException
      */
-    public function __construct(array $options = [])
+    public function __construct(array|ClientOptions $options = [])
     {
         $clientOptions = $this->buildClientOptions($options);
         $this->setClientOptions($clientOptions);
     }
 
     /**
+     * @example samples/BasicServerStreamingClient/method_empty.php
      *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodEmpty();
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param array $optionalArgs {
+     * @param EmptyRequest $request     A request to house fields associated with the call.
+     * @param array        $callOptions {
      *     Optional.
      *
      *     @type int $timeoutMillis
      *           Timeout to use for this call.
      * }
      *
-     * @return \Google\ApiCore\ServerStream
+     * @return ServerStream<Response>
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodEmpty(array $optionalArgs = [])
+    public function methodEmpty(EmptyRequest $request, array $callOptions = []): ServerStream
     {
-        $request = new EmptyRequest();
-        return $this->startCall('MethodEmpty', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
+        return $this->startApiCall('MethodEmpty', $request, $callOptions);
     }
 
     /**
+     * @example samples/BasicServerStreamingClient/method_server.php
      *
-     * Sample code:
-     * ```
-     * $basicServerStreamingClient = new BasicServerStreamingClient();
-     * try {
-     *     $aNumber = 0;
-     *     // Read all responses until the stream is complete
-     *     $stream = $basicServerStreamingClient->methodServer($aNumber);
-     *     foreach ($stream->readAll() as $element) {
-     *         // doSomethingWith($element);
-     *     }
-     * } finally {
-     *     $basicServerStreamingClient->close();
-     * }
-     * ```
-     *
-     * @param int   $aNumber
-     * @param array $optionalArgs {
+     * @param Request $request     A request to house fields associated with the call.
+     * @param array   $callOptions {
      *     Optional.
      *
-     *     @type string $aString
      *     @type int $timeoutMillis
      *           Timeout to use for this call.
      * }
      *
-     * @return \Google\ApiCore\ServerStream
+     * @return ServerStream<Response>
      *
-     * @throws ApiException if the remote call fails
+     * @throws ApiException Thrown if the API call fails.
      */
-    public function methodServer($aNumber, array $optionalArgs = [])
+    public function methodServer(Request $request, array $callOptions = []): ServerStream
     {
-        $request = new Request();
-        $request->setANumber($aNumber);
-        if (isset($optionalArgs['aString'])) {
-            $request->setAString($optionalArgs['aString']);
-        }
-
-        return $this->startCall('MethodServer', Response::class, $optionalArgs, $request, Call::SERVER_STREAMING_CALL);
+        return $this->startApiCall('MethodServer', $request, $callOptions);
     }
 }

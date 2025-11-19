@@ -29,9 +29,9 @@ class GapicMetadataGenerator
     {
         $gapicMetadata = new GapicMetadata();
         // Initialization.
-        $gapicMetadata->setSchema("1.0");
-        $gapicMetadata->setComment("This file maps proto services/RPCs to the corresponding library clients/methods");
-        $gapicMetadata->setLanguage("php");
+        $gapicMetadata->setSchema('1.0');
+        $gapicMetadata->setComment('This file maps proto services/RPCs to the corresponding library clients/methods');
+        $gapicMetadata->setLanguage('php');
         $gapicMetadata->setLibraryPackage($namespace);
 
         $gapicMetadataServices = [];
@@ -56,6 +56,10 @@ class GapicMetadataGenerator
             );
             $transport = new GapicMetadata\ServiceForTransport();
             $transport->setClients(['grpc' => $libraryClient]);
+            if (!is_null($service->apiVersion)) {
+                $transport->setApiVersion($service->apiVersion);
+            }
+
             $gapicMetadataServices[$service->shortName] = $transport;
         }
         $gapicMetadata->setServices($gapicMetadataServices);

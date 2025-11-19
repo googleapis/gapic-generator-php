@@ -30,7 +30,8 @@ use Google\Cloud\Spanner\Admin\Database\V1\UpdateBackupRequest;
 use Google\Protobuf\FieldMask;
 
 /**
- * Updates a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+ * Updates a pending or completed
+ * [Backup][google.spanner.admin.database.v1.Backup].
  *
  * This sample has been automatically generated and should be regarded as a code
  * template only. It will require modifications to work:

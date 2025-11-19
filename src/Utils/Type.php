@@ -18,12 +18,13 @@ declare(strict_types=1);
 
 namespace Google\Generator\Utils;
 
-use Google\Protobuf\Internal\GPBType;
+use Exception;
+use Google\Generator\Collections\Equality;
+use Google\Generator\Collections\Vector;
 use Google\Protobuf\Internal\Descriptor;
 use Google\Protobuf\Internal\EnumDescriptor;
 use Google\Protobuf\Internal\FieldDescriptor;
-use Google\Generator\Collections\Equality;
-use Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\GPBType;
 
 /** A fully-specified PHP type. */
 class Type implements Equality
@@ -88,10 +89,25 @@ class Type implements Equality
         return new Type(null, 'void');
     }
 
+    /** Null type, for use in union types and generics. */
+    public static function null(): Type
+    {
+        return new Type(null, 'null');
+    }
+
     /** The built-in 'stdClass' type. */
     public static function stdClass(): Type
     {
         return new Type(Vector::new([]), 'stdClass');
+    }
+
+    /** Combines multiple types into a single union type */
+    public static function union(string $types): Type
+    {
+        return new Type(
+            null,
+            $types
+        );
     }
 
     /** An array of the specified type, for PhpDoc use only. */
@@ -166,7 +182,7 @@ class Type implements Equality
             case GPBType::SFIXED64: // 16
             case GPBType::SINT32: // 17
             case GPBType::SINT64: // 18
-            return static::int();
+                return static::int();
             case GPBType::BOOL: // 8
                 return static::bool();
             case GPBType::STRING: // 9
@@ -178,8 +194,17 @@ class Type implements Equality
             case GPBType::ENUM: // 14
                 return static::fromEnum($catalog->enumsByFullname[$desc->getEnumType()]->desc);
             default:
-                throw new \Exception("Cannot get field type of type: {$desc->getType()}");
+                throw new Exception("Cannot get field type of type: {$desc->getType()}");
         }
+    }
+
+    /** Combines multiple types into a single union type */
+    public static function generic(string $typeString): Type
+    {
+        return new Type(
+            null,
+            $typeString
+        );
     }
 
     private function __construct(?Vector $namespaceParts, string $name)
@@ -212,7 +237,7 @@ class Type implements Equality
     public function getNamespace(): string
     {
         if (!$this->isClass()) {
-            throw new \Exception('Non-class types do not have a namespace');
+            throw new Exception('Non-class types do not have a namespace');
         }
         return $this->namespaceParts->join('\\');
     }

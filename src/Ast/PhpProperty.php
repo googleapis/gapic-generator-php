@@ -24,8 +24,9 @@ use Google\Generator\Utils\ResolvedType;
 final class PhpProperty extends PhpClassMember
 {
     private ?ResolvedType $type;
-    
-    public function __construct(string $name)
+    private ?Expression $value;
+
+    public function __construct(private string $name)
     {
         $this->name = $name;
         $this->value = null;
@@ -46,15 +47,15 @@ final class PhpProperty extends PhpClassMember
 
     /**
      * Adds a type declaration to the property
-     * 
+     *
      * @param ResolvedType $type The type of the property
-     * 
+     *
      * @return PhpProperty
      */
     public function withType(ResolvedType $type): PhpProperty
     {
         return $this->clone(fn ($clone) => $clone->type = $type);
-    } 
+    }
 
     public function getName(): string
     {

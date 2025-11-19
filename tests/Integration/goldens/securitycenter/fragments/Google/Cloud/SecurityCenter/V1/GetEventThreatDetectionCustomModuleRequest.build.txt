@@ -1,0 +1,20 @@
+
+    /**
+     * @param string $name Required. Name of the custom module to get.
+     *
+     *                     Its format is:
+     *
+     *                     * `organizations/{organization}/eventThreatDetectionSettings/customModules/{module}`.
+     *                     * `folders/{folder}/eventThreatDetectionSettings/customModules/{module}`.
+     *                     * `projects/{project}/eventThreatDetectionSettings/customModules/{module}`. Please see
+     *                     {@see SecurityCenterClient::eventThreatDetectionCustomModuleName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\SecurityCenter\V1\GetEventThreatDetectionCustomModuleRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }
