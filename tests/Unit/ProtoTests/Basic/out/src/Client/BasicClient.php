@@ -43,6 +43,8 @@ use Testing\Basic\Response;
 /**
  * Service Description: This is a basic service.
  *
+ * This client uses Basic version v1_20240418.
+ *
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  *

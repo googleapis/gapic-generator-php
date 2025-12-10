@@ -115,6 +115,11 @@ class GapicClientV2Generator
                             'Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? '')
                         )
                 ),
+                !is_null($this->serviceDetails->apiVersion)
+                    ? PhpDoc::text(
+                        'This client uses ' . $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion . '.'
+                    )
+                    : null,
                 PhpDoc::preFormattedText(
                     Vector::new([
                         'This class provides the ability to make remote calls to the backing service through method',
