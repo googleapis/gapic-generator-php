@@ -45,6 +45,9 @@ class PostProcessor
 
     private static function loadProcessors(array $opts): Vector
     {
-        return Vector::new([FragmentInjectionProcessor::class]);
+        return Vector::new([
+            FragmentInjectionProcessor::class,
+            ProtobufDeprecationsProcessor::class,
+        ]);
     }
 }
