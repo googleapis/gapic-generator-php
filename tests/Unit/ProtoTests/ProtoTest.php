@@ -57,7 +57,7 @@ final class ProtoTest extends TestCase
             $this->assertTrue(file_exists($filename), "Expected code file missing: '{$filename}'");
             $expectedCode = file_get_contents($filename);
             if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {
-                $this->assertEquals($expectedCode, $code);
+                $this->assertEquals($expectedCode, $code, str_replace(__DIR__ . '/', '', $filename));
             }
             unset($files[$filename]);
         }
