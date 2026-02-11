@@ -21,6 +21,7 @@ namespace Google\Generator\Tests\Unit\PostProcessor;
 use PHPUnit\Framework\TestCase;
 use Google\PostProcessor\FragmentInjectionProcessor;
 use ParseError;
+use Throwable;
 
 final class FragmentInjectionProcessorTest extends TestCase
 {
@@ -123,7 +124,7 @@ EOL;
     public function testFragmentInjectionProcessor(
         string $methodFragment,
         string $classContents,
-        \Throwable $expectedException = null
+        ?Throwable $expectedException = null
     ) {
         if ($expectedException) {
             $this->expectException(get_class($expectedException));
