@@ -115,7 +115,7 @@ EOL;
     /**
      * @runInSeparateProcess
      */
-    public function testFragmentInjectionProcessor()
+    public function testProtobufDeprecationProcessor()
     {
         $tmpDir = sys_get_temp_dir() . '/test-fragment-injection-processor-' . rand();
         mkdir($tmpDir . '/proto/src', 0777, true);
