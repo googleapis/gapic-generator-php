@@ -43,8 +43,9 @@ class ProtobufNoCheckInHeaderProcessor implements ProcessorInterface
         print("No Check-In Header removed in $classFile\n");
     }
 
-    public function __construct(private string $contents)
-    {
+    public function __construct(
+        private string $contents
+    ) {
     }
 
     public function removeNoCheckInHeader(): void
