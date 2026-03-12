@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/gapic-generator-php/compare/v1.20.4...v1.21.0) (2026-03-12)
+
+
+### Features
+
+* Post processsor to remove protobuf no check-in header  ([#807](https://github.com/googleapis/gapic-generator-php/issues/807)) ([9a62029](https://github.com/googleapis/gapic-generator-php/commit/9a6202966046548f79e530d0802526fdbf500fc2))
+
 ## [1.20.4](https://github.com/googleapis/gapic-generator-php/compare/v1.20.3...v1.20.4) (2025-12-10)
 
 
