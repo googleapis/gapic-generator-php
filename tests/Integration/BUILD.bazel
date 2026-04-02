@@ -67,6 +67,7 @@ php_gapic_library(
     name = "asset_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/asset/v1:cloudasset_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     rest_numeric_enums = True,
     deps = [
         ":asset_php_grpc",
@@ -123,6 +124,7 @@ php_gapic_library(
     name = "compute_small_php_gapic",
     srcs = [":compute_small_proto_with_info"],
     service_yaml = "apis/compute_small/v1/compute_small_v1.yaml",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     transport = "rest",
     deps = [
         ":compute_small_php_grpc",
@@ -155,6 +157,7 @@ php_gapic_library(
     name = "container_php_gapic",
     srcs = ["@com_google_googleapis//google/container/v1:container_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/container/v1:container_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     deps = [
         ":container_php_grpc",
         ":container_php_proto",
@@ -187,6 +190,7 @@ php_gapic_library(
     srcs = ["@com_google_googleapis//google/cloud/dataproc/v1:dataproc_proto_with_info"],
     gapic_yaml = "apis/dataproc/v1/dataproc_gapic.yaml",
     grpc_service_config = "@com_google_googleapis//google/cloud/dataproc/v1:dataproc_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     service_yaml = "@com_google_googleapis//google/cloud/dataproc/v1:dataproc_v1.yaml",
     deps = [
         ":dataproc_php_grpc",
@@ -254,6 +258,7 @@ php_gapic_library(
     # For batching.
     gapic_yaml = "@com_google_googleapis//google/logging/v2:logging_gapic.yaml",
     grpc_service_config = "@com_google_googleapis//google/logging/v2:logging_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     deps = [
         ":logging_php_grpc",
         ":logging_php_proto",
@@ -386,6 +391,7 @@ php_gapic_library(
     name = "retail_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/retail/v2alpha:retail_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/retail/v2alpha:retail_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     service_yaml = "@com_google_googleapis//google/cloud/retail/v2alpha:retail_v2alpha.yaml",
     deps = [
         ":retail_php_grpc",
@@ -418,6 +424,7 @@ php_gapic_library(
     name = "videointelligence_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/videointelligence/v1:videointelligence_proto_with_info"],
     gapic_yaml = "@com_google_googleapis//google/cloud/videointelligence/v1:videointelligence_gapic.yaml",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     service_yaml = "apis/videointelligence/v1/videointelligence_v1.yaml",
     deps = [
         ":videointelligence_php_grpc",
@@ -483,6 +490,7 @@ php_gapic_library(
     name = "kms_php_gapic",
     srcs = [":kms_proto_with_info"],
     grpc_service_config = "apis/kms/v1/cloudkms_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     # For the IAM mixin.
     service_yaml = "apis/kms/v1/cloudkms_test_mixins_v1.yaml",
     deps = [
@@ -520,6 +528,7 @@ php_gapic_library(
     srcs = ["@com_google_googleapis//google/iam/v1:iam_proto_with_info"],
     gapic_yaml = "apis/iam/v1/iam_gapic.yaml",
     service_yaml = "apis/iam/v1/iam_api.yaml",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     deps = [
         ":iam_php_proto",
     ],
@@ -550,6 +559,7 @@ php_gapic_library(
     name = "talent_php_gapic",
     srcs = ["@com_google_googleapis//google/cloud/talent/v4beta1:talent_proto_with_info"],
     grpc_service_config = "@com_google_googleapis//google/cloud/talent/v4beta1:talent_grpc_service_config.json",
+    migration_mode = "PRE_MIGRATION_SURFACE_ONLY",
     service_yaml = "@com_google_googleapis//google/cloud/talent/v4beta1:jobs_v4beta1.yaml",
     deps = [
         ":talent_php_grpc",
