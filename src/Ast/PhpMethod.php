@@ -18,10 +18,12 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use AllowDynamicProperties;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 
 /** A method within a class. */
+#[AllowDynamicProperties]
 final class PhpMethod extends PhpClassMember
 {
     public function __construct(string $name)
