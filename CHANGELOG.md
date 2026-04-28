@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.1](https://github.com/googleapis/gapic-generator-php/compare/v1.21.0...v1.21.1) (2026-04-28)
+
+
+### Bug Fixes
+
+* Mulitline phpdoc for mixins ([#815](https://github.com/googleapis/gapic-generator-php/issues/815)) ([4d1d27f](https://github.com/googleapis/gapic-generator-php/commit/4d1d27ff4115d2831c562debd360276994dbfac9))
+
 ## [1.21.0](https://github.com/googleapis/gapic-generator-php/compare/v1.20.4...v1.21.0) (2026-03-12)
 
 
