@@ -177,7 +177,7 @@ class CodeGenerator
             $mixinRpcNamesToHttpRule = $serviceYamlConfig->httpRules->toMap(fn ($h) => $h->getSelector(), fn ($h) => $h);
             $mixinRpcNamesToDocs = $serviceYamlConfig->documentationRules->toMap(
                 fn ($d) => $d->getSelector(),
-                fn ($d) => Vector::new([$d->getDescription()])
+                fn ($d) => Vector::new(explode("\n", $d->getDescription()))
             );
 
             // $fileDescs: Vector<FileDescriptorProto>
