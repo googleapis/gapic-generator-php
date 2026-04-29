@@ -23,7 +23,7 @@ use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
 use RuntimeException;
 
-/** A class definition. */
+/** An interface definition. */
 final class PhpInterface extends AST
 {
     use HasPhpDoc;
