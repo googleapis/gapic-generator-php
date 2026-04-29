@@ -35,6 +35,8 @@ use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Ast\PhpInterface;
+use Google\Generator\Ast\PhpMethod;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
@@ -50,7 +52,10 @@ class GapicClientV2Generator
 {
     private const CALL_OPTIONS_VAR = 'callOptions';
 
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets): PhpFile
+    /**
+     * @return array<PhpFile>
+     */
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets): array
     {
         return (new GapicClientV2Generator($ctx, $serviceDetails, $generateSnippets))->generateImpl();
     }
@@ -67,7 +72,10 @@ class GapicClientV2Generator
         $this->generateSnippets = $generateSnippets;
     }
 
-    private function generateImpl(): PhpFile
+    /**
+     * @return array<PhpFile>
+     */
+    private function generateImpl(): array
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
@@ -92,15 +100,27 @@ class GapicClientV2Generator
             }
         }
         // Generate file content
-        $file = AST::file($this->generateClass())
+        $classFile = AST::file($class = $this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
             // TODO(vNext): Consider if this header is sensible, as it ties this generator to Google cloud.
             ->withGeneratedFromProtoCodeWarning(
                 $this->serviceDetails->filePath,
                 $this->serviceDetails->isGa()
             );
+        // Generate service interface
+        $interfaceFile = AST::file($this->generateInterface($class))
+            ->withApacheLicense($this->ctx->licenseYear)
+            // TODO(vNext): Consider if this header is sensible, as it ties this generator to Google cloud.
+            ->withGeneratedFromProtoCodeWarning(
+                $this->serviceDetails->filePath,
+                $this->serviceDetails->isGa()
+            );
+
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
-        return $this->ctx->finalize($file);
+        return [
+            $this->ctx->finalize($classFile),
+            $this->ctx->finalize($interfaceFile),
+        ];
     }
 
     private function generateClass(): PhpClass
@@ -159,6 +179,43 @@ class GapicClientV2Generator
             ->withMember($this->magicMethod())
             ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
             ->withMember(EmulatorSupportGenerator::generateEmulatorSupport($this->serviceDetails, $this->ctx));
+    }
+
+    private function generateInterface(PhpClass $class): PhpInterface
+    {
+        return AST::interface(Type::fromName($this->serviceDetails->gapicClientV2Type->getFullname() . 'Interface'))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::preFormattedText(
+                    $this->serviceDetails->docLines->skip(1)
+                        ->prepend(
+                            'Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? '')
+                        )
+                ),
+                !is_null($this->serviceDetails->apiVersion)
+                    ? PhpDoc::text(
+                        'This client uses ' . $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion . '.'
+                    )
+                    : null,
+                PhpDoc::preFormattedText(
+                    Vector::new([
+                        'This interface defines the methods available for calling the backing service API',
+                    ])
+                ),
+                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
+                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
+                $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
+            ))
+            ->withMembers(
+                $class->members
+                    // omit constants and properties from the interface
+                    ->filter(fn ($x) => $x instanceof PhpMethod)
+                    // omit private, protected, and static methods
+                    ->filter(fn ($x) => $x->access->join() === Access::PUBLIC)
+                    // omit "__call" and "__construct"
+                    ->filter(fn ($x) => 0 !== strpos($x->name, '__'))
+                    // ensure the members are rendered without their method body
+                    ->map(fn ($x) => $x->forInterface())
+            );
     }
 
     private function serviceName(): PhpClassMember
