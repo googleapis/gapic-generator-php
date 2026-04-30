@@ -194,7 +194,8 @@ class GapicClientV2Generator
                 ),
                 PhpDoc::text(
                     'This interface defines the methods available for calling ' .
-                    (is_null($this->serviceDetails->apiVersion)
+                    (
+                        is_null($this->serviceDetails->apiVersion)
                         ? 'the backing service API'
                         : $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion
                     ) . '.'
