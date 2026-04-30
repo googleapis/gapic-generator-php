@@ -25,17 +25,10 @@
 namespace Google\Cloud\SecurityCenter\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
-use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
-use Google\ApiCore\Transport\TransportInterface;
-use Google\ApiCore\ValidationException;
-use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
@@ -123,18 +116,12 @@ use Google\Cloud\SecurityCenter\V1\ValidateEventThreatDetectionCustomModuleRespo
 use Google\Cloud\SecurityCenter\V1\ValuedResource;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: V1 APIs for Security Center service.
  *
- * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods.
- *
- * Many parameters require resource names to be formatted in a particular way. To
- * assist with these names, this class includes a format method for each type of
- * name, and additionally a parseName method to extract the individual identifiers
- * contained within formatted names that are returned by the API.
+ * This interface defines the methods available for calling the backing service
+ * API.
  *
  * @method PromiseInterface<BatchCreateResourceValueConfigsResponse> batchCreateResourceValueConfigsAsync(BatchCreateResourceValueConfigsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> bulkMuteFindingsAsync(BulkMuteFindingsRequest $request, array $optionalArgs = [])
@@ -200,65 +187,14 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Source> updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<ValidateEventThreatDetectionCustomModuleResponse> validateEventThreatDetectionCustomModuleAsync(ValidateEventThreatDetectionCustomModuleRequest $request, array $optionalArgs = [])
  */
-final class SecurityCenterClient implements SecurityCenterClientInterface
+interface SecurityCenterClientInterface
 {
-    use GapicClientTrait;
-    use ResourceHelperTrait;
-
-    /** The name of the service. */
-    private const SERVICE_NAME = 'google.cloud.securitycenter.v1.SecurityCenter';
-
-    /**
-     * The default address of the service.
-     *
-     * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
-     */
-    private const SERVICE_ADDRESS = 'securitycenter.googleapis.com';
-
-    /** The address template of the service. */
-    private const SERVICE_ADDRESS_TEMPLATE = 'securitycenter.UNIVERSE_DOMAIN';
-
-    /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
-
-    /** The name of the code generator, to be included in the agent header. */
-    private const CODEGEN_NAME = 'gapic';
-
-    /** The default scopes required by the service. */
-    public static $serviceScopes = [
-        'https://www.googleapis.com/auth/cloud-platform',
-    ];
-
-    private $operationsClient;
-
-    private static function getClientDefaults()
-    {
-        return [
-            'serviceName' => self::SERVICE_NAME,
-            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
-            'clientConfig' => __DIR__ . '/../resources/security_center_client_config.json',
-            'descriptorsConfigPath' => __DIR__ . '/../resources/security_center_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/security_center_grpc_config.json',
-            'credentialsConfig' => [
-                'defaultScopes' => self::$serviceScopes,
-            ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/security_center_rest_client_config.php',
-                ],
-            ],
-        ];
-    }
-
     /**
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
      */
-    public function getOperationsClient()
-    {
-        return $this->operationsClient;
-    }
+    public function getOperationsClient();
 
     /**
      * Resume an existing long running operation that was previously started by a long
@@ -271,1508 +207,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @return OperationResponse
      */
-    public function resumeOperation($operationName, $methodName = null)
-    {
-        $options = $this->descriptors[$methodName]['longRunning'] ?? [];
-        $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
-        $operation->reload();
-        return $operation;
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * big_query_export resource.
-     *
-     * @param string $organization
-     * @param string $export
-     *
-     * @return string The formatted big_query_export resource.
-     */
-    public static function bigQueryExportName(string $organization, string $export): string
-    {
-        return self::getPathTemplate('bigQueryExport')->render([
-            'organization' => $organization,
-            'export' => $export,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a dlp_job
-     * resource.
-     *
-     * @param string $project
-     * @param string $dlpJob
-     *
-     * @return string The formatted dlp_job resource.
-     */
-    public static function dlpJobName(string $project, string $dlpJob): string
-    {
-        return self::getPathTemplate('dlpJob')->render([
-            'project' => $project,
-            'dlp_job' => $dlpJob,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * effective_event_threat_detection_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $module
-     *
-     * @return string The formatted effective_event_threat_detection_custom_module resource.
-     */
-    public static function effectiveEventThreatDetectionCustomModuleName(string $organization, string $module): string
-    {
-        return self::getPathTemplate('effectiveEventThreatDetectionCustomModule')->render([
-            'organization' => $organization,
-            'module' => $module,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * effective_security_health_analytics_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $effectiveCustomModule
-     *
-     * @return string The formatted effective_security_health_analytics_custom_module resource.
-     */
-    public static function effectiveSecurityHealthAnalyticsCustomModuleName(string $organization, string $effectiveCustomModule): string
-    {
-        return self::getPathTemplate('effectiveSecurityHealthAnalyticsCustomModule')->render([
-            'organization' => $organization,
-            'effective_custom_module' => $effectiveCustomModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * event_threat_detection_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $module
-     *
-     * @return string The formatted event_threat_detection_custom_module resource.
-     */
-    public static function eventThreatDetectionCustomModuleName(string $organization, string $module): string
-    {
-        return self::getPathTemplate('eventThreatDetectionCustomModule')->render([
-            'organization' => $organization,
-            'module' => $module,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * event_threat_detection_settings resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted event_threat_detection_settings resource.
-     */
-    public static function eventThreatDetectionSettingsName(string $organization): string
-    {
-        return self::getPathTemplate('eventThreatDetectionSettings')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * external_system resource.
-     *
-     * @param string $organization
-     * @param string $source
-     * @param string $finding
-     * @param string $externalsystem
-     *
-     * @return string The formatted external_system resource.
-     */
-    public static function externalSystemName(string $organization, string $source, string $finding, string $externalsystem): string
-    {
-        return self::getPathTemplate('externalSystem')->render([
-            'organization' => $organization,
-            'source' => $source,
-            'finding' => $finding,
-            'externalsystem' => $externalsystem,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a finding
-     * resource.
-     *
-     * @param string $organization
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted finding resource.
-     */
-    public static function findingName(string $organization, string $source, string $finding): string
-    {
-        return self::getPathTemplate('finding')->render([
-            'organization' => $organization,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a folder
-     * resource.
-     *
-     * @param string $folder
-     *
-     * @return string The formatted folder resource.
-     */
-    public static function folderName(string $folder): string
-    {
-        return self::getPathTemplate('folder')->render([
-            'folder' => $folder,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_asset_securityMarks resource.
-     *
-     * @param string $folder
-     * @param string $asset
-     *
-     * @return string The formatted folder_asset_securityMarks resource.
-     */
-    public static function folderAssetSecurityMarksName(string $folder, string $asset): string
-    {
-        return self::getPathTemplate('folderAssetSecurityMarks')->render([
-            'folder' => $folder,
-            'asset' => $asset,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_constraint_name resource.
-     *
-     * @param string $folder
-     * @param string $constraintName
-     *
-     * @return string The formatted folder_constraint_name resource.
-     */
-    public static function folderConstraintNameName(string $folder, string $constraintName): string
-    {
-        return self::getPathTemplate('folderConstraintName')->render([
-            'folder' => $folder,
-            'constraint_name' => $constraintName,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_custom_module resource.
-     *
-     * @param string $folder
-     * @param string $customModule
-     *
-     * @return string The formatted folder_custom_module resource.
-     */
-    public static function folderCustomModuleName(string $folder, string $customModule): string
-    {
-        return self::getPathTemplate('folderCustomModule')->render([
-            'folder' => $folder,
-            'custom_module' => $customModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_effective_custom_module resource.
-     *
-     * @param string $folder
-     * @param string $effectiveCustomModule
-     *
-     * @return string The formatted folder_effective_custom_module resource.
-     */
-    public static function folderEffectiveCustomModuleName(string $folder, string $effectiveCustomModule): string
-    {
-        return self::getPathTemplate('folderEffectiveCustomModule')->render([
-            'folder' => $folder,
-            'effective_custom_module' => $effectiveCustomModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_eventThreatDetectionSettings resource.
-     *
-     * @param string $folder
-     *
-     * @return string The formatted folder_eventThreatDetectionSettings resource.
-     */
-    public static function folderEventThreatDetectionSettingsName(string $folder): string
-    {
-        return self::getPathTemplate('folderEventThreatDetectionSettings')->render([
-            'folder' => $folder,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_export resource.
-     *
-     * @param string $folder
-     * @param string $export
-     *
-     * @return string The formatted folder_export resource.
-     */
-    public static function folderExportName(string $folder, string $export): string
-    {
-        return self::getPathTemplate('folderExport')->render([
-            'folder' => $folder,
-            'export' => $export,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_location resource.
-     *
-     * @param string $folder
-     * @param string $location
-     *
-     * @return string The formatted folder_location resource.
-     */
-    public static function folderLocationName(string $folder, string $location): string
-    {
-        return self::getPathTemplate('folderLocation')->render([
-            'folder' => $folder,
-            'location' => $location,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_location_mute_config resource.
-     *
-     * @param string $folder
-     * @param string $location
-     * @param string $muteConfig
-     *
-     * @return string The formatted folder_location_mute_config resource.
-     */
-    public static function folderLocationMuteConfigName(string $folder, string $location, string $muteConfig): string
-    {
-        return self::getPathTemplate('folderLocationMuteConfig')->render([
-            'folder' => $folder,
-            'location' => $location,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_module resource.
-     *
-     * @param string $folder
-     * @param string $module
-     *
-     * @return string The formatted folder_module resource.
-     */
-    public static function folderModuleName(string $folder, string $module): string
-    {
-        return self::getPathTemplate('folderModule')->render([
-            'folder' => $folder,
-            'module' => $module,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_mute_config resource.
-     *
-     * @param string $folder
-     * @param string $muteConfig
-     *
-     * @return string The formatted folder_mute_config resource.
-     */
-    public static function folderMuteConfigName(string $folder, string $muteConfig): string
-    {
-        return self::getPathTemplate('folderMuteConfig')->render([
-            'folder' => $folder,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_notification_config resource.
-     *
-     * @param string $folder
-     * @param string $notificationConfig
-     *
-     * @return string The formatted folder_notification_config resource.
-     */
-    public static function folderNotificationConfigName(string $folder, string $notificationConfig): string
-    {
-        return self::getPathTemplate('folderNotificationConfig')->render([
-            'folder' => $folder,
-            'notification_config' => $notificationConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_securityHealthAnalyticsSettings resource.
-     *
-     * @param string $folder
-     *
-     * @return string The formatted folder_securityHealthAnalyticsSettings resource.
-     */
-    public static function folderSecurityHealthAnalyticsSettingsName(string $folder): string
-    {
-        return self::getPathTemplate('folderSecurityHealthAnalyticsSettings')->render([
-            'folder' => $folder,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_source resource.
-     *
-     * @param string $folder
-     * @param string $source
-     *
-     * @return string The formatted folder_source resource.
-     */
-    public static function folderSourceName(string $folder, string $source): string
-    {
-        return self::getPathTemplate('folderSource')->render([
-            'folder' => $folder,
-            'source' => $source,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_source_finding resource.
-     *
-     * @param string $folder
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted folder_source_finding resource.
-     */
-    public static function folderSourceFindingName(string $folder, string $source, string $finding): string
-    {
-        return self::getPathTemplate('folderSourceFinding')->render([
-            'folder' => $folder,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_source_finding_externalsystem resource.
-     *
-     * @param string $folder
-     * @param string $source
-     * @param string $finding
-     * @param string $externalsystem
-     *
-     * @return string The formatted folder_source_finding_externalsystem resource.
-     */
-    public static function folderSourceFindingExternalsystemName(string $folder, string $source, string $finding, string $externalsystem): string
-    {
-        return self::getPathTemplate('folderSourceFindingExternalsystem')->render([
-            'folder' => $folder,
-            'source' => $source,
-            'finding' => $finding,
-            'externalsystem' => $externalsystem,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * folder_source_finding_securityMarks resource.
-     *
-     * @param string $folder
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted folder_source_finding_securityMarks resource.
-     */
-    public static function folderSourceFindingSecurityMarksName(string $folder, string $source, string $finding): string
-    {
-        return self::getPathTemplate('folderSourceFindingSecurityMarks')->render([
-            'folder' => $folder,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a location
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     *
-     * @return string The formatted location resource.
-     */
-    public static function locationName(string $project, string $location): string
-    {
-        return self::getPathTemplate('location')->render([
-            'project' => $project,
-            'location' => $location,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a mute_config
-     * resource.
-     *
-     * @param string $organization
-     * @param string $muteConfig
-     *
-     * @return string The formatted mute_config resource.
-     */
-    public static function muteConfigName(string $organization, string $muteConfig): string
-    {
-        return self::getPathTemplate('muteConfig')->render([
-            'organization' => $organization,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * notification_config resource.
-     *
-     * @param string $organization
-     * @param string $notificationConfig
-     *
-     * @return string The formatted notification_config resource.
-     */
-    public static function notificationConfigName(string $organization, string $notificationConfig): string
-    {
-        return self::getPathTemplate('notificationConfig')->render([
-            'organization' => $organization,
-            'notification_config' => $notificationConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a organization
-     * resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted organization resource.
-     */
-    public static function organizationName(string $organization): string
-    {
-        return self::getPathTemplate('organization')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_asset_securityMarks resource.
-     *
-     * @param string $organization
-     * @param string $asset
-     *
-     * @return string The formatted organization_asset_securityMarks resource.
-     */
-    public static function organizationAssetSecurityMarksName(string $organization, string $asset): string
-    {
-        return self::getPathTemplate('organizationAssetSecurityMarks')->render([
-            'organization' => $organization,
-            'asset' => $asset,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_constraint_name resource.
-     *
-     * @param string $organization
-     * @param string $constraintName
-     *
-     * @return string The formatted organization_constraint_name resource.
-     */
-    public static function organizationConstraintNameName(string $organization, string $constraintName): string
-    {
-        return self::getPathTemplate('organizationConstraintName')->render([
-            'organization' => $organization,
-            'constraint_name' => $constraintName,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $customModule
-     *
-     * @return string The formatted organization_custom_module resource.
-     */
-    public static function organizationCustomModuleName(string $organization, string $customModule): string
-    {
-        return self::getPathTemplate('organizationCustomModule')->render([
-            'organization' => $organization,
-            'custom_module' => $customModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_effective_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $effectiveCustomModule
-     *
-     * @return string The formatted organization_effective_custom_module resource.
-     */
-    public static function organizationEffectiveCustomModuleName(string $organization, string $effectiveCustomModule): string
-    {
-        return self::getPathTemplate('organizationEffectiveCustomModule')->render([
-            'organization' => $organization,
-            'effective_custom_module' => $effectiveCustomModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_eventThreatDetectionSettings resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted organization_eventThreatDetectionSettings resource.
-     */
-    public static function organizationEventThreatDetectionSettingsName(string $organization): string
-    {
-        return self::getPathTemplate('organizationEventThreatDetectionSettings')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_export resource.
-     *
-     * @param string $organization
-     * @param string $export
-     *
-     * @return string The formatted organization_export resource.
-     */
-    public static function organizationExportName(string $organization, string $export): string
-    {
-        return self::getPathTemplate('organizationExport')->render([
-            'organization' => $organization,
-            'export' => $export,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_location resource.
-     *
-     * @param string $organization
-     * @param string $location
-     *
-     * @return string The formatted organization_location resource.
-     */
-    public static function organizationLocationName(string $organization, string $location): string
-    {
-        return self::getPathTemplate('organizationLocation')->render([
-            'organization' => $organization,
-            'location' => $location,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_location_mute_config resource.
-     *
-     * @param string $organization
-     * @param string $location
-     * @param string $muteConfig
-     *
-     * @return string The formatted organization_location_mute_config resource.
-     */
-    public static function organizationLocationMuteConfigName(string $organization, string $location, string $muteConfig): string
-    {
-        return self::getPathTemplate('organizationLocationMuteConfig')->render([
-            'organization' => $organization,
-            'location' => $location,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_module resource.
-     *
-     * @param string $organization
-     * @param string $module
-     *
-     * @return string The formatted organization_module resource.
-     */
-    public static function organizationModuleName(string $organization, string $module): string
-    {
-        return self::getPathTemplate('organizationModule')->render([
-            'organization' => $organization,
-            'module' => $module,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_mute_config resource.
-     *
-     * @param string $organization
-     * @param string $muteConfig
-     *
-     * @return string The formatted organization_mute_config resource.
-     */
-    public static function organizationMuteConfigName(string $organization, string $muteConfig): string
-    {
-        return self::getPathTemplate('organizationMuteConfig')->render([
-            'organization' => $organization,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_notification_config resource.
-     *
-     * @param string $organization
-     * @param string $notificationConfig
-     *
-     * @return string The formatted organization_notification_config resource.
-     */
-    public static function organizationNotificationConfigName(string $organization, string $notificationConfig): string
-    {
-        return self::getPathTemplate('organizationNotificationConfig')->render([
-            'organization' => $organization,
-            'notification_config' => $notificationConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_securityHealthAnalyticsSettings resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted organization_securityHealthAnalyticsSettings resource.
-     */
-    public static function organizationSecurityHealthAnalyticsSettingsName(string $organization): string
-    {
-        return self::getPathTemplate('organizationSecurityHealthAnalyticsSettings')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_settings resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted organization_settings resource.
-     */
-    public static function organizationSettingsName(string $organization): string
-    {
-        return self::getPathTemplate('organizationSettings')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_source resource.
-     *
-     * @param string $organization
-     * @param string $source
-     *
-     * @return string The formatted organization_source resource.
-     */
-    public static function organizationSourceName(string $organization, string $source): string
-    {
-        return self::getPathTemplate('organizationSource')->render([
-            'organization' => $organization,
-            'source' => $source,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_source_finding resource.
-     *
-     * @param string $organization
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted organization_source_finding resource.
-     */
-    public static function organizationSourceFindingName(string $organization, string $source, string $finding): string
-    {
-        return self::getPathTemplate('organizationSourceFinding')->render([
-            'organization' => $organization,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_source_finding_externalsystem resource.
-     *
-     * @param string $organization
-     * @param string $source
-     * @param string $finding
-     * @param string $externalsystem
-     *
-     * @return string The formatted organization_source_finding_externalsystem resource.
-     */
-    public static function organizationSourceFindingExternalsystemName(string $organization, string $source, string $finding, string $externalsystem): string
-    {
-        return self::getPathTemplate('organizationSourceFindingExternalsystem')->render([
-            'organization' => $organization,
-            'source' => $source,
-            'finding' => $finding,
-            'externalsystem' => $externalsystem,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * organization_source_finding_securityMarks resource.
-     *
-     * @param string $organization
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted organization_source_finding_securityMarks resource.
-     */
-    public static function organizationSourceFindingSecurityMarksName(string $organization, string $source, string $finding): string
-    {
-        return self::getPathTemplate('organizationSourceFindingSecurityMarks')->render([
-            'organization' => $organization,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a policy
-     * resource.
-     *
-     * @param string $organization
-     * @param string $constraintName
-     *
-     * @return string The formatted policy resource.
-     */
-    public static function policyName(string $organization, string $constraintName): string
-    {
-        return self::getPathTemplate('policy')->render([
-            'organization' => $organization,
-            'constraint_name' => $constraintName,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a project
-     * resource.
-     *
-     * @param string $project
-     *
-     * @return string The formatted project resource.
-     */
-    public static function projectName(string $project): string
-    {
-        return self::getPathTemplate('project')->render([
-            'project' => $project,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_asset_securityMarks resource.
-     *
-     * @param string $project
-     * @param string $asset
-     *
-     * @return string The formatted project_asset_securityMarks resource.
-     */
-    public static function projectAssetSecurityMarksName(string $project, string $asset): string
-    {
-        return self::getPathTemplate('projectAssetSecurityMarks')->render([
-            'project' => $project,
-            'asset' => $asset,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_constraint_name resource.
-     *
-     * @param string $project
-     * @param string $constraintName
-     *
-     * @return string The formatted project_constraint_name resource.
-     */
-    public static function projectConstraintNameName(string $project, string $constraintName): string
-    {
-        return self::getPathTemplate('projectConstraintName')->render([
-            'project' => $project,
-            'constraint_name' => $constraintName,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_custom_module resource.
-     *
-     * @param string $project
-     * @param string $customModule
-     *
-     * @return string The formatted project_custom_module resource.
-     */
-    public static function projectCustomModuleName(string $project, string $customModule): string
-    {
-        return self::getPathTemplate('projectCustomModule')->render([
-            'project' => $project,
-            'custom_module' => $customModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_dlp_job resource.
-     *
-     * @param string $project
-     * @param string $dlpJob
-     *
-     * @return string The formatted project_dlp_job resource.
-     */
-    public static function projectDlpJobName(string $project, string $dlpJob): string
-    {
-        return self::getPathTemplate('projectDlpJob')->render([
-            'project' => $project,
-            'dlp_job' => $dlpJob,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_effective_custom_module resource.
-     *
-     * @param string $project
-     * @param string $effectiveCustomModule
-     *
-     * @return string The formatted project_effective_custom_module resource.
-     */
-    public static function projectEffectiveCustomModuleName(string $project, string $effectiveCustomModule): string
-    {
-        return self::getPathTemplate('projectEffectiveCustomModule')->render([
-            'project' => $project,
-            'effective_custom_module' => $effectiveCustomModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_eventThreatDetectionSettings resource.
-     *
-     * @param string $project
-     *
-     * @return string The formatted project_eventThreatDetectionSettings resource.
-     */
-    public static function projectEventThreatDetectionSettingsName(string $project): string
-    {
-        return self::getPathTemplate('projectEventThreatDetectionSettings')->render([
-            'project' => $project,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_export resource.
-     *
-     * @param string $project
-     * @param string $export
-     *
-     * @return string The formatted project_export resource.
-     */
-    public static function projectExportName(string $project, string $export): string
-    {
-        return self::getPathTemplate('projectExport')->render([
-            'project' => $project,
-            'export' => $export,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_location_dlp_job resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $dlpJob
-     *
-     * @return string The formatted project_location_dlp_job resource.
-     */
-    public static function projectLocationDlpJobName(string $project, string $location, string $dlpJob): string
-    {
-        return self::getPathTemplate('projectLocationDlpJob')->render([
-            'project' => $project,
-            'location' => $location,
-            'dlp_job' => $dlpJob,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_location_mute_config resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $muteConfig
-     *
-     * @return string The formatted project_location_mute_config resource.
-     */
-    public static function projectLocationMuteConfigName(string $project, string $location, string $muteConfig): string
-    {
-        return self::getPathTemplate('projectLocationMuteConfig')->render([
-            'project' => $project,
-            'location' => $location,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_location_table_profile resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $tableProfile
-     *
-     * @return string The formatted project_location_table_profile resource.
-     */
-    public static function projectLocationTableProfileName(string $project, string $location, string $tableProfile): string
-    {
-        return self::getPathTemplate('projectLocationTableProfile')->render([
-            'project' => $project,
-            'location' => $location,
-            'table_profile' => $tableProfile,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_module resource.
-     *
-     * @param string $project
-     * @param string $module
-     *
-     * @return string The formatted project_module resource.
-     */
-    public static function projectModuleName(string $project, string $module): string
-    {
-        return self::getPathTemplate('projectModule')->render([
-            'project' => $project,
-            'module' => $module,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_mute_config resource.
-     *
-     * @param string $project
-     * @param string $muteConfig
-     *
-     * @return string The formatted project_mute_config resource.
-     */
-    public static function projectMuteConfigName(string $project, string $muteConfig): string
-    {
-        return self::getPathTemplate('projectMuteConfig')->render([
-            'project' => $project,
-            'mute_config' => $muteConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_notification_config resource.
-     *
-     * @param string $project
-     * @param string $notificationConfig
-     *
-     * @return string The formatted project_notification_config resource.
-     */
-    public static function projectNotificationConfigName(string $project, string $notificationConfig): string
-    {
-        return self::getPathTemplate('projectNotificationConfig')->render([
-            'project' => $project,
-            'notification_config' => $notificationConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_securityHealthAnalyticsSettings resource.
-     *
-     * @param string $project
-     *
-     * @return string The formatted project_securityHealthAnalyticsSettings resource.
-     */
-    public static function projectSecurityHealthAnalyticsSettingsName(string $project): string
-    {
-        return self::getPathTemplate('projectSecurityHealthAnalyticsSettings')->render([
-            'project' => $project,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_source resource.
-     *
-     * @param string $project
-     * @param string $source
-     *
-     * @return string The formatted project_source resource.
-     */
-    public static function projectSourceName(string $project, string $source): string
-    {
-        return self::getPathTemplate('projectSource')->render([
-            'project' => $project,
-            'source' => $source,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_source_finding resource.
-     *
-     * @param string $project
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted project_source_finding resource.
-     */
-    public static function projectSourceFindingName(string $project, string $source, string $finding): string
-    {
-        return self::getPathTemplate('projectSourceFinding')->render([
-            'project' => $project,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_source_finding_externalsystem resource.
-     *
-     * @param string $project
-     * @param string $source
-     * @param string $finding
-     * @param string $externalsystem
-     *
-     * @return string The formatted project_source_finding_externalsystem resource.
-     */
-    public static function projectSourceFindingExternalsystemName(string $project, string $source, string $finding, string $externalsystem): string
-    {
-        return self::getPathTemplate('projectSourceFindingExternalsystem')->render([
-            'project' => $project,
-            'source' => $source,
-            'finding' => $finding,
-            'externalsystem' => $externalsystem,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_source_finding_securityMarks resource.
-     *
-     * @param string $project
-     * @param string $source
-     * @param string $finding
-     *
-     * @return string The formatted project_source_finding_securityMarks resource.
-     */
-    public static function projectSourceFindingSecurityMarksName(string $project, string $source, string $finding): string
-    {
-        return self::getPathTemplate('projectSourceFindingSecurityMarks')->render([
-            'project' => $project,
-            'source' => $source,
-            'finding' => $finding,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * project_table_profile resource.
-     *
-     * @param string $project
-     * @param string $tableProfile
-     *
-     * @return string The formatted project_table_profile resource.
-     */
-    public static function projectTableProfileName(string $project, string $tableProfile): string
-    {
-        return self::getPathTemplate('projectTableProfile')->render([
-            'project' => $project,
-            'table_profile' => $tableProfile,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * resource_value_config resource.
-     *
-     * @param string $organization
-     * @param string $resourceValueConfig
-     *
-     * @return string The formatted resource_value_config resource.
-     */
-    public static function resourceValueConfigName(string $organization, string $resourceValueConfig): string
-    {
-        return self::getPathTemplate('resourceValueConfig')->render([
-            'organization' => $organization,
-            'resource_value_config' => $resourceValueConfig,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * security_health_analytics_custom_module resource.
-     *
-     * @param string $organization
-     * @param string $customModule
-     *
-     * @return string The formatted security_health_analytics_custom_module resource.
-     */
-    public static function securityHealthAnalyticsCustomModuleName(string $organization, string $customModule): string
-    {
-        return self::getPathTemplate('securityHealthAnalyticsCustomModule')->render([
-            'organization' => $organization,
-            'custom_module' => $customModule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * security_health_analytics_settings resource.
-     *
-     * @param string $organization
-     *
-     * @return string The formatted security_health_analytics_settings resource.
-     */
-    public static function securityHealthAnalyticsSettingsName(string $organization): string
-    {
-        return self::getPathTemplate('securityHealthAnalyticsSettings')->render([
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * security_marks resource.
-     *
-     * @param string $organization
-     * @param string $asset
-     *
-     * @return string The formatted security_marks resource.
-     */
-    public static function securityMarksName(string $organization, string $asset): string
-    {
-        return self::getPathTemplate('securityMarks')->render([
-            'organization' => $organization,
-            'asset' => $asset,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a simulation
-     * resource.
-     *
-     * @param string $organization
-     * @param string $simulation
-     *
-     * @return string The formatted simulation resource.
-     */
-    public static function simulationName(string $organization, string $simulation): string
-    {
-        return self::getPathTemplate('simulation')->render([
-            'organization' => $organization,
-            'simulation' => $simulation,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a source
-     * resource.
-     *
-     * @param string $organization
-     * @param string $source
-     *
-     * @return string The formatted source resource.
-     */
-    public static function sourceName(string $organization, string $source): string
-    {
-        return self::getPathTemplate('source')->render([
-            'organization' => $organization,
-            'source' => $source,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * table_data_profile resource.
-     *
-     * @param string $project
-     * @param string $tableProfile
-     *
-     * @return string The formatted table_data_profile resource.
-     */
-    public static function tableDataProfileName(string $project, string $tableProfile): string
-    {
-        return self::getPathTemplate('tableDataProfile')->render([
-            'project' => $project,
-            'table_profile' => $tableProfile,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a topic
-     * resource.
-     *
-     * @param string $project
-     * @param string $topic
-     *
-     * @return string The formatted topic resource.
-     */
-    public static function topicName(string $project, string $topic): string
-    {
-        return self::getPathTemplate('topic')->render([
-            'project' => $project,
-            'topic' => $topic,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * valued_resource resource.
-     *
-     * @param string $organization
-     * @param string $simulation
-     * @param string $valuedResource
-     *
-     * @return string The formatted valued_resource resource.
-     */
-    public static function valuedResourceName(string $organization, string $simulation, string $valuedResource): string
-    {
-        return self::getPathTemplate('valuedResource')->render([
-            'organization' => $organization,
-            'simulation' => $simulation,
-            'valued_resource' => $valuedResource,
-        ]);
-    }
-
-    /**
-     * Parses a formatted name string and returns an associative array of the components in the name.
-     * The following name formats are supported:
-     * Template: Pattern
-     * - bigQueryExport: organizations/{organization}/bigQueryExports/{export}
-     * - dlpJob: projects/{project}/dlpJobs/{dlp_job}
-     * - effectiveEventThreatDetectionCustomModule: organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}
-     * - effectiveSecurityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
-     * - eventThreatDetectionCustomModule: organizations/{organization}/eventThreatDetectionSettings/customModules/{module}
-     * - eventThreatDetectionSettings: organizations/{organization}/eventThreatDetectionSettings
-     * - externalSystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
-     * - finding: organizations/{organization}/sources/{source}/findings/{finding}
-     * - folder: folders/{folder}
-     * - folderAssetSecurityMarks: folders/{folder}/assets/{asset}/securityMarks
-     * - folderConstraintName: folders/{folder}/policies/{constraint_name}
-     * - folderCustomModule: folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}
-     * - folderEffectiveCustomModule: folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
-     * - folderEventThreatDetectionSettings: folders/{folder}/eventThreatDetectionSettings
-     * - folderExport: folders/{folder}/bigQueryExports/{export}
-     * - folderLocation: folders/{folder}/locations/{location}
-     * - folderLocationMuteConfig: folders/{folder}/locations/{location}/muteConfigs/{mute_config}
-     * - folderModule: folders/{folder}/eventThreatDetectionSettings/customModules/{module}
-     * - folderMuteConfig: folders/{folder}/muteConfigs/{mute_config}
-     * - folderNotificationConfig: folders/{folder}/notificationConfigs/{notification_config}
-     * - folderSecurityHealthAnalyticsSettings: folders/{folder}/securityHealthAnalyticsSettings
-     * - folderSource: folders/{folder}/sources/{source}
-     * - folderSourceFinding: folders/{folder}/sources/{source}/findings/{finding}
-     * - folderSourceFindingExternalsystem: folders/{folder}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
-     * - folderSourceFindingSecurityMarks: folders/{folder}/sources/{source}/findings/{finding}/securityMarks
-     * - location: projects/{project}/locations/{location}
-     * - muteConfig: organizations/{organization}/muteConfigs/{mute_config}
-     * - notificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
-     * - organization: organizations/{organization}
-     * - organizationAssetSecurityMarks: organizations/{organization}/assets/{asset}/securityMarks
-     * - organizationConstraintName: organizations/{organization}/policies/{constraint_name}
-     * - organizationCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
-     * - organizationEffectiveCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
-     * - organizationEventThreatDetectionSettings: organizations/{organization}/eventThreatDetectionSettings
-     * - organizationExport: organizations/{organization}/bigQueryExports/{export}
-     * - organizationLocation: organizations/{organization}/locations/{location}
-     * - organizationLocationMuteConfig: organizations/{organization}/locations/{location}/muteConfigs/{mute_config}
-     * - organizationModule: organizations/{organization}/eventThreatDetectionSettings/customModules/{module}
-     * - organizationMuteConfig: organizations/{organization}/muteConfigs/{mute_config}
-     * - organizationNotificationConfig: organizations/{organization}/notificationConfigs/{notification_config}
-     * - organizationSecurityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
-     * - organizationSettings: organizations/{organization}/organizationSettings
-     * - organizationSource: organizations/{organization}/sources/{source}
-     * - organizationSourceFinding: organizations/{organization}/sources/{source}/findings/{finding}
-     * - organizationSourceFindingExternalsystem: organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
-     * - organizationSourceFindingSecurityMarks: organizations/{organization}/sources/{source}/findings/{finding}/securityMarks
-     * - policy: organizations/{organization}/policies/{constraint_name}
-     * - project: projects/{project}
-     * - projectAssetSecurityMarks: projects/{project}/assets/{asset}/securityMarks
-     * - projectConstraintName: projects/{project}/policies/{constraint_name}
-     * - projectCustomModule: projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}
-     * - projectDlpJob: projects/{project}/dlpJobs/{dlp_job}
-     * - projectEffectiveCustomModule: projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}
-     * - projectEventThreatDetectionSettings: projects/{project}/eventThreatDetectionSettings
-     * - projectExport: projects/{project}/bigQueryExports/{export}
-     * - projectLocationDlpJob: projects/{project}/locations/{location}/dlpJobs/{dlp_job}
-     * - projectLocationMuteConfig: projects/{project}/locations/{location}/muteConfigs/{mute_config}
-     * - projectLocationTableProfile: projects/{project}/locations/{location}/tableProfiles/{table_profile}
-     * - projectModule: projects/{project}/eventThreatDetectionSettings/customModules/{module}
-     * - projectMuteConfig: projects/{project}/muteConfigs/{mute_config}
-     * - projectNotificationConfig: projects/{project}/notificationConfigs/{notification_config}
-     * - projectSecurityHealthAnalyticsSettings: projects/{project}/securityHealthAnalyticsSettings
-     * - projectSource: projects/{project}/sources/{source}
-     * - projectSourceFinding: projects/{project}/sources/{source}/findings/{finding}
-     * - projectSourceFindingExternalsystem: projects/{project}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}
-     * - projectSourceFindingSecurityMarks: projects/{project}/sources/{source}/findings/{finding}/securityMarks
-     * - projectTableProfile: projects/{project}/tableProfiles/{table_profile}
-     * - resourceValueConfig: organizations/{organization}/resourceValueConfigs/{resource_value_config}
-     * - securityHealthAnalyticsCustomModule: organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}
-     * - securityHealthAnalyticsSettings: organizations/{organization}/securityHealthAnalyticsSettings
-     * - securityMarks: organizations/{organization}/assets/{asset}/securityMarks
-     * - simulation: organizations/{organization}/simulations/{simulation}
-     * - source: organizations/{organization}/sources/{source}
-     * - tableDataProfile: projects/{project}/tableProfiles/{table_profile}
-     * - topic: projects/{project}/topics/{topic}
-     * - valuedResource: organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}
-     *
-     * The optional $template argument can be supplied to specify a particular pattern,
-     * and must match one of the templates listed above. If no $template argument is
-     * provided, or if the $template argument does not match one of the templates
-     * listed, then parseName will check each of the supported templates, and return
-     * the first match.
-     *
-     * @param string  $formattedName The formatted name string
-     * @param ?string $template      Optional name of template to match
-     *
-     * @return array An associative array from name component IDs to component values.
-     *
-     * @throws ValidationException If $formattedName could not be matched.
-     */
-    public static function parseName(string $formattedName, ?string $template = null): array
-    {
-        return self::parseFormattedName($formattedName, $template);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param array|ClientOptions $options {
-     *     Optional. Options for configuring the service API wrapper.
-     *
-     *     @type string $apiEndpoint
-     *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'securitycenter.googleapis.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
-     *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
-     *           **Important**: If you are providing a path to a credentials file, or a decoded
-     *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
-     *           unvalidated credential configuration to Google APIs can compromise the security
-     *           of your systems and data. It is recommended to create the credentials explicitly
-     *           ```
-     *           use Google\Auth\Credentials\ServiceAccountCredentials;
-     *           use Google\Cloud\SecurityCenter\V1\SecurityCenterClient;
-     *           $creds = new ServiceAccountCredentials($scopes, $json);
-     *           $options = new SecurityCenterClient(['credentials' => $creds]);
-     *           ```
-     *           {@see
-     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
-     *     @type array $credentialsConfig
-     *           Options used to configure credentials, including auth token caching, for the
-     *           client. For a full list of supporting configuration options, see
-     *           {@see \Google\ApiCore\CredentialsWrapper::build()} .
-     *     @type bool $disableRetries
-     *           Determines whether or not retries defined by the client configuration should be
-     *           disabled. Defaults to `false`.
-     *     @type string|array $clientConfig
-     *           Client method configuration, including retry settings. This option can be either
-     *           a path to a JSON file, or a PHP array containing the decoded JSON data. By
-     *           default this settings points to the default client config file, which is
-     *           provided in the resources folder.
-     *     @type string|TransportInterface $transport
-     *           The transport used for executing network requests. May be either the string
-     *           `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.
-     *           *Advanced usage*: Additionally, it is possible to pass in an already
-     *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
-     *           that when this object is provided, any settings in $transportConfig, and any
-     *           $apiEndpoint setting, will be ignored.
-     *     @type array $transportConfig
-     *           Configuration options that will be used to construct the transport. Options for
-     *           each supported transport type should be passed in a key for that transport. For
-     *           example:
-     *           $transportConfig = [
-     *               'grpc' => [...],
-     *               'rest' => [...],
-     *           ];
-     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} and
-     *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
-     *           supported options.
-     *     @type callable $clientCertSource
-     *           A callable which returns the client cert as a string. This can be used to
-     *           provide a certificate and private key to the transport layer for mTLS.
-     *     @type false|LoggerInterface $logger
-     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
-     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
-     *     @type string $universeDomain
-     *           The service domain for the client. Defaults to 'googleapis.com'.
-     * }
-     *
-     * @throws ValidationException
-     */
-    public function __construct(array|ClientOptions $options = [])
-    {
-        $clientOptions = $this->buildClientOptions($options);
-        $this->setClientOptions($clientOptions);
-        $this->operationsClient = $this->createOperationsClient($clientOptions);
-    }
-
-    /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
-    {
-        if (substr($method, -5) !== 'Async') {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
-        }
-
-        array_unshift($args, substr($method, 0, -5));
-        return call_user_func_array([$this, 'startAsyncCall'], $args);
-    }
+    public function resumeOperation($operationName, $methodName = null);
 
     /**
      * Creates a ResourceValueConfig for an organization. Maps user's tags to
@@ -1797,10 +232,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function batchCreateResourceValueConfigs(BatchCreateResourceValueConfigsRequest $request, array $callOptions = []): BatchCreateResourceValueConfigsResponse
-    {
-        return $this->startApiCall('BatchCreateResourceValueConfigs', $request, $callOptions)->wait();
-    }
+    public function batchCreateResourceValueConfigs(BatchCreateResourceValueConfigsRequest $request, array $callOptions = []): BatchCreateResourceValueConfigsResponse;
 
     /**
      * Kicks off an LRO to bulk mute findings for a parent based on a filter. The
@@ -1825,10 +257,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function bulkMuteFindings(BulkMuteFindingsRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('BulkMuteFindings', $request, $callOptions)->wait();
-    }
+    public function bulkMuteFindings(BulkMuteFindingsRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Creates a BigQuery export.
@@ -1851,10 +280,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createBigQueryExport(CreateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
-    {
-        return $this->startApiCall('CreateBigQueryExport', $request, $callOptions)->wait();
-    }
+    public function createBigQueryExport(CreateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport;
 
     /**
      * Creates a resident Event Threat Detection custom module at the scope of the
@@ -1881,10 +307,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createEventThreatDetectionCustomModule(CreateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule
-    {
-        return $this->startApiCall('CreateEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function createEventThreatDetectionCustomModule(CreateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule;
 
     /**
      * Creates a finding. The corresponding source must exist for finding creation
@@ -1908,10 +331,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createFinding(CreateFindingRequest $request, array $callOptions = []): Finding
-    {
-        return $this->startApiCall('CreateFinding', $request, $callOptions)->wait();
-    }
+    public function createFinding(CreateFindingRequest $request, array $callOptions = []): Finding;
 
     /**
      * Creates a mute config.
@@ -1934,10 +354,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createMuteConfig(CreateMuteConfigRequest $request, array $callOptions = []): MuteConfig
-    {
-        return $this->startApiCall('CreateMuteConfig', $request, $callOptions)->wait();
-    }
+    public function createMuteConfig(CreateMuteConfigRequest $request, array $callOptions = []): MuteConfig;
 
     /**
      * Creates a notification config.
@@ -1961,10 +378,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createNotificationConfig(CreateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
-    {
-        return $this->startApiCall('CreateNotificationConfig', $request, $callOptions)->wait();
-    }
+    public function createNotificationConfig(CreateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig;
 
     /**
      * Creates a resident SecurityHealthAnalyticsCustomModule at the scope of the
@@ -1991,10 +405,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createSecurityHealthAnalyticsCustomModule(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
-    {
-        return $this->startApiCall('CreateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function createSecurityHealthAnalyticsCustomModule(CreateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule;
 
     /**
      * Creates a source.
@@ -2017,10 +428,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createSource(CreateSourceRequest $request, array $callOptions = []): Source
-    {
-        return $this->startApiCall('CreateSource', $request, $callOptions)->wait();
-    }
+    public function createSource(CreateSourceRequest $request, array $callOptions = []): Source;
 
     /**
      * Deletes an existing BigQuery export.
@@ -2041,10 +449,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBigQueryExport(DeleteBigQueryExportRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteBigQueryExport', $request, $callOptions)->wait();
-    }
+    public function deleteBigQueryExport(DeleteBigQueryExportRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes the specified Event Threat Detection custom module and all of its
@@ -2068,10 +473,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteEventThreatDetectionCustomModule(DeleteEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function deleteEventThreatDetectionCustomModule(DeleteEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes an existing mute config.
@@ -2092,10 +494,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteMuteConfig(DeleteMuteConfigRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteMuteConfig', $request, $callOptions)->wait();
-    }
+    public function deleteMuteConfig(DeleteMuteConfigRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes a notification config.
@@ -2117,10 +516,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteNotificationConfig(DeleteNotificationConfigRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteNotificationConfig', $request, $callOptions)->wait();
-    }
+    public function deleteNotificationConfig(DeleteNotificationConfigRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes a ResourceValueConfig.
@@ -2142,10 +538,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteResourceValueConfig(DeleteResourceValueConfigRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteResourceValueConfig', $request, $callOptions)->wait();
-    }
+    public function deleteResourceValueConfig(DeleteResourceValueConfigRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes the specified SecurityHealthAnalyticsCustomModule and all of its
@@ -2169,10 +562,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteSecurityHealthAnalyticsCustomModule(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function deleteSecurityHealthAnalyticsCustomModule(DeleteSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): void;
 
     /**
      * Gets a BigQuery export.
@@ -2195,10 +585,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBigQueryExport(GetBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
-    {
-        return $this->startApiCall('GetBigQueryExport', $request, $callOptions)->wait();
-    }
+    public function getBigQueryExport(GetBigQueryExportRequest $request, array $callOptions = []): BigQueryExport;
 
     /**
      * Gets an effective Event Threat Detection custom module at the given level.
@@ -2223,10 +610,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getEffectiveEventThreatDetectionCustomModule(GetEffectiveEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EffectiveEventThreatDetectionCustomModule
-    {
-        return $this->startApiCall('GetEffectiveEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function getEffectiveEventThreatDetectionCustomModule(GetEffectiveEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EffectiveEventThreatDetectionCustomModule;
 
     /**
      * Retrieves an EffectiveSecurityHealthAnalyticsCustomModule.
@@ -2251,10 +635,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getEffectiveSecurityHealthAnalyticsCustomModule(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): EffectiveSecurityHealthAnalyticsCustomModule
-    {
-        return $this->startApiCall('GetEffectiveSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function getEffectiveSecurityHealthAnalyticsCustomModule(GetEffectiveSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): EffectiveSecurityHealthAnalyticsCustomModule;
 
     /**
      * Gets an Event Threat Detection custom module.
@@ -2278,10 +659,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getEventThreatDetectionCustomModule(GetEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule
-    {
-        return $this->startApiCall('GetEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function getEventThreatDetectionCustomModule(GetEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule;
 
     /**
      * Gets the access control policy on the specified Source.
@@ -2304,10 +682,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
-    {
-        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
-    }
+    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy;
 
     /**
      * Gets a mute config.
@@ -2330,10 +705,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getMuteConfig(GetMuteConfigRequest $request, array $callOptions = []): MuteConfig
-    {
-        return $this->startApiCall('GetMuteConfig', $request, $callOptions)->wait();
-    }
+    public function getMuteConfig(GetMuteConfigRequest $request, array $callOptions = []): MuteConfig;
 
     /**
      * Gets a notification config.
@@ -2356,10 +728,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNotificationConfig(GetNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
-    {
-        return $this->startApiCall('GetNotificationConfig', $request, $callOptions)->wait();
-    }
+    public function getNotificationConfig(GetNotificationConfigRequest $request, array $callOptions = []): NotificationConfig;
 
     /**
      * Gets the settings for an organization.
@@ -2383,10 +752,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getOrganizationSettings(GetOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings
-    {
-        return $this->startApiCall('GetOrganizationSettings', $request, $callOptions)->wait();
-    }
+    public function getOrganizationSettings(GetOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings;
 
     /**
      * Gets a ResourceValueConfig.
@@ -2410,10 +776,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getResourceValueConfig(GetResourceValueConfigRequest $request, array $callOptions = []): ResourceValueConfig
-    {
-        return $this->startApiCall('GetResourceValueConfig', $request, $callOptions)->wait();
-    }
+    public function getResourceValueConfig(GetResourceValueConfigRequest $request, array $callOptions = []): ResourceValueConfig;
 
     /**
      * Retrieves a SecurityHealthAnalyticsCustomModule.
@@ -2437,10 +800,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getSecurityHealthAnalyticsCustomModule(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
-    {
-        return $this->startApiCall('GetSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function getSecurityHealthAnalyticsCustomModule(GetSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule;
 
     /**
      * Get the simulation by name or the latest simulation for the given
@@ -2464,10 +824,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getSimulation(GetSimulationRequest $request, array $callOptions = []): Simulation
-    {
-        return $this->startApiCall('GetSimulation', $request, $callOptions)->wait();
-    }
+    public function getSimulation(GetSimulationRequest $request, array $callOptions = []): Simulation;
 
     /**
      * Gets a source.
@@ -2490,10 +847,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getSource(GetSourceRequest $request, array $callOptions = []): Source
-    {
-        return $this->startApiCall('GetSource', $request, $callOptions)->wait();
-    }
+    public function getSource(GetSourceRequest $request, array $callOptions = []): Source;
 
     /**
      * Get the valued resource by name
@@ -2516,10 +870,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getValuedResource(GetValuedResourceRequest $request, array $callOptions = []): ValuedResource
-    {
-        return $this->startApiCall('GetValuedResource', $request, $callOptions)->wait();
-    }
+    public function getValuedResource(GetValuedResourceRequest $request, array $callOptions = []): ValuedResource;
 
     /**
      * Filters an organization's assets and  groups them by their specified
@@ -2545,10 +896,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function groupAssets(GroupAssetsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('GroupAssets', $request, $callOptions);
-    }
+    public function groupAssets(GroupAssetsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Filters an organization or source's findings and  groups them by their
@@ -2577,10 +925,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function groupFindings(GroupFindingsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('GroupFindings', $request, $callOptions);
-    }
+    public function groupFindings(GroupFindingsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists an organization's assets.
@@ -2605,10 +950,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function listAssets(ListAssetsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListAssets', $request, $callOptions);
-    }
+    public function listAssets(ListAssetsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists the attack paths for a set of simulation results or valued resources
@@ -2632,10 +974,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listAttackPaths(ListAttackPathsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListAttackPaths', $request, $callOptions);
-    }
+    public function listAttackPaths(ListAttackPathsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists BigQuery exports. Note that when requesting BigQuery exports at a
@@ -2662,10 +1001,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBigQueryExports(ListBigQueryExportsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListBigQueryExports', $request, $callOptions);
-    }
+    public function listBigQueryExports(ListBigQueryExportsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all resident Event Threat Detection custom modules under the
@@ -2691,10 +1027,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listDescendantEventThreatDetectionCustomModules(ListDescendantEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListDescendantEventThreatDetectionCustomModules', $request, $callOptions);
-    }
+    public function listDescendantEventThreatDetectionCustomModules(ListDescendantEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Returns a list of all resident SecurityHealthAnalyticsCustomModules under
@@ -2720,10 +1053,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listDescendantSecurityHealthAnalyticsCustomModules(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListDescendantSecurityHealthAnalyticsCustomModules', $request, $callOptions);
-    }
+    public function listDescendantSecurityHealthAnalyticsCustomModules(ListDescendantSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all effective Event Threat Detection custom modules for the
@@ -2750,10 +1080,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listEffectiveEventThreatDetectionCustomModules(ListEffectiveEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListEffectiveEventThreatDetectionCustomModules', $request, $callOptions);
-    }
+    public function listEffectiveEventThreatDetectionCustomModules(ListEffectiveEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Returns a list of all EffectiveSecurityHealthAnalyticsCustomModules for the
@@ -2780,10 +1107,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listEffectiveSecurityHealthAnalyticsCustomModules(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListEffectiveSecurityHealthAnalyticsCustomModules', $request, $callOptions);
-    }
+    public function listEffectiveSecurityHealthAnalyticsCustomModules(ListEffectiveSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all Event Threat Detection custom modules for the given
@@ -2809,10 +1133,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listEventThreatDetectionCustomModules(ListEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListEventThreatDetectionCustomModules', $request, $callOptions);
-    }
+    public function listEventThreatDetectionCustomModules(ListEventThreatDetectionCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists an organization or source's findings.
@@ -2838,10 +1159,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listFindings(ListFindingsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListFindings', $request, $callOptions);
-    }
+    public function listFindings(ListFindingsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists mute configs.
@@ -2864,10 +1182,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listMuteConfigs(ListMuteConfigsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListMuteConfigs', $request, $callOptions);
-    }
+    public function listMuteConfigs(ListMuteConfigsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists notification configs.
@@ -2891,10 +1206,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listNotificationConfigs(ListNotificationConfigsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListNotificationConfigs', $request, $callOptions);
-    }
+    public function listNotificationConfigs(ListNotificationConfigsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all ResourceValueConfigs.
@@ -2918,10 +1230,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listResourceValueConfigs(ListResourceValueConfigsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListResourceValueConfigs', $request, $callOptions);
-    }
+    public function listResourceValueConfigs(ListResourceValueConfigsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Returns a list of all SecurityHealthAnalyticsCustomModules for the given
@@ -2947,10 +1256,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listSecurityHealthAnalyticsCustomModules(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListSecurityHealthAnalyticsCustomModules', $request, $callOptions);
-    }
+    public function listSecurityHealthAnalyticsCustomModules(ListSecurityHealthAnalyticsCustomModulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all sources belonging to an organization.
@@ -2973,10 +1279,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listSources(ListSourcesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListSources', $request, $callOptions);
-    }
+    public function listSources(ListSourcesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists the valued resources for a set of simulation results and filter.
@@ -2999,10 +1302,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listValuedResources(ListValuedResourcesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListValuedResources', $request, $callOptions);
-    }
+    public function listValuedResources(ListValuedResourcesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Runs asset discovery. The discovery is tracked with a long-running
@@ -3032,10 +1332,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @deprecated This method will be removed in the next major version update.
      */
-    public function runAssetDiscovery(RunAssetDiscoveryRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('RunAssetDiscovery', $request, $callOptions)->wait();
-    }
+    public function runAssetDiscovery(RunAssetDiscoveryRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Updates the state of a finding.
@@ -3058,10 +1355,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setFindingState(SetFindingStateRequest $request, array $callOptions = []): Finding
-    {
-        return $this->startApiCall('SetFindingState', $request, $callOptions)->wait();
-    }
+    public function setFindingState(SetFindingStateRequest $request, array $callOptions = []): Finding;
 
     /**
      * Sets the access control policy on the specified Source.
@@ -3084,10 +1378,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy
-    {
-        return $this->startApiCall('SetIamPolicy', $request, $callOptions)->wait();
-    }
+    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy;
 
     /**
      * Updates the mute state of a finding.
@@ -3110,10 +1401,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setMute(SetMuteRequest $request, array $callOptions = []): Finding
-    {
-        return $this->startApiCall('SetMute', $request, $callOptions)->wait();
-    }
+    public function setMute(SetMuteRequest $request, array $callOptions = []): Finding;
 
     /**
      * Simulates a given SecurityHealthAnalyticsCustomModule and Resource.
@@ -3138,10 +1426,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function simulateSecurityHealthAnalyticsCustomModule(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SimulateSecurityHealthAnalyticsCustomModuleResponse
-    {
-        return $this->startApiCall('SimulateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function simulateSecurityHealthAnalyticsCustomModule(SimulateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SimulateSecurityHealthAnalyticsCustomModuleResponse;
 
     /**
      * Returns the permissions that a caller has on the specified source.
@@ -3164,10 +1449,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
-    {
-        return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
-    }
+    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse;
 
     /**
      * Updates a BigQuery export.
@@ -3190,10 +1472,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBigQueryExport(UpdateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport
-    {
-        return $this->startApiCall('UpdateBigQueryExport', $request, $callOptions)->wait();
-    }
+    public function updateBigQueryExport(UpdateBigQueryExportRequest $request, array $callOptions = []): BigQueryExport;
 
     /**
      * Updates the Event Threat Detection custom module with the given name based
@@ -3222,10 +1501,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateEventThreatDetectionCustomModule(UpdateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule
-    {
-        return $this->startApiCall('UpdateEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function updateEventThreatDetectionCustomModule(UpdateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): EventThreatDetectionCustomModule;
 
     /**
      * Updates external system. This is for a given finding.
@@ -3248,10 +1524,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateExternalSystem(UpdateExternalSystemRequest $request, array $callOptions = []): ExternalSystem
-    {
-        return $this->startApiCall('UpdateExternalSystem', $request, $callOptions)->wait();
-    }
+    public function updateExternalSystem(UpdateExternalSystemRequest $request, array $callOptions = []): ExternalSystem;
 
     /**
      * Creates or updates a finding. The corresponding source must exist for a
@@ -3275,10 +1548,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateFinding(UpdateFindingRequest $request, array $callOptions = []): Finding
-    {
-        return $this->startApiCall('UpdateFinding', $request, $callOptions)->wait();
-    }
+    public function updateFinding(UpdateFindingRequest $request, array $callOptions = []): Finding;
 
     /**
      * Updates a mute config.
@@ -3301,10 +1571,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateMuteConfig(UpdateMuteConfigRequest $request, array $callOptions = []): MuteConfig
-    {
-        return $this->startApiCall('UpdateMuteConfig', $request, $callOptions)->wait();
-    }
+    public function updateMuteConfig(UpdateMuteConfigRequest $request, array $callOptions = []): MuteConfig;
 
     /**
      *
@@ -3330,10 +1597,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateNotificationConfig(UpdateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig
-    {
-        return $this->startApiCall('UpdateNotificationConfig', $request, $callOptions)->wait();
-    }
+    public function updateNotificationConfig(UpdateNotificationConfigRequest $request, array $callOptions = []): NotificationConfig;
 
     /**
      * Updates an organization's settings.
@@ -3357,10 +1621,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateOrganizationSettings(UpdateOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings
-    {
-        return $this->startApiCall('UpdateOrganizationSettings', $request, $callOptions)->wait();
-    }
+    public function updateOrganizationSettings(UpdateOrganizationSettingsRequest $request, array $callOptions = []): OrganizationSettings;
 
     /**
      * Updates an existing ResourceValueConfigs with new rules.
@@ -3384,10 +1645,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateResourceValueConfig(UpdateResourceValueConfigRequest $request, array $callOptions = []): ResourceValueConfig
-    {
-        return $this->startApiCall('UpdateResourceValueConfig', $request, $callOptions)->wait();
-    }
+    public function updateResourceValueConfig(UpdateResourceValueConfigRequest $request, array $callOptions = []): ResourceValueConfig;
 
     /**
      * Updates the SecurityHealthAnalyticsCustomModule under the given name based
@@ -3415,10 +1673,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSecurityHealthAnalyticsCustomModule(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule
-    {
-        return $this->startApiCall('UpdateSecurityHealthAnalyticsCustomModule', $request, $callOptions)->wait();
-    }
+    public function updateSecurityHealthAnalyticsCustomModule(UpdateSecurityHealthAnalyticsCustomModuleRequest $request, array $callOptions = []): SecurityHealthAnalyticsCustomModule;
 
     /**
      * Updates security marks.
@@ -3441,10 +1696,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSecurityMarks(UpdateSecurityMarksRequest $request, array $callOptions = []): SecurityMarks
-    {
-        return $this->startApiCall('UpdateSecurityMarks', $request, $callOptions)->wait();
-    }
+    public function updateSecurityMarks(UpdateSecurityMarksRequest $request, array $callOptions = []): SecurityMarks;
 
     /**
      * Updates a source.
@@ -3467,10 +1719,7 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateSource(UpdateSourceRequest $request, array $callOptions = []): Source
-    {
-        return $this->startApiCall('UpdateSource', $request, $callOptions)->wait();
-    }
+    public function updateSource(UpdateSourceRequest $request, array $callOptions = []): Source;
 
     /**
      * Validates the given Event Threat Detection custom module.
@@ -3494,8 +1743,5 @@ final class SecurityCenterClient implements SecurityCenterClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function validateEventThreatDetectionCustomModule(ValidateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): ValidateEventThreatDetectionCustomModuleResponse
-    {
-        return $this->startApiCall('ValidateEventThreatDetectionCustomModule', $request, $callOptions)->wait();
-    }
+    public function validateEventThreatDetectionCustomModule(ValidateEventThreatDetectionCustomModuleRequest $request, array $callOptions = []): ValidateEventThreatDetectionCustomModuleResponse;
 }

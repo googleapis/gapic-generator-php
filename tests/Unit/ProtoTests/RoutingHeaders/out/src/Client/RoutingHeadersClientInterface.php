@@ -25,15 +25,8 @@
 namespace Testing\RoutingHeaders\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\RetrySettings;
-use Google\ApiCore\Transport\TransportInterface;
-use Google\ApiCore\ValidationException;
-use Google\Auth\FetchAuthTokenInterface;
 use GuzzleHttp\Promise\PromiseInterface;
-use Psr\Log\LoggerInterface;
 use Testing\RoutingHeaders\NestedRequest;
 use Testing\RoutingHeaders\OrderRequest;
 use Testing\RoutingHeaders\Response;
@@ -42,8 +35,8 @@ use Testing\RoutingHeaders\SimpleRequest;
 /**
  * Service Description:
  *
- * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods.
+ * This interface defines the methods available for calling the backing service
+ * API.
  *
  * @method PromiseInterface<Response> deleteMethodAsync(SimpleRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Response> getMethodAsync(SimpleRequest $request, array $optionalArgs = [])
@@ -58,129 +51,8 @@ use Testing\RoutingHeaders\SimpleRequest;
  * @method PromiseInterface<Response> routingRuleWithOutParametersAsync(NestedRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Response> routingRuleWithParametersAsync(NestedRequest $request, array $optionalArgs = [])
  */
-final class RoutingHeadersClient implements RoutingHeadersClientInterface
+interface RoutingHeadersClientInterface
 {
-    use GapicClientTrait;
-
-    /** The name of the service. */
-    private const SERVICE_NAME = 'testing.routingheaders.RoutingHeaders';
-
-    /** The default address of the service. */
-    private const SERVICE_ADDRESS = 'routingheaders.example.com';
-
-    /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
-
-    /** The name of the code generator, to be included in the agent header. */
-    private const CODEGEN_NAME = 'gapic';
-
-    /** The default scopes required by the service. */
-    public static $serviceScopes = [];
-
-    private static function getClientDefaults()
-    {
-        return [
-            'serviceName' => self::SERVICE_NAME,
-            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
-            'clientConfig' => __DIR__ . '/../resources/routing_headers_client_config.json',
-            'descriptorsConfigPath' => __DIR__ . '/../resources/routing_headers_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/routing_headers_grpc_config.json',
-            'credentialsConfig' => [
-                'defaultScopes' => self::$serviceScopes,
-            ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/routing_headers_rest_client_config.php',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param array|ClientOptions $options {
-     *     Optional. Options for configuring the service API wrapper.
-     *
-     *     @type string $apiEndpoint
-     *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'routingheaders.example.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
-     *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
-     *           **Important**: If you are providing a path to a credentials file, or a decoded
-     *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
-     *           unvalidated credential configuration to Google APIs can compromise the security
-     *           of your systems and data. It is recommended to create the credentials explicitly
-     *           ```
-     *           use Google\Auth\Credentials\ServiceAccountCredentials;
-     *           use Testing\RoutingHeaders\RoutingHeadersClient;
-     *           $creds = new ServiceAccountCredentials($scopes, $json);
-     *           $options = new RoutingHeadersClient(['credentials' => $creds]);
-     *           ```
-     *           {@see
-     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
-     *     @type array $credentialsConfig
-     *           Options used to configure credentials, including auth token caching, for the
-     *           client. For a full list of supporting configuration options, see
-     *           {@see \Google\ApiCore\CredentialsWrapper::build()} .
-     *     @type bool $disableRetries
-     *           Determines whether or not retries defined by the client configuration should be
-     *           disabled. Defaults to `false`.
-     *     @type string|array $clientConfig
-     *           Client method configuration, including retry settings. This option can be either
-     *           a path to a JSON file, or a PHP array containing the decoded JSON data. By
-     *           default this settings points to the default client config file, which is
-     *           provided in the resources folder.
-     *     @type string|TransportInterface $transport
-     *           The transport used for executing network requests. May be either the string
-     *           `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.
-     *           *Advanced usage*: Additionally, it is possible to pass in an already
-     *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
-     *           that when this object is provided, any settings in $transportConfig, and any
-     *           $apiEndpoint setting, will be ignored.
-     *     @type array $transportConfig
-     *           Configuration options that will be used to construct the transport. Options for
-     *           each supported transport type should be passed in a key for that transport. For
-     *           example:
-     *           $transportConfig = [
-     *               'grpc' => [...],
-     *               'rest' => [...],
-     *           ];
-     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} and
-     *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
-     *           supported options.
-     *     @type callable $clientCertSource
-     *           A callable which returns the client cert as a string. This can be used to
-     *           provide a certificate and private key to the transport layer for mTLS.
-     *     @type false|LoggerInterface $logger
-     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
-     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
-     *     @type string $universeDomain
-     *           The service domain for the client. Defaults to 'googleapis.com'.
-     * }
-     *
-     * @throws ValidationException
-     */
-    public function __construct(array|ClientOptions $options = [])
-    {
-        $clientOptions = $this->buildClientOptions($options);
-        $this->setClientOptions($clientOptions);
-    }
-
-    /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
-    {
-        if (substr($method, -5) !== 'Async') {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
-        }
-
-        array_unshift($args, substr($method, 0, -5));
-        return call_user_func_array([$this, 'startAsyncCall'], $args);
-    }
-
     /**
      * The async variant is {@see RoutingHeadersClient::deleteMethodAsync()} .
      *
@@ -200,10 +72,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('DeleteMethod', $request, $callOptions)->wait();
-    }
+    public function deleteMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::getMethodAsync()} .
@@ -224,10 +93,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('GetMethod', $request, $callOptions)->wait();
-    }
+    public function getMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::getNoPlaceholdersMethodAsync()}
@@ -249,10 +115,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoPlaceholdersMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('GetNoPlaceholdersMethod', $request, $callOptions)->wait();
-    }
+    public function getNoPlaceholdersMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::getNoTemplateMethodAsync()} .
@@ -273,10 +136,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getNoTemplateMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('GetNoTemplateMethod', $request, $callOptions)->wait();
-    }
+    public function getNoTemplateMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::nestedMethodAsync()} .
@@ -297,10 +157,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMethod(NestedRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('NestedMethod', $request, $callOptions)->wait();
-    }
+    public function nestedMethod(NestedRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::nestedMultiMethodAsync()} .
@@ -321,10 +178,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function nestedMultiMethod(NestedRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('NestedMultiMethod', $request, $callOptions)->wait();
-    }
+    public function nestedMultiMethod(NestedRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::orderingMethodAsync()} .
@@ -345,10 +199,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function orderingMethod(OrderRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('OrderingMethod', $request, $callOptions)->wait();
-    }
+    public function orderingMethod(OrderRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::patchMethodAsync()} .
@@ -369,10 +220,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function patchMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('PatchMethod', $request, $callOptions)->wait();
-    }
+    public function patchMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::postMethodAsync()} .
@@ -393,10 +241,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function postMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('PostMethod', $request, $callOptions)->wait();
-    }
+    public function postMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is {@see RoutingHeadersClient::putMethodAsync()} .
@@ -417,10 +262,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function putMethod(SimpleRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('PutMethod', $request, $callOptions)->wait();
-    }
+    public function putMethod(SimpleRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is
@@ -442,10 +284,7 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithOutParameters(NestedRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('RoutingRuleWithOutParameters', $request, $callOptions)->wait();
-    }
+    public function routingRuleWithOutParameters(NestedRequest $request, array $callOptions = []): Response;
 
     /**
      * The async variant is
@@ -467,8 +306,5 @@ final class RoutingHeadersClient implements RoutingHeadersClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function routingRuleWithParameters(NestedRequest $request, array $callOptions = []): Response
-    {
-        return $this->startApiCall('RoutingRuleWithParameters', $request, $callOptions)->wait();
-    }
+    public function routingRuleWithParameters(NestedRequest $request, array $callOptions = []): Response;
 }

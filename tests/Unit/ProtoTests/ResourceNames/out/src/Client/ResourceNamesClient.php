@@ -67,7 +67,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * @method PromiseInterface<PlaceholderResponse> wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PlaceholderResponse> wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
-final class ResourceNamesClient
+final class ResourceNamesClient implements ResourceNamesClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
