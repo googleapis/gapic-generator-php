@@ -162,6 +162,7 @@ class GapicClientV2Generator
             ->withTrait(
                 $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null
             )
+            ->withInterface($this->ctx->type($this->serviceDetails->gapicClientInterfaceType))
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
@@ -183,7 +184,7 @@ class GapicClientV2Generator
 
     private function generateInterface(PhpClass $class): PhpInterface
     {
-        return AST::interface(Type::fromName($this->serviceDetails->gapicClientV2Type->getFullname() . 'Interface'))
+        return AST::interface($this->serviceDetails->gapicClientInterfaceType)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)
@@ -191,15 +192,12 @@ class GapicClientV2Generator
                             'Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? '')
                         )
                 ),
-                !is_null($this->serviceDetails->apiVersion)
-                    ? PhpDoc::text(
-                        'This client uses ' . $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion . '.'
-                    )
-                    : null,
-                PhpDoc::preFormattedText(
-                    Vector::new([
-                        'This interface defines the methods available for calling the backing service API',
-                    ])
+                PhpDoc::text(
+                    'This interface defines the methods available for calling ' .
+                    (is_null($this->serviceDetails->apiVersion)
+                        ? 'the backing service API'
+                        : $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion
+                    ) . '.'
                 ),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
@@ -214,7 +212,7 @@ class GapicClientV2Generator
                     // omit "__call" and "__construct"
                     ->filter(fn ($x) => 0 !== strpos($x->name, '__'))
                     // ensure the members are rendered without their method body
-                    ->map(fn ($x) => $x->forInterface())
+                    ->map(fn ($x) => $x->declarationOnly())
             );
     }
 

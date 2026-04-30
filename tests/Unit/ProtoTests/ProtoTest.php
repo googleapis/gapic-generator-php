@@ -54,8 +54,6 @@ final class ProtoTest extends TestCase
             $filename = __DIR__ . '/' . dirname($protoPath) . '/out/' . $relativeFilename;
             // Check "expected-code" file exists, then compare generated code against expected code.
             // TODO: Add ability to check partial files.
-            @mkdir(dirname(__DIR__ . '/codegen/' . $relativeFilename), recursive: true);
-            file_put_contents(__DIR__ . '/codegen/' . $relativeFilename, $code);
             $this->assertTrue(file_exists($filename), "Expected code file missing: '{$filename}'");
             $expectedCode = file_get_contents($filename);
             if (trim($expectedCode) !== 'IGNORE' && trim($expectedCode) !== '<?php // IGNORE') {

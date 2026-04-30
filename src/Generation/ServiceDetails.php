@@ -55,6 +55,9 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the service client V2 class. */
     public Type $gapicClientV2Type;
 
+    /** @var Type *Readonly* The type of the service client interface. */
+    public Type $gapicClientInterfaceType;
+
     /** @var Type *Readonly* The type of the empty client class. */
     public Type $emptyClientType;
 
@@ -179,6 +182,7 @@ class ServiceDetails
         $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
         $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
         $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
+        $this->gapicClientInterfaceType = Type::fromName("{$namespace}\\Client\\{$desc->getName()}ClientInterface");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?

@@ -34,7 +34,7 @@ final class PhpMethod extends PhpClassMember
     public string $name;
     private Vector $params;
     protected mixed $body;
-    private bool $forInterface = false;
+    private bool $declarationOnly = false;
 
     /** @var string The return type of the function. */
     private ?ResolvedType $returnType = null;
@@ -76,9 +76,9 @@ final class PhpMethod extends PhpClassMember
         return $this->clone(fn ($clone) => $clone->returnType = $returnType);
     }
 
-    public function forInterface(): PhpMethod
+    public function declarationOnly(): PhpMethod
     {
-        return $this->clone(fn ($clone) => $clone->forInterface = true);
+        return $this->clone(fn ($clone) => $clone->declarationOnly = true);
     }
 
     public function getName(): string
@@ -96,7 +96,8 @@ final class PhpMethod extends PhpClassMember
             $this->phpDocToCode() .
             $this->accessToCode() .
             $fnSignatureDeclaration .
-            ($this->forInterface ? ';' :
+            (
+                $this->declarationOnly ? ';' :
                 '{' . PHP_EOL .
                 static::toPhp($this->body) .
                 PHP_EOL . '}' . PHP_EOL
