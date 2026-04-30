@@ -25,18 +25,10 @@
 namespace Google\Cloud\Spanner\Admin\Database\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
-use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
-use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
-use Google\ApiCore\Transport\TransportInterface;
-use Google\ApiCore\ValidationException;
-use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\SetIamPolicyRequest;
@@ -79,9 +71,7 @@ use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseRequest;
 use Google\LongRunning\Operation;
-use Grpc\ChannelCredentials;
 use GuzzleHttp\Promise\PromiseInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: Cloud Spanner Database Admin API
@@ -92,13 +82,8 @@ use Psr\Log\LoggerInterface;
  * * create, delete, copy and list backups for a database
  * * restore a database from an existing backup
  *
- * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods.
- *
- * Many parameters require resource names to be formatted in a particular way. To
- * assist with these names, this class includes a format method for each type of
- * name, and additionally a parseName method to extract the individual identifiers
- * contained within formatted names that are returned by the API.
+ * This interface defines the methods available for calling the backing service
+ * API.
  *
  * @method PromiseInterface<AddSplitPointsResponse> addSplitPointsAsync(AddSplitPointsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> copyBackupAsync(CopyBackupRequest $request, array $optionalArgs = [])
@@ -128,66 +113,14 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> updateDatabaseAsync(UpdateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> updateDatabaseDdlAsync(UpdateDatabaseDdlRequest $request, array $optionalArgs = [])
  */
-final class DatabaseAdminClient implements DatabaseAdminClientInterface
+interface DatabaseAdminClientInterface
 {
-    use GapicClientTrait;
-    use ResourceHelperTrait;
-
-    /** The name of the service. */
-    private const SERVICE_NAME = 'google.spanner.admin.database.v1.DatabaseAdmin';
-
-    /**
-     * The default address of the service.
-     *
-     * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
-     */
-    private const SERVICE_ADDRESS = 'spanner.googleapis.com';
-
-    /** The address template of the service. */
-    private const SERVICE_ADDRESS_TEMPLATE = 'spanner.UNIVERSE_DOMAIN';
-
-    /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
-
-    /** The name of the code generator, to be included in the agent header. */
-    private const CODEGEN_NAME = 'gapic';
-
-    /** The default scopes required by the service. */
-    public static $serviceScopes = [
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.admin',
-    ];
-
-    private $operationsClient;
-
-    private static function getClientDefaults()
-    {
-        return [
-            'serviceName' => self::SERVICE_NAME,
-            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
-            'clientConfig' => __DIR__ . '/../resources/database_admin_client_config.json',
-            'descriptorsConfigPath' => __DIR__ . '/../resources/database_admin_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/database_admin_grpc_config.json',
-            'credentialsConfig' => [
-                'defaultScopes' => self::$serviceScopes,
-            ],
-            'transportConfig' => [
-                'rest' => [
-                    'restClientConfigPath' => __DIR__ . '/../resources/database_admin_rest_client_config.php',
-                ],
-            ],
-        ];
-    }
-
     /**
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
      */
-    public function getOperationsClient()
-    {
-        return $this->operationsClient;
-    }
+    public function getOperationsClient();
 
     /**
      * Resume an existing long running operation that was previously started by a long
@@ -200,273 +133,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @return OperationResponse
      */
-    public function resumeOperation($operationName, $methodName = null)
-    {
-        $options = $this->descriptors[$methodName]['longRunning'] ?? [];
-        $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
-        $operation->reload();
-        return $operation;
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a backup
-     * resource.
-     *
-     * @param string $project
-     * @param string $instance
-     * @param string $backup
-     *
-     * @return string The formatted backup resource.
-     */
-    public static function backupName(string $project, string $instance, string $backup): string
-    {
-        return self::getPathTemplate('backup')->render([
-            'project' => $project,
-            'instance' => $instance,
-            'backup' => $backup,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * backup_schedule resource.
-     *
-     * @param string $project
-     * @param string $instance
-     * @param string $database
-     * @param string $schedule
-     *
-     * @return string The formatted backup_schedule resource.
-     */
-    public static function backupScheduleName(string $project, string $instance, string $database, string $schedule): string
-    {
-        return self::getPathTemplate('backupSchedule')->render([
-            'project' => $project,
-            'instance' => $instance,
-            'database' => $database,
-            'schedule' => $schedule,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a crypto_key
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $keyRing
-     * @param string $cryptoKey
-     *
-     * @return string The formatted crypto_key resource.
-     */
-    public static function cryptoKeyName(string $project, string $location, string $keyRing, string $cryptoKey): string
-    {
-        return self::getPathTemplate('cryptoKey')->render([
-            'project' => $project,
-            'location' => $location,
-            'key_ring' => $keyRing,
-            'crypto_key' => $cryptoKey,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * crypto_key_version resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $keyRing
-     * @param string $cryptoKey
-     * @param string $cryptoKeyVersion
-     *
-     * @return string The formatted crypto_key_version resource.
-     */
-    public static function cryptoKeyVersionName(string $project, string $location, string $keyRing, string $cryptoKey, string $cryptoKeyVersion): string
-    {
-        return self::getPathTemplate('cryptoKeyVersion')->render([
-            'project' => $project,
-            'location' => $location,
-            'key_ring' => $keyRing,
-            'crypto_key' => $cryptoKey,
-            'crypto_key_version' => $cryptoKeyVersion,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a database
-     * resource.
-     *
-     * @param string $project
-     * @param string $instance
-     * @param string $database
-     *
-     * @return string The formatted database resource.
-     */
-    public static function databaseName(string $project, string $instance, string $database): string
-    {
-        return self::getPathTemplate('database')->render([
-            'project' => $project,
-            'instance' => $instance,
-            'database' => $database,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a instance
-     * resource.
-     *
-     * @param string $project
-     * @param string $instance
-     *
-     * @return string The formatted instance resource.
-     */
-    public static function instanceName(string $project, string $instance): string
-    {
-        return self::getPathTemplate('instance')->render([
-            'project' => $project,
-            'instance' => $instance,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a
-     * instance_partition resource.
-     *
-     * @param string $project
-     * @param string $instance
-     * @param string $instancePartition
-     *
-     * @return string The formatted instance_partition resource.
-     */
-    public static function instancePartitionName(string $project, string $instance, string $instancePartition): string
-    {
-        return self::getPathTemplate('instancePartition')->render([
-            'project' => $project,
-            'instance' => $instance,
-            'instance_partition' => $instancePartition,
-        ]);
-    }
-
-    /**
-     * Parses a formatted name string and returns an associative array of the components in the name.
-     * The following name formats are supported:
-     * Template: Pattern
-     * - backup: projects/{project}/instances/{instance}/backups/{backup}
-     * - backupSchedule: projects/{project}/instances/{instance}/databases/{database}/backupSchedules/{schedule}
-     * - cryptoKey: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}
-     * - cryptoKeyVersion: projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}
-     * - database: projects/{project}/instances/{instance}/databases/{database}
-     * - instance: projects/{project}/instances/{instance}
-     * - instancePartition: projects/{project}/instances/{instance}/instancePartitions/{instance_partition}
-     *
-     * The optional $template argument can be supplied to specify a particular pattern,
-     * and must match one of the templates listed above. If no $template argument is
-     * provided, or if the $template argument does not match one of the templates
-     * listed, then parseName will check each of the supported templates, and return
-     * the first match.
-     *
-     * @param string  $formattedName The formatted name string
-     * @param ?string $template      Optional name of template to match
-     *
-     * @return array An associative array from name component IDs to component values.
-     *
-     * @throws ValidationException If $formattedName could not be matched.
-     */
-    public static function parseName(string $formattedName, ?string $template = null): array
-    {
-        return self::parseFormattedName($formattedName, $template);
-    }
-
-    /**
-     * Constructor.
-     *
-     * Setting the "SPANNER_EMULATOR_HOST" environment variable will automatically set
-     * the API Endpoint to the value specified in the variable, as well as ensure that
-     * empty credentials are used in the transport layer.
-     *
-     * @param array|ClientOptions $options {
-     *     Optional. Options for configuring the service API wrapper.
-     *
-     *     @type string $apiEndpoint
-     *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'spanner.googleapis.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
-     *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
-     *           **Important**: If you are providing a path to a credentials file, or a decoded
-     *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
-     *           unvalidated credential configuration to Google APIs can compromise the security
-     *           of your systems and data. It is recommended to create the credentials explicitly
-     *           ```
-     *           use Google\Auth\Credentials\ServiceAccountCredentials;
-     *           use Google\Cloud\Spanner\Admin\Database\V1\DatabaseAdminClient;
-     *           $creds = new ServiceAccountCredentials($scopes, $json);
-     *           $options = new DatabaseAdminClient(['credentials' => $creds]);
-     *           ```
-     *           {@see
-     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
-     *     @type array $credentialsConfig
-     *           Options used to configure credentials, including auth token caching, for the
-     *           client. For a full list of supporting configuration options, see
-     *           {@see \Google\ApiCore\CredentialsWrapper::build()} .
-     *     @type bool $disableRetries
-     *           Determines whether or not retries defined by the client configuration should be
-     *           disabled. Defaults to `false`.
-     *     @type string|array $clientConfig
-     *           Client method configuration, including retry settings. This option can be either
-     *           a path to a JSON file, or a PHP array containing the decoded JSON data. By
-     *           default this settings points to the default client config file, which is
-     *           provided in the resources folder.
-     *     @type string|TransportInterface $transport
-     *           The transport used for executing network requests. May be either the string
-     *           `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.
-     *           *Advanced usage*: Additionally, it is possible to pass in an already
-     *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
-     *           that when this object is provided, any settings in $transportConfig, and any
-     *           $apiEndpoint setting, will be ignored.
-     *     @type array $transportConfig
-     *           Configuration options that will be used to construct the transport. Options for
-     *           each supported transport type should be passed in a key for that transport. For
-     *           example:
-     *           $transportConfig = [
-     *               'grpc' => [...],
-     *               'rest' => [...],
-     *           ];
-     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} and
-     *           {@see \Google\ApiCore\Transport\RestTransport::build()} methods for the
-     *           supported options.
-     *     @type callable $clientCertSource
-     *           A callable which returns the client cert as a string. This can be used to
-     *           provide a certificate and private key to the transport layer for mTLS.
-     *     @type false|LoggerInterface $logger
-     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
-     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
-     *     @type string $universeDomain
-     *           The service domain for the client. Defaults to 'googleapis.com'.
-     * }
-     *
-     * @throws ValidationException
-     */
-    public function __construct(array|ClientOptions $options = [])
-    {
-        $options = $this->setDefaultEmulatorConfig($options);
-        $clientOptions = $this->buildClientOptions($options);
-        $this->setClientOptions($clientOptions);
-        $this->operationsClient = $this->createOperationsClient($clientOptions);
-    }
-
-    /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
-    {
-        if (substr($method, -5) !== 'Async') {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
-        }
-
-        array_unshift($args, substr($method, 0, -5));
-        return call_user_func_array([$this, 'startAsyncCall'], $args);
-    }
+    public function resumeOperation($operationName, $methodName = null);
 
     /**
      * Adds split points to specified tables, indexes of a database.
@@ -489,10 +156,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function addSplitPoints(AddSplitPointsRequest $request, array $callOptions = []): AddSplitPointsResponse
-    {
-        return $this->startApiCall('AddSplitPoints', $request, $callOptions)->wait();
-    }
+    public function addSplitPoints(AddSplitPointsRequest $request, array $callOptions = []): AddSplitPointsResponse;
 
     /**
      * Starts copying a Cloud Spanner Backup.
@@ -527,10 +191,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function copyBackup(CopyBackupRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('CopyBackup', $request, $callOptions)->wait();
-    }
+    public function copyBackup(CopyBackupRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Starts creating a new Cloud Spanner Backup.
@@ -564,10 +225,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createBackup(CreateBackupRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('CreateBackup', $request, $callOptions)->wait();
-    }
+    public function createBackup(CreateBackupRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Creates a new backup schedule.
@@ -590,10 +248,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createBackupSchedule(CreateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
-    {
-        return $this->startApiCall('CreateBackupSchedule', $request, $callOptions)->wait();
-    }
+    public function createBackupSchedule(CreateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule;
 
     /**
      * Creates a new Cloud Spanner database and starts to prepare it for serving.
@@ -623,10 +278,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createDatabase(CreateDatabaseRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('CreateDatabase', $request, $callOptions)->wait();
-    }
+    public function createDatabase(CreateDatabaseRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Deletes a pending or completed
@@ -648,10 +300,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBackup(DeleteBackupRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteBackup', $request, $callOptions)->wait();
-    }
+    public function deleteBackup(DeleteBackupRequest $request, array $callOptions = []): void;
 
     /**
      * Deletes a backup schedule.
@@ -672,10 +321,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteBackupSchedule(DeleteBackupScheduleRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DeleteBackupSchedule', $request, $callOptions)->wait();
-    }
+    public function deleteBackupSchedule(DeleteBackupScheduleRequest $request, array $callOptions = []): void;
 
     /**
      * Drops (aka deletes) a Cloud Spanner database.
@@ -700,10 +346,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function dropDatabase(DropDatabaseRequest $request, array $callOptions = []): void
-    {
-        $this->startApiCall('DropDatabase', $request, $callOptions)->wait();
-    }
+    public function dropDatabase(DropDatabaseRequest $request, array $callOptions = []): void;
 
     /**
      * Gets metadata on a pending or completed
@@ -727,10 +370,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBackup(GetBackupRequest $request, array $callOptions = []): Backup
-    {
-        return $this->startApiCall('GetBackup', $request, $callOptions)->wait();
-    }
+    public function getBackup(GetBackupRequest $request, array $callOptions = []): Backup;
 
     /**
      * Gets backup schedule for the input schedule name.
@@ -753,10 +393,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getBackupSchedule(GetBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
-    {
-        return $this->startApiCall('GetBackupSchedule', $request, $callOptions)->wait();
-    }
+    public function getBackupSchedule(GetBackupScheduleRequest $request, array $callOptions = []): BackupSchedule;
 
     /**
      * Gets the state of a Cloud Spanner database.
@@ -779,10 +416,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getDatabase(GetDatabaseRequest $request, array $callOptions = []): Database
-    {
-        return $this->startApiCall('GetDatabase', $request, $callOptions)->wait();
-    }
+    public function getDatabase(GetDatabaseRequest $request, array $callOptions = []): Database;
 
     /**
      * Returns the schema of a Cloud Spanner database as a list of formatted
@@ -807,10 +441,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getDatabaseDdl(GetDatabaseDdlRequest $request, array $callOptions = []): GetDatabaseDdlResponse
-    {
-        return $this->startApiCall('GetDatabaseDdl', $request, $callOptions)->wait();
-    }
+    public function getDatabaseDdl(GetDatabaseDdlRequest $request, array $callOptions = []): GetDatabaseDdlResponse;
 
     /**
      * Gets the access control policy for a database or backup resource.
@@ -840,10 +471,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy
-    {
-        return $this->startApiCall('GetIamPolicy', $request, $callOptions)->wait();
-    }
+    public function getIamPolicy(GetIamPolicyRequest $request, array $callOptions = []): Policy;
 
     /**
      * This is an internal API called by Spanner Graph jobs. You should never need
@@ -868,10 +496,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function internalUpdateGraphOperation(InternalUpdateGraphOperationRequest $request, array $callOptions = []): InternalUpdateGraphOperationResponse
-    {
-        return $this->startApiCall('InternalUpdateGraphOperation', $request, $callOptions)->wait();
-    }
+    public function internalUpdateGraphOperation(InternalUpdateGraphOperationRequest $request, array $callOptions = []): InternalUpdateGraphOperationResponse;
 
     /**
      * Lists the backup [long-running operations][google.longrunning.Operation] in
@@ -903,10 +528,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBackupOperations(ListBackupOperationsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListBackupOperations', $request, $callOptions);
-    }
+    public function listBackupOperations(ListBackupOperationsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists all the backup schedules for the database.
@@ -929,10 +551,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBackupSchedules(ListBackupSchedulesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListBackupSchedules', $request, $callOptions);
-    }
+    public function listBackupSchedules(ListBackupSchedulesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists completed and pending backups.
@@ -957,10 +576,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listBackups(ListBackupsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListBackups', $request, $callOptions);
-    }
+    public function listBackups(ListBackupsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists database [longrunning-operations][google.longrunning.Operation].
@@ -990,10 +606,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listDatabaseOperations(ListDatabaseOperationsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListDatabaseOperations', $request, $callOptions);
-    }
+    public function listDatabaseOperations(ListDatabaseOperationsRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists Cloud Spanner database roles.
@@ -1016,10 +629,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listDatabaseRoles(ListDatabaseRolesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListDatabaseRoles', $request, $callOptions);
-    }
+    public function listDatabaseRoles(ListDatabaseRolesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Lists Cloud Spanner databases.
@@ -1042,10 +652,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listDatabases(ListDatabasesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListDatabases', $request, $callOptions);
-    }
+    public function listDatabases(ListDatabasesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Create a new database by restoring from a completed backup. The new
@@ -1084,10 +691,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function restoreDatabase(RestoreDatabaseRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('RestoreDatabase', $request, $callOptions)->wait();
-    }
+    public function restoreDatabase(RestoreDatabaseRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Sets the access control policy on a database or backup resource.
@@ -1116,10 +720,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy
-    {
-        return $this->startApiCall('SetIamPolicy', $request, $callOptions)->wait();
-    }
+    public function setIamPolicy(SetIamPolicyRequest $request, array $callOptions = []): Policy;
 
     /**
      * Returns permissions that the caller has on the specified database or backup
@@ -1151,10 +752,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse
-    {
-        return $this->startApiCall('TestIamPermissions', $request, $callOptions)->wait();
-    }
+    public function testIamPermissions(TestIamPermissionsRequest $request, array $callOptions = []): TestIamPermissionsResponse;
 
     /**
      * Updates a pending or completed
@@ -1178,10 +776,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBackup(UpdateBackupRequest $request, array $callOptions = []): Backup
-    {
-        return $this->startApiCall('UpdateBackup', $request, $callOptions)->wait();
-    }
+    public function updateBackup(UpdateBackupRequest $request, array $callOptions = []): Backup;
 
     /**
      * Updates a backup schedule.
@@ -1204,10 +799,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateBackupSchedule(UpdateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule
-    {
-        return $this->startApiCall('UpdateBackupSchedule', $request, $callOptions)->wait();
-    }
+    public function updateBackupSchedule(UpdateBackupScheduleRequest $request, array $callOptions = []): BackupSchedule;
 
     /**
      * Updates a Cloud Spanner database. The returned
@@ -1265,10 +857,7 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateDatabase(UpdateDatabaseRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('UpdateDatabase', $request, $callOptions)->wait();
-    }
+    public function updateDatabase(UpdateDatabaseRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Updates the schema of a Cloud Spanner database by
@@ -1298,30 +887,5 @@ final class DatabaseAdminClient implements DatabaseAdminClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateDatabaseDdl(UpdateDatabaseDdlRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('UpdateDatabaseDdl', $request, $callOptions)->wait();
-    }
-
-    /** Configure the gapic configuration to use a service emulator. */
-    private function setDefaultEmulatorConfig(array $options): array
-    {
-        $emulatorHost = getenv('SPANNER_EMULATOR_HOST');
-        if (empty($emulatorHost)) {
-            return $options;
-        }
-
-        if ($scheme = parse_url($emulatorHost, PHP_URL_SCHEME)) {
-            $search = $scheme . '://';
-            $emulatorHost = str_replace($search, '', $emulatorHost);
-        }
-
-        $options['apiEndpoint'] ??= $emulatorHost;
-        if (class_exists(ChannelCredentials::class)) {
-            $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
-        }
-
-        $options['credentials'] ??= new InsecureCredentialsWrapper();
-        return $options;
-    }
+    public function updateDatabaseDdl(UpdateDatabaseDdlRequest $request, array $callOptions = []): OperationResponse;
 }
