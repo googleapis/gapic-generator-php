@@ -17,10 +17,11 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//rules_php_gapic:php_repo.bzl", "php", "php_composer_install")
 
 def gapic_generator_php_repositories():
-    _rules_gapic_version = "0.5.4"
+    _rules_gapic_version = "1.0.0"
     maybe(
         http_archive,
         name = "rules_gapic",
+        sha256 = "c21e78a42f69898e7c3142fa837e3a637b1993d27c08a64723262611971d2b96",
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )

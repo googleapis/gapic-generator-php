@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     container: gcr.io/gapic-images/googleapis:latest
+    env:
+      USE_BAZEL_VERSION: 6.3.0
 
     steps:
     - name: Checkout code
@@ -46,6 +48,7 @@ jobs:
 
     - name: Show bazel version
       run: |
+        which -a bazel
         bazel --version
 
     - name: Build example package; all targets
