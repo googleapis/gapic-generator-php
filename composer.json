@@ -4,6 +4,7 @@
             "Google\\PostProcessor\\": "src/PostProcessor",
             "Google\\Generator\\": "src",
             "Google\\Generator\\Tests\\": "tests",
+            "Google\\Protobuf\\Internal\\": "src/Protobuf/Internal",
             "Google\\": "generated/Google",
             "Grpc\\": "generated/Grpc",
             "GPBMetadata\\": "generated/GPBMetadata"
