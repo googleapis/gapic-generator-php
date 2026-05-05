@@ -49,4 +49,8 @@ def gapic_generator_php_repositories():
         urls = [
             "https://github.com/googleapis/googleapis/archive/9841522f92c6542aad0049d98721cba04f541f29.zip",
         ],
+        patch_cmds = [
+            "find . -name BUILD.bazel -exec sed -i '1i exports_files(glob([\"*.json\", \"*.yaml\"]))' {} +",
+            "find . -name BUILD -exec sed -i '1i exports_files(glob([\"*.json\", \"*.yaml\"]))' {} +",
+        ],
     )
