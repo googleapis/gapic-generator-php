@@ -42,15 +42,6 @@ def gapic_generator_php_repositories():
         composer_json = "@gapic_generator_php//:composer.json",
     )
 
-    # Import Bazel-only dependencies.
-    _protobuf_version = "3.13.0"
-    maybe(
-        http_archive,
-        name = "com_google_protobuf",
-        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _protobuf_version],
-        strip_prefix = "protobuf-%s" % _protobuf_version,
-    )
-
     maybe(
         http_archive,
         name = "com_google_googleapis",
