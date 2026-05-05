@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     container: gcr.io/gapic-images/googleapis:latest
+    env:
+      USE_BAZEL_VERSION: 5.4.1
 
     steps:
     - name: Checkout code
@@ -39,8 +41,14 @@ jobs:
         echo "and it will start over with a clean cache."
         echo "The old one will disappear after 7 days."
 
+    - name: Install Bazelisk
+      run: |
+        curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel
+        chmod +x /usr/local/bin/bazel
+
     - name: Show bazel version
       run: |
+        which -a bazel
         bazel --version
 
     - name: Build example package; all targets

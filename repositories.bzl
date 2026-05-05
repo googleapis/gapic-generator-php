@@ -17,10 +17,11 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//rules_php_gapic:php_repo.bzl", "php", "php_composer_install")
 
 def gapic_generator_php_repositories():
-    _rules_gapic_version = "0.5.4"
+    _rules_gapic_version = "1.0.0"
     maybe(
         http_archive,
         name = "rules_gapic",
+        sha256 = "c21e78a42f69898e7c3142fa837e3a637b1993d27c08a64723262611971d2b96",
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
@@ -41,20 +42,15 @@ def gapic_generator_php_repositories():
         composer_json = "@gapic_generator_php//:composer.json",
     )
 
-    # Import Bazel-only dependencies.
-    _protobuf_version = "3.13.0"
-    maybe(
-        http_archive,
-        name = "com_google_protobuf",
-        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _protobuf_version],
-        strip_prefix = "protobuf-%s" % _protobuf_version,
-    )
-
     maybe(
         http_archive,
         name = "com_google_googleapis",
         strip_prefix = "googleapis-9841522f92c6542aad0049d98721cba04f541f29",
         urls = [
             "https://github.com/googleapis/googleapis/archive/9841522f92c6542aad0049d98721cba04f541f29.zip",
+        ],
+        patch_cmds = [
+            "find . -name BUILD.bazel -exec sed -i '1i exports_files(glob([\"*.json\", \"*.yaml\"]))' {} +",
+            "find . -name BUILD -exec sed -i '1i exports_files(glob([\"*.json\", \"*.yaml\"]))' {} +",
         ],
     )
