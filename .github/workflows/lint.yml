@@ -14,6 +14,7 @@ jobs:
         uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@main
         with:
           path: src
+          exclude-patterns: '["src/Protobuf/Internal"]'
 
     static-analysis:
         name: PHPStan Static Analysis
