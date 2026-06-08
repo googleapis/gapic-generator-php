@@ -199,7 +199,9 @@ class Formatter
                 )
             ),
             $blockFinder,
-            new TokenAnalyzer\FunctionCallNameMatcher()
+            new TokenAnalyzer\FunctionCallNameMatcher(),
+            new TokenAnalyzer\Naming\MethodNameResolver(),
+            new TokenAnalyzer\HeredocAnalyzer(),
         );
 
         $fixer->configure([

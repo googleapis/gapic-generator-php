@@ -62,7 +62,7 @@ tar cf - --dereference src/ generated/ googleapis/ tools/ vendor/ composer.json 
 WD="$(pwd)"
 PHP="$WD/$(dirname $0)/{run_name}.runfiles/$(basename $WD)/{php_short_path}"
 cd "$(dirname $0)/{run_name}.runfiles/$(basename $WD)/{out_short_path}/install"
-"$PHP" -n -d memory_limit=1024M './{entry_point}' {working_directory_flag} $@
+"$PHP" -n -d display_errors=stderr -d error_reporting=0 -d memory_limit=1024M './{entry_point}' {working_directory_flag} $@
     """.format(
         php_short_path = ctx.file.php.short_path,
         out_short_path = out_dir.short_path,
