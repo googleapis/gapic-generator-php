@@ -26,7 +26,7 @@ def gapic_generator_php_repositories():
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
 
-    _php_version = "8.1.13"
+    _php_version = "8.2.30"
     maybe(
         php,
         name = "php_micro",
