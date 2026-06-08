@@ -25,13 +25,10 @@ def gapic_generator_php_repositories():
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
 
-    _php_version = "8.1.13"
+    _php_version = "8.2.30"
     maybe(
         php,
         name = "php_micro",
-        prebuilt_phps = [
-            "@gapic_generator_php//:rules_php_gapic/resources/php-%s_linux_x86_64.tar.gz" % _php_version,
-        ],
         urls = ["https://www.php.net/distributions/php-%s.tar.gz" % _php_version ],
         strip_prefix = "php-%s" % _php_version,
     )
@@ -42,12 +39,13 @@ def gapic_generator_php_repositories():
     )
 
     # Import Bazel-only dependencies.
-    _protobuf_version = "3.13.0"
+    _protobuf_version = "27.2"
     maybe(
         http_archive,
         name = "com_google_protobuf",
-        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _protobuf_version],
+        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.tar.gz" % _protobuf_version],
         strip_prefix = "protobuf-%s" % _protobuf_version,
+        sha256 = "e4ff2aeb767da6f4f52485c2e72468960ddfe5262483879ef6ad552e52757a77",
     )
 
     maybe(

@@ -1,1 +1,3 @@
 build --protocopt=--experimental_allow_proto3_optional
+build --cxxopt=-std=c++17
+build --noenable_bzlmod
