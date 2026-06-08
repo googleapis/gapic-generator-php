@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.2](https://github.com/googleapis/gapic-generator-php/compare/v1.21.1...v1.21.2) (2026-06-08)
+
+
+### Bug Fixes
+
+* Clean spaces from method_signatures ([#828](https://github.com/googleapis/gapic-generator-php/issues/828)) ([f679226](https://github.com/googleapis/gapic-generator-php/commit/f67922670dc1a4709693d7abcdda138de91f6d23))
+
 ## [1.21.1](https://github.com/googleapis/gapic-generator-php/compare/v1.21.0...v1.21.1) (2026-06-08)
 
 
