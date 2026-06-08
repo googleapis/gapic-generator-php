@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.21.1](https://github.com/googleapis/gapic-generator-php/compare/v1.21.0...v1.21.1) (2026-06-08)
+
+
+### Bug Fixes
+
+* Mulitline phpdoc for mixins ([#815](https://github.com/googleapis/gapic-generator-php/issues/815)) ([4d1d27f](https://github.com/googleapis/gapic-generator-php/commit/4d1d27ff4115d2831c562debd360276994dbfac9))
+* Update PHP to 8.2, symplify/coding-standard to 13 ([#822](https://github.com/googleapis/gapic-generator-php/issues/822)) ([1171a6f](https://github.com/googleapis/gapic-generator-php/commit/1171a6fde0cc9d271dcb281c6486048026d798e0))
+
 ## [1.21.0](https://github.com/googleapis/gapic-generator-php/compare/v1.20.4...v1.21.0) (2026-03-12)
 
 
