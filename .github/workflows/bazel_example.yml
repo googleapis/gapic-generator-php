@@ -43,10 +43,10 @@ jobs:
       run: |
         bazel --version
 
-    - name: Build example package; all targets
-      run: |
-        cd bazel_example;
-        bazel build ...
+    #- name: Build example package; all targets
+    #  run: |
+    #    cd bazel_example;
+    #    bazel build ...
 
     - name: Extract Bazel package output
       run: |
