@@ -30,6 +30,9 @@ def gapic_generator_php_repositories():
         php,
         name = "php_micro",
         urls = ["https://www.php.net/distributions/php-%s.tar.gz" % _php_version ],
+        prebuilt_phps = [
+            "@gapic_generator_php//:rules_php_gapic/resources/php-%s_linux_x86_64.tar.gz" % _php_version,
+        ],
         strip_prefix = "php-%s" % _php_version,
     )
     maybe(
