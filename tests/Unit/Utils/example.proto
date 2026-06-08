@@ -36,6 +36,11 @@ service Example {
       metadata_type: "LroMetadata"
     };
   }
+
+  rpc ExampleMethodWithSignatures(Request) returns(Response) {
+    option (google.api.method_signature) = "name";
+    option (google.api.method_signature) = "name, number";
+  }
 }
 
 option (google.api.resource_definition) = {

@@ -150,9 +150,10 @@ class BuildMethodFragmentGenerator
             $newSelf = AST::call($newSelf, $requiredField->setter)($callingParam);
         }
 
+        $cleanSignature = preg_replace('/\s+/', '', $methodSignature);
         $methodName = $isFirst
             ? 'build'
-            : 'buildFrom' . Helpers::toUpperCamelCase(str_replace(',', '_', $methodSignature));
+            : 'buildFrom' . Helpers::toUpperCamelCase(str_replace(',', '_', $cleanSignature));
 
         return AST::method($methodName)
             ->withAccess(Access::PUBLIC, Access::STATIC)
