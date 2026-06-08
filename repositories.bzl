@@ -39,12 +39,13 @@ def gapic_generator_php_repositories():
     )
 
     # Import Bazel-only dependencies.
-    _protobuf_version = "3.13.0"
+    _protobuf_version = "27.2"
     maybe(
         http_archive,
         name = "com_google_protobuf",
-        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _protobuf_version],
+        urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.tar.gz" % _protobuf_version],
         strip_prefix = "protobuf-%s" % _protobuf_version,
+        sha256 = "e4ff2aeb767da6f4f52485c2e72468960ddfe5262483879ef6ad552e52757a77",
     )
 
     maybe(
