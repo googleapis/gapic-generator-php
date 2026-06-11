@@ -25,16 +25,9 @@
 namespace Google\Cloud\Redis\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
-use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
-use Google\ApiCore\Transport\TransportInterface;
-use Google\ApiCore\ValidationException;
-use Google\Auth\FetchAuthTokenInterface;
 use Google\Cloud\Location\GetLocationRequest;
 use Google\Cloud\Location\ListLocationsRequest;
 use Google\Cloud\Location\Location;
@@ -54,7 +47,6 @@ use Google\Cloud\Redis\V1\UpgradeInstanceRequest;
 use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Service Description: Configures and manages Cloud Memorystore for Redis instances
@@ -73,13 +65,8 @@ use Psr\Log\LoggerInterface;
  * Note that location_id must be referring to a GCP `region`; for example:
  * * `projects/redpepper-1290/locations/us-central1/instances/my-redis`
  *
- * This class provides the ability to make remote calls to the backing service through method
- * calls that map to API methods.
- *
- * Many parameters require resource names to be formatted in a particular way. To
- * assist with these names, this class includes a format method for each type of
- * name, and additionally a parseName method to extract the individual identifiers
- * contained within formatted names that are returned by the API.
+ * This interface defines the methods available for calling the backing service
+ * API.
  *
  * @method PromiseInterface<OperationResponse> createInstanceAsync(CreateInstanceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> deleteInstanceAsync(DeleteInstanceRequest $request, array $optionalArgs = [])
@@ -95,69 +82,14 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Location> getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
-final class CloudRedisClient implements CloudRedisClientInterface
+interface CloudRedisClientInterface
 {
-    use GapicClientTrait;
-    use ResourceHelperTrait;
-
-    /** The name of the service. */
-    private const SERVICE_NAME = 'google.cloud.redis.v1.CloudRedis';
-
-    /**
-     * The default address of the service.
-     *
-     * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
-     */
-    private const SERVICE_ADDRESS = 'redis.googleapis.com';
-
-    /** The address template of the service. */
-    private const SERVICE_ADDRESS_TEMPLATE = 'redis.UNIVERSE_DOMAIN';
-
-    /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
-
-    /** The name of the code generator, to be included in the agent header. */
-    private const CODEGEN_NAME = 'gapic';
-
-    /** The default scopes required by the service. */
-    public static $serviceScopes = [
-        'https://www.googleapis.com/auth/cloud-platform',
-    ];
-
-    private $operationsClient;
-
-    private static function getClientDefaults()
-    {
-        return [
-            'serviceName' => self::SERVICE_NAME,
-            'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
-            'clientConfig' => __DIR__ . '/../resources/cloud_redis_client_config.json',
-            'descriptorsConfigPath' => __DIR__ . '/../resources/cloud_redis_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/cloud_redis_grpc_config.json',
-            'credentialsConfig' => [
-                'defaultScopes' => self::$serviceScopes,
-            ],
-        ];
-    }
-
-    /** Implements ClientOptionsTrait::supportedTransports. */
-    private static function supportedTransports()
-    {
-        return [
-            'grpc',
-            'grpc-fallback',
-        ];
-    }
-
     /**
      * Return an OperationsClient object with the same endpoint as $this.
      *
      * @return OperationsClient
      */
-    public function getOperationsClient()
-    {
-        return $this->operationsClient;
-    }
+    public function getOperationsClient();
 
     /**
      * Resume an existing long running operation that was previously started by a long
@@ -170,176 +102,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @return OperationResponse
      */
-    public function resumeOperation($operationName, $methodName = null)
-    {
-        $options = $this->descriptors[$methodName]['longRunning'] ?? [];
-        $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
-        $operation->reload();
-        return $operation;
-    }
-
-    /**
-     * Create the default operation client for the service.
-     *
-     * @param array $options ClientOptions for the client.
-     *
-     * @return OperationsClient
-     */
-    private function createOperationsClient(array $options)
-    {
-        // Unset client-specific configuration options
-        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
-
-        if (isset($options['operationsClient'])) {
-            return $options['operationsClient'];
-        }
-
-        return new OperationsClient($options);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a instance
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     * @param string $instance
-     *
-     * @return string The formatted instance resource.
-     */
-    public static function instanceName(string $project, string $location, string $instance): string
-    {
-        return self::getPathTemplate('instance')->render([
-            'project' => $project,
-            'location' => $location,
-            'instance' => $instance,
-        ]);
-    }
-
-    /**
-     * Formats a string containing the fully-qualified path to represent a location
-     * resource.
-     *
-     * @param string $project
-     * @param string $location
-     *
-     * @return string The formatted location resource.
-     */
-    public static function locationName(string $project, string $location): string
-    {
-        return self::getPathTemplate('location')->render([
-            'project' => $project,
-            'location' => $location,
-        ]);
-    }
-
-    /**
-     * Parses a formatted name string and returns an associative array of the components in the name.
-     * The following name formats are supported:
-     * Template: Pattern
-     * - instance: projects/{project}/locations/{location}/instances/{instance}
-     * - location: projects/{project}/locations/{location}
-     *
-     * The optional $template argument can be supplied to specify a particular pattern,
-     * and must match one of the templates listed above. If no $template argument is
-     * provided, or if the $template argument does not match one of the templates
-     * listed, then parseName will check each of the supported templates, and return
-     * the first match.
-     *
-     * @param string  $formattedName The formatted name string
-     * @param ?string $template      Optional name of template to match
-     *
-     * @return array An associative array from name component IDs to component values.
-     *
-     * @throws ValidationException If $formattedName could not be matched.
-     */
-    public static function parseName(string $formattedName, ?string $template = null): array
-    {
-        return self::parseFormattedName($formattedName, $template);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param array|ClientOptions $options {
-     *     Optional. Options for configuring the service API wrapper.
-     *
-     *     @type string $apiEndpoint
-     *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'redis.googleapis.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
-     *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
-     *           **Important**: If you are providing a path to a credentials file, or a decoded
-     *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
-     *           unvalidated credential configuration to Google APIs can compromise the security
-     *           of your systems and data. It is recommended to create the credentials explicitly
-     *           ```
-     *           use Google\Auth\Credentials\ServiceAccountCredentials;
-     *           use Google\Cloud\Redis\V1\CloudRedisClient;
-     *           $creds = new ServiceAccountCredentials($scopes, $json);
-     *           $options = new CloudRedisClient(['credentials' => $creds]);
-     *           ```
-     *           {@see
-     *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
-     *     @type array $credentialsConfig
-     *           Options used to configure credentials, including auth token caching, for the
-     *           client. For a full list of supporting configuration options, see
-     *           {@see \Google\ApiCore\CredentialsWrapper::build()} .
-     *     @type bool $disableRetries
-     *           Determines whether or not retries defined by the client configuration should be
-     *           disabled. Defaults to `false`.
-     *     @type string|array $clientConfig
-     *           Client method configuration, including retry settings. This option can be either
-     *           a path to a JSON file, or a PHP array containing the decoded JSON data. By
-     *           default this settings points to the default client config file, which is
-     *           provided in the resources folder.
-     *     @type string|TransportInterface $transport
-     *           The transport used for executing network requests. At the moment, supports only
-     *           `grpc`. *Advanced usage*: Additionally, it is possible to pass in an already
-     *           instantiated {@see \Google\ApiCore\Transport\TransportInterface} object. Note
-     *           that when this object is provided, any settings in $transportConfig, and any
-     *           $apiEndpoint setting, will be ignored.
-     *     @type array $transportConfig
-     *           Configuration options that will be used to construct the transport. Options for
-     *           each supported transport type should be passed in a key for that transport. For
-     *           example:
-     *           $transportConfig = [
-     *               'grpc' => [...],
-     *           ];
-     *           See the {@see \Google\ApiCore\Transport\GrpcTransport::build()} method for the
-     *           supported options.
-     *     @type callable $clientCertSource
-     *           A callable which returns the client cert as a string. This can be used to
-     *           provide a certificate and private key to the transport layer for mTLS.
-     *     @type false|LoggerInterface $logger
-     *           A PSR-3 compliant logger. If set to false, logging is disabled, ignoring the
-     *           'GOOGLE_SDK_PHP_LOGGING' environment flag
-     *     @type string $universeDomain
-     *           The service domain for the client. Defaults to 'googleapis.com'.
-     * }
-     *
-     * @throws ValidationException
-     */
-    public function __construct(array|ClientOptions $options = [])
-    {
-        $clientOptions = $this->buildClientOptions($options);
-        $this->setClientOptions($clientOptions);
-        $this->operationsClient = $this->createOperationsClient($clientOptions);
-    }
-
-    /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
-    {
-        if (substr($method, -5) !== 'Async') {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
-        }
-
-        array_unshift($args, substr($method, 0, -5));
-        return call_user_func_array([$this, 'startAsyncCall'], $args);
-    }
+    public function resumeOperation($operationName, $methodName = null);
 
     /**
      * Creates a Redis instance based on the specified tier and memory size.
@@ -373,10 +136,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createInstance(CreateInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('CreateInstance', $request, $callOptions)->wait();
-    }
+    public function createInstance(CreateInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Deletes a specific Redis instance.  Instance stops serving and data is
@@ -400,10 +160,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function deleteInstance(DeleteInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('DeleteInstance', $request, $callOptions)->wait();
-    }
+    public function deleteInstance(DeleteInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Export Redis instance data into a Redis RDB format file in Cloud Storage.
@@ -431,10 +188,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function exportInstance(ExportInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('ExportInstance', $request, $callOptions)->wait();
-    }
+    public function exportInstance(ExportInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Initiates a failover of the primary node to current replica node for a
@@ -458,10 +212,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function failoverInstance(FailoverInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('FailoverInstance', $request, $callOptions)->wait();
-    }
+    public function failoverInstance(FailoverInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Gets the details of a specific Redis instance.
@@ -484,10 +235,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getInstance(GetInstanceRequest $request, array $callOptions = []): Instance
-    {
-        return $this->startApiCall('GetInstance', $request, $callOptions)->wait();
-    }
+    public function getInstance(GetInstanceRequest $request, array $callOptions = []): Instance;
 
     /**
      * Gets the AUTH string for a Redis instance. If AUTH is not enabled for the
@@ -512,10 +260,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getInstanceAuthString(GetInstanceAuthStringRequest $request, array $callOptions = []): InstanceAuthString
-    {
-        return $this->startApiCall('GetInstanceAuthString', $request, $callOptions)->wait();
-    }
+    public function getInstanceAuthString(GetInstanceAuthStringRequest $request, array $callOptions = []): InstanceAuthString;
 
     /**
      * Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
@@ -545,10 +290,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function importInstance(ImportInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('ImportInstance', $request, $callOptions)->wait();
-    }
+    public function importInstance(ImportInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Lists all Redis instances owned by a project in either the specified
@@ -579,10 +321,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listInstances(ListInstancesRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListInstances', $request, $callOptions);
-    }
+    public function listInstances(ListInstancesRequest $request, array $callOptions = []): PagedListResponse;
 
     /**
      * Reschedule maintenance for a given instance in a given project and
@@ -606,10 +345,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function rescheduleMaintenance(RescheduleMaintenanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('RescheduleMaintenance', $request, $callOptions)->wait();
-    }
+    public function rescheduleMaintenance(RescheduleMaintenanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Updates the metadata and configuration of a specific Redis instance.
@@ -636,10 +372,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function updateInstance(UpdateInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('UpdateInstance', $request, $callOptions)->wait();
-    }
+    public function updateInstance(UpdateInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Upgrades Redis instance to the newer Redis version specified in the
@@ -663,10 +396,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function upgradeInstance(UpgradeInstanceRequest $request, array $callOptions = []): OperationResponse
-    {
-        return $this->startApiCall('UpgradeInstance', $request, $callOptions)->wait();
-    }
+    public function upgradeInstance(UpgradeInstanceRequest $request, array $callOptions = []): OperationResponse;
 
     /**
      * Gets information about a location.
@@ -689,10 +419,7 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function getLocation(GetLocationRequest $request, array $callOptions = []): Location
-    {
-        return $this->startApiCall('GetLocation', $request, $callOptions)->wait();
-    }
+    public function getLocation(GetLocationRequest $request, array $callOptions = []): Location;
 
     /**
      * Lists information about the supported locations for this service.
@@ -715,8 +442,5 @@ final class CloudRedisClient implements CloudRedisClientInterface
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function listLocations(ListLocationsRequest $request, array $callOptions = []): PagedListResponse
-    {
-        return $this->startApiCall('ListLocations', $request, $callOptions);
-    }
+    public function listLocations(ListLocationsRequest $request, array $callOptions = []): PagedListResponse;
 }

@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 use Testing\BasicDiregapic\LibraryClient;
 use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\ValidationException;
-use Testing\BasicGrpcOnly\Client\BasicGrpcOnlyClient;
+use Testing\Basicgrpconly\Client\BasicGrpcOnlyClient;
 
 final class ClientTest extends TestCase
 {
