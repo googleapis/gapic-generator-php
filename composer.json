@@ -37,7 +37,7 @@
         "php": "^8.2",
         "google/protobuf": "^5.0",
         "friendsofphp/php-cs-fixer": "^3",
-        "symfony/yaml": "^5.2",
+        "symfony/yaml": "^8.0",
         "microsoft/tolerant-php-parser": "^0.1.2",
         "symplify/coding-standard": "13.0.1"
     },
