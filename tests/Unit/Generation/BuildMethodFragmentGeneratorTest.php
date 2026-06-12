@@ -32,7 +32,7 @@ use Google\Generator\Utils\Transport;
 
 final class BuildMethodFragmentGeneratorTest extends TestCase
 {
-    public function testBuildMethodNamesWithSpacesInSignatures(): void
+    public function testBuildMethodNamesWithSpacesAndDotNotationSignatures(): void
     {
         $descBytes = ProtoLoader::loadDescriptorBytes('Utils/example.proto');
         $descSet = new \Google\Protobuf\Internal\FileDescriptorSet();
@@ -62,12 +62,19 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
         $this->assertTrue(isset($fragments[$requestClassName]));
 
         $buildMethods = $fragments[$requestClassName];
-        $this->assertEquals(2, $buildMethods->count());
+        $this->assertEquals(3, $buildMethods->count());
 
         // First builder method should be 'build'
         $this->assertEquals('build', $buildMethods[0]->name);
 
         // Second builder method should be 'buildFromNameNumber' (spaces stripped and camel-cased)
         $this->assertEquals('buildFromNameNumber', $buildMethods[1]->name);
+
+        // Third builder method should be based on the clean original dot-notation signature.
+        $this->assertEquals('buildFromFooAFooB', $buildMethods[2]->name);
+
+        $buildMethodCode = $buildMethods[2]->toCode();
+        $this->assertStringContainsString('function buildFromFooAFooB(\Example\Foo $foo): self', $buildMethodCode);
+        $this->assertStringContainsString('setFoo($foo)', $buildMethodCode);
     }
 }

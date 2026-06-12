@@ -17,6 +17,7 @@ syntax = "proto3";
 package example;
 
 import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/longrunning/operations.proto";
 
@@ -40,6 +41,7 @@ service Example {
   rpc ExampleMethodWithSignatures(Request) returns(Response) {
     option (google.api.method_signature) = "name";
     option (google.api.method_signature) = "name, number";
+    option (google.api.method_signature) = "foo.a, foo.b";
   }
 }
 
@@ -55,6 +57,12 @@ message Request {
   // Required. Percentage of selected conversation to analyze, between
   // [0, 100].
   float analysis_percentage = 3;
+  Foo foo = 4 [(google.api.field_behavior) = REQUIRED];
+}
+
+message Foo {
+  string a = 1;
+  string b = 2;
 }
 
 message Response {
