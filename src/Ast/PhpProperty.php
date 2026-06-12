@@ -18,9 +18,11 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use AllowDynamicProperties;
 use Google\Generator\Utils\ResolvedType;
 
 /** A property within a class. */
+#[AllowDynamicProperties]
 final class PhpProperty extends PhpClassMember
 {
     private ?ResolvedType $type;

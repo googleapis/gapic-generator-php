@@ -18,7 +18,10 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use AllowDynamicProperties;
+
 /** A constant within a class. */
+#[AllowDynamicProperties]
 final class PhpConstant extends PhpClassMember
 {
     private mixed $value;
