@@ -32,6 +32,8 @@ return [
                     'responsePageTokenGetMethod' => 'getNextPageToken',
                     'resourcesGetMethod' => 'getTheResults',
                 ],
+                'callType' => \Google\ApiCore\Call::PAGINATED_CALL,
+                'responseType' => 'Testing\BasicPaginated\Response',
             ],
         ],
     ],

@@ -28,7 +28,6 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\GapicYamlConfig;
 use Google\Generator\Utils\GrpcServiceConfig;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ServiceYamlConfig;
@@ -44,18 +43,14 @@ class ResourcesGenerator
 
     public static function generateDescriptorConfig(ServiceDetails $serviceDetails, GapicYamlConfig $gapicYamlConfig): string
     {
-        $preMigrationOnly = $serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY;
-        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails, $preMigrationOnly) {
+        $perMethod = function ($method) use ($gapicYamlConfig, $serviceDetails) {
             switch ($method->methodType) {
                 case MethodDetails::CUSTOM_OP:
                     $descriptor = [
-                        'longRunning' => static::customOperationDescriptor($serviceDetails, $method)
+                        'longRunning' => static::customOperationDescriptor($serviceDetails, $method),
+                        'responseType' => $method->responseType->getFullName(true),
+                        'callType' => AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL'),
                     ];
-                    if (!$preMigrationOnly) {
-                        // Include the responseType for Custom Operations because they define their own operation class.
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL');
-                    }
                     break;
                 case MethodDetails::LRO:
                     $methodGapicConfig = $gapicYamlConfig->configsByMethodName->get($method->name, null);
@@ -80,11 +75,9 @@ class ResourcesGenerator
                             'pollDelayMultiplier' => static::ensureDecimal($pollDelayMultiplier),
                             'maxPollDelayMillis' => $maxPollDelayMillis,
                             'totalPollTimeoutMillis' => $totalPollTimeoutMillis,
-                        ])
+                        ]),
+                        'callType' => AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL'),
                     ];
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::LONGRUNNING_CALL');
-                    }
                     break;
                 case MethodDetails::PAGINATED:
                     $descriptor = [
@@ -95,57 +88,47 @@ class ResourcesGenerator
                             'requestPageSizeSetMethod' => $method->requestPageSizeSetter->name,
                             'responsePageTokenGetMethod' => $method->responseNextPageTokenGetter->name,
                             'resourcesGetMethod' => $method->resourcesGetter->name,
-                        ])
+                        ]),
+                        'callType' => AST::literal('\Google\ApiCore\Call::PAGINATED_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
                     ];
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::PAGINATED_CALL');
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                    }
                     break;
                 case MethodDetails::BIDI_STREAMING:
                     $descriptor = [
                         'grpcStreaming' => AST::array([
                             'grpcStreamingType' => 'BidiStreaming',
-                        ])
+                        ]),
+                        'callType' => AST::literal('\Google\ApiCore\Call::BIDI_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
                     ];
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::BIDI_STREAMING_CALL');
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                    }
                     break;
                 case MethodDetails::SERVER_STREAMING:
                     $descriptor = [
                         'grpcStreaming' => AST::array([
                             'grpcStreamingType' => 'ServerStreaming',
-                        ])
+                        ]),
+                        'callType' => AST::literal('\Google\ApiCore\Call::SERVER_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
                     ];
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::SERVER_STREAMING_CALL');
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                    }
                     break;
                 case MethodDetails::CLIENT_STREAMING:
                     $descriptor = [
                         'grpcStreaming' => AST::array([
                             'grpcStreamingType' => 'ClientStreaming',
-                        ])
+                        ]),
+                        'callType' => AST::literal('\Google\ApiCore\Call::CLIENT_STREAMING_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
                     ];
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::CLIENT_STREAMING_CALL');
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                    }
                     break;
                 default:
-                    $descriptor = [];
-
-                    if (!$preMigrationOnly) {
-                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::UNARY_CALL');
-                        $descriptor['responseType'] = $method->responseType->getFullName(true);
-                    }
+                    $descriptor = [
+                        'callType' => AST::literal('\Google\ApiCore\Call::UNARY_CALL'),
+                        'responseType' => $method->responseType->getFullName(true),
+                    ];
                     break;
             }
 
-            if ($method->headerParams && !$preMigrationOnly) {
+            if ($method->headerParams) {
                 $descriptor['headerParams'] = $method->headerParams;
             }
 
@@ -167,7 +150,7 @@ class ResourcesGenerator
             ->orderBy(fn ($x) => isset($x[1]['longRunning']) ? 0 : 1) // LRO come first
             ->toArray(fn ($x) => $x[0], fn ($x) => AST::array($x[1]));
 
-        if ($serviceDetails->hasResources && !$preMigrationOnly) {
+        if ($serviceDetails->hasResources) {
             $serviceDescriptor['templateMap'] = $serviceDetails->resourceParts
                 ->toArray(fn ($x) => $x->getNameCamelCase(), fn ($x) => $x->getPattern());
         }

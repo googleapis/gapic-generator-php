@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
@@ -39,6 +38,7 @@ use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\GetOperationRequest;
 use Google\LongRunning\Operation;
 use Google\Protobuf\Any;
@@ -64,6 +64,7 @@ class UnitTestsGenerator
     private $assertInstanceOf;
     private $assertArrayHasKey;
     private $fail;
+    private $operationsClientClass;
 
     private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
@@ -78,13 +79,14 @@ class UnitTestsGenerator
         $this->assertInstanceOf = AST::call(AST::THIS, AST::method('assertInstanceOf'));
         $this->assertArrayHasKey = AST::call(AST::THIS, AST::method('assertArrayHasKey'));
         $this->fail = AST::call(AST::THIS, AST::method('fail'));
+        $this->operationsClientClass = OperationsClient::class;
     }
 
     private function generateImpl(): PhpFile
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(BidiStream::class));
-        $this->ctx->type(Type::fromName(\Google\ApiCore\LongRunning\OperationsClient::class));
+        $this->ctx->type(Type::fromName($this->operationsClientClass));
         $this->ctx->type(Type::fromName(ServerStream::class));
         $this->ctx->type(Type::fromName(GetOperationRequest::class));
         $this->ctx->type(Type::fromName(Any::class));
@@ -114,7 +116,11 @@ class UnitTestsGenerator
 
     private function generateClass(): PhpClass
     {
-        return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
+        // Just pick one non-streaming method to generate an async unit test for.
+        // This is more of a sanity check than a coverage thing.
+        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn ($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
+
+        return AST::class($this->serviceDetails->unitTestsV2Type, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
                 is_null($this->serviceDetails->unitTestGroupName) ? null : PhpDoc::group($this->serviceDetails->unitTestGroupName),
                 PhpDoc::group('gapic')
@@ -122,7 +128,8 @@ class UnitTestsGenerator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))));
+            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))))
+            ->withMember(is_null($nonStreamingMethod) ? null : $this->testAsync($nonStreamingMethod));
     }
 
     private function createTransport(): PhpClassMember
@@ -170,10 +177,10 @@ class UnitTestsGenerator
                 AST::binaryOp($options->var, '+=', AST::array([
                     'credentials' => AST::call(AST::THIS, $this->createCredentials())()
                 ])),
-                AST::return(AST::new($this->ctx->type($this->serviceDetails->emptyClientType, false, $brokenNoImport))($options->var))
+                AST::return(AST::new($this->ctx->type($this->serviceDetails->gapicClientType, false, $brokenNoImport))($options->var))
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::return($this->ctx->type($this->serviceDetails->emptyClientType, false, $brokenNoImport))
+                PhpDoc::return($this->ctx->type($this->serviceDetails->gapicClientType, false, $brokenNoImport))
             ));
     }
 
@@ -214,14 +221,35 @@ class UnitTestsGenerator
         }
     }
 
-    private function testSuccessCaseNormal(MethodDetails $method): PhpMethod
+    private function testAsync(MethodDetails $method)
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        switch ($method->methodType) {
+            case MethodDetails::CUSTOM_OP:
+                return $this->testSuccessCaseCustomOp($method, true);
+                break;
+            case MethodDetails::NORMAL:
+                return $this->testSuccessCaseNormal($method, true);
+                break;
+            case MethodDetails::LRO:
+                return $this->testSuccessCaseLro($method, true);
+                break;
+            case MethodDetails::PAGINATED:
+                return $this->testSuccessCasePaginated($method, true);
+                break;
+            default:
+                throw new Exception("Cannot handle method-type: '{$method->methodType}'");
+        }
+    }
+
+    private function testSuccessCaseNormal(MethodDetails $method, $async = false): PhpMethod
+    {
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
+
         // Response fields must be initialized after request fields, to ensure naming which is compatible with monolith.
         $responsePerField = $prod->perField($method->responseFields->filter(fn ($x) => $x->isInTestResponse));
         $actualRequests = AST::var('actualRequests');
@@ -229,7 +257,13 @@ class UnitTestsGenerator
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
         $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
-        return AST::method($method->testSuccessMethodName)
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
@@ -242,11 +276,12 @@ class UnitTestsGenerator
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
+                $initializedFields,
+                $requestAssignment,
                 $method->hasEmptyResponse ?
-                    $client->instanceCall(AST::method($method->methodName))($requestCallArgs) :
+                    $invocation :
                     Vector::new([
-                        AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                        AST::assign($response, $invocation),
                         ($this->assertEquals)($expectedResponse, $response)
                     ]),
                 AST::assign($actualRequests, $transport->instanceCall(AST::method('popReceivedCalls'))()),
@@ -256,15 +291,7 @@ class UnitTestsGenerator
                 ($this->assertSame)("/$rpcHostServiceName/{$method->name}", $actualFuncCall),
                 $requestPerField->map(fn ($x) => Vector::new([
                     AST::assign($actualValue, $actualRequestObject->instanceCall($x->field->getter)()),
-                    !$x->field->isOneOf
-                        ? ($this->assertProtobufEquals)($x->var, $actualValue)
-                        : ($this->assertTrue)(
-                            // Variable of type oneof wrapper, e.g. supplementaryData.
-                            AST::call(
-                                AST::var(Helpers::toCamelCase($x->field->getOneofDesc()->getName())),
-                                AST::method('is' . Helpers::toUpperCamelCase($x->field->name))
-                            )()
-                        )
+                    ($this->assertProtobufEquals)($x->var, $actualValue)
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
             ))
@@ -273,13 +300,14 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseNormal(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
         $expectedExceptionMessage  = AST::var('expectedExceptionMessage ');
-        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method, ['status']);
         $ex = AST::var('ex');
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -298,9 +326,10 @@ class UnitTestsGenerator
                 $transport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
+                $initializedFields,
+                $requestAssignment,
                 AST::try(
-                    $client->instanceCall(AST::method($method->methodName))($requestCallArgs),
+                    $client->instanceCall(AST::method($method->methodName))($requestAssignment->to),
                     sprintf('// If the $%s method call did not throw, fail the test', self::CLIENT_VARIABLE),
                     ($this->fail)('Expected an ApiException, but no exception was thrown.')
                 )->catch($this->ctx->type(Type::fromName(ApiException::class)), $ex)(
@@ -314,9 +343,9 @@ class UnitTestsGenerator
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function testSuccessCaseLro(MethodDetails $method): PhpMethod
+    private function testSuccessCaseLro(MethodDetails $method, $async = false): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $expectedResponse = AST::var('expectedResponse');
         $anyResponse = AST::var('anyResponse');
         $completeOperation = AST::var('completeOperation');
@@ -335,7 +364,13 @@ class UnitTestsGenerator
         $actualOperationsFuncCall = AST::var('actualOperationsFuncCall');
         $actualOperationsRequestObject = AST::var('actualOperationsRequestObject');
         [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testSuccessMethodName);
-        return AST::method($method->testSuccessMethodName)
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 $initCode,
@@ -351,8 +386,9 @@ class UnitTestsGenerator
                 $operationsTransport->addResponse($completeOperation),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($response, $invocation),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
                 AST::assign($apiRequests, $transport->popReceivedCalls()),
@@ -389,7 +425,7 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseLro(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
@@ -397,6 +433,7 @@ class UnitTestsGenerator
         $expectedOperationsRequestObject = AST::var('expectedOperationsRequestObject');
         $ex = AST::var('ex');
         [$initCode, $operationsTransport, $client, $transport] = $this->lroTestInit($method->testSuccessMethodName);
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -413,8 +450,9 @@ class UnitTestsGenerator
                 $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
                 AST::assign($expectedOperationsRequestObject, AST::new($this->ctx->type(Type::fromName(GetOperationRequest::class)))()),
@@ -447,7 +485,7 @@ class UnitTestsGenerator
         $incompleteOperation = AST::var('incompleteOperation');
         $initCode = Vector::new([
             AST::assign($operationsTransport, AST::call(AST::THIS, $this->createTransport())()),
-            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName(OperationsClient::class)))(AST::array([
+            AST::assign($operationsClient, AST::new($this->ctx->type(Type::fromName($this->operationsClientClass)))(AST::array([
                 'apiEndpoint' => '',
                 'transport' => $operationsTransport,
                 'credentials' => AST::call(AST::THIS, $this->createCredentials())(),
@@ -468,9 +506,9 @@ class UnitTestsGenerator
         return [$initCode, $operationsTransport, $client, $transport];
     }
 
-    private function testSuccessCasePaginated(MethodDetails $method): PhpMethod
+    private function testSuccessCasePaginated(MethodDetails $method, $async = false): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponse = AST::var('expectedResponse');
@@ -491,7 +529,7 @@ class UnitTestsGenerator
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
         $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
-
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         // Should apply only to REST-only transports. This allowance of map-as-resource-field is set
         // in MethodDetails.php.
         $resourcesIsMap = $method->resourcesField->isMap;
@@ -500,7 +538,12 @@ class UnitTestsGenerator
             ? Helpers::toCamelCase($method->resourcesField->camelName . '_key')
             : 0;
 
-        return AST::method($method->testSuccessMethodName)
+        $methodName = $async ? $method->methodName . 'Async' : $method->methodName;
+        $invocation = $async
+            ? AST::call($client->instanceCall(AST::method($methodName))($requestAssignment->to), AST::method('wait'))()
+            : $client->instanceCall(AST::method($methodName))($requestAssignment->to);
+
+        return AST::method($async ? $method->testAsyncMethodName : $method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
                 AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
@@ -520,8 +563,9 @@ class UnitTestsGenerator
                 AST::call($transport, AST::method('addResponse'))($expectedResponse),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($response, $invocation),
                 ($this->assertEquals)($expectedResponse, $response->getPage()->getResponseObject()),
                 AST::assign($resources, AST::call(AST::ITERATOR_TO_ARRAY)($response->iterateAllElements())),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($resources)),
@@ -548,7 +592,7 @@ class UnitTestsGenerator
 
     private function testSuccessCaseBidiStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -664,7 +708,7 @@ class UnitTestsGenerator
     private function testSuccessCaseServerStreaming(MethodDetails $method): PhpMethod
     {
         // TODO: Support resource-names in request args.
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $expectedResponseList = Vector::range(1, 3)->map(fn ($i) => AST::var('expectedResponse' . ($i === 1 ? '' : $i)));
@@ -688,6 +732,7 @@ class UnitTestsGenerator
         $actualRequestObject = AST::var('actualRequestObject');
         $actualValue = AST::var('actualValue');
         $rpcHostServiceName = $method->isMixin() ? $method->mixinServiceFullname : $this->serviceDetails->serviceName;
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testSuccessMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -702,8 +747,9 @@ class UnitTestsGenerator
                     $transport->addResponse($x),
                 ])),
                 '// Mock request',
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
                 ($this->assertInstanceOf)(AST::access($this->ctx->type(Type::fromName(ServerStream::class)), AST::CLS), $serverStream),
                 AST::assign($responses, AST::call(AST::ITERATOR_TO_ARRAY)($serverStream->readAll())),
                 AST::assign($expectedResponses, AST::array([])),
@@ -725,7 +771,7 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseServerStreaming(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         $status = AST::var('status');
@@ -734,6 +780,7 @@ class UnitTestsGenerator
         $serverStream = AST::var('serverStream');
         $results = AST::var('results');
         $ex = AST::var('ex');
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -751,8 +798,9 @@ class UnitTestsGenerator
                 $transport->setStreamingStatus($status),
                 ($this->assertTrue)($transport->isExhausted()),
                 '// Mock request',
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($serverStream, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
                 AST::assign($results, $serverStream->readAll()),
                 AST::try(
                     AST::call(AST::ITERATOR_TO_ARRAY)($results),
@@ -769,10 +817,10 @@ class UnitTestsGenerator
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }
 
-    private function testSuccessCaseCustomOp(MethodDetails $method): PhpMethod
+    private function testSuccessCaseCustomOp(MethodDetails $method, $async = false): PhpMethod
     {
-        $testMethodName = $method->testSuccessMethodName;
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $testMethodName = $async ? $method->testAsyncMethodName : $method->testSuccessMethodName;
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $completeOperation = AST::var('completeOperation');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
@@ -793,6 +841,7 @@ class UnitTestsGenerator
         $pollingMethod = $method->operationPollingMethod;
         $pollingMethodRPCPath = "/{$method->serviceDetails->package}.{$method->serviceDetails->customOperationService->getName()}/{$pollingMethod->name}";
         [$initCode, $operationsTransport, $client, $transport] = $this->customOpTestInit($method, $testMethodName);
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($testMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -803,8 +852,9 @@ class UnitTestsGenerator
                 $operationsTransport->addResponse($completeOperation),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
                 ($this->assertFalse)($response->isDone()),
                 AST::assign($apiRequests, $transport->popReceivedCalls()),
                 ($this->assertSame)(1, AST::call(AST::COUNT)($apiRequests)),
@@ -848,13 +898,14 @@ class UnitTestsGenerator
 
     private function testExceptionalCaseCustomOp(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
         $status = AST::var('status');
         $expectedExceptionMessage = AST::var('expectedExceptionMessage');
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
         $response = AST::var('response');
         $ex = AST::var('ex');
         [$initCode, $operationsTransport, $client, $transport] = $this->customOpTestInit($method, $method->testExceptionMethodName);
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
         return AST::method($method->testExceptionMethodName)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
@@ -871,8 +922,9 @@ class UnitTestsGenerator
                 $operationsTransport->instanceCall(AST::method('addResponse'))(AST::NULL, $status),
                 // TODO(vNext): Always add this comment.
                 $method->requiredFields->any() ? '// Mock request' : null,
-                $requestPerField->map(fn ($x) => $x->initCode),
-                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestCallArgs)),
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($response, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
                 ($this->assertFalse)($response->isDone()),
                 ($this->assertNull)($response->getResult()),
                 AST::try(
@@ -927,5 +979,30 @@ class UnitTestsGenerator
             $transport->addResponse($incompleteOperation),
         ]);
         return [$initCode, $operationsTransport, $client, $transport];
+    }
+
+    private function initializeRequest(Vector $requestPerField, Type $requestType): array
+    {
+        $setters = [];
+        $initializedFields = $requestPerField->map(function ($x) use (&$setters) {
+            $setters[] = [$x->var, $x->field->setter->getName()];
+            return $x->initCode;
+        });
+        $value = AST::new(
+            $this->ctx->type($requestType)
+        )();
+        foreach ($setters as $setter) {
+            $var = $setter[0];
+            $setterMethodName = $setter[1];
+            $value = $value->$setterMethodName($var);
+        }
+
+        return [
+            $initializedFields,
+            AST::assign(
+                AST::var('request'),
+                $value
+            )
+        ];
     }
 }

@@ -40,8 +40,7 @@ function method_empty_sample(): void
 {
     // Create a client.
     $basicServerStreamingClient = new BasicServerStreamingClient();
-
-    // Prepare the request message.
+    
     $request = new EmptyRequest();
 
     // Call the API and handle any network failures.

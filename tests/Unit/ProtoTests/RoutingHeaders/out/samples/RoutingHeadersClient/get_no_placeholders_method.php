@@ -39,8 +39,7 @@ function get_no_placeholders_method_sample(): void
 {
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-
-    // Prepare the request message.
+    
     $request = new SimpleRequest();
 
     // Call the API and handle any network failures.

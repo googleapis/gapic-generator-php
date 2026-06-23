@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1ServerStreaming_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ServerStream;
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\Client\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
 /**
@@ -39,11 +40,13 @@ function method1_server_streaming_sample(): void
 {
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
+    
+    $request = new Request1();
 
     // Call the API and handle any network failures.
     try {
         /** @var ServerStream $stream */
-        $stream = $grpcServiceConfigWithRetry1Client->method1ServerStreaming();
+        $stream = $grpcServiceConfigWithRetry1Client->method1ServerStreaming($request);
 
         /** @var Response1 $element */
         foreach ($stream->readAll() as $element) {

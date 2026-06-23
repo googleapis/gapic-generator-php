@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_CreateBook_sync]
 use Google\ApiCore\ApiException;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\CreateBookRequest;
 
 /**
  * Creates a book.
@@ -41,15 +42,17 @@ function create_book_sample(string $formattedName, string $formattedBookName): v
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-
-    // Prepare any non-scalar elements to be passed along with the request.
+    
     $book = (new BookResponse())
         ->setName($formattedBookName);
+    $request = (new CreateBookRequest())
+        ->setName($formattedName)
+        ->setBook($book);
 
     // Call the API and handle any network failures.
     try {
         /** @var BookResponse $response */
-        $response = $libraryClient->createBook($formattedName, $book);
+        $response = $libraryClient->createBook($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

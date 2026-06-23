@@ -42,6 +42,8 @@ return [
                     'cancelOperationRequest' => '\Testing\CustomLro\CancelOperationRequest',
                     'deleteOperationRequest' => '\Testing\CustomLro\DeleteOperationRequest',
                 ],
+                'responseType' => 'Testing\CustomLro\CustomOperationResponse',
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
             ],
         ],
     ],

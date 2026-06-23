@@ -51,7 +51,6 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
             $file,
             new ServiceYamlConfig(null),
             Transport::GRPC,
-            MigrationMode::NEW_SURFACE_ONLY
         );
 
         $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), 2026);

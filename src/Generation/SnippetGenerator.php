@@ -26,7 +26,6 @@ use Google\Generator\Ast\PhpFunction;
 use Google\Generator\Ast\Variable;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\Rpc\Status;
@@ -68,9 +67,7 @@ class SnippetGenerator
 
         foreach ($this->serviceDetails->methods as $method) {
             $regionTag = $this->generateRegionTag($method->name);
-            $snippetDetails = $this->serviceDetails->migrationMode == MigrationMode::MIGRATION_MODE_UNSPECIFIED || $this->serviceDetails->migrationMode == MigrationMode::PRE_MIGRATION_SURFACE_ONLY ?
-                new SnippetDetails($method, $this->serviceDetails) :
-                new SnippetDetailsV2($method, $this->serviceDetails);
+            $snippetDetails = new SnippetDetails($method, $this->serviceDetails);
             $rpcMethodExample = $this->rpcMethodExample($snippetDetails);
             $files[Helpers::toSnakeCase($method->name)] = AST::file(null)
                 ->withApacheLicense($this->licenseYear)
@@ -379,13 +376,7 @@ class SnippetGenerator
         $shouldGenerateDocBlock = $docLineCount > 0
             || count($snippetDetails->phpDocParams) > 0
             || !$hasSampleParams;
-        $preMigrationSurface = in_array(
-            $this->serviceDetails->migrationMode,
-            [MigrationMode::MIGRATION_MODE_UNSPECIFIED, MigrationMode::PRE_MIGRATION_SURFACE_ONLY]
-        );
-        $clientType = $preMigrationSurface ?
-            $this->serviceDetails->emptyClientType :
-            $this->serviceDetails->gapicClientV2Type;
+        $clientType = $this->serviceDetails->gapicClientType;
 
         $sampleFn = AST::fn($sampleName)
             ->withParams($snippetDetails->sampleParams)
@@ -397,12 +388,7 @@ class SnippetGenerator
                         $snippetDetails->serviceClientVar,
                         AST::new($snippetDetails->context->type($clientType))()
                     ),
-                    $hasSampleAssignments ? PHP_EOL : null,
-                    $hasSampleAssignments ? (
-                        $preMigrationSurface
-                            ? '// Prepare any non-scalar elements to be passed along with the request.'
-                            : '// Prepare the request message.'
-                    ) : null,
+                    $hasSampleAssignments ? PHP_EOL . '// Prepare the request message.' : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',

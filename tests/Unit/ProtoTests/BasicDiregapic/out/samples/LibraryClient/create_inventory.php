@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_CreateInventory_sync]
 use Google\ApiCore\ApiException;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\CreateInventoryRequest;
 use Testing\BasicDiregapic\InventoryResponse;
-use Testing\BasicDiregapic\LibraryClient;
 
 /**
  * Creates an inventory. Tests singleton resources.
@@ -43,14 +44,18 @@ function create_inventory_sample(
 ): void {
     // Create a client.
     $libraryClient = new LibraryClient();
-
-    // Prepare any non-scalar elements to be passed along with the request.
+    
     $assets = [$assetsElement,];
+    $request = (new CreateInventoryRequest())
+        ->setParent($formattedParent)
+        ->setAsset($asset)
+        ->setParentAsset($parentAsset)
+        ->setAssets($assets);
 
     // Call the API and handle any network failures.
     try {
         /** @var InventoryResponse $response */
-        $response = $libraryClient->createInventory($formattedParent, $asset, $parentAsset, $assets);
+        $response = $libraryClient->createInventory($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

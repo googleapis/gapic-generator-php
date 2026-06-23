@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_AddTag_sync]
 use Google\ApiCore\ApiException;
+use Testing\BasicDiregapic\AddTagRequest;
 use Testing\BasicDiregapic\AddTagResponse;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
 
 /**
  * Adds a tag to the book. This RPC is a mixin.
@@ -38,11 +39,15 @@ function add_tag_sample(string $resource, string $tag): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
+    
+    $request = (new AddTagRequest())
+        ->setResource($resource)
+        ->setTag($tag);
 
     // Call the API and handle any network failures.
     try {
         /** @var AddTagResponse $response */
-        $response = $libraryClient->addTag($resource, $tag);
+        $response = $libraryClient->addTag($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
