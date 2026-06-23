@@ -128,11 +128,15 @@ class BuildMethodFragmentGenerator
         };
 
         $methodSignatureArguments = array_map('trim', array_filter(explode(',', $methodSignature)));
+        $methodSignatureTopLevelArguments = array_values(array_unique(array_map(
+            fn ($arg) => explode('.', $arg, 2)[0],
+            $methodSignatureArguments
+        )));
         $requiredFields = $methodDetails->allFields
-            ->filter(fn ($f) => in_array($f->name, $methodSignatureArguments))
-            ->orderBy(fn ($f) => array_search($f->name, $methodSignatureArguments));
+            ->filter(fn ($f) => in_array($f->name, $methodSignatureTopLevelArguments))
+            ->orderBy(fn ($f) => array_search($f->name, $methodSignatureTopLevelArguments));
 
-        if (count($methodSignatureArguments) !== $requiredFields->count()) {
+        if (count($methodSignatureTopLevelArguments) !== $requiredFields->count()) {
             throw new \LogicException(sprintf(
                 'missing method signature arguments (Expected "%s", found %s)',
                 $methodSignature,
@@ -153,7 +157,7 @@ class BuildMethodFragmentGenerator
         $cleanSignature = preg_replace('/\s+/', '', $methodSignature);
         $methodName = $isFirst
             ? 'build'
-            : 'buildFrom' . Helpers::toUpperCamelCase(str_replace(',', '_', $cleanSignature));
+            : 'buildFrom' . Helpers::toUpperCamelCase(str_replace([',', '.'], '_', $cleanSignature));
 
         return AST::method($methodName)
             ->withAccess(Access::PUBLIC, Access::STATIC)
