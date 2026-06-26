@@ -63,6 +63,9 @@ class GapicClientExamplesGenerator
             case MethodDetails::CLIENT_STREAMING:
                 $code = $this->rpcMethodExampleClientStreaming($method);
                 break;
+            case MethodDetails::RESUMABLE_UPLOAD:
+                $code = $this->rpcMethodExampleResumableUpload($method);
+                break;
             default:
                 throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
@@ -133,6 +136,22 @@ class GapicClientExamplesGenerator
                 $method->hasEmptyResponse ?
                     AST::call($serviceClient, AST::method($method->methodName))($callVars) :
                     AST::assign($response, AST::call($serviceClient, AST::method($method->methodName))($callVars))
+            )->finally(
+                AST::call($serviceClient, AST::method('close'))()
+            )
+        );
+    }
+
+    private function rpcMethodExampleResumableUpload(MethodDetails $method): AST
+    {
+        $serviceClient = AST::var($this->serviceDetails->clientVarName);
+        [$varsInitCode, $callVars] = $this->initCallVars($method);
+        $uploader = AST::var('uploader');
+        return AST::block(
+            AST::assign($serviceClient, AST::new($this->ctx->type($this->serviceDetails->emptyClientType))()),
+            AST::try(
+                $varsInitCode,
+                AST::assign($uploader, AST::call($serviceClient, AST::method($method->methodName))($callVars))
             )->finally(
                 AST::call($serviceClient, AST::method('close'))()
             )

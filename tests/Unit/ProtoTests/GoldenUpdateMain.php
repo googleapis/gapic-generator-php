@@ -119,6 +119,12 @@ class GoldenUpdateMain
             'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
         ],
         20 => [
+            'name' => 'ResumableUpload',
+            'protoPath' => 'ResumableUpload/resumable_upload.proto',
+            'package' => 'testing.resumableupload',
+            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
+        ],
+        21 => [
             'name' => 'DiregapicPaginated',
             'protoPath' => 'DiregapicPaginated/diregapic-paginated.proto',
             'transport' => 'rest',

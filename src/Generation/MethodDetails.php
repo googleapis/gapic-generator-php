@@ -52,6 +52,7 @@ abstract class MethodDetails
     public const SERVER_STREAMING = 'server_streaming';
     public const CLIENT_STREAMING = 'client_streaming';
     public const CUSTOM_OP = 'custom_op';
+    public const RESUMABLE_UPLOAD = 'resumable_upload';
 
     public const DEPRECATED_MSG = 'This method will be removed in the next major version update.';
 
@@ -59,6 +60,7 @@ abstract class MethodDetails
     {
         // TODO: Handle further method types; e.g. streaming, paginated, ...
         return
+            static::maybeCreateResumableUpload($svc, $desc) ??
             static::maybeCreatePaginated($svc, $desc) ??
             static::maybeCreateCustomOperation($svc, $desc) ??
             static::maybeCreateLro($svc, $desc) ??
@@ -73,6 +75,35 @@ abstract class MethodDetails
         $methodDetails = static::create($svc, $desc);
         $methodDetails->mixinServiceFullname = $mixinHostServiceFullname;
         return $methodDetails;
+    }
+
+    private static function maybeCreateResumableUpload(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails
+    {
+        $httpRule = ProtoHelpers::httpRule($desc);
+        if (!$httpRule instanceof HttpRule) {
+            return null;
+        }
+
+        $isMediaUpload = false;
+        if (method_exists($httpRule, 'getMediaUpload')) {
+            $isMediaUpload = (bool) $httpRule->getMediaUpload()?->getEnabled();
+        } elseif ($desc->getName() === 'CreateYouTubeVideoUpload') {
+            // @TODO: Remove hardcoded CreateYouTubeVideoUpload method once getMediaUpload annotation is available in common-protos
+            $isMediaUpload = true;
+        }
+
+        if (!$isMediaUpload) {
+            return null;
+        }
+
+        return new class($svc, $desc) extends MethodDetails {
+            public function __construct($svc, $desc)
+            {
+                parent::__construct($svc, $desc);
+                $this->methodType = MethodDetails::RESUMABLE_UPLOAD;
+                $this->methodReturnType = Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUpload::class);
+            }
+        };
     }
 
     private static function maybeCreateClientStreaming(ServiceDetails $svc, MethodDescriptorProto $desc): ?MethodDetails

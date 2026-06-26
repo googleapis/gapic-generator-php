@@ -135,6 +135,13 @@ class ResourcesGenerator
                         $descriptor['responseType'] = $method->responseType->getFullName(true);
                     }
                     break;
+                case MethodDetails::RESUMABLE_UPLOAD:
+                    $descriptor = [];
+                    if (!$preMigrationOnly) {
+                        $descriptor['callType'] = AST::literal('\Google\ApiCore\Call::RESUMABLE_UPLOAD_CALL');
+                        $descriptor['responseType'] = $method->responseType->getFullName(true);
+                    }
+                    break;
                 default:
                     $descriptor = [];
 

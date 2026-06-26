@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package testing.resumableupload;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+
+service ResumableUpload {
+  option (google.api.default_host) = "resumableupload.example.com";
+
+  // A method with media_upload annotation enabled.
+  rpc CreateYouTubeVideoUpload(CreateYouTubeVideoUploadRequest) returns (CreateYouTubeVideoUploadResponse) {
+    option (google.api.http) = {
+      post: "/v1/files:upload"
+      body: "*"
+      media_upload: {
+        enabled: true
+      }
+    };
+  }
+}
+
+message CreateYouTubeVideoUploadRequest {
+  string name = 1;
+}
+
+message CreateYouTubeVideoUploadResponse {
+  string name = 1;
+  int64 size = 2;
+}

@@ -122,7 +122,7 @@ class UnitTestsV2Generator
     {
         // Just pick one non-streaming method to generate an async unit test for.
         // This is more of a sanity check than a coverage thing.
-        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn ($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
+        $nonStreamingMethod = $this->serviceDetails->methods->filter(fn ($m) => !$m->isStreaming() && !$m->isMixin() && $m->methodType !== MethodDetails::RESUMABLE_UPLOAD)->firstOrNull();
 
         return AST::class($this->serviceDetails->unitTestsV2Type, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
@@ -220,6 +220,9 @@ class UnitTestsV2Generator
                 // That behaviour is reproduced here, but we may add new tests after the
                 // initial release of this micro-generator.
                 break;
+            case MethodDetails::RESUMABLE_UPLOAD:
+                yield $this->testSuccessCaseResumableUpload($method);
+                break;
             default:
                 throw new Exception("Cannot handle method-type: '{$method->methodType}'");
         }
@@ -298,6 +301,32 @@ class UnitTestsV2Generator
                     ($this->assertProtobufEquals)($x->var, $actualValue)
                 ])),
                 ($this->assertTrue)(AST::call($transport, AST::method('isExhausted'))()),
+            ))
+            ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
+    }
+
+    private function testSuccessCaseResumableUpload(MethodDetails $method): PhpMethod
+    {
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
+        $transport = AST::var('transport');
+        $client = AST::var(self::CLIENT_VARIABLE);
+        [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
+        $upload = AST::var('upload');
+        $uploadType = $this->ctx->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUpload::class));
+        list($initializedFields, $requestAssignment) = $this->initializeRequest($requestPerField, $method->requestType);
+
+        return AST::method($method->testSuccessMethodName)
+            ->withAccess(Access::PUBLIC)
+            ->withBody(AST::block(
+                AST::assign($transport, AST::call(AST::THIS, $this->createTransport())()),
+                AST::assign($client, AST::call(AST::THIS, $this->createClient())(AST::array(['transport' => $transport]))),
+                $method->requiredFields->any() ? '// Mock request' : null,
+                $initializedFields,
+                $requestAssignment,
+                AST::assign($upload, $client->instanceCall(AST::method($method->methodName))($requestAssignment->to)),
+                ($this->assertInstanceOf)(AST::access($uploadType, AST::CLS), $upload),
+                AST::assign(AST::var('callProp'), AST::call(AST::new($this->ctx->type(Type::fromName(\ReflectionClass::class)))($upload), AST::method('getProperty'))('call')),
+                ($this->assertSame)($method->serviceDetails->serviceName . '/' . $method->name, AST::call(AST::var('callProp')->instanceCall(AST::method('getValue'))($upload), AST::method('getMethod'))())
             ))
             ->withPhpDoc(PhpDoc::block(PhpDoc::test()));
     }

@@ -351,4 +351,9 @@ class ServiceDetails
         // of all properties labelled as "readonly" to actually be private properties with getters.
         $this->methods = $newMethods;
     }
+
+    public function hasResumableUploadMethods(): bool
+    {
+        return $this->methods->any(fn ($x) => $x->methodType === MethodDetails::RESUMABLE_UPLOAD);
+    }
 }

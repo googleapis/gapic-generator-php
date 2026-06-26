@@ -1,0 +1,23 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services\/RPCs to the corresponding library clients\/methods",
+    "language": "php",
+    "protoPackage": "testing.resumableupload",
+    "libraryPackage": "Testing\\Resumableupload",
+    "services": {
+        "ResumableUpload": {
+            "clients": {
+                "grpc": {
+                    "libraryClient": "ResumableUploadGapicClient",
+                    "rpcs": {
+                        "CreateYouTubeVideoUpload": {
+                            "methods": [
+                                "createYouTubeVideoUpload"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

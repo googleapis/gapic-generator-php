@@ -142,6 +142,9 @@ class GapicClientV2Generator
             ->withTrait(
                 $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null
             )
+            ->withTrait(
+                $this->serviceDetails->hasResumableUploadMethods() ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUploadTrait::class)): null
+            )
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
@@ -238,7 +241,7 @@ class GapicClientV2Generator
     private function magicAsyncDocs(): PhpDoc
     {
         $methodDocs = $this->serviceDetails->methods
-            ->filter(fn ($m) => !$m->isStreaming())
+            ->filter(fn ($m) => !$m->isStreaming() && $m->methodType !== MethodDetails::RESUMABLE_UPLOAD)
             ->map(fn ($m) => PhpDoc::method(
                 $m->methodName . 'Async',
                 $this->asyncReturnType($m),
@@ -507,7 +510,7 @@ class GapicClientV2Generator
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
 
-        if ($this->serviceDetails->transportType !== Transport::GRPC) {
+        if ($this->serviceDetails->transportType !== Transport::GRPC || $this->serviceDetails->hasResumableUploadMethods()) {
             $clientDefaultValues['transportConfig'] = AST::array([
                 'rest' => AST::array([
                     'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
@@ -655,6 +658,12 @@ class GapicClientV2Generator
                         AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
                     )
+                    : null,
+                $this->serviceDetails->hasResumableUploadMethods()
+                    ? AST::assign(
+                        AST::access(AST::THIS, AST::property('resumableUploadClient')),
+                        AST::call(AST::THIS, AST::method('createResumableUploadClient'))($clientOptions)
+                    )
                     : null
             ))
             ->withPhpDoc(PhpDoc::block(
@@ -800,9 +809,12 @@ class GapicClientV2Generator
             $this->ctx->type($method->requestType),
             $request
         );
+        $optionsVarName = $method->methodType === MethodDetails::RESUMABLE_UPLOAD
+            ? 'resumableUploadOptions'
+            : self::CALL_OPTIONS_VAR;
         $callOptions = AST::param(
             ResolvedType::array(),
-            AST::var(self::CALL_OPTIONS_VAR),
+            AST::var($optionsVarName),
             AST::array([])
         );
         $retrySettingsType = Type::fromName(RetrySettings::class);
@@ -811,7 +823,11 @@ class GapicClientV2Generator
         $startCall = $this->startCall($method, $callOptions, $request);
         $phpDocReturnType = null;
         $returnType = $this->ctx->type(Type::void());
-        if (!$method->hasEmptyResponse) {
+        if ($method->methodType === MethodDetails::RESUMABLE_UPLOAD) {
+            $returnType = $this->ctx->type($method->methodReturnType);
+            $phpDocReturnType = PhpDoc::return($returnType);
+            $startCall = AST::return($startCall);
+        } elseif (!$method->hasEmptyResponse) {
             $returnType = $this->ctx->type($method->methodReturnType);
             $phpDocReturnType = PhpDoc::return($returnType);
             $startCall = AST::return($startCall);
@@ -845,7 +861,7 @@ class GapicClientV2Generator
                     count($method->docLines) > 0
                         ? PhpDoc::preFormattedText($method->docLines)
                         : null,
-                    !$method->isStreaming()
+                    !$method->isStreaming() && $method->methodType !== MethodDetails::RESUMABLE_UPLOAD
                         ? PhpDoc::text(
                             'The async variant is',
                             AST::staticCall( // use staticCall for PHP Doc :: syntax
@@ -866,7 +882,50 @@ class GapicClientV2Generator
                         : null,
                     PhpDoc::param(
                         $callOptions,
-                        PhpDoc::block(
+                        $method->methodType === MethodDetails::RESUMABLE_UPLOAD
+                        ? PhpDoc::block(
+                            PhpDoc::text('Optional.'),
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type(Type::int())]),
+                                'chunkSize',
+                                PhpDoc::text(
+                                    "Optional. The size of each chunk to upload in bytes. Must be a multiple of 262144 (256 KB). " .
+                                    "Values smaller than the server's chunk granularity (typically 256 KB) " .
+                                    "will be rounded up to match the granularity. Defaults to 8388608 (8 MB)."
+                                )
+                            ),
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type(Type::callable())]),
+                                'progressCallback',
+                                PhpDoc::text(
+                                    'Optional. A callback function executed after every chunk upload or query. ' .
+                                    'The callback should accept two arguments: (int $bytesUploaded, ',
+                                    $this->ctx->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUpload::class)),
+                                    ' $upload).'
+                                )
+                            ),
+                            PhpDoc::type(
+                                Vector::new([ResolvedType::array()]),
+                                'headers',
+                                PhpDoc::text('Optional. Key-value array of custom HTTP headers to include with upload requests.')
+                            ),
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type(Type::int())]),
+                                'timeoutMillis',
+                                PhpDoc::text('Optional. The timeout in milliseconds for the initial start call.')
+                            ),
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type(Type::int())]),
+                                'totalTimeoutMillis',
+                                PhpDoc::text('Optional. The total timeout in milliseconds for the entire resumable upload operation. Defaults to 600000 (10 minutes).')
+                            ),
+                            PhpDoc::type(
+                                Vector::new([$this->ctx->type($retrySettingsType), ResolvedType::array()]),
+                                'retrySettings',
+                                PhpDoc::text('Optional. Retry settings to use for the initial start call.')
+                            )
+                        )
+                        : PhpDoc::block(
                             PhpDoc::Text('Optional.'),
                             $method->isStreaming()
                             ? PhpDoc::type(
@@ -891,15 +950,15 @@ class GapicClientV2Generator
                     PhpDoc::throws(
                         $this->ctx->type(Type::fromName(ApiException::class)),
                         PhpDoc::text('Thrown if the API call fails.')
-                    ),
-                    $this->serviceDetails->isGa()
-                        ? null
-                        : PhpDoc::experimental(),
-                    $method->isDeprecated
-                        ? PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
-                        : null
-                )
-            );
+                     ),
+                     $this->serviceDetails->isGa()
+                         ? null
+                         : PhpDoc::experimental(),
+                     $method->isDeprecated
+                         ? PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
+                         : null
+                 )
+             );
     }
 
     private function startCall($method, $callOptions, $request): AST
@@ -922,8 +981,12 @@ class GapicClientV2Generator
             case MethodDetails::PAGINATED:
                 $wait = false;
                 break;
+            case MethodDetails::RESUMABLE_UPLOAD:
+                $wait = false;
+                break;
             default:
         }
+
 
         $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
         if ($wait) {
