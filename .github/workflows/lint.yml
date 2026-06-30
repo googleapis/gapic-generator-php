@@ -1,5 +1,8 @@
 name: Lint
 
+permissions:
+  contents: read
+
 on:
     push:
         branches:
@@ -11,12 +14,12 @@ on:
 jobs:
     style:
         name: PHP Style Check
-        uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@main
+        uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@main # zizmor: ignore[unpinned-uses]
         with:
           path: src
 
     static-analysis:
         name: PHPStan Static Analysis
-        uses: GoogleCloudPlatform/php-tools/.github/workflows/static-analysis.yml@main
+        uses: GoogleCloudPlatform/php-tools/.github/workflows/static-analysis.yml@main # zizmor: ignore[unpinned-uses]
         with:
           autoload-file: tests/Unit/autoload.php
